@@ -1,0 +1,28 @@
+
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="MIT"
+[[mods]]
+modId="hole" #mandatory
+version="0.2" #mandatory
+displayName="Hole" #mandatory
+authors="Peeko32213" #optional
+description='''A Mod that adds a few new mobs to caves'''
+[[dependencies.hole]] #optional
+modId="forge" #mandatory
+mandatory=true #mandatory
+versionRange="${forge_version_range}" #mandatory
+ordering="NONE"
+side="BOTH"
+[[dependencies.hole]]
+modId="minecraft"
+mandatory=true
+versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"
+[[dependencies.geckolib]]
+modId="geckolib"
+mandatory=true
+versionRange="[4.2,)"
+ordering="BEFORE"
+side="BOTH"
