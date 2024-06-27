@@ -5,6 +5,7 @@ import com.peeko32213.hole.Hole;
 import com.peeko32213.hole.core.registry.HoleCreativeTabs;
 import com.peeko32213.hole.core.registry.HoleEntities;
 import com.peeko32213.hole.core.registry.HoleItems;
+import com.peeko32213.hole.core.registry.HoleSounds;
 import net.minecraft.data.PackOutput;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.CreativeModeTab;
@@ -31,6 +32,11 @@ public class LanguageGenerator extends LanguageProvider {
 
         addEntityType(HoleEntities.UMBER_SPIDER, "Umber Spider");
         addItem(HoleItems.UMBER_SPIDER_SPAWN_EGG, "Umber Spider Spawn Egg");
+
+        addSound(HoleSounds.UMBER_SPIDER_DEATH, "Umber Spider Dying");
+        addSound(HoleSounds.UMBER_SPIDER_HURT, "Umber Spider Hurt");
+        addSound(HoleSounds.UMBER_SPIDER_IDLE, "Umber Spider Idling");
+
     }
 
     @Override

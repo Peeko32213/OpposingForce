@@ -1,0 +1,29 @@
+{
+  "umber_spider_death": {
+    "sounds": [
+      {
+        "name": "hole:umber_spider_death",
+        "volume": 0.35
+      }
+    ],
+    "subtitle": "hole.sound.subtitle.umber_spider_death"
+  },
+  "umber_spider_hurt": {
+    "sounds": [
+      {
+        "name": "hole:umber_spider_hurt",
+        "volume": 0.35
+      }
+    ],
+    "subtitle": "hole.sound.subtitle.umber_spider_hurt"
+  },
+  "umber_spider_idle": {
+    "sounds": [
+      {
+        "name": "hole:umber_spider_idle",
+        "volume": 0.35
+      }
+    ],
+    "subtitle": "hole.sound.subtitle.umber_spider_idle"
+  }
+}

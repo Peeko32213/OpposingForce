@@ -22,7 +22,7 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
 
 
-version = '0.2'
+version = '1.0'
 group = 'com.peeko32213.hole'
 archivesBaseName = 'hole'
 
@@ -136,7 +136,7 @@ tasks.named('jar', Jar).configure {
         attributes([
                 'Specification-Title'     : "hole",
                 'Specification-Vendor'    : "Peeko32213",
-                'Specification-Version'   : '0.0.2', // We are version beta-1.0 of ourselves
+                'Specification-Version'   : '1.0.0', // We are version beta-1.0 of ourselves
                 'Implementation-Title'    : project.name,
                 'Implementation-Version'  : project.jar.archiveVersion,
                 'Implementation-Vendor'   : "hole",

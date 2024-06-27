@@ -1,9 +1,6 @@
 package com.peeko32213.hole;
 
-import com.peeko32213.hole.core.registry.HoleCreativeTabs;
-import com.peeko32213.hole.core.registry.HoleEntities;
-import com.peeko32213.hole.core.registry.HoleEntityPlacement;
-import com.peeko32213.hole.core.registry.HoleItems;
+import com.peeko32213.hole.core.registry.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -36,7 +33,7 @@ public class Hole {
         HoleItems.ITEMS.register(modEventBus);
         HoleCreativeTabs.DEF_REG.register(modEventBus);
         HoleEntities.ENTITIES.register(modEventBus);
-       // SFFeatures.FEATURES.register(modEventBus);
+        HoleSounds.DEF_REG.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
