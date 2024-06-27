@@ -1,0 +1,70 @@
+{
+  "attributes_additions": [],
+  "goal_operations": [
+    {
+      "type": "goalsmith:add_goal_operation",
+      "goal": [
+        {
+          "type": "goalsmith:float_goal",
+          "goal_priority": 1
+        },
+        {
+          "type": "goalsmith:leap_at_target_goal",
+          "goal_priority": 3,
+          "y_movement": 0.6
+        },
+        {
+          "type": "goalsmith:water_avoiding_random_stroll_goal",
+          "goal_priority": 5,
+          "probability": 0.001,
+          "speed_modifier": 0.8
+        },
+        {
+          "type": "goalsmith:look_at_entity_goal",
+          "goal_priority": 6,
+          "look_at_type": "goalsmith:player",
+          "look_distance": 8.0,
+          "only_horizontal": false,
+          "probability": 0.02
+        },
+        {
+          "type": "goalsmith:random_look_around_goal",
+          "goal_priority": 6
+        },
+        {
+          "type": "hole:fear_the_light_goal",
+          "execute_chance": 100,
+          "goal_priority": 0,
+          "light_level": 10,
+          "movement_speed": 1.5
+        },
+        {
+          "type": "goalsmith:melee_attack_goal",
+          "following_target_even_if_not_seen": false,
+          "goal_priority": 4,
+          "speed_modifier": 0.8
+        }
+      ]
+    }
+  ],
+  "target_entity": "hole:umber_spider",
+  "target_goal_operations": [
+    {
+      "type": "goalsmith:add_target_goal_operation",
+      "target_goal": [
+        {
+          "type": "goalsmith:hurt_by_target_goal",
+          "target_goal_priority": 1,
+          "to_ignore": "hole:umber_spider"
+        },
+        {
+          "type": "goalsmith:smart_nearest_target_goal",
+          "must_reach": true,
+          "must_see": true,
+          "target_goal_priority": 1,
+          "target_type": "goalsmith:player"
+        }
+      ]
+    }
+  ]
+}

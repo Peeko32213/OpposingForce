@@ -18,15 +18,12 @@ import java.util.Locale;
 @Mod(Hole.MODID)
 public class Hole {
     public static final String MODID = "hole";
-    private static int packetsRegistered;
-    public static final List<Runnable> CALLBACKS = new ArrayList<>();
     public static final Logger LOGGER = LogManager.getLogger();
 
 
     public Hole()
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modEventBus.addListener(this::commonSetup);
         //DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> modEventBus.addListener(ClientEvents::init));
 
        // SFBlocks.BLOCKS.register(modEventBus);
@@ -34,15 +31,11 @@ public class Hole {
         HoleCreativeTabs.DEF_REG.register(modEventBus);
         HoleEntities.ENTITIES.register(modEventBus);
         HoleSounds.DEF_REG.register(modEventBus);
+        HoleGoals.TARGET_GOAL_TYPE_SERIALIZER.register(modEventBus);
+        HoleGoals.GOAL_TYPE_SERIALIZER.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event)
-    {
-        event.enqueueWork(() -> {
-            HoleEntityPlacement.entityPlacement();
-        });
-    }
 
     public static ResourceLocation prefix(String name) {
         return new ResourceLocation(MODID, name.toLowerCase(Locale.ROOT));

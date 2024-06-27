@@ -75,17 +75,17 @@ public class EntityUmberSpider extends Spider implements GeoAnimatable, GeoEntit
     }
 
 
-    protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.6F));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8D));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true));
-        this.goalSelector.addGoal(0, new FearTheLightGoal(this, 1.5D));
-        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 0.8D, false));
-    }
+    //protected void registerGoals() {
+    //    //this.goalSelector.addGoal(1, new FloatGoal(this));
+    //    //this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.6F));
+    //    //this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8D));
+    //    //this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+    //    //this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+    //    //this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+    //    //this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true));
+    //    //this.goalSelector.addGoal(0, new FearTheLightGoal(this, 1.5D));
+    //    //this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 0.8D, false));
+    //}
 
     protected SoundEvent getAmbientSound() {
         return HoleSounds.UMBER_SPIDER_IDLE.get();

@@ -17,20 +17,17 @@ public class FearTheLightGoal extends Goal {
     private double shelterZ;
     private final double movementSpeed;
     private final Level world;
-    private int executeChance = 100;
-    private int lightLevel = 10;
+    private int executeChance;
+    private final int lightLevel;
 
-    public FearTheLightGoal(PathfinderMob p_i1623_1_, double p_i1623_2_) {
-        this.creature = p_i1623_1_;
-        this.movementSpeed = p_i1623_2_;
-        this.world = p_i1623_1_.level();
-        this.setFlags(EnumSet.of(Flag.MOVE));
+    public FearTheLightGoal(PathfinderMob mob, double movementSpeed) {
+        this(mob, movementSpeed, 100, 10);
     }
 
-    public FearTheLightGoal(PathfinderMob p_i1623_1_, double p_i1623_2_, int chance, int level) {
-        this.creature = p_i1623_1_;
-        this.movementSpeed = p_i1623_2_;
-        this.world = p_i1623_1_.level();
+    public FearTheLightGoal(PathfinderMob mob, double movementSpeed, int chance, int level) {
+        this.creature = mob;
+        this.movementSpeed = movementSpeed;
+        this.world = mob.level();
         this.executeChance = chance;
         this.lightLevel = level;
         this.setFlags(EnumSet.of(Flag.MOVE));
@@ -45,13 +42,13 @@ public class FearTheLightGoal extends Goal {
     }
 
     protected boolean isPossibleShelter() {
-        Vec3 lvt_1_1_ = this.findPossibleShelter();
-        if (lvt_1_1_ == null) {
+        Vec3 vec3 = this.findPossibleShelter();
+        if (vec3 == null) {
             return false;
         } else {
-            this.shelterX = lvt_1_1_.x;
-            this.shelterY = lvt_1_1_.y;
-            this.shelterZ = lvt_1_1_.z;
+            this.shelterX = vec3.x;
+            this.shelterY = vec3.y;
+            this.shelterZ = vec3.z;
             return true;
         }
     }
@@ -66,11 +63,11 @@ public class FearTheLightGoal extends Goal {
 
     @Nullable
     protected Vec3 findPossibleShelter() {
-        RandomSource lvt_1_1_ = this.creature.getRandom();
-        BlockPos lvt_2_1_ = this.creature.blockPosition();
+        RandomSource randomSource = this.creature.getRandom();
+        BlockPos blockPos = this.creature.blockPosition();
 
         for(int lvt_3_1_ = 0; lvt_3_1_ < 10; ++lvt_3_1_) {
-            BlockPos lvt_4_1_ = lvt_2_1_.offset(lvt_1_1_.nextInt(20) - 10, lvt_1_1_.nextInt(6) - 3, lvt_1_1_.nextInt(20) - 10);
+            BlockPos lvt_4_1_ = blockPos.offset(randomSource.nextInt(20) - 10, randomSource.nextInt(6) - 3, randomSource.nextInt(20) - 10);
             if (this.creature.level().getMaxLocalRawBrightness(lvt_4_1_) < lightLevel) {
                 return Vec3.atBottomCenterOf(lvt_4_1_);
             }
