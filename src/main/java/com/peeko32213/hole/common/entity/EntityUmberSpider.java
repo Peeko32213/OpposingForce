@@ -2,11 +2,14 @@ package com.peeko32213.hole.common.entity;
 
 import com.peeko32213.hole.common.entity.util.FearTheLightGoal;
 import com.peeko32213.hole.common.entity.util.SmartNearestTargetGoal;
+import com.peeko32213.hole.core.registry.HoleSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -82,6 +85,18 @@ public class EntityUmberSpider extends Spider implements GeoAnimatable, GeoEntit
         this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true));
         this.goalSelector.addGoal(0, new FearTheLightGoal(this, 1.5D));
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 0.8D, false));
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return HoleSounds.UMBER_SPIDER_IDLE.get();
+    }
+
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return HoleSounds.UMBER_SPIDER_HURT.get();
+    }
+
+    protected SoundEvent getDeathSound() {
+        return HoleSounds.UMBER_SPIDER_DEATH.get();
     }
 
     public boolean doHurtTarget(Entity pEntity) {

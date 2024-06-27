@@ -3,8 +3,12 @@ package com.peeko32213.hole.client.render.layer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.peeko32213.hole.Hole;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.entity.layers.SpiderEyesLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,12 +17,28 @@ import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
-public class HoleGlowingEyeLayer<T extends LivingEntity & GeoEntity> extends GeoRenderLayer<T> {
+
+public class HoleSpiderEyeLayer <T extends LivingEntity & GeoEntity> extends GeoRenderLayer<T> {
     private final String loc;
 
-    public HoleGlowingEyeLayer(String loc, GeoRenderer<T> entityRendererIn) {
+    public HoleSpiderEyeLayer(String loc, GeoRenderer<T> entityRendererIn) {
         super(entityRendererIn);
         this.loc = loc;
+    }
+
+
+    protected static <T extends LivingEntity> void coloredCutoutModelCopyLayerRender(EntityModel<T> pModelParent, EntityModel<T> pModel, ResourceLocation pTextureLocation, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, T pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch, float pPartialTicks, float pRed, float pGreen, float pBlue) {
+        if (!pEntity.isInvisible()) {
+            pModelParent.copyPropertiesTo(pModel);
+            pModel.prepareMobModel(pEntity, pLimbSwing, pLimbSwingAmount, pPartialTicks);
+            pModel.setupAnim(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+        }
+
+    }
+
+    protected static <T extends LivingEntity> void renderColoredCutoutModel(EntityModel<T> pModel, ResourceLocation pTextureLocation, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, T pEntity, float pRed, float pGreen, float pBlue) {
+        VertexConsumer vertexconsumer = pBuffer.getBuffer(RenderType.entityCutoutNoCull(pTextureLocation));
+        pModel.renderToBuffer(pPoseStack, vertexconsumer, pPackedLight, LivingEntityRenderer.getOverlayCoords(pEntity, 0.0F), pRed, pGreen, pBlue, 1.0F);
     }
 
     @Override
@@ -29,5 +49,7 @@ public class HoleGlowingEyeLayer<T extends LivingEntity & GeoEntity> extends Geo
 
         this.getRenderer().reRender(this.getGeoModel().getBakedModel(modelLoc), poseStack, bufferSource, animatable, eyes, vertexConsumer, partialTick, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
     }
+
+
 
 }

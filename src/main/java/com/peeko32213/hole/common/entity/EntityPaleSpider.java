@@ -436,15 +436,13 @@ public class EntityPaleSpider extends Spider implements GeoAnimatable, GeoEntity
         public MobEffect effect;
 
         public void setRandomEffect(RandomSource pRandom) {
-            int i = pRandom.nextInt(5);
+            int i = pRandom.nextInt(4);
             if (i <= 1) {
                 this.effect = MobEffects.JUMP;
             } else if (i <= 2) {
                 this.effect = MobEffects.MOVEMENT_SPEED;
             } else if (i <= 3) {
                 this.effect = MobEffects.FIRE_RESISTANCE;
-            } else if (i <= 4) {
-                this.effect = MobEffects.INVISIBILITY;
             }
 
         }
