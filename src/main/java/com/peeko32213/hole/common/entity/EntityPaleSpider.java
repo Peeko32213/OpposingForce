@@ -100,18 +100,18 @@ public class EntityPaleSpider extends Spider implements GeoAnimatable, GeoEntity
 
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new DroppingMeleeGoal());
-        this.goalSelector.addGoal(2, new WanderStrollUpsideDown());
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, LivingEntity.class, 30F));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, EntityPaleSpider.class));
-        this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true) {
-            protected AABB getTargetSearchArea(double targetDistance) {
-                AABB bb = this.mob.getBoundingBox().inflate(targetDistance, targetDistance, targetDistance);
-                return new AABB(bb.minX, 0, bb.minZ, bb.maxX, 32, bb.maxZ);
-            }
-        });
+        //this.goalSelector.addGoal(0, new FloatGoal(this));
+        ////this.goalSelector.addGoal(1, new DroppingMeleeGoal());
+        //this.goalSelector.addGoal(2, new WanderStrollUpsideDown());
+        //this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        //this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, LivingEntity.class, 30F));
+        //this.targetSelector.addGoal(1, new HurtByTargetGoal(this, EntityPaleSpider.class));
+        //this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true) {
+        //    protected AABB getTargetSearchArea(double targetDistance) {
+        //        AABB bb = this.mob.getBoundingBox().inflate(targetDistance, targetDistance, targetDistance);
+        //        return new AABB(bb.minX, 0, bb.minZ, bb.maxX, 32, bb.maxZ);
+        //    }
+        //});
     }
 
 
@@ -339,55 +339,52 @@ public class EntityPaleSpider extends Spider implements GeoAnimatable, GeoEntity
 
     }
 
-    private class DroppingMeleeGoal extends Goal {
-        private boolean prevOnGround = false;
-
-        public DroppingMeleeGoal() {
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-        }
-
-        @Override
-        public boolean canUse() {
-            return EntityPaleSpider.this.getTarget() != null;
-        }
-
-
-        @Override
-        public void tick() {
-            LivingEntity target = EntityPaleSpider.this.getTarget();
-            if(attackCooldown > 0){
-                attackCooldown--;
-            }
-            if (target != null) {
-                double dist = EntityPaleSpider.this.distanceTo(target);
-                if (EntityPaleSpider.this.isUpsideDown()) {
-                    double d0 = EntityPaleSpider.this.getX() - target.getX();
-                    double d2 = EntityPaleSpider.this.getZ() - target.getZ();
-                    double xzDistSqr = d0 * d0 + d2 * d2;
-                    BlockPos ceilingPos = new BlockPos((int) target.getX(), (int) (EntityPaleSpider.this.getY() - 3 - random.nextInt(3)), (int) target.getZ());
-                    BlockPos lowestPos = EntityPaleSpider.getLowestPos(level(), ceilingPos);
-                    EntityPaleSpider.this.getMoveControl().setWantedPosition(lowestPos.getX() + 0.5F, ceilingPos.getY(), lowestPos.getZ() + 0.5F, 1.1D);
-                    if (xzDistSqr < 12.5F) {
-                        EntityPaleSpider.this.setUpsideDown(false);
-                    }
-                } else {
-                    if (EntityPaleSpider.this.onGround()) {
-                        EntityPaleSpider.this.getNavigation().moveTo(target, 1.15D);
-                    }
-                }
-                if (dist < 1.8D) {
-                    if (attackCooldown == 0) {
-                        EntityPaleSpider.this.doHurtTarget(target);
-                        attackCooldown = 20;
-                        EntityPaleSpider.this.swinging = true;
-                    }
-                }
-            }
-        }
-
-
-
-    }
+   // private class DroppingMeleeGoal extends Goal {
+   //     private boolean prevOnGround = false;
+//
+   //     public DroppingMeleeGoal() {
+   //         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+   //     }
+//
+   //     @Override
+   //     public boolean canUse() {
+   //         return EntityPaleSpider.this.getTarget() != null;
+   //     }
+//
+//
+   //     @Override
+   //     public void tick() {
+   //         LivingEntity target = EntityPaleSpider.this.getTarget();
+   //         if(attackCooldown > 0){
+   //             attackCooldown--;
+   //         }
+   //         if (target != null) {
+   //             double dist = EntityPaleSpider.this.distanceTo(target);
+   //             if (EntityPaleSpider.this.isUpsideDown()) {
+   //                 double d0 = EntityPaleSpider.this.getX() - target.getX();
+   //                 double d2 = EntityPaleSpider.this.getZ() - target.getZ();
+   //                 double xzDistSqr = d0 * d0 + d2 * d2;
+   //                 BlockPos ceilingPos = new BlockPos((int) target.getX(), (int) (EntityPaleSpider.this.getY() - 3 - random.nextInt(3)), (int) target.getZ());
+   //                 BlockPos lowestPos = EntityPaleSpider.getLowestPos(level(), ceilingPos);
+   //                 EntityPaleSpider.this.getMoveControl().setWantedPosition(lowestPos.getX() + 0.5F, ceilingPos.getY(), lowestPos.getZ() + 0.5F, 1.1D);
+   //                 if (xzDistSqr < 12.5F) {
+   //                     EntityPaleSpider.this.setUpsideDown(false);
+   //                 }
+   //             } else {
+   //                 if (EntityPaleSpider.this.onGround()) {
+   //                     EntityPaleSpider.this.getNavigation().moveTo(target, 1.15D);
+   //                 }
+   //             }
+   //             if (dist < 1.8D) {
+   //                 if (attackCooldown == 0) {
+   //                     EntityPaleSpider.this.doHurtTarget(target);
+   //                     attackCooldown = 20;
+   //                     EntityPaleSpider.this.swinging = true;
+   //                 }
+   //             }
+   //         }
+   //     }
+   // }
 
     protected <E extends EntityPaleSpider> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
         if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F) && !this.isInWater() && !this.isUpsideDown()) {
