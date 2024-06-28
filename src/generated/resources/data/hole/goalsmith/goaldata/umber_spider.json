@@ -59,7 +59,7 @@
         },
         {
           "type": "goalsmith:smart_nearest_target_goal",
-          "must_reach": true,
+          "big": true,
           "must_see": true,
           "target_goal_priority": 1,
           "target_type": "goalsmith:player"
