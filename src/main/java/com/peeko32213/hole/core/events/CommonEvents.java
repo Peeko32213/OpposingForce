@@ -32,11 +32,10 @@ public class CommonEvents {
     @SubscribeEvent
     public static void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(()->{
-            TargetGoalMappings.NAMED_TARGET_GOALS.put(prefix("smart_nearest_target_goal"), SmartNearestTargetGoal.class);
-            GoalMappings.NAMED_GOALS.put(prefix("dropping_melee_goal"), SmartNearestTargetGoal.class);
-            GoalMappings.NAMED_GOALS.put(prefix("fear_the_light_goal"), FearTheLightGoal.class);
-            GoalMappings.NAMED_GOALS.put(prefix("wander_stroll_upside_down_goal"), WanderStrollUpsideDown.class);
-
+            TargetGoalMappings.addTargetGoal(prefix("smart_nearest_target_goal"), SmartNearestTargetGoal.class);
+            GoalMappings.addGoal(prefix("dropping_melee_goal"), SmartNearestTargetGoal.class);
+            GoalMappings.addGoal(prefix("fear_the_light_goal"), FearTheLightGoal.class);
+            GoalMappings.addGoal(prefix("wander_stroll_upside_down_goal"), WanderStrollUpsideDown.class);
         });
         event.enqueueWork(HoleEntityPlacement::entityPlacement);
 
