@@ -1,0 +1,56 @@
+{
+  "attributes_additions": [],
+  "goal_operations": [
+    {
+      "type": "goalsmith:add_goal_operation",
+      "goal": [
+        {
+          "type": "goalsmith:float_goal",
+          "goal_priority": 0
+        },
+        {
+          "type": "hole:dropping_melee_goal",
+          "goal_priority": 1
+        },
+        {
+          "type": "hole:wander_stroll_upside_down_goal",
+          "goal_priority": 2,
+          "interval": 100,
+          "speed_modifier": 1.2
+        },
+        {
+          "type": "goalsmith:random_look_around_goal",
+          "goal_priority": 6
+        },
+        {
+          "type": "goalsmith:look_at_entity_goal",
+          "goal_priority": 7,
+          "look_at_type": "goalsmith:player",
+          "look_distance": 30.0,
+          "only_horizontal": false,
+          "probability": 0.02
+        }
+      ]
+    }
+  ],
+  "target_entity": "hole:pale_spider",
+  "target_goal_operations": [
+    {
+      "type": "goalsmith:add_target_goal_operation",
+      "target_goal": [
+        {
+          "type": "goalsmith:hurt_by_target_goal",
+          "target_goal_priority": 1,
+          "to_ignore": "hole:pale_spider"
+        },
+        {
+          "type": "goalsmith:smart_nearest_target_goal",
+          "big": true,
+          "must_see": true,
+          "target_goal_priority": 1,
+          "target_type": "goalsmith:living_entity"
+        }
+      ]
+    }
+  ]
+}
