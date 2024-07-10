@@ -390,7 +390,7 @@ public class EntityPaleSpider extends Spider implements GeoAnimatable, GeoEntity
     }
 
     protected <E extends EntityPaleSpider> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
-        if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F) && !this.isInWater() && !this.isUpsideDown()) {
+        if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F) && !this.isUpsideDown()) {
             event.setAndContinue(SCURRY);
             event.getController().setAnimationSpeed(1.8D);
         }

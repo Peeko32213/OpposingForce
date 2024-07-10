@@ -31,6 +31,9 @@ public class LanguageGenerator extends LanguageProvider {
 
         addEntityType(HoleEntities.UMBER_SPIDER, "Umber Spider");
         addItem(HoleItems.UMBER_SPIDER_SPAWN_EGG, "Umber Spider Spawn Egg");
+
+        addEntityType(HoleEntities.RAMBLE, "Ramble");
+        addItem(HoleItems.RAMBLE_SPAWN_EGG, "Rambler Spawn Egg");
     }
 
     @Override

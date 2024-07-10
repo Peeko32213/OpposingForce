@@ -2,6 +2,7 @@ package com.peeko32213.hole.core.registry;
 
 import com.peeko32213.hole.Hole;
 import com.peeko32213.hole.common.entity.EntityPaleSpider;
+import com.peeko32213.hole.common.entity.EntityRamble;
 import com.peeko32213.hole.common.entity.EntityUmberSpider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -24,6 +25,10 @@ public class HoleEntities {
     public static final RegistryObject<EntityType<EntityUmberSpider>> UMBER_SPIDER = ENTITIES.register("umber_spider",
             () -> EntityType.Builder.of(EntityUmberSpider::new, MobCategory.MONSTER).sized(1.5F, 1.0F)
                     .build(new ResourceLocation(Hole.MODID, "umber_spider").toString()));
+
+    public static final RegistryObject<EntityType<EntityRamble>> RAMBLE = ENTITIES.register("ramble",
+            () -> EntityType.Builder.of(EntityRamble::new, MobCategory.MONSTER).sized(1.0F, 2.0F)
+                    .build(new ResourceLocation(Hole.MODID, "ramble").toString()));
 
 
 }
