@@ -1,7 +1,9 @@
 {
+  "entity.hole.dicer": "Dicer",
   "entity.hole.pale_spider": "Pale Spider",
   "entity.hole.ramble": "Ramble",
   "entity.hole.umber_spider": "Umber Spider",
+  "item.hole.dicer_spawn_egg": "Dicer Spawn Egg",
   "item.hole.pale_spider_spawn_egg": "Pale Spider Spawn Egg",
   "item.hole.ramble_spawn_egg": "Rambler Spawn Egg",
   "item.hole.umber_spider_spawn_egg": "Umber Spider Spawn Egg",

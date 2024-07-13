@@ -2,6 +2,7 @@ package com.peeko32213.hole.core.events;
 
 
 import com.peeko32213.hole.Hole;
+import com.peeko32213.hole.common.entity.EntityDicer;
 import com.peeko32213.hole.common.entity.EntityPaleSpider;
 import com.peeko32213.hole.common.entity.EntityRamble;
 import com.peeko32213.hole.common.entity.EntityUmberSpider;
@@ -19,6 +20,7 @@ public class CommonEvents {
         event.put(HoleEntities.PALE_SPIDER.get(), EntityPaleSpider.createAttributes().build());
         event.put(HoleEntities.UMBER_SPIDER.get(), EntityUmberSpider.createAttributes().build());
         event.put(HoleEntities.RAMBLE.get(), EntityRamble.createAttributes().build());
+        event.put(HoleEntities.DICER.get(), EntityDicer.createAttributes().build());
 
     }
 

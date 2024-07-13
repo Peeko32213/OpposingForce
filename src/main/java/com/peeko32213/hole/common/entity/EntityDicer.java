@@ -1,28 +1,31 @@
 package com.peeko32213.hole.common.entity;
 
 import com.peeko32213.hole.common.entity.util.AbstractMonster;
-import com.peeko32213.hole.common.entity.util.FearTheLightGoal;
 import com.peeko32213.hole.common.entity.util.SmartNearestTargetGoal;
 import com.peeko32213.hole.common.entity.util.helper.HitboxHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.sensing.Sensing;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Contract;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -32,73 +35,122 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoEntity {
-
+public class EntityDicer extends AbstractMonster implements GeoAnimatable, GeoEntity {
+    private static final EntityDataAccessor<Boolean> SPOTTED = SynchedEntityData.defineId(EntityDicer.class, EntityDataSerializers.BOOLEAN);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("animation.ramble.idle");
-    private static final RawAnimation IDLE_FLAIL = RawAnimation.begin().thenLoop("animation.ramble.idle_flail");
-    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("animation.ramble.walk");
-    private static final RawAnimation AGGRO = RawAnimation.begin().thenLoop("animation.ramble.aggro");
 
-    public EntityRamble(EntityType<? extends AbstractMonster> pEntityType, Level pLevel) {
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("animation.dicer.idle");
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("animation.dicer.walk");
+    private static final RawAnimation RUN = RawAnimation.begin().thenLoop("animation.dicer.run");
+    private static final RawAnimation IDLE_ALERT = RawAnimation.begin().thenLoop("animation.dicer.idle_alert");
+    private static final RawAnimation WALK_ALERT = RawAnimation.begin().thenLoop("animation.dicer.walk_alert");
+    private static final RawAnimation TAIL_STAB_1 = RawAnimation.begin().thenLoop("animation.dicer.tail_stab1");
+    private static final RawAnimation TAIL_STAB_2 = RawAnimation.begin().thenLoop("animation.dicer.tail_stab2");
+    private static final RawAnimation CLAW = RawAnimation.begin().thenLoop("animation.dicer.claw");
+    public int spottedTimer = 0;
+
+
+    public EntityDicer(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 40.0D)
-                .add(Attributes.MOVEMENT_SPEED, (double)0.13F)
-                .add(Attributes.ATTACK_DAMAGE, (double)10.0F)
-                .add(Attributes.ARMOR,20.0F)
-                .add(Attributes.ARMOR_TOUGHNESS,20.0F)
-                .add(Attributes.KNOCKBACK_RESISTANCE,5.0);
+                .add(Attributes.MAX_HEALTH, 10.0D)
+                .add(Attributes.MOVEMENT_SPEED, (double)0.33F)
+                .add(Attributes.ATTACK_DAMAGE, 8.0F)
+                .add(Attributes.ARMOR,5.0F)
+                .add(Attributes.ARMOR_TOUGHNESS,1.0F);
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(1, new EntityRamble.RambleMeleeAttackGoal(this,  1.0F, true));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(1, new EntityDicer.RambleMeleeAttackGoal(this,  1.0F, true));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true));
+    }
+
+    public void tick() {
+        super.tick();
+        LivingEntity attackTarget = this.getTarget();
+        if (this.getSensing().hasLineOfSight(this.getTarget()) && this.hasSpotted() && spottedTimer < 5F) {
+            spottedTimer++;
+        }
+        if (!this.getSensing().hasLineOfSight(this.getTarget()) && !this.hasSpotted() && spottedTimer > 0F) {
+            spottedTimer--;
+        }
+        if ((this.onGround() && (attackTarget == null || attackTarget != null && !attackTarget.isAlive()) && random.nextInt(300) == 0 && this.onGround() && !this.hasSpotted())) {
+            spottedTimer--;
+        }
+        else {
+            spottedTimer = 0;
+        }
+        if (this.hasSpotted()  && spottedTimer < 10F){
+            this.canAttack(attackTarget);
+        }
+    }
+
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(SPOTTED, false);
+    }
+
+    public boolean hasSpotted() {
+        return this.entityData.get(SPOTTED);
+    }
+
+    public void setHasSpotted(boolean upsideDown) {
+        this.entityData.set(SPOTTED, upsideDown);
     }
 
     @Override
-    public void customServerAiStep() {
-        if (this.getMoveControl().hasWanted()) {
-            this.setSprinting(this.getMoveControl().getSpeedModifier() >= 1.2D);
-        } else {
-            this.setSprinting(false);
-        }
-        super.customServerAiStep();
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("hasSpotted", this.hasSpotted());
     }
 
-    public boolean canDisableShield() {
-        return true;
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.setHasSpotted(compound.getBoolean("setHasSpotted"));
     }
 
     private boolean isStillEnough() {
         return this.getDeltaMovement().horizontalDistance() < 0.05;
     }
 
-    protected <E extends EntityRamble> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
+    protected <E extends EntityDicer> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
         int animState = this.getAnimationState();
         {
             switch (animState) {
 
                 case 21:
-                    event.setAndContinue(AGGRO);
+                    event.setAndContinue(CLAW);
+                    break;
+                case 22:
+                    event.setAndContinue(TAIL_STAB_1);
+                    break;
+                case 23:
+                    event.setAndContinue(TAIL_STAB_2);
                     break;
                 default:
                     if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
                         if (this.isSprinting()) {
-                            event.setAndContinue(AGGRO);
+                            event.setAndContinue(RUN);
                             event.getController().setAnimationSpeed(2.0D);
                             return PlayState.CONTINUE;
-                        } else if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F)) {
+                        }
+                        else if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F) && hasSpotted()) {
+                            event.setAndContinue(WALK_ALERT);
+                            event.getController().setAnimationSpeed(1.0D);
+                            return PlayState.CONTINUE;
+                        }
+                        else if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F)) {
                             event.setAndContinue(WALK);
                             event.getController().setAnimationSpeed(1.0D);
                             return PlayState.CONTINUE;
@@ -106,15 +158,14 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
                     }
                     if (playingAnimation()) {
                         return PlayState.CONTINUE;
-                    } else if (isStillEnough() && getRandomAnimationNumber() == 0) {
-                        int rand = getRandomAnimationNumber();
-                        if (rand < 33) {
+                    } else if (isStillEnough()) {
+                        if (hasSpotted()) {
                             setAnimationTimer(150);
-                            return event.setAndContinue(IDLE);
+                            return event.setAndContinue(IDLE_ALERT);
                         }
-                        if (rand < 66) {
+                        else {
                             setAnimationTimer(300);
-                            return event.setAndContinue(IDLE_FLAIL);
+                            return event.setAndContinue(IDLE);
                         }
                     }
             }
@@ -139,7 +190,7 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
 
     static class RambleMeleeAttackGoal extends Goal {
 
-        protected final EntityRamble mob;
+        protected final EntityDicer mob;
         private final double speedModifier;
         private final boolean followingTargetEvenIfNotSeen;
         private Path path;
@@ -154,7 +205,7 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
         private int animTime = 0;
 
 
-        public RambleMeleeAttackGoal(EntityRamble p_i1636_1_, double p_i1636_2_, boolean p_i1636_4_) {
+        public RambleMeleeAttackGoal(EntityDicer p_i1636_1_, double p_i1636_2_, boolean p_i1636_4_) {
             this.mob = p_i1636_1_;
             this.speedModifier = p_i1636_2_;
             this.followingTargetEvenIfNotSeen = p_i1636_4_;
@@ -243,7 +294,9 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
 
 
             switch (animState) {
-                case 21 -> tickLightAttack1();
+                case 21 -> tickDiceAttack();
+                case 22 -> tickTailAttack();
+                case 23 -> tickTailAttack();
                 default -> {
                     this.ticksUntilNextPathRecalculation = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
                     this.ticksUntilNextAttack = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
@@ -316,10 +369,10 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
 
 
 
-        protected void tickLightAttack1 () {
+        protected void tickDiceAttack () {
             animTime++;
             if(animTime==4) {
-                performLightAttack();
+                performDiceAttack();
             }
             if(animTime>=8) {
                 animTime=0;
@@ -333,11 +386,31 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
             }
         }
 
-        protected void performLightAttack () {
-            Vec3 pos = mob.position();
-            HitboxHelper.LargeAttack(this.mob.damageSources().mobAttack(mob),10.0f, 0.0f, mob, pos,  6.0F, -Math.PI/2, Math.PI/2, -1.0f, 3.0f);
+        protected void tickTailAttack () {
+            animTime++;
+            if(animTime==4) {
+                performTailAttack();
+            }
+            if(animTime>=8) {
+                animTime=0;
+                if (this.getRangeCheck()) {
+                    this.mob.setAnimationState(22);
+                }else {
+                    this.mob.setAnimationState(0);
+                    this.resetAttackCooldown();
+                    this.ticksUntilNextPathRecalculation = 0;
+                }
+            }
         }
 
+        protected void performDiceAttack () {
+            Vec3 pos = mob.position();
+            HitboxHelper.LargeAttack(this.mob.damageSources().mobAttack(mob),15.0f, 0.5f, mob, pos,  3.0F, -Math.PI/2, Math.PI/2, -1.0f, 3.0f);
+        }
+        protected void performTailAttack () {
+            Vec3 pos = mob.position();
+            HitboxHelper.LargeAttack(this.mob.damageSources().mobAttack(mob),10.0f, 0.5f, mob, pos,  6.0F, -Math.PI/2, Math.PI/2, -1.0f, 3.0f);
+        }
 
         protected void resetAttackCooldown () {
             this.ticksUntilNextAttack = 0;

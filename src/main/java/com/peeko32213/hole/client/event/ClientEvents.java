@@ -4,6 +4,7 @@ import com.peeko32213.hole.Hole;
 import com.peeko32213.hole.client.model.DefaultModel;
 import com.peeko32213.hole.client.render.layer.HoleSpiderEyeLayer;
 import com.peeko32213.hole.client.render.PlainGeoRenderer;
+import com.peeko32213.hole.common.entity.EntityDicer;
 import com.peeko32213.hole.common.entity.EntityPaleSpider;
 import com.peeko32213.hole.common.entity.EntityRamble;
 import com.peeko32213.hole.common.entity.EntityUmberSpider;
@@ -37,6 +38,11 @@ public final class ClientEvents {
 
         EntityRenderers.register(HoleEntities.RAMBLE.get(), (ctx) -> {
             PlainGeoRenderer<EntityRamble> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("ramble"));
+            return render;
+        });
+
+        EntityRenderers.register(HoleEntities.DICER.get(), (ctx) -> {
+            PlainGeoRenderer<EntityDicer> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("dicer"));
             return render;
         });
     }

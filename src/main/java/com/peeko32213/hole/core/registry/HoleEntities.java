@@ -1,6 +1,7 @@
 package com.peeko32213.hole.core.registry;
 
 import com.peeko32213.hole.Hole;
+import com.peeko32213.hole.common.entity.EntityDicer;
 import com.peeko32213.hole.common.entity.EntityPaleSpider;
 import com.peeko32213.hole.common.entity.EntityRamble;
 import com.peeko32213.hole.common.entity.EntityUmberSpider;
@@ -29,6 +30,10 @@ public class HoleEntities {
     public static final RegistryObject<EntityType<EntityRamble>> RAMBLE = ENTITIES.register("ramble",
             () -> EntityType.Builder.of(EntityRamble::new, MobCategory.MONSTER).sized(1.0F, 2.0F)
                     .build(new ResourceLocation(Hole.MODID, "ramble").toString()));
+
+    public static final RegistryObject<EntityType<EntityDicer>> DICER = ENTITIES.register("dicer",
+            () -> EntityType.Builder.of(EntityDicer::new, MobCategory.MONSTER).sized(0.7F, 2.0F)
+                    .build(new ResourceLocation(Hole.MODID, "dicer").toString()));
 
 
 }
