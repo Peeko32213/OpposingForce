@@ -60,9 +60,10 @@ public class EntityDicer extends AbstractMonster implements GeoAnimatable, GeoEn
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 10.0D)
-                .add(Attributes.MOVEMENT_SPEED, (double)0.33F)
+                .add(Attributes.MOVEMENT_SPEED, (double)0.175F)
                 .add(Attributes.ATTACK_DAMAGE, 8.0F)
                 .add(Attributes.ARMOR,5.0F)
+                .add(Attributes.FOLLOW_RANGE,6.0F)
                 .add(Attributes.ARMOR_TOUGHNESS,1.0F);
     }
 
@@ -70,58 +71,20 @@ public class EntityDicer extends AbstractMonster implements GeoAnimatable, GeoEn
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(1, new EntityDicer.RambleMeleeAttackGoal(this,  1.0F, true));
+        this.goalSelector.addGoal(1, new EntityDicer.RambleMeleeAttackGoal(this,  1.8F, true));
+        this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
 
-    public void tick() {
-        super.tick();
-        LivingEntity attackTarget = this.getTarget();
-        if (this.getSensing().hasLineOfSight(this.getTarget()) && this.hasSpotted() && spottedTimer < 5F) {
-            spottedTimer++;
-        }
-        if (!this.getSensing().hasLineOfSight(this.getTarget()) && !this.hasSpotted() && spottedTimer > 0F) {
-            spottedTimer--;
-        }
-        if ((this.onGround() && (attackTarget == null || attackTarget != null && !attackTarget.isAlive()) && random.nextInt(300) == 0 && this.onGround() && !this.hasSpotted())) {
-            spottedTimer--;
-        }
-        else {
-            spottedTimer = 0;
-        }
-        if (this.hasSpotted()  && spottedTimer < 10F){
-            this.canAttack(attackTarget);
-        }
-    }
-
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SPOTTED, false);
-    }
-
-    public boolean hasSpotted() {
-        return this.entityData.get(SPOTTED);
-    }
-
-    public void setHasSpotted(boolean upsideDown) {
-        this.entityData.set(SPOTTED, upsideDown);
-    }
-
     @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putBoolean("hasSpotted", this.hasSpotted());
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        this.setHasSpotted(compound.getBoolean("setHasSpotted"));
-    }
-
-    private boolean isStillEnough() {
-        return this.getDeltaMovement().horizontalDistance() < 0.05;
+    public void customServerAiStep() {
+        if (this.getMoveControl().hasWanted()) {
+            this.setSprinting(this.getMoveControl().getSpeedModifier() >= 1.2D);
+        } else {
+            this.setSprinting(false);
+        }
+        super.customServerAiStep();
     }
 
     protected <E extends EntityDicer> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
@@ -140,33 +103,19 @@ public class EntityDicer extends AbstractMonster implements GeoAnimatable, GeoEn
                     break;
                 default:
                     if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
-                        if (this.isSprinting()) {
+                        if (this.isSprinting() || !this.getPassengers().isEmpty()) {
                             event.setAndContinue(RUN);
                             event.getController().setAnimationSpeed(2.0D);
                             return PlayState.CONTINUE;
-                        }
-                        else if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F) && hasSpotted()) {
-                            event.setAndContinue(WALK_ALERT);
-                            event.getController().setAnimationSpeed(1.0D);
-                            return PlayState.CONTINUE;
-                        }
-                        else if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F)) {
+                        } else if (event.isMoving()) {
                             event.setAndContinue(WALK);
                             event.getController().setAnimationSpeed(1.0D);
                             return PlayState.CONTINUE;
                         }
                     }
-                    if (playingAnimation()) {
+                   else {
+                        event.setAndContinue(IDLE);
                         return PlayState.CONTINUE;
-                    } else if (isStillEnough()) {
-                        if (hasSpotted()) {
-                            setAnimationTimer(150);
-                            return event.setAndContinue(IDLE_ALERT);
-                        }
-                        else {
-                            setAnimationTimer(300);
-                            return event.setAndContinue(IDLE);
-                        }
                     }
             }
             return PlayState.CONTINUE;
@@ -295,8 +244,8 @@ public class EntityDicer extends AbstractMonster implements GeoAnimatable, GeoEn
 
             switch (animState) {
                 case 21 -> tickDiceAttack();
-                case 22 -> tickTailAttack();
-                case 23 -> tickTailAttack();
+                case 22 -> tickTailAttack1();
+                case 23 -> tickTailAttack2();
                 default -> {
                     this.ticksUntilNextPathRecalculation = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
                     this.ticksUntilNextAttack = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
@@ -371,10 +320,10 @@ public class EntityDicer extends AbstractMonster implements GeoAnimatable, GeoEn
 
         protected void tickDiceAttack () {
             animTime++;
-            if(animTime==4) {
+            if(animTime==9) {
                 performDiceAttack();
             }
-            if(animTime>=8) {
+            if(animTime>=12) {
                 animTime=0;
                 if (this.getRangeCheck()) {
                     this.mob.setAnimationState(22);
@@ -386,12 +335,29 @@ public class EntityDicer extends AbstractMonster implements GeoAnimatable, GeoEn
             }
         }
 
-        protected void tickTailAttack () {
+        protected void tickTailAttack1 () {
             animTime++;
-            if(animTime==4) {
+            if(animTime==11) {
                 performTailAttack();
             }
-            if(animTime>=8) {
+            if(animTime>=14) {
+                animTime=0;
+                if (this.getRangeCheck()) {
+                    this.mob.setAnimationState(22);
+                }else {
+                    this.mob.setAnimationState(0);
+                    this.resetAttackCooldown();
+                    this.ticksUntilNextPathRecalculation = 0;
+                }
+            }
+        }
+
+        protected void tickTailAttack2 () {
+            animTime++;
+            if(animTime==11) {
+                performTailAttack();
+            }
+            if(animTime>=14) {
                 animTime=0;
                 if (this.getRangeCheck()) {
                     this.mob.setAnimationState(22);
@@ -405,11 +371,11 @@ public class EntityDicer extends AbstractMonster implements GeoAnimatable, GeoEn
 
         protected void performDiceAttack () {
             Vec3 pos = mob.position();
-            HitboxHelper.LargeAttack(this.mob.damageSources().mobAttack(mob),15.0f, 0.5f, mob, pos,  3.0F, -Math.PI/2, Math.PI/2, -1.0f, 3.0f);
+            HitboxHelper.LargeAttack(this.mob.damageSources().mobAttack(mob),15.0f, 0.5f, mob, pos,  5.0F, -Math.PI/2, Math.PI/2, -1.0f, 3.0f);
         }
         protected void performTailAttack () {
             Vec3 pos = mob.position();
-            HitboxHelper.LargeAttack(this.mob.damageSources().mobAttack(mob),10.0f, 0.5f, mob, pos,  6.0F, -Math.PI/2, Math.PI/2, -1.0f, 3.0f);
+            HitboxHelper.LargeAttack(this.mob.damageSources().mobAttack(mob),10.0f, 0.5f, mob, pos,  8.0F, -Math.PI/2, Math.PI/2, -1.0f, 3.0f);
         }
 
         protected void resetAttackCooldown () {

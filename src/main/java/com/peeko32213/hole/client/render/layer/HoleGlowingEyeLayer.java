@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.peeko32213.hole.Hole;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.layers.SpiderEyesLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,10 +13,10 @@ import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
-public class HoleSpiderEyeLayer <T extends LivingEntity & GeoEntity> extends GeoRenderLayer<T> {
+public class HoleGlowingEyeLayer<T extends LivingEntity & GeoEntity> extends GeoRenderLayer<T> {
     private final String loc;
 
-    public HoleSpiderEyeLayer(String loc, GeoRenderer<T> entityRendererIn) {
+    public HoleGlowingEyeLayer(String loc, GeoRenderer<T> entityRendererIn) {
         super(entityRendererIn);
         this.loc = loc;
     }
