@@ -1,7 +1,6 @@
 package com.peeko32213.hole.core.registry;
 
-import com.peeko32213.hole.common.entity.EntityPaleSpider;
-import com.peeko32213.hole.common.entity.EntityUmberSpider;
+import com.peeko32213.hole.common.entity.*;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -14,6 +13,12 @@ public class HoleEntityPlacement {
         //SpawnPlacements.register(UPEntities.BEELZ.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityBaseDinosaurAnimal::checkSurfaceDinoSpawnRules);
         SpawnPlacements.register(HoleEntities.PALE_SPIDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityPaleSpider::canFirstTierSpawn);
         SpawnPlacements.register(HoleEntities.UMBER_SPIDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityUmberSpider::canSecondTierSpawn);
+        SpawnPlacements.register(HoleEntities.TREMBLER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityTrembler::canFirstTierSpawn);
+        SpawnPlacements.register(HoleEntities.DICER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityDicer::canSecondTierSpawn);
+        SpawnPlacements.register(HoleEntities.RAMBLE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityRamble::canSecondTierSpawn);
+
+
+
     }
 
     public static boolean rollSpawn(int rolls, RandomSource random, MobSpawnType reason){

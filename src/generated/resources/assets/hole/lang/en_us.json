@@ -1,10 +1,16 @@
 {
+  "entity.hole.dicer": "Dicer",
   "entity.hole.pale_spider": "Pale Spider",
+  "entity.hole.ramble": "Ramble",
+  "entity.hole.trembler": "Trembler",
   "entity.hole.umber_spider": "Umber Spider",
   "hole.sound.subtitle.umber_spider_death": "Umber Spider Dying",
   "hole.sound.subtitle.umber_spider_hurt": "Umber Spider Hurt",
   "hole.sound.subtitle.umber_spider_idle": "Umber Spider Idling",
+  "item.hole.dicer_spawn_egg": "Dicer Spawn Egg",
   "item.hole.pale_spider_spawn_egg": "Pale Spider Spawn Egg",
+  "item.hole.ramble_spawn_egg": "Rambler Spawn Egg",
+  "item.hole.trembler_spawn_egg": "Trembler Spawn Egg",
   "item.hole.umber_spider_spawn_egg": "Umber Spider Spawn Egg",
   "itemGroup.hole": "Hole"
 }

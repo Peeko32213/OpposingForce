@@ -228,7 +228,7 @@ public class EntityUmberSpider extends Spider implements GeoAnimatable, GeoEntit
     }
 
     protected <E extends EntityUmberSpider> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
-        if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F) && !this.isInWater()) {
+        if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F)) {
             event.setAndContinue(SCURRY);
             event.getController().setAnimationSpeed(1.8D);
         }

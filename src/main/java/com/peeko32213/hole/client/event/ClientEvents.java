@@ -2,10 +2,9 @@ package com.peeko32213.hole.client.event;
 
 import com.peeko32213.hole.Hole;
 import com.peeko32213.hole.client.model.DefaultModel;
-import com.peeko32213.hole.client.render.layer.HoleSpiderEyeLayer;
+import com.peeko32213.hole.client.render.layer.HoleGlowingEyeLayer;
 import com.peeko32213.hole.client.render.PlainGeoRenderer;
-import com.peeko32213.hole.common.entity.EntityPaleSpider;
-import com.peeko32213.hole.common.entity.EntityUmberSpider;
+import com.peeko32213.hole.common.entity.*;
 import com.peeko32213.hole.core.registry.HoleEntities;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
@@ -24,13 +23,29 @@ public final class ClientEvents {
 
         EntityRenderers.register(HoleEntities.PALE_SPIDER.get(), (ctx) -> {
             PlainGeoRenderer<EntityPaleSpider> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("pale_spider"));
-            render.addRenderLayer(new HoleSpiderEyeLayer<>("pale_spider", render));
+            render.addRenderLayer(new HoleGlowingEyeLayer<>("pale_spider", render));
             return render;
         });
 
         EntityRenderers.register(HoleEntities.UMBER_SPIDER.get(), (ctx) -> {
             PlainGeoRenderer<EntityUmberSpider> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("umber_spider"));
-            render.addRenderLayer(new HoleSpiderEyeLayer<>("umber_spider", render));
+            render.addRenderLayer(new HoleGlowingEyeLayer<>("umber_spider", render));
+            return render;
+        });
+
+        EntityRenderers.register(HoleEntities.RAMBLE.get(), (ctx) -> {
+            PlainGeoRenderer<EntityRamble> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("ramble"));
+            return render;
+        });
+
+        EntityRenderers.register(HoleEntities.DICER.get(), (ctx) -> {
+            PlainGeoRenderer<EntityDicer> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("dicer"));
+            render.addRenderLayer(new HoleGlowingEyeLayer<>("dicer", render));
+            return render;
+        });
+
+        EntityRenderers.register(HoleEntities.TREMBLER.get(), (ctx) -> {
+            PlainGeoRenderer<EntityTrembler> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("trembler"));
             return render;
         });
 
