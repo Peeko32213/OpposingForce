@@ -58,7 +58,7 @@ public class EntityTrembler extends AbstractMonster implements GeoAnimatable, Ge
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 25.0D)
+                .add(Attributes.MAX_HEALTH, 15.0D)
                 .add(Attributes.ARMOR, 30.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.08D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0D)
@@ -66,7 +66,7 @@ public class EntityTrembler extends AbstractMonster implements GeoAnimatable, Ge
     }
 
     public static <T extends Mob> boolean canFirstTierSpawn(EntityType<EntityTrembler> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 30 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
+        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() >= 30 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
     }
 
 

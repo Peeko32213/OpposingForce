@@ -35,7 +35,6 @@ public class DataGenerators {
         generator.addProvider(true,new LanguageGenerator(packOutput));
         generator.addProvider(true,new ItemModelGenerator(packOutput, helper));
         generator.addProvider(true, new EntityTagGenerator(packOutput, lookupProvider, helper));
-        generator.addProvider(true ,new GoalDataGenerator(packOutput));
         //generator.addProvider(true,new AdvancementGenerator(generator, helper));
 
     }

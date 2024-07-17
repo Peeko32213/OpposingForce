@@ -1,6 +1,5 @@
 package com.peeko32213.hole.common.entity.util;
 
-import com.scouter.goalsmith.data.goals.target.NearestAttackableTargetGoalImproved;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,21 +10,20 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
-public class SmartNearestTargetGoal extends NearestAttackableTargetGoalImproved {
-
-
-    private final boolean big;
-    public SmartNearestTargetGoal(Mob pMob, TagKey<EntityType<?>> pTargetType, boolean pMustSee, boolean big) {
-        super(pMob, pTargetType, 10, pMustSee, false, (Predicate<LivingEntity>) null);
-        this.big = big;
+public class SmartNearestTargetGoal<T extends LivingEntity> extends NearestAttackableTargetGoal<T> {
+    public SmartNearestTargetGoal(Mob goalOwnerIn, Class<T> targetClassIn, boolean checkSight) {
+        super(goalOwnerIn, targetClassIn, checkSight);
     }
 
+    public SmartNearestTargetGoal(Mob goalOwnerIn, Class<T> targetClassIn, boolean checkSight, boolean nearbyOnlyIn) {
+        super(goalOwnerIn, targetClassIn, checkSight, nearbyOnlyIn);
+    }
+
+    public SmartNearestTargetGoal(Mob goalOwnerIn, Class<T> targetClassIn, int targetChanceIn, boolean checkSight, boolean nearbyOnlyIn, @Nullable Predicate<LivingEntity> targetPredicate) {
+        super(goalOwnerIn, targetClassIn, targetChanceIn, checkSight, nearbyOnlyIn, targetPredicate);
+    }
 
     protected AABB getTargetSearchArea(double targetDistance) {
-        if(big) {
-            AABB bb = this.mob.getBoundingBox().inflate(targetDistance, targetDistance, targetDistance);
-            return new AABB(bb.minX, 0, bb.minZ, bb.maxX, 32, bb.maxZ);
-        }
         return this.mob.getBoundingBox().inflate(targetDistance, targetDistance, targetDistance);
     }
 
