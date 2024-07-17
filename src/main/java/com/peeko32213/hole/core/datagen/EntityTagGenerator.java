@@ -3,7 +3,6 @@ package com.peeko32213.hole.core.datagen;
 import com.peeko32213.hole.Hole;
 import com.peeko32213.hole.core.registry.HoleEntities;
 import com.peeko32213.hole.core.utils.HoleTags;
-import com.scouter.goalsmith.GoalSmith;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -18,7 +17,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
-import static com.scouter.goalsmith.GoalSmith.prefix;
 
 public class EntityTagGenerator extends EntityTypeTagsProvider {
 

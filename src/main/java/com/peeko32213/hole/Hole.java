@@ -31,8 +31,6 @@ public class Hole {
         HoleCreativeTabs.DEF_REG.register(modEventBus);
         HoleEntities.ENTITIES.register(modEventBus);
         HoleSounds.DEF_REG.register(modEventBus);
-        HoleGoals.TARGET_GOAL_TYPE_SERIALIZER.register(modEventBus);
-        HoleGoals.GOAL_TYPE_SERIALIZER.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(this);
     }
 

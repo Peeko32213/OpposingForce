@@ -71,21 +71,21 @@ public class EntityUmberSpider extends Spider implements GeoAnimatable, GeoEntit
     }
 
     public static <T extends Mob> boolean canSecondTierSpawn(EntityType<EntityUmberSpider> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= -20 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
+        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() >= 0 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
     }
 
 
-    //protected void registerGoals() {
-    //    //this.goalSelector.addGoal(1, new FloatGoal(this));
-    //    //this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.6F));
-    //    //this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8D));
-    //    //this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-    //    //this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-    //    //this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-    //    //this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true));
-    //    //this.goalSelector.addGoal(0, new FearTheLightGoal(this, 1.5D));
-    //    //this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 0.8D, false));
-    //}
+    protected void registerGoals() {
+        this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.6F));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8D));
+       this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true));
+        this.goalSelector.addGoal(0, new FearTheLightGoal(this, 1.5D));
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 0.8D, false));
+    }
 
     protected SoundEvent getAmbientSound() {
         return HoleSounds.UMBER_SPIDER_IDLE.get();
