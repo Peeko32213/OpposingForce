@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -16,9 +17,11 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.sensing.Sensing;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.pathfinder.Node;
@@ -57,15 +60,21 @@ public class EntityDicer extends AbstractMonster implements GeoAnimatable, GeoEn
         super(pEntityType, pLevel);
     }
 
+
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 10.0D)
+                .add(Attributes.MAX_HEALTH, 15.0D)
                 .add(Attributes.MOVEMENT_SPEED, (double)0.175F)
                 .add(Attributes.ATTACK_DAMAGE, 8.0F)
                 .add(Attributes.ARMOR,5.0F)
                 .add(Attributes.FOLLOW_RANGE,6.0F)
                 .add(Attributes.ARMOR_TOUGHNESS,1.0F);
     }
+
+    public static <T extends Mob> boolean canSecondTierSpawn(EntityType<EntityDicer> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= -20 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
+    }
+
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
@@ -301,8 +310,11 @@ public class EntityDicer extends AbstractMonster implements GeoAnimatable, GeoEn
                 int r = this.mob.getRandom().nextInt(2048);
                 if (r <= 800) {
                     this.mob.setAnimationState(21);
+                } else if (r <= 1300) {
+                    this.mob.setAnimationState(22);
+                } else if (r <= 1850) {
+                    this.mob.setAnimationState(23);
                 }
-
             }
         }
 
@@ -337,10 +349,10 @@ public class EntityDicer extends AbstractMonster implements GeoAnimatable, GeoEn
 
         protected void tickTailAttack1 () {
             animTime++;
-            if(animTime==11) {
+            if(animTime==9) {
                 performTailAttack();
             }
-            if(animTime>=14) {
+            if(animTime>=17) {
                 animTime=0;
                 if (this.getRangeCheck()) {
                     this.mob.setAnimationState(22);
@@ -354,10 +366,10 @@ public class EntityDicer extends AbstractMonster implements GeoAnimatable, GeoEn
 
         protected void tickTailAttack2 () {
             animTime++;
-            if(animTime==11) {
+            if(animTime==9) {
                 performTailAttack();
             }
-            if(animTime>=14) {
+            if(animTime>=17) {
                 animTime=0;
                 if (this.getRangeCheck()) {
                     this.mob.setAnimationState(22);
@@ -371,11 +383,11 @@ public class EntityDicer extends AbstractMonster implements GeoAnimatable, GeoEn
 
         protected void performDiceAttack () {
             Vec3 pos = mob.position();
-            HitboxHelper.LargeAttack(this.mob.damageSources().mobAttack(mob),15.0f, 0.5f, mob, pos,  5.0F, -Math.PI/2, Math.PI/2, -1.0f, 3.0f);
+            HitboxHelper.LargeAttackWithTargetCheck(this.mob.damageSources().mobAttack(mob),15.0f, 0.5f, mob, pos,  5.0F, -Math.PI/3, Math.PI/3, -1.0f, 3.0f);
         }
         protected void performTailAttack () {
             Vec3 pos = mob.position();
-            HitboxHelper.LargeAttack(this.mob.damageSources().mobAttack(mob),10.0f, 0.5f, mob, pos,  8.0F, -Math.PI/2, Math.PI/2, -1.0f, 3.0f);
+            HitboxHelper.LargeAttackWithTargetCheck(this.mob.damageSources().mobAttack(mob),10.0f, 0.5f, mob, pos,  8.0F, -Math.PI/5, Math.PI/5, -1.0f, 3.0f);
         }
 
         protected void resetAttackCooldown () {

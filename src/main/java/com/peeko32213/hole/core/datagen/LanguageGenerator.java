@@ -37,6 +37,9 @@ public class LanguageGenerator extends LanguageProvider {
 
         addEntityType(HoleEntities.DICER, "Dicer");
         addItem(HoleItems.DICER_SPAWN_EGG, "Dicer Spawn Egg");
+
+        addEntityType(HoleEntities.TREMBLER, "Trembler");
+        addItem(HoleItems.TREMBLER_SPAWN_EGG, "Trembler Spawn Egg");
     }
 
     @Override

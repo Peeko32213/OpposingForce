@@ -4,10 +4,19 @@ import com.peeko32213.hole.common.entity.util.AbstractMonster;
 import com.peeko32213.hole.common.entity.util.FearTheLightGoal;
 import com.peeko32213.hole.common.entity.util.SmartNearestTargetGoal;
 import com.peeko32213.hole.common.entity.util.helper.HitboxHelper;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -18,11 +27,14 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ToolActions;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -56,6 +68,11 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
                 .add(Attributes.KNOCKBACK_RESISTANCE,5.0);
     }
 
+    public static <T extends Mob> boolean canSecondTierSpawn(EntityType<EntityRamble> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= -20 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
+    }
+
+
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -76,8 +93,54 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
         super.customServerAiStep();
     }
 
-    public boolean canDisableShield() {
-        return true;
+    @Override
+    protected void blockedByShield(LivingEntity defender) {
+        this.playSound(SoundEvents.RAVAGER_STUNNED, 1.0f, 1.0f);
+        this.level().broadcastEntityEvent(this, (byte) 39);
+        defender.push(this);
+        defender.hurtMarked = true;
+    }
+
+    public void tick() {
+        super.tick();
+        if (this.isAlive() && this.getTarget() != null && (level().getDifficulty() != Difficulty.PEACEFUL || !(this.getTarget() instanceof Player))) {
+            final float f1 = this.getYRot() * Mth.DEG_TO_RAD;
+            this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
+            if (this.distanceTo(this.getTarget()) < 3.5F && this.hasLineOfSight(this.getTarget())) {
+                boolean flag = this.getTarget().isBlocking();
+                if (flag) {
+                    if (this.getTarget() instanceof final Player player) {
+                        this.damageShieldFor(player, (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                    }
+                }
+            }
+        }
+    }
+
+    protected void damageShieldFor(Player holder, float damage) {
+        if (holder.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)) {
+            if (!this.level().isClientSide) {
+                holder.awardStat(Stats.ITEM_USED.get(holder.getUseItem().getItem()));
+            }
+
+            if (damage >= 3.0F) {
+                int i = 1 + Mth.floor(damage);
+                InteractionHand hand = holder.getUsedItemHand();
+                holder.getUseItem().hurtAndBreak(i, holder, (p_213833_1_) -> {
+                    p_213833_1_.broadcastBreakEvent(hand);
+                    net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem(holder, holder.getUseItem(), hand);
+                });
+                if (holder.getUseItem().isEmpty()) {
+                    if (hand == InteractionHand.MAIN_HAND) {
+                        holder.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+                    } else {
+                        holder.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
+                    }
+                    holder.playSound(SoundEvents.SHIELD_BREAK, 0.8F, 0.8F + this.level().random.nextFloat() * 0.4F);
+                }
+            }
+
+        }
     }
 
     private boolean isStillEnough() {
@@ -152,6 +215,7 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
         private int failedPathFindingPenalty = 0;
         private boolean canPenalize = false;
         private int animTime = 0;
+        Vec3 slamOffSet = new Vec3(2, 2, 2);
 
 
         public RambleMeleeAttackGoal(EntityRamble p_i1636_1_, double p_i1636_2_, boolean p_i1636_4_) {
@@ -335,7 +399,8 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
 
         protected void performLightAttack () {
             Vec3 pos = mob.position();
-            HitboxHelper.LargeAttack(this.mob.damageSources().mobAttack(mob),10.0f, 0.0f, mob, pos,  6.0F, -Math.PI/2, Math.PI/2, -1.0f, 3.0f);
+            HitboxHelper.PivotedPolyHitCheck(this.mob, this.slamOffSet, 3f, 3f, 3f, (ServerLevel)this.mob.level(), 10, mob.damageSources().mobAttack(mob), 2f, true);
+
         }
 
 

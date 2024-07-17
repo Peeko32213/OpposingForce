@@ -1,10 +1,7 @@
 package com.peeko32213.hole.core.registry;
 
 import com.peeko32213.hole.Hole;
-import com.peeko32213.hole.common.entity.EntityDicer;
-import com.peeko32213.hole.common.entity.EntityPaleSpider;
-import com.peeko32213.hole.common.entity.EntityRamble;
-import com.peeko32213.hole.common.entity.EntityUmberSpider;
+import com.peeko32213.hole.common.entity.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -28,12 +25,15 @@ public class HoleEntities {
                     .build(new ResourceLocation(Hole.MODID, "umber_spider").toString()));
 
     public static final RegistryObject<EntityType<EntityRamble>> RAMBLE = ENTITIES.register("ramble",
-            () -> EntityType.Builder.of(EntityRamble::new, MobCategory.MONSTER).sized(1.0F, 2.0F)
+            () -> EntityType.Builder.of(EntityRamble::new, MobCategory.MONSTER).sized(1.4F, 2.0F)
                     .build(new ResourceLocation(Hole.MODID, "ramble").toString()));
 
     public static final RegistryObject<EntityType<EntityDicer>> DICER = ENTITIES.register("dicer",
             () -> EntityType.Builder.of(EntityDicer::new, MobCategory.MONSTER).sized(0.7F, 2.0F)
                     .build(new ResourceLocation(Hole.MODID, "dicer").toString()));
 
+    public static final RegistryObject<EntityType<EntityTrembler>> TREMBLER = ENTITIES.register("trembler",
+            () -> EntityType.Builder.of(EntityTrembler::new, MobCategory.MONSTER).sized(0.9F, 1.0F)
+                    .build(new ResourceLocation(Hole.MODID, "trembler").toString()));
 
 }

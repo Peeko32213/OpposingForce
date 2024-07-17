@@ -4,10 +4,7 @@ import com.peeko32213.hole.Hole;
 import com.peeko32213.hole.client.model.DefaultModel;
 import com.peeko32213.hole.client.render.layer.HoleGlowingEyeLayer;
 import com.peeko32213.hole.client.render.PlainGeoRenderer;
-import com.peeko32213.hole.common.entity.EntityDicer;
-import com.peeko32213.hole.common.entity.EntityPaleSpider;
-import com.peeko32213.hole.common.entity.EntityRamble;
-import com.peeko32213.hole.common.entity.EntityUmberSpider;
+import com.peeko32213.hole.common.entity.*;
 import com.peeko32213.hole.core.registry.HoleEntities;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
@@ -44,6 +41,11 @@ public final class ClientEvents {
         EntityRenderers.register(HoleEntities.DICER.get(), (ctx) -> {
             PlainGeoRenderer<EntityDicer> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("dicer"));
             render.addRenderLayer(new HoleGlowingEyeLayer<>("dicer", render));
+            return render;
+        });
+
+        EntityRenderers.register(HoleEntities.TREMBLER.get(), (ctx) -> {
+            PlainGeoRenderer<EntityTrembler> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("trembler"));
             return render;
         });
 
