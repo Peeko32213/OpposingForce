@@ -2,17 +2,11 @@ package com.peeko32213.hole.core.datagen;
 
 import com.peeko32213.hole.Hole;
 import com.peeko32213.hole.core.registry.HoleEntities;
-import com.peeko32213.hole.core.utils.HoleTags;
+import com.peeko32213.hole.core.registry.HoleTags;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;

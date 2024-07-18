@@ -66,7 +66,7 @@ public class EntityTrembler extends AbstractMonster implements GeoAnimatable, Ge
     }
 
     public static <T extends Mob> boolean canFirstTierSpawn(EntityType<EntityTrembler> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() >= 30 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
+        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 30 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
     }
 
 
