@@ -16,7 +16,17 @@ public class HoleTags {
     public static final TagKey<EntityType<?>> UMBER_SPIDER = registerEntityTag("umber_spider");
 
 
-    public static final TagKey<Biome> IS_UNDERGROUND_BIOME = registerBiomeTag("is_underground_biome");
+    public static final TagKey<Biome> IS_DEEP_UNDERGROUND = registerBiomeTag("is_deep_underground");
+    public static final TagKey<Biome> IS_UNDERGROUND = registerBiomeTag("is_underground");
+
+    public static final TagKey<Biome> HAS_DICER = registerBiomeTag("has_monster/dicer");
+    public static final TagKey<Biome> HAS_PALE_SPIDER = registerBiomeTag("has_monster/pale_spider");
+    public static final TagKey<Biome> HAS_RAMBLE = registerBiomeTag("has_monster/ramble");
+    public static final TagKey<Biome> HAS_TREMBLE = registerBiomeTag("has_monster/tremble");
+    public static final TagKey<Biome> HAS_UMBER_SPIDER = registerBiomeTag("has_monster/umber_spider");
+
+
+    public static final TagKey<Biome> WITH_DEFAULT_MONSTER_SPAWNS = registerBiomeTag("with_default_monster_spawns");
 
 
 
