@@ -1,6 +1,6 @@
 {
   "type": "forge:add_spawns",
-  "biomes": "#minecraft:is_overworld",
+  "biomes": "#hole:has_monster/umber_spider",
   "spawners":
   {
     "type": "hole:umber_spider",
