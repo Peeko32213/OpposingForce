@@ -72,7 +72,7 @@ public class EntityDicer extends AbstractMonster implements GeoAnimatable, GeoEn
     }
 
     public static <T extends Mob> boolean canSecondTierSpawn(EntityType<EntityDicer> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() >= 0 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
+        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= -20 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
     }
 
 

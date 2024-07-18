@@ -92,7 +92,7 @@ public class EntityPaleSpider extends Spider implements GeoAnimatable, GeoEntity
     }
 
     public static <T extends Mob> boolean canFirstTierSpawn(EntityType<EntityPaleSpider> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() >= 30 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
+        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= -20 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
     }
 
     protected void registerGoals() {

@@ -71,7 +71,7 @@ public class EntityUmberSpider extends Spider implements GeoAnimatable, GeoEntit
     }
 
     public static <T extends Mob> boolean canSecondTierSpawn(EntityType<EntityUmberSpider> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() >= 0 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
+        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= -20 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
     }
 
 
