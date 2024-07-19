@@ -420,10 +420,7 @@ public class EntityPaleSpider extends Spider implements GeoAnimatable, GeoEntity
             event.setAndContinue(IDLE_UPSIDE_DOWN);
 
         }
-        else {
-            event.setAndContinue(IDLE);
-        }
-        return PlayState.CONTINUE;
+        return  event.setAndContinue(IDLE);
     }
 
     @Nullable

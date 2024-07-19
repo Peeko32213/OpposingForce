@@ -1,6 +1,6 @@
 package com.peeko32213.hole;
 
-import com.peeko32213.hole.core.data.server.tags.HoleBiomeTagsProvider;
+import com.peeko32213.hole.core.datagen.HoleBiomeTagsProvider;
 import com.peeko32213.hole.core.registry.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -16,8 +16,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
@@ -28,30 +26,24 @@ public class Hole {
     public static final Logger LOGGER = LogManager.getLogger();
 
 
-    public Hole()
-    {
+    public Hole() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         //DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> modEventBus.addListener(ClientEvents::init));
+        modEventBus.addListener(this::commonSetup);
 
-       // SFBlocks.BLOCKS.register(modEventBus);
+        // SFBlocks.BLOCKS.register(modEventBus);
         HoleItems.ITEMS.register(modEventBus);
         HoleCreativeTabs.DEF_REG.register(modEventBus);
         HoleEntities.ENTITIES.register(modEventBus);
         HoleSounds.DEF_REG.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(this);
-        modEventBus.addListener(this::dataSetup);
 
     }
 
-    private void dataSetup(GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        PackOutput output = generator.getPackOutput();
-        CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
-        ExistingFileHelper helper = event.getExistingFileHelper();
-
-        boolean server = event.includeServer();
-        generator.addProvider(server, new HoleBiomeTagsProvider(MODID, output, provider, helper));
+    public void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(HoleEntityPlacement::entityPlacement);
     }
+
 
     public static ResourceLocation prefix(String name) {
         return new ResourceLocation(MODID, name.toLowerCase(Locale.ROOT));
