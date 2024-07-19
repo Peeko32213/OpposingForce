@@ -4,7 +4,7 @@
   "spawners":
   {
     "type": "hole:pale_spider",
-    "weight": 100,
+    "weight": 150,
     "minCount": 3,
     "maxCount": 5
   }
