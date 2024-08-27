@@ -1,6 +1,6 @@
 {
   "type": "forge:add_spawns",
-  "biomes": "#hole:has_monster/ramble ",
+  "biomes": "#hole:has_monster/ramble",
   "spawners":
   {
     "type": "hole:ramble",

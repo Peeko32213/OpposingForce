@@ -32,6 +32,7 @@ public class LanguageGenerator extends LanguageProvider {
 
         addEntityType(HoleEntities.UMBER_SPIDER, "Umber Spider");
         addItem(HoleItems.UMBER_SPIDER_SPAWN_EGG, "Umber Spider Spawn Egg");
+        addItem(HoleItems.DEEP_SILK, "Deep Silk");
 
         addSound(HoleSounds.UMBER_SPIDER_DEATH, "Umber Spider Dying");
         addSound(HoleSounds.UMBER_SPIDER_HURT, "Umber Spider Hurt");

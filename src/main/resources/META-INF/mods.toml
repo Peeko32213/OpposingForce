@@ -4,7 +4,7 @@ loaderVersion="${loader_version_range}"
 license="MIT"
 [[mods]]
 modId="hole" #mandatory
-version="0.1.1.1" #mandatory
+version="1.1.0.0" #mandatory
 displayName="Hole" #mandatory
 authors="Peeko32213, Indominator, Scouter456, and AbsoluteKun!" #optional
 description='''A Mod that adds a few new mobs to caves'''
