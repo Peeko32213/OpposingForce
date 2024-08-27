@@ -99,7 +99,7 @@ public class EntityTrembler extends AbstractMonster implements GeoAnimatable, Ge
         this.goalSelector.addGoal(2, new TremblePrepareChargeGoal(this));
         this.goalSelector.addGoal(3, new TrembleChargeGoal(this, 2.5F));
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.35D));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.9D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0f));
         this.targetSelector.addGoal(8, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true));
@@ -247,16 +247,16 @@ public class EntityTrembler extends AbstractMonster implements GeoAnimatable, Ge
             event.setAndContinue(IDLE_WOBBLE);
             event.getController().setAnimationSpeed(1.0F);
             return PlayState.CONTINUE;
-        } else if (event.isMoving()) {
+        } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
             if (this.isSprinting()) {
                 event.setAndContinue(ROLLING);
                 return PlayState.CONTINUE;
             } else {
                 event.setAndContinue(MOVE);
-                event.getController().setAnimationSpeed(1.0F);
-                return PlayState.CONTINUE;
+                event.getController().setAnimationSpeed(2.0F);
             }
-        } else if (this.hasChargeCooldown() && this.hasTarget()) {
+        }
+        else if (this.hasChargeCooldown() && this.hasTarget()) {
             event.setAndContinue(IDLE_SHAKE);
             event.getController().setAnimationSpeed(1.0F);
             return PlayState.CONTINUE;

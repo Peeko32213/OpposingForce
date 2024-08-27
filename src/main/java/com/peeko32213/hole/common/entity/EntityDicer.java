@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.*;
@@ -402,14 +403,16 @@ public class EntityDicer extends AbstractMonster implements GeoAnimatable, GeoEn
                 }
             }
         }
+        Vec3 diceOffset = new Vec3(1, 1, 1);
+        Vec3 tailOffset = new Vec3(2, 2, 2);
 
         protected void performDiceAttack () {
-            Vec3 pos = mob.position();
-            HitboxHelper.LargeAttackWithTargetCheck(this.mob.damageSources().mobAttack(mob),15.0f, 0.5f, mob, pos,  5.0F, -Math.PI/3, Math.PI/3, -1.0f, 3.0f);
+            HitboxHelper.PivotedPolyHitCheck(this.mob, this.diceOffset, 2f, 2f, 2f, (ServerLevel)this.mob.level(), 15, mob.damageSources().mobAttack(mob), 0.5f, false);
         }
         protected void performTailAttack () {
-            Vec3 pos = mob.position();
-            HitboxHelper.LargeAttackWithTargetCheck(this.mob.damageSources().mobAttack(mob),10.0f, 0.5f, mob, pos,  8.0F, -Math.PI/5, Math.PI/5, -1.0f, 3.0f);
+            HitboxHelper.PivotedPolyHitCheck(this.mob, this.tailOffset, 3f, 1f, 3f, (ServerLevel)this.mob.level(), 8, mob.damageSources().mobAttack(mob), 0.5f, true);
+
+
         }
 
         protected void resetAttackCooldown () {

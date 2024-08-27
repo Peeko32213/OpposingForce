@@ -2,6 +2,7 @@ package com.peeko32213.hole.core.datagen;
 
 
 import com.peeko32213.hole.Hole;
+import com.peeko32213.hole.core.registry.HoleItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -27,6 +28,10 @@ public class ItemModelGenerator extends ItemModelProvider {
                         .parent(getExistingFile(new ResourceLocation("item/template_spawn_egg")));
             }
         }
+
+        singleTex(HoleItems.DEEP_SILK);
+
+
     }
 
 

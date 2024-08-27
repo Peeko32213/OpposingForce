@@ -1,6 +1,6 @@
 {
-"format_version": "1.8.0",
-"animations": {
+	"format_version": "1.8.0",
+	"animations": {
 		"animation.trembler.idle_breath": {
 			"animation_length": 7.2,
 			"anim_time_update": "0",
@@ -444,6 +444,7 @@
 			}
 		},
 		"animation.trembler.move": {
+			"loop": true,
 			"animation_length": 7.2083,
 			"anim_time_update": "0",
 			"blend_weight": "1",

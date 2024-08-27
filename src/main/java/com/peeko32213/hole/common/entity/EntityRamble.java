@@ -177,17 +177,17 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
                     event.setAndContinue(AGGRO);
                     break;
                 default:
-                    if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
+                    
+                    if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F) && !this.isInWater()) {
                         if (this.isSprinting()) {
                             event.setAndContinue(AGGRO);
                             event.getController().setAnimationSpeed(2.0D);
                             return PlayState.CONTINUE;
-                        } else if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F)) {
+                        } else {
                             event.setAndContinue(WALK);
-                            event.getController().setAnimationSpeed(1.0D);
-                            return PlayState.CONTINUE;
                         }
                     }
+
                     if (playingAnimation()) {
                         return PlayState.CONTINUE;
                     } else if (isStillEnough() && getRandomAnimationNumber() == 0) {
