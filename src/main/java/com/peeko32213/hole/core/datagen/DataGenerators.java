@@ -5,6 +5,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.blockstates.BlockStateGenerator;
+import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -37,7 +38,9 @@ public class DataGenerators {
         generator.addProvider(true, new EntityTagGenerator(packOutput, lookupProvider, helper));
         //generator.addProvider(true,new AdvancementGenerator(generator, helper));
         generator.addProvider(true, new HoleBiomeTagsProvider(MODID, packOutput, lookupProvider, helper));
-
+        DatapackBuiltinEntriesProvider datapackProvider = new RegistryDataGenerator(packOutput, lookupProvider);
+        CompletableFuture<HolderLookup.Provider> customLookupProvider = datapackProvider.getRegistryProvider();
+        generator.addProvider(true, datapackProvider);
     }
 
 }
