@@ -31,6 +31,8 @@ public class HoleItems {
     public static final RegistryObject<ForgeSpawnEggItem> TREMBLER_SPAWN_EGG = registerSpawnEggs("trembler_spawn_egg",
             HoleEntities.TREMBLER , 0x20281e, 0x86b5b4);
 
+    public static final RegistryObject<Item> DEEP_SILK = ITEMS.register("deep_silk",
+            () -> new Item(new Item.Properties()));
 
     private static RegistryObject<ForgeSpawnEggItem> registerSpawnEggs(String name, Supplier<? extends EntityType<? extends Mob>> type, int backgroundColor, int highlightColor) {
         return ITEMS.register(name, () -> new ForgeSpawnEggItem(type, backgroundColor, highlightColor,new Item.Properties()));
