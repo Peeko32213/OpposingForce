@@ -38,6 +38,18 @@ public class LanguageGenerator extends LanguageProvider {
         addSound(HoleSounds.UMBER_SPIDER_HURT, "Umber Spider Hurt");
         addSound(HoleSounds.UMBER_SPIDER_IDLE, "Umber Spider Idling");
 
+        addEntityType(HoleEntities.RAMBLE, "Ramble");
+        addItem(HoleItems.RAMBLE_SPAWN_EGG, "Rambler Spawn Egg");
+
+        addSound(HoleSounds.RAMBLE_DEATH, "Falling Clatters");
+        addSound(HoleSounds.RAMBLE_HURT, "Uncomfortable Clattering");
+        addSound(HoleSounds.RAMBLE_IDLE, "Rambling Clatters");
+
+        addEntityType(HoleEntities.DICER, "Dicer");
+        addItem(HoleItems.DICER_SPAWN_EGG, "Dicer Spawn Egg");
+
+        addEntityType(HoleEntities.TREMBLER, "Trembler");
+        addItem(HoleItems.TREMBLER_SPAWN_EGG, "Trembler Spawn Egg");
     }
 
     @Override

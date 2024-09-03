@@ -72,7 +72,7 @@ public class EntityDicer extends AbstractMonster implements GeoAnimatable, GeoEn
                 .add(Attributes.MOVEMENT_SPEED, (double)0.175F)
                 .add(Attributes.ATTACK_DAMAGE, 8.0F)
                 .add(Attributes.ARMOR,5.0F)
-                .add(Attributes.FOLLOW_RANGE,6.0F)
+                .add(Attributes.FOLLOW_RANGE,12.0F)
                 .add(Attributes.ARMOR_TOUGHNESS,1.0F);
     }
 

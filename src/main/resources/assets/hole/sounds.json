@@ -25,5 +25,36 @@
       }
     ],
     "subtitle": "hole.sound.subtitle.umber_spider_idle"
+  },
+  "ramble_death": {
+    "sounds": [
+      {
+        "name": "hole:ramble_death",
+        "volume": 0.35
+      }
+    ],
+    "subtitle": "hole.sound.subtitle.ramble_death"
+  },
+  "ramble_hurt": {
+    "sounds": [
+      {
+        "name": "hole:ramble_hurt",
+        "volume": 0.35
+      }
+    ],
+    "subtitle": "hole.sound.subtitle.ramble_hurt"
+  },
+  "ramble_idle": {
+    "sounds": [
+      {
+        "name": "hole:ramble_idle_0",
+        "volume": 0.35
+      },
+      {
+        "name": "hole:ramble_idle_1",
+        "volume": 0.35
+      }
+    ],
+    "subtitle": "hole.sound.subtitle.ramble_idle"
   }
 }

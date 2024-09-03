@@ -4,11 +4,13 @@ import com.peeko32213.hole.common.entity.util.AbstractMonster;
 import com.peeko32213.hole.common.entity.util.FearTheLightGoal;
 import com.peeko32213.hole.common.entity.util.SmartNearestTargetGoal;
 import com.peeko32213.hole.common.entity.util.helper.HitboxHelper;
+import com.peeko32213.hole.core.registry.HoleSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
@@ -66,7 +68,7 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
                 .add(Attributes.MAX_HEALTH, 40.0D)
                 .add(Attributes.MOVEMENT_SPEED, (double)0.13F)
                 .add(Attributes.ATTACK_DAMAGE, (double)10.0F)
-                .add(Attributes.ARMOR,20.0F)
+                .add(Attributes.ARMOR,10.0)
                 .add(Attributes.ARMOR_TOUGHNESS,20.0F)
                 .add(Attributes.KNOCKBACK_RESISTANCE,5.0);
     }
@@ -95,6 +97,17 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
         }
     }
 
+    protected SoundEvent getAmbientSound() {
+        return HoleSounds.RAMBLE_IDLE.get();
+    }
+
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return HoleSounds.RAMBLE_HURT.get();
+    }
+
+    protected SoundEvent getDeathSound() {
+        return HoleSounds.RAMBLE_DEATH.get();
+    }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
