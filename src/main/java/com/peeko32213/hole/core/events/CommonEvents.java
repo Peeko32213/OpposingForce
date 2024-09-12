@@ -2,6 +2,11 @@ package com.peeko32213.hole.core.events;
 
 
 import com.peeko32213.hole.Hole;
+import com.peeko32213.hole.common.entity.EntityPaleSpider;
+import com.peeko32213.hole.common.entity.EntityUmberSpider;
+import com.peeko32213.hole.common.entity.util.FearTheLightGoal;
+import com.peeko32213.hole.common.entity.util.SmartNearestTargetGoal;
+import com.peeko32213.hole.common.entity.util.WanderStrollUpsideDown;
 import com.peeko32213.hole.common.entity.*;
 import com.peeko32213.hole.common.entity.util.FearTheLightGoal;
 import com.peeko32213.hole.common.entity.util.SmartNearestTargetGoal;
@@ -27,7 +32,6 @@ public class CommonEvents {
         event.put(HoleEntities.TREMBLER.get(), EntityTrembler.createAttributes().build());
         event.put(HoleEntities.DICER.get(), EntityDicer.createAttributes().build());
         event.put(HoleEntities.TERROR.get(), EntityTerror.createAttributes().build());
-
     }
 
 }

@@ -131,7 +131,7 @@ public class EntityPaleSpider extends Spider implements GeoAnimatable, GeoEntity
         this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true) {
             protected AABB getTargetSearchArea(double targetDistance) {
                 AABB bb = this.mob.getBoundingBox().inflate(targetDistance, targetDistance, targetDistance);
-                return new AABB(bb.minX, 0, bb.minZ, bb.maxX, 32, bb.maxZ);
+               return new AABB(bb.minX, 0, bb.minZ, bb.maxX, 32, bb.maxZ);
             }
         });
     }
@@ -409,7 +409,7 @@ public class EntityPaleSpider extends Spider implements GeoAnimatable, GeoEntity
 
     }
 
-    protected <E extends EntityPaleSpider> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
+        protected <E extends EntityPaleSpider> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
         if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F) && !this.isUpsideDown()) {
             event.setAndContinue(SCURRY);
             event.getController().setAnimationSpeed(1.8D);

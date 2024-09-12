@@ -33,7 +33,6 @@ public class HoleItems {
 
     public static final RegistryObject<ForgeSpawnEggItem> TERROR_SPAWN_EGG = registerSpawnEggs("terror_spawn_egg",
             HoleEntities.TERROR , 0x070508, 0x54174c);
-
     public static final RegistryObject<Item> DEEP_SILK = ITEMS.register("deep_silk",
             () -> new Item(new Item.Properties()));
 
