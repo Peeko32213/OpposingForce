@@ -36,4 +36,8 @@ public class HoleEntities {
             () -> EntityType.Builder.of(EntityTrembler::new, MobCategory.MONSTER).sized(0.9F, 1.0F)
                     .build(new ResourceLocation(Hole.MODID, "trembler").toString()));
 
+    public static final RegistryObject<EntityType<EntityTerror>> TERROR = ENTITIES.register("terror",
+            () -> EntityType.Builder.of(EntityTerror::new, MobCategory.MONSTER).sized(1.5F, 0.9F)
+                    .build(new ResourceLocation(Hole.MODID, "terror").toString()));
+
 }

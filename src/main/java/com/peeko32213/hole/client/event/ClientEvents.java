@@ -2,6 +2,7 @@ package com.peeko32213.hole.client.event;
 
 import com.peeko32213.hole.Hole;
 import com.peeko32213.hole.client.model.DefaultModel;
+import com.peeko32213.hole.client.render.TerrorRenderer;
 import com.peeko32213.hole.client.render.layer.HoleGlowingEyeLayer;
 import com.peeko32213.hole.client.render.PlainGeoRenderer;
 import com.peeko32213.hole.common.entity.*;
@@ -49,10 +50,13 @@ public final class ClientEvents {
             return render;
         });
 
+
     }
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(HoleEntities.TERROR.get(), TerrorRenderer::new);
+
     }
 
 }

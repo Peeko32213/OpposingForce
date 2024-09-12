@@ -75,6 +75,11 @@
 					"rotation": {
 						"vector": ["Math.sin((query.anim_time)*720)*-5", "Math.cos((query.anim_time)*720)*-5", "Math.sin((query.anim_time)*720)*-10"]
 					}
+				},
+				"Stalker": {
+					"position": {
+						"vector": [0, 0, 0]
+					}
 				}
 			}
 		},

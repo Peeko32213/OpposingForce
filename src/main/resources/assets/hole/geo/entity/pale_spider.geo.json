@@ -3,7 +3,7 @@
 	"minecraft:geometry": [
 		{
 			"description": {
-				"identifier": "geometry.pale_spider",
+				"identifier": "geometry.stalker",
 				"texture_width": 64,
 				"texture_height": 64,
 				"visible_bounds_width": 4,
@@ -59,11 +59,11 @@
 					]
 				},
 				{
-					"name": "EyeLayer",
+					"name": "Eyes",
 					"parent": "Head",
 					"pivot": [0, 6, -2],
 					"cubes": [
-						{"origin": [-3.5, 4, -7], "size": [7, 5, 5], "inflate": 0.2, "uv": [0, 26]}
+						{"origin": [-3.5, 4, -7], "size": [7, 5, 5], "inflate": 0.3, "uv": [0, 24]}
 					]
 				},
 				{

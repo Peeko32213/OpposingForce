@@ -1,45 +1,42 @@
 package com.peeko32213.hole.common.entity;
 
 import com.peeko32213.hole.common.entity.util.AbstractMonster;
-import com.peeko32213.hole.common.entity.util.FearTheLightGoal;
 import com.peeko32213.hole.common.entity.util.SmartNearestTargetGoal;
 import com.peeko32213.hole.common.entity.util.helper.HitboxHelper;
-import com.peeko32213.hole.core.registry.HoleSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.stats.Stats;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.LookControl;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
+import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Skeleton;
-import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.biome.Biomes;
-import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ToolActions;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -49,182 +46,225 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoEntity {
+public class EntityTerror extends AbstractMonster implements GeoAnimatable, GeoEntity {
+    private static final EntityDataAccessor<Boolean> DATA_ID_MOVING = SynchedEntityData.defineId(EntityTerror.class, EntityDataSerializers.BOOLEAN);
+
+
+    private static final RawAnimation SWIM = RawAnimation.begin().thenLoop("animation.terror.swim");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("animation.terror.idle");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenLoop("animation.terror.attack");
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("animation.ramble.idle");
-    private static final RawAnimation IDLE_FLAIL = RawAnimation.begin().thenLoop("animation.ramble.idle_flail");
-    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("animation.ramble.walk");
-    private static final RawAnimation AGGRO = RawAnimation.begin().thenLoop("animation.ramble.aggro");
 
-    public EntityRamble(EntityType<? extends AbstractMonster> pEntityType, Level pLevel) {
+    private boolean clientSideTouchedGround;
+    @Nullable
+    protected RandomStrollGoal randomStrollGoal;
+
+
+
+    public EntityTerror(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.xpReward = 10;
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.moveControl = new EntityTerror.TerrorMoveControl(this);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 30.0D)
-                .add(Attributes.MOVEMENT_SPEED, (double)0.13F)
-                .add(Attributes.ATTACK_DAMAGE, (double)10.0F)
-                .add(Attributes.ARMOR,10.0)
-                .add(Attributes.ARMOR_TOUGHNESS,5.0F)
-                .add(Attributes.KNOCKBACK_RESISTANCE,5.0);
-    }
-
-    public static <T extends Mob> boolean canSecondTierSpawn(EntityType<EntityRamble> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        boolean isDeepDark = iServerWorld.getBiome(pos).is(Biomes.DEEP_DARK);
-        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 0 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
-    }
-
-    public static boolean checkUndergroundMonsterSpawnRules(EntityType<? extends Monster> monster, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource p_219018_) {
-        return level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, p_219018_) && checkMobSpawnRules(monster, level, reason, pos, p_219018_);
-    }
-
-    public static boolean isDarkEnoughToSpawnNoSkylight(ServerLevelAccessor level, BlockPos pos, RandomSource random) {
-        if (level.getBrightness(LightLayer.SKY, pos) > 0) {
-            return false;
-        } else {
-            DimensionType dimension = level.dimensionType();
-            int i = dimension.monsterSpawnBlockLightLimit();
-            if (i < 15 && level.getBrightness(LightLayer.BLOCK, pos) > i) {
-                return false;
-            } else {
-                int j = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
-                return j <= dimension.monsterSpawnLightTest().sample(random);
-            }
-        }
-    }
-
-    protected SoundEvent getAmbientSound() {
-        return HoleSounds.RAMBLE_IDLE.get();
-    }
-
-    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return HoleSounds.RAMBLE_HURT.get();
-    }
-
-    protected SoundEvent getDeathSound() {
-        return HoleSounds.RAMBLE_DEATH.get();
+                .add(Attributes.MAX_HEALTH, 24.0D)
+                .add(Attributes.MOVEMENT_SPEED, (double)0.25F)
+                .add(Attributes.ATTACK_DAMAGE, (double)10.0F);
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(1, new EntityRamble.RambleMeleeAttackGoal(this,  1.0F, true));
+        MoveTowardsRestrictionGoal movetowardsrestrictiongoal = new MoveTowardsRestrictionGoal(this, 1.0D);
+        this.randomStrollGoal = new RandomStrollGoal(this, 1.0D, 80);
+        this.goalSelector.addGoal(5, movetowardsrestrictiongoal);
+        this.goalSelector.addGoal(7, this.randomStrollGoal);
+        this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
+        this.randomStrollGoal.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        movetowardsrestrictiongoal.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true));
+        this.goalSelector.addGoal(1, new EntityTerror.RambleMeleeAttackGoal(this,  1.8F, true));
     }
 
-    @Override
-    public void customServerAiStep() {
-        if (this.getMoveControl().hasWanted()) {
-            this.setSprinting(this.getMoveControl().getSpeedModifier() >= 1.2D);
+    protected PathNavigation createNavigation(Level pLevel) {
+        return new WaterBoundPathNavigation(this, pLevel);
+    }
+
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_ID_MOVING, false);
+    }
+
+
+    public boolean canBreatheUnderwater() {
+        return true;
+    }
+
+    public MobType getMobType() {
+        return MobType.WATER;
+    }
+
+    public boolean isMoving() {
+        return this.entityData.get(DATA_ID_MOVING);
+    }
+
+    void setMoving(boolean pMoving) {
+        this.entityData.set(DATA_ID_MOVING, pMoving);
+    }
+
+    protected Entity.MovementEmission getMovementEmission() {
+        return Entity.MovementEmission.EVENTS;
+    }
+
+    protected float getStandingEyeHeight(Pose pPose, EntityDimensions pSize) {
+        return pSize.height * 0.5F;
+    }
+
+    public float getWalkTargetValue(BlockPos pPos, LevelReader pLevel) {
+        return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10.0F + pLevel.getPathfindingCostFromLightLevels(pPos) : super.getWalkTargetValue(pPos, pLevel);
+    }
+
+    public void aiStep() {
+        if (this.isAlive()) {
+            if (this.level().isClientSide) {
+                if (!this.isInWater()) {
+                    Vec3 vec3 = this.getDeltaMovement();
+                    if (vec3.y > 0.0D && this.clientSideTouchedGround && !this.isSilent()) {
+                        this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), this.getFlopSound(), this.getSoundSource(), 1.0F, 1.0F, false);
+                    }
+
+                    this.clientSideTouchedGround = vec3.y < 0.0D && this.level().loadedAndEntityCanStandOn(this.blockPosition().below(), this);
+                }
+
+                if (this.isMoving() && this.isInWater()) {
+                    Vec3 vec31 = this.getViewVector(0.0F);
+
+                    for(int i = 0; i < 2; ++i) {
+                        this.level().addParticle(ParticleTypes.BUBBLE, this.getRandomX(0.5D) - vec31.x * 1.5D, this.getRandomY() - vec31.y * 1.5D, this.getRandomZ(0.5D) - vec31.z * 1.5D, 0.0D, 0.0D, 0.0D);
+                    }
+                }
+            }
+
+            if (this.isInWaterOrBubble()) {
+                this.setAirSupply(300);
+            } else if (this.onGround()) {
+                this.setDeltaMovement(this.getDeltaMovement().add((double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.4F), 0.5D, (double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.4F)));
+                this.setYRot(this.random.nextFloat() * 360.0F);
+                this.setOnGround(false);
+                this.hasImpulse = true;
+            }
+        }
+
+        super.aiStep();
+    }
+
+    protected SoundEvent getFlopSound() {
+        return SoundEvents.GUARDIAN_FLOP;
+    }
+
+    public boolean checkSpawnObstruction(LevelReader pLevel) {
+        return pLevel.isUnobstructed(this);
+    }
+
+    public int getMaxHeadXRot() {
+        return 180;
+    }
+
+    public void travel(Vec3 pTravelVector) {
+        if (this.isControlledByLocalInstance() && this.isInWater()) {
+            this.moveRelative(0.1F, pTravelVector);
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
+            if (!this.isMoving() && this.getTarget() == null) {
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
+            }
         } else {
-            this.setSprinting(false);
+            super.travel(pTravelVector);
         }
-        super.customServerAiStep();
+
     }
 
-    @Override
-    protected void blockedByShield(LivingEntity defender) {
-        this.playSound(SoundEvents.RAVAGER_STUNNED, 1.0f, 1.0f);
-        this.level().broadcastEntityEvent(this, (byte) 39);
-        defender.push(this);
-        defender.hurtMarked = true;
-    }
+    static class TerrorMoveControl extends MoveControl {
+        private final EntityTerror guardian;
 
-    public void tick() {
-        super.tick();
-        if (this.isAlive() && this.getTarget() != null && (level().getDifficulty() != Difficulty.PEACEFUL || !(this.getTarget() instanceof Player))) {
-            final float f1 = this.getYRot() * Mth.DEG_TO_RAD;
-            this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
-            if (this.distanceTo(this.getTarget()) < 3.5F && this.hasLineOfSight(this.getTarget())) {
-                boolean flag = this.getTarget().isBlocking();
-                if (flag) {
-                    if (this.getTarget() instanceof final Player player) {
-                        this.damageShieldFor(player, (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
-                    }
+        public TerrorMoveControl(EntityTerror pGuardian) {
+            super(pGuardian);
+            this.guardian = pGuardian;
+        }
+
+        public void tick() {
+            if (this.operation == MoveControl.Operation.MOVE_TO && !this.guardian.getNavigation().isDone()) {
+                Vec3 vec3 = new Vec3(this.wantedX - this.guardian.getX(), this.wantedY - this.guardian.getY(), this.wantedZ - this.guardian.getZ());
+                double d0 = vec3.length();
+                double d1 = vec3.x / d0;
+                double d2 = vec3.y / d0;
+                double d3 = vec3.z / d0;
+                float f = (float)(Mth.atan2(vec3.z, vec3.x) * (double)(180F / (float)Math.PI)) - 90.0F;
+                this.guardian.setYRot(this.rotlerp(this.guardian.getYRot(), f, 90.0F));
+                this.guardian.yBodyRot = this.guardian.getYRot();
+                float f1 = (float)(this.speedModifier * this.guardian.getAttributeValue(Attributes.MOVEMENT_SPEED));
+                float f2 = Mth.lerp(0.125F, this.guardian.getSpeed(), f1);
+                this.guardian.setSpeed(f2);
+                double d4 = Math.sin((double)(this.guardian.tickCount + this.guardian.getId()) * 0.5D) * 0.05D;
+                double d5 = Math.cos((double)(this.guardian.getYRot() * ((float)Math.PI / 180F)));
+                double d6 = Math.sin((double)(this.guardian.getYRot() * ((float)Math.PI / 180F)));
+                double d7 = Math.sin((double)(this.guardian.tickCount + this.guardian.getId()) * 0.75D) * 0.05D;
+                this.guardian.setDeltaMovement(this.guardian.getDeltaMovement().add(d4 * d5, d7 * (d6 + d5) * 0.25D + (double)f2 * d2 * 0.1D, d4 * d6));
+                LookControl lookcontrol = this.guardian.getLookControl();
+                double d8 = this.guardian.getX() + d1 * 2.0D;
+                double d9 = this.guardian.getEyeY() + d2 / d0;
+                double d10 = this.guardian.getZ() + d3 * 2.0D;
+                double d11 = lookcontrol.getWantedX();
+                double d12 = lookcontrol.getWantedY();
+                double d13 = lookcontrol.getWantedZ();
+                if (!lookcontrol.isLookingAtTarget()) {
+                    d11 = d8;
+                    d12 = d9;
+                    d13 = d10;
                 }
+
+                this.guardian.getLookControl().setLookAt(Mth.lerp(0.125D, d11, d8), Mth.lerp(0.125D, d12, d9), Mth.lerp(0.125D, d13, d10), 10.0F, 40.0F);
+                this.guardian.setMoving(true);
+            } else {
+                this.guardian.setSpeed(0.0F);
+                this.guardian.setMoving(false);
             }
         }
     }
 
-    protected void damageShieldFor(Player holder, float damage) {
-        if (holder.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)) {
-            if (!this.level().isClientSide) {
-                holder.awardStat(Stats.ITEM_USED.get(holder.getUseItem().getItem()));
-            }
-
-            if (damage >= 3.0F) {
-                int i = 1 + Mth.floor(damage);
-                InteractionHand hand = holder.getUsedItemHand();
-                holder.getUseItem().hurtAndBreak(i, holder, (p_213833_1_) -> {
-                    p_213833_1_.broadcastBreakEvent(hand);
-                    net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem(holder, holder.getUseItem(), hand);
-                });
-                if (holder.getUseItem().isEmpty()) {
-                    if (hand == InteractionHand.MAIN_HAND) {
-                        holder.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-                    } else {
-                        holder.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
-                    }
-                    holder.playSound(SoundEvents.SHIELD_BREAK, 0.8F, 0.8F + this.level().random.nextFloat() * 0.4F);
-                }
-            }
-
-        }
-    }
-
-    private boolean isStillEnough() {
-        return this.getDeltaMovement().horizontalDistance() < 0.05;
-    }
-
-    protected <E extends EntityRamble> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
+    protected <E extends EntityTerror> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
         int animState = this.getAnimationState();
         {
             switch (animState) {
 
                 case 21:
-                    event.setAndContinue(AGGRO);
+                    event.setAndContinue(ATTACK);
+                    event.getController().setAnimationSpeed(0.75D);
                     break;
                 default:
-                    
-                    if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F) && !this.isInWater()) {
-                        if (this.isSprinting()) {
-                            event.setAndContinue(AGGRO);
-                            event.getController().setAnimationSpeed(2.0D);
-                            return PlayState.CONTINUE;
-                        } else {
-                            event.setAndContinue(WALK);
-                        }
-                    }
-
-                    if (playingAnimation()) {
-                        return PlayState.CONTINUE;
-                    } else if (isStillEnough() && getRandomAnimationNumber() == 0) {
-                        int rand = getRandomAnimationNumber();
-                        if (rand < 33) {
-                            setAnimationTimer(150);
-                            return event.setAndContinue(IDLE);
-                        }
-                        if (rand < 66) {
-                            setAnimationTimer(300);
-                            return event.setAndContinue(IDLE_FLAIL);
-                        }
+                    if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F)) {
+                        event.setAndContinue(SWIM);
+                        event.getController().setAnimationSpeed(1.8D);
+                    } else {
+                        event.setAndContinue(IDLE);
                     }
             }
-            return PlayState.CONTINUE;
         }
+        return PlayState.CONTINUE;
     }
 
     @Override
     public void registerControllers(final AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "Normal", 5, this::controller));
     }
+
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
@@ -238,7 +278,7 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
 
     static class RambleMeleeAttackGoal extends Goal {
 
-        protected final EntityRamble mob;
+        protected final EntityTerror mob;
         private final double speedModifier;
         private final boolean followingTargetEvenIfNotSeen;
         private Path path;
@@ -251,10 +291,9 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
         private int failedPathFindingPenalty = 0;
         private boolean canPenalize = false;
         private int animTime = 0;
-        Vec3 slamOffSet = new Vec3(2, 2, 2);
 
 
-        public RambleMeleeAttackGoal(EntityRamble p_i1636_1_, double p_i1636_2_, boolean p_i1636_4_) {
+        public RambleMeleeAttackGoal(EntityTerror p_i1636_1_, double p_i1636_2_, boolean p_i1636_4_) {
             this.mob = p_i1636_1_;
             this.speedModifier = p_i1636_2_;
             this.followingTargetEvenIfNotSeen = p_i1636_4_;
@@ -343,7 +382,7 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
 
 
             switch (animState) {
-                case 21 -> tickLightAttack1();
+                case 21 -> tickDiceAttack();
                 default -> {
                     this.ticksUntilNextPathRecalculation = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
                     this.ticksUntilNextAttack = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
@@ -400,7 +439,6 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
                 if (r <= 800) {
                     this.mob.setAnimationState(21);
                 }
-
             }
         }
 
@@ -416,12 +454,12 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
 
 
 
-        protected void tickLightAttack1 () {
+        protected void tickDiceAttack () {
             animTime++;
-            if(animTime==4) {
-                performLightAttack();
+            if(animTime==9) {
+                performDiceAttack();
             }
-            if(animTime>=8) {
+            if(animTime>=22.5) {
                 animTime=0;
                 if (this.getRangeCheck()) {
                     this.mob.setAnimationState(22);
@@ -433,15 +471,15 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
             }
         }
 
-        protected void performLightAttack () {
-            Vec3 pos = mob.position();
-            HitboxHelper.PivotedPolyHitCheck(this.mob, this.slamOffSet, 4f, 4f, 4f, (ServerLevel)this.mob.level(), 10, mob.damageSources().mobAttack(mob), 2f, true);
+        Vec3 diceOffset = new Vec3(1, 1, 1);
+        Vec3 tailOffset = new Vec3(2, 2, 2);
 
+        protected void performDiceAttack () {
+            HitboxHelper.PivotedPolyHitCheck(this.mob, this.diceOffset, 1.0f, 1.0f, 1.5f, (ServerLevel)this.mob.level(), 4, mob.damageSources().mobAttack(mob), 0.5f, false);
         }
 
-
         protected void resetAttackCooldown () {
-            this.ticksUntilNextAttack = 0;
+            this.ticksUntilNextAttack = 5;
         }
 
         protected boolean isTimeToAttack () {
@@ -460,5 +498,4 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
             return (double)(this.mob.getBbWidth() * 2.0F * this.mob.getBbWidth() * 1.3F + p_25556_.getBbWidth());
         }
     }
-
 }

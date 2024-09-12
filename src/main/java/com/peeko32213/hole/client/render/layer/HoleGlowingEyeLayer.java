@@ -18,10 +18,10 @@ import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
 
-public class HoleSpiderEyeLayer <T extends LivingEntity & GeoEntity> extends GeoRenderLayer<T> {
+public class HoleGlowingEyeLayer <T extends LivingEntity & GeoEntity> extends GeoRenderLayer<T> {
     private final String loc;
 
-    public HoleSpiderEyeLayer(String loc, GeoRenderer<T> entityRendererIn) {
+    public HoleGlowingEyeLayer(String loc, GeoRenderer<T> entityRendererIn) {
         super(entityRendererIn);
         this.loc = loc;
     }
