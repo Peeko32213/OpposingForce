@@ -254,6 +254,7 @@ public class EntityUmberSpider extends Spider implements GeoAnimatable, GeoEntit
         if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F) && !this.isInWater()) {
             event.setAndContinue(SCURRY);
             event.getController().setAnimationSpeed(1.8D);
+            return PlayState.CONTINUE;
         }
         else {
             event.setAndContinue(IDLE);

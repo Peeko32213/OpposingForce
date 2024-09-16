@@ -267,7 +267,6 @@ public class EntityPaleSpider extends Spider implements GeoAnimatable, GeoEntity
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
         if (id == 39) {
             spawnGroundEffects();
@@ -413,15 +412,16 @@ public class EntityPaleSpider extends Spider implements GeoAnimatable, GeoEntity
         if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F) && !this.isUpsideDown()) {
             event.setAndContinue(SCURRY);
             event.getController().setAnimationSpeed(1.8D);
+            return PlayState.CONTINUE;
         }
         else if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F) && this.isUpsideDown() & !this.isInWaterOrBubble() && !this.isClimbing()){
             event.setAndContinue(SCURRY_UPSIDE_DOWN);
             event.getController().setAnimationSpeed(1.8D);
-
+            return PlayState.CONTINUE;
         }
         else if (this.isUpsideDown() & !this.isInWaterOrBubble() && !this.isClimbing()){
             event.setAndContinue(IDLE_UPSIDE_DOWN);
-
+            return PlayState.CONTINUE;
         }
         return  event.setAndContinue(IDLE);
     }
