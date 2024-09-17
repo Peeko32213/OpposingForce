@@ -23,6 +23,6 @@ public class SmallElectricBallModel extends GeoModel<EntitySmallElectricBall>
     @Override
     public ResourceLocation getAnimationResource(EntitySmallElectricBall object)
     {
-        return new ResourceLocation(Hole.MODID, "animations/small_electric_ball.json");
+        return new ResourceLocation(Hole.MODID, "animations/small_electric_ball.animation.json");
     }
 }

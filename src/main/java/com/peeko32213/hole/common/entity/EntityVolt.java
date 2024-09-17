@@ -8,14 +8,12 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -39,6 +37,8 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
+
+import java.util.EnumSet;
 
 public class EntityVolt extends AbstractMonster implements GeoAnimatable, GeoEntity {
     private static final EntityDataAccessor<Boolean> DATA_IS_CHARGING = SynchedEntityData.defineId(EntityVolt.class, EntityDataSerializers.BOOLEAN);
@@ -94,6 +94,7 @@ public class EntityVolt extends AbstractMonster implements GeoAnimatable, GeoEnt
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.goalSelector.addGoal(3, new EntityVolt.VoltShootElectricBall(this));
+        this.goalSelector.addGoal(3, new EntityVolt.VoltLookGoal(this));
 
     }
 
@@ -114,6 +115,48 @@ public class EntityVolt extends AbstractMonster implements GeoAnimatable, GeoEnt
         this.entityData.define(DATA_IS_CHARGING, false);
     }
 
+
+    static class VoltLookGoal extends Goal {
+        private final EntityVolt ghast;
+
+        public VoltLookGoal(EntityVolt pGhast) {
+            this.ghast = pGhast;
+            this.setFlags(EnumSet.of(Goal.Flag.LOOK));
+        }
+
+        /**
+         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
+         * method as well.
+         */
+        public boolean canUse() {
+            return true;
+        }
+
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void tick() {
+            if (this.ghast.getTarget() == null) {
+                Vec3 vec3 = this.ghast.getDeltaMovement();
+                this.ghast.setYRot(-((float) Mth.atan2(vec3.x, vec3.z)) * (180F / (float)Math.PI));
+                this.ghast.yBodyRot = this.ghast.getYRot();
+            } else {
+                LivingEntity livingentity = this.ghast.getTarget();
+                double d0 = 64.0D;
+                if (livingentity.distanceToSqr(this.ghast) < 4096.0D) {
+                    double d1 = livingentity.getX() - this.ghast.getX();
+                    double d2 = livingentity.getZ() - this.ghast.getZ();
+                    this.ghast.setYRot(-((float)Mth.atan2(d1, d2)) * (180F / (float)Math.PI));
+                    this.ghast.yBodyRot = this.ghast.getYRot();
+                }
+            }
+
+        }
+    }
 
     static class VoltShootElectricBall extends Goal {
         private final EntityVolt ghast;
@@ -174,7 +217,7 @@ public class EntityVolt extends AbstractMonster implements GeoAnimatable, GeoEnt
                         }
 
                         EntitySmallElectricBall largefireball = new EntitySmallElectricBall(level, this.ghast, d2, d3, d4);
-                        largefireball.setPos(this.ghast.getX() + vec3.x * 4.0D, this.ghast.getY(0.5D) + 0.5D, largefireball.getZ() + vec3.z * 4.0D);
+                        largefireball.setPos(this.ghast.getX() + vec3.x * 0.0D, this.ghast.getY(0.5D) + 0.5D, largefireball.getZ() + vec3.z * 0.0D);
                         level.addFreshEntity(largefireball);
                         this.chargeTime = -40;
                     }
@@ -192,10 +235,10 @@ public class EntityVolt extends AbstractMonster implements GeoAnimatable, GeoEnt
     }
 
 
-
     protected <E extends EntityVolt> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
         {
             if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
+
                 event.setAndContinue(MOVE);
                 event.getController().setAnimationSpeed(2.0F);
                 return PlayState.CONTINUE;
@@ -203,7 +246,6 @@ public class EntityVolt extends AbstractMonster implements GeoAnimatable, GeoEnt
 
             if (this.isCharging()){
                 event.setAndContinue(ATTACK);
-                event.getController().setAnimationSpeed(2.0F);
                 return PlayState.CONTINUE;
             }
 

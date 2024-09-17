@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
-public abstract class EntityAbstractElectricBall  extends AnimatedTextureEntity implements ItemSupplier {
+public abstract class EntityAbstractElectricBall  extends AbstractHurtingProjectile implements ItemSupplier {
     private static final EntityDataAccessor<ItemStack> DATA_ITEM_STACK = SynchedEntityData.defineId(EntitySmallElectricBall.class, EntityDataSerializers.ITEM_STACK);
 
     public EntityAbstractElectricBall(EntityType<? extends EntitySmallElectricBall> pEntityType, Level pLevel) {

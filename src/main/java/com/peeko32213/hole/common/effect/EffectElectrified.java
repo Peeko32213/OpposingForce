@@ -11,7 +11,6 @@ public class EffectElectrified extends MobEffect {
 
     public EffectElectrified() {
         super(MobEffectCategory.HARMFUL, 0X0080c3);
-        this.addAttributeModifier(Attributes.MOVEMENT_SPEED, "7107DE5E-7CE8-4030-940E-514C1F160890", (double)-1.0F, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
     public void applyEffectTick(LivingEntity entity, int amplifier) {

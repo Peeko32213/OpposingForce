@@ -6,9 +6,6 @@
 			"animation_length": 1,
 			"bones": {
 				"VoltBall": {
-					"rotation": {
-						"vector": ["query.camera_rotation(0)", "query.camera_rotation(1)", 0]
-					},
 					"scale": {
 						"0.0": {
 							"vector": [1, 1, 1]

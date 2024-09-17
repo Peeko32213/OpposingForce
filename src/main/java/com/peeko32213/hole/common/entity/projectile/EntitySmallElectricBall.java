@@ -4,7 +4,6 @@ import com.google.common.base.MoreObjects;
 import com.peeko32213.hole.core.registry.HoleEffects;
 import com.peeko32213.hole.core.registry.HoleEntities;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -12,11 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.projectile.Fireball;
-import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseFireBlock;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
@@ -44,6 +39,11 @@ public class EntitySmallElectricBall extends EntityAbstractElectricBall implemen
         super(HoleEntities.SMALL_ELECTRICITY_BALL.get(), pX, pY, pZ, pOffsetX, pOffsetY, pOffsetZ, pLevel);
     }
 
+    public boolean isOnFire() {
+        return false;
+    }
+
+
     /**
      * Called when the arrow hits an entity
      */
@@ -52,33 +52,15 @@ public class EntitySmallElectricBall extends EntityAbstractElectricBall implemen
         if (!this.level().isClientSide) {
             Entity entity = pResult.getEntity();
             Entity entity1 = this.getOwner();
-            entity.setSecondsOnFire(5);
             entity.hurt(this.damageSources().magic(), 2.0F);
             if (entity instanceof LivingEntity target) {
-                target.addEffect(new MobEffectInstance(HoleEffects.ELECTRIFIED.get(), 200));
+                target.addEffect(new MobEffectInstance(HoleEffects.ELECTRIFIED.get(), 200), MoreObjects.firstNonNull(entity1, this));
             }
         }
     }
 
 
 
-    protected void onHitBlock(BlockHitResult pResult) {
-        super.onHitBlock(pResult);
-        if (!this.level().isClientSide) {
-            Entity entity = this.getOwner();
-            if (!(entity instanceof Mob) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), entity)) {
-                BlockPos blockpos = pResult.getBlockPos().relative(pResult.getDirection());
-                if (this.level().isEmptyBlock(blockpos)) {
-                    this.level().setBlockAndUpdate(blockpos, BaseFireBlock.getState(this.level(), blockpos));
-                }
-            }
-
-        }
-    }
-
-    /**
-     * Called when this EntityFireball hits a block or entity.
-     */
     protected void onHit(HitResult pResult) {
         super.onHit(pResult);
         if (!this.level().isClientSide) {
@@ -119,30 +101,5 @@ public class EntitySmallElectricBall extends EntityAbstractElectricBall implemen
     @Override
     public double getTick(Object o) {
         return tickCount;
-    }
-
-    @Override
-    public float size() {
-        return 0;
-    }
-
-    @Override
-    public ResourceLocation getTextureLocation() {
-        return null;
-    }
-
-    @Override
-    public int getTextureCount() {
-        return 0;
-    }
-
-    @Override
-    public float animationSpeed() {
-        return 0;
-    }
-
-    @Override
-    public int animationTime() {
-        return 0;
     }
 }
