@@ -6,6 +6,8 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 
@@ -15,7 +17,7 @@ import static com.peeko32213.hole.Hole.prefix;
  * Represents an entity with an animated texture that can be synchronized across clients.
  * This entity supports animations with different speeds, counts, and time intervals.
  */
-public abstract class AnimatedTextureEntity extends Projectile {
+public abstract class AnimatedTextureEntity extends AbstractHurtingProjectile {
     // EntityDataAccessors to sync animation states
     public static final EntityDataAccessor<Integer> ANIMATION_COUNT = SynchedEntityData.defineId(AnimatedTextureEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Float> ANIMATION_SPEED = SynchedEntityData.defineId(AnimatedTextureEntity.class, EntityDataSerializers.FLOAT);
@@ -32,10 +34,16 @@ public abstract class AnimatedTextureEntity extends Projectile {
      * @param pEntityType The entity type.
      * @param pLevel      The world in which the entity exists.
      */
-    protected AnimatedTextureEntity(EntityType<? extends Projectile> pEntityType, Level pLevel) {
+    protected AnimatedTextureEntity(EntityType<? extends AbstractHurtingProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
+    public AnimatedTextureEntity(EntityType<? extends AbstractHurtingProjectile> pEntityType, double pX, double pY, double pZ, double pOffsetX, double pOffsetY, double pOffsetZ, Level pLevel) {
+        super(pEntityType, pX, pY, pZ, pOffsetX, pOffsetY, pOffsetZ, pLevel);
+    }
 
+    public AnimatedTextureEntity(EntityType<? extends AbstractHurtingProjectile> pEntityType, LivingEntity pShooter, double pOffsetX, double pOffsetY, double pOffsetZ, Level pLevel) {
+        super(pEntityType, pShooter, pOffsetX, pOffsetY, pOffsetZ, pLevel);
+    }
     /**
      * Handles the animation logic by returning the correct texture location based on the current animation count.
      *

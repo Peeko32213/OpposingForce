@@ -4,6 +4,7 @@ import com.google.common.base.MoreObjects;
 import com.peeko32213.hole.core.registry.HoleEffects;
 import com.peeko32213.hole.core.registry.HoleEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -54,7 +55,7 @@ public class EntitySmallElectricBall extends EntityAbstractElectricBall implemen
             entity.setSecondsOnFire(5);
             entity.hurt(this.damageSources().magic(), 2.0F);
             if (entity instanceof LivingEntity target) {
-                target.addEffect(new MobEffectInstance(HoleEffects.ELECTRIFIED.get(), 200), MoreObjects.firstNonNull(entity1, this));
+                target.addEffect(new MobEffectInstance(HoleEffects.ELECTRIFIED.get(), 200));
             }
         }
     }
@@ -118,5 +119,30 @@ public class EntitySmallElectricBall extends EntityAbstractElectricBall implemen
     @Override
     public double getTick(Object o) {
         return tickCount;
+    }
+
+    @Override
+    public float size() {
+        return 0;
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation() {
+        return null;
+    }
+
+    @Override
+    public int getTextureCount() {
+        return 0;
+    }
+
+    @Override
+    public float animationSpeed() {
+        return 0;
+    }
+
+    @Override
+    public int animationTime() {
+        return 0;
     }
 }
