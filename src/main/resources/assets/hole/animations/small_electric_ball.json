@@ -11,25 +11,13 @@
 					},
 					"scale": {
 						"0.0": {
-							"post": {
-								"vector": [1, 1, 1],
-								"easing": "linear"
-							},
-							"lerp_mode": "catmullrom"
+							"vector": [1, 1, 1]
 						},
 						"0.5": {
-							"post": {
-								"vector": [1.2, 1.2, 1],
-								"easing": "linear"
-							},
-							"lerp_mode": "catmullrom"
+							"vector": [1.2, 1.2, 1]
 						},
 						"1.0": {
-							"post": {
-								"vector": [1, 1, 1],
-								"easing": "linear"
-							},
-							"lerp_mode": "catmullrom"
+							"vector": [1, 1, 1]
 						}
 					}
 				}
