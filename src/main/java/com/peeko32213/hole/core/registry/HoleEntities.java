@@ -2,9 +2,11 @@ package com.peeko32213.hole.core.registry;
 
 import com.peeko32213.hole.Hole;
 import com.peeko32213.hole.common.entity.*;
+import com.peeko32213.hole.common.entity.projectile.EntitySmallElectricBall;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -39,5 +41,14 @@ public class HoleEntities {
     public static final RegistryObject<EntityType<EntityTerror>> TERROR = ENTITIES.register("terror",
             () -> EntityType.Builder.of(EntityTerror::new, MobCategory.MONSTER).sized(1.5F, 0.9F)
                     .build(new ResourceLocation(Hole.MODID, "terror").toString()));
+
+    public static final RegistryObject<EntityType<EntityVolt>> VOLT = ENTITIES.register("volt",
+            () -> EntityType.Builder.of(EntityVolt::new, MobCategory.MONSTER).sized(1.1F, 1.8F)
+                    .build(new ResourceLocation(Hole.MODID, "volt").toString()));
+
+    public static final RegistryObject<EntityType<EntitySmallElectricBall>> SMALL_ELECTRICITY_BALL = ENTITIES.register(
+            "small_electric_ball", () -> EntityType.Builder.<EntitySmallElectricBall>of(EntitySmallElectricBall::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F).clientTrackingRange(9).updateInterval(10)
+                    .build(new ResourceLocation(Hole.MODID, "small_electric_ball").toString()));
 
 }

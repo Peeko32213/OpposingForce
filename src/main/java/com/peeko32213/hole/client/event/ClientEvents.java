@@ -2,6 +2,8 @@ package com.peeko32213.hole.client.event;
 
 import com.peeko32213.hole.Hole;
 import com.peeko32213.hole.client.model.DefaultModel;
+import com.peeko32213.hole.client.model.SmallElectricBallModel;
+import com.peeko32213.hole.client.render.SmallElectricBallRenderer;
 import com.peeko32213.hole.client.render.TerrorRenderer;
 import com.peeko32213.hole.client.render.layer.HoleGlowingEyeLayer;
 import com.peeko32213.hole.client.render.PlainGeoRenderer;
@@ -50,12 +52,17 @@ public final class ClientEvents {
             return render;
         });
 
+        EntityRenderers.register(HoleEntities.VOLT.get(), (ctx) -> {
+            PlainGeoRenderer<EntityVolt> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("volt"));
+            return render;
+        });
 
     }
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(HoleEntities.TERROR.get(), TerrorRenderer::new);
+        event.registerEntityRenderer(HoleEntities.SMALL_ELECTRICITY_BALL.get(), SmallElectricBallRenderer::new);
 
     }
 

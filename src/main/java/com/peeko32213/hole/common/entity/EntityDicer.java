@@ -430,7 +430,7 @@ public class EntityDicer extends AbstractMonster implements GeoAnimatable, GeoEn
         }
 
         protected int getAttackInterval () {
-            return 3;
+            return 5;
         }
 
         protected double getAttackReachSqr(LivingEntity p_25556_) {

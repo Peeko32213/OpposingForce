@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#hole:has_monster/tremble",
+  "spawners": {
+    "type": "hole:trembler",
+    "maxCount": 2,
+    "minCount": 1,
+    "weight": 100
+  }
+}

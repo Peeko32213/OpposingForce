@@ -1,11 +1,10 @@
 {
   "type": "forge:add_spawns",
   "biomes": "#hole:has_monster/pale_spider",
-  "spawners":
-  {
+  "spawners": {
     "type": "hole:pale_spider",
-    "weight": 150,
+    "maxCount": 5,
     "minCount": 3,
-    "maxCount": 5
+    "weight": 100
   }
 }

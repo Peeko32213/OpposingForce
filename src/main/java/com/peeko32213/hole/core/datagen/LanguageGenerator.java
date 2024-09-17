@@ -2,10 +2,7 @@ package com.peeko32213.hole.core.datagen;
 
 import com.mojang.logging.LogUtils;
 import com.peeko32213.hole.Hole;
-import com.peeko32213.hole.core.registry.HoleCreativeTabs;
-import com.peeko32213.hole.core.registry.HoleEntities;
-import com.peeko32213.hole.core.registry.HoleItems;
-import com.peeko32213.hole.core.registry.HoleSounds;
+import com.peeko32213.hole.core.registry.*;
 import net.minecraft.data.PackOutput;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.CreativeModeTab;
@@ -53,6 +50,13 @@ public class LanguageGenerator extends LanguageProvider {
 
         addEntityType(HoleEntities.TERROR, "Terror");
         addItem(HoleItems.TERROR_SPAWN_EGG, "Terror Spawn Egg");
+
+        addEntityType(HoleEntities.VOLT, "Volt");
+        addItem(HoleItems.VOLT_SPAWN_EGG, "Volt Spawn Egg");
+        addEntityType(HoleEntities.SMALL_ELECTRICITY_BALL, "Small Ball of Electricity");
+        addItem(HoleItems.ELECTRIC_CHARGE, "Electric Charge");
+        addEffect(HoleEffects.ELECTRIFIED, "Electrified");
+
     }
 
     @Override

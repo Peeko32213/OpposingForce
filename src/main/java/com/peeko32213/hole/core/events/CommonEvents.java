@@ -32,6 +32,8 @@ public class CommonEvents {
         event.put(HoleEntities.TREMBLER.get(), EntityTrembler.createAttributes().build());
         event.put(HoleEntities.DICER.get(), EntityDicer.createAttributes().build());
         event.put(HoleEntities.TERROR.get(), EntityTerror.createAttributes().build());
+        event.put(HoleEntities.VOLT.get(), EntityVolt.createAttributes().build());
+
     }
 
 }

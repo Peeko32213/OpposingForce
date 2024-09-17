@@ -68,10 +68,7 @@ public class EntityUmberSpider extends Spider implements GeoAnimatable, GeoEntit
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 26.0D)
                 .add(Attributes.MOVEMENT_SPEED, (double)0.3F)
-                .add(Attributes.ATTACK_DAMAGE, (double)4.0F)
-                .add(Attributes.ARMOR,10.0F)
-                .add(Attributes.ARMOR_TOUGHNESS,10.0F)
-                .add(Attributes.KNOCKBACK_RESISTANCE,3.0);
+                .add(Attributes.ATTACK_DAMAGE, (double)4.0F);
     }
 
     public static <T extends Mob> boolean canSecondTierSpawn(EntityType<EntityUmberSpider> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {

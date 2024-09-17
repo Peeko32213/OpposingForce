@@ -36,6 +36,7 @@ public class Hole {
         HoleCreativeTabs.DEF_REG.register(modEventBus);
         HoleEntities.ENTITIES.register(modEventBus);
         HoleSounds.DEF_REG.register(modEventBus);
+        HoleEffects.EFFECT_DEF_REG.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(this);
 
     }
