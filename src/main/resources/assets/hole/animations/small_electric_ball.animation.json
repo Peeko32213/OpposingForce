@@ -5,7 +5,7 @@
 			"loop": true,
 			"animation_length": 1,
 			"bones": {
-				"VoltBall": {
+				"Ball": {
 					"scale": {
 						"0.0": {
 							"vector": [1, 1, 1]
@@ -16,6 +16,15 @@
 						"1.0": {
 							"vector": [1, 1, 1]
 						}
+					}
+				},
+				"BallInterior": {
+					"rotation": {
+						"vector": [
+							"math.clamp(math.cos(query.anim_time*720*2)*40,-10,10)",
+							"math.clamp(math.cos(query.anim_time*1440*2)*40,-10,10)",
+							"math.clamp(math.cos(query.anim_time*720*3)*40,-10,10)"
+						]
 					}
 				}
 			}

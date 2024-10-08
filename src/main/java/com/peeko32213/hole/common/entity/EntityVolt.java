@@ -21,6 +21,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.monster.CaveSpider;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.LargeFireball;
 import net.minecraft.world.level.Level;
@@ -57,7 +58,7 @@ public class EntityVolt extends AbstractMonster implements GeoAnimatable, GeoEnt
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 8.0D)
-                .add(Attributes.MOVEMENT_SPEED, (double)0.08F)
+                .add(Attributes.MOVEMENT_SPEED, (double)0.1F)
                 .add(Attributes.ATTACK_DAMAGE, 8.0F);
     }
 
@@ -202,11 +203,11 @@ public class EntityVolt extends AbstractMonster implements GeoAnimatable, GeoEnt
                 if (livingentity.distanceToSqr(this.ghast) < 4096.0D && this.ghast.hasLineOfSight(livingentity)) {
                     Level level = this.ghast.level();
                     ++this.chargeTime;
-                    if (this.chargeTime == 10 && !this.ghast.isSilent()) {
+                    if (this.chargeTime == 5 && !this.ghast.isSilent()) {
                         level.levelEvent((Player)null, 1015, this.ghast.blockPosition(), 0);
                     }
 
-                    if (this.chargeTime == 20) {
+                    if (this.chargeTime == 10) {
                         double d1 = 4.0D;
                         Vec3 vec3 = this.ghast.getViewVector(1.0F);
                         double d2 = livingentity.getX() - (this.ghast.getX() + vec3.x * 4.0D);
@@ -219,14 +220,29 @@ public class EntityVolt extends AbstractMonster implements GeoAnimatable, GeoEnt
                         EntitySmallElectricBall largefireball = new EntitySmallElectricBall(level, this.ghast, d2, d3, d4);
                         largefireball.setPos(this.ghast.getX() + vec3.x * 0.0D, this.ghast.getY(0.5D) + 0.5D, largefireball.getZ() + vec3.z * 0.0D);
                         level.addFreshEntity(largefireball);
-                        this.chargeTime = -40;
+                        this.chargeTime = -20;
                     }
                 } else if (this.chargeTime > 0) {
                     --this.chargeTime;
                 }
 
-                this.ghast.setCharging(this.chargeTime > 10);
+                this.ghast.setCharging(this.chargeTime > 5);
             }
+        }
+    }
+
+    @Override
+    public void travel(Vec3 pTravelVector) {
+        if(this.isCharging()) {
+            if (this.getNavigation().getPath() != null) {
+                this.getNavigation().stop();
+
+            }
+            pTravelVector = Vec3.ZERO;
+            super.travel(pTravelVector);
+        }
+        else{
+            super.travel(pTravelVector);
         }
     }
 
@@ -240,7 +256,6 @@ public class EntityVolt extends AbstractMonster implements GeoAnimatable, GeoEnt
             if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
 
                 event.setAndContinue(MOVE);
-                event.getController().setAnimationSpeed(2.0F);
                 return PlayState.CONTINUE;
             }
 

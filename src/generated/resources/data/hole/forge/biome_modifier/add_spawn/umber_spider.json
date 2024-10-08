@@ -5,6 +5,6 @@
     "type": "hole:umber_spider",
     "maxCount": 5,
     "minCount": 3,
-    "weight": 100
+    "weight": 50
   }
 }

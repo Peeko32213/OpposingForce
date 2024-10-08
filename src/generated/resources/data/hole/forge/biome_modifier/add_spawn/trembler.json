@@ -5,6 +5,6 @@
     "type": "hole:trembler",
     "maxCount": 2,
     "minCount": 1,
-    "weight": 100
+    "weight": 25
   }
 }

@@ -30,6 +30,7 @@ public class ItemModelGenerator extends ItemModelProvider {
         }
 
         singleTex(HoleItems.DEEP_SILK);
+        singleTex(HoleItems.ELECTRIC_CHARGE);
 
 
     }

@@ -24,11 +24,11 @@ import java.util.stream.Stream;
 public class HoleBiomeModifiers {
 
     public static void bootstrap(BootstapContext<BiomeModifier> context) {
-        addSpawn(context, "dicer", HoleTags.HAS_DICER, new MobSpawnSettings.SpawnerData(HoleEntities.DICER.get(), 100, 1, 2));
-        addSpawn(context, "pale_spider", HoleTags.HAS_PALE_SPIDER, new MobSpawnSettings.SpawnerData(HoleEntities.PALE_SPIDER.get(), 100, 3, 5));
-        addSpawn(context, "ramble", HoleTags.HAS_RAMBLE, new MobSpawnSettings.SpawnerData(HoleEntities.RAMBLE.get(), 100, 1, 2));
-        addSpawn(context, "trembler", HoleTags.HAS_TREMBLE, new MobSpawnSettings.SpawnerData(HoleEntities.TREMBLER.get(), 100, 1, 2));
-        addSpawn(context, "umber_spider", HoleTags.HAS_UMBER_SPIDER, new MobSpawnSettings.SpawnerData(HoleEntities.UMBER_SPIDER.get(), 100, 3, 5));
+        addSpawn(context, "dicer", HoleTags.HAS_DICER, new MobSpawnSettings.SpawnerData(HoleEntities.DICER.get(), 25, 1, 2));
+        addSpawn(context, "pale_spider", HoleTags.HAS_PALE_SPIDER, new MobSpawnSettings.SpawnerData(HoleEntities.PALE_SPIDER.get(), 50, 3, 5));
+        addSpawn(context, "ramble", HoleTags.HAS_RAMBLE, new MobSpawnSettings.SpawnerData(HoleEntities.RAMBLE.get(), 10, 1, 2));
+        addSpawn(context, "trembler", HoleTags.HAS_TREMBLE, new MobSpawnSettings.SpawnerData(HoleEntities.TREMBLER.get(), 25, 1, 2));
+        addSpawn(context, "umber_spider", HoleTags.HAS_UMBER_SPIDER, new MobSpawnSettings.SpawnerData(HoleEntities.UMBER_SPIDER.get(), 50, 3, 5));
     }
 
     private static void addSpawn(BootstapContext<BiomeModifier> context, String name, TagKey<Biome> biomes, MobSpawnSettings.SpawnerData... spawns) {
