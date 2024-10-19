@@ -9,7 +9,10 @@ import com.peeko32213.hole.client.render.TerrorRenderer;
 import com.peeko32213.hole.client.render.layer.HoleGlowingEyeLayer;
 import com.peeko32213.hole.client.render.PlainGeoRenderer;
 import com.peeko32213.hole.common.entity.*;
+import com.peeko32213.hole.core.registry.HoleBlocks;
 import com.peeko32213.hole.core.registry.HoleEntities;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -63,6 +66,32 @@ public final class ClientEvents {
             render.addRenderLayer(new HoleGlowingEyeLayer<>("terror", render));
             return render;
         });
+
+        EntityRenderers.register(HoleEntities.WIZZ.get(), (ctx) -> {
+            PlainGeoRenderer<EntityWizz> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("wizz"));
+            return render;
+        });
+
+        EntityRenderers.register(HoleEntities.HOPPER.get(), (ctx) -> {
+            PlainGeoRenderer<EntityHopper> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("hopper"));
+            return render;
+        });
+
+        EntityRenderers.register(HoleEntities.FROWZY.get(), (ctx) -> {
+            PlainGeoRenderer<EntityFrowzy> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("frowzy"));
+            return render;
+        });
+
+
+
+        ItemBlockRenderTypes.setRenderLayer(HoleBlocks.BLUE_TRUMPET.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(HoleBlocks.CAVE_PATTY.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(HoleBlocks.CHICKEN_OF_THE_CAVES.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(HoleBlocks.POWDER_GNOME.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(HoleBlocks.PRINCESS_JELLY.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(HoleBlocks.CREAM_CAP.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(HoleBlocks.COPPER_ENOKI.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(HoleBlocks.RAINCAP.get(), RenderType.cutout());
 
     }
 

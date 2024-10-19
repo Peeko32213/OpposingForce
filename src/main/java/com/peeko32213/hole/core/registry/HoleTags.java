@@ -12,6 +12,9 @@ import net.minecraft.world.level.block.Block;
 
 public class HoleTags {
 
+    public static final TagKey<Block> HOLE_MUSHROOM_BLOCKS = registerBlockTag("hole_mushroom_blocks");
+
+
     public static final TagKey<EntityType<?>> PALE_SPIDER = registerEntityTag("pale_spider");
     public static final TagKey<EntityType<?>> UMBER_SPIDER = registerEntityTag("umber_spider");
 

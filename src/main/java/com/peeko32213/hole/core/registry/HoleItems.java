@@ -38,6 +38,15 @@ public class HoleItems {
 
     public static final RegistryObject<ForgeSpawnEggItem> VOLT_SPAWN_EGG = registerSpawnEggs("volt_spawn_egg",
             HoleEntities.VOLT , 0x171b2d, 0x78f4d9);
+
+    public static final RegistryObject<ForgeSpawnEggItem> WIZZ_SPAWN_EGG = registerSpawnEggs("wizz_spawn_egg",
+            HoleEntities.WIZZ , 0x6656bb, 0xffe7f8);
+
+    public static final RegistryObject<ForgeSpawnEggItem> HOPPER_SPAWN_EGG = registerSpawnEggs("hopper_spawn_egg",
+            HoleEntities.HOPPER , 0x0f0c18, 0xedb436);
+
+    public static final RegistryObject<ForgeSpawnEggItem> FROWZY_SPAWN_EGG = registerSpawnEggs("frowzy_spawn_egg",
+            HoleEntities.FROWZY , 0x35313b, 0x3f759f);
     public static final RegistryObject<Item> DEEP_SILK = ITEMS.register("deep_silk",
             () -> new Item(new Item.Properties()));
 

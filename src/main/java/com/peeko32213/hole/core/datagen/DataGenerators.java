@@ -33,6 +33,7 @@ public class DataGenerators {
         Set<BlockStateGenerator> set = Sets.newHashSet();
         Consumer<BlockStateGenerator> consumer = set::add;
         CompletableFuture<HolderLookup.Provider> lookupProvider = evt.getLookupProvider();
+        generator.addProvider(true,new BlockstateGenerator(packOutput, helper));
         generator.addProvider(true,new LanguageGenerator(packOutput));
         generator.addProvider(true,new ItemModelGenerator(packOutput, helper));
         generator.addProvider(true, new EntityTagGenerator(packOutput, lookupProvider, helper));
@@ -40,6 +41,8 @@ public class DataGenerators {
         generator.addProvider(true, new HoleBiomeTagsProvider(MODID, packOutput, lookupProvider, helper));
         DatapackBuiltinEntriesProvider datapackProvider = new RegistryDataGenerator(packOutput, lookupProvider);
         CompletableFuture<HolderLookup.Provider> customLookupProvider = datapackProvider.getRegistryProvider();
+        BlockTagsGenerator blockTagGenerator = generator.addProvider(evt.includeServer(),
+                new BlockTagsGenerator(packOutput, lookupProvider, helper));
         generator.addProvider(true, datapackProvider);
     }
 

@@ -46,9 +46,20 @@ public class HoleEntities {
             () -> EntityType.Builder.of(EntityVolt::new, MobCategory.MONSTER).sized(1.1F, 1.8F)
                     .build(new ResourceLocation(Hole.MODID, "volt").toString()));
 
+    public static final RegistryObject<EntityType<EntityWizz>> WIZZ = ENTITIES.register("wizz",
+            () -> EntityType.Builder.of(EntityWizz::new, MobCategory.MONSTER).sized(0.5F, 0.5F)
+                    .build(new ResourceLocation(Hole.MODID, "wizz").toString()));
+
+    public static final RegistryObject<EntityType<EntityHopper>> HOPPER = ENTITIES.register("hopper",
+            () -> EntityType.Builder.of(EntityHopper::new, MobCategory.MONSTER).sized(1.0F, 0.65F)
+                    .build(new ResourceLocation(Hole.MODID, "wizz").toString()));
     public static final RegistryObject<EntityType<EntitySmallElectricBall>> SMALL_ELECTRICITY_BALL = ENTITIES.register(
             "small_electric_ball", () -> EntityType.Builder.<EntitySmallElectricBall>of(EntitySmallElectricBall::new, MobCategory.MISC)
                     .sized(0.5F, 0.5F).clientTrackingRange(9).updateInterval(10)
                     .build(new ResourceLocation(Hole.MODID, "small_electric_ball").toString()));
+
+    public static final RegistryObject<EntityType<EntityFrowzy>> FROWZY = ENTITIES.register("frowzy",
+            () -> EntityType.Builder.of(EntityFrowzy::new, MobCategory.MONSTER).sized(0.6F, 1.9F)
+                    .build(new ResourceLocation(Hole.MODID, "frowzy").toString()));
 
 }

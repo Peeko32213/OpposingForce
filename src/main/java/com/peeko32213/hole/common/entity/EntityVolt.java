@@ -116,6 +116,11 @@ public class EntityVolt extends AbstractMonster implements GeoAnimatable, GeoEnt
         this.entityData.define(DATA_IS_CHARGING, false);
     }
 
+    public static <T extends Mob> boolean canSecondTierSpawn(EntityType<EntityVolt> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        boolean isDeepDark = iServerWorld.getBiome(pos).is(Biomes.DEEP_DARK);
+        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 0 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
+    }
+
 
     static class VoltLookGoal extends Goal {
         private final EntityVolt ghast;

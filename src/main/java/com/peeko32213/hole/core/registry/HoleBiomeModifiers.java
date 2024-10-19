@@ -6,10 +6,12 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ForgeBiomeModifiers;
 import net.minecraftforge.fml.common.Mod;
@@ -24,11 +26,15 @@ import java.util.stream.Stream;
 public class HoleBiomeModifiers {
 
     public static void bootstrap(BootstapContext<BiomeModifier> context) {
-        addSpawn(context, "dicer", HoleTags.HAS_DICER, new MobSpawnSettings.SpawnerData(HoleEntities.DICER.get(), 25, 1, 2));
-        addSpawn(context, "pale_spider", HoleTags.HAS_PALE_SPIDER, new MobSpawnSettings.SpawnerData(HoleEntities.PALE_SPIDER.get(), 50, 3, 5));
-        addSpawn(context, "ramble", HoleTags.HAS_RAMBLE, new MobSpawnSettings.SpawnerData(HoleEntities.RAMBLE.get(), 10, 1, 2));
-        addSpawn(context, "trembler", HoleTags.HAS_TREMBLE, new MobSpawnSettings.SpawnerData(HoleEntities.TREMBLER.get(), 25, 1, 2));
-        addSpawn(context, "umber_spider", HoleTags.HAS_UMBER_SPIDER, new MobSpawnSettings.SpawnerData(HoleEntities.UMBER_SPIDER.get(), 50, 3, 5));
+        addSpawn(context, "dicer", BiomeTags.IS_OVERWORLD, new MobSpawnSettings.SpawnerData(HoleEntities.DICER.get(), 25, 1, 2));
+        addSpawn(context, "pale_spider", BiomeTags.IS_OVERWORLD, new MobSpawnSettings.SpawnerData(HoleEntities.PALE_SPIDER.get(), 50, 3, 5));
+        addSpawn(context, "ramble", BiomeTags.IS_OVERWORLD, new MobSpawnSettings.SpawnerData(HoleEntities.RAMBLE.get(), 10, 1, 2));
+        addSpawn(context, "trembler", BiomeTags.IS_OVERWORLD, new MobSpawnSettings.SpawnerData(HoleEntities.TREMBLER.get(), 25, 1, 2));
+        addSpawn(context, "umber_spider", BiomeTags.IS_OVERWORLD, new MobSpawnSettings.SpawnerData(HoleEntities.UMBER_SPIDER.get(), 50, 3, 5));
+        addSpawn(context, "terror", BiomeTags.IS_OVERWORLD, new MobSpawnSettings.SpawnerData(HoleEntities.TERROR.get(), 25, 1, 2));
+        addSpawn(context, "hopper", BiomeTags.IS_OVERWORLD, new MobSpawnSettings.SpawnerData(HoleEntities.HOPPER.get(), 50, 3, 5));
+        addSpawn(context, "volt", BiomeTags.IS_OVERWORLD, new MobSpawnSettings.SpawnerData(HoleEntities.VOLT.get(), 25, 2, 3));
+
     }
 
     private static void addSpawn(BootstapContext<BiomeModifier> context, String name, TagKey<Biome> biomes, MobSpawnSettings.SpawnerData... spawns) {

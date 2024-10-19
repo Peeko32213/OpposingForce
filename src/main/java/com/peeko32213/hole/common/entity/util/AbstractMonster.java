@@ -15,7 +15,8 @@ public class AbstractMonster extends Monster {
     private static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(AbstractMonster.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> COMBAT_STATE = SynchedEntityData.defineId(AbstractMonster.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> ENTITY_STATE = SynchedEntityData.defineId(AbstractMonster.class, EntityDataSerializers.INT);
-
+    private static final EntityDataAccessor<Boolean> SWINGING = SynchedEntityData.defineId(AbstractMonster.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> HAS_SWUNG = SynchedEntityData.defineId(AbstractMonster.class, EntityDataSerializers.BOOLEAN);
     protected AbstractMonster(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
@@ -28,6 +29,8 @@ public class AbstractMonster extends Monster {
         this.entityData.define(ANIMATION_STATE, 0);
         this.entityData.define(COMBAT_STATE, 0);
         this.entityData.define(ENTITY_STATE, 0);
+        this.entityData.define(SWINGING, false);
+        this.entityData.define(HAS_SWUNG, false);
     }
 
     @Override
@@ -35,6 +38,15 @@ public class AbstractMonster extends Monster {
         super.addAdditionalSaveData(compound);
         compound.putInt("randomNr", this.getRandomNumber());
         compound.putInt("animTimer", this.getAnimationTimer());
+        compound.putBoolean("IsSwinging", this.isSwinging());
+        compound.putBoolean("HasSwung", this.hasSwung());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.setSwinging(compound.getBoolean("IsSwinging"));
+        this.setHasSwung(compound.getBoolean("HasSwung"));
     }
 
     public int getRandomAnimationNumber(int nr) {
@@ -94,6 +106,22 @@ public class AbstractMonster extends Monster {
 
     public void setAnimationTimer(int time) {
         this.entityData.set(ANIM_TIMER,time);
+    }
+
+    public boolean isSwinging() {
+        return this.entityData.get(SWINGING).booleanValue();
+    }
+
+    public void setSwinging(boolean swinging) {
+        this.entityData.set(SWINGING, Boolean.valueOf(swinging));
+    }
+
+    public boolean hasSwung() {
+        return this.entityData.get(HAS_SWUNG).booleanValue();
+    }
+
+    public void setHasSwung(boolean swung) {
+        this.entityData.set(HAS_SWUNG, Boolean.valueOf(swinging));
     }
 
 }

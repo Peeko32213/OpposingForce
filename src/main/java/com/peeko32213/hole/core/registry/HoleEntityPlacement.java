@@ -16,8 +16,9 @@ public class HoleEntityPlacement {
         SpawnPlacements.register(HoleEntities.TREMBLER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityTrembler::canFirstTierSpawn);
         SpawnPlacements.register(HoleEntities.DICER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityDicer::canSecondTierSpawn);
         SpawnPlacements.register(HoleEntities.RAMBLE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityRamble::canSecondTierSpawn);
-
-
+        SpawnPlacements.register(HoleEntities.VOLT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityVolt::canSecondTierSpawn);
+        SpawnPlacements.register(HoleEntities.HOPPER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityHopper::canFirstTierSpawn);
+        SpawnPlacements.register(HoleEntities.TERROR.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityTerror::canWaterSpawn);
 
     }
 

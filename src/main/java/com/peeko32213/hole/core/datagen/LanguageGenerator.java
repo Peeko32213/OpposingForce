@@ -57,6 +57,23 @@ public class LanguageGenerator extends LanguageProvider {
         addItem(HoleItems.ELECTRIC_CHARGE, "Electric Charge");
         addEffect(HoleEffects.ELECTRIFIED, "Electrified");
 
+        addEntityType(HoleEntities.WIZZ, "Whizz");
+        addItem(HoleItems.WIZZ_SPAWN_EGG, "Whizz Spawn Egg");
+
+        addEntityType(HoleEntities.HOPPER, "Bouncer");
+        addItem(HoleItems.HOPPER_SPAWN_EGG, "Bouncer Spawn Egg");
+
+        addEntityType(HoleEntities.FROWZY, "Frowzy");
+        addItem(HoleItems.FROWZY_SPAWN_EGG, "Frowzy Spawn Egg");
+
+        addBlock(HoleBlocks.CAVE_PATTY, "Cave Patty");
+        addBlock(HoleBlocks.COPPER_ENOKI, "Copper Enoki");
+        addBlock(HoleBlocks.RAINCAP, "Rain Cap");
+        addBlock(HoleBlocks.CREAM_CAP, "Cream Cap");
+        addBlock(HoleBlocks.CHICKEN_OF_THE_CAVES, "Chicken of The Caves");
+        addBlock(HoleBlocks.PRINCESS_JELLY, "Princess Jelly");
+        addBlock(HoleBlocks.BLUE_TRUMPET, "Blue Trumpet");
+        addBlock(HoleBlocks.POWDER_GNOME, "Powder Gnome");
     }
 
     @Override

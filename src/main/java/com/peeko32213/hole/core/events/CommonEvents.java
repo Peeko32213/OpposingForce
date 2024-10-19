@@ -70,6 +70,9 @@ public class CommonEvents {
         event.put(HoleEntities.DICER.get(), EntityDicer.createAttributes().build());
         event.put(HoleEntities.TERROR.get(), EntityTerror.createAttributes().build());
         event.put(HoleEntities.VOLT.get(), EntityVolt.createAttributes().build());
+        event.put(HoleEntities.WIZZ.get(), EntityWizz.createAttributes().build());
+        event.put(HoleEntities.HOPPER.get(), EntityHopper.createAttributes().build());
+        event.put(HoleEntities.FROWZY.get(), EntityFrowzy.createAttributes().build());
 
     }
 

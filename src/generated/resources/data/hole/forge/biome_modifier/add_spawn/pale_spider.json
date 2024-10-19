@@ -1,6 +1,6 @@
 {
   "type": "forge:add_spawns",
-  "biomes": "#hole:has_monster/pale_spider",
+  "biomes": "#minecraft:is_overworld",
   "spawners": {
     "type": "hole:pale_spider",
     "maxCount": 5,
