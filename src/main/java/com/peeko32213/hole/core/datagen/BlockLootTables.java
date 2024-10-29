@@ -49,6 +49,16 @@ public class BlockLootTables extends BlockLootSubProvider {
         dropSelf(HoleBlocks.RAINCAP.get());
         dropSelf(HoleBlocks.PRINCESS_JELLY.get());
         dropSelf(HoleBlocks.POWDER_GNOME.get());
+        dropSelf(HoleBlocks.BLACKCAP.get());
+        dropSelf(HoleBlocks.CAP_OF_EYE.get());
+        dropSelf(HoleBlocks.GREEN_FUNK.get());
+        dropSelf(HoleBlocks.LIME_NUB.get());
+        dropSelf(HoleBlocks.POP_CAP.get());
+        dropSelf(HoleBlocks.PURPLE_KNOB.get());
+        dropSelf(HoleBlocks.QUEEN_IN_PURPLE.get());
+        dropSelf(HoleBlocks.SLATESHROOM.get());
+        dropSelf(HoleBlocks.SLIPPERY_TOP.get());
+        dropSelf(HoleBlocks.WHITECAP.get());
 
         createPotFlowerItemTable(HoleBlocks.POTTED_CAVE_PATTY.get(),HoleBlocks.CAVE_PATTY.get());
         createPotFlowerItemTable(HoleBlocks.POTTED_CREAM_CAP.get(),HoleBlocks.CREAM_CAP.get());
@@ -58,7 +68,16 @@ public class BlockLootTables extends BlockLootSubProvider {
         createPotFlowerItemTable(HoleBlocks.POTTED_RAINCAP.get(),HoleBlocks.RAINCAP.get());
         createPotFlowerItemTable(HoleBlocks.POTTED_PRINCESS_JELLY.get(),HoleBlocks.PRINCESS_JELLY.get());
         createPotFlowerItemTable(HoleBlocks.POTTED_POWDER_GNOME.get(),HoleBlocks.POWDER_GNOME.get());
-
+        createPotFlowerItemTable(HoleBlocks.POTTED_BLACKCAP.get(),HoleBlocks.BLACKCAP.get());
+        createPotFlowerItemTable(HoleBlocks.POTTED_CAP_OF_EYE.get(),HoleBlocks.CAP_OF_EYE.get());
+        createPotFlowerItemTable(HoleBlocks.POTTED_GREEN_FUNK.get(),HoleBlocks.GREEN_FUNK.get());
+        createPotFlowerItemTable(HoleBlocks.POTTED_LIME_NUB.get(),HoleBlocks.LIME_NUB.get());
+        createPotFlowerItemTable(HoleBlocks.POTTED_POP_CAP.get(),HoleBlocks.POP_CAP.get());
+        createPotFlowerItemTable(HoleBlocks.POTTED_PURPLE_KNOB.get(),HoleBlocks.PURPLE_KNOB.get());
+        createPotFlowerItemTable(HoleBlocks.POTTED_QUEEN_IN_PURPLE.get(),HoleBlocks.QUEEN_IN_PURPLE.get());
+        createPotFlowerItemTable(HoleBlocks.POTTED_SLATESHROOM.get(),HoleBlocks.SLATESHROOM.get());
+        createPotFlowerItemTable(HoleBlocks.POTTED_SLIPPERY_TOP.get(),HoleBlocks.SLIPPERY_TOP.get());
+        createPotFlowerItemTable(HoleBlocks.POTTED_WHITECAP.get(),HoleBlocks.WHITECAP.get());
 
     }
     protected void createPotFlowerItemTable(Block flowerpotBlock, ItemLike pItem) {

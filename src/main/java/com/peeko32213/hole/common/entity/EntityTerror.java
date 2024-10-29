@@ -135,7 +135,7 @@ public class EntityTerror extends AbstractMonster implements GeoAnimatable, GeoE
     }
 
     public static boolean canWaterSpawn(EntityType<EntityTerror> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return reason == MobSpawnType.SPAWNER || iServerWorld.getBlockState(pos).is(Blocks.WATER) && iServerWorld.getBlockState(pos.above()).is(Blocks.WATER) && pos.getY() <= 20 && iServerWorld.getLightEmission(pos) < 8;
+        return pos.getY() <= iServerWorld.getSeaLevel() - 33 && iServerWorld.getRawBrightness(pos, 0) == 0 && iServerWorld.getBlockState(pos).is(Blocks.WATER);
     }
 
 

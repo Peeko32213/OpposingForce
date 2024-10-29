@@ -20,6 +20,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.minecraft.core.HolderLookup.Provider;
 
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
@@ -33,6 +34,7 @@ public class Hole {
 
 
     public Hole() {
+
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         //DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> modEventBus.addListener(ClientEvents::init));
         modEventBus.addListener(this::commonSetup);
@@ -44,6 +46,7 @@ public class Hole {
         HoleSounds.DEF_REG.register(modEventBus);
         HoleBlocks.BLOCKS.register(modEventBus);
         HoleEffects.EFFECT_DEF_REG.register(modEventBus);
+
         MinecraftForge.EVENT_BUS.register(this);
 
     }
@@ -59,6 +62,16 @@ public class Hole {
         addToFlowerPot(HoleBlocks.PRINCESS_JELLY, HoleBlocks.POTTED_PRINCESS_JELLY);
         addToFlowerPot(HoleBlocks.BLUE_TRUMPET, HoleBlocks.POTTED_BLUE_TRUMPET);
         addToFlowerPot(HoleBlocks.POWDER_GNOME, HoleBlocks.POTTED_POWDER_GNOME);
+        addToFlowerPot(HoleBlocks.BLACKCAP, HoleBlocks.POTTED_BLACKCAP);
+        addToFlowerPot(HoleBlocks.CAP_OF_EYE, HoleBlocks.POTTED_CAP_OF_EYE);
+        addToFlowerPot(HoleBlocks.GREEN_FUNK, HoleBlocks.POTTED_GREEN_FUNK);
+        addToFlowerPot(HoleBlocks.LIME_NUB, HoleBlocks.POTTED_LIME_NUB);
+        addToFlowerPot(HoleBlocks.POP_CAP, HoleBlocks.POTTED_POP_CAP);
+        addToFlowerPot(HoleBlocks.PURPLE_KNOB, HoleBlocks.POTTED_PURPLE_KNOB);
+        addToFlowerPot(HoleBlocks.QUEEN_IN_PURPLE, HoleBlocks.POTTED_QUEEN_IN_PURPLE);
+        addToFlowerPot(HoleBlocks.SLATESHROOM, HoleBlocks.POTTED_SLATESHROOM);
+        addToFlowerPot(HoleBlocks.SLIPPERY_TOP, HoleBlocks.POTTED_SLIPPERY_TOP);
+        addToFlowerPot(HoleBlocks.WHITECAP, HoleBlocks.POTTED_WHITECAP);
 
         addToComposter(HoleBlocks.CAVE_PATTY, 0.7F);
         addToComposter(HoleBlocks.COPPER_ENOKI, 0.3F);
@@ -68,6 +81,17 @@ public class Hole {
         addToComposter(HoleBlocks.PRINCESS_JELLY, 0.3F);
         addToComposter(HoleBlocks.BLUE_TRUMPET, 0.5F);
         addToComposter(HoleBlocks.POWDER_GNOME, 0.6F);
+        addToComposter(HoleBlocks.BLACKCAP, 0.5F);
+        addToComposter(HoleBlocks.CAP_OF_EYE, 0.5F);
+        addToComposter(HoleBlocks.GREEN_FUNK, 0.5F);
+        addToComposter(HoleBlocks.LIME_NUB, 0.5F);
+        addToComposter(HoleBlocks.POP_CAP, 0.6F);
+        addToComposter(HoleBlocks.PURPLE_KNOB, 0.3F);
+        addToComposter(HoleBlocks.QUEEN_IN_PURPLE, 1.3F);
+        addToComposter(HoleBlocks.SLATESHROOM, 0.5F);
+        addToComposter(HoleBlocks.SLIPPERY_TOP, 0.6F);
+        addToComposter(HoleBlocks.WHITECAP, 0.5F);
+
     }
 
     public static void addToFlowerPot(RegistryObject<Block> plantBlockLoc, Supplier<? extends Block> pottedPlantBlock){
@@ -77,8 +101,11 @@ public class Hole {
         ComposterBlock.COMPOSTABLES.put(item.get().asItem(), amountOfCompost);
     }
 
+
+
     public static ResourceLocation prefix(String name) {
         return new ResourceLocation(MODID, name.toLowerCase(Locale.ROOT));
     }
 
 }
+

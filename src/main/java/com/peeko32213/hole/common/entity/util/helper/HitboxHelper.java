@@ -152,7 +152,7 @@ public class HitboxHelper {
 
     }
 
-    public static void PivotedPolyHitCheck(LivingEntity source, Vec3 boxOffset, double attackWidth, double attackHeight, double attackLength, ServerLevel world, float damage, DamageSource damageSource, float knockback, boolean disableShield) {
+    public static void PivotedPolyHitCheck(PathfinderMob source, Vec3 boxOffset, double attackWidth, double attackHeight, double attackLength, ServerLevel world, float damage, DamageSource damageSource, float knockback, boolean disableShield) {
         //attackRadius is in blocks
 
         Vec3 sourcePos = source.position();
@@ -183,11 +183,15 @@ public class HitboxHelper {
                                 new Vec3(-victim.position().x, -victim.position().y, -victim.position().z)
                         ));
 
+                if(victim == source.getTarget()) {
+                    //entityIn.doHurtTarget(target);
+                    victim.hurt(damageSource, damage);
+                    victim.setLastHurtByMob(source);
 
-                victim.hurt(damageSource, damage);
-                victim.setLastHurtByMob(source);
+                    source.knockback(knockback, knockVec.x, knockVec.y);
 
-                victim.knockback(knockback, knockVec.x, knockVec.y);
+                }
+
 
             }
         }

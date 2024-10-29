@@ -56,6 +56,10 @@ public class LanguageGenerator extends LanguageProvider {
         addEntityType(HoleEntities.SMALL_ELECTRICITY_BALL, "Small Ball of Electricity");
         addItem(HoleItems.ELECTRIC_CHARGE, "Electric Charge");
         addEffect(HoleEffects.ELECTRIFIED, "Electrified");
+        add("death.attack.hole.electrified", "%s met a shocking end");
+        add("death.attack.hole.electrified.player", "%s met a shocking end by %s");
+        addItem(HoleItems.TESLA_BOW, "Tesla Bow");
+        addItem(HoleItems.ELECTRIC_CHARGE, "Electric Charge");
 
         addEntityType(HoleEntities.WIZZ, "Whizz");
         addItem(HoleItems.WIZZ_SPAWN_EGG, "Whizz Spawn Egg");
@@ -74,6 +78,21 @@ public class LanguageGenerator extends LanguageProvider {
         addBlock(HoleBlocks.PRINCESS_JELLY, "Princess Jelly");
         addBlock(HoleBlocks.BLUE_TRUMPET, "Blue Trumpet");
         addBlock(HoleBlocks.POWDER_GNOME, "Powder Gnome");
+        addBlock(HoleBlocks.BLACKCAP, "Black Cap");
+        addBlock(HoleBlocks.CAP_OF_EYE, "Cap of Eye");
+        addBlock(HoleBlocks.GREEN_FUNK, "Green Funk");
+        addBlock(HoleBlocks.LIME_NUB, "Lime Nub");
+        addBlock(HoleBlocks.POP_CAP, "Pop Cap");
+        addBlock(HoleBlocks.PURPLE_KNOB, "Purple Knob");
+        addBlock(HoleBlocks.QUEEN_IN_PURPLE, "Queen in Magenta");
+        addBlock(HoleBlocks.SLATESHROOM, "Slate Shroom");
+        addBlock(HoleBlocks.SLIPPERY_TOP, "Slippery Top");
+        addBlock(HoleBlocks.WHITECAP, "White Cap");
+
+
+        addItem(HoleItems.TOMAHAWK, "Tomahawk");
+        add("death.attack.hole.tomahawk", "%s was domed by %s");
+
     }
 
     @Override

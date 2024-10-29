@@ -74,6 +74,18 @@ public class BlockstateGenerator extends BlockStateProvider {
         createPottedPlant(HoleBlocks.PRINCESS_JELLY, HoleBlocks.POTTED_PRINCESS_JELLY, "cutout");
         createPottedPlant(HoleBlocks.BLUE_TRUMPET, HoleBlocks.POTTED_BLUE_TRUMPET, "cutout");
         createPottedPlant(HoleBlocks.POWDER_GNOME, HoleBlocks.POTTED_POWDER_GNOME, "cutout");
+
+        createPottedPlant(HoleBlocks.BLACKCAP, HoleBlocks.POTTED_BLACKCAP, "cutout");
+        createPottedPlant(HoleBlocks.CAP_OF_EYE, HoleBlocks.POTTED_CAP_OF_EYE, "cutout");
+        createPottedPlant(HoleBlocks.GREEN_FUNK, HoleBlocks.POTTED_GREEN_FUNK, "cutout");
+        createPottedPlant(HoleBlocks.LIME_NUB, HoleBlocks.POTTED_LIME_NUB, "cutout");
+        createPottedPlant(HoleBlocks.POP_CAP, HoleBlocks.POTTED_POP_CAP, "cutout");
+        createPottedPlant(HoleBlocks.PURPLE_KNOB, HoleBlocks.POTTED_PURPLE_KNOB, "cutout");
+        createPottedPlant(HoleBlocks.QUEEN_IN_PURPLE, HoleBlocks.POTTED_QUEEN_IN_PURPLE, "cutout");
+        createPottedPlant(HoleBlocks.SLATESHROOM, HoleBlocks.POTTED_SLATESHROOM, "cutout");
+        createPottedPlant(HoleBlocks.SLIPPERY_TOP, HoleBlocks.POTTED_SLIPPERY_TOP, "cutout");
+        createPottedPlant(HoleBlocks.WHITECAP, HoleBlocks.POTTED_WHITECAP, "cutout");
+
     }
 
 

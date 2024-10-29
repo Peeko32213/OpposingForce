@@ -1,6 +1,7 @@
 package com.peeko32213.hole.core.registry;
 
 import com.peeko32213.hole.Hole;
+import com.peeko32213.hole.core.registry.util.TagUtilities;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -29,7 +30,7 @@ public class HoleTags {
     public static final TagKey<Biome> HAS_UMBER_SPIDER = registerBiomeTag("has_monster/umber_spider");
 
 
-    public static final TagKey<Biome> WITH_DEFAULT_MONSTER_SPAWNS = registerBiomeTag("with_default_monster_spawns");
+    public static final TagKey<Biome> WITH_DEFAULT_MONSTER_SPAWNS = TagUtilities.specialBiomeTag("forge", "with_default_monster_spawns");
 
 
 

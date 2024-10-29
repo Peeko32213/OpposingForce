@@ -3,14 +3,16 @@ package com.peeko32213.hole.core.registry;
 import com.peeko32213.hole.Hole;
 import com.peeko32213.hole.common.entity.*;
 import com.peeko32213.hole.common.entity.projectile.EntitySmallElectricBall;
+import com.peeko32213.hole.common.entity.projectile.EntityThrownTomahawk;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import static com.peeko32213.hole.Hole.prefix;
 
 @Mod.EventBusSubscriber(modid = Hole.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class HoleEntities {
@@ -39,7 +41,7 @@ public class HoleEntities {
                     .build(new ResourceLocation(Hole.MODID, "trembler").toString()));
 
     public static final RegistryObject<EntityType<EntityTerror>> TERROR = ENTITIES.register("terror",
-            () -> EntityType.Builder.of(EntityTerror::new, MobCategory.MONSTER).sized(1.5F, 0.9F)
+            () -> EntityType.Builder.of(EntityTerror::new, MobCategory.UNDERGROUND_WATER_CREATURE).sized(1.5F, 0.9F)
                     .build(new ResourceLocation(Hole.MODID, "terror").toString()));
 
     public static final RegistryObject<EntityType<EntityVolt>> VOLT = ENTITIES.register("volt",
@@ -61,5 +63,12 @@ public class HoleEntities {
     public static final RegistryObject<EntityType<EntityFrowzy>> FROWZY = ENTITIES.register("frowzy",
             () -> EntityType.Builder.of(EntityFrowzy::new, MobCategory.MONSTER).sized(0.6F, 1.9F)
                     .build(new ResourceLocation(Hole.MODID, "frowzy").toString()));
+
+    public static final RegistryObject<EntityType<EntityThrownTomahawk>> TOMAHAWK = ENTITIES.register("tomahawk",
+            () ->  EntityType.Builder.<EntityThrownTomahawk>of(EntityThrownTomahawk::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(prefix("kunai").toString()));
 
 }

@@ -202,24 +202,27 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
                             event.setAndContinue(WALK);
                         }
                     }
-
-                    if (playingAnimation()) {
+                    else {
+                        event.setAndContinue(IDLE_FLAIL);
                         return PlayState.CONTINUE;
-                    } else if (isStillEnough() && getRandomAnimationNumber() == 0) {
-                        int rand = getRandomAnimationNumber();
-                        if (rand < 33) {
-                            setAnimationTimer(150);
-                            return event.setAndContinue(IDLE);
-                        }
-                        if (rand < 66) {
-                            setAnimationTimer(300);
-                            return event.setAndContinue(IDLE_FLAIL);
-                        }
                     }
+                 //   if (playingAnimation()) {
+                    //      return PlayState.CONTINUE;
+                    //  } else if (isStillEnough() && getRandomAnimationNumber() == 0) {
+                    //      int rand = getRandomAnimationNumber();
+                    //      if (rand < 33) {
+                    //          setAnimationTimer(150);
+                    //          return event.setAndContinue(IDLE);
+                        }
+            //    if (rand < 66) {
+            //         setAnimationTimer(300);
+            //         return event.setAndContinue(IDLE_FLAIL);
+            //       }
+        //   }
             }
             return PlayState.CONTINUE;
         }
-    }
+
 
     @Override
     public void registerControllers(final AnimatableManager.ControllerRegistrar controllers) {
@@ -234,6 +237,11 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
     @Override
     public double getTick(Object o) {
         return tickCount;
+    }
+
+    @Override
+    public boolean isAlliedTo(Entity pEntity) {
+        return pEntity.is(this);
     }
 
     static class RambleMeleeAttackGoal extends Goal {
@@ -435,7 +443,7 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
 
         protected void performLightAttack () {
             Vec3 pos = mob.position();
-            HitboxHelper.PivotedPolyHitCheck(this.mob, this.slamOffSet, 4f, 4f, 4f, (ServerLevel)this.mob.level(), 10, mob.damageSources().mobAttack(mob), 2f, true);
+            HitboxHelper.PivotedPolyHitCheck(this.mob, this.slamOffSet, 4f, 4f, 4f, (ServerLevel)this.mob.level(), 10, mob.damageSources().mobAttack(mob), 0.2f, true);
 
         }
 

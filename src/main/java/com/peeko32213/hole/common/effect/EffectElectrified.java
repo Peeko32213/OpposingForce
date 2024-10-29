@@ -1,5 +1,6 @@
 package com.peeko32213.hole.common.effect;
 
+import com.peeko32213.hole.core.registry.HoleDamageTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -14,6 +15,7 @@ public class EffectElectrified extends MobEffect {
     }
 
     public void applyEffectTick(LivingEntity entity, int amplifier) {
+
         if(entity.isInWaterOrBubble()){
             entity.hurt(entity.damageSources().magic(), 10.0F);
         }

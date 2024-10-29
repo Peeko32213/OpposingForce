@@ -2,6 +2,7 @@ package com.peeko32213.hole.core.datagen;
 
 import com.peeko32213.hole.Hole;
 import com.peeko32213.hole.core.registry.HoleBiomeModifiers;
+import com.peeko32213.hole.core.registry.HoleDamageTypes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -16,7 +17,8 @@ public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
 
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(ForgeRegistries.Keys.BIOME_MODIFIERS, HoleBiomeModifiers::bootstrap)
-;
+            .add(Registries.DAMAGE_TYPE, HoleDamageTypes::bootstrap)
+            ;
 
 
     public RegistryDataGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {

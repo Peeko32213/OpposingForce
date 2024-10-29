@@ -2,9 +2,10 @@ package com.peeko32213.hole.core.registry;
 
 import com.peeko32213.hole.Hole;
 import com.peeko32213.hole.common.item.ElectricChargeItem;
+import com.peeko32213.hole.common.item.TeslaBowItem;
+import com.peeko32213.hole.common.item.TomahawkItem;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.item.FireChargeItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
@@ -51,8 +52,13 @@ public class HoleItems {
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> ELECTRIC_CHARGE = ITEMS.register("electric_charge",
-            () -> new ElectricChargeItem(new Item.Properties()));
+            () -> new ElectricChargeItem(HoleEntities.SMALL_ELECTRICITY_BALL, new Item.Properties()));
 
+    public static final RegistryObject<Item> TOMAHAWK =  ITEMS.register("tomahawk",
+            () -> new TomahawkItem((new Item.Properties()).stacksTo(16)));
+
+    public static final RegistryObject<Item> TESLA_BOW = ITEMS.register("tesla_bow",
+            () -> new TeslaBowItem(new Item.Properties()));
 
     private static RegistryObject<ForgeSpawnEggItem> registerSpawnEggs(String name, Supplier<? extends EntityType<? extends Mob>> type, int backgroundColor, int highlightColor) {
         return ITEMS.register(name, () -> new ForgeSpawnEggItem(type, backgroundColor, highlightColor,new Item.Properties()));

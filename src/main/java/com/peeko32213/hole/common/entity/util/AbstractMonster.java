@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
@@ -47,6 +48,11 @@ public class AbstractMonster extends Monster {
         super.readAdditionalSaveData(compound);
         this.setSwinging(compound.getBoolean("IsSwinging"));
         this.setHasSwung(compound.getBoolean("HasSwung"));
+    }
+
+    @Override
+    public boolean isAlliedTo(Entity pEntity) {
+        return pEntity.is(this);
     }
 
     public int getRandomAnimationNumber(int nr) {

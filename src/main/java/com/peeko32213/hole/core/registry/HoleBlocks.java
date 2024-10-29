@@ -134,6 +134,147 @@ public class HoleBlocks {
             () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, HoleBlocks.PRINCESS_JELLY, BlockBehaviour
                     .Properties.copy(Blocks.POTTED_DANDELION).noOcclusion()));
 
+    public static final RegistryObject<Block> BLACKCAP = register("blackcap", () ->
+            new HoleMushroomBlock(BlockBehaviour.Properties
+                    .of().mapColor(MapColor.TERRACOTTA_WHITE)
+                    .replaceable().noCollission()
+                    .instabreak()
+                    .sound(SoundType.GRASS)
+                    .ignitedByLava()
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .pushReaction(PushReaction.DESTROY)));
+
+    public static final RegistryObject<Block> POTTED_BLACKCAP = registerBlockNoItem("potted_blackcap",
+            () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, HoleBlocks.BLACKCAP, BlockBehaviour
+                    .Properties.copy(Blocks.POTTED_DANDELION).noOcclusion()));
+
+    public static final RegistryObject<Block> CAP_OF_EYE = register("cap_of_eye", () ->
+            new HoleMushroomBlock(BlockBehaviour.Properties
+                    .of().mapColor(MapColor.COLOR_PURPLE)
+                    .replaceable().noCollission()
+                    .instabreak()
+                    .sound(SoundType.GRASS)
+                    .ignitedByLava()
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .pushReaction(PushReaction.DESTROY)));
+
+    public static final RegistryObject<Block> POTTED_CAP_OF_EYE = registerBlockNoItem("potted_cap_of_eye",
+            () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, HoleBlocks.CAP_OF_EYE, BlockBehaviour
+                    .Properties.copy(Blocks.POTTED_DANDELION).noOcclusion()));
+
+    public static final RegistryObject<Block> GREEN_FUNK = register("green_funk", () ->
+            new HoleMushroomBlock(BlockBehaviour.Properties
+                    .of().mapColor(MapColor.COLOR_GREEN)
+                    .replaceable().noCollission()
+                    .instabreak()
+                    .sound(SoundType.GRASS)
+                    .ignitedByLava()
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .pushReaction(PushReaction.DESTROY)));
+
+    public static final RegistryObject<Block> POTTED_GREEN_FUNK = registerBlockNoItem("potted_green_funk",
+            () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, HoleBlocks.GREEN_FUNK, BlockBehaviour
+                    .Properties.copy(Blocks.POTTED_DANDELION).noOcclusion()));
+
+    public static final RegistryObject<Block> LIME_NUB = register("lime_nub", () ->
+            new HoleMushroomBlock(BlockBehaviour.Properties
+                    .of().mapColor(MapColor.COLOR_LIGHT_GREEN)
+                    .replaceable().noCollission()
+                    .instabreak()
+                    .sound(SoundType.GRASS)
+                    .ignitedByLava()
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .pushReaction(PushReaction.DESTROY)));
+
+    public static final RegistryObject<Block> POTTED_LIME_NUB = registerBlockNoItem("potted_lime_nub",
+            () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, HoleBlocks.LIME_NUB, BlockBehaviour
+                    .Properties.copy(Blocks.POTTED_DANDELION).noOcclusion()));
+
+    public static final RegistryObject<Block> POP_CAP = register("pop_cap", () ->
+            new HoleMushroomBlock(BlockBehaviour.Properties
+                    .of().mapColor(MapColor.TERRACOTTA_YELLOW)
+                    .replaceable().noCollission()
+                    .instabreak()
+                    .sound(SoundType.GRASS)
+                    .ignitedByLava()
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .pushReaction(PushReaction.DESTROY)));
+
+    public static final RegistryObject<Block> POTTED_POP_CAP = registerBlockNoItem("potted_pop_cap",
+            () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, HoleBlocks.POP_CAP, BlockBehaviour
+                    .Properties.copy(Blocks.POTTED_DANDELION).noOcclusion()));
+
+    public static final RegistryObject<Block> PURPLE_KNOB = register("purple_knob", () ->
+            new HoleMushroomBlock(BlockBehaviour.Properties
+                    .of().mapColor(MapColor.TERRACOTTA_PURPLE)
+                    .replaceable().noCollission()
+                    .instabreak()
+                    .sound(SoundType.GRASS)
+                    .ignitedByLava()
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .pushReaction(PushReaction.DESTROY)));
+
+    public static final RegistryObject<Block> POTTED_PURPLE_KNOB = registerBlockNoItem("potted_purple_knob",
+            () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, HoleBlocks.PURPLE_KNOB, BlockBehaviour
+                    .Properties.copy(Blocks.POTTED_DANDELION).noOcclusion()));
+
+    public static final RegistryObject<Block> QUEEN_IN_PURPLE = register("queen_in_purple", () ->
+            new HoleMushroomBlock(BlockBehaviour.Properties
+                    .of().mapColor(MapColor.TERRACOTTA_PURPLE)
+                    .replaceable().noCollission()
+                    .instabreak()
+                    .sound(SoundType.GRASS)
+                    .ignitedByLava()
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .pushReaction(PushReaction.DESTROY)));
+
+    public static final RegistryObject<Block> POTTED_QUEEN_IN_PURPLE = registerBlockNoItem("potted_queen_in_purple",
+            () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, HoleBlocks.QUEEN_IN_PURPLE, BlockBehaviour
+                    .Properties.copy(Blocks.POTTED_DANDELION).noOcclusion()));
+
+    public static final RegistryObject<Block> SLATESHROOM = register("slateshroom", () ->
+            new HoleMushroomBlock(BlockBehaviour.Properties
+                    .of().mapColor(MapColor.TERRACOTTA_PURPLE)
+                    .replaceable().noCollission()
+                    .instabreak()
+                    .sound(SoundType.GRASS)
+                    .ignitedByLava()
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .pushReaction(PushReaction.DESTROY)));
+
+    public static final RegistryObject<Block> POTTED_SLATESHROOM = registerBlockNoItem("potted_slateshroom",
+            () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, HoleBlocks.SLATESHROOM, BlockBehaviour
+                    .Properties.copy(Blocks.POTTED_DANDELION).noOcclusion()));
+
+
+    public static final RegistryObject<Block> SLIPPERY_TOP = register("slippery_top", () ->
+            new HoleMushroomBlock(BlockBehaviour.Properties
+                    .of().mapColor(MapColor.TERRACOTTA_PURPLE)
+                    .replaceable().noCollission()
+                    .instabreak()
+                    .sound(SoundType.GRASS)
+                    .ignitedByLava()
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .pushReaction(PushReaction.DESTROY)));
+
+    public static final RegistryObject<Block> POTTED_SLIPPERY_TOP = registerBlockNoItem("potted_slipperytop",
+            () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, HoleBlocks.SLIPPERY_TOP, BlockBehaviour
+                    .Properties.copy(Blocks.POTTED_DANDELION).noOcclusion()));
+
+
+    public static final RegistryObject<Block> WHITECAP = register("whitecap", () ->
+            new HoleMushroomBlock(BlockBehaviour.Properties
+                    .of().mapColor(MapColor.TERRACOTTA_PURPLE)
+                    .replaceable().noCollission()
+                    .instabreak()
+                    .sound(SoundType.GRASS)
+                    .ignitedByLava()
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .pushReaction(PushReaction.DESTROY)));
+
+    public static final RegistryObject<Block> POTTED_WHITECAP = registerBlockNoItem("potted_whitecap",
+            () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, HoleBlocks.WHITECAP, BlockBehaviour
+                    .Properties.copy(Blocks.POTTED_DANDELION).noOcclusion()));
 
     public static <T extends Block> RegistryObject<T> register(String name, Supplier<Block> block) {
         RegistryObject<? extends Block> ret = BLOCKS.register(name, block);

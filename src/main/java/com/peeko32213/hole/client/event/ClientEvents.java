@@ -2,10 +2,9 @@ package com.peeko32213.hole.client.event;
 
 import com.peeko32213.hole.Hole;
 import com.peeko32213.hole.client.model.DefaultModel;
-import com.peeko32213.hole.client.model.SmallElectricBallModel;
 import com.peeko32213.hole.client.model.TerrorDefaultModel;
+import com.peeko32213.hole.client.render.SpinningVerticalThrownItemRenderer;
 import com.peeko32213.hole.client.render.SmallElectricBallRenderer;
-import com.peeko32213.hole.client.render.TerrorRenderer;
 import com.peeko32213.hole.client.render.layer.HoleGlowingEyeLayer;
 import com.peeko32213.hole.client.render.PlainGeoRenderer;
 import com.peeko32213.hole.common.entity.*;
@@ -93,11 +92,22 @@ public final class ClientEvents {
         ItemBlockRenderTypes.setRenderLayer(HoleBlocks.COPPER_ENOKI.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(HoleBlocks.RAINCAP.get(), RenderType.cutout());
 
+        ItemBlockRenderTypes.setRenderLayer(HoleBlocks.BLACKCAP.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(HoleBlocks.CAP_OF_EYE.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(HoleBlocks.GREEN_FUNK.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(HoleBlocks.LIME_NUB.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(HoleBlocks.POP_CAP.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(HoleBlocks.PURPLE_KNOB.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(HoleBlocks.QUEEN_IN_PURPLE.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(HoleBlocks.SLATESHROOM.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(HoleBlocks.SLIPPERY_TOP.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(HoleBlocks.WHITECAP.get(), RenderType.cutout());
     }
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(HoleEntities.SMALL_ELECTRICITY_BALL.get(), SmallElectricBallRenderer::new);
+        event.registerEntityRenderer(HoleEntities.TOMAHAWK.get(), SpinningVerticalThrownItemRenderer::new);
 
     }
 

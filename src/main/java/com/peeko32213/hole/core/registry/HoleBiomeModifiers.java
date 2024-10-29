@@ -26,16 +26,18 @@ import java.util.stream.Stream;
 public class HoleBiomeModifiers {
 
     public static void bootstrap(BootstapContext<BiomeModifier> context) {
-        addSpawn(context, "dicer", BiomeTags.IS_OVERWORLD, new MobSpawnSettings.SpawnerData(HoleEntities.DICER.get(), 25, 1, 2));
-        addSpawn(context, "pale_spider", BiomeTags.IS_OVERWORLD, new MobSpawnSettings.SpawnerData(HoleEntities.PALE_SPIDER.get(), 50, 3, 5));
-        addSpawn(context, "ramble", BiomeTags.IS_OVERWORLD, new MobSpawnSettings.SpawnerData(HoleEntities.RAMBLE.get(), 10, 1, 2));
-        addSpawn(context, "trembler", BiomeTags.IS_OVERWORLD, new MobSpawnSettings.SpawnerData(HoleEntities.TREMBLER.get(), 25, 1, 2));
-        addSpawn(context, "umber_spider", BiomeTags.IS_OVERWORLD, new MobSpawnSettings.SpawnerData(HoleEntities.UMBER_SPIDER.get(), 50, 3, 5));
-        addSpawn(context, "terror", BiomeTags.IS_OVERWORLD, new MobSpawnSettings.SpawnerData(HoleEntities.TERROR.get(), 25, 1, 2));
-        addSpawn(context, "hopper", BiomeTags.IS_OVERWORLD, new MobSpawnSettings.SpawnerData(HoleEntities.HOPPER.get(), 50, 3, 5));
-        addSpawn(context, "volt", BiomeTags.IS_OVERWORLD, new MobSpawnSettings.SpawnerData(HoleEntities.VOLT.get(), 25, 2, 3));
+        addSpawn(context, "dicer", HoleTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(HoleEntities.DICER.get(), 25, 1, 2));
+        addSpawn(context, "pale_spider", HoleTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(HoleEntities.PALE_SPIDER.get(), 50, 3, 5));
+        addSpawn(context, "ramble", HoleTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(HoleEntities.RAMBLE.get(), 10, 1, 2));
+        addSpawn(context, "trembler", HoleTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(HoleEntities.TREMBLER.get(), 25, 1, 2));
+        addSpawn(context, "umber_spider", HoleTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(HoleEntities.UMBER_SPIDER.get(), 50, 3, 5));
+        addSpawn(context, "terror", HoleTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(HoleEntities.TERROR.get(), 5, 1, 2));
+        addSpawn(context, "hopper", HoleTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(HoleEntities.HOPPER.get(), 50, 3, 5));
+        addSpawn(context, "volt", HoleTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(HoleEntities.VOLT.get(), 25, 2, 3));
 
     }
+
+
 
     private static void addSpawn(BootstapContext<BiomeModifier> context, String name, TagKey<Biome> biomes, MobSpawnSettings.SpawnerData... spawns) {
         register(context, "add_spawn/" + name, () -> new ForgeBiomeModifiers.AddSpawnsBiomeModifier(context.lookup(Registries.BIOME).getOrThrow(biomes), List.of(spawns)));
