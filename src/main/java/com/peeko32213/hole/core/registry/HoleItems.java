@@ -58,7 +58,7 @@ public class HoleItems {
             () -> new TomahawkItem((new Item.Properties()).stacksTo(16)));
 
     public static final RegistryObject<Item> TESLA_BOW = ITEMS.register("tesla_bow",
-            () -> new TeslaBowItem(new Item.Properties()));
+            () -> new TeslaBowItem(new Item.Properties().stacksTo(1).durability(465)));
 
     private static RegistryObject<ForgeSpawnEggItem> registerSpawnEggs(String name, Supplier<? extends EntityType<? extends Mob>> type, int backgroundColor, int highlightColor) {
         return ITEMS.register(name, () -> new ForgeSpawnEggItem(type, backgroundColor, highlightColor,new Item.Properties()));

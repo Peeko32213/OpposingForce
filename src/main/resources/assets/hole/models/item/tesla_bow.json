@@ -78,27 +78,27 @@
       "predicate": {
         "pulling": 1
       },
-      "model": "hole:item/teslabow_pulling_0"
+      "model": "hole:item/tesla_bow_pulling_0"
     },
     {
       "predicate": {
         "pulling": 1,
         "pull": 0.58
       },
-      "model": "hole:item/teslabow_pulling_1"
+      "model": "hole:item/tesla_bow_pulling_1"
     },
     {
       "predicate": {
         "pulling": 1,
         "pull": 1
       },
-      "model": "hole:item/teslabow_pulling_2"
+      "model": "hole:item/tesla_bow_pulling_2"
     },
     {
       "predicate": {
         "charged": 1
       },
-      "model": "hole:item/teslabow_loaded"
+      "model": "hole:item/tesla_bow_loaded"
     }
   ]
 }

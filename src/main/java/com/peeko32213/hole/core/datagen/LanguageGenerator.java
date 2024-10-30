@@ -59,7 +59,6 @@ public class LanguageGenerator extends LanguageProvider {
         add("death.attack.hole.electrified", "%s met a shocking end");
         add("death.attack.hole.electrified.player", "%s met a shocking end by %s");
         addItem(HoleItems.TESLA_BOW, "Tesla Bow");
-        addItem(HoleItems.ELECTRIC_CHARGE, "Electric Charge");
 
         addEntityType(HoleEntities.WIZZ, "Whizz");
         addItem(HoleItems.WIZZ_SPAWN_EGG, "Whizz Spawn Egg");
