@@ -8,6 +8,7 @@ import com.peeko32213.hole.client.render.SmallElectricBallRenderer;
 import com.peeko32213.hole.client.render.layer.HoleGlowingEyeLayer;
 import com.peeko32213.hole.client.render.PlainGeoRenderer;
 import com.peeko32213.hole.common.entity.*;
+import com.peeko32213.hole.common.item.HoleItemProperties;
 import com.peeko32213.hole.core.registry.HoleBlocks;
 import com.peeko32213.hole.core.registry.HoleEntities;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -102,6 +103,8 @@ public final class ClientEvents {
         ItemBlockRenderTypes.setRenderLayer(HoleBlocks.SLATESHROOM.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(HoleBlocks.SLIPPERY_TOP.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(HoleBlocks.WHITECAP.get(), RenderType.cutout());
+        event.enqueueWork(HoleItemProperties::addItemProperties);
+
     }
 
     @SubscribeEvent
