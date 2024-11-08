@@ -1,7 +1,10 @@
 package com.peeko32213.hole.common.item;
 import java.util.List;
 
+import com.peeko32213.hole.common.entity.projectile.EntitySmallElectricBall;
 import com.peeko32213.hole.core.registry.HoleItems;
+import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import net.minecraft.sounds.SoundEvents;
@@ -54,7 +57,7 @@ public interface ModifiedCrossbowMethod {
         }
 
         if (msLevel <= 0) {
-            CrossbowItem.shootProjectile(world, shooter, handUsed, crossbow, list.get(0), 1.0F, creativeModeFlag, speed, divergence, 0.0F);
+            modifiedShootProjectile(world, shooter, handUsed, crossbow, list.get(0), 1.0F, creativeModeFlag, speed, divergence, 0.0F);
         } else {
 
             float[] afloat = this.modifiedGetShotPitches(shooter.getRandom(), msLevel);
@@ -69,7 +72,7 @@ public interface ModifiedCrossbowMethod {
                 ItemStack itemstack = list.get(i);
 
                 if (!itemstack.isEmpty()) {
-                    CrossbowItem.shootProjectile(world, shooter, handUsed, crossbow, itemstack, afloat[i], creativeModeFlag, speed, divergence, currentAngle);
+                    modifiedShootProjectile(world, shooter, handUsed, crossbow, itemstack, afloat[i], creativeModeFlag, speed, divergence, currentAngle);
                 }
                 currentAngle += anglePerIteration;
             }
@@ -85,9 +88,9 @@ public interface ModifiedCrossbowMethod {
             if (flag) {
                 projectileentity = new FireworkRocketEntity(world, projectileStack, shooter, shooter.getX(), shooter.getEyeY() - (double) 0.15F, shooter.getZ(), true);
             } else {
-                projectileentity = CrossbowItem.getArrow(world, shooter, crossbow, projectileStack);
+                projectileentity = getElectricCharge(world, shooter, crossbow, projectileStack);
                 if (flagProjectileCantBePickedUp || simulated != 0.0F) {
-                    ((AbstractArrow) projectileentity).pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+                    //((EntitySmallElectricBall) projectileentity).pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
                 }
             }
 
@@ -109,7 +112,22 @@ public interface ModifiedCrossbowMethod {
             world.playSound((Player) null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, shootSoundPitch);
         }
     }
+    public static EntitySmallElectricBall getElectricCharge(Level pLevel, LivingEntity pLivingEntity, ItemStack pCrossbowStack, ItemStack pAmmoStack) {
+        ElectricChargeItem arrowitem = (ElectricChargeItem)(pAmmoStack.getItem() instanceof ElectricChargeItem ? pAmmoStack.getItem() : HoleItems.ELECTRIC_CHARGE);
+        EntitySmallElectricBall abstractarrow = arrowitem.createDart(pLevel, pLivingEntity);
+        if (pLivingEntity instanceof Player) {
+            //abstractarrow.setCritArrow(true);
+        }
 
+        abstractarrow.setSoundEvent(SoundEvents.CROSSBOW_HIT);
+        //abstractarrow.setShotFromCrossbow(true);
+        int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, pCrossbowStack);
+        if (i > 0) {
+            //abstractarrow.setPierceLevel((byte)i);
+        }
+
+        return abstractarrow;
+    }
     public default int modifiedGetChargeDuration(ItemStack crossbow) {
         int i = crossbow.getEnchantmentLevel(Enchantments.QUICK_CHARGE);
         return i == 0 ? this.getMaxChargeTime() : this.getMaxChargeTime() - this.getChargeTimeReductionPerQuickChargeLevel() * i;
