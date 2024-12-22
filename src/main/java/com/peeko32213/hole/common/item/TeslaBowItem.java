@@ -56,7 +56,7 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable, ModifiedCr
             modifiedPerformShooting(pLevel, pPlayer, pHand, itemstack, getShootingPower(itemstack), 1.0F);
             setCharged(itemstack, false);
             Vec3 lookVec = pPlayer.getLookAngle().multiply(-1,-1,-1);
-            pPlayer.setDeltaMovement(new Vec3(0.5,0.5,0.5).multiply(lookVec));
+            pPlayer.setDeltaMovement(new Vec3(1.0,1.0,1.0).multiply(lookVec));
             pPlayer.hurtMarked = true;
             return InteractionResultHolder.consume(itemstack);
         } else if (!pPlayer.getProjectile(itemstack).isEmpty()) {

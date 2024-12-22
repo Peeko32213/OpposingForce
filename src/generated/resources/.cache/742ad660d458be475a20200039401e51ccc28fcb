@@ -1,8 +1,10 @@
-// 1.20.1	2024-10-28T21:01:15.5937341	Item Models: hole
+// 1.20.1	2024-12-19T20:55:28.2281223	Item Models: hole
 ff60ed6d82bb851982b750e07ac2414c311abd36 assets/hole/models/item/deep_silk.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/hole/models/item/dicer_spawn_egg.json
 bd50e086d10a5f258e8089a52fc12b92997597f1 assets/hole/models/item/electric_charge.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/hole/models/item/fireslime_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/hole/models/item/frowzy_spawn_egg.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/hole/models/item/guzzler_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/hole/models/item/hopper_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/hole/models/item/pale_spider_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/hole/models/item/ramble_spawn_egg.json

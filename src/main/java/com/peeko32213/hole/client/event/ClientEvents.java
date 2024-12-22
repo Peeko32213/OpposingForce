@@ -82,6 +82,16 @@ public final class ClientEvents {
             return render;
         });
 
+        EntityRenderers.register(HoleEntities.FIRE_SLIME.get(), (ctx) -> {
+            PlainGeoRenderer<EntityFireSlime> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("fireslime"));
+            return render;
+        });
+
+        EntityRenderers.register(HoleEntities.GUZZLER.get(), (ctx) -> {
+            PlainGeoRenderer<EntityGuzzler> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("guzzler"));
+            return render;
+        });
+
 
 
         ItemBlockRenderTypes.setRenderLayer(HoleBlocks.BLUE_TRUMPET.get(), RenderType.cutout());

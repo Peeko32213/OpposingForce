@@ -48,6 +48,12 @@ public class HoleItems {
 
     public static final RegistryObject<ForgeSpawnEggItem> FROWZY_SPAWN_EGG = registerSpawnEggs("frowzy_spawn_egg",
             HoleEntities.FROWZY , 0x35313b, 0x3f759f);
+
+    public static final RegistryObject<ForgeSpawnEggItem> FIRESLIME_SPAWN_EGG = registerSpawnEggs("fireslime_spawn_egg",
+            HoleEntities.FIRE_SLIME , 0xdb3709, 0xffffff);
+
+    public static final RegistryObject<ForgeSpawnEggItem> GUZZLER_SPAWN_EGG = registerSpawnEggs("guzzler_spawn_egg",
+            HoleEntities.GUZZLER , 0x59316a, 0xfff067);
     public static final RegistryObject<Item> DEEP_SILK = ITEMS.register("deep_silk",
             () -> new Item(new Item.Properties()));
 

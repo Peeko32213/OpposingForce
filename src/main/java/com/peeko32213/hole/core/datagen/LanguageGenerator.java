@@ -69,6 +69,12 @@ public class LanguageGenerator extends LanguageProvider {
         addEntityType(HoleEntities.FROWZY, "Frowzy");
         addItem(HoleItems.FROWZY_SPAWN_EGG, "Frowzy Spawn Egg");
 
+        addEntityType(HoleEntities.FIRE_SLIME, "Aflame Slime");
+        addItem(HoleItems.FIRESLIME_SPAWN_EGG, "Aflame Slime Spawn Egg");
+
+        addEntityType(HoleEntities.GUZZLER, "Guzzler");
+        addItem(HoleItems.GUZZLER_SPAWN_EGG, "Guzzler Spawn Egg");
+
         addBlock(HoleBlocks.CAVE_PATTY, "Cave Patty");
         addBlock(HoleBlocks.COPPER_ENOKI, "Copper Enoki");
         addBlock(HoleBlocks.RAINCAP, "Rain Cap");

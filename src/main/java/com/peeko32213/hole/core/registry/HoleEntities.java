@@ -64,6 +64,14 @@ public class HoleEntities {
             () -> EntityType.Builder.of(EntityFrowzy::new, MobCategory.MONSTER).sized(0.6F, 1.9F)
                     .build(new ResourceLocation(Hole.MODID, "frowzy").toString()));
 
+    public static final RegistryObject<EntityType<EntityFireSlime>> FIRE_SLIME = ENTITIES.register("fireslime",
+            () -> EntityType.Builder.of(EntityFireSlime::new, MobCategory.MONSTER).sized(0.6F, 0.6F)
+                    .build(new ResourceLocation(Hole.MODID, "fireslime").toString()));
+
+    public static final RegistryObject<EntityType<EntityGuzzler>> GUZZLER = ENTITIES.register("guzzler",
+            () -> EntityType.Builder.of(EntityGuzzler::new, MobCategory.MONSTER).sized(2.0F, 2.0F)
+                    .build(new ResourceLocation(Hole.MODID, "guzzler").toString()));
+
     public static final RegistryObject<EntityType<EntityThrownTomahawk>> TOMAHAWK = ENTITIES.register("tomahawk",
             () ->  EntityType.Builder.<EntityThrownTomahawk>of(EntityThrownTomahawk::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F)
