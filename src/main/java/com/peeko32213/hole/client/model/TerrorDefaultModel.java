@@ -1,7 +1,6 @@
 package com.peeko32213.hole.client.model;
 
 import com.peeko32213.hole.Hole;
-import com.peeko32213.hole.common.entity.EntityTerror;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import software.bernie.geckolib.constant.DataTickets;

@@ -2,10 +2,9 @@ package com.peeko32213.hole.core.datagen;
 
 import com.peeko32213.hole.core.registry.HoleTags;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
-
-import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList;

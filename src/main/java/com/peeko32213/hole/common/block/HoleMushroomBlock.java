@@ -1,13 +1,11 @@
 package com.peeko32213.hole.common.block;
 
-import com.peeko32213.hole.core.registry.HoleTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BushBlock;
-import net.minecraft.world.level.block.MushroomBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;

@@ -3,7 +3,6 @@ package com.peeko32213.hole.core.registry;
 import com.peeko32213.hole.Hole;
 import com.peeko32213.hole.common.entity.projectile.EntityAbstractElectricBall;
 import com.peeko32213.hole.common.entity.projectile.EntityThrownTomahawk;
-import com.peeko32213.hole.common.item.TomahawkItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;

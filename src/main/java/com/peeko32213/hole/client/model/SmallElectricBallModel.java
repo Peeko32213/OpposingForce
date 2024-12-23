@@ -1,7 +1,6 @@
 package com.peeko32213.hole.client.model;
 
 import com.peeko32213.hole.Hole;
-import com.peeko32213.hole.common.entity.EntityTerror;
 import com.peeko32213.hole.common.entity.projectile.EntitySmallElectricBall;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;

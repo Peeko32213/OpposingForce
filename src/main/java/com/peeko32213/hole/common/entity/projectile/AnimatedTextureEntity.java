@@ -8,7 +8,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 
 import static com.peeko32213.hole.Hole.prefix;

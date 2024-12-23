@@ -2,28 +2,16 @@ package com.peeko32213.hole.core.events;
 
 
 import com.peeko32213.hole.Hole;
-import com.peeko32213.hole.common.entity.EntityPaleSpider;
-import com.peeko32213.hole.common.entity.EntityUmberSpider;
-import com.peeko32213.hole.common.entity.projectile.EntitySmallElectricBall;
-import com.peeko32213.hole.common.entity.util.FearTheLightGoal;
-import com.peeko32213.hole.common.entity.util.SmartNearestTargetGoal;
-import com.peeko32213.hole.common.entity.util.WanderStrollUpsideDown;
 import com.peeko32213.hole.common.entity.*;
-import com.peeko32213.hole.common.entity.util.FearTheLightGoal;
-import com.peeko32213.hole.common.entity.util.SmartNearestTargetGoal;
-import com.peeko32213.hole.common.entity.util.WanderStrollUpsideDown;
+import com.peeko32213.hole.common.entity.projectile.EntitySmallElectricBall;
 import com.peeko32213.hole.core.registry.HoleEntities;
-import com.peeko32213.hole.core.registry.HoleEntityPlacement;
 import com.peeko32213.hole.core.registry.HoleItems;
 import net.minecraft.Util;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
-import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
@@ -31,8 +19,6 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-
-import static com.peeko32213.hole.Hole.prefix;
 
 @Mod.EventBusSubscriber(modid = Hole.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonEvents {

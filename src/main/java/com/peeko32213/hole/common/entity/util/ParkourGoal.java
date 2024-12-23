@@ -1,9 +1,6 @@
 package com.peeko32213.hole.common.entity.util;
 
-import net.minecraft.world.entity.ai.goal.Goal;
-
 import com.google.common.collect.Lists;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;

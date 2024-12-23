@@ -1,7 +1,6 @@
 package com.peeko32213.hole.core.datagen;
 
 import com.peeko32213.hole.Hole;
-import com.peeko32213.hole.core.registry.HoleDamageTypes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -9,12 +8,12 @@ import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
-import static com.peeko32213.hole.core.registry.HoleDamageTypes.*;
+
+import static com.peeko32213.hole.core.registry.HoleDamageTypes.ELECTRIFIED;
+import static com.peeko32213.hole.core.registry.HoleDamageTypes.TOMAHAWK;
 
 public class DamageTypeTagsGenerator extends TagsProvider<DamageType> {
 

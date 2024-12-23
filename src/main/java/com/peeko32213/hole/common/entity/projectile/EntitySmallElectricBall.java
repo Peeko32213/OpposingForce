@@ -1,21 +1,15 @@
 package com.peeko32213.hole.common.entity.projectile;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.Sets;
 import com.peeko32213.hole.core.registry.HoleEffects;
 import com.peeko32213.hole.core.registry.HoleEntities;
 import com.peeko32213.hole.core.registry.HoleItems;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;

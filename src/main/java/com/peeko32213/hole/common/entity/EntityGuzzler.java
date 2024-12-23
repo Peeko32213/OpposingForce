@@ -1,7 +1,14 @@
 package com.peeko32213.hole.common.entity;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
-import com.peeko32213.hole.common.entity.util.AbstractMonster;
+import com.peeko32213.hole.Hole;
+import com.peeko32213.hole.common.entity.state.EntityAction;
+import com.peeko32213.hole.common.entity.state.RandomStateGoal;
+import com.peeko32213.hole.common.entity.state.StateHelper;
+import com.peeko32213.hole.common.entity.state.WeightedState;
+import com.peeko32213.hole.common.entity.util.StatedAbstractMonster;
 import com.peeko32213.hole.core.registry.HoleEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -9,9 +16,11 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -20,8 +29,6 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.MagmaCube;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.DismountHelper;
@@ -39,10 +46,13 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
-public class EntityGuzzler extends AbstractMonster implements GeoAnimatable, GeoEntity {
-    private static final EntityDataAccessor<Boolean> DATA_IS_CHARGING = SynchedEntityData.defineId(EntityVolt.class, EntityDataSerializers.BOOLEAN);
+public class EntityGuzzler extends StatedAbstractMonster implements GeoAnimatable, GeoEntity {
+    private static final EntityDataAccessor<Boolean> DATA_IS_CHARGING = SynchedEntityData.defineId(EntityGuzzler.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> IS_SHOOTING = SynchedEntityData.defineId(EntityGuzzler.class, EntityDataSerializers.INT);
+
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private static final RawAnimation IDLE_1 = RawAnimation.begin().thenLoop("animation.guzzler.idle_1");
@@ -52,22 +62,71 @@ public class EntityGuzzler extends AbstractMonster implements GeoAnimatable, Geo
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("animation.guzzler.attack");
 
     private static final RawAnimation STAGGERED = RawAnimation.begin().thenLoop("animation.guzzler.staggered");
+
+    private static final EntityDataAccessor<Boolean> IDLE_1_AC = SynchedEntityData.defineId(EntityGuzzler.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> IDLE_2_AC = SynchedEntityData.defineId(EntityGuzzler.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> IDLE_3_AC = SynchedEntityData.defineId(EntityGuzzler.class, EntityDataSerializers.BOOLEAN);
+
+    private static final EntityAction GUZZLER_IDLE_1_ACTION = new EntityAction(0, (e) -> {
+        return;
+    }, 1);
+
+    private static final StateHelper GUZZLER_IDLE_1_STATE =
+            StateHelper.Builder.state(IDLE_1_AC, "guzzler_idle_1")
+                    .playTime(70)
+                    .stopTime(100)
+                    .affectsAI(true)
+                    .affectedFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK))
+                    .entityAction(GUZZLER_IDLE_1_ACTION)
+                    .build();
+
+    private static final EntityAction GUZZLER_IDLE_2_ACTION = new EntityAction(0, (e) -> {
+        return;
+    }, 1);
+
+    private static final StateHelper GUZZLER_IDLE_2_STATE =
+            StateHelper.Builder.state(IDLE_2_AC, "guzzler_idle_2")
+                    .playTime(70)
+                    .stopTime(100)
+                    .affectsAI(true)
+                    .affectedFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK))
+                    .entityAction(GUZZLER_IDLE_2_ACTION)
+                    .build();
+
+    private static final EntityAction GUZZLER_IDLE_3_ACTION = new EntityAction(0, (e) -> {
+        return;
+    }, 1);
+
+
+    private static final StateHelper GUZZLER_IDLE_3_STATE =
+            StateHelper.Builder.state(IDLE_3_AC, "guzzler_idle_3")
+                    .playTime(70)
+                    .stopTime(100)
+                    .affectsAI(true)
+                    .affectedFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK))
+                    .entityAction(GUZZLER_IDLE_3_ACTION)
+                    .build();
+
+
     private int shootCooldown = 0;
-    public EntityGuzzler(EntityType<? extends Monster> pEntityType, Level pLevel) {
+
+    public EntityGuzzler(EntityType<? extends StatedAbstractMonster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 80.0)
-                .add(Attributes.MOVEMENT_SPEED, (double)0.11F)
+                .add(Attributes.MOVEMENT_SPEED, (double) 0.11F)
                 .add(Attributes.ATTACK_DAMAGE, 12.0F)
-                .add(Attributes.ARMOR,15.0F)
-                .add(Attributes.ARMOR_TOUGHNESS,1.0F);
+                .add(Attributes.ARMOR, 15.0F)
+                .add(Attributes.ARMOR_TOUGHNESS, 1.0F);
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new EntityGuzzler.GuzzlerShootingGoal(this, 0.5F, 30, 16));
+        this.goalSelector.addGoal(3, new RandomStateGoal<>(this));
+
         this.goalSelector.addGoal(7, new RandomStrollGoal(this, 1.0D, 60));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -77,15 +136,14 @@ public class EntityGuzzler extends AbstractMonster implements GeoAnimatable, Geo
     }
 
     public void travel(Vec3 travelVector) {
-        if(this.isCharging()) {
+        if (this.isCharging()) {
             if (this.getNavigation().getPath() != null) {
                 this.getNavigation().stop();
 
             }
             travelVector = Vec3.ZERO;
             super.travel(travelVector);
-        }
-        else{
+        } else {
             super.travel(travelVector);
         }
     }
@@ -129,27 +187,30 @@ public class EntityGuzzler extends AbstractMonster implements GeoAnimatable, Geo
     public void tick() {
         super.tick();
         this.checkInsideBlocks();
-        if(shootCooldown > 0){
-            shootCooldown--;
+        if (getShootCooldown() > 0) {
+            setShootCooldown(getShootCooldown() - 1);
         }
-        if (this.getTarget() != null && shootCooldown == 0) {
+        Hole.LOGGER.info("cooldown " + getShootCooldown() + " side " + this.level());
+        if (this.getTarget() != null && getShootCooldown() == 0) {
             EntityFireSlime pole = HoleEntities.FIRE_SLIME.get().create(level());
             pole.setParentId(this.getUUID());
             pole.setPos(this.getX(), this.getEyeY(), this.getZ());
-            final double d0 = this.getTarget().getEyeY() - (double)1.1F;
+            final double d0 = this.getTarget().getEyeY() - (double) 1.1F;
             final double d1 = this.getTarget().getX() - this.getX();
             final double d2 = d0 - pole.getY();
             final double d3 = this.getTarget().getZ() - this.getZ();
             final float f3 = Mth.sqrt((float) (d1 * d1 + d2 * d2 + d3 * d3)) * 0.2F;
             this.gameEvent(GameEvent.PROJECTILE_SHOOT);
             this.playSound(SoundEvents.CROSSBOW_LOADING_END, 2F, 1F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-            pole.shoot(d1, d2 + (double)f3, d3, 2F, 0F);
+            pole.shoot(d1, d2 + (double) f3, d3, 2F, 0F);
             pole.setYRot(this.getYRot() % 360.0F);
             pole.setXRot(Mth.clamp(this.getYRot(), -90.0F, 90.0F) % 360.0F);
-            if(!this.level().isClientSide){
+            if (!this.level().isClientSide) {
+                triggerAnim("attack", "animation.guzzler.attack");
                 this.level().addFreshEntity(pole);
             }
-            shootCooldown = 20 + this.getRandom().nextInt(10);
+            setShootCooldown(20 + this.getRandom().nextInt(10));
+
         }
     }
 
@@ -165,12 +226,49 @@ public class EntityGuzzler extends AbstractMonster implements GeoAnimatable, Geo
         this.entityData.set(DATA_IS_CHARGING, pCharging);
     }
 
+    public boolean isShooting() {
+        return this.entityData.get(IS_SHOOTING) <= 0;
+    }
+
+    public int getShootCooldown() {
+        return this.entityData.get(IS_SHOOTING);
+    }
+
+    public void setShootCooldown(int shooting) {
+        this.entityData.set(IS_SHOOTING, shooting);
+    }
+
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_IS_CHARGING, false);
+        this.entityData.define(IS_SHOOTING, 0);
+        this.entityData.define(IDLE_1_AC, false);
+        this.entityData.define(IDLE_2_AC, false);
+        this.entityData.define(IDLE_3_AC, false);
+
+
     }
 
-    public class GuzzlerShootingGoal extends Goal {
+    @Override
+    public ImmutableMap<String, StateHelper> getStates() {
+        return ImmutableMap.of(
+                GUZZLER_IDLE_1_STATE.getName(), GUZZLER_IDLE_1_STATE,
+                GUZZLER_IDLE_2_STATE.getName(), GUZZLER_IDLE_2_STATE,
+                GUZZLER_IDLE_3_STATE.getName(), GUZZLER_IDLE_3_STATE
+        );
+    }
+
+    @Override
+    public List<WeightedState<StateHelper>> getWeightedStatesToPerform() {
+        return ImmutableList.of(
+                WeightedState.of(GUZZLER_IDLE_1_STATE, 77),
+                WeightedState.of(GUZZLER_IDLE_2_STATE, 15),
+                WeightedState.of(GUZZLER_IDLE_3_STATE, 10)
+        );
+    }
+
+
+    public static class GuzzlerShootingGoal extends Goal {
         private final EntityGuzzler entity;
         private final double moveSpeedAmp;
         private int attackCooldown;
@@ -298,39 +396,32 @@ public class EntityGuzzler extends AbstractMonster implements GeoAnimatable, Geo
     }
 
     protected <E extends EntityGuzzler> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
-            if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
+        if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6   && !getBooleanState(IDLE_2_AC) && !getBooleanState(IDLE_3_AC)) {
+            event.setAndContinue(WALK);
+            return PlayState.CONTINUE;
+        }
 
-                event.setAndContinue(WALK);
-                return PlayState.CONTINUE;
-            }
-        if (this.isCharging()){
+
+
+        if (this.isCharging()) {
             event.setAndContinue(ATTACK);
             return PlayState.CONTINUE;
         }
-            if (playingAnimation()) {
-                return PlayState.CONTINUE;
-            } else if (isStillEnough() && getRandomAnimationNumber() == 0) {
-                int rand = getRandomAnimationNumber();
-                if (rand < 99) {
-                    setAnimationTimer(150);
-                    return event.setAndContinue(IDLE_1);
-                }
-                if (rand < 66) {
-                    setAnimationTimer(300);
-                    return event.setAndContinue(IDLE_2);
-                }
-                if (rand < 33) {
-                    setAnimationTimer(300);
-                    return event.setAndContinue(IDLE_3);
-                }
-            }
-            return PlayState.CONTINUE;
+
+
+        if (getBooleanState(IDLE_2_AC)) {
+            return event.setAndContinue(IDLE_2);
+        }
+        if (getBooleanState(IDLE_3_AC)) {
+            return event.setAndContinue(IDLE_3);
+        }
+            return event.setAndContinue(IDLE_1);
+
     }
 
     protected <E extends EntityGuzzler> PlayState attackController(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
-        if (this.getTarget() != null && shootCooldown == 0){
-            event.setAndContinue(ATTACK);
-            return PlayState.CONTINUE;
+        if (getShootCooldown() == 0) {
+            return event.setAndContinue(ATTACK);
         }
         event.getController().forceAnimationReset();
         return PlayState.STOP;
@@ -339,6 +430,10 @@ public class EntityGuzzler extends AbstractMonster implements GeoAnimatable, Geo
     @Override
     public void registerControllers(final AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "Normal", 5, this::controller));
+        controllers.add(new AnimationController<>(this, "attack", 0, event -> {
+            return PlayState.STOP;
+        }).triggerableAnim("animation.guzzler.attack", ATTACK));
+        //controllers.add(new AnimationController<>(this, "Shooting", 5, this::attackController));
     }
 
 
