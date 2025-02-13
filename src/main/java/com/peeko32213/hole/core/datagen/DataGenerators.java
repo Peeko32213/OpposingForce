@@ -37,6 +37,7 @@ public class DataGenerators {
         generator.addProvider(true,new LanguageGenerator(packOutput));
         generator.addProvider(true,new ItemModelGenerator(packOutput, helper));
         generator.addProvider(true, new EntityTagGenerator(packOutput, lookupProvider, helper));
+        generator.addProvider(evt.includeServer(), LootGenerator.create(packOutput));
         //generator.addProvider(evt.includeServer(), new DamageTypeTagsGenerator(packOutput, lookupProvider, helper));
         //generator.addProvider(true,new AdvancementGenerator(generator, helper));
         generator.addProvider(true, new HoleBiomeTagsProvider(MODID, packOutput, lookupProvider, helper));

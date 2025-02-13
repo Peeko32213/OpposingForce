@@ -32,7 +32,10 @@ public class HoleBiomeModifiers {
         addSpawn(context, "terror", HoleTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(HoleEntities.TERROR.get(), 5, 1, 2));
         addSpawn(context, "hopper", HoleTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(HoleEntities.HOPPER.get(), 50, 3, 5));
         addSpawn(context, "volt", HoleTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(HoleEntities.VOLT.get(), 25, 2, 3));
-
+        addSpawn(context, "wizz", HoleTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(HoleEntities.WIZZ.get(), 50, 4, 10));
+        addSpawn(context, "frowzy", HoleTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(HoleEntities.FROWZY.get(), 50, 2, 4));
+        addSpawn(context, "guzzler", HoleTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(HoleEntities.GUZZLER.get(), 5, 1, 1));
+        addSpawn(context, "slug", HoleTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(HoleEntities.SLUG.get(), 50, 1, 5));
     }
 
 

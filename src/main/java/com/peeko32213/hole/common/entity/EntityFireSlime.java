@@ -209,7 +209,7 @@ public class EntityFireSlime extends AbstractMonster implements GeoAnimatable, G
         this.setNoGravity(false);
         if (isDespawnSoon()) {
             despawnTimer++;
-            if (despawnTimer > 100) {
+            if (despawnTimer > 80) {
                 despawnTimer = 0;
                 this.spawnAnim();
                 this.remove(RemovalReason.DISCARDED);

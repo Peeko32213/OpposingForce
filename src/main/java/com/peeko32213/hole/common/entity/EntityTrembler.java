@@ -62,7 +62,7 @@ public class EntityTrembler extends AbstractMonster implements GeoAnimatable, Ge
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 15.0D)
+                .add(Attributes.MAX_HEALTH, 30.0D)
                 .add(Attributes.ARMOR, 16.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.08D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0D)

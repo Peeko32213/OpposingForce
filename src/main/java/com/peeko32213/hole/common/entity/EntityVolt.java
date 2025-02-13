@@ -56,7 +56,7 @@ public class EntityVolt extends AbstractMonster implements GeoAnimatable, GeoEnt
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 8.0D)
+                .add(Attributes.MAX_HEALTH, 25.0D)
                 .add(Attributes.MOVEMENT_SPEED, (double)0.1F)
                 .add(Attributes.ATTACK_DAMAGE, 8.0F);
     }

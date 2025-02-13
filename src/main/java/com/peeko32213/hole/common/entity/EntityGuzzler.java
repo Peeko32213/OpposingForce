@@ -17,10 +17,9 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -29,10 +28,15 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -116,7 +120,7 @@ public class EntityGuzzler extends StatedAbstractMonster implements GeoAnimatabl
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 80.0)
+                .add(Attributes.MAX_HEALTH, 120.0)
                 .add(Attributes.MOVEMENT_SPEED, (double) 0.11F)
                 .add(Attributes.ATTACK_DAMAGE, 12.0F)
                 .add(Attributes.ARMOR, 15.0F)
@@ -190,12 +194,11 @@ public class EntityGuzzler extends StatedAbstractMonster implements GeoAnimatabl
         if (getShootCooldown() > 0) {
             setShootCooldown(getShootCooldown() - 1);
         }
-        Hole.LOGGER.info("cooldown " + getShootCooldown() + " side " + this.level());
         if (this.getTarget() != null && getShootCooldown() == 0) {
             EntityFireSlime pole = HoleEntities.FIRE_SLIME.get().create(level());
             pole.setParentId(this.getUUID());
             pole.setPos(this.getX(), this.getEyeY(), this.getZ());
-            final double d0 = this.getTarget().getEyeY() - (double) 1.1F;
+            final double d0 = this.getTarget().getEyeY() - (double) .1F;
             final double d1 = this.getTarget().getX() - this.getX();
             final double d2 = d0 - pole.getY();
             final double d3 = this.getTarget().getZ() - this.getZ();
@@ -209,7 +212,7 @@ public class EntityGuzzler extends StatedAbstractMonster implements GeoAnimatabl
                 triggerAnim("attack", "animation.guzzler.attack");
                 this.level().addFreshEntity(pole);
             }
-            setShootCooldown(20 + this.getRandom().nextInt(10));
+            setShootCooldown(30 + this.getRandom().nextInt(10));
 
         }
     }
@@ -265,6 +268,30 @@ public class EntityGuzzler extends StatedAbstractMonster implements GeoAnimatabl
                 WeightedState.of(GUZZLER_IDLE_2_STATE, 15),
                 WeightedState.of(GUZZLER_IDLE_3_STATE, 10)
         );
+    }
+
+    public static <T extends Mob> boolean canSecondTierSpawn(EntityType<EntityGuzzler> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        boolean isDeepDark = iServerWorld.getBiome(pos).is(Biomes.DEEP_DARK);
+        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 0 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
+    }
+
+    public static boolean checkUndergroundMonsterSpawnRules(EntityType<? extends Monster> monster, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource p_219018_) {
+        return level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, p_219018_) && checkMobSpawnRules(monster, level, reason, pos, p_219018_);
+    }
+
+    public static boolean isDarkEnoughToSpawnNoSkylight(ServerLevelAccessor level, BlockPos pos, RandomSource random) {
+        if (level.getBrightness(LightLayer.SKY, pos) > 0) {
+            return false;
+        } else {
+            DimensionType dimension = level.dimensionType();
+            int i = dimension.monsterSpawnBlockLightLimit();
+            if (i < 15 && level.getBrightness(LightLayer.BLOCK, pos) > i) {
+                return false;
+            } else {
+                int j = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
+                return j <= dimension.monsterSpawnLightTest().sample(random);
+            }
+        }
     }
 
 
@@ -417,14 +444,6 @@ public class EntityGuzzler extends StatedAbstractMonster implements GeoAnimatabl
         }
             return event.setAndContinue(IDLE_1);
 
-    }
-
-    protected <E extends EntityGuzzler> PlayState attackController(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
-        if (getShootCooldown() == 0) {
-            return event.setAndContinue(ATTACK);
-        }
-        event.getController().forceAnimationReset();
-        return PlayState.STOP;
     }
 
     @Override

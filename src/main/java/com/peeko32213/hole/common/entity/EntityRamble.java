@@ -57,7 +57,7 @@ public class EntityRamble extends AbstractMonster implements GeoAnimatable, GeoE
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 30.0D)
+                .add(Attributes.MAX_HEALTH, 70.0D)
                 .add(Attributes.MOVEMENT_SPEED, (double)0.13F)
                 .add(Attributes.ATTACK_DAMAGE, (double)10.0F)
                 .add(Attributes.ARMOR,10.0)

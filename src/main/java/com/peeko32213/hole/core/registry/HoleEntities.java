@@ -2,6 +2,7 @@ package com.peeko32213.hole.core.registry;
 
 import com.peeko32213.hole.Hole;
 import com.peeko32213.hole.common.entity.*;
+import com.peeko32213.hole.common.entity.projectile.EntitySlugEgg;
 import com.peeko32213.hole.common.entity.projectile.EntitySmallElectricBall;
 import com.peeko32213.hole.common.entity.projectile.EntityThrownTomahawk;
 import net.minecraft.resources.ResourceLocation;
@@ -78,5 +79,24 @@ public class HoleEntities {
                     .clientTrackingRange(4)
                     .updateInterval(10)
                     .build(prefix("kunai").toString()));
+
+    public static final RegistryObject<EntityType<EntitySlugEgg>> SLUG_EGG = ENTITIES.register("slug_egg",
+            () -> registerEntity(EntityType.Builder.of(EntitySlugEgg::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .setCustomClientFactory(EntitySlugEgg::new)
+                    .fireImmune(), "slug_egg"));
+
+    public static final RegistryObject<EntityType<EntitySlug>> SLUG = ENTITIES.register("slug",
+            () -> EntityType.Builder.of(EntitySlug::new, MobCategory.MONSTER).sized(0.9F, 0.9F)
+                    .build(new ResourceLocation(Hole.MODID, "slug").toString()));
+
+    public static final RegistryObject<EntityType<EntityFetid>> FETID = ENTITIES.register("fetid",
+            () -> EntityType.Builder.of(EntityFetid::new, MobCategory.MONSTER).sized(0.8F, 1.9F)
+                    .build(new ResourceLocation(Hole.MODID, "fetid").toString()));
+
+    private static EntityType registerEntity(EntityType.Builder builder, String entityName) {
+        return builder.build(entityName);
+    }
+
 
 }

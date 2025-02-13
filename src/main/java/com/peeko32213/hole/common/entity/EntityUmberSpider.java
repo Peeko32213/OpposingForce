@@ -58,7 +58,7 @@ public class EntityUmberSpider extends Spider implements GeoAnimatable, GeoEntit
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 26.0D)
+                .add(Attributes.MAX_HEALTH, 52.0D)
                 .add(Attributes.MOVEMENT_SPEED, (double)0.3F)
                 .add(Attributes.ATTACK_DAMAGE, (double)4.0F);
     }

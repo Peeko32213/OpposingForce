@@ -57,7 +57,7 @@ public class EntityHopper extends AbstractMonster implements GeoAnimatable, GeoE
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 6.0D)
+                .add(Attributes.MAX_HEALTH, 12.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.8D)
                 .add(Attributes.ATTACK_DAMAGE, 1.5D);
 

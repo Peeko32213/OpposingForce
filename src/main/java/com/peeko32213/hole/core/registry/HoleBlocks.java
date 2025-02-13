@@ -276,6 +276,9 @@ public class HoleBlocks {
             () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, HoleBlocks.WHITECAP, BlockBehaviour
                     .Properties.copy(Blocks.POTTED_DANDELION).noOcclusion()));
 
+
+
+
     public static <T extends Block> RegistryObject<T> register(String name, Supplier<Block> block) {
         RegistryObject<? extends Block> ret = BLOCKS.register(name, block);
         HoleItems.ITEMS.register(name, () -> new BlockItem(ret.get(), new Item.Properties()));

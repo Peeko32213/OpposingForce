@@ -71,7 +71,7 @@ public class EntityTerror extends AbstractMonster implements GeoAnimatable, GeoE
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 24.0D)
+                .add(Attributes.MAX_HEALTH, 45.0D)
                 .add(Attributes.MOVEMENT_SPEED, (double)0.25F)
                 .add(Attributes.ATTACK_DAMAGE, (double)10.0F);
     }

@@ -111,7 +111,7 @@ public class EntityFrowzy extends AbstractMonster implements GeoAnimatable, GeoE
         return tickCount;
     }
 
-    public static <T extends Mob> boolean canFirstTierSpawn(EntityType<EntityHopper> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
+    public static <T extends Mob> boolean canFirstTierSpawn(EntityType<EntityFrowzy> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
         boolean isDeepDark = iServerWorld.getBiome(pos).is(Biomes.DEEP_DARK);
         return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 30 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
     }

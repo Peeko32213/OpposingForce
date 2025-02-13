@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#forge:with_default_monster_spawns",
+  "spawners": {
+    "type": "hole:slug",
+    "maxCount": 5,
+    "minCount": 1,
+    "weight": 50
+  }
+}

@@ -59,7 +59,7 @@ public class EntityDicer extends AbstractMonster implements GeoAnimatable, GeoEn
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 15.0D)
+                .add(Attributes.MAX_HEALTH, 35.0D)
                 .add(Attributes.MOVEMENT_SPEED, (double)0.175F)
                 .add(Attributes.ATTACK_DAMAGE, 8.0F)
                 .add(Attributes.ARMOR,5.0F)

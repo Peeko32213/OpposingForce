@@ -98,6 +98,12 @@ public class LanguageGenerator extends LanguageProvider {
         addItem(HoleItems.TOMAHAWK, "Tomahawk");
         add("death.attack.hole.tomahawk", "%s was domed by %s");
 
+        addEntityType(HoleEntities.SLUG, "Slug");
+        addItem(HoleItems.SLUG_SPAWN_EGG, "Slug Spawn Egg");
+        addItem(HoleItems.SLUG_EGG, "Slug Eggs");
+
+        addEntityType(HoleEntities.FETID, "Fetid");
+        addItem(HoleItems.FETID_SPAWN_EGG, "Fetid Spawn Egg");
     }
 
     @Override

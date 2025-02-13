@@ -14,6 +14,7 @@ import com.peeko32213.hole.core.registry.HoleEntities;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -92,7 +93,19 @@ public final class ClientEvents {
             return render;
         });
 
+        EntityRenderers.register(HoleEntities.SLUG_EGG.get(), (render) -> {
+            return new ThrownItemRenderer<>(render, 0.75F, true);
+        });
 
+        EntityRenderers.register(HoleEntities.SLUG.get(), (ctx) -> {
+            PlainGeoRenderer<EntitySlug> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("slug"));
+            return render;
+        });
+
+        EntityRenderers.register(HoleEntities.FETID.get(), (ctx) -> {
+            PlainGeoRenderer<EntityFetid> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("fetid"));
+            return render;
+        });
 
         ItemBlockRenderTypes.setRenderLayer(HoleBlocks.BLUE_TRUMPET.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(HoleBlocks.CAVE_PATTY.get(), RenderType.cutout());

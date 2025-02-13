@@ -1,11 +1,15 @@
-// 1.20.1	2024-10-24T19:12:10.6306855	Registries
+// 1.20.1	2025-01-30T13:13:29.1120137	Registries
 14c4fa0b3da44b353039f8c05b60d10245e74cb1 data/hole/damage_type/electrified.json
 aa529805623d9fb8e0fdd9cf84c942808ef2cd45 data/hole/damage_type/tomahawk.json
 5e7a3f38b5c422cec3e99bf222f34a1edb2d91b1 data/hole/forge/biome_modifier/add_spawn/dicer.json
+2a66e05bfa79412921872461e017bf55b381e09f data/hole/forge/biome_modifier/add_spawn/frowzy.json
+af4c0638d760fcd2a41121632fd85d681007d3d7 data/hole/forge/biome_modifier/add_spawn/guzzler.json
 a6cc5a0e8b53373665b5d8d94ca00879dc6ce555 data/hole/forge/biome_modifier/add_spawn/hopper.json
 53db04873ae361bd3cb567fd5ecc4443932dcf40 data/hole/forge/biome_modifier/add_spawn/pale_spider.json
 2b6463c6da0b13bc1e2c814b1e935c01de2b14b0 data/hole/forge/biome_modifier/add_spawn/ramble.json
+adb572195e58e61440c2fee7f967ce6d4d61c0ba data/hole/forge/biome_modifier/add_spawn/slug.json
 e8b6d275b2edbd9c6e01f96e73d36e9553313211 data/hole/forge/biome_modifier/add_spawn/terror.json
 597198062340a5210399b0ae0fecf465946fa587 data/hole/forge/biome_modifier/add_spawn/trembler.json
 f81c0a96b299a420349a17921567e511957737f5 data/hole/forge/biome_modifier/add_spawn/umber_spider.json
 e489967a56385fb56f54fcaee0ef56d61468ce13 data/hole/forge/biome_modifier/add_spawn/volt.json
+dfd0ec4ef64adad15e7d5637c0738c3983389fe3 data/hole/forge/biome_modifier/add_spawn/wizz.json
