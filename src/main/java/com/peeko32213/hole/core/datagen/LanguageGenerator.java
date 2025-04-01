@@ -104,6 +104,9 @@ public class LanguageGenerator extends LanguageProvider {
 
         addEntityType(HoleEntities.FETID, "Fetid");
         addItem(HoleItems.FETID_SPAWN_EGG, "Fetid Spawn Egg");
+
+        addEntityType(HoleEntities.SPINDLE, "Spindle");
+        addItem(HoleItems.SPINDLE_SPAWN_EGG, "Spindle Spawn Egg");
     }
 
     @Override

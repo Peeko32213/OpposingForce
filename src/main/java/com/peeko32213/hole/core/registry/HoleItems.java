@@ -61,6 +61,9 @@ public class HoleItems {
 
     public static final RegistryObject<ForgeSpawnEggItem> FETID_SPAWN_EGG = registerSpawnEggs("fetid_spawn_egg",
             HoleEntities.FETID , 0x3c3625, 0xafb140);
+
+    public static final RegistryObject<ForgeSpawnEggItem> SPINDLE_SPAWN_EGG = registerSpawnEggs("spindle_spawn_egg",
+            HoleEntities.SPINDLE , 0x452b65, 0x3b6b64);
     public static final RegistryObject<Item> DEEP_SILK = ITEMS.register("deep_silk",
             () -> new Item(new Item.Properties()));
 

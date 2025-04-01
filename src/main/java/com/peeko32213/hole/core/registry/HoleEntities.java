@@ -94,6 +94,10 @@ public class HoleEntities {
             () -> EntityType.Builder.of(EntityFetid::new, MobCategory.MONSTER).sized(0.8F, 1.9F)
                     .build(new ResourceLocation(Hole.MODID, "fetid").toString()));
 
+    public static final RegistryObject<EntityType<EntitySpindle>> SPINDLE = ENTITIES.register("spindle",
+            () -> EntityType.Builder.of(EntitySpindle::new, MobCategory.MONSTER).sized(0.8F, 1.9F)
+                    .build(new ResourceLocation(Hole.MODID, "fetid").toString()));
+
     private static EntityType registerEntity(EntityType.Builder builder, String entityName) {
         return builder.build(entityName);
     }

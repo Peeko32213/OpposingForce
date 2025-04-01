@@ -107,6 +107,11 @@ public final class ClientEvents {
             return render;
         });
 
+        EntityRenderers.register(HoleEntities.SPINDLE.get(), (ctx) -> {
+            PlainGeoRenderer<EntitySpindle> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("spindle"));
+            return render;
+        });
+
         ItemBlockRenderTypes.setRenderLayer(HoleBlocks.BLUE_TRUMPET.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(HoleBlocks.CAVE_PATTY.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(HoleBlocks.CHICKEN_OF_THE_CAVES.get(), RenderType.cutout());

@@ -1,0 +1,285 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.spindle",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 4,
+				"visible_bounds_height": 7.5,
+				"visible_bounds_offset": [0, 3.25, 0]
+			},
+			"bones": [
+				{
+					"name": "STRIDERRRRR",
+					"pivot": [1, 76, -4]
+				},
+				{
+					"name": "Body",
+					"parent": "STRIDERRRRR",
+					"pivot": [0, 73, -9.1],
+					"cubes": [
+						{"origin": [-12.5, 76, -10], "size": [25, 4, 13], "uv": [0, 0]},
+						{"origin": [-7.5, 76, 3], "size": [15, 4, 5], "uv": [28, 36]},
+						{"origin": [-1.5, 80, -10], "size": [3, 9, 3], "uv": [76, 5]},
+						{"origin": [-4.5, 81, -9.5], "size": [3, 2, 2], "uv": [88, 10]},
+						{"origin": [-4.5, 83, -9.5], "size": [2, 3, 2], "uv": [32, 88]},
+						{"origin": [2.5, 83, -9.5], "size": [2, 3, 2], "uv": [32, 88], "mirror": true},
+						{"origin": [1.5, 81, -9.5], "size": [3, 2, 2], "uv": [88, 10], "mirror": true},
+						{"origin": [-4.5, 72, -5], "size": [9, 4, 5], "uv": [68, 33]},
+						{"origin": [-5.5, 74, -10.1], "size": [11, 5, 0], "uv": [76, 0]}
+					]
+				},
+				{
+					"name": "Jaw",
+					"parent": "Body",
+					"pivot": [0, 74, -5.1],
+					"cubes": [
+						{"origin": [-4.425, 71, -10], "size": [0, 7, 5], "uv": [52, 81]},
+						{"origin": [4.425, 71, -10], "size": [0, 7, 5], "uv": [52, 81], "mirror": true},
+						{"origin": [-4.5, 71, -10], "size": [9, 2, 5], "uv": [52, 74]},
+						{"origin": [-4.5, 71, -10.1], "size": [9, 3, 0], "uv": [68, 42]}
+					]
+				},
+				{
+					"name": "Eye",
+					"parent": "Body",
+					"pivot": [0, 83, -10.1],
+					"cubes": [
+						{"origin": [-2.5, 81, -10.1], "size": [5, 5, 0], "uv": [88, 5]}
+					]
+				},
+				{
+					"name": "Arm1Bone",
+					"parent": "STRIDERRRRR",
+					"pivot": [-7, 76, -9]
+				},
+				{
+					"name": "Arm1",
+					"parent": "Arm1Bone",
+					"pivot": [-7, 76, -9],
+					"cubes": [
+						{"origin": [-8, 66, -10], "size": [2, 10, 2], "uv": [70, 81]},
+						{"origin": [-7, 67, -12], "size": [0, 9, 2], "uv": [28, 88]},
+						{"origin": [-10, 67, -9], "size": [2, 9, 0], "uv": [40, 88]}
+					]
+				},
+				{
+					"name": "Arm1Joint1",
+					"parent": "Arm1",
+					"pivot": [-7, 67, -10],
+					"cubes": [
+						{"origin": [-7.5, 67, -26], "size": [0, 2, 13], "uv": [56, 59]},
+						{"origin": [-10, 66.5, -26], "size": [2, 0, 13], "uv": [28, 45]},
+						{"origin": [-8, 65, -27], "size": [2, 2, 17], "uv": [28, 17]}
+					]
+				},
+				{
+					"name": "Arm1LowerJoint1",
+					"parent": "Arm1Joint1",
+					"pivot": [-7, 66, -27],
+					"cubes": [
+						{"origin": [-7.5, 52, -32], "size": [0, 14, 3], "uv": [0, 81]},
+						{"origin": [-11, 52, -28.5], "size": [3, 14, 0], "uv": [86, 42]},
+						{"origin": [-8, 50, -29], "size": [2, 16, 2], "uv": [12, 76]}
+					]
+				},
+				{
+					"name": "Arm1Claw1",
+					"parent": "Arm1LowerJoint1",
+					"pivot": [-7, 51, -28]
+				},
+				{
+					"name": "LongClaw1",
+					"parent": "Arm1Claw1",
+					"pivot": [-7.675, 50, -28],
+					"cubes": [
+						{"origin": [-8.175, 34, -26], "size": [1, 17, 1], "uv": [6, 81]},
+						{"origin": [-8.175, 49, -28], "size": [1, 2, 2], "uv": [88, 56]}
+					]
+				},
+				{
+					"name": "ShearClaw1",
+					"parent": "Arm1Claw1",
+					"pivot": [-6.075, 49, -12],
+					"cubes": [
+						{"origin": [-7.075, 39, -30], "size": [1, 12, 2], "uv": [82, 59]},
+						{"origin": [-7.075, 39, -28], "size": [1, 1, 2], "uv": [88, 14]}
+					]
+				},
+				{
+					"name": "Arm1Bone2",
+					"parent": "STRIDERRRRR",
+					"pivot": [7, 76, -9]
+				},
+				{
+					"name": "Arm2",
+					"parent": "Arm1Bone2",
+					"pivot": [7, 76, -9],
+					"cubes": [
+						{"origin": [6, 66, -10], "size": [2, 10, 2], "uv": [70, 81], "mirror": true},
+						{"origin": [7, 67, -12], "size": [0, 9, 2], "uv": [28, 88], "mirror": true},
+						{"origin": [8, 67, -9], "size": [2, 9, 0], "uv": [40, 88], "mirror": true}
+					]
+				},
+				{
+					"name": "Arm1Joint2",
+					"parent": "Arm2",
+					"pivot": [7, 67, -10],
+					"cubes": [
+						{"origin": [7.5, 67, -26], "size": [0, 2, 13], "uv": [56, 59], "mirror": true},
+						{"origin": [8, 66.5, -26], "size": [2, 0, 13], "uv": [28, 45], "mirror": true},
+						{"origin": [6, 65, -27], "size": [2, 2, 17], "uv": [28, 17], "mirror": true}
+					]
+				},
+				{
+					"name": "Arm1LowerJoint2",
+					"parent": "Arm1Joint2",
+					"pivot": [7, 66, -27],
+					"cubes": [
+						{"origin": [7.5, 52, -32], "size": [0, 14, 3], "uv": [0, 81], "mirror": true},
+						{"origin": [8, 52, -28.5], "size": [3, 14, 0], "uv": [86, 42], "mirror": true},
+						{"origin": [6, 50, -29], "size": [2, 16, 2], "uv": [12, 76], "mirror": true}
+					]
+				},
+				{
+					"name": "Arm1Claw2",
+					"parent": "Arm1LowerJoint2",
+					"pivot": [7, 51, -28]
+				},
+				{
+					"name": "LongClaw2",
+					"parent": "Arm1Claw2",
+					"pivot": [7.675, 50, -28],
+					"cubes": [
+						{"origin": [7.175, 34, -26], "size": [1, 17, 1], "uv": [6, 81], "mirror": true},
+						{"origin": [7.175, 49, -28], "size": [1, 2, 2], "uv": [88, 56], "mirror": true}
+					]
+				},
+				{
+					"name": "ShearClaw2",
+					"parent": "Arm1Claw2",
+					"pivot": [6.075, 49, -12],
+					"cubes": [
+						{"origin": [6.075, 39, -30], "size": [1, 12, 2], "uv": [82, 59], "mirror": true},
+						{"origin": [6.075, 39, -28], "size": [1, 1, 2], "uv": [88, 14], "mirror": true}
+					]
+				},
+				{
+					"name": "BackLegYBone",
+					"parent": "STRIDERRRRR",
+					"pivot": [0, 72, -2]
+				},
+				{
+					"name": "BackLegBone",
+					"parent": "BackLegYBone",
+					"pivot": [0, 72, -2]
+				},
+				{
+					"name": "BackLeg",
+					"parent": "BackLegBone",
+					"pivot": [0, 72, -2],
+					"cubes": [
+						{"origin": [-1, 57, -2], "size": [2, 15, 2], "uv": [20, 76], "mirror": true},
+						{"origin": [0, 57, 0], "size": [0, 15, 2], "uv": [66, 81]}
+					]
+				},
+				{
+					"name": "BackLegJoint1",
+					"parent": "BackLeg",
+					"pivot": [0, 58, 0],
+					"cubes": [
+						{"origin": [-1, 56, 0], "size": [2, 2, 12], "uv": [58, 45]},
+						{"origin": [0, 57, 0], "size": [0, 4, 12], "uv": [28, 72]}
+					]
+				},
+				{
+					"name": "BackLegJoint2",
+					"parent": "BackLegJoint1",
+					"pivot": [0, 57, 12],
+					"cubes": [
+						{"origin": [-1, 0, 12], "size": [2, 57, 2], "uv": [20, 17]},
+						{"origin": [0, 0, 14], "size": [0, 61, 3], "uv": [6, 17]}
+					]
+				},
+				{
+					"name": "Leg1YBone",
+					"parent": "STRIDERRRRR",
+					"pivot": [4, 72, -2]
+				},
+				{
+					"name": "Leg1Bone",
+					"parent": "Leg1YBone",
+					"pivot": [4, 72, -2],
+					"rotation": [0, 0, 0]
+				},
+				{
+					"name": "Leg1",
+					"parent": "Leg1Bone",
+					"pivot": [4, 72, -2],
+					"cubes": [
+						{"origin": [3, 57, -3], "size": [2, 15, 2], "uv": [20, 76]},
+						{"origin": [4.5, 57, -5], "size": [0, 15, 2], "uv": [62, 81]}
+					]
+				},
+				{
+					"name": "Leg1Joint1",
+					"parent": "Leg1",
+					"pivot": [4, 58, -3],
+					"cubes": [
+						{"origin": [3, 56, -15], "size": [2, 2, 12], "uv": [28, 58]},
+						{"origin": [4, 57, -15], "size": [0, 4, 12], "uv": [66, 17]}
+					]
+				},
+				{
+					"name": "Leg1LowerJoint1",
+					"parent": "Leg1Joint1",
+					"pivot": [4, 57, -15],
+					"cubes": [
+						{"origin": [3, 0, -17], "size": [2, 57, 2], "uv": [12, 17]},
+						{"origin": [4, 0, -20], "size": [0, 61, 3], "uv": [0, 17]}
+					]
+				},
+				{
+					"name": "Leg2YBone",
+					"parent": "STRIDERRRRR",
+					"pivot": [-4, 72, -2]
+				},
+				{
+					"name": "Leg2Bone",
+					"parent": "Leg2YBone",
+					"pivot": [-4, 72, -2],
+					"rotation": [0, 0, 0]
+				},
+				{
+					"name": "Leg2",
+					"parent": "Leg2Bone",
+					"pivot": [-4, 72, -2],
+					"cubes": [
+						{"origin": [-5, 57, -3], "size": [2, 15, 2], "uv": [20, 76], "mirror": true},
+						{"origin": [-4.5, 57, -5], "size": [0, 15, 2], "uv": [62, 81], "mirror": true}
+					]
+				},
+				{
+					"name": "Leg2Joint1",
+					"parent": "Leg2",
+					"pivot": [-4, 58, -3],
+					"cubes": [
+						{"origin": [-5, 56, -15], "size": [2, 2, 12], "uv": [28, 58], "mirror": true},
+						{"origin": [-4, 57, -15], "size": [0, 4, 12], "uv": [66, 17], "mirror": true}
+					]
+				},
+				{
+					"name": "Leg2LowerJoint1",
+					"parent": "Leg2Joint1",
+					"pivot": [-4, 57, -15],
+					"cubes": [
+						{"origin": [-5, 0, -17], "size": [2, 57, 2], "uv": [12, 17], "mirror": true},
+						{"origin": [-4, 0, -20], "size": [0, 61, 3], "uv": [0, 17], "mirror": true}
+					]
+				}
+			]
+		}
+	]
+}

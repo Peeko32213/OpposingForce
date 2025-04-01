@@ -63,6 +63,7 @@ public class CommonEvents {
         event.put(HoleEntities.FIRE_SLIME.get(), EntityFireSlime.createAttributes().build());
         event.put(HoleEntities.SLUG.get(), EntitySlug.createAttributes().build());
         event.put(HoleEntities.FETID.get(), EntityFetid.createAttributes().build());
+        event.put(HoleEntities.SPINDLE.get(), EntitySpindle.createAttributes().build());
     }
 
 }
