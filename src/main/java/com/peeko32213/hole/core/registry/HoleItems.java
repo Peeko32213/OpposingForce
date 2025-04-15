@@ -1,10 +1,7 @@
 package com.peeko32213.hole.core.registry;
 
 import com.peeko32213.hole.Hole;
-import com.peeko32213.hole.common.item.ElectricChargeItem;
-import com.peeko32213.hole.common.item.ItemSlugEgg;
-import com.peeko32213.hole.common.item.TeslaBowItem;
-import com.peeko32213.hole.common.item.TomahawkItem;
+import com.peeko32213.hole.common.item.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
@@ -75,6 +72,9 @@ public class HoleItems {
 
     public static final RegistryObject<Item> TESLA_BOW = ITEMS.register("tesla_bow",
             () -> new TeslaBowItem(new Item.Properties().stacksTo(1).durability(465)));
+
+    public static final RegistryObject<Item> AUTO_CROSSBOW = ITEMS.register("automatic_crossbow",
+            () -> new AutomaticCrossbowItem(new Item.Properties().stacksTo(1).durability(465)));
 
     public static final RegistryObject<Item> SLUG_EGG = ITEMS.register("slug_eggs",
             () -> new ItemSlugEgg(new Item.Properties().stacksTo(16)));

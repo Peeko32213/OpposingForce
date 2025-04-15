@@ -1,6 +1,6 @@
 package com.peeko32213.hole.common.item;
 
-import com.peeko32213.hole.common.entity.projectile.EntityThrownTomahawk;
+import com.peeko32213.hole.common.entity.projectile.Tomahawk;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -17,28 +17,23 @@ public class TomahawkItem extends Item {
         super(builder);
     }
 
-    /**
-     * Called to trigger the item's "innate" right click behavior. To handle when this item is used on a Block, see
-     * {@link #}.
-     */
     @Override
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack itemstack = playerIn.getItemInHand(handIn);
         worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.EGG_THROW, SoundSource.PLAYERS, 0.5F, 0.4F / (worldIn.random.nextFloat() * 0.4F + 0.8F));
-        playerIn.getCooldowns().addCooldown(this, 3);
+        playerIn.getCooldowns().addCooldown(this, 10);
         if (!worldIn.isClientSide()) {
-            EntityThrownTomahawk kunai = new EntityThrownTomahawk(worldIn, playerIn);
-            kunai.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), 0.0F, 2.5F, 0.75F);
+            Tomahawk tomahawk = new Tomahawk(worldIn, playerIn);
+            tomahawk.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), 0.0F, 1.25F, 0.5F);
             if (playerIn.getAbilities().instabuild) {
-                kunai.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+                tomahawk.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
             }
-            worldIn.addFreshEntity(kunai);
+            worldIn.addFreshEntity(tomahawk);
         }
         playerIn.awardStat(Stats.ITEM_USED.get(this));
         if (!playerIn.getAbilities().instabuild) {
             itemstack.shrink(1);
         }
-
         return InteractionResultHolder.sidedSuccess(itemstack, worldIn.isClientSide());
     }
 }

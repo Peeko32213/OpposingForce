@@ -11,9 +11,8 @@ public class EffectElectrified extends MobEffect {
     }
 
     public void applyEffectTick(LivingEntity entity, int amplifier) {
-
-        if(entity.isInWaterOrBubble()){
-            entity.hurt(entity.damageSources().magic(), 10.0F);
+        if (entity.isInWaterRainOrBubble()){
+            entity.hurt(entity.damageSources().magic(), 4.0F);
         }
     }
 

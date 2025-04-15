@@ -5,7 +5,7 @@ import com.peeko32213.hole.client.model.DefaultModel;
 import com.peeko32213.hole.client.model.TerrorDefaultModel;
 import com.peeko32213.hole.client.render.PlainGeoRenderer;
 import com.peeko32213.hole.client.render.SmallElectricBallRenderer;
-import com.peeko32213.hole.client.render.SpinningVerticalThrownItemRenderer;
+import com.peeko32213.hole.client.render.TomahawkRenderer;
 import com.peeko32213.hole.client.render.layer.HoleGlowingEyeLayer;
 import com.peeko32213.hole.common.entity.*;
 import com.peeko32213.hole.common.item.HoleItemProperties;
@@ -138,7 +138,7 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(HoleEntities.SMALL_ELECTRICITY_BALL.get(), SmallElectricBallRenderer::new);
-        event.registerEntityRenderer(HoleEntities.TOMAHAWK.get(), SpinningVerticalThrownItemRenderer::new);
+        event.registerEntityRenderer(HoleEntities.TOMAHAWK.get(), TomahawkRenderer::new);
 
     }
 

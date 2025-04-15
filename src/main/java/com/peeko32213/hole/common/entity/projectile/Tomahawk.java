@@ -24,31 +24,22 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
 
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 
-public class EntityThrownTomahawk extends AbstractArrow implements ItemSupplier {
+public class Tomahawk extends AbstractArrow implements ItemSupplier {
 
-    public EntityThrownTomahawk(EntityType<? extends EntityThrownTomahawk> type, Level worldIn) {
+    public Tomahawk(EntityType<? extends Tomahawk> type, Level worldIn) {
         super(type, worldIn);
     }
 
-    public EntityThrownTomahawk(Level worldIn, double x, double y, double z) {
-        super(HoleEntities.TOMAHAWK.get(), x, y, z, worldIn);
-    }
-    public EntityThrownTomahawk(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(HoleEntities.TOMAHAWK.get(), world);
-    }
-
-    public EntityThrownTomahawk(Level worldIn, LivingEntity shooter) {
+    public Tomahawk(Level worldIn, LivingEntity shooter) {
         super(HoleEntities.TOMAHAWK.get(), shooter, worldIn);
     }
 
     @Override
     protected void doPostHurtEffects(LivingEntity living) {
         super.doPostHurtEffects(living);
-        //SilverTool.causeMagicParticles(living, false);
     }
 
     @Override
@@ -57,37 +48,31 @@ public class EntityThrownTomahawk extends AbstractArrow implements ItemSupplier 
         Entity shooter = this.getOwner();
 
         float motion = (float) this.getDeltaMovement().length();
-        int damage = Mth.ceil(Mth.clamp((double) motion * 0.5F * this.getBaseDamage(), 0.0D, 2.147483647E9D));
+        int damage = Mth.ceil(Mth.clamp((double) motion * 0.75F * this.getBaseDamage(), 0.0D, 2.147483647E9D));
 
         DamageSource damagesource = HoleDamageTypes.tomahawk(this.level(), this, shooter);
         if (shooter instanceof LivingEntity living) {
             living.setLastHurtMob(target);
         }
-
         boolean isEnderman = target.getType() == EntityType.ENDERMAN;
         if (this.isOnFire() && !isEnderman) {
             target.setSecondsOnFire(5);
         }
-
         if (target.hurt(damagesource, (float) damage)) {
             if (isEnderman) return;
-
             if (target instanceof LivingEntity livingTarget) {
-
                 if (!this.level().isClientSide() && shooter instanceof LivingEntity) {
                     EnchantmentHelper.doPostHurtEffects(livingTarget, shooter);
                     EnchantmentHelper.doPostDamageEffects((LivingEntity) shooter, livingTarget);
                 }
-
                 this.doPostHurtEffects(livingTarget);
                 if (livingTarget != shooter && livingTarget instanceof Player && shooter instanceof ServerPlayer && !this.isSilent()) {
                     ((ServerPlayer) shooter).connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
                 }
-
             }
-
             this.playSound(this.getDefaultHitGroundSoundEvent(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
-        } else {
+        }
+        else {
             target.setRemainingFireTicks(target.getRemainingFireTicks());
             this.setDeltaMovement(this.getDeltaMovement().scale(-0.1D));
             this.setYRot(this.getYRot() + 180.0F);
@@ -96,7 +81,6 @@ public class EntityThrownTomahawk extends AbstractArrow implements ItemSupplier 
                 if (this.pickup == AbstractArrow.Pickup.ALLOWED) {
                     this.spawnAtLocation(this.getPickupItem(), 0.1F);
                 }
-
                 this.discard();
             }
         }
@@ -118,7 +102,7 @@ public class EntityThrownTomahawk extends AbstractArrow implements ItemSupplier 
     @Override
     protected void tickDespawn() {
         ++this.life;
-        if (this.life >= 6000) {
+        if (this.life >= 5000) {
             this.discard();
         }
     }
@@ -130,6 +114,6 @@ public class EntityThrownTomahawk extends AbstractArrow implements ItemSupplier 
 
     @Override
     public double getBaseDamage() {
-        return 2.0D;
+        return 7.0D;
     }
 }

@@ -21,10 +21,9 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 
-public class EntityAbstractElectricBall  extends AbstractHurtingProjectile implements ItemSupplier {
-    private SoundEvent soundEvent;
+public class EntityAbstractElectricBall extends AbstractHurtingProjectile implements ItemSupplier {
 
-    private static final EntityDataAccessor<ItemStack> DATA_ITEM_STACK = SynchedEntityData.defineId(EntitySmallElectricBall.class, EntityDataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<ItemStack> DATA_ITEM_STACK = SynchedEntityData.defineId(EntityAbstractElectricBall.class, EntityDataSerializers.ITEM_STACK);
 
     public EntityAbstractElectricBall(EntityType<? extends EntitySmallElectricBall> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -38,12 +37,10 @@ public class EntityAbstractElectricBall  extends AbstractHurtingProjectile imple
         super(pEntityType, pShooter, pOffsetX, pOffsetY, pOffsetZ, pLevel);
     }
 
-
     public void setItem(ItemStack pStack) {
         if (!pStack.is(HoleItems.ELECTRIC_CHARGE.get()) || pStack.hasTag()) {
             this.getEntityData().set(DATA_ITEM_STACK, pStack.copyWithCount(1));
         }
-
     }
     protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
@@ -64,9 +61,7 @@ public class EntityAbstractElectricBall  extends AbstractHurtingProjectile imple
                 if (livingTarget != shooter && livingTarget instanceof Player && shooter instanceof ServerPlayer && !this.isSilent()) {
                     ((ServerPlayer) shooter).connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
                 }
-
             }
-
         }
     }
 
@@ -96,9 +91,6 @@ public class EntityAbstractElectricBall  extends AbstractHurtingProjectile imple
 
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         ItemStack itemstack = ItemStack.of(pCompound.getCompound("Item"));
@@ -106,7 +98,5 @@ public class EntityAbstractElectricBall  extends AbstractHurtingProjectile imple
     }
 
     public void setSoundEvent(SoundEvent pSoundEvent) {
-        this.soundEvent = pSoundEvent;
     }
-
 }

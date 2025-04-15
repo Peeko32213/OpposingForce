@@ -2,7 +2,7 @@ package com.peeko32213.hole.core.registry;
 
 import com.peeko32213.hole.Hole;
 import com.peeko32213.hole.common.entity.projectile.EntityAbstractElectricBall;
-import com.peeko32213.hole.common.entity.projectile.EntityThrownTomahawk;
+import com.peeko32213.hole.common.entity.projectile.Tomahawk;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
@@ -24,7 +24,7 @@ public class HoleDamageTypes {
 
     }
 
-    public static DamageSource tomahawk(Level level, EntityThrownTomahawk tomahawk, @Nullable Entity indirectEntity) {
+    public static DamageSource tomahawk(Level level, Tomahawk tomahawk, @Nullable Entity indirectEntity) {
         return level.damageSources().source(TOMAHAWK, tomahawk, indirectEntity);
     }
 

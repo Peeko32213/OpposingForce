@@ -13,12 +13,12 @@ import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 public class ElectricChargeItem extends Item {
-    private final Supplier<? extends EntityType<?>> dartEntityType;
+    private final Supplier<? extends EntityType<?>> entity;
     private SoundEvent soundEvent;
 
     public ElectricChargeItem(Supplier<? extends EntityType<?>> dartEntityType, Properties properties) {
         super(properties);
-        this.dartEntityType = dartEntityType;
+        this.entity = dartEntityType;
     }
 
     @Nullable
@@ -36,7 +36,7 @@ public class ElectricChargeItem extends Item {
 
     @Nullable
     public EntitySmallElectricBall createDart(Level level) {
-        Entity entity = this.getDartEntityType().get().create(level);
+        Entity entity = this.getEntity().get().create(level);
         if (entity instanceof EntitySmallElectricBall dart) {
             return dart;
         } else {
@@ -44,13 +44,7 @@ public class ElectricChargeItem extends Item {
         }
     }
 
-    /**
-     * @return A {@link Supplier Supplier&lt;? extends EntityType&lt;?&gt;&gt;} that gives the entity type correlating with the projectile that can be created by this dart.
-     */
-    public Supplier<? extends EntityType<?>> getDartEntityType() {
-        return this.dartEntityType;
+    public Supplier<? extends EntityType<?>> getEntity() {
+        return this.entity;
     }
-
-
-
 }

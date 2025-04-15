@@ -25,6 +25,7 @@ public class EntitySmallElectricBall extends EntityAbstractElectricBall implemen
     private static final RawAnimation VOLT_BALL = RawAnimation.begin().thenPlay("animation.volt_ball.orb");
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private int despawnTimer = 90;
 
     public EntitySmallElectricBall(EntityType<? extends EntitySmallElectricBall> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -38,7 +39,6 @@ public class EntitySmallElectricBall extends EntityAbstractElectricBall implemen
         super(HoleEntities.SMALL_ELECTRICITY_BALL.get(), pX, pY, pZ, pOffsetX, pOffsetY, pOffsetZ, pLevel);
     }
 
-
     public boolean isOnFire() {
         return false;
     }
@@ -46,9 +46,7 @@ public class EntitySmallElectricBall extends EntityAbstractElectricBall implemen
     protected Item getDefaultItem() {
         return HoleItems.ELECTRIC_CHARGE.get();
     }
-    /**
-     * Called when the arrow hits an entity
-     */
+
     protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
         if (!this.level().isClientSide) {
@@ -61,26 +59,17 @@ public class EntitySmallElectricBall extends EntityAbstractElectricBall implemen
         }
     }
 
-
-
     protected void onHit(HitResult pResult) {
         super.onHit(pResult);
         if (!this.level().isClientSide) {
             this.discard();
         }
-
     }
 
-    /**
-     * Returns {@code true} if other Entities should be prevented from moving through this Entity.
-     */
     public boolean isPickable() {
         return false;
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     public boolean hurt(DamageSource pSource, float pAmount) {
         return false;
     }
@@ -103,5 +92,12 @@ public class EntitySmallElectricBall extends EntityAbstractElectricBall implemen
     @Override
     public double getTick(Object o) {
         return tickCount;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        despawnTimer--;
+        if (despawnTimer <= 0) discard();
     }
 }

@@ -1,74 +1,68 @@
 package com.peeko32213.hole.common.item;
 
+import com.peeko32213.hole.common.entity.projectile.EntitySmallElectricBall;
 import com.peeko32213.hole.core.registry.HoleItems;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Vanishable;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
+import java.util.List;
 import java.util.function.Predicate;
 
-public class TeslaBowItem extends CrossbowItem implements Vanishable, ModifiedCrossbowMethod {
+public class TeslaBowItem extends CrossbowItem implements Vanishable {
     private boolean startSoundPlayed = false;
     private boolean midLoadSoundPlayed = false;
-    protected static final Predicate<ItemStack> PREDICATE_BOLTS_ONLY = (itemstack) -> {
-        return itemstack.getItem() instanceof ElectricChargeItem;
-    };
 
-    protected static final Predicate<ItemStack> PREDICATE_BOLTS_ONLY_NO_EXPLOSIVE = (itemstack) -> {
-        return itemstack.getItem() instanceof ElectricChargeItem;
-    };
+    protected static final Predicate<ItemStack> ELECTRIC_BALL = (itemstack) -> itemstack.getItem() instanceof ElectricChargeItem;
 
-    //This only checks the items in off and main hand
     @Override
     public Predicate<ItemStack> getSupportedHeldProjectiles() {
-        return PREDICATE_BOLTS_ONLY_NO_EXPLOSIVE;
+        return ELECTRIC_BALL;
     }
 
-    //Checks for all projectiles in the inventory
     @Override
     public Predicate<ItemStack> getAllSupportedProjectiles() {
-        return PREDICATE_BOLTS_ONLY_NO_EXPLOSIVE;
+        return ELECTRIC_BALL;
     }
 
     public TeslaBowItem(Properties properties) {
         super(properties);
     }
 
-    //DONE: Mixin interface to CrossbowItem that has methods for the below stuff
-    //DONE: Add mixin / ASM that changes CrossbowItem.performShooting() to call a method from the item
-    //DONE: Add mixin / ASM that changes CrossbowItem.getChargeDuration() to call a method from the item
-    //DONE: Move CrossbowItem.shootProjectile() to Item
-
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
         if (isCharged(itemstack)) {
-            modifiedPerformShooting(pLevel, pPlayer, pHand, itemstack, getShootingPower(itemstack), 1.0F);
+            performShootElectricity(pLevel, pPlayer, pHand, itemstack, 1.0F);
             setCharged(itemstack, false);
             Vec3 lookVec = pPlayer.getLookAngle().multiply(-1,-1,-1);
             pPlayer.setDeltaMovement(new Vec3(1.0,1.0,1.0).multiply(lookVec));
             pPlayer.hurtMarked = true;
             return InteractionResultHolder.consume(itemstack);
-        } else if (!pPlayer.getProjectile(itemstack).isEmpty()) {
+        }
+        else if (!pPlayer.getProjectile(itemstack).isEmpty()) {
             if (!isCharged(itemstack)) {
                 this.startSoundPlayed = false;
                 this.midLoadSoundPlayed = false;
                 pPlayer.startUsingItem(pHand);
             }
-
             return InteractionResultHolder.consume(itemstack);
-        } else {
+        }
+        else {
             return InteractionResultHolder.fail(itemstack);
         }
     }
@@ -82,15 +76,13 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable, ModifiedCr
                 this.startSoundPlayed = false;
                 this.midLoadSoundPlayed = false;
             }
-
             if (f >= 0.2F && !this.startSoundPlayed) {
                 this.startSoundPlayed = true;
-                pLevel.playSound((Player)null, pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(), soundevent, SoundSource.PLAYERS, 0.5F, 1.0F);
+                pLevel.playSound(null, pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(), soundevent, SoundSource.PLAYERS, 0.5F, 1.0F);
             }
-
             if (f >= 0.5F && soundevent1 != null && !this.midLoadSoundPlayed) {
                 this.midLoadSoundPlayed = true;
-                pLevel.playSound((Player)null, pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(), soundevent1, SoundSource.PLAYERS, 0.5F, 1.0F);
+                pLevel.playSound(null, pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(), soundevent1, SoundSource.PLAYERS, 0.5F, 1.0F);
             }
         }
 
@@ -102,12 +94,10 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable, ModifiedCr
         if (f >= 1.0F && !CrossbowItem.isCharged(weaponItem) && this.tryLoadProjectiles(shooter, weaponItem)) {
             CrossbowItem.setCharged(weaponItem, true);
             SoundSource soundcategory = shooter instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
-            world.playSound((Player) null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.CROSSBOW_LOADING_END, soundcategory, 1.0F, 1.0F / (shooter.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F);
-
+            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.CROSSBOW_LOADING_END, soundcategory, 1.0F, 1.0F / (shooter.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F);
         }
     }
 
-    // Attention: this actually differs from vanilla!
     protected boolean tryLoadProjectiles(LivingEntity shooter, ItemStack weaponItem) {
         int multishotEnchantLevel = weaponItem.getEnchantmentLevel(Enchantments.MULTISHOT);
         int actualShotCount = 1 + (2 * multishotEnchantLevel);
@@ -119,22 +109,18 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable, ModifiedCr
             if (i > 0) {
                 itemstack = itemStackForAdditionalProjectiles.copy();
             }
-
             if (itemstack.isEmpty() && flag) {
                 itemstack = new ItemStack(HoleItems.ELECTRIC_CHARGE.get(), 1);
                 itemStackForAdditionalProjectiles = itemstack.copy();
             }
-
             if (!this.loadProjectile(shooter, weaponItem, itemstack, i > 0, flag)) {
                 return false;
             }
         }
-
         return true;
     }
 
     protected boolean loadProjectile(LivingEntity shooter, ItemStack weaponItem, ItemStack projectileItem, boolean forceCopyProjectileItem, boolean forceArrowSubTypeFlag) {
-        //!!This is needed to avoid the arrows glitching in !!
         if(!(this.getAllSupportedProjectiles().test(projectileItem) || this.getSupportedHeldProjectiles().test(projectileItem))) {
             projectileItem = new ItemStack(HoleItems.ELECTRIC_CHARGE.get(), 1);
         }
@@ -151,40 +137,17 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable, ModifiedCr
             } else {
                 itemstack = projectileItem.copy();
             }
-
             CrossbowItem.addChargedProjectile(weaponItem, itemstack);
             return true;
         }
     }
 
-
-    //Override charging duration
-    @Override
     public int getMaxChargeTime() {
-        return 25;
-    }
-
-    @Override
-    public int getDefaultProjectileRange() {
-        return super.getDefaultProjectileRange();
-    }
-
-    @Override
-    public float getProjectileSpeedModifier() {
-        return 1.0F;
+        return 80;
     }
 
     public int getUseDuration(ItemStack pStack) {
         return modifiedGetChargeDuration(pStack) + 3;
-    }
-
-
-    protected boolean parentClassIsEnchantable(ItemStack stack) {
-        return super.isEnchantable(stack);
-    }
-
-    protected boolean parentClassIsBookEnchantable(ItemStack stack, ItemStack book) {
-        return super.isEnchantable(stack);
     }
 
     @Override
@@ -197,20 +160,89 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable, ModifiedCr
         return false;
     }
 
-    private static float getShootingPower(ItemStack pCrossbowStack) {
-        return containsChargedProjectile(pCrossbowStack, Items.FIREWORK_ROCKET) ? 1.6F : 3.15F;
+    private SoundEvent getStartSound(int pEnchantmentLevel) {
+        return switch (pEnchantmentLevel) {
+            case 1 -> SoundEvents.CROSSBOW_QUICK_CHARGE_1;
+            case 2 -> SoundEvents.CROSSBOW_QUICK_CHARGE_2;
+            case 3 -> SoundEvents.CROSSBOW_QUICK_CHARGE_3;
+            default -> SoundEvents.CROSSBOW_LOADING_START;
+        };
     }
 
-    private SoundEvent getStartSound(int pEnchantmentLevel) {
-        switch (pEnchantmentLevel) {
-            case 1:
-                return SoundEvents.CROSSBOW_QUICK_CHARGE_1;
-            case 2:
-                return SoundEvents.CROSSBOW_QUICK_CHARGE_2;
-            case 3:
-                return SoundEvents.CROSSBOW_QUICK_CHARGE_3;
-            default:
-                return SoundEvents.CROSSBOW_LOADING_START;
+    public float getMultiShotAngle() {
+        return 22.5F;
+    }
+
+    public float[] modifiedGetShotPitches(RandomSource randomSource, final int multiShotLevel) {
+        if (multiShotLevel <= 0) {
+            return new float[] { 1.0F };
         }
+        float[] result = new float[multiShotLevel * 2 + 1];
+        for (int i = 0; i < multiShotLevel; i++) {
+            boolean currentFlag = randomSource.nextBoolean();
+            result[i] = CrossbowItem.getRandomShotPitch(currentFlag, randomSource);
+            result[result.length - (i + 1)] = CrossbowItem.getRandomShotPitch(!currentFlag, randomSource);
+        }
+        result[multiShotLevel] = 1.0F;
+        return result;
+    }
+
+    private void performShootElectricity(Level world, LivingEntity shooter, InteractionHand handUsed, ItemStack crossbow, float divergence) {
+        List<ItemStack> list = CrossbowItem.getChargedProjectiles(crossbow);
+        final int msLevel = (list.size() - 1) / 2;
+
+        if (list.isEmpty()) {
+            list.add(new ItemStack(HoleItems.ELECTRIC_CHARGE.get(), 1));
+        }
+        if (msLevel <= 0) {
+            shootElectricity(world, shooter, handUsed, crossbow, list.get(0), 1.0F, divergence, 0.0F);
+        }
+        else {
+            float[] afloat = this.modifiedGetShotPitches(shooter.getRandom(), msLevel);
+
+            final float anglePerIteration = this.getMultiShotAngle() / ((float) msLevel);
+            float currentAngle = -this.getMultiShotAngle();
+
+            for (int i = 0; i < list.size(); ++i) {
+                ItemStack itemstack = list.get(i);
+                if (!itemstack.isEmpty()) {
+                    shootElectricity(world, shooter, handUsed, crossbow, itemstack, afloat[i], divergence, currentAngle);
+                }
+                currentAngle += anglePerIteration;
+            }
+        }
+        CrossbowItem.onCrossbowShot(world, shooter, crossbow);
+    }
+
+    private void shootElectricity(Level world, LivingEntity shooter, InteractionHand handUsed, ItemStack crossbow, ItemStack projectileStack, float shootSoundPitch, float divergence, float simulated) {
+        if (!world.isClientSide) {
+            Projectile projectileentity = getElectricCharge(world, shooter, projectileStack);
+
+            Vec3 vec31 = shooter.getUpVector(1.0F);
+            Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(simulated * ((float)Math.PI / 180F), vec31.x, vec31.y, vec31.z);
+            Vec3 vec3 = shooter.getViewVector(1.0F);
+            Vector3f vector3f = vec3.toVector3f().rotate(quaternionf);
+            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 5.0F, divergence);
+
+            crossbow.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
+            shooter.level().addFreshEntity(projectileentity);
+            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, shootSoundPitch);
+        }
+    }
+
+    static EntitySmallElectricBall getElectricCharge(Level pLevel, LivingEntity pLivingEntity, ItemStack pAmmoStack) {
+        ElectricChargeItem arrowitem = (ElectricChargeItem)(pAmmoStack.getItem() instanceof ElectricChargeItem ? pAmmoStack.getItem() : HoleItems.ELECTRIC_CHARGE);
+        EntitySmallElectricBall abstractarrow = arrowitem.createDart(pLevel, pLivingEntity);
+        abstractarrow.setSoundEvent(SoundEvents.CROSSBOW_HIT);
+        return abstractarrow;
+    }
+
+    public int modifiedGetChargeDuration(ItemStack crossbow) {
+        int i = crossbow.getEnchantmentLevel(Enchantments.QUICK_CHARGE);
+        return i == 0 ? this.getMaxChargeTime() : this.getMaxChargeTime() - this.getChargeTimeReductionPerQuickChargeLevel() * i;
+    }
+
+    public int getChargeTimeReductionPerQuickChargeLevel() {
+        return this.getMaxChargeTime() / 5;
     }
 }
