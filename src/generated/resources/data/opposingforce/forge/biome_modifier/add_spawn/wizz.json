@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#forge:with_default_monster_spawns",
+  "spawners": {
+    "type": "opposingforce:wizz",
+    "maxCount": 10,
+    "minCount": 4,
+    "weight": 50
+  }
+}

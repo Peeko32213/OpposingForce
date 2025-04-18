@@ -1,6 +1,0 @@
-{
-  "type": "forge:add_features",
-  "biomes": "#minecraft:is_overworld",
-  "features": "hole:patch_slippery_top",
-  "step": "vegetal_decoration"
-}

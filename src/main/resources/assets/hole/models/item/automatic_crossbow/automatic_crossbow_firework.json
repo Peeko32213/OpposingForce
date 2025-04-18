@@ -1,6 +1,0 @@
-{
-    "parent": "hole:item/automatic_crossbow/automatic_crossbow",
-    "textures": {
-        "layer0": "hole:item/automatic_crossbow_firework"
-    }
-}

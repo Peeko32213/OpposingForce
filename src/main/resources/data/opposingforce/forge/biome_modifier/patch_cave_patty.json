@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "opposingforce:patch_cave_patty",
+  "step": "vegetal_decoration"
+}

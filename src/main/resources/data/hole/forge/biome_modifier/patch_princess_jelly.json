@@ -1,6 +1,0 @@
-{
-  "type": "forge:add_features",
-  "biomes": "#minecraft:is_overworld",
-  "features": "hole:patch_princess_jelly",
-  "step": "vegetal_decoration"
-}

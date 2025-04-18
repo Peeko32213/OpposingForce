@@ -1,28 +1,35 @@
-
 modLoader="javafml"
-loaderVersion="${loader_version_range}"
+loaderVersion="[43,)"
 license="MIT"
+issueTrackerURL = "https://github.com/Peeko32213/OpposingForce/issues"
+
 [[mods]]
-modId="hole" #mandatory
-version="1.2.0.0" #mandatory
-displayName="Hole" #mandatory
-authors="Peeko32213, Indominator, Scouter456, and AbsoluteKun!" #optional
-description='''A Mod that adds a few new mobs to caves'''
-[[dependencies.hole]] #optional
-modId="forge" #mandatory
-mandatory=true #mandatory
-versionRange="${forge_version_range}" #mandatory
-ordering="NONE"
-side="BOTH"
-[[dependencies.hole]]
-modId="minecraft"
-mandatory=true
-versionRange="${minecraft_version_range}"
-ordering="NONE"
-side="BOTH"
-[[dependencies.geckolib]]
-modId="geckolib"
-mandatory=true
-versionRange="[4.2,)"
-ordering="BEFORE"
-side="BOTH"
+    modId = "opposingforce"
+    version = "0.0.0"
+    logoFile = "logo.png"
+    itemIcon = "minecraft:spider_eye"
+    configBackground = "minecraft:textures/block/stone.png"
+    authors = "Unusual Modding"
+    credits = "Peeko32213, Indominator, Scouter456, AbsoluteKun, IcyDwarf, platypushasnohat"
+    displayURL = "https://github.com/Peeko32213/OpposingForce"
+    displayName = "Opposing Force"
+    description = '''A Mod that expands the enemy variety in Minecraft!'''
+
+[[dependencies.opposingforce]] #optional
+	modId="forge" #mandatory
+	mandatory=true #mandatory
+	versionRange="${forge_version_range}" #mandatory
+	ordering="NONE"
+	side="BOTH"
+[[dependencies.opposingforce]]
+	modId="minecraft"
+	mandatory=true
+	versionRange="${minecraft_version_range}"
+	ordering="NONE"
+	side="BOTH"
+[[dependencies.opposingforce]]
+	modId="geckolib"
+	mandatory=true
+	versionRange="[4.2,)"
+	ordering="BEFORE"
+	side="BOTH"

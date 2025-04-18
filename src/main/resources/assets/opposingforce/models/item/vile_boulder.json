@@ -1,0 +1,15 @@
+{
+  "parent": "item/handheld",
+  "loader": "forge:separate_transforms",
+  "base": {
+    "parent": "opposingforce:item/vile_boulder_handheld"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "opposingforce:item/vile_boulder_gui"
+    },
+    "fixed": {
+      "parent": "opposingforce:item/vile_boulder_gui"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#forge:with_default_monster_spawns",
+  "spawners": {
+    "type": "opposingforce:umber_spider",
+    "maxCount": 5,
+    "minCount": 3,
+    "weight": 50
+  }
+}
