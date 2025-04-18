@@ -1,6 +1,6 @@
 package com.unusualmodding.opposingforce.core.registry;
 
-import com.unusualmodding.opposingforce.common.entity.*;
+import com.unusualmodding.opposingforce.common.entity.custom.monster.*;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacements;

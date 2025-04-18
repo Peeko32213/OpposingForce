@@ -26,6 +26,7 @@
     ],
     "subtitle": "hole.sound.subtitle.umber_spider_idle"
   },
+
   "ramble_death": {
     "sounds": [
       {
@@ -56,5 +57,71 @@
       }
     ],
     "subtitle": "hole.sound.subtitle.ramble_idle"
+  },
+
+  "dicer_death": {
+    "sounds": [
+      "opposingforce:entity/dicer/death_0"
+    ],
+    "subtitle": "opposingforce.sound.subtitle.dicer_death"
+  },
+  "dicer_hurt": {
+    "sounds": [
+      "opposingforce:entity/dicer/hurt_0",
+      "opposingforce:entity/dicer/hurt_1"
+    ],
+    "subtitle": "opposingforce.sound.subtitle.dicer_hurt"
+  },
+  "dicer_idle": {
+    "sounds": [
+        "opposingforce:entity/dicer/idle_0",
+        "opposingforce:entity/dicer/idle_1"
+    ],
+    "subtitle": "opposingforce.sound.subtitle.dicer_idle"
+  },
+  "dicer_attack": {
+    "sounds": [
+      "opposingforce:entity/dicer/attack_0",
+      "opposingforce:entity/dicer/attack_1"
+    ],
+    "subtitle": "opposingforce.sound.subtitle.dicer_attack"
+  },
+
+  "volt_death": {
+    "sounds": [
+      "opposingforce:entity/volt/death_0"
+    ],
+    "subtitle": "opposingforce.sound.subtitle.volt_death"
+  },
+  "volt_hurt": {
+    "sounds": [
+      "opposingforce:entity/volt/hurt_0"
+    ],
+    "subtitle": "opposingforce.sound.subtitle.volt_hurt"
+  },
+  "volt_idle": {
+    "sounds": [
+      "opposingforce:entity/volt/idle_0"
+    ],
+    "subtitle": "opposingforce.sound.subtitle.volt_idle"
+  },
+  "volt_shoot": {
+    "sounds": [
+      "opposingforce:entity/volt/shoot_0"
+    ],
+    "subtitle": "opposingforce.sound.subtitle.volt_shoot"
+  },
+
+  "electrical_charge": {
+    "sounds": [
+      "opposingforce:entity/misc/electrical_charge_0"
+    ],
+    "subtitle": "opposingforce.sound.subtitle.electrical_charge"
+  },
+  "electrical_charge_dissipate": {
+    "sounds": [
+      "opposingforce:entity/misc/electrical_charge_dissipate_0"
+    ],
+    "subtitle": "opposingforce.sound.subtitle.electrical_charge_dissipate"
   }
 }

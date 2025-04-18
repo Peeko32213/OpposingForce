@@ -1,7 +1,7 @@
 package com.unusualmodding.opposingforce.client.render;
 
 import com.unusualmodding.opposingforce.client.model.TerrorModel;
-import com.unusualmodding.opposingforce.common.entity.TerrorEntity;
+import com.unusualmodding.opposingforce.common.entity.custom.monster.TerrorEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 

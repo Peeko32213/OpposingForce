@@ -1,7 +1,7 @@
 package com.unusualmodding.opposingforce.client.model;
 
 import com.unusualmodding.opposingforce.OpposingForce;
-import com.unusualmodding.opposingforce.common.entity.projectile.SmallElectricBall;
+import com.unusualmodding.opposingforce.common.entity.custom.projectile.SmallElectricBall;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;
 

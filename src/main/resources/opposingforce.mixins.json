@@ -5,7 +5,9 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "opposingforce.refmap.json",
   "mixins": [],
-  "client": [],
+  "client": [
+    "client.ClientPacketListenerMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

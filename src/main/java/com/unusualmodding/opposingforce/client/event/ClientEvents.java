@@ -7,7 +7,7 @@ import com.unusualmodding.opposingforce.client.render.PlainGeoRenderer;
 import com.unusualmodding.opposingforce.client.render.SmallElectricBallRenderer;
 import com.unusualmodding.opposingforce.client.render.TomahawkRenderer;
 import com.unusualmodding.opposingforce.client.render.layer.OPGlowingEyeLayer;
-import com.unusualmodding.opposingforce.common.entity.*;
+import com.unusualmodding.opposingforce.common.entity.custom.monster.*;
 import com.unusualmodding.opposingforce.common.item.OPItemProperties;
 import com.unusualmodding.opposingforce.core.registry.OPBlocks;
 import com.unusualmodding.opposingforce.core.registry.OPEntities;

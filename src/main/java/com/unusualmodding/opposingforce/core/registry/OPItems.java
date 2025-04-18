@@ -5,8 +5,6 @@ import com.unusualmodding.opposingforce.common.item.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tier;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -29,7 +27,7 @@ public class OPItems {
             OPEntities.RAMBLE , 0x131313, 0xffffff);
 
     public static final RegistryObject<ForgeSpawnEggItem> DICER_SPAWN_EGG = registerSpawnEggs("dicer_spawn_egg",
-            OPEntities.DICER , 0xbb0000, 0xd354c7);
+            OPEntities.DICER , 0x1a1818, 0xf17eeb);
 
     public static final RegistryObject<ForgeSpawnEggItem> TREMBLER_SPAWN_EGG = registerSpawnEggs("trembler_spawn_egg",
             OPEntities.TREMBLER , 0x20281e, 0x86b5b4);
@@ -70,12 +68,12 @@ public class OPItems {
             () -> new ElectricChargeItem(OPEntities.SMALL_ELECTRICITY_BALL, new Item.Properties()));
 
     public static final RegistryObject<Item> TOMAHAWK =  ITEMS.register("tomahawk",
-            () -> new TomahawkItem((new Item.Properties()).stacksTo(16)));
+            () -> new TomahawkItem(4, -2.2F, (new Item.Properties()).stacksTo(16)));
 
     public static final RegistryObject<Item> TESLA_BOW = ITEMS.register("tesla_bow",
             () -> new TeslaBowItem(new Item.Properties().stacksTo(1).durability(465)));
 
-    public static final RegistryObject<Item> SLUG_EGG = ITEMS.register("slug_eggs",
+    public static final RegistryObject<Item> SLUG_EGGS = ITEMS.register("slug_eggs",
             () -> new SlugEggItem(new Item.Properties().stacksTo(16)));
 
     public static final RegistryObject<Item> VILE_BOULDER = ITEMS.register("vile_boulder",

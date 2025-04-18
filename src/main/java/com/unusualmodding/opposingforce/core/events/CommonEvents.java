@@ -1,8 +1,8 @@
 package com.unusualmodding.opposingforce.core.events;
 
 import com.unusualmodding.opposingforce.OpposingForce;
-import com.unusualmodding.opposingforce.common.entity.*;
-import com.unusualmodding.opposingforce.common.entity.projectile.SmallElectricBall;
+import com.unusualmodding.opposingforce.common.entity.custom.monster.*;
+import com.unusualmodding.opposingforce.common.entity.custom.projectile.SmallElectricBall;
 import com.unusualmodding.opposingforce.core.registry.OPEntities;
 import com.unusualmodding.opposingforce.core.registry.OPItems;
 import net.minecraft.Util;

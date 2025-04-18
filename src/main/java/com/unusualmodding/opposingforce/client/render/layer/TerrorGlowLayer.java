@@ -3,7 +3,7 @@ package com.unusualmodding.opposingforce.client.render.layer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposingforce.OpposingForce;
-import com.unusualmodding.opposingforce.common.entity.TerrorEntity;
+import com.unusualmodding.opposingforce.common.entity.custom.monster.TerrorEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;

@@ -1,6 +1,6 @@
 package com.unusualmodding.opposingforce.common.item;
 
-import com.unusualmodding.opposingforce.common.entity.projectile.SmallElectricBall;
+import com.unusualmodding.opposingforce.common.entity.custom.projectile.SmallElectricBall;
 import com.unusualmodding.opposingforce.core.registry.OPItems;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -222,7 +222,7 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
             Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(simulated * ((float)Math.PI / 180F), vec31.x, vec31.y, vec31.z);
             Vec3 vec3 = shooter.getViewVector(1.0F);
             Vector3f vector3f = vec3.toVector3f().rotate(quaternionf);
-            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 5.0F, divergence);
+            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 2.5F, divergence);
 
             crossbow.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
             shooter.level().addFreshEntity(projectileentity);

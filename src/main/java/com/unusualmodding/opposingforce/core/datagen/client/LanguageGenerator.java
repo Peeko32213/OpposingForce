@@ -30,16 +30,29 @@ public class LanguageGenerator extends LanguageProvider {
         addItem(OPItems.UMBER_SPIDER_SPAWN_EGG, "Umber Spider Spawn Egg");
         addItem(OPItems.DEEP_SILK, "Deep Silk");
 
-        addSound(OPSounds.UMBER_SPIDER_DEATH, "Umber Spider Dying");
-        addSound(OPSounds.UMBER_SPIDER_HURT, "Umber Spider Hurt");
-        addSound(OPSounds.UMBER_SPIDER_IDLE, "Umber Spider Idling");
+        addSound(OPSounds.UMBER_SPIDER_DEATH, "Umber Spider dies");
+        addSound(OPSounds.UMBER_SPIDER_HURT, "Umber Spider hurts");
+        addSound(OPSounds.UMBER_SPIDER_IDLE, "Umber Spider groans");
 
         addEntityType(OPEntities.RAMBLE, "Ramble");
-        addItem(OPItems.RAMBLE_SPAWN_EGG, "Rambler Spawn Egg");
+        addItem(OPItems.RAMBLE_SPAWN_EGG, "Ramble Spawn Egg");
 
-        addSound(OPSounds.RAMBLE_DEATH, "Falling Clatters");
-        addSound(OPSounds.RAMBLE_HURT, "Uncomfortable Clattering");
-        addSound(OPSounds.RAMBLE_IDLE, "Rambling Clatters");
+        addSound(OPSounds.RAMBLE_DEATH, "Ramble dies");
+        addSound(OPSounds.RAMBLE_HURT, "Ramble hurts");
+        addSound(OPSounds.RAMBLE_IDLE, "Ramble clatters");
+
+        addSound(OPSounds.DICER_DEATH, "Dicer dies");
+        addSound(OPSounds.DICER_HURT, "Dicer hurts");
+        addSound(OPSounds.DICER_IDLE, "Dicer screams");
+        addSound(OPSounds.DICER_ATTACK, "Dicer slashes");
+
+        addSound(OPSounds.VOLT_DEATH, "Volt dies");
+        addSound(OPSounds.VOLT_HURT, "Volt hurts");
+        addSound(OPSounds.VOLT_IDLE, "Volt hums");
+        addSound(OPSounds.VOLT_SHOOT, "Volt shoots");
+
+        addSound(OPSounds.ELECTRIC_CHARGE, "Electricity whirls");
+        addSound(OPSounds.ELECTRIC_CHARGE_DISSIPATE, "Electricity dissipates");
 
         addEntityType(OPEntities.DICER, "Dicer");
         addItem(OPItems.DICER_SPAWN_EGG, "Dicer Spawn Egg");
@@ -98,7 +111,7 @@ public class LanguageGenerator extends LanguageProvider {
 
         addEntityType(OPEntities.SLUG, "Slug");
         addItem(OPItems.SLUG_SPAWN_EGG, "Slug Spawn Egg");
-        addItem(OPItems.SLUG_EGG, "Slug Eggs");
+        addItem(OPItems.SLUG_EGGS, "Slug Eggs");
 
         addItem(OPItems.VILE_BOULDER, "Vile Boulder");
 

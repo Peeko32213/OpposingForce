@@ -1,7 +1,7 @@
 package com.unusualmodding.opposingforce.client.model;
 
 import com.unusualmodding.opposingforce.OpposingForce;
-import com.unusualmodding.opposingforce.common.entity.TerrorEntity;
+import com.unusualmodding.opposingforce.common.entity.custom.monster.TerrorEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import software.bernie.geckolib.constant.DataTickets;

@@ -2,7 +2,7 @@ package com.unusualmodding.opposingforce.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.unusualmodding.opposingforce.common.entity.projectile.Tomahawk;
+import com.unusualmodding.opposingforce.common.entity.custom.projectile.Tomahawk;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

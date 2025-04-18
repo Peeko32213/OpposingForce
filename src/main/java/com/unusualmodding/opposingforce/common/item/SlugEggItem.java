@@ -1,6 +1,6 @@
 package com.unusualmodding.opposingforce.common.item;
 
-import com.unusualmodding.opposingforce.common.entity.projectile.SlugEgg;
+import com.unusualmodding.opposingforce.common.entity.custom.projectile.SlugEgg;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;

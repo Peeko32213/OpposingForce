@@ -31,7 +31,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 
         singleTex(OPItems.DEEP_SILK);
         singleTex(OPItems.ELECTRIC_CHARGE);
-        singleTex(OPItems.SLUG_EGG);
+        singleTex(OPItems.SLUG_EGGS);
 
     }
 

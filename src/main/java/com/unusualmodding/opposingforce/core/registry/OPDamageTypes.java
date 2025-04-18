@@ -1,8 +1,8 @@
 package com.unusualmodding.opposingforce.core.registry;
 
 import com.unusualmodding.opposingforce.OpposingForce;
-import com.unusualmodding.opposingforce.common.entity.projectile.AbstractElectricBall;
-import com.unusualmodding.opposingforce.common.entity.projectile.Tomahawk;
+import com.unusualmodding.opposingforce.common.entity.custom.projectile.AbstractElectricBall;
+import com.unusualmodding.opposingforce.common.entity.custom.projectile.Tomahawk;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;

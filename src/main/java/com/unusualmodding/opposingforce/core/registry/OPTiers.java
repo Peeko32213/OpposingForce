@@ -1,6 +1,8 @@
 package com.unusualmodding.opposingforce.core.registry;
 
 import net.minecraft.util.LazyLoadedValue;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -8,10 +10,8 @@ import java.util.function.Supplier;
 
 public enum OPTiers implements Tier {
 
-//TODO
-    // Make Ingredients be decided by the Shell Tag rather than just one item
-    VILE(0, 180, 3.0F, 0.0F, 10, () -> Ingredient.of(OPItems.SLUG_EGG.get())),
-
+        VILE(0, 180, 3.0F, 0.0F, 10, () -> Ingredient.of(OPItems.SLUG_EGGS.get())),
+        DUMMY(0, 0, 0.0F, 0.0F, 0, () -> Ingredient.of(Items.IRON_INGOT)),
     ;
 
     private final int level;

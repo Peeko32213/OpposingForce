@@ -1,7 +1,7 @@
 package com.unusualmodding.opposingforce.common.item;
 
 
-import com.unusualmodding.opposingforce.common.entity.projectile.SmallElectricBall;
+import com.unusualmodding.opposingforce.common.entity.custom.projectile.SmallElectricBall;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

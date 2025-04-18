@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.unusualmodding.opposingforce.client.model.SmallElectricBallModel;
-import com.unusualmodding.opposingforce.common.entity.projectile.SmallElectricBall;
+import com.unusualmodding.opposingforce.common.entity.custom.projectile.SmallElectricBall;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

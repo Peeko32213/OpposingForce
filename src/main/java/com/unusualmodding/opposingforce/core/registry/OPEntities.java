@@ -1,10 +1,10 @@
 package com.unusualmodding.opposingforce.core.registry;
 
 import com.unusualmodding.opposingforce.OpposingForce;
-import com.unusualmodding.opposingforce.common.entity.*;
-import com.unusualmodding.opposingforce.common.entity.projectile.SlugEgg;
-import com.unusualmodding.opposingforce.common.entity.projectile.SmallElectricBall;
-import com.unusualmodding.opposingforce.common.entity.projectile.Tomahawk;
+import com.unusualmodding.opposingforce.common.entity.custom.monster.*;
+import com.unusualmodding.opposingforce.common.entity.custom.projectile.SlugEgg;
+import com.unusualmodding.opposingforce.common.entity.custom.projectile.SmallElectricBall;
+import com.unusualmodding.opposingforce.common.entity.custom.projectile.Tomahawk;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;

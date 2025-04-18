@@ -18,7 +18,7 @@ public class OPCreativeTabs {
     public static final RegistryObject<CreativeModeTab> TAB = DEF_REG.register(OpposingForce.MODID, () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup." + OpposingForce.MODID))
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
-            .icon(() -> new ItemStack(OPItems.PALE_SPIDER_SPAWN_EGG.get()))
+            .icon(() -> new ItemStack(OPItems.SLUG_EGGS.get()))
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .displayItems((enabledFeatures, output) -> {
                 for(RegistryObject<Item> item : OPItems.ITEMS.getEntries()){
