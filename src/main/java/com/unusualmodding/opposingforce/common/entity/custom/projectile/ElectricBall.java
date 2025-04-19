@@ -9,6 +9,7 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -90,8 +91,7 @@ public class ElectricBall extends ThrowableItemProjectile {
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (this.isInvulnerableTo(pSource)) {
             return false;
-        }
-        else {
+        } else {
             this.markHurt();
             Entity entity = pSource.getEntity();
             if (entity != null) {
@@ -104,8 +104,7 @@ public class ElectricBall extends ThrowableItemProjectile {
                     this.setOwner(entity);
                 }
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
         }
@@ -118,8 +117,7 @@ public class ElectricBall extends ThrowableItemProjectile {
         if (!this.level().isClientSide && this.level().getBlockState(this.blockPosition().below(0)).is(Blocks.WATER)) {
             this.discard();
             this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1F);
-        }
-        else if (!this.level().isClientSide && tickCount > 300) {
+        } else if (!this.level().isClientSide && tickCount > 300) {
             this.discard();
             this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1F);
         }
@@ -131,14 +129,29 @@ public class ElectricBall extends ThrowableItemProjectile {
 
         float range = 1F;
         float particleMax = 5 + this.level().getRandom().nextInt(3);
+        RandomSource rand = this.level().getRandom();
 
-        if (this.level().isClientSide) {
-            for (int particles = 0; particles < particleMax; particles++) {
-                Vec3 vec3 = new Vec3((this.level().getRandom().nextFloat() - 0.5) * 0.3F, (this.level().getRandom().nextFloat() - 0.5) * 0.3F, range * 0.5F + range * 0.5F * this.level().getRandom().nextFloat()).yRot((float) ((particles / particleMax) * Math.PI * 2)).add(movement);
-                this.level().addParticle(OPParticles.ELECTRIC_ORB.get(), d0, d1, d2, movement.x, movement.y, movement.z);
-                OPMessages.sendMSGToAll(new ParticleSyncS2CPacket(movement, vec3));
-            }
+        for (int i = 0; i < particleMax; i++) {
+            float angle = (float) ((i / particleMax) * Math.PI * 2);
+
+            // Generate the initial random vector
+            double x = (rand.nextFloat() - 0.5F) * 0.3F;
+            double y = (rand.nextFloat() - 0.5F) * 0.3F;
+            double z = range * 0.5F + range * 0.5F * rand.nextFloat();
+
+            // Rotate around Y-axis
+            double rotX = x * Math.cos(angle) - z * Math.sin(angle);
+            double rotZ = x * Math.sin(angle) + z * Math.cos(angle);
+
+            // Add movement vector
+            double finalX = rotX + movement.x;
+            double finalY = y + movement.y;
+            double finalZ = rotZ + movement.z;
+
+            // Send packet with just the coordinates
+            OPMessages.sendToClients(new ParticleSyncS2CPacket((float) d0, (float)d1, (float)d2, (float)finalX, (float)finalY, (float)finalZ));
         }
+
     }
 
     public void setSoundEvent(SoundEvent pSoundEvent) {

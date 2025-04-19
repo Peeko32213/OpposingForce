@@ -16,48 +16,48 @@ import java.util.function.Supplier;
 
 public class ParticleSyncS2CPacket {
 
-    private final Vec3 blockPos;
-    private final Vec3 attackPos;
+    private final float blockX, blockY, blockZ;
+    private final float attackX, attackY, attackZ;
 
-    public ParticleSyncS2CPacket(Vec3 blockPos, Vec3 attackPos) {
-        this.blockPos = blockPos;
-        this.attackPos = attackPos;
+    public ParticleSyncS2CPacket(float blockX, float blockY, float blockZ,
+                                 float attackX, float attackY, float attackZ) {
+        this.blockX = blockX;
+        this.blockY = blockY;
+        this.blockZ = blockZ;
+        this.attackX = attackX;
+        this.attackY = attackY;
+        this.attackZ = attackZ;
     }
+
 
     public ParticleSyncS2CPacket(FriendlyByteBuf buf) {
-        float bpx = buf.readFloat();
-        float bpy = buf.readFloat();
-        float bpz = buf.readFloat();
-        float apx = buf.readFloat();
-        float apy = buf.readFloat();
-        float apz = buf.readFloat();
-
-
-        this.blockPos = new Vec3(bpx, bpy, bpz);
-        this.attackPos = new Vec3(apx, apy, apz);
+        this.blockX = buf.readFloat();
+        this.blockY = buf.readFloat();
+        this.blockZ = buf.readFloat();
+        this.attackX = buf.readFloat();
+        this.attackY = buf.readFloat();
+        this.attackZ = buf.readFloat();
     }
+
 
     public void toBytes(FriendlyByteBuf buf) {
-        float bpx = (float) blockPos.x();
-        float bpy = (float) blockPos.y();
-        float bpz = (float) blockPos.z();
-        float apx = (float) attackPos.x();
-        float apy = (float) attackPos.y();
-        float apz = (float) attackPos.z();
-        buf.writeFloat(bpx);
-        buf.writeFloat(bpy);
-        buf.writeFloat(bpz);
-        buf.writeFloat(apx);
-        buf.writeFloat(apy);
-        buf.writeFloat(apz);
+        buf.writeFloat(blockX);
+        buf.writeFloat(blockY);
+        buf.writeFloat(blockZ);
+        buf.writeFloat(attackX);
+        buf.writeFloat(attackY);
+        buf.writeFloat(attackZ);
     }
+
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
             ClientLevel level = Minecraft.getInstance().level;
             if(level != null) {
-                level.addParticle(OPParticles.ELECTRIC_ORB.get(), blockPos.x, blockPos.y, blockPos.z, attackPos.x, attackPos.y, attackPos.z);
+                level.addParticle(OPParticles.ELECTRIC_ORB.get(),
+                        blockX, blockY, blockZ,
+                        attackX, attackY, attackZ);
             }
         });
         return true;
