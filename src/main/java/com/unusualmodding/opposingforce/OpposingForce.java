@@ -18,8 +18,8 @@ import org.apache.logging.log4j.Logger;
 import java.util.Locale;
 import java.util.function.Supplier;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(OpposingForce.MODID)
+@Mod.EventBusSubscriber(modid = OpposingForce.MODID)
 public class OpposingForce {
     public static final String MODID = "opposingforce";
     public static final Logger LOGGER = LogManager.getLogger();
@@ -27,17 +27,16 @@ public class OpposingForce {
 
     public OpposingForce() {
 
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        //DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> modEventBus.addListener(ClientEvents::init));
-        modEventBus.addListener(this::commonSetup);
+        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        bus.addListener(this::commonSetup);
 
-        // SFBlocks.BLOCKS.register(modEventBus);
-        OPItems.ITEMS.register(modEventBus);
-        OPCreativeTabs.DEF_REG.register(modEventBus);
-        OPEntities.ENTITIES.register(modEventBus);
-        OPSounds.DEF_REG.register(modEventBus);
-        OPBlocks.BLOCKS.register(modEventBus);
-        OPEffects.EFFECT_DEF_REG.register(modEventBus);
+        OPItems.ITEMS.register(bus);
+        OPCreativeTabs.DEF_REG.register(bus);
+        OPEntities.ENTITIES.register(bus);
+        OPSounds.DEF_REG.register(bus);
+        OPBlocks.BLOCKS.register(bus);
+        OPEffects.EFFECT_DEF_REG.register(bus);
+        OPParticles.PARTICLE_TYPES.register(bus);
         OPWorldGen.register();
 
         MinecraftForge.EVENT_BUS.register(this);
@@ -46,6 +45,7 @@ public class OpposingForce {
 
     public void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(OPEntityPlacement::entityPlacement);
+        OPMessages.register();
 
         addToFlowerPot(OPBlocks.CAVE_PATTY, OPBlocks.POTTED_CAVE_PATTY);
         addToFlowerPot(OPBlocks.COPPER_ENOKI, OPBlocks.POTTED_COPPER_ENOKI);
@@ -93,11 +93,8 @@ public class OpposingForce {
         ComposterBlock.COMPOSTABLES.put(item.get().asItem(), amountOfCompost);
     }
 
-
-
     public static ResourceLocation prefix(String name) {
         return new ResourceLocation(MODID, name.toLowerCase(Locale.ROOT));
     }
-
 }
 

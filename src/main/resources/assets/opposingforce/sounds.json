@@ -123,5 +123,18 @@
       "opposingforce:entity/misc/electrical_charge_dissipate_0"
     ],
     "subtitle": "opposingforce.sound.subtitle.electrical_charge_dissipate"
+  },
+
+  "tesla_bow_charged": {
+    "sounds": [
+      "opposingforce:item/tesla_bow/charged_0"
+    ],
+    "subtitle": "opposingforce.sound.subtitle.tesla_bow_charged"
+  },
+  "tesla_bow_shoot": {
+    "sounds": [
+      "opposingforce:item/tesla_bow/shoot_0"
+    ],
+    "subtitle": "opposingforce.sound.subtitle.tesla_bow_shoot"
   }
 }

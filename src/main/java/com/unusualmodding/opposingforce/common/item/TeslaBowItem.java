@@ -1,7 +1,8 @@
 package com.unusualmodding.opposingforce.common.item;
 
-import com.unusualmodding.opposingforce.common.entity.custom.projectile.SmallElectricBall;
+import com.unusualmodding.opposingforce.common.entity.custom.projectile.ElectricBall;
 import com.unusualmodding.opposingforce.core.registry.OPItems;
+import com.unusualmodding.opposingforce.core.registry.OPSounds;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -94,7 +95,7 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
         if (f >= 1.0F && !CrossbowItem.isCharged(weaponItem) && this.tryLoadProjectiles(shooter, weaponItem)) {
             CrossbowItem.setCharged(weaponItem, true);
             SoundSource soundcategory = shooter instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
-            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.CROSSBOW_LOADING_END, soundcategory, 1.0F, 1.0F / (shooter.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F);
+            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSounds.TESLA_BOW_CHARGED.get(), soundcategory, 1.0F, 1.0F / (shooter.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F);
         }
     }
 
@@ -222,19 +223,19 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
             Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(simulated * ((float)Math.PI / 180F), vec31.x, vec31.y, vec31.z);
             Vec3 vec3 = shooter.getViewVector(1.0F);
             Vector3f vector3f = vec3.toVector3f().rotate(quaternionf);
-            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 2.5F, divergence);
+            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 1.5F, divergence);
 
             crossbow.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
             shooter.level().addFreshEntity(projectileentity);
-            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, shootSoundPitch);
+            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSounds.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, shootSoundPitch * 1.2F);
         }
     }
 
-    static SmallElectricBall getElectricCharge(Level pLevel, LivingEntity pLivingEntity, ItemStack pAmmoStack) {
+    static ElectricBall getElectricCharge(Level pLevel, LivingEntity pLivingEntity, ItemStack pAmmoStack) {
         ElectricChargeItem arrowitem = (ElectricChargeItem)(pAmmoStack.getItem() instanceof ElectricChargeItem ? pAmmoStack.getItem() : OPItems.ELECTRIC_CHARGE);
-        SmallElectricBall abstractarrow = arrowitem.createDart(pLevel, pLivingEntity);
-        abstractarrow.setSoundEvent(SoundEvents.CROSSBOW_HIT);
-        return abstractarrow;
+        ElectricBall electricBall = arrowitem.shootCharge(pLevel, pLivingEntity);
+        electricBall.setSoundEvent(SoundEvents.CROSSBOW_HIT);
+        return electricBall;
     }
 
     public int modifiedGetChargeDuration(ItemStack crossbow) {

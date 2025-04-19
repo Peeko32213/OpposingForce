@@ -1,6 +1,6 @@
 package com.unusualmodding.opposingforce.client.sound;
 
-import com.unusualmodding.opposingforce.common.entity.custom.projectile.SmallElectricBall;
+import com.unusualmodding.opposingforce.common.entity.custom.projectile.ElectricBall;
 import com.unusualmodding.opposingforce.core.registry.OPSounds;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -12,9 +12,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ElectricBallSoundInstance extends AbstractTickableSoundInstance {
 
-    protected final SmallElectricBall electricBall;
+    protected final ElectricBall electricBall;
 
-    public ElectricBallSoundInstance(SmallElectricBall smallElectricBall) {
+    public ElectricBallSoundInstance(ElectricBall smallElectricBall) {
         super(OPSounds.ELECTRIC_CHARGE.get(), SoundSource.NEUTRAL, SoundInstance.createUnseededRandom());
         this.electricBall = smallElectricBall;
         this.x = (float) smallElectricBall.getX();
@@ -22,7 +22,7 @@ public class ElectricBallSoundInstance extends AbstractTickableSoundInstance {
         this.z = (float) smallElectricBall.getZ();
         this.looping = true;
         this.delay = 0;
-        this.volume = 0.4f;
+        this.volume = 0.5f;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ElectricBallSoundInstance extends AbstractTickableSoundInstance {
     }
 
     private float getMaxPitch() {
-        return 1.25f;
+        return 1.2f;
     }
 
     @Override

@@ -3,20 +3,22 @@ package com.unusualmodding.opposingforce.client.event;
 import com.unusualmodding.opposingforce.OpposingForce;
 import com.unusualmodding.opposingforce.client.model.DefaultModel;
 import com.unusualmodding.opposingforce.client.model.TerrorDefaultModel;
+import com.unusualmodding.opposingforce.client.particles.ElectricBallParticle;
 import com.unusualmodding.opposingforce.client.render.PlainGeoRenderer;
-import com.unusualmodding.opposingforce.client.render.SmallElectricBallRenderer;
-import com.unusualmodding.opposingforce.client.render.TomahawkRenderer;
+import com.unusualmodding.opposingforce.client.render.*;
 import com.unusualmodding.opposingforce.client.render.layer.OPGlowingEyeLayer;
 import com.unusualmodding.opposingforce.common.entity.custom.monster.*;
 import com.unusualmodding.opposingforce.common.item.OPItemProperties;
 import com.unusualmodding.opposingforce.core.registry.OPBlocks;
 import com.unusualmodding.opposingforce.core.registry.OPEntities;
+import com.unusualmodding.opposingforce.core.registry.OPParticles;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -26,6 +28,12 @@ public final class ClientEvents {
 
     public static void init(FMLClientSetupEvent event) {
     }
+
+    @SubscribeEvent
+    public static void registerParticleTypes(RegisterParticleProvidersEvent event){
+        event.registerSpecial(OPParticles.ELECTRIC_ORB.get(), new ElectricBallParticle.ElectricOrbFactory());
+    }
+
     @SubscribeEvent
     public static void onClientSetup(final FMLClientSetupEvent event) {
 
@@ -137,7 +145,7 @@ public final class ClientEvents {
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(OPEntities.SMALL_ELECTRICITY_BALL.get(), SmallElectricBallRenderer::new);
+        event.registerEntityRenderer(OPEntities.ELECTRICITY_BALL.get(), SmallElectricBallRenderer::new);
         event.registerEntityRenderer(OPEntities.TOMAHAWK.get(), TomahawkRenderer::new);
 
     }

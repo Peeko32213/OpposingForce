@@ -1,7 +1,7 @@
 package com.unusualmodding.opposingforce.core.registry;
 
 import com.unusualmodding.opposingforce.OpposingForce;
-import com.unusualmodding.opposingforce.common.entity.custom.projectile.AbstractElectricBall;
+import com.unusualmodding.opposingforce.common.entity.custom.projectile.ElectricBall;
 import com.unusualmodding.opposingforce.common.entity.custom.projectile.Tomahawk;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -28,7 +28,7 @@ public class OPDamageTypes {
         return level.damageSources().source(TOMAHAWK, tomahawk, indirectEntity);
     }
 
-    public static DamageSource electrified(Level level, AbstractElectricBall electricBall, @Nullable Entity indirectEntity) {
+    public static DamageSource electrified(Level level, ElectricBall electricBall, @Nullable Entity indirectEntity) {
         return level.damageSources().source(ELECTRIFIED, electricBall, indirectEntity);
     }
 

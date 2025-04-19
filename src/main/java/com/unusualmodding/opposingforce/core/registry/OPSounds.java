@@ -34,6 +34,9 @@ public class OPSounds {
     public static final RegistryObject<SoundEvent> ELECTRIC_CHARGE = createSoundEvent("electrical_charge");
     public static final RegistryObject<SoundEvent> ELECTRIC_CHARGE_DISSIPATE = createSoundEvent("electrical_charge_dissipate");
 
+    public static final RegistryObject<SoundEvent> TESLA_BOW_CHARGED = createSoundEvent("tesla_bow_charged");
+    public static final RegistryObject<SoundEvent> TESLA_BOW_SHOOT = createSoundEvent("tesla_bow_shoot");
+
     private static RegistryObject<SoundEvent> createSoundEvent(final String soundName) {
         return DEF_REG.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(OpposingForce.MODID, soundName)));
     }

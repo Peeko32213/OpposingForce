@@ -54,6 +54,9 @@ public class LanguageGenerator extends LanguageProvider {
         addSound(OPSounds.ELECTRIC_CHARGE, "Electricity whirls");
         addSound(OPSounds.ELECTRIC_CHARGE_DISSIPATE, "Electricity dissipates");
 
+        addSound(OPSounds.TESLA_BOW_CHARGED, "Tesla Bow loads");
+        addSound(OPSounds.TESLA_BOW_SHOOT, "Tesla Bow fires");
+
         addEntityType(OPEntities.DICER, "Dicer");
         addItem(OPItems.DICER_SPAWN_EGG, "Dicer Spawn Egg");
 
@@ -65,7 +68,7 @@ public class LanguageGenerator extends LanguageProvider {
 
         addEntityType(OPEntities.VOLT, "Volt");
         addItem(OPItems.VOLT_SPAWN_EGG, "Volt Spawn Egg");
-        addEntityType(OPEntities.SMALL_ELECTRICITY_BALL, "Small Ball of Electricity");
+        addEntityType(OPEntities.ELECTRICITY_BALL, "Ball of Electricity");
         addItem(OPItems.ELECTRIC_CHARGE, "Electric Charge");
         addEffect(OPEffects.ELECTRIFIED, "Electrified");
         add("death.attack.hole.electrified", "%s met a shocking end");

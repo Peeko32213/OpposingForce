@@ -2,7 +2,6 @@ package com.unusualmodding.opposingforce.common.entity.custom.monster;
 
 import com.google.common.collect.ImmutableMap;
 import com.unusualmodding.opposingforce.common.entity.custom.base.EnhancedMonsterEntity;
-import com.unusualmodding.opposingforce.common.entity.custom.projectile.SmallElectricBall;
 import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.SmartNearestTargetGoal;
 import com.unusualmodding.opposingforce.common.entity.state.StateHelper;
 import com.unusualmodding.opposingforce.common.entity.state.WeightedState;
@@ -117,7 +116,6 @@ public class VoltEntity extends EnhancedMonsterEntity {
         this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.goalSelector.addGoal(3, new VoltEntity.VoltShootElectricBall(this));
         this.goalSelector.addGoal(3, new VoltEntity.VoltLookGoal(this));
 
     }
@@ -214,59 +212,6 @@ public class VoltEntity extends EnhancedMonsterEntity {
                 }
             }
 
-        }
-    }
-
-    static class VoltShootElectricBall extends Goal {
-        private final VoltEntity ghast;
-        public int chargeTime;
-
-        public VoltShootElectricBall(VoltEntity pGhast) {
-            this.ghast = pGhast;
-        }
-
-        public boolean canUse() {
-            return this.ghast.getTarget() != null;
-        }
-
-        public void start() {
-            this.chargeTime = 0;
-        }
-
-        public void stop() {
-            this.ghast.setCharging(false);
-        }
-
-        public boolean requiresUpdateEveryTick() {
-            return true;
-        }
-
-        public void tick() {
-            LivingEntity livingentity = this.ghast.getTarget();
-            if (livingentity != null) {
-                double d0 = 64.0D;
-                if (livingentity.distanceToSqr(this.ghast) < 4096.0D && this.ghast.hasLineOfSight(livingentity)) {
-                    Level level = this.ghast.level();
-                    ++this.chargeTime;
-
-                    if (this.chargeTime == 10) {
-                        double d1 = 4.0D;
-                        Vec3 vec3 = this.ghast.getViewVector(1.0F);
-                        double d2 = livingentity.getX() - (this.ghast.getX() + vec3.x * 4.0D);
-                        double d3 = livingentity.getY(0.5D) - (0.5D + this.ghast.getY(0.5D));
-                        double d4 = livingentity.getZ() - (this.ghast.getZ() + vec3.z * 4.0D);
-
-                        SmallElectricBall largefireball = new SmallElectricBall(level, this.ghast, d2, d3, d4);
-                        largefireball.setPos(this.ghast.getX() + vec3.x * 0.0D, this.ghast.getY(0.5D) + 0.5D, largefireball.getZ() + vec3.z * 0.0D);
-                        level.addFreshEntity(largefireball);
-                        this.chargeTime = -20;
-                    }
-                } else if (this.chargeTime > 0) {
-                    --this.chargeTime;
-                }
-
-                this.ghast.setCharging(this.chargeTime > 5);
-            }
         }
     }
 
