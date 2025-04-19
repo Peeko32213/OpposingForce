@@ -49,7 +49,7 @@ public class TomahawkRenderer extends EntityRenderer<Tomahawk> {
                 matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F));
                 matrixStackIn.translate(0.0F, -0.175F, 0.0F);
 
-                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(-(entity.tickCount + partialTicks) * 45 % 360));
+                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(-(entity.tickCount + partialTicks) * -45 % 360));
             }
             else {
                 matrixStackIn.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));

@@ -65,10 +65,10 @@ public class OPItems {
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> ELECTRIC_CHARGE = ITEMS.register("electric_charge",
-            () -> new ElectricChargeItem(OPEntities.ELECTRICITY_BALL, new Item.Properties()));
+            () -> new ElectricChargeItem(OPEntities.ELECTRICITY_BALL, (new Item.Properties()).stacksTo(32)));
 
     public static final RegistryObject<Item> TOMAHAWK =  ITEMS.register("tomahawk",
-            () -> new TomahawkItem(4, -2.2F, (new Item.Properties()).stacksTo(16)));
+            () -> new TomahawkItem(4, -2.2F, (new Item.Properties()).stacksTo(64)));
 
     public static final RegistryObject<Item> TESLA_BOW = ITEMS.register("tesla_bow",
             () -> new TeslaBowItem(new Item.Properties().stacksTo(1).durability(465)));
@@ -78,7 +78,6 @@ public class OPItems {
 
     public static final RegistryObject<Item> VILE_BOULDER = ITEMS.register("vile_boulder",
             () -> new VileBoulderItem(OPTiers.VILE,  8, -2.4F, new Item.Properties()));
-
 
     private static RegistryObject<ForgeSpawnEggItem> registerSpawnEggs(String name, Supplier<? extends EntityType<? extends Mob>> type, int backgroundColor, int highlightColor) {
         return ITEMS.register(name, () -> new ForgeSpawnEggItem(type, backgroundColor, highlightColor,new Item.Properties()));

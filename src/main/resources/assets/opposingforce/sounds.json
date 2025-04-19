@@ -1,62 +1,41 @@
 {
   "umber_spider_death": {
     "sounds": [
-      {
-        "name": "hole:umber_spider_death",
-        "volume": 0.35
-      }
+      "opposingforce:entity/umber_spider/death_0"
     ],
-    "subtitle": "hole.sound.subtitle.umber_spider_death"
+    "subtitle": "opposingforce.sound.subtitle.umber_spider_death"
   },
   "umber_spider_hurt": {
     "sounds": [
-      {
-        "name": "hole:umber_spider_hurt",
-        "volume": 0.35
-      }
+      "opposingforce:entity/umber_spider/hurt_0"
     ],
-    "subtitle": "hole.sound.subtitle.umber_spider_hurt"
+    "subtitle": "opposingforce.sound.subtitle.umber_spider_hurt"
   },
   "umber_spider_idle": {
     "sounds": [
-      {
-        "name": "hole:umber_spider_idle",
-        "volume": 0.35
-      }
+      "opposingforce:entity/umber_spider/idle_0"
     ],
-    "subtitle": "hole.sound.subtitle.umber_spider_idle"
+    "subtitle": "opposingforce.sound.subtitle.umber_spider_idle"
   },
 
   "ramble_death": {
     "sounds": [
-      {
-        "name": "hole:ramble_death",
-        "volume": 0.35
-      }
+      "opposingforce:entity/ramble/death_0"
     ],
-    "subtitle": "hole.sound.subtitle.ramble_death"
-  },
-  "ramble_hurt": {
-    "sounds": [
-      {
-        "name": "hole:ramble_hurt",
-        "volume": 0.35
-      }
-    ],
-    "subtitle": "hole.sound.subtitle.ramble_hurt"
+    "subtitle": "opposingforce.sound.subtitle.ramble_death"
   },
   "ramble_idle": {
     "sounds": [
-      {
-        "name": "hole:ramble_idle_0",
-        "volume": 0.35
-      },
-      {
-        "name": "hole:ramble_idle_1",
-        "volume": 0.35
-      }
+      "opposingforce:entity/ramble/idle_0",
+      "opposingforce:entity/ramble/idle_1"
     ],
-    "subtitle": "hole.sound.subtitle.ramble_idle"
+    "subtitle": "opposingforce.sound.subtitle.ramble_idle"
+  },
+  "ramble_attack": {
+    "sounds": [
+      "opposingforce:entity/ramble/attack_0"
+    ],
+    "subtitle": "opposingforce.sound.subtitle.ramble_attack"
   },
 
   "dicer_death": {

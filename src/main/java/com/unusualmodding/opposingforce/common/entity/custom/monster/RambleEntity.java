@@ -94,7 +94,7 @@ public class RambleEntity extends AbstractMonster implements GeoAnimatable, GeoE
     }
 
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return OPSounds.RAMBLE_HURT.get();
+        return SoundEvents.SKELETON_HURT;
     }
 
     protected SoundEvent getDeathSound() {

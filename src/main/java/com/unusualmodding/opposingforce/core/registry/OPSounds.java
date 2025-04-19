@@ -18,7 +18,7 @@ public class OPSounds {
     public static final RegistryObject<SoundEvent> UMBER_SPIDER_IDLE = createSoundEvent("umber_spider_idle");
 
     public static final RegistryObject<SoundEvent> RAMBLE_DEATH = createSoundEvent("ramble_death");
-    public static final RegistryObject<SoundEvent> RAMBLE_HURT = createSoundEvent("ramble_hurt");
+    public static final RegistryObject<SoundEvent> RAMBLE_ATTACK = createSoundEvent("ramble_attack");
     public static final RegistryObject<SoundEvent> RAMBLE_IDLE = createSoundEvent("ramble_idle");
 
     public static final RegistryObject<SoundEvent> DICER_DEATH = createSoundEvent("dicer_death");

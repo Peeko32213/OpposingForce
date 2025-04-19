@@ -59,7 +59,7 @@ public class OPEntities {
 
     public static final RegistryObject<EntityType<ElectricBall>> ELECTRICITY_BALL = ENTITIES.register(
             "electric_ball", () -> EntityType.Builder.<ElectricBall>of(ElectricBall::new, MobCategory.MISC)
-                    .sized(0.5F, 0.5F).clientTrackingRange(9).updateInterval(10)
+                    .sized(0.75F, 0.75F).clientTrackingRange(9).updateInterval(10)
                     .build(new ResourceLocation(OpposingForce.MODID, "electric_ball").toString()));
 
     public static final RegistryObject<EntityType<FrowzyEntity>> FROWZY = ENTITIES.register("frowzy",

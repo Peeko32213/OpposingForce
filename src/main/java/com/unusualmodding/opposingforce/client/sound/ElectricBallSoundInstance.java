@@ -22,7 +22,7 @@ public class ElectricBallSoundInstance extends AbstractTickableSoundInstance {
         this.z = (float) smallElectricBall.getZ();
         this.looping = true;
         this.delay = 0;
-        this.volume = 0.5f;
+        this.volume = 0.6f;
     }
 
     @Override

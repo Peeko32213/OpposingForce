@@ -38,7 +38,7 @@ public class LanguageGenerator extends LanguageProvider {
         addItem(OPItems.RAMBLE_SPAWN_EGG, "Ramble Spawn Egg");
 
         addSound(OPSounds.RAMBLE_DEATH, "Ramble dies");
-        addSound(OPSounds.RAMBLE_HURT, "Ramble hurts");
+        addSound(OPSounds.RAMBLE_ATTACK, "Ramble slices");
         addSound(OPSounds.RAMBLE_IDLE, "Ramble clatters");
 
         addSound(OPSounds.DICER_DEATH, "Dicer dies");
