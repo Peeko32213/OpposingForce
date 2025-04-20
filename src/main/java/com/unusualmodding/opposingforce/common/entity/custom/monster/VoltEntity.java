@@ -1,7 +1,8 @@
 package com.unusualmodding.opposingforce.common.entity.custom.monster;
 
 import com.google.common.collect.ImmutableMap;
-import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.attack.VoltAttackGoal;
+import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.volt.VoltAttackGoal;
+import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.volt.VoltJumpGoal;
 import com.unusualmodding.opposingforce.common.entity.custom.base.EnhancedMonsterEntity;
 import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.SmartNearestTargetGoal;
 import com.unusualmodding.opposingforce.common.entity.state.StateHelper;
@@ -16,13 +17,11 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -32,7 +31,6 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
@@ -40,7 +38,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -49,12 +46,14 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.keyframe.event.SoundKeyframeEvent;
 import software.bernie.geckolib.core.object.PlayState;
 
-import java.util.EnumSet;
 import java.util.List;
 
 public class VoltEntity extends EnhancedMonsterEntity {
 
-    private static final EntityDataAccessor<Boolean> DATA_IS_CHARGING = SynchedEntityData.defineId(VoltEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> LEAPING = SynchedEntityData.defineId(VoltEntity.class, EntityDataSerializers.BOOLEAN);
+
+    private float leapProgress;
+    private int timeLeaping = 0;
 
     private static final RawAnimation VOLT_IDLE = RawAnimation.begin().thenLoop("animation.volt.idle");
     private static final RawAnimation VOLT_IDLE_JAW = RawAnimation.begin().thenPlay("animation.volt.idle_jaw");
@@ -86,8 +85,53 @@ public class VoltEntity extends EnhancedMonsterEntity {
                 .add(Attributes.ATTACK_DAMAGE, 8.0F);
     }
 
-    public static <T extends Mob> boolean canFirstTierSpawn(EntityType<VoltEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
+    protected void registerGoals() {
+        this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new VoltAttackGoal(this));
+        this.goalSelector.addGoal(2, new VoltJumpGoal(this));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+    }
 
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(LEAPING, false);
+    }
+
+    public void tick() {
+        super.tick();
+        if (isLeaping() && leapProgress < 5F) {
+            leapProgress++;
+        }
+        if (!isLeaping() && leapProgress > 0F) {
+            leapProgress--;
+        }
+        if (this.isLeaping()) {
+            if (this.onGround() && leapProgress >= 5.0F) {
+                this.setLeaping(false);
+            }
+            timeLeaping++;
+        } else {
+            timeLeaping = 0;
+            if (this.onGround() && !level().isClientSide) {
+                this.setLeaping(true);
+                this.playSound(SoundEvents.SLIME_JUMP, this.getSoundVolume(), this.getVoicePitch());
+            }
+        }
+    }
+
+    public boolean isLeaping() {
+        return this.entityData.get(LEAPING);
+    }
+
+    public void setLeaping(boolean leaping) {
+        this.entityData.set(LEAPING, leaping);
+    }
+
+    public static <T extends Mob> boolean canFirstTierSpawn(EntityType<VoltEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
         boolean isDeepDark = iServerWorld.getBiome(pos).is(Biomes.DEEP_DARK);
         return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 30 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
     }
@@ -109,16 +153,6 @@ public class VoltEntity extends EnhancedMonsterEntity {
                 return j <= dimension.monsterSpawnLightTest().sample(random);
             }
         }
-    }
-
-    protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new VoltAttackGoal(this));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
 
     // Sounds
@@ -152,19 +186,6 @@ public class VoltEntity extends EnhancedMonsterEntity {
         return super.isInvulnerableTo(source) || source.is(DamageTypeTags.IS_FALL) || source.is(DamageTypes.IN_WALL) || source.is(DamageTypeTags.IS_DROWNING) ;
     }
 
-    public boolean isCharging() {
-        return this.entityData.get(DATA_IS_CHARGING);
-    }
-
-    public void setCharging(boolean pCharging) {
-        this.entityData.set(DATA_IS_CHARGING, pCharging);
-    }
-
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_IS_CHARGING, false);
-    }
-
     public static <T extends Mob> boolean canSecondTierSpawn(EntityType<VoltEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
         boolean isDeepDark = iServerWorld.getBiome(pos).is(Biomes.DEEP_DARK);
         return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 0 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
@@ -178,21 +199,6 @@ public class VoltEntity extends EnhancedMonsterEntity {
     @Override
     public List<WeightedState<StateHelper>> getWeightedStatesToPerform() {
         return List.of();
-    }
-
-    @Override
-    public void travel(Vec3 pTravelVector) {
-        if(this.isCharging()) {
-            if (this.getNavigation().getPath() != null) {
-                this.getNavigation().stop();
-
-            }
-            pTravelVector = Vec3.ZERO;
-            super.travel(pTravelVector);
-        }
-        else{
-            super.travel(pTravelVector);
-        }
     }
 
     // Animation sounds
@@ -217,7 +223,7 @@ public class VoltEntity extends EnhancedMonsterEntity {
     }
 
     protected <E extends VoltEntity> PlayState predicate(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
-        if (!this.isCharging()) {
+        if (!(this.getAttackState() > 0)) {
             if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
                 event.setAndContinue(VOLT_WALK);
             } else {
