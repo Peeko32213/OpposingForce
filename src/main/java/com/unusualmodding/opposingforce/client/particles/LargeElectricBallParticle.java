@@ -18,20 +18,20 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Vector4f;
 
-public class ElectricBallParticle extends Particle {
+public class LargeElectricBallParticle extends Particle {
 
     private LightningRender lightningRender = new LightningRender();
 
-    public ElectricBallParticle(ClientLevel world, double x, double y, double z, double xd, double yd, double zd) {
+    public LargeElectricBallParticle(ClientLevel world, double x, double y, double z, double xd, double yd, double zd) {
         super(world, x, y, z);
         this.setSize(3.0F, 3.0F);
         this.x = x;
-        this.y = y + 0.5;
+        this.y = y + 0.75;
         this.z = z;
         this.xd = 0;
         this.yd = 0;
         this.zd = 0;
-        Vec3 lightningTo = findLightningToPos(world, x, y, z, 2 + random.nextInt(2));
+        Vec3 lightningTo = findLightningToPos(world, x, y, z, 4 + random.nextInt(3));
         Vec3 to = lightningTo.subtract(x, y, z);
         this.lifetime = (int) Math.ceil(to.length());
         int sections = 6 * this.lifetime;
@@ -76,16 +76,17 @@ public class ElectricBallParticle extends Particle {
             this.remove();
         } else {
             this.move(this.xd, this.yd, this.zd);
-            this.yd -= this.gravity;
+            this.yd -= (double) this.gravity;
         }
     }
+
 
     public void render(VertexConsumer consumer, Camera camera, float partialTick) {
         MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
         Vec3 cameraPos = camera.getPosition();
-        float x = (float) (Mth.lerp(partialTick, this.xo, this.x));
-        float y = (float) (Mth.lerp(partialTick, this.yo, this.y));
-        float z = (float) (Mth.lerp(partialTick, this.zo, this.z));
+        float x = (float) (Mth.lerp((double) partialTick, this.xo, this.x));
+        float y = (float) (Mth.lerp((double) partialTick, this.yo, this.y));
+        float z = (float) (Mth.lerp((double) partialTick, this.zo, this.z));
         PoseStack posestack = new PoseStack();
         posestack.pushPose();
         posestack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
@@ -107,7 +108,7 @@ public class ElectricBallParticle extends Particle {
         }
 
         public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new ElectricBallParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
+            return new LargeElectricBallParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
         }
     }
 }

@@ -45,7 +45,7 @@ public class DicerAttackGoal extends Goal {
                 case 21, 22 -> tickTailStabAttack();
                 case 23 -> tickClawAttack();
                 default -> {
-                    this.dicer.getNavigation().moveTo(target, 1.0D);
+                    this.dicer.getNavigation().moveTo(target, 2.25D);
                     this.checkForCloseRangeAttack(distance);
                 }
             }

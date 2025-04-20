@@ -37,6 +37,7 @@ public class OpposingForce {
         OPBlocks.BLOCKS.register(bus);
         OPEffects.EFFECT_DEF_REG.register(bus);
         OPParticles.PARTICLE_TYPES.register(bus);
+        OPEnchantments.ENCHANTMENTS.register(bus);
         OPWorldGen.register();
 
         MinecraftForge.EVENT_BUS.register(this);

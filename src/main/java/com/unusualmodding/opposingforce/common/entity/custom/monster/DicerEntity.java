@@ -1,15 +1,21 @@
 package com.unusualmodding.opposingforce.common.entity.custom.monster;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.SmartNearestTargetGoal;
 import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.attack.DicerAttackGoal;
 import com.unusualmodding.opposingforce.common.entity.custom.base.EnhancedMonsterEntity;
+import com.unusualmodding.opposingforce.common.entity.state.EntityAction;
+import com.unusualmodding.opposingforce.common.entity.state.RandomStateGoal;
 import com.unusualmodding.opposingforce.common.entity.state.StateHelper;
 import com.unusualmodding.opposingforce.common.entity.state.WeightedState;
 import com.unusualmodding.opposingforce.common.entity.util.helper.SmartBodyHelper;
 import com.unusualmodding.opposingforce.common.entity.util.navigator.SmoothGroundNavigation;
 import com.unusualmodding.opposingforce.core.registry.OPSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
@@ -41,6 +47,7 @@ import software.bernie.geckolib.core.keyframe.event.SoundKeyframeEvent;
 import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public class DicerEntity extends EnhancedMonsterEntity implements GeoAnimatable, GeoEntity {
 
@@ -58,13 +65,59 @@ public class DicerEntity extends EnhancedMonsterEntity implements GeoAnimatable,
     private static final RawAnimation DICER_TAIL_STAB2 = RawAnimation.begin().thenLoop("animation.dicer.tail_stab2");
     private static final RawAnimation DICER_CLAW = RawAnimation.begin().thenLoop("animation.dicer.claw");
 
+    // Idle accessors
+    private static final EntityDataAccessor<Boolean> WALK_ALERT = SynchedEntityData.defineId(DicerEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> IDLE_ALERT = SynchedEntityData.defineId(DicerEntity.class, EntityDataSerializers.BOOLEAN);
+
+    // Starting predicates
+    private static final Predicate<LivingEntity> DICER_WALK_ALERT_PREDICATE = (e -> {
+        if(e instanceof DicerEntity entity) {
+            return !entity.isStillEnough() && !entity.isRunning();
+        }
+        return false;
+    });
+
+    private static final Predicate<LivingEntity> DICER_IDLE_ALERT_PREDICATE = (e -> {
+        if(e instanceof DicerEntity entity) {
+            return entity.isStillEnough() && !entity.isRunning();
+        }
+        return false;
+    });
+
+    // Idle actions
+    private static final EntityAction DICER_WALK_ALERT_ACTION = new EntityAction(0, (e) -> {}, 1);
+    private static final StateHelper DICER_WALK_ALERT_STATE =
+            StateHelper.Builder.state(WALK_ALERT, "dicer_alert_walk")
+                    .playTime(320)
+                    .stopTime(180)
+                    .startingPredicate(DICER_WALK_ALERT_PREDICATE)
+                    .entityAction(DICER_WALK_ALERT_ACTION)
+                    .build();
+
+    private static final EntityAction DICER_IDLE_ALERT_ACTION = new EntityAction(0, (e) -> {}, 1);
+    private static final StateHelper DICER_IDLE_ALERT_STATE =
+            StateHelper.Builder.state(IDLE_ALERT, "dicer_alert_idle")
+                    .playTime(320)
+                    .stopTime(180)
+                    .startingPredicate(DICER_IDLE_ALERT_PREDICATE)
+                    .entityAction(DICER_IDLE_ALERT_ACTION)
+                    .build();
+
+    // States
     @Override
     public ImmutableMap<String, StateHelper> getStates() {
-        return null;
+        return ImmutableMap.of(
+                DICER_WALK_ALERT_STATE.getName(), DICER_WALK_ALERT_STATE,
+                DICER_IDLE_ALERT_STATE.getName(), DICER_IDLE_ALERT_STATE
+        );
     }
+
     @Override
     public List<WeightedState<StateHelper>> getWeightedStatesToPerform() {
-        return List.of();
+        return ImmutableList.of(
+                WeightedState.of(DICER_WALK_ALERT_STATE, 8),
+                WeightedState.of(DICER_IDLE_ALERT_STATE, 8)
+        );
     }
 
     // Body control / navigation
@@ -94,6 +147,7 @@ public class DicerEntity extends EnhancedMonsterEntity implements GeoAnimatable,
     }
 
     protected void registerGoals() {
+        this.goalSelector.addGoal(0, new RandomStateGoal<>(this));
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(1, new DicerAttackGoal(this));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -103,16 +157,10 @@ public class DicerEntity extends EnhancedMonsterEntity implements GeoAnimatable,
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
 
-    public void tick() {
-        super.tick();
-        if (isRunning() && !hasRunningAttributes) {
-            hasRunningAttributes = true;
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.4D);
-        }
-        if (!isRunning() && hasRunningAttributes) {
-            hasRunningAttributes = false;
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18D);
-        }
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(WALK_ALERT, false);
+        this.entityData.define(IDLE_ALERT, false);
     }
 
     // Sounds
@@ -192,7 +240,7 @@ public class DicerEntity extends EnhancedMonsterEntity implements GeoAnimatable,
                 event.setAndContinue(DICER_RUN);
             }
             else {
-                if (this.getLookControl().isLookingAtTarget()) {
+                if (this.getBooleanState(WALK_ALERT)) {
                     event.setAndContinue(DICER_WALK_ALERT);
                 }
                 else event.setAndContinue(DICER_WALK);
@@ -200,7 +248,7 @@ public class DicerEntity extends EnhancedMonsterEntity implements GeoAnimatable,
             event.getController().setAnimationSpeed(1.0D);
         }
         else {
-            if (this.getLookControl().isLookingAtTarget()) {
+            if (this.getBooleanState(IDLE_ALERT)) {
                 event.setAndContinue(DICER_IDLE_ALERT);
             }
             else event.setAndContinue(DICER_IDLE);

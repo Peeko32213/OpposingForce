@@ -404,10 +404,6 @@ public class GuzzlerEntity extends EnhancedMonsterEntity implements GeoAnimatabl
         }
     }
 
-    private boolean isStillEnough() {
-        return this.getDeltaMovement().horizontalDistance() < 0.05;
-    }
-
     protected <E extends GuzzlerEntity> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
         if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6   && !getBooleanState(IDLE_2_AC) && !getBooleanState(IDLE_3_AC)) {
             event.setAndContinue(WALK);

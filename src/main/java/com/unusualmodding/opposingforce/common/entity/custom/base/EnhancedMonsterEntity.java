@@ -24,8 +24,6 @@ public  abstract class EnhancedMonsterEntity extends Monster implements IStateAc
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public boolean hasRunningAttributes = false;
-
     protected EnhancedMonsterEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
     }
@@ -66,6 +64,10 @@ public  abstract class EnhancedMonsterEntity extends Monster implements IStateAc
             pTravelVector = Vec3.ZERO;
         }
         super.travel(pTravelVector);
+    }
+
+    public boolean isStillEnough() {
+        return this.getDeltaMovement().horizontalDistance() < 0.05;
     }
 
     // Set running

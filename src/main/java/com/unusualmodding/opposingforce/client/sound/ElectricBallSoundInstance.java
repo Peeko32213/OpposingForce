@@ -39,11 +39,17 @@ public class ElectricBallSoundInstance extends AbstractTickableSoundInstance {
     }
 
     private float getMinPitch() {
-        return 1.0f;
+        if (this.electricBall.getChargeScale() >= 2.0F) {
+            return 0.85f;
+        }
+        else return 1.0f;
     }
 
     private float getMaxPitch() {
-        return 1.2f;
+        if (this.electricBall.getChargeScale() >= 2.0F) {
+            return 1.0f;
+        }
+        else return 1.2f;
     }
 
     @Override

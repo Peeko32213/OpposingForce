@@ -37,9 +37,9 @@ public class TomahawkRenderer extends EntityRenderer<Tomahawk> {
         if (entity.tickCount >= 2 || !(this.entityRenderDispatcher.camera.getEntity().distanceToSqr(entity) < 12.25D)) {
             matrixStackIn.pushPose();
 
-            float shurikenScale = 1.5F;
+            float tomahawkScale = 1.5F;
             matrixStackIn.scale(this.scale, this.scale, this.scale);
-            matrixStackIn.scale(shurikenScale, shurikenScale, shurikenScale);
+            matrixStackIn.scale(tomahawkScale, tomahawkScale, tomahawkScale);
 
             if (!entity.inGround) {
                 matrixStackIn.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
@@ -66,7 +66,7 @@ public class TomahawkRenderer extends EntityRenderer<Tomahawk> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Tomahawk shuriken) {
+    public ResourceLocation getTextureLocation(Tomahawk tomahawk) {
         return TextureAtlas.LOCATION_BLOCKS;
     }
 }
