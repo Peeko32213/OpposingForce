@@ -83,7 +83,7 @@ public final class ClientEvents {
             return render;
         });
 
-        EntityRenderers.register(OPEntities.HOPPER.get(), (ctx) -> {
+        EntityRenderers.register(OPEntities.BOUNCER.get(), (ctx) -> {
             PlainGeoRenderer<HopperEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("hopper"));
             return render;
         });
@@ -137,7 +137,7 @@ public final class ClientEvents {
         ItemBlockRenderTypes.setRenderLayer(OPBlocks.LIME_NUB.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(OPBlocks.POP_CAP.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(OPBlocks.PURPLE_KNOB.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(OPBlocks.QUEEN_IN_PURPLE.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(OPBlocks.QUEEN_IN_MAGENTA.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(OPBlocks.SLATESHROOM.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(OPBlocks.SLIPPERY_TOP.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(OPBlocks.WHITECAP.get(), RenderType.cutout());

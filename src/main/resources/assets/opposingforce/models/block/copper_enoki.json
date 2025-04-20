@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "hole:block/copper_enoki"
+    "cross": "opposingforce:block/copper_enoki"
   }
 }

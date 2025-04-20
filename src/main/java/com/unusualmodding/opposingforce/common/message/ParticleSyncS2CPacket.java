@@ -18,16 +18,17 @@ public class ParticleSyncS2CPacket {
 
     private final float blockX, blockY, blockZ;
     private final float attackX, attackY, attackZ;
+    public boolean large;
 
-    public ParticleSyncS2CPacket(float blockX, float blockY, float blockZ, float attackX, float attackY, float attackZ) {
+    public ParticleSyncS2CPacket(float blockX, float blockY, float blockZ, float attackX, float attackY, float attackZ, boolean large) {
         this.blockX = blockX;
         this.blockY = blockY;
         this.blockZ = blockZ;
         this.attackX = attackX;
         this.attackY = attackY;
         this.attackZ = attackZ;
+        this.large = large;
     }
-
 
     public ParticleSyncS2CPacket(FriendlyByteBuf buf) {
         this.blockX = buf.readFloat();
@@ -38,7 +39,6 @@ public class ParticleSyncS2CPacket {
         this.attackZ = buf.readFloat();
     }
 
-
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeFloat(blockX);
         buf.writeFloat(blockY);
@@ -48,15 +48,16 @@ public class ParticleSyncS2CPacket {
         buf.writeFloat(attackZ);
     }
 
-
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
             ClientLevel level = Minecraft.getInstance().level;
-            if(level != null) {
-                level.addParticle(OPParticles.ELECTRIC_ORB.get(),
-                        blockX, blockY, blockZ,
-                        attackX, attackY, attackZ);
+            if (level != null) {
+                // TODO make size (findLightningToPos range) dynamic based on ball scale instead of this
+                if (this.large) {
+                    level.addParticle(OPParticles.LARGE_ELECTRIC_ORB.get(), blockX, blockY, blockZ, attackX, attackY, attackZ);
+                }
+                else level.addParticle(OPParticles.ELECTRIC_ORB.get(), blockX, blockY, blockZ, attackX, attackY, attackZ);
             }
         });
         return true;

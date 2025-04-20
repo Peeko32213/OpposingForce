@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "hole:block/raincap"
+    "cross": "opposingforce:block/raincap"
   }
 }

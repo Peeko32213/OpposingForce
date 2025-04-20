@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "hole:block/whitecap"
+      "model": "opposingforce:block/whitecap"
     }
   }
 }

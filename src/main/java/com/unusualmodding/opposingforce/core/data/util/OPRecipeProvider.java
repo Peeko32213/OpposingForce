@@ -1,4 +1,4 @@
-package com.unusualmodding.opposingforce.core.datagen.util;
+package com.unusualmodding.opposingforce.core.data.util;
 
 import com.unusualmodding.opposingforce.OpposingForce;
 import net.minecraft.core.registries.BuiltInRegistries;

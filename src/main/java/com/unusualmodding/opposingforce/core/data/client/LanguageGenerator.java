@@ -1,4 +1,4 @@
-package com.unusualmodding.opposingforce.core.datagen.client;
+package com.unusualmodding.opposingforce.core.data.client;
 
 import com.mojang.logging.LogUtils;
 import com.unusualmodding.opposingforce.OpposingForce;
@@ -9,9 +9,13 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.common.data.LanguageProvider;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.commons.lang3.text.WordUtils;
 import org.slf4j.Logger;
 
 import java.util.function.Supplier;
+
+import static java.lang.String.format;
 
 public class LanguageGenerator extends LanguageProvider {
     public LanguageGenerator(PackOutput output) {
@@ -78,8 +82,8 @@ public class LanguageGenerator extends LanguageProvider {
         addEntityType(OPEntities.WIZZ, "Whizz");
         addItem(OPItems.WIZZ_SPAWN_EGG, "Whizz Spawn Egg");
 
-        addEntityType(OPEntities.HOPPER, "Bouncer");
-        addItem(OPItems.HOPPER_SPAWN_EGG, "Bouncer Spawn Egg");
+        addEntityType(OPEntities.BOUNCER, "Bouncer");
+        addItem(OPItems.BOUNCER_SPAWN_EGG, "Bouncer Spawn Egg");
 
         addEntityType(OPEntities.FROWZY, "Frowzy");
         addItem(OPItems.FROWZY_SPAWN_EGG, "Frowzy Spawn Egg");
@@ -104,7 +108,7 @@ public class LanguageGenerator extends LanguageProvider {
         addBlock(OPBlocks.LIME_NUB, "Lime Nub");
         addBlock(OPBlocks.POP_CAP, "Pop Cap");
         addBlock(OPBlocks.PURPLE_KNOB, "Purple Knob");
-        addBlock(OPBlocks.QUEEN_IN_PURPLE, "Queen in Magenta");
+        addBlock(OPBlocks.QUEEN_IN_MAGENTA, "Queen in Magenta");
         addBlock(OPBlocks.SLATESHROOM, "Slate Shroom");
         addBlock(OPBlocks.SLIPPERY_TOP, "Slippery Top");
         addBlock(OPBlocks.WHITECAP, "White Cap");
@@ -123,6 +127,10 @@ public class LanguageGenerator extends LanguageProvider {
 
         addEntityType(OPEntities.SPINDLE, "Spindle");
         addItem(OPItems.SPINDLE_SPAWN_EGG, "Spindle Spawn Egg");
+
+        addEnchantmentWithDesc(OPEnchantments.BIG_ELECTRIC_BALL.get(), "Increases the size of the fired electric charge");
+        addEnchantmentWithDesc(OPEnchantments.BOUNCY_ELECTRIC_BALL.get(), "The fired electric charge bounces off blocks and passes through mobs");
+        addEnchantmentWithDesc(OPEnchantments.KICKBACK.get(), "Launches the user backwards after firing");
     }
 
     @Override
@@ -138,6 +146,16 @@ public class LanguageGenerator extends LanguageProvider {
         add(OpposingForce.MODID + ".sound.subtitle." + key.get().getLocation().getPath(), name);
     }
 
+    private void addEnchantmentWithDesc(Enchantment enchantment, String description) {
+        String name = ForgeRegistries.ENCHANTMENTS.getKey(enchantment).getPath();
+        this.add(enchantment, formatEnchantment(name));
+        this.add(enchantment.getDescriptionId() + ".desc", description);
+    }
+
+    private String formatEnchantment(String path) {
+        return WordUtils.capitalizeFully(path.replace("_", " ")).replace("Of ", "of ");
+    }
+
     public void addTabName(CreativeModeTab key, String name){
         add(key.getDisplayName().getString(), name);
     }
@@ -148,10 +166,6 @@ public class LanguageGenerator extends LanguageProvider {
 
     public void addPotion(Supplier<? extends Potion> key, String name, String regName) {
         add(key.get(), name, regName);
-    }
-
-    public void addEnchantDescription(String description, Enchantment enchantment){
-        add(enchantment.getDescriptionId() + ".desc", description);
     }
 
     public void add(Potion key, String name, String regName) {

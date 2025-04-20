@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "hole:block/blue_trumpet"
+      "model": "opposingforce:block/blue_trumpet"
     }
   }
 }

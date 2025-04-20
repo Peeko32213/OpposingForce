@@ -1,6 +1,6 @@
 {
   "parent" : "item/generated",
   "textures" : {
-    "layer0" : "opposingforce:block/queen_in_purple"
+    "layer0" : "opposingforce:block/queen_in_magenta"
   }
 }

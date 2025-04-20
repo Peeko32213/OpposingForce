@@ -31,7 +31,7 @@ public class ElectricBallParticle extends Particle {
         this.xd = 0;
         this.yd = 0;
         this.zd = 0;
-        Vec3 lightningTo = findLightningToPos(world, x, y, z, 2 + random.nextInt(2));
+        Vec3 lightningTo = findLightningToPos(world, x, y, z, 1 + random.nextInt(2));
         Vec3 to = lightningTo.subtract(x, y, z);
         this.lifetime = (int) Math.ceil(to.length());
         int sections = 6 * this.lifetime;
@@ -48,7 +48,7 @@ public class ElectricBallParticle extends Particle {
         return false;
     }
 
-    private Vec3 findLightningToPos(ClientLevel world, double x, double y, double z, int range) {
+    public Vec3 findLightningToPos(ClientLevel world, double x, double y, double z, int range) {
         Vec3 vec3 = new Vec3(x, y, z);
         for (int i = 0; i < 10; i++) {
             Vec3 vec31 = vec3.add(random.nextFloat() * range - range / 2F, random.nextFloat() * range - range / 2F, random.nextFloat() * range - range / 2F);

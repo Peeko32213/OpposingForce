@@ -218,9 +218,9 @@ public class OPBlocks {
             () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, OPBlocks.PURPLE_KNOB, BlockBehaviour
                     .Properties.copy(Blocks.POTTED_DANDELION).noOcclusion()));
 
-    public static final RegistryObject<Block> QUEEN_IN_PURPLE = register("queen_in_purple", () ->
+    public static final RegistryObject<Block> QUEEN_IN_MAGENTA = register("queen_in_magenta", () ->
             new OPMushroomBlock(BlockBehaviour.Properties
-                    .of().mapColor(MapColor.TERRACOTTA_PURPLE)
+                    .of().mapColor(MapColor.TERRACOTTA_MAGENTA)
                     .replaceable().noCollission()
                     .instabreak()
                     .sound(SoundType.GRASS)
@@ -228,8 +228,8 @@ public class OPBlocks {
                     .offsetType(BlockBehaviour.OffsetType.XZ)
                     .pushReaction(PushReaction.DESTROY)));
 
-    public static final RegistryObject<Block> POTTED_QUEEN_IN_PURPLE = registerBlockNoItem("potted_queen_in_purple",
-            () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, OPBlocks.QUEEN_IN_PURPLE, BlockBehaviour
+    public static final RegistryObject<Block> POTTED_QUEEN_IN_PURPLE = registerBlockNoItem("potted_queen_in_magenta",
+            () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, OPBlocks.QUEEN_IN_MAGENTA, BlockBehaviour
                     .Properties.copy(Blocks.POTTED_DANDELION).noOcclusion()));
 
     public static final RegistryObject<Block> SLATESHROOM = register("slateshroom", () ->

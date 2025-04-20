@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "hole:block/cave_patty"
+    "cross": "opposingforce:block/cave_patty"
   }
 }

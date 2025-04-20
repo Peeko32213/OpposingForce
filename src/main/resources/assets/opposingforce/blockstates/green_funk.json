@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "hole:block/green_funk"
+      "model": "opposingforce:block/green_funk"
     }
   }
 }

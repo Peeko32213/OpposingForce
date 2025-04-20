@@ -26,12 +26,12 @@ public class LargeElectricBallParticle extends Particle {
         super(world, x, y, z);
         this.setSize(3.0F, 3.0F);
         this.x = x;
-        this.y = y + 0.75;
+        this.y = y + 0.5;
         this.z = z;
         this.xd = 0;
         this.yd = 0;
         this.zd = 0;
-        Vec3 lightningTo = findLightningToPos(world, x, y, z, 4 + random.nextInt(3));
+        Vec3 lightningTo = findLightningToPos(world, x, y, z, 6 + random.nextInt(4));
         Vec3 to = lightningTo.subtract(x, y, z);
         this.lifetime = (int) Math.ceil(to.length());
         int sections = 6 * this.lifetime;
@@ -48,7 +48,7 @@ public class LargeElectricBallParticle extends Particle {
         return false;
     }
 
-    private Vec3 findLightningToPos(ClientLevel world, double x, double y, double z, int range) {
+    public Vec3 findLightningToPos(ClientLevel world, double x, double y, double z, int range) {
         Vec3 vec3 = new Vec3(x, y, z);
         for (int i = 0; i < 10; i++) {
             Vec3 vec31 = vec3.add(random.nextFloat() * range - range / 2F, random.nextFloat() * range - range / 2F, random.nextFloat() * range - range / 2F);
@@ -64,7 +64,6 @@ public class LargeElectricBallParticle extends Particle {
         return Vec3.atCenterOf(result.getBlockPos()).distanceTo(to) < 3.0F;
     }
 
-
     public void tick() {
         this.xo = this.x;
         this.yo = this.y;
@@ -76,17 +75,16 @@ public class LargeElectricBallParticle extends Particle {
             this.remove();
         } else {
             this.move(this.xd, this.yd, this.zd);
-            this.yd -= (double) this.gravity;
+            this.yd -= this.gravity;
         }
     }
-
 
     public void render(VertexConsumer consumer, Camera camera, float partialTick) {
         MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
         Vec3 cameraPos = camera.getPosition();
-        float x = (float) (Mth.lerp((double) partialTick, this.xo, this.x));
-        float y = (float) (Mth.lerp((double) partialTick, this.yo, this.y));
-        float z = (float) (Mth.lerp((double) partialTick, this.zo, this.z));
+        float x = (float) (Mth.lerp(partialTick, this.xo, this.x));
+        float y = (float) (Mth.lerp(partialTick, this.yo, this.y));
+        float z = (float) (Mth.lerp(partialTick, this.zo, this.z));
         PoseStack posestack = new PoseStack();
         posestack.pushPose();
         posestack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
@@ -108,7 +106,7 @@ public class LargeElectricBallParticle extends Particle {
         }
 
         public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new LargeElectricBallParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
+            return new ElectricBallParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
         }
     }
 }

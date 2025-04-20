@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "hole:block/pop_cap"
+      "model": "opposingforce:block/pop_cap"
     }
   }
 }

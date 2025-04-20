@@ -62,7 +62,7 @@ public class OpposingForce {
         addToFlowerPot(OPBlocks.LIME_NUB, OPBlocks.POTTED_LIME_NUB);
         addToFlowerPot(OPBlocks.POP_CAP, OPBlocks.POTTED_POP_CAP);
         addToFlowerPot(OPBlocks.PURPLE_KNOB, OPBlocks.POTTED_PURPLE_KNOB);
-        addToFlowerPot(OPBlocks.QUEEN_IN_PURPLE, OPBlocks.POTTED_QUEEN_IN_PURPLE);
+        addToFlowerPot(OPBlocks.QUEEN_IN_MAGENTA, OPBlocks.POTTED_QUEEN_IN_PURPLE);
         addToFlowerPot(OPBlocks.SLATESHROOM, OPBlocks.POTTED_SLATESHROOM);
         addToFlowerPot(OPBlocks.SLIPPERY_TOP, OPBlocks.POTTED_SLIPPERY_TOP);
         addToFlowerPot(OPBlocks.WHITECAP, OPBlocks.POTTED_WHITECAP);
@@ -81,7 +81,7 @@ public class OpposingForce {
         addToComposter(OPBlocks.LIME_NUB, 0.5F);
         addToComposter(OPBlocks.POP_CAP, 0.6F);
         addToComposter(OPBlocks.PURPLE_KNOB, 0.3F);
-        addToComposter(OPBlocks.QUEEN_IN_PURPLE, 1.3F);
+        addToComposter(OPBlocks.QUEEN_IN_MAGENTA, 1.3F);
         addToComposter(OPBlocks.SLATESHROOM, 0.5F);
         addToComposter(OPBlocks.SLIPPERY_TOP, 0.6F);
         addToComposter(OPBlocks.WHITECAP, 0.5F);

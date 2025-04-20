@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "hole:block/blue_trumpet"
+    "cross": "opposingforce:block/blue_trumpet"
   }
 }

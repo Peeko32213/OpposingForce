@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "hole:block/chicken_of_the_caves"
+      "model": "opposingforce:block/chicken_of_the_caves"
     }
   }
 }

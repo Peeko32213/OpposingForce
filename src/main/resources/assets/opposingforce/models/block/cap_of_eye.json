@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "hole:block/cap_of_eye"
+    "cross": "opposingforce:block/cap_of_eye"
   }
 }

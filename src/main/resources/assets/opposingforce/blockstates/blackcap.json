@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "hole:block/blackcap"
+      "model": "opposingforce:block/blackcap"
     }
   }
 }

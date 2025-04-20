@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "hole:block/queen_in_purple"
+    "cross": "opposingforce:block/queen_in_magenta"
   }
 }

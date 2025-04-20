@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-18T11:53:47.38032	Loot Tables
+// 1.20.1	2025-04-19T22:07:28.237845	Loot Tables
 be68cc19dff51392d9ec42c7b877209c66a15d32 data/opposingforce/loot_tables/blocks/blackcap.json
 4f2fa4407750cb4b9b1e8501fc2e811f708303b9 data/opposingforce/loot_tables/blocks/blue_trumpet.json
 67562236aae1f02ba22cc950de70517465431b17 data/opposingforce/loot_tables/blocks/cap_of_eye.json
@@ -22,7 +22,7 @@ cfa695190f28b78a57d37b347d9bbc0e7385fc44 data/opposingforce/loot_tables/blocks/p
 9fd9774b082c813f5f6389b5011a4cff885c963a data/opposingforce/loot_tables/blocks/potted_powder_gnome.json
 fe6b62b9c9fc6cc74496a66f3346709b0578cb6e data/opposingforce/loot_tables/blocks/potted_princes_jelly.json
 ec47d6344dd57db708e076b8871aa24a86b08251 data/opposingforce/loot_tables/blocks/potted_purple_knob.json
-90361430cfbf4d89e68ba4bd4fd03b363b7cdbc3 data/opposingforce/loot_tables/blocks/potted_queen_in_purple.json
+ef2183695b8c575c91101b8e1129a779792c9928 data/opposingforce/loot_tables/blocks/potted_queen_in_magenta.json
 287be982621c08aee11111dc70d9198ed5df6232 data/opposingforce/loot_tables/blocks/potted_raincap.json
 1ece7f8a184aedd372da4ed3285a1805dd50d1d7 data/opposingforce/loot_tables/blocks/potted_slateshroom.json
 747c2619a3d861f347689eec08c15821b3f28cd8 data/opposingforce/loot_tables/blocks/potted_slipperytop.json
@@ -30,7 +30,7 @@ c34cc84485a18e527f377859686dbc63662096a6 data/opposingforce/loot_tables/blocks/p
 399ac0aecc05e19c5696d1154be2bf752f3ab4fb data/opposingforce/loot_tables/blocks/powder_gnome.json
 cc9f4b08fd5a3f19a61a68384ce4ba5edd86cbae data/opposingforce/loot_tables/blocks/princess_jelly.json
 2b34b3a87dd6dd8f871f35ab6303f257d84257c6 data/opposingforce/loot_tables/blocks/purple_knob.json
-eeadaf597e85ce7086d194ce3a2805a3ce9f22b6 data/opposingforce/loot_tables/blocks/queen_in_purple.json
+0c227fcb9bb1a07819ccf899005c89887e7efa79 data/opposingforce/loot_tables/blocks/queen_in_magenta.json
 253043419c0306af3b24555f051f2751ec5cbf7d data/opposingforce/loot_tables/blocks/raincap.json
 052fa159766214eb6868309475d281abc5b10d28 data/opposingforce/loot_tables/blocks/slateshroom.json
 71e3d693bc128fa90010c4038d93e115a11848f6 data/opposingforce/loot_tables/blocks/slippery_top.json

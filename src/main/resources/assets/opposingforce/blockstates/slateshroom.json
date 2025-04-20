@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "hole:block/slateshroom"
+      "model": "opposingforce:block/slateshroom"
     }
   }
 }

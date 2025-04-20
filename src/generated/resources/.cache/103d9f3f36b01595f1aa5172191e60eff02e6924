@@ -1,10 +1,10 @@
-// 1.20.1	2025-04-18T11:53:47.3824195	Registries
+// 1.20.1	2025-04-19T22:07:28.2398384	Registries
 14c4fa0b3da44b353039f8c05b60d10245e74cb1 data/opposingforce/damage_type/electrified.json
 aa529805623d9fb8e0fdd9cf84c942808ef2cd45 data/opposingforce/damage_type/tomahawk.json
 d12df77c73b17f5dd6b2cd33a2e980a2016b3052 data/opposingforce/forge/biome_modifier/add_spawn/dicer.json
 a52bde0d6bbd067685b744748e62a515fa0a374d data/opposingforce/forge/biome_modifier/add_spawn/frowzy.json
 e3bc845b38759755ff928a2fa369aeea1b39acac data/opposingforce/forge/biome_modifier/add_spawn/guzzler.json
-e0535b03ace77cbafaf2de97998312883072e611 data/opposingforce/forge/biome_modifier/add_spawn/hopper.json
+4b042936c5e3257e5217451b3007381617e88661 data/opposingforce/forge/biome_modifier/add_spawn/hopper.json
 59f1f6dcfc5e4484a340d06673150043e6c0d209 data/opposingforce/forge/biome_modifier/add_spawn/pale_spider.json
 fef73d00f1622b8af7188d2cdd48f361d170ad9d data/opposingforce/forge/biome_modifier/add_spawn/ramble.json
 b552029b4e9481626b07c205fff07d5e7265ceec data/opposingforce/forge/biome_modifier/add_spawn/slug.json

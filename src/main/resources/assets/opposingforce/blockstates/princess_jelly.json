@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "hole:block/princess_jelly"
+      "model": "opposingforce:block/princess_jelly"
     }
   }
 }

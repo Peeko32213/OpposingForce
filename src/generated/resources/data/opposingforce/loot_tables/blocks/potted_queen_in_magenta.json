@@ -26,11 +26,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "opposingforce:queen_in_purple"
+          "name": "opposingforce:queen_in_magenta"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "opposingforce:blocks/potted_queen_in_purple"
+  "random_sequence": "opposingforce:blocks/potted_queen_in_magenta"
 }

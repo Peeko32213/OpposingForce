@@ -1,7 +1,7 @@
-package com.unusualmodding.opposingforce.core.datagen.server;
+package com.unusualmodding.opposingforce.core.data.server;
 
 import com.unusualmodding.opposingforce.OpposingForce;
-import com.unusualmodding.opposingforce.core.datagen.util.OPRecipeProvider;
+import com.unusualmodding.opposingforce.core.data.util.OPRecipeProvider;
 import com.unusualmodding.opposingforce.core.registry.OPBlocks;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;

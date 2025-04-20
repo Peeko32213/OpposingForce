@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "hole:block/cream_cap"
+      "model": "opposingforce:block/cream_cap"
     }
   }
 }

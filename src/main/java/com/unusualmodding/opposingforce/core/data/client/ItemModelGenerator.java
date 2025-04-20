@@ -1,4 +1,4 @@
-package com.unusualmodding.opposingforce.core.datagen.client;
+package com.unusualmodding.opposingforce.core.data.client;
 
 
 import com.unusualmodding.opposingforce.OpposingForce;

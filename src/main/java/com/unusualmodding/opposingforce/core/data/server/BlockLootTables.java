@@ -1,4 +1,4 @@
-package com.unusualmodding.opposingforce.core.datagen.server;
+package com.unusualmodding.opposingforce.core.data.server;
 
 
 import com.unusualmodding.opposingforce.core.registry.OPBlocks;
@@ -55,7 +55,7 @@ public class BlockLootTables extends BlockLootSubProvider {
         dropSelf(OPBlocks.LIME_NUB.get());
         dropSelf(OPBlocks.POP_CAP.get());
         dropSelf(OPBlocks.PURPLE_KNOB.get());
-        dropSelf(OPBlocks.QUEEN_IN_PURPLE.get());
+        dropSelf(OPBlocks.QUEEN_IN_MAGENTA.get());
         dropSelf(OPBlocks.SLATESHROOM.get());
         dropSelf(OPBlocks.SLIPPERY_TOP.get());
         dropSelf(OPBlocks.WHITECAP.get());
@@ -74,7 +74,7 @@ public class BlockLootTables extends BlockLootSubProvider {
         createPotFlowerItemTable(OPBlocks.POTTED_LIME_NUB.get(), OPBlocks.LIME_NUB.get());
         createPotFlowerItemTable(OPBlocks.POTTED_POP_CAP.get(), OPBlocks.POP_CAP.get());
         createPotFlowerItemTable(OPBlocks.POTTED_PURPLE_KNOB.get(), OPBlocks.PURPLE_KNOB.get());
-        createPotFlowerItemTable(OPBlocks.POTTED_QUEEN_IN_PURPLE.get(), OPBlocks.QUEEN_IN_PURPLE.get());
+        createPotFlowerItemTable(OPBlocks.POTTED_QUEEN_IN_PURPLE.get(), OPBlocks.QUEEN_IN_MAGENTA.get());
         createPotFlowerItemTable(OPBlocks.POTTED_SLATESHROOM.get(), OPBlocks.SLATESHROOM.get());
         createPotFlowerItemTable(OPBlocks.POTTED_SLIPPERY_TOP.get(), OPBlocks.SLIPPERY_TOP.get());
         createPotFlowerItemTable(OPBlocks.POTTED_WHITECAP.get(), OPBlocks.WHITECAP.get());

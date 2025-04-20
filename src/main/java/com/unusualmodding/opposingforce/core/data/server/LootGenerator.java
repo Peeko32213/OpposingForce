@@ -1,4 +1,4 @@
-package com.unusualmodding.opposingforce.core.datagen.server;
+package com.unusualmodding.opposingforce.core.data.server;
 
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "hole:block/cream_cap"
+    "cross": "opposingforce:block/cream_cap"
   }
 }

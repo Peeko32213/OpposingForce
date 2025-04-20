@@ -1,9 +1,9 @@
-package com.unusualmodding.opposingforce.core.datagen.server;
+package com.unusualmodding.opposingforce.core.data.server;
 
 import com.google.common.collect.Sets;
-import com.unusualmodding.opposingforce.core.datagen.client.BlockstateGenerator;
-import com.unusualmodding.opposingforce.core.datagen.client.ItemModelGenerator;
-import com.unusualmodding.opposingforce.core.datagen.client.LanguageGenerator;
+import com.unusualmodding.opposingforce.core.data.client.BlockstateGenerator;
+import com.unusualmodding.opposingforce.core.data.client.ItemModelGenerator;
+import com.unusualmodding.opposingforce.core.data.client.LanguageGenerator;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;

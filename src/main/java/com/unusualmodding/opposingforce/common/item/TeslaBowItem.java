@@ -15,6 +15,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Vanishable;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class TeslaBowItem extends CrossbowItem implements Vanishable {
+
     private boolean startSoundPlayed = false;
     private boolean midLoadSoundPlayed = false;
 
@@ -39,6 +41,19 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
     @Override
     public Predicate<ItemStack> getAllSupportedProjectiles() {
         return ELECTRIC_BALL;
+    }
+
+    @Override
+    public int getEnchantmentValue() {
+        return 15;
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return enchantment.category.canEnchant(stack.getItem())
+                && enchantment != Enchantments.BINDING_CURSE
+                && enchantment != Enchantments.PIERCING
+        ;
     }
 
     public TeslaBowItem(Properties properties) {
@@ -158,8 +173,9 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
     }
 
     private void shootElectricity(Level world, LivingEntity shooter, InteractionHand handUsed, ItemStack crossbow, ItemStack projectileStack, float shootSoundPitch, float divergence, float simulated) {
-        Projectile projectileentity = getCharge(world, shooter, projectileStack, crossbow);
-        Projectile bigProjectileentity = getBigCharge(world, shooter, projectileStack, crossbow);
+
+        Projectile projectileentity = getCharge(world, shooter, projectileStack, crossbow, false);
+        Projectile bigProjectileentity = getCharge(world, shooter, projectileStack, crossbow, true);
 
         boolean largeBall = crossbow.getEnchantmentLevel(OPEnchantments.BIG_ELECTRIC_BALL.get()) > 0;
 
@@ -169,37 +185,39 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
         Vector3f vector3f = vec3.toVector3f().rotate(quaternionf);
 
         if (largeBall) {
-            bigProjectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.75F, divergence);
+            bigProjectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 1F, divergence);
             crossbow.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
             shooter.level().addFreshEntity(bigProjectileentity);
             world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSounds.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.25F, shootSoundPitch * 0.85F);
         }
         else {
-            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 1.5F, divergence);
+            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 1.75F, divergence);
             crossbow.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
             shooter.level().addFreshEntity(projectileentity);
             world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSounds.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, shootSoundPitch);
         }
     }
 
-    static ElectricBall getCharge(Level pLevel, LivingEntity pLivingEntity, ItemStack pAmmoStack, ItemStack crossbow) {
-        boolean bouncy = crossbow.getEnchantmentLevel(OPEnchantments.BOUNCY_ELECTRIC_BALL.get()) > 0;
-        ElectricChargeItem arrowitem = (ElectricChargeItem)(pAmmoStack.getItem() instanceof ElectricChargeItem ? pAmmoStack.getItem() : OPItems.ELECTRIC_CHARGE);
-        ElectricBall electricBall = arrowitem.shootCharge(pLevel, pLivingEntity);
-        electricBall.setSoundEvent(SoundEvents.CROSSBOW_HIT);
-        if (bouncy) {
-            electricBall.setBouncy(true);
-        }
-        return electricBall;
-    }
+    static ElectricBall getCharge(Level pLevel, LivingEntity pLivingEntity, ItemStack pAmmoStack, ItemStack crossbow, boolean bigCharge) {
 
-    static ElectricBall getBigCharge(Level pLevel, LivingEntity pLivingEntity, ItemStack pAmmoStack, ItemStack crossbow) {
         boolean bouncy = crossbow.getEnchantmentLevel(OPEnchantments.BOUNCY_ELECTRIC_BALL.get()) > 0;
+        int bounces = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.BOUNCY_ELECTRIC_BALL.get(), crossbow);
+
+        int chargeSize = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.BIG_ELECTRIC_BALL.get(), crossbow);
+
         ElectricChargeItem arrowitem = (ElectricChargeItem)(pAmmoStack.getItem() instanceof ElectricChargeItem ? pAmmoStack.getItem() : OPItems.ELECTRIC_CHARGE);
         ElectricBall electricBall = arrowitem.shootCharge(pLevel, pLivingEntity);
         electricBall.setSoundEvent(SoundEvents.CROSSBOW_HIT);
-        electricBall.setChargeScale(2.5F);
+
+        electricBall.setBaseDamage(electricBall.getBaseDamage() + 1);
+
+        if (bigCharge) {
+            electricBall.setChargeScale(electricBall.getChargeScale() + ((float) chargeSize + 0.5F));
+            electricBall.setBaseDamage(electricBall.getBaseDamage() * 2F - 2);
+        }
+
         if (bouncy) {
+            electricBall.setMaxBounces(1 + bounces);
             electricBall.setBouncy(true);
         }
         return electricBall;

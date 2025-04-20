@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "hole:block/purple_knob"
+      "model": "opposingforce:block/purple_knob"
     }
   }
 }

@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "hole:block/powder_gnome"
+      "model": "opposingforce:block/powder_gnome"
     }
   }
 }

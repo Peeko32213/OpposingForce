@@ -1,4 +1,4 @@
-package com.unusualmodding.opposingforce.core.datagen.server;
+package com.unusualmodding.opposingforce.core.data.server;
 
 import com.unusualmodding.opposingforce.OpposingForce;
 import net.minecraft.core.HolderLookup;

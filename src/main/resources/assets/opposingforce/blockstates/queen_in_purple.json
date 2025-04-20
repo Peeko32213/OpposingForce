@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "hole:block/queen_in_purple"
+      "model": "opposingforce:block/queen_in_purple"
     }
   }
 }

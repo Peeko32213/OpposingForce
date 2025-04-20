@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "hole:block/cave_patty"
+      "model": "opposingforce:block/cave_patty"
     }
   }
 }

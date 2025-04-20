@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "hole:block/slateshroom"
+    "cross": "opposingforce:block/slateshroom"
   }
 }

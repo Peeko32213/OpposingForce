@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "hole:block/lime_nub"
+    "cross": "opposingforce:block/lime_nub"
   }
 }

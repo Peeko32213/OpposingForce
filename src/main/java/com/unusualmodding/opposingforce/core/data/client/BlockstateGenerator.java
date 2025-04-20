@@ -1,4 +1,4 @@
-package com.unusualmodding.opposingforce.core.datagen.client;
+package com.unusualmodding.opposingforce.core.data.client;
 
 import com.mojang.logging.LogUtils;
 import com.unusualmodding.opposingforce.OpposingForce;
@@ -67,7 +67,7 @@ public class BlockstateGenerator extends BlockStateProvider {
         createPottedPlant(OPBlocks.LIME_NUB, OPBlocks.POTTED_LIME_NUB, "cutout");
         createPottedPlant(OPBlocks.POP_CAP, OPBlocks.POTTED_POP_CAP, "cutout");
         createPottedPlant(OPBlocks.PURPLE_KNOB, OPBlocks.POTTED_PURPLE_KNOB, "cutout");
-        createPottedPlant(OPBlocks.QUEEN_IN_PURPLE, OPBlocks.POTTED_QUEEN_IN_PURPLE, "cutout");
+        createPottedPlant(OPBlocks.QUEEN_IN_MAGENTA, OPBlocks.POTTED_QUEEN_IN_PURPLE, "cutout");
         createPottedPlant(OPBlocks.SLATESHROOM, OPBlocks.POTTED_SLATESHROOM, "cutout");
         createPottedPlant(OPBlocks.SLIPPERY_TOP, OPBlocks.POTTED_SLIPPERY_TOP, "cutout");
         createPottedPlant(OPBlocks.WHITECAP, OPBlocks.POTTED_WHITECAP, "cutout");

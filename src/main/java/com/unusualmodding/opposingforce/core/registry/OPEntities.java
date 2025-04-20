@@ -4,7 +4,6 @@ import com.unusualmodding.opposingforce.OpposingForce;
 import com.unusualmodding.opposingforce.common.entity.custom.monster.*;
 import com.unusualmodding.opposingforce.common.entity.custom.projectile.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.fml.common.Mod;
@@ -52,9 +51,9 @@ public class OPEntities {
             () -> EntityType.Builder.of(WizzEntity::new, MobCategory.MONSTER).sized(0.5F, 0.5F)
                     .build(new ResourceLocation(OpposingForce.MODID, "wizz").toString()));
 
-    public static final RegistryObject<EntityType<HopperEntity>> HOPPER = ENTITIES.register("hopper",
+    public static final RegistryObject<EntityType<HopperEntity>> BOUNCER = ENTITIES.register("bouncer",
             () -> EntityType.Builder.of(HopperEntity::new, MobCategory.MONSTER).sized(1.0F, 0.65F)
-                    .build(new ResourceLocation(OpposingForce.MODID, "wizz").toString()));
+                    .build(new ResourceLocation(OpposingForce.MODID, "bouncer").toString()));
 
     public static final RegistryObject<EntityType<FrowzyEntity>> FROWZY = ENTITIES.register("frowzy",
             () -> EntityType.Builder.of(FrowzyEntity::new, MobCategory.MONSTER).sized(0.6F, 1.9F)
@@ -70,7 +69,7 @@ public class OPEntities {
 
     public static final RegistryObject<EntityType<ElectricBall>> ELECTRICITY_BALL = ENTITIES.register(
             "electric_ball", () -> EntityType.Builder.<ElectricBall>of(ElectricBall::new, MobCategory.MISC)
-                    .sized(0.75F, 0.75F).clientTrackingRange(150).updateInterval(2)
+                    .sized(0.75F, 0.75F).clientTrackingRange(4).updateInterval(10)
                     .build(new ResourceLocation(OpposingForce.MODID, "electric_ball").toString()));
 
     public static final RegistryObject<EntityType<Tomahawk>> TOMAHAWK = ENTITIES.register("tomahawk",
