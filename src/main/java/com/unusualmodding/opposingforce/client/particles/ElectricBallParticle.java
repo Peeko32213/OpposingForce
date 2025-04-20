@@ -2,6 +2,7 @@ package com.unusualmodding.opposingforce.client.particles;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.unusualmodding.opposingforce.client.particles.type.LightningBallParticleType;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -22,7 +23,7 @@ public class ElectricBallParticle extends Particle {
 
     private LightningRender lightningRender = new LightningRender();
 
-    public ElectricBallParticle(ClientLevel world, double x, double y, double z, double xd, double yd, double zd) {
+    public ElectricBallParticle(LightningBallParticleType.Data typeIn, ClientLevel world, double x, double y, double z, double xd, double yd, double zd) {
         super(world, x, y, z);
         this.setSize(3.0F, 3.0F);
         this.x = x;
@@ -31,14 +32,14 @@ public class ElectricBallParticle extends Particle {
         this.xd = 0;
         this.yd = 0;
         this.zd = 0;
-        Vec3 lightningTo = findLightningToPos(world, x, y, z, 1 + random.nextInt(2));
+        Vec3 lightningTo = findLightningToPos(world, x, y, z, typeIn.range + random.nextInt(2));
         Vec3 to = lightningTo.subtract(x, y, z);
         this.lifetime = (int) Math.ceil(to.length());
-        int sections = 6 * this.lifetime;
+        int sections = typeIn.sections * this.lifetime;
         boolean lightBlue = random.nextBoolean();
-        LightningBoltData.BoltRenderInfo boltData = new LightningBoltData.BoltRenderInfo(0.3F, 0.125F, 0.25F, 0.66F, new Vector4f(lightBlue ? 0.05F : 0.15F, 0.5F, lightBlue ? 0.9F : 0.75F, 0.75F), 0.15F);
+        LightningBoltData.BoltRenderInfo boltData = new LightningBoltData.BoltRenderInfo(typeIn.parallelNoise, typeIn.spreadFactor, typeIn.branchInitiationFactor, typeIn.branchContinuationFactor, typeIn.color, typeIn.closeness);
         LightningBoltData bolt = new LightningBoltData(boltData, Vec3.ZERO, to, sections)
-                .size(0.08F + random.nextFloat() * 0.1F)
+                .size(typeIn.size + random.nextFloat() * 0.1F)
                 .lifespan(this.lifetime + 1)
                 .spawn(LightningBoltData.SpawnFunction.CONSECUTIVE);
         lightningRender.update(this, bolt, 1.0F);
@@ -100,13 +101,13 @@ public class ElectricBallParticle extends Particle {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static class ElectricOrbFactory implements ParticleProvider<SimpleParticleType> {
+    public static class ElectricOrbFactory implements ParticleProvider<LightningBallParticleType.Data> {
 
         public ElectricOrbFactory() {
         }
 
-        public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new ElectricBallParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
+        public Particle createParticle(LightningBallParticleType.Data typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            return new ElectricBallParticle(typeIn,worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
         }
     }
 }

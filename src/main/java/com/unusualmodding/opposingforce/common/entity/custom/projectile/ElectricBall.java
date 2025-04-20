@@ -1,6 +1,6 @@
 package com.unusualmodding.opposingforce.common.entity.custom.projectile;
 
-import com.unusualmodding.opposingforce.common.message.ParticleSyncS2CPacket;
+import com.unusualmodding.opposingforce.common.message.ElectricBallSyncS2CPacket;
 import com.unusualmodding.opposingforce.core.registry.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -52,6 +52,7 @@ public class ElectricBall extends ThrowableItemProjectile {
 
     @Override
     protected void defineSynchedData() {
+        super.defineSynchedData();
         this.getEntityData().define(CHARGE_SCALE, 1F);
         this.getEntityData().define(BOUNCY, false);
         this.getEntityData().define(MAX_BOUNCES, 0);
@@ -116,6 +117,9 @@ public class ElectricBall extends ThrowableItemProjectile {
         }
     }
 
+
+
+
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
@@ -141,9 +145,9 @@ public class ElectricBall extends ThrowableItemProjectile {
         float conservedEnergy = 1F;
         newVel = newVel.scale(conservedEnergy);
         this.setDeltaMovement(newVel);
-        double missingDistance = velocity.subtract(this.position().subtract(new Vec3(xo, yo, zo))).length();
-        Vec3 missingVel = newVel.normalize().scale(missingDistance);
-        this.move(MoverType.SELF, missingVel);
+        //double missingDistance = velocity.subtract(this.position().subtract(new Vec3(xo, yo, zo))).length();
+        //Vec3 missingVel = newVel.normalize().scale(missingDistance);
+        //this.move(MoverType.SELF, missingVel);
         if (!level().isClientSide) {
             this.hasImpulse = true;
             if (bounces >= 0) {
@@ -181,9 +185,9 @@ public class ElectricBall extends ThrowableItemProjectile {
             float angle = (float) ((i / particleMax) * Math.PI * 2);
 
             // Generate the initial random vector
-            double x = (rand.nextFloat() - 0.5F) * 0.3F;
-            double y = (rand.nextFloat() - 0.5F) * 0.3F;
-            double z = range * 0.5F + range * 0.5F * rand.nextFloat();
+            float x = (rand.nextFloat() - 0.5F) * 0.3F;
+            float y = (rand.nextFloat() - 0.5F) * 0.3F;
+            float z = range * 0.5F + range * 0.5F * rand.nextFloat();
 
             // Rotate around Y-axis
             double rotX = x * Math.cos(angle) - z * Math.sin(angle);
@@ -195,10 +199,17 @@ public class ElectricBall extends ThrowableItemProjectile {
             double finalZ = rotZ + movement.z;
 
             // Send packet with just the coordinates
-            if (this.getChargeScale() > 2F) {
-                OPMessages.sendToClients(new ParticleSyncS2CPacket((float) d0, (float)d1, (float)d2, (float)finalX, (float)finalY, (float)finalZ, true));
-            }
-            else OPMessages.sendToClients(new ParticleSyncS2CPacket((float) d0, (float)d1, (float)d2, (float)finalX, (float)finalY, (float)finalZ, false));
+
+
+            ElectricBallSyncS2CPacket packet = ElectricBallSyncS2CPacket.builder()
+                    .pos(d0, d1, d2)
+                    .direction(finalX, finalY, finalZ)
+                    .range(5)
+                    .size(0.16f)
+                    .color(1.0f, 0.0f, 1.0f, 0.9f)
+                    .build();
+
+            OPMessages.sendToClients(packet);
         }
     }
 

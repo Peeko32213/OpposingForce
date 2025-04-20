@@ -31,7 +31,7 @@ public class ElectricBallImpactParticle extends Particle {
         this.xd = 0;
         this.yd = 0;
         this.zd = 0;
-        Vec3 lightningTo = findLightningToPos(world, x, y, z, 4 + random.nextInt(3));
+        Vec3 lightningTo = findLightningToPos(world, x, y, z, 15 + random.nextInt(3));
         Vec3 to = lightningTo.subtract(x, y, z);
         this.lifetime = (int) Math.ceil(to.length());
         int sections = 6 * this.lifetime;

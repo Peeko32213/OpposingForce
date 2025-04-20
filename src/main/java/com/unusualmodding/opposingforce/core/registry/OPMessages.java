@@ -1,7 +1,7 @@
 package com.unusualmodding.opposingforce.core.registry;
 
 import com.unusualmodding.opposingforce.OpposingForce;
-import com.unusualmodding.opposingforce.common.message.ParticleSyncS2CPacket;
+import com.unusualmodding.opposingforce.common.message.ElectricBallSyncS2CPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -28,10 +28,10 @@ public class OPMessages {
 
         INSTANCE = net;
 
-        net.messageBuilder(ParticleSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(ParticleSyncS2CPacket::new)
-                .encoder(ParticleSyncS2CPacket::toBytes)
-                .consumerMainThread(ParticleSyncS2CPacket::handle)
+        net.messageBuilder(ElectricBallSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ElectricBallSyncS2CPacket::new)
+                .encoder(ElectricBallSyncS2CPacket::toBytes)
+                .consumerMainThread(ElectricBallSyncS2CPacket::handle)
                 .add();
     }
 
