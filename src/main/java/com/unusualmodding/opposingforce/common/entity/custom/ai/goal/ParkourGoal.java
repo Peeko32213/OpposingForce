@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiPredicate;
 
-//CREDITS TO THE BIG BRAIN MOD FOR THE ORIGINAL CODE, WHOM WAS INSPIRED FROM "Mobs Attempt Parkour mod". TALLESTSTRED CERTAINLY HAS A BIGGER BRAIN THAN I!
+// CREDITS TO THE BIG BRAIN MOD FOR THE ORIGINAL CODE, WHOM WAS INSPIRED FROM "Mobs Attempt Parkour mod". TALLESTSTRED CERTAINLY HAS A BIGGER BRAIN THAN I!
 
 public class ParkourGoal extends Goal {
     private static final List<Integer> ALLOWED_ANGLES = Lists.newArrayList(65, 70, 75, 80);
@@ -224,41 +224,6 @@ public class ParkourGoal extends Goal {
         ((Mob) entity).getLookControl().setLookAt(target);
         entity.setDeltaMovement(horzVelocity.yRot(clampedYVelocity));
     }
-
-    /*public BlockType testForBlock(Level level, BlockPos pos) {
-        BlockState blockState = level.getBlockState(pos);
-        Block block = blockState.getBlock();
-        Material material = blockState.getMaterial();
-        FluidState fluidState = level.getFluidState(pos);
-
-        if (blockState.is(Blocks.SWEET_BERRY_BUSH) ||
-                blockState.is(BlockTags.FIRE) ||
-                CampfireBlock.isLitCampfire(blockState) ||
-                fluidState.is(FluidTags.WATER))
-            return BlockType.PASSABLE_OBSTACLE;
-        if (fluidState.is(FluidTags.LAVA) ||
-                blockState.is(Blocks.CACTUS) ||
-                blockState.is(Blocks.HONEY_BLOCK) ||
-                blockState.is(Blocks.MAGMA_BLOCK))
-            return BlockType.SOLID_OBSTACLE;
-        if (block instanceof LeavesBlock ||
-                blockState.is(BlockTags.FENCES) ||
-                blockState.is(BlockTags.WALLS) ||
-                (block instanceof FenceGateBlock && !blockState.getValue(FenceGateBlock.OPEN) ||
-                        (DoorBlock.isWoodenDoor(blockState) && !blockState.getValue(DoorBlock.OPEN)) ||
-                        (block instanceof DoorBlock && material == Material.METAL && !blockState.getValue(DoorBlock.OPEN)) ||
-                        (block instanceof DoorBlock && blockState.getValue(DoorBlock.OPEN)) ||
-                        !blockState.isPathfindable(level, pos, PathComputationType.LAND))) {
-            return BlockType.BLOCKED;
-        }
-        return null;
-    }
-
-    public enum BlockType {
-        BLOCKED,
-        SOLID_OBSTACLE,
-        PASSABLE_OBSTACLE,
-    }*/
 
     public enum JumpPhases {
         NONE,

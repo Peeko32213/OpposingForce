@@ -1,6 +1,7 @@
 package com.unusualmodding.opposingforce.common.entity.custom.monster;
 
 import com.google.common.collect.ImmutableMap;
+import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.attack.VoltAttackGoal;
 import com.unusualmodding.opposingforce.common.entity.custom.base.EnhancedMonsterEntity;
 import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.SmartNearestTargetGoal;
 import com.unusualmodding.opposingforce.common.entity.state.StateHelper;
@@ -31,6 +32,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
@@ -111,13 +113,12 @@ public class VoltEntity extends EnhancedMonsterEntity {
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new VoltAttackGoal(this));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.goalSelector.addGoal(3, new VoltEntity.VoltLookGoal(this));
-
     }
 
     // Sounds
@@ -179,42 +180,6 @@ public class VoltEntity extends EnhancedMonsterEntity {
         return List.of();
     }
 
-
-    static class VoltLookGoal extends Goal {
-        private final VoltEntity ghast;
-
-        public VoltLookGoal(VoltEntity pGhast) {
-            this.ghast = pGhast;
-            this.setFlags(EnumSet.of(Goal.Flag.LOOK));
-        }
-
-        public boolean canUse() {
-            return true;
-        }
-
-        public boolean requiresUpdateEveryTick() {
-            return true;
-        }
-
-        public void tick() {
-            if (this.ghast.getTarget() == null) {
-                Vec3 vec3 = this.ghast.getDeltaMovement();
-                this.ghast.setYRot(-((float) Mth.atan2(vec3.x, vec3.z)) * (180F / (float)Math.PI));
-                this.ghast.yBodyRot = this.ghast.getYRot();
-            } else {
-                LivingEntity livingentity = this.ghast.getTarget();
-                double d0 = 64.0D;
-                if (livingentity.distanceToSqr(this.ghast) < 4096.0D) {
-                    double d1 = livingentity.getX() - this.ghast.getX();
-                    double d2 = livingentity.getZ() - this.ghast.getZ();
-                    this.ghast.setYRot(-((float)Mth.atan2(d1, d2)) * (180F / (float)Math.PI));
-                    this.ghast.yBodyRot = this.ghast.getYRot();
-                }
-            }
-
-        }
-    }
-
     @Override
     public void travel(Vec3 pTravelVector) {
         if(this.isCharging()) {
@@ -264,11 +229,12 @@ public class VoltEntity extends EnhancedMonsterEntity {
 
     // Attack animations
     protected <E extends VoltEntity> PlayState attackPredicate(final AnimationState<E> event) {
-        if (this.isCharging()) {
+        int attackState = this.getAttackState();
+        if (attackState == 21) {
             event.setAndContinue(VOLT_SHOOT);
             return PlayState.CONTINUE;
         }
-        else if (!this.isCharging()) {
+        else if (attackState == 0) {
             event.getController().forceAnimationReset();
             return PlayState.STOP;
         }

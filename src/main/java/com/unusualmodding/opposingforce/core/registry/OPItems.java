@@ -46,7 +46,7 @@ public class OPItems {
             () -> new TeslaBowItem(new Item.Properties().stacksTo(1).durability(465)));
 
     public static final RegistryObject<Item> SLUG_EGGS = ITEMS.register("slug_eggs",
-            () -> new SlugEggItem(new Item.Properties().stacksTo(16)));
+            () -> new SlugEggItem(new Item.Properties().stacksTo(64)));
 
     public static final RegistryObject<Item> VILE_BOULDER = ITEMS.register("vile_boulder",
             () -> new VileBoulderItem(OPTiers.VILE,  8, -2.4F, new Item.Properties()));
