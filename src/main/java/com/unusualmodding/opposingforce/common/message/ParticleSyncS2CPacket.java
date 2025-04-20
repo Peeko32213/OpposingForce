@@ -19,8 +19,7 @@ public class ParticleSyncS2CPacket {
     private final float blockX, blockY, blockZ;
     private final float attackX, attackY, attackZ;
 
-    public ParticleSyncS2CPacket(float blockX, float blockY, float blockZ,
-                                 float attackX, float attackY, float attackZ) {
+    public ParticleSyncS2CPacket(float blockX, float blockY, float blockZ, float attackX, float attackY, float attackZ) {
         this.blockX = blockX;
         this.blockY = blockY;
         this.blockZ = blockZ;
