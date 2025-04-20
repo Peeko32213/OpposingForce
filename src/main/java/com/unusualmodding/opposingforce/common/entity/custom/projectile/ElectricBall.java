@@ -1,5 +1,6 @@
 package com.unusualmodding.opposingforce.common.entity.custom.projectile;
 
+import com.unusualmodding.opposingforce.common.entity.custom.monster.GuzzlerEntity;
 import com.unusualmodding.opposingforce.common.message.ElectricBallSyncS2CPacket;
 import com.unusualmodding.opposingforce.core.registry.*;
 import net.minecraft.core.BlockPos;
@@ -7,12 +8,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -20,8 +23,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+
+import java.util.List;
+import java.util.Optional;
 
 public class ElectricBall extends ThrowableItemProjectile {
 
@@ -201,12 +208,22 @@ public class ElectricBall extends ThrowableItemProjectile {
             // Send packet with just the coordinates
 
 
+
+            List<Entity> entity = level().getEntitiesOfClass(Entity.class, this.getBoundingBox().inflate(10,10,10));
+
+
+            BlockPos pos = BlockPos.ZERO;
+            Optional<Entity> player = entity.stream().findFirst();
+            if(player.isPresent()) {
+                pos = player.get().getOnPos();
+            }
+
             ElectricBallSyncS2CPacket packet = ElectricBallSyncS2CPacket.builder()
                     .pos(d0, d1, d2)
-                    .direction(finalX, finalY, finalZ)
                     .range(5)
                     .size(0.16f)
                     .color(1.0f, 0.0f, 1.0f, 0.9f)
+                    .targetPosition(pos.getCenter())
                     .build();
 
             OPMessages.sendToClients(packet);

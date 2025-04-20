@@ -40,7 +40,7 @@ public class LargeElectricBallParticle extends Particle {
         LightningBoltData bolt = new LightningBoltData(boltData, Vec3.ZERO, to, sections)
                 .size(0.08F + random.nextFloat() * 0.1F)
                 .lifespan(this.lifetime + 1)
-                .spawn(LightningBoltData.SpawnFunction.CONSECUTIVE);
+                .spawn(LightningBoltData.SpawnFunction.NO_DELAY);
         lightningRender.update(this, bolt, 1.0F);
     }
 

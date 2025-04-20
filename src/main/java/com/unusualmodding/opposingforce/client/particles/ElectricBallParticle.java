@@ -12,6 +12,7 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -21,9 +22,9 @@ import org.joml.Vector4f;
 
 public class ElectricBallParticle extends Particle {
 
-    private LightningRender lightningRender = new LightningRender();
+    private final LightningRender lightningRender = new LightningRender();
 
-    public ElectricBallParticle(LightningBallParticleType.Data typeIn, ClientLevel world, double x, double y, double z, double xd, double yd, double zd) {
+    public ElectricBallParticle(LightningBallParticleType.Data data, ClientLevel world, double x, double y, double z, double xd, double yd, double zd) {
         super(world, x, y, z);
         this.setSize(3.0F, 3.0F);
         this.x = x;
@@ -32,32 +33,54 @@ public class ElectricBallParticle extends Particle {
         this.xd = 0;
         this.yd = 0;
         this.zd = 0;
-        Vec3 lightningTo = findLightningToPos(world, x, y, z, typeIn.range + random.nextInt(2));
-        Vec3 to = lightningTo.subtract(x, y, z);
+
+        Vec3 from = new Vec3(x, y, z);
+        Vec3 lightningTo = resolveTarget(data, world, from);
+        Vec3 to = lightningTo.subtract(from);
+
         this.lifetime = (int) Math.ceil(to.length());
-        int sections = typeIn.sections * this.lifetime;
-        boolean lightBlue = random.nextBoolean();
-        LightningBoltData.BoltRenderInfo boltData = new LightningBoltData.BoltRenderInfo(typeIn.parallelNoise, typeIn.spreadFactor, typeIn.branchInitiationFactor, typeIn.branchContinuationFactor, typeIn.color, typeIn.closeness);
+        int sections = data.sections * this.lifetime;
+
+        LightningBoltData.BoltRenderInfo boltData = new LightningBoltData.BoltRenderInfo(
+                data.parallelNoise,
+                data.spreadFactor,
+                data.branchInitiationFactor,
+                data.branchContinuationFactor,
+                data.color,
+                data.closeness
+        );
+
         LightningBoltData bolt = new LightningBoltData(boltData, Vec3.ZERO, to, sections)
-                .size(typeIn.size + random.nextFloat() * 0.1F)
+                .size(data.size + random.nextFloat() * 0.1F)
                 .lifespan(this.lifetime + 1)
                 .spawn(LightningBoltData.SpawnFunction.CONSECUTIVE);
+
         lightningRender.update(this, bolt, 1.0F);
     }
 
-    public boolean shouldCull() {
-        return false;
+    private Vec3 resolveTarget(LightningBallParticleType.Data data, ClientLevel level, Vec3 from) {
+        return switch (data.targetType) {
+            case ENTITY -> {
+                Entity entity = level.getEntity(data.entitySourceId);
+                yield (entity != null) ? entity.position().add(0, entity.getBbHeight() * 0.5, 0) : from;
+            }
+            case POSITION -> canSeeBlock(from, data.targetPos) ? data.targetPos : from;
+            case RANDOM -> findRandomLightningTarget(level, from, data.range + random.nextInt(2));
+        };
     }
 
-    public Vec3 findLightningToPos(ClientLevel world, double x, double y, double z, int range) {
-        Vec3 vec3 = new Vec3(x, y, z);
+    private Vec3 findRandomLightningTarget(ClientLevel world, Vec3 origin, int range) {
         for (int i = 0; i < 10; i++) {
-            Vec3 vec31 = vec3.add(random.nextFloat() * range - range / 2F, random.nextFloat() * range - range / 2F, random.nextFloat() * range - range / 2F);
-            if (canSeeBlock(vec3, vec31)) {
-                return vec31;
+            Vec3 candidate = origin.add(
+                    random.nextFloat() * range - range / 2F,
+                    random.nextFloat() * range - range / 2F,
+                    random.nextFloat() * range - range / 2F
+            );
+            if (canSeeBlock(origin, candidate)) {
+                return candidate;
             }
         }
-        return vec3;
+        return origin;
     }
 
     private boolean canSeeBlock(Vec3 from, Vec3 to) {
@@ -65,6 +88,7 @@ public class ElectricBallParticle extends Particle {
         return Vec3.atCenterOf(result.getBlockPos()).distanceTo(to) < 3.0F;
     }
 
+    @Override
     public void tick() {
         this.xo = this.x;
         this.yo = this.y;
@@ -80,19 +104,20 @@ public class ElectricBallParticle extends Particle {
         }
     }
 
+    @Override
     public void render(VertexConsumer consumer, Camera camera, float partialTick) {
-        MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
-        Vec3 cameraPos = camera.getPosition();
-        float x = (float) (Mth.lerp(partialTick, this.xo, this.x));
-        float y = (float) (Mth.lerp(partialTick, this.yo, this.y));
-        float z = (float) (Mth.lerp(partialTick, this.zo, this.z));
-        PoseStack posestack = new PoseStack();
-        posestack.pushPose();
-        posestack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
-        posestack.translate(x, y, z);
-        lightningRender.render(partialTick, posestack, multibuffersource$buffersource);
-        multibuffersource$buffersource.endBatch();
-        posestack.popPose();
+        MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
+        Vec3 camPos = camera.getPosition();
+        float x = (float) Mth.lerp(partialTick, this.xo, this.x);
+        float y = (float) Mth.lerp(partialTick, this.yo, this.y);
+        float z = (float) Mth.lerp(partialTick, this.zo, this.z);
+
+        PoseStack poseStack = new PoseStack();
+        poseStack.pushPose();
+        poseStack.translate(x - camPos.x, y - camPos.y, z - camPos.z);
+        lightningRender.render(partialTick, poseStack, bufferSource);
+        bufferSource.endBatch();
+        poseStack.popPose();
     }
 
     @Override
@@ -102,12 +127,11 @@ public class ElectricBallParticle extends Particle {
 
     @OnlyIn(Dist.CLIENT)
     public static class ElectricOrbFactory implements ParticleProvider<LightningBallParticleType.Data> {
+        public ElectricOrbFactory() {}
 
-        public ElectricOrbFactory() {
-        }
-
-        public Particle createParticle(LightningBallParticleType.Data typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new ElectricBallParticle(typeIn,worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
+        @Override
+        public Particle createParticle(LightningBallParticleType.Data data, ClientLevel level, double x, double y, double z, double xd, double yd, double zd) {
+            return new ElectricBallParticle(data, level, x, y, z, xd, yd, zd);
         }
     }
 }

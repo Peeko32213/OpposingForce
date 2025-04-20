@@ -5,6 +5,7 @@ import com.unusualmodding.opposingforce.core.registry.OPParticles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
 import org.joml.Vector4f;
 
@@ -25,13 +26,17 @@ public class ElectricBallSyncS2CPacket {
     private final float closeness;
     private final Vector4f color;
 
+    private final LightningBallParticleType.TargetType targetType;
+    private final int entitySourceId;
+    private final Vec3 targetPos;
 
     public ElectricBallSyncS2CPacket(float blockX, float blockY, float blockZ,
                                      float attackX, float attackY, float attackZ,
                                      int range, int sections, float size,
                                      float parallelNoise, float spreadFactor,
                                      float branchInitiationFactor, float branchContinuationFactor,
-                                     float closeness, Vector4f color) {
+                                     float closeness, Vector4f color,
+                                     LightningBallParticleType.TargetType targetType, int entitySourceId, Vec3 targetPos) {
         this.blockX = blockX;
         this.blockY = blockY;
         this.blockZ = blockZ;
@@ -47,6 +52,9 @@ public class ElectricBallSyncS2CPacket {
         this.branchContinuationFactor = branchContinuationFactor;
         this.closeness = closeness;
         this.color = color;
+        this.targetType = targetType;
+        this.entitySourceId = entitySourceId;
+        this.targetPos = targetPos;
     }
 
     public ElectricBallSyncS2CPacket(FriendlyByteBuf buf) {
@@ -65,7 +73,11 @@ public class ElectricBallSyncS2CPacket {
         this.branchContinuationFactor = buf.readFloat();
         this.closeness = buf.readFloat();
         this.color = new Vector4f(
-                buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat());
+                buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat()
+        );
+        this.targetType = buf.readEnum(LightningBallParticleType.TargetType.class);
+        this.entitySourceId = buf.readVarInt();
+        this.targetPos = new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble());
     }
 
     public void toBytes(FriendlyByteBuf buf) {
@@ -87,6 +99,11 @@ public class ElectricBallSyncS2CPacket {
         buf.writeFloat(color.y());
         buf.writeFloat(color.z());
         buf.writeFloat(color.w());
+        buf.writeEnum(targetType);
+        buf.writeVarInt(entitySourceId);
+        buf.writeDouble(targetPos.x);
+        buf.writeDouble(targetPos.y);
+        buf.writeDouble(targetPos.z);
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
@@ -94,16 +111,10 @@ public class ElectricBallSyncS2CPacket {
         context.enqueueWork(() -> {
             ClientLevel level = Minecraft.getInstance().level;
             if (level != null) {
-                LightningBallParticleType.Data data = new LightningBallParticleType.Data(OPParticles.ELECTRIC_ORB.get())
-                        .range(range)
-                        .sections(sections)
-                        .size(size)
-                        .parallelNoise(parallelNoise)
-                        .spreadFactor(spreadFactor)
-                        .branchInitiationFactor(branchInitiationFactor)
-                        .branchContinuationFactor(branchContinuationFactor)
-                        .closeness(closeness)
-                        .color(color);
+                LightningBallParticleType.Data data = new LightningBallParticleType.Data(OPParticles.ELECTRIC_ORB.get(),
+                        range, sections, size, parallelNoise, spreadFactor,
+                        branchInitiationFactor, branchContinuationFactor, closeness,
+                        color, targetType, entitySourceId, targetPos);
 
                 level.addParticle(data, true, blockX, blockY, blockZ, attackX, attackY, attackZ);
             }
@@ -129,7 +140,9 @@ public class ElectricBallSyncS2CPacket {
         private float closeness = 0.15f;
         private Vector4f color = new Vector4f(0.1f, 0.8f, 0.1f, 0.75f);
 
-        private boolean large = false;
+        private LightningBallParticleType.TargetType targetType = LightningBallParticleType.TargetType.RANDOM;
+        private int entitySourceId = -1;
+        private Vec3 targetPos = Vec3.ZERO;
 
         public Builder pos(double x, double y, double z) {
             this.blockX = (float) x;
@@ -138,12 +151,12 @@ public class ElectricBallSyncS2CPacket {
             return this;
         }
 
-        public Builder direction(double dx, double dy, double dz) {
-            this.attackX = (float) dx;
-            this.attackY = (float) dy;
-            this.attackZ = (float) dz;
-            return this;
-        }
+        //public Builder direction(double dx, double dy, double dz) {
+        //    this.attackX = (float) dx;
+        //    this.attackY = (float) dy;
+        //    this.attackZ = (float) dz;
+        //    return this;
+        //}
 
         public Builder range(int range) {
             this.range = range;
@@ -195,11 +208,39 @@ public class ElectricBallSyncS2CPacket {
             return this;
         }
 
+        public Builder targetRandom() {
+            this.targetType = LightningBallParticleType.TargetType.RANDOM;
+            this.entitySourceId = -1;
+            this.targetPos = Vec3.ZERO;
+            return this;
+        }
+
+        public Builder targetEntity(int entityId) {
+            this.targetType = LightningBallParticleType.TargetType.ENTITY;
+            this.entitySourceId = entityId;
+            this.targetPos = Vec3.ZERO;
+            return this;
+        }
+
+        public Builder targetPosition(double x, double y, double z) {
+            this.targetType = LightningBallParticleType.TargetType.POSITION.POSITION;
+            this.entitySourceId = -1;
+            this.targetPos = new Vec3(x,y,z);
+            return this;
+        }
+
+        public Builder targetPosition(Vec3 pos) {
+            this.targetType = LightningBallParticleType.TargetType.POSITION.POSITION;
+            this.entitySourceId = -1;
+            this.targetPos = pos;
+            return this;
+        }
 
         public ElectricBallSyncS2CPacket build() {
             return new ElectricBallSyncS2CPacket(blockX, blockY, blockZ, attackX, attackY, attackZ,
                     range, sections, size, parallelNoise, spreadFactor,
-                    branchInitiationFactor, branchContinuationFactor, closeness, color);
+                    branchInitiationFactor, branchContinuationFactor, closeness, color,
+                    targetType, entitySourceId, targetPos);
         }
     }
 }
