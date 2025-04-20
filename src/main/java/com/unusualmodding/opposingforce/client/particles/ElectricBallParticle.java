@@ -64,7 +64,6 @@ public class ElectricBallParticle extends Particle {
         return Vec3.atCenterOf(result.getBlockPos()).distanceTo(to) < 3.0F;
     }
 
-
     public void tick() {
         this.xo = this.x;
         this.yo = this.y;
