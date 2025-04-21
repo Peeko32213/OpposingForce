@@ -7,7 +7,7 @@ plugins {
 }
 
 version = "${mod_version}"
-group = "com.peeko32213.${mod_id}"
+group = "com.unusualmodding.${mod_id}"
 archivesBaseName = "${mod_id}"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -28,7 +28,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                sinew {
+                opposingforce {
                     source sourceSets.main
                 }
             }
@@ -42,7 +42,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                sinew {
+                opposingforce {
                     source sourceSets.main
                 }
             }
@@ -58,7 +58,7 @@ minecraft {
             args '--mod', "${mod_id}", '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                sinew {
+                opposingforce {
                     source sourceSets.main
                 }
             }
