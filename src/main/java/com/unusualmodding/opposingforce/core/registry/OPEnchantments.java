@@ -21,17 +21,21 @@ public class OPEnchantments {
     public static final EnchantmentCategory TESLA_BOW = EnchantmentCategory.create("tesla_bow", (item -> item == OPItems.TESLA_BOW.get()));
 
     // Opposing Force categories
-    public static final RegistryObject<Enchantment> BIG_ELECTRIC_BALL = ENCHANTMENTS.register("capacitance", () -> new OPEnchantment("capacitance", Enchantment.Rarity.UNCOMMON, TESLA_BOW, 1, 20, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> BOUNCY_ELECTRIC_BALL = ENCHANTMENTS.register("rebound", () -> new OPEnchantment("rebound", Enchantment.Rarity.RARE, TESLA_BOW, 4, 15, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> BIG_ELECTRIC_BALL = ENCHANTMENTS.register("capacitance", () -> new OPWeaponEnchantment("capacitance", Enchantment.Rarity.RARE, TESLA_BOW, 1, 20, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> BOUNCY_ELECTRIC_BALL = ENCHANTMENTS.register("rebound", () -> new OPWeaponEnchantment("rebound", Enchantment.Rarity.UNCOMMON, TESLA_BOW, 4, 15, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> THUNDERBOLT = ENCHANTMENTS.register("thunderbolt", () -> new OPWeaponEnchantment("thunderbolt", Enchantment.Rarity.RARE, TESLA_BOW, 1, 25, EquipmentSlot.MAINHAND));
 
     // Vanilla categories
-    public static final RegistryObject<Enchantment> KICKBACK = ENCHANTMENTS.register("kickback", () -> new OPEnchantment("kickback", Enchantment.Rarity.RARE, EnchantmentCategory.CROSSBOW, 3, 10, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> KICKBACK = ENCHANTMENTS.register("kickback", () -> new OPWeaponEnchantment("kickback", Enchantment.Rarity.RARE, EnchantmentCategory.CROSSBOW, 3, 10, EquipmentSlot.MAINHAND));
 
-    public static boolean areCompatible(OPEnchantment enchantment1, Enchantment enchantment2) {
+    public static boolean areCompatible(OPWeaponEnchantment enchantment1, Enchantment enchantment2) {
         if (enchantment1 == KICKBACK.get() && enchantment2 == Enchantments.QUICK_CHARGE) {
             return false;
         }
         if (enchantment1 == BIG_ELECTRIC_BALL.get() && enchantment2 == Enchantments.MULTISHOT) {
+            return false;
+        }
+        if (enchantment1 == THUNDERBOLT.get() && (enchantment2 == Enchantments.MULTISHOT || enchantment2 == BIG_ELECTRIC_BALL.get())) {
             return false;
         }
         return true;

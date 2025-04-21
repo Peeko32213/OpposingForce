@@ -2,7 +2,6 @@ package com.unusualmodding.opposingforce.common.entity.custom.monster;
 
 import com.google.common.collect.ImmutableMap;
 import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.volt.VoltAttackGoal;
-import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.volt.VoltJumpGoal;
 import com.unusualmodding.opposingforce.common.entity.custom.base.EnhancedMonsterEntity;
 import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.SmartNearestTargetGoal;
 import com.unusualmodding.opposingforce.common.entity.state.StateHelper;
@@ -52,9 +51,6 @@ public class VoltEntity extends EnhancedMonsterEntity {
 
     private static final EntityDataAccessor<Boolean> LEAPING = SynchedEntityData.defineId(VoltEntity.class, EntityDataSerializers.BOOLEAN);
 
-    private float leapProgress;
-    private int timeLeaping = 0;
-
     private static final RawAnimation VOLT_IDLE = RawAnimation.begin().thenLoop("animation.volt.idle");
     private static final RawAnimation VOLT_IDLE_JAW = RawAnimation.begin().thenPlay("animation.volt.idle_jaw");
     private static final RawAnimation VOLT_WALK = RawAnimation.begin().thenLoop("animation.volt.move");
@@ -88,7 +84,6 @@ public class VoltEntity extends EnhancedMonsterEntity {
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(1, new VoltAttackGoal(this));
-        this.goalSelector.addGoal(2, new VoltJumpGoal(this));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -103,32 +98,6 @@ public class VoltEntity extends EnhancedMonsterEntity {
 
     public void tick() {
         super.tick();
-        if (isLeaping() && leapProgress < 5F) {
-            leapProgress++;
-        }
-        if (!isLeaping() && leapProgress > 0F) {
-            leapProgress--;
-        }
-        if (this.isLeaping()) {
-            if (this.onGround() && leapProgress >= 5.0F) {
-                this.setLeaping(false);
-            }
-            timeLeaping++;
-        } else {
-            timeLeaping = 0;
-            if (this.onGround() && !level().isClientSide) {
-                this.setLeaping(true);
-                this.playSound(SoundEvents.SLIME_JUMP, this.getSoundVolume(), this.getVoicePitch());
-            }
-        }
-    }
-
-    public boolean isLeaping() {
-        return this.entityData.get(LEAPING);
-    }
-
-    public void setLeaping(boolean leaping) {
-        this.entityData.set(LEAPING, leaping);
     }
 
     public static <T extends Mob> boolean canFirstTierSpawn(EntityType<VoltEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {

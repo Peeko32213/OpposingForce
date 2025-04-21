@@ -28,6 +28,7 @@ public class ElectricBall extends ThrowableItemProjectile {
     private static final EntityDataAccessor<Float> CHARGE_SCALE = SynchedEntityData.defineId(ElectricBall.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> BOUNCY = SynchedEntityData.defineId(ElectricBall.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> MAX_BOUNCES = SynchedEntityData.defineId(ElectricBall.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> THUNDER = SynchedEntityData.defineId(ElectricBall.class, EntityDataSerializers.BOOLEAN);
 
     private int bounces = 0;
     public double baseDamage = 4;
@@ -59,6 +60,7 @@ public class ElectricBall extends ThrowableItemProjectile {
         this.getEntityData().define(CHARGE_SCALE, 1F);
         this.getEntityData().define(BOUNCY, false);
         this.getEntityData().define(MAX_BOUNCES, 0);
+        this.getEntityData().define(THUNDER, false);
     }
 
     public float getChargeScale() {
@@ -80,6 +82,13 @@ public class ElectricBall extends ThrowableItemProjectile {
     }
     public void setBouncy(boolean bounce) {
         this.entityData.set(BOUNCY, bounce);
+    }
+
+    public boolean isThunder() {
+        return this.entityData.get(THUNDER);
+    }
+    public void setThunder(boolean thunder) {
+        this.entityData.set(THUNDER, thunder);
     }
 
     public void setBaseDamage(double baseDamage) {
@@ -192,26 +201,18 @@ public class ElectricBall extends ThrowableItemProjectile {
         double d1 = this.getY() + movement.y;
         double d2 = this.getZ() + movement.z;
 
-        float range = 1F;
         float particleMax = 5 + this.level().getRandom().nextInt(3);
-        RandomSource rand = this.level().getRandom();
 
         for (int i = 0; i < particleMax; i++) {
-            float angle = (float) ((i / particleMax) * Math.PI * 2);
-
-            // Generate the initial random vector
-            float x = (rand.nextFloat() - 0.5F) * 0.3F;
-            float y = (rand.nextFloat() - 0.5F) * 0.3F;
-            float z = range * 0.5F + range * 0.5F * rand.nextFloat();
-
-            // Rotate around Y-axis
-            double rotX = x * Math.cos(angle) - z * Math.sin(angle);
-            double rotZ = x * Math.sin(angle) + z * Math.cos(angle);
-
-            // Add movement vector
-            double finalX = rotX + movement.x;
-            double finalY = y + movement.y;
-            double finalZ = rotZ + movement.z;
+            if (this.isThunder()) {
+                ElectricBallSyncS2CPacket packet = ElectricBallSyncS2CPacket.builder()
+                        .pos(d0, d1, d2)
+                        .range((int) (0 + this.getChargeScale()))
+                        .size(0.16f)
+                        .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
+                        .build();
+                OPMessages.sendToClients(packet);
+            }
 
             // Send packet with just the coordinates
             ElectricBallSyncS2CPacket packet = ElectricBallSyncS2CPacket.builder()
@@ -234,6 +235,7 @@ public class ElectricBall extends ThrowableItemProjectile {
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1F);
                 this.discard();
             }
+
             else if (!this.level().isClientSide && tickCount > 300) {
                 ElectricBallSyncS2CPacket packetDissipate = ElectricBallSyncS2CPacket.builder()
                         .pos(d0, d1, d2)
