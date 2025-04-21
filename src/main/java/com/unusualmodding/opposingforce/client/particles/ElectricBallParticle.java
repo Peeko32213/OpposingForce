@@ -2,6 +2,8 @@ package com.unusualmodding.opposingforce.client.particles;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.unusualmodding.opposingforce.common.message.LightningDamageC2SPacket;
+import com.unusualmodding.opposingforce.core.registry.OPMessages;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -16,13 +18,22 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Comparator;
+import java.util.List;
+
+import static com.unusualmodding.opposingforce.client.particles.LightningBallParticleType.TargetType.POSITION;
 
 public class ElectricBallParticle extends Particle {
 
     private final LightningRender lightningRender = new LightningRender();
-
+    private final LightningBallParticleType.Data data;
+    private Vec3 to;
+    private Vec3 lightningOrigin;
     public ElectricBallParticle(LightningBallParticleType.Data data, ClientLevel world, double x, double y, double z, double xd, double yd, double zd) {
         super(world, x, y, z);
+        this.data = data;
         this.setSize(3.0F, 3.0F);
         this.x = x;
         this.y = y + 0.5;
@@ -33,9 +44,9 @@ public class ElectricBallParticle extends Particle {
 
         Vec3 from = new Vec3(x, y, z);
         Vec3 lightningTo = resolveTarget(data, world, from);
-        Vec3 to = lightningTo.subtract(from);
-
-        this.lifetime = (int) Math.ceil(to.length());
+        this.to = lightningTo.subtract(from);
+        this.lightningOrigin = lightningTo;
+        this.lifetime = (int) Math.ceil(this.to.length());
         int sections = data.sections * this.lifetime;
 
         LightningBoltData.BoltRenderInfo boltData = new LightningBoltData.BoltRenderInfo(
@@ -56,13 +67,21 @@ public class ElectricBallParticle extends Particle {
     }
 
     private Vec3 resolveTarget(LightningBallParticleType.Data data, ClientLevel level, Vec3 from) {
-        return switch (data.targetType) {
-            case ENTITY -> {
-                Entity entity = level.getEntity(data.entitySourceId);
-                yield (entity != null) ? entity.position().add(0, entity.getBbHeight() * 0.5, 0) : from;
+        LightningTarget target = data.target;
+        return switch (target.type()) {
+            case ENTITY, CHAIN -> {
+                Entity entity = level.getEntity(target.entityId());
+                if (entity != null) {
+                    double offX = (random.nextDouble() - 0.5) * entity.getBbWidth();
+                    double offY = random.nextDouble() * entity.getBbHeight();
+                    double offZ = (random.nextDouble() - 0.5) * entity.getBbWidth();
+                    yield entity.position().add(offX, offY, offZ);
+                } else {
+                    yield from;
+                }
             }
-            case POSITION -> canSeeBlock(from, data.targetPos) ? data.targetPos : from;
-            case RANDOM -> findRandomLightningTarget(level, from, data.range + random.nextInt(2));
+            case POSITION -> canSeeBlock(from, target.position()) ? target.position() : from;
+            default -> findRandomLightningTarget(level, from, data.range + random.nextInt(2));
         };
     }
 
@@ -94,11 +113,59 @@ public class ElectricBallParticle extends Particle {
         this.yd = 0;
         this.zd = 0;
         if (this.age++ >= this.lifetime) {
+            if (data.target.type() == LightningBallParticleType.TargetType.CHAIN) {
+                spawnNextChainParticle();
+            }
             this.remove();
         } else {
             this.move(this.xd, this.yd, this.zd);
             this.yd -= this.gravity;
         }
+    }
+
+    private void spawnNextChainParticle() {
+        LightningTarget target = data.target;
+        if (target.chainTargets().isEmpty()) return;
+
+        Vec3 origin = lightningOrigin;
+        List<Integer> sorted = target.chainTargets().stream()
+                .map(id -> level.getEntity(id))
+                .filter(e -> e != null)
+                .sorted(Comparator.comparingDouble(e -> e.position().distanceToSqr(origin)))
+                .map(Entity::getId)
+                .toList();
+        if (sorted.isEmpty()) return;
+
+        int nextId = sorted.get(0);
+        List<Integer> remaining = sorted.subList(1, sorted.size());
+
+        Entity nextEntity = level.getEntity(nextId);
+        if (nextEntity != null) {
+            LightningDamageC2SPacket damageC2SPacket = new LightningDamageC2SPacket(data.senderId, nextId, 5, new Vec3(0,0,0));
+            OPMessages.sendToServer(damageC2SPacket);
+            LightningBallParticleType.Data newData = getData(nextEntity.getId(), remaining);
+
+            Minecraft.getInstance().level.addParticle(newData, true, lightningOrigin.x, lightningOrigin.y, lightningOrigin.z, 0, 0, 0);
+        }
+    }
+
+    private LightningBallParticleType.@NotNull Data getData(int nextId, List<Integer> remaining) {
+        LightningTarget newTarget = new LightningTarget(LightningBallParticleType.TargetType.CHAIN, nextId, Vec3.ZERO, remaining);
+        LightningBallParticleType.Data newData = new LightningBallParticleType.Data(
+                data.particleType,
+                data.senderId,
+                data.range,
+                data.sections,
+                data.size,
+                data.parallelNoise,
+                data.spreadFactor,
+                data.branchInitiationFactor,
+                data.branchContinuationFactor,
+                data.closeness,
+                data.color,
+                newTarget
+        );
+        return newData;
     }
 
     @Override

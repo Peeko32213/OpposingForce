@@ -1,7 +1,4 @@
-package com.unusualmodding.opposingforce.client.particles;//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
+package com.unusualmodding.opposingforce.client.particles;
 
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.Pair;
@@ -108,6 +105,7 @@ public class LightningBoltData {
                 Pair<BoltQuads, QuadCache> quadData = this.createQuads(data.cache, data.start, segmentEnd, boltSize);
                 quads.add((BoltQuads)quadData.getLeft());
                 if (segmentEnd == this.end) {
+
                     break;
                 }
 

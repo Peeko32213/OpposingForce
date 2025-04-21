@@ -2,6 +2,7 @@ package com.unusualmodding.opposingforce.core.registry;
 
 import com.unusualmodding.opposingforce.OpposingForce;
 import com.unusualmodding.opposingforce.common.message.ElectricBallSyncS2CPacket;
+import com.unusualmodding.opposingforce.common.message.LightningDamageC2SPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -32,6 +33,12 @@ public class OPMessages {
                 .decoder(ElectricBallSyncS2CPacket::new)
                 .encoder(ElectricBallSyncS2CPacket::toBytes)
                 .consumerMainThread(ElectricBallSyncS2CPacket::handle)
+                .add();
+
+        net.messageBuilder(LightningDamageC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(LightningDamageC2SPacket::new)
+                .encoder(LightningDamageC2SPacket::toBytes)
+                .consumerMainThread(LightningDamageC2SPacket::handle)
                 .add();
     }
 

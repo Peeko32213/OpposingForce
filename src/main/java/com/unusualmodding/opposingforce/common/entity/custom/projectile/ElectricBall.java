@@ -17,11 +17,15 @@ import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+
+import java.util.Comparator;
+import java.util.List;
 
 public class ElectricBall extends ThrowableItemProjectile {
 
@@ -149,6 +153,7 @@ public class ElectricBall extends ThrowableItemProjectile {
                 .range((int) (8 + this.getChargeScale()))
                 .size(0.16f)
                 .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
+                .senderId(this.getId())
                 .build();
 
         if (!this.level().isClientSide) {
@@ -172,11 +177,20 @@ public class ElectricBall extends ThrowableItemProjectile {
         newVel = newVel.scale(conservedEnergy);
         this.setDeltaMovement(newVel);
 
+        Vec3 origin = this.position();
+        List<Integer> entityIds = this.level().getEntities(this, this.getBoundingBox().inflate(10), e -> e.isAlive() && e != this)
+                .stream()
+                .sorted(Comparator.comparingDouble(e -> e.position().distanceToSqr(origin)))
+                .map(Entity::getId)
+                .toList();
+
+
         ElectricBallSyncS2CPacket packetBounceDissipate = ElectricBallSyncS2CPacket.builder()
                 .pos(this.getX(), this.getY(), this.getZ())
                 .range((int) (8 + this.getChargeScale()))
                 .size(0.16f)
                 .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
+                .chain(entityIds)
                 .build();
 
         if (!level().isClientSide) {
