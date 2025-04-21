@@ -243,8 +243,6 @@ public class ElectricBallSyncS2CPacket {
             return this;
         }
 
-
-
         public ElectricBallSyncS2CPacket build() {
             return new ElectricBallSyncS2CPacket(blockX, blockY, blockZ, attackX, attackY, attackZ,
                     senderId, range, sections, size, parallelNoise, spreadFactor,

@@ -131,7 +131,7 @@ public class LanguageGenerator extends LanguageProvider {
         addEnchantmentWithDesc(OPEnchantments.BIG_ELECTRIC_BALL.get(), "Increases the size of the fired electric charge");
         addEnchantmentWithDesc(OPEnchantments.BOUNCY_ELECTRIC_BALL.get(), "The fired electric charge bounces off blocks and passes through mobs");
         addEnchantmentWithDesc(OPEnchantments.KICKBACK.get(), "Launches the user backwards after firing");
-        addEnchantmentWithDesc(OPEnchantments.THUNDERBOLT.get(), "The fired electric charge becomes a quick and powerful bolt of lightning");
+        addEnchantmentWithDesc(OPEnchantments.CONDUCTION.get(), "The fired electric charge chains between nearby entities");
     }
 
     @Override

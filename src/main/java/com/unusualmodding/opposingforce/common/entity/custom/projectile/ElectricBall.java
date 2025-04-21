@@ -1,6 +1,7 @@
 package com.unusualmodding.opposingforce.common.entity.custom.projectile;
 
 import com.unusualmodding.opposingforce.common.message.ElectricBallSyncS2CPacket;
+import com.unusualmodding.opposingforce.common.message.LightningDamageC2SPacket;
 import com.unusualmodding.opposingforce.core.registry.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -10,14 +11,12 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -126,6 +125,22 @@ public class ElectricBall extends ThrowableItemProjectile {
                 .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
                 .build();
 
+        // Conduction
+        Vec3 origin = this.position();
+        List<Integer> entityIds = this.level().getEntities(this, this.getBoundingBox().inflate(50), e -> e.isAlive() && e != this)
+                .stream()
+                .sorted(Comparator.comparingDouble(e -> e.position().distanceToSqr(origin)))
+                .map(Entity::getId)
+                .toList();
+
+        ElectricBallSyncS2CPacket packetChainLightning = ElectricBallSyncS2CPacket.builder()
+                .pos(this.getX(), this.getY(), this.getZ())
+                .range((int) (8 + this.getChargeScale()))
+                .size(0.16f)
+                .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
+                .chain(entityIds)
+                .build();
+
         if (!this.level().isClientSide) {
             if (entity instanceof LivingEntity target) {
                 if (target.isBlocking()) {
@@ -136,6 +151,11 @@ public class ElectricBall extends ThrowableItemProjectile {
                 }
             }
             this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.6F, 1F);
+
+            if (this.isThunder()) {
+                OPMessages.sendToClients(packetChainLightning);
+                this.discard();
+            }
             if (!this.isBouncy()) {
                 OPMessages.sendToClients(packetImpactEntity);
                 this.discard();
@@ -177,22 +197,6 @@ public class ElectricBall extends ThrowableItemProjectile {
         newVel = newVel.scale(conservedEnergy);
         this.setDeltaMovement(newVel);
 
-        Vec3 origin = this.position();
-        List<Integer> entityIds = this.level().getEntities(this, this.getBoundingBox().inflate(10), e -> e.isAlive() && e != this)
-                .stream()
-                .sorted(Comparator.comparingDouble(e -> e.position().distanceToSqr(origin)))
-                .map(Entity::getId)
-                .toList();
-
-
-        ElectricBallSyncS2CPacket packetBounceDissipate = ElectricBallSyncS2CPacket.builder()
-                .pos(this.getX(), this.getY(), this.getZ())
-                .range((int) (8 + this.getChargeScale()))
-                .size(0.16f)
-                .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
-                .chain(entityIds)
-                .build();
-
         if (!level().isClientSide) {
             this.hasImpulse = true;
             if (bounces >= 0) {
@@ -200,7 +204,6 @@ public class ElectricBall extends ThrowableItemProjectile {
             }
             if (bounces > getMaxBounces()) {
                 this.playSound(OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), 0.5F, 1.0F);
-                OPMessages.sendToClients(packetBounceDissipate);
                 this.discard();
             }
         }

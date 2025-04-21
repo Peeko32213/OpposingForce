@@ -179,7 +179,7 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
         Projectile thunderProjectileentity = getCharge(world, shooter, projectileStack, crossbow, false, true);
 
         boolean largeBall = crossbow.getEnchantmentLevel(OPEnchantments.BIG_ELECTRIC_BALL.get()) > 0;
-        boolean thunder = crossbow.getEnchantmentLevel(OPEnchantments.THUNDERBOLT.get()) > 0;
+        boolean thunder = crossbow.getEnchantmentLevel(OPEnchantments.CONDUCTION.get()) > 0;
 
         Vec3 vec31 = shooter.getUpVector(1.0F);
         Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(simulated * ((float) Math.PI / 180F), vec31.x, vec31.y, vec31.z);

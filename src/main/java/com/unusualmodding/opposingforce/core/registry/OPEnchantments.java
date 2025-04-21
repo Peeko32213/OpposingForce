@@ -21,9 +21,9 @@ public class OPEnchantments {
     public static final EnchantmentCategory TESLA_BOW = EnchantmentCategory.create("tesla_bow", (item -> item == OPItems.TESLA_BOW.get()));
 
     // Opposing Force categories
-    public static final RegistryObject<Enchantment> BIG_ELECTRIC_BALL = ENCHANTMENTS.register("capacitance", () -> new OPWeaponEnchantment("capacitance", Enchantment.Rarity.RARE, TESLA_BOW, 1, 20, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> BIG_ELECTRIC_BALL = ENCHANTMENTS.register("capacitance", () -> new OPWeaponEnchantment("capacitance", Enchantment.Rarity.RARE, TESLA_BOW, 3, 20, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> BOUNCY_ELECTRIC_BALL = ENCHANTMENTS.register("rebound", () -> new OPWeaponEnchantment("rebound", Enchantment.Rarity.UNCOMMON, TESLA_BOW, 4, 15, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> THUNDERBOLT = ENCHANTMENTS.register("thunderbolt", () -> new OPWeaponEnchantment("thunderbolt", Enchantment.Rarity.RARE, TESLA_BOW, 1, 25, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> CONDUCTION = ENCHANTMENTS.register("conduction", () -> new OPWeaponEnchantment("conduction", Enchantment.Rarity.RARE, TESLA_BOW, 5, 25, EquipmentSlot.MAINHAND));
 
     // Vanilla categories
     public static final RegistryObject<Enchantment> KICKBACK = ENCHANTMENTS.register("kickback", () -> new OPWeaponEnchantment("kickback", Enchantment.Rarity.RARE, EnchantmentCategory.CROSSBOW, 3, 10, EquipmentSlot.MAINHAND));
@@ -35,7 +35,7 @@ public class OPEnchantments {
         if (enchantment1 == BIG_ELECTRIC_BALL.get() && enchantment2 == Enchantments.MULTISHOT) {
             return false;
         }
-        if (enchantment1 == THUNDERBOLT.get() && (enchantment2 == Enchantments.MULTISHOT || enchantment2 == BIG_ELECTRIC_BALL.get())) {
+        if (enchantment1 == CONDUCTION.get() && (enchantment2 == Enchantments.MULTISHOT || enchantment2 == BIG_ELECTRIC_BALL.get())) {
             return false;
         }
         return true;
