@@ -6,7 +6,7 @@
 				"identifier": "geometry.spindle",
 				"texture_width": 128,
 				"texture_height": 128,
-				"visible_bounds_width": 4,
+				"visible_bounds_width": 6,
 				"visible_bounds_height": 7.5,
 				"visible_bounds_offset": [0, 3.25, 0]
 			},
@@ -211,8 +211,7 @@
 				{
 					"name": "Leg1Bone",
 					"parent": "Leg1YBone",
-					"pivot": [4, 72, -2],
-					"rotation": [0, 0, 0]
+					"pivot": [4, 72, -2]
 				},
 				{
 					"name": "Leg1",
@@ -249,8 +248,7 @@
 				{
 					"name": "Leg2Bone",
 					"parent": "Leg2YBone",
-					"pivot": [-4, 72, -2],
-					"rotation": [0, 0, 0]
+					"pivot": [-4, 72, -2]
 				},
 				{
 					"name": "Leg2",

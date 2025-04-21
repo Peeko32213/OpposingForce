@@ -28,6 +28,7 @@ public class VoltAttackGoal extends Goal {
         volt.setRunning(true);
         volt.setAttackState(0);
         this.attackTime = 0;
+        this.retreatCooldown = 0;
     }
 
     public void stop() {
@@ -60,7 +61,7 @@ public class VoltAttackGoal extends Goal {
         if (volt.onGround()) {
             volt.setAttackState(21);
         }
-        else if (distance < 14 && this.retreatCooldown <= 0) {
+        else if (distance < 40 && this.retreatCooldown <= 0 && volt.onGround()) {
             this.retreat();
         }
     }
@@ -86,7 +87,7 @@ public class VoltAttackGoal extends Goal {
     }
 
     public void retreat() {
-        Vec3 diff = new Vec3(volt.getTarget().getX() - volt.getX(), (volt.getTarget().getY() - volt.getY()) + 1.25, volt.getTarget().getZ() -volt.getZ());
+        Vec3 diff = new Vec3(volt.getTarget().getX() - volt.getX(), (volt.getTarget().getY() - volt.getY()) + 4.25, volt.getTarget().getZ() -volt.getZ());
         Vec3 vel = diff.multiply(0.5D,0.4D, 0.5D).add(0,0.45,0).normalize();
         volt.setDeltaMovement(vel);
         this.retreatCooldown = volt.getRandom().nextInt(5) + 5;
