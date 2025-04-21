@@ -1,6 +1,6 @@
 package com.unusualmodding.opposingforce.common.message;
 
-import com.unusualmodding.opposingforce.client.particles.type.LightningBallParticleType;
+import com.unusualmodding.opposingforce.client.particles.LightningBallParticleType;
 import com.unusualmodding.opposingforce.core.registry.OPParticles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;

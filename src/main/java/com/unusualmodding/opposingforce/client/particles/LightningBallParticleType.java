@@ -1,4 +1,4 @@
-package com.unusualmodding.opposingforce.client.particles.type;
+package com.unusualmodding.opposingforce.client.particles;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector4f;
+
 
 import java.util.Locale;
 
@@ -38,7 +39,7 @@ public class LightningBallParticleType extends ParticleType<LightningBallParticl
             TargetType.CODEC.fieldOf("target_type").forGetter(data -> data.targetType),
             Codec.INT.fieldOf("entity_id").forGetter(data -> data.entitySourceId),
             Vec3.CODEC.fieldOf("target_pos").forGetter(data -> data.targetPos)
-            ).apply(instance, (type, range, sections, size, parallelNoise, spreadFactor, bif, bcf, closeness, color, ttype, id, pos) ->
+    ).apply(instance, (type, range, sections, size, parallelNoise, spreadFactor, bif, bcf, closeness, color, ttype, id, pos) ->
             new Data((ParticleType<Data>) BuiltInRegistries.PARTICLE_TYPE.get(new ResourceLocation(type)),
                     range, sections, size, parallelNoise, spreadFactor, bif, bcf, closeness, color,ttype,id,pos)));
 
@@ -288,4 +289,3 @@ public class LightningBallParticleType extends ParticleType<LightningBallParticl
     }
 
 }
-

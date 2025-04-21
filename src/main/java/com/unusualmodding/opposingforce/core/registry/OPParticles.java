@@ -1,7 +1,7 @@
 package com.unusualmodding.opposingforce.core.registry;
 
 import com.unusualmodding.opposingforce.OpposingForce;
-import com.unusualmodding.opposingforce.client.particles.type.LightningBallParticleType;
+import com.unusualmodding.opposingforce.client.particles.LightningBallParticleType;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.registries.DeferredRegister;
