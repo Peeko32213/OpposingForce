@@ -11,7 +11,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Vector4f;
 
-
 import java.util.Locale;
 
 public class LightningBallParticleType extends ParticleType<LightningBallParticleType.Data> {

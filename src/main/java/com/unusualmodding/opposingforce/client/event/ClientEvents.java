@@ -31,7 +31,6 @@ public final class ClientEvents {
 
     @SubscribeEvent
     public static void registerParticleTypes(RegisterParticleProvidersEvent event){
-        event.registerSpecial(OPParticles.ELECTRIC_ORB.get(), new ElectricBallParticle.ElectricOrbFactory());
         event.registerSpecial(OPParticles.LARGE_ELECTRIC_ORB.get(), new LargeElectricBallParticle.ElectricOrbFactory());
         event.registerSpecial(OPParticles.ELECTRIC_ORB_IMPACT.get(), new ElectricBallImpactParticle.ElectricOrbFactory());
     }
