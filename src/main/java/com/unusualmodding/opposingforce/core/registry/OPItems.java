@@ -37,7 +37,7 @@ public class OPItems {
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> ELECTRIC_CHARGE = ITEMS.register("electric_charge",
-            () -> new ElectricChargeItem(OPEntities.ELECTRICITY_BALL, (new Item.Properties()).stacksTo(32)));
+            () -> new ElectricChargeItem(OPEntities.ELECTRICITY_BALL, (new Item.Properties()).stacksTo(64)));
 
     public static final RegistryObject<Item> TOMAHAWK =  ITEMS.register("tomahawk",
             () -> new TomahawkItem(4, -2.2F, (new Item.Properties()).stacksTo(64)));

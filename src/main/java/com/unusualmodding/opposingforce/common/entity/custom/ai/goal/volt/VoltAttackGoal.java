@@ -14,6 +14,7 @@ public class VoltAttackGoal extends Goal {
     protected final VoltEntity volt;
     private int attackTime = 0;
     private int retreatCooldown = 0;
+    private float retreatYaw = 0;
 
     public VoltAttackGoal(VoltEntity mob) {
         this.volt = mob;
@@ -46,33 +47,34 @@ public class VoltAttackGoal extends Goal {
             double distance = volt.distanceToSqr(target.getX(), target.getY(), target.getZ());
             int attackState = volt.getAttackState();
 
-            if (attackState == 21) {
-                tickShootAttack();
-            }
-            else {
-                this.retreatCooldown = Math.max(this.retreatCooldown - 1, 0);
-                this.volt.getNavigation().moveTo(target, 0.5D);
-                this.checkForCloseRangeAttack(distance);
+            switch (attackState) {
+                case 21 -> tickShootAttack();
+                case 22 -> tickRetreat();
+                default -> {
+                    this.volt.getNavigation().moveTo(target, 0.5D);
+                    this.retreatCooldown = Math.max(this.retreatCooldown - 1, 0);
+                    this.checkForCloseRangeAttack(distance);
+                }
             }
         }
     }
 
     protected void checkForCloseRangeAttack (double distance){
-        if (volt.onGround()) {
+        if (volt.onGround() || volt.isInLava() || volt.isInWater() && distance >= 12) {
             volt.setAttackState(21);
         }
-        else if (distance < 40 && this.retreatCooldown <= 0 && volt.onGround()) {
-            this.retreat();
+        else if (distance < 12 && this.retreatCooldown <= 0) {
+            volt.setAttackState(22);
         }
     }
 
     protected void tickShootAttack () {
         attackTime++;
         LivingEntity target = volt.getTarget();
-        volt.setDeltaMovement(0, volt.getDeltaMovement().y, 0);
+        volt.getNavigation().stop();
 
         if (attackTime == 10) {
-            ElectricBall projectile = new ElectricBall(volt, volt.level());
+            ElectricBall projectile = new ElectricBall(volt, volt.level(), volt.position().x(), volt.getEyePosition().y(), volt.position().z());
             double tx = target.getX() - volt.getX();
             double ty = target.getY() + target.getEyeHeight() - 1.1D - projectile.getY();
             double tz = target.getZ() - volt.getZ();
@@ -86,10 +88,24 @@ public class VoltAttackGoal extends Goal {
         }
     }
 
-    public void retreat() {
-        Vec3 diff = new Vec3(volt.getTarget().getX() - volt.getX(), (volt.getTarget().getY() - volt.getY()) + 4.25, volt.getTarget().getZ() -volt.getZ());
-        Vec3 vel = diff.multiply(0.5D,0.4D, 0.5D).add(0,0.45,0).normalize();
-        volt.setDeltaMovement(vel);
-        this.retreatCooldown = volt.getRandom().nextInt(5) + 5;
+    public void tickRetreat() {
+        attackTime++;
+        LivingEntity target = volt.getTarget();
+        volt.getNavigation().stop();
+        if (attackTime == 1) {
+            float targetAngle = -1;
+            retreatYaw = (float) Math.toRadians(targetAngle + 90 + volt.getRandom().nextFloat() * 150 - 75);
+        }
+        if (attackTime == 2 && (volt.onGround())) {
+            float speed = 1.6f;
+            Vec3 m = volt.getDeltaMovement().add(speed * Math.cos(retreatYaw), 0, speed * Math.sin(retreatYaw));
+            volt.setDeltaMovement(m.x, 0.85, m.z);
+        }
+        if (target != null) volt.getLookControl().setLookAt(target, 30, 30);
+        if (attackTime >= 3) {
+            attackTime = 0;
+            this.volt.setAttackState(0);
+            this.retreatCooldown = volt.getRandom().nextInt(5) + 10;
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.unusualmodding.opposingforce.common.entity.custom.ai.goal.attack;
+package com.unusualmodding.opposingforce.common.entity.custom.ai.goal.dicer;
 
 import com.unusualmodding.opposingforce.common.entity.custom.monster.DicerEntity;
 import net.minecraft.world.entity.LivingEntity;

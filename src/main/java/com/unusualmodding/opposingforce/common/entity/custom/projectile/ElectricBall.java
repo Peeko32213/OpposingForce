@@ -1,7 +1,6 @@
 package com.unusualmodding.opposingforce.common.entity.custom.projectile;
 
 import com.unusualmodding.opposingforce.common.message.ElectricBallSyncS2CPacket;
-import com.unusualmodding.opposingforce.common.message.LightningDamageC2SPacket;
 import com.unusualmodding.opposingforce.core.registry.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -9,24 +8,16 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.phys.*;
 import org.joml.Vector3f;
 
-import java.util.Comparator;
-import java.util.List;
-
-public class ElectricBall extends ThrowableItemProjectile {
+public class ElectricBall extends AbstractElectricBall {
 
     private static final EntityDataAccessor<Float> CHARGE_SCALE = SynchedEntityData.defineId(ElectricBall.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> BOUNCY = SynchedEntityData.defineId(ElectricBall.class, EntityDataSerializers.BOOLEAN);
@@ -39,22 +30,13 @@ public class ElectricBall extends ThrowableItemProjectile {
     private final boolean darkBlue = random.nextBoolean();
     private final boolean alphaVar = random.nextBoolean();
 
-    public ElectricBall(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
+    public ElectricBall(EntityType<? extends AbstractElectricBall> entityType, Level level) {
         super(entityType, level);
     }
 
-    public ElectricBall(LivingEntity livingEntity, Level level) {
-        super(OPEntities.ELECTRICITY_BALL.get(), livingEntity, level);
-    }
-
-    public ElectricBall(LivingEntity livingEntity, Level level, double x, double y, double z) {
-        super(OPEntities.ELECTRICITY_BALL.get(), livingEntity, level);
-        this.setPos(x, y, z);
-    }
-
-    @Override
-    protected @NotNull Item getDefaultItem() {
-        return OPItems.ELECTRIC_CHARGE.get();
+    public ElectricBall(LivingEntity entity, Level level, double x, double y, double z) {
+        super(OPEntities.ELECTRICITY_BALL.get(), level, entity, x, y, z);
+        this.setOwner(entity);
     }
 
     @Override
@@ -109,6 +91,72 @@ public class ElectricBall extends ThrowableItemProjectile {
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        Vec3 pos = this.position();
+
+        this.spawnElectricParticles(this, 1, 4);
+        this.hurtEntitiesAround(pos, this.getChargeScale() + 2.0F, this.getChargeScale() + 4.0F, false);
+
+        if (this.level().getBlockState(this.blockPosition().below(0)).is(Blocks.WATER)) {
+            this.spawnElectricParticles(this, 10, 6);
+            if (!this.level().isClientSide) {
+                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1F);
+                this.hurtEntitiesAround(pos, this.getChargeScale() + 8.0F, this.getChargeScale() + 7.0F, true);
+                this.discard();
+            }
+        }
+
+        if (tickCount > 300 || this.getBlockY() > this.level().getMaxBuildHeight() + 30) {
+            this.spawnElectricParticles(this, 4, 3);
+            if (!this.level().isClientSide) {
+                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1F);
+                this.discard();
+            }
+        }
+    }
+
+    public void spawnElectricParticles(ElectricBall charge, int range, float particleMax) {
+        Vec3 movement = charge.getDeltaMovement();
+
+        double d0 = charge.getX() + movement.x;
+        double d1 = charge.getY() + (charge.getBbHeight() - charge.getBbHeight() / 2) + movement.y;
+        double d2 = charge.getZ() + movement.z;
+
+        for (int i = 0; i < particleMax; i++) {
+            ElectricBallSyncS2CPacket packet = ElectricBallSyncS2CPacket.builder()
+                    .pos(d0, d1, d2)
+                    .range((int) (range + charge.getChargeScale()))
+                    .size(0.12f)
+                    .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
+                    .build();
+            OPMessages.sendToClients(packet);
+        }
+    }
+
+    public boolean hurtEntitiesAround(Vec3 center, float radius, float damageAmount, boolean inWater){
+        AABB aabb = new AABB(center.subtract(radius, radius, radius), center.add(radius, radius, radius));
+        Entity shooter = this.getOwner();
+        boolean flag = false;
+        for (LivingEntity living : level().getEntitiesOfClass(LivingEntity.class, aabb, EntitySelector.NO_CREATIVE_OR_SPECTATOR)) {
+            DamageSource damageSource = this.damageSources().source(OPDamageTypes.ELECTRIFIED);
+            if (!living.is(this) && !living.isAlliedTo(this) && living.getType() != this.getType() && living.distanceToSqr(center.x, center.y, center.z) <= radius * radius && !living.is(shooter) && !inWater) {
+                if (living.hurt(damageSource, damageAmount)) {
+                    living.addEffect(new MobEffectInstance(OPEffects.ELECTRIFIED.get(), 160), shooter);
+                    flag = true;
+                }
+            }
+            if (!living.is(this) && living.getType() != this.getType() && living.distanceToSqr(center.x, center.y, center.z) <= radius * radius && living.isInWaterRainOrBubble() && inWater) {
+                if (living.hurt(damageSource, damageAmount)) {
+                    living.addEffect(new MobEffectInstance(OPEffects.ELECTRIFIED.get(), 160), shooter);
+                    flag = true;
+                }
+            }
+        }
+        return flag;
+    }
+
+    @Override
     public EntityDimensions getDimensions(Pose pose) {
         return super.getDimensions(pose).scale(this.getChargeScale());
     }
@@ -118,46 +166,10 @@ public class ElectricBall extends ThrowableItemProjectile {
         super.onHitEntity(entityHitResult);
         Entity entity = entityHitResult.getEntity();
 
-        ElectricBallSyncS2CPacket packetImpactEntity = ElectricBallSyncS2CPacket.builder()
-                .pos(this.getX(), this.getY(), this.getZ())
-                .range((int) (8 + this.getChargeScale()))
-                .size(0.16f)
-                .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
-                .build();
-
-        // Conduction
-        Vec3 origin = this.position();
-        List<Integer> entityIds = this.level().getEntities(this, this.getBoundingBox().inflate(50), e -> e.isAlive() && e != this)
-                .stream()
-                .sorted(Comparator.comparingDouble(e -> e.position().distanceToSqr(origin)))
-                .map(Entity::getId)
-                .toList();
-
-        ElectricBallSyncS2CPacket packetChainLightning = ElectricBallSyncS2CPacket.builder()
-                .pos(this.getX(), this.getY(), this.getZ())
-                .range((int) (8 + this.getChargeScale()))
-                .size(0.16f)
-                .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
-                .chain(entityIds)
-                .build();
-
         if (!this.level().isClientSide) {
-            if (entity instanceof LivingEntity target) {
-                if (target.isBlocking()) {
-                    this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.SHIELD_BLOCK, SoundSource.NEUTRAL, 1F, 1F);
-                } else {
-                    entity.hurt(this.damageSources().source(OPDamageTypes.ELECTRIFIED, this.getOwner()), (float) this.getBaseDamage());
-                    target.addEffect(new MobEffectInstance(OPEffects.ELECTRIFIED.get(), 160), this.getOwner());
-                }
-            }
             this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.6F, 1F);
-
-            if (this.isThunder()) {
-                OPMessages.sendToClients(packetChainLightning);
-                this.discard();
-            }
             if (!this.isBouncy()) {
-                OPMessages.sendToClients(packetImpactEntity);
+                this.spawnElectricParticles(this, 4, 3);
                 this.discard();
             }
         }
@@ -168,14 +180,6 @@ public class ElectricBall extends ThrowableItemProjectile {
         super.onHitBlock(result);
         BlockPos pos = result.getBlockPos();
 
-        ElectricBallSyncS2CPacket packetImpactBlock = ElectricBallSyncS2CPacket.builder()
-                .pos(this.getX(), this.getY(), this.getZ())
-                .range((int) (8 + this.getChargeScale()))
-                .size(0.16f)
-                .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
-                .senderId(this.getId())
-                .build();
-
         if (!this.level().isClientSide) {
             if (this.isBouncy()) {
                 Direction hitDirection = result.getDirection();
@@ -185,7 +189,7 @@ public class ElectricBall extends ThrowableItemProjectile {
                 bounce(newVel);
             } else {
                 this.level().playSound(null, pos.getX(), pos.getY(), pos.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1F);
-                OPMessages.sendToClients(packetImpactBlock);
+                this.spawnElectricParticles(this, 4, 3);
                 this.discard();
             }
         }
@@ -204,65 +208,7 @@ public class ElectricBall extends ThrowableItemProjectile {
             }
             if (bounces > getMaxBounces()) {
                 this.playSound(OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), 0.5F, 1.0F);
-                this.discard();
-            }
-        }
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-
-        Vec3 movement = this.getDeltaMovement();
-        double d0 = this.getX() + movement.x;
-        double d1 = this.getY() + movement.y;
-        double d2 = this.getZ() + movement.z;
-
-        float particleMax = 5 + this.level().getRandom().nextInt(3);
-
-        for (int i = 0; i < particleMax; i++) {
-            if (this.isThunder()) {
-                ElectricBallSyncS2CPacket packet = ElectricBallSyncS2CPacket.builder()
-                        .pos(d0, d1, d2)
-                        .range((int) (0 + this.getChargeScale()))
-                        .size(0.16f)
-                        .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
-                        .build();
-                OPMessages.sendToClients(packet);
-            }
-
-            // Send packet with just the coordinates
-            ElectricBallSyncS2CPacket packet = ElectricBallSyncS2CPacket.builder()
-                    .pos(d0, d1, d2)
-                    .range((int) (1 + this.getChargeScale()))
-                    .size(0.16f)
-                    .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
-                    .build();
-            OPMessages.sendToClients(packet);
-
-            if (!this.level().isClientSide && this.level().getBlockState(this.blockPosition().below(0)).is(Blocks.WATER)) {
-                ElectricBallSyncS2CPacket packetImpactWater = ElectricBallSyncS2CPacket.builder()
-                        .pos(d0, d1, d2)
-                        .range((int) (13 + this.getChargeScale()))
-                        .size(0.16f)
-                        .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
-                        .build();
-                OPMessages.sendToClients(packetImpactWater);
-
-                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1F);
-                this.discard();
-            }
-
-            else if (!this.level().isClientSide && tickCount > 300) {
-                ElectricBallSyncS2CPacket packetDissipate = ElectricBallSyncS2CPacket.builder()
-                        .pos(d0, d1, d2)
-                        .range((int) (8 + this.getChargeScale()))
-                        .size(0.16f)
-                        .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
-                        .build();
-                OPMessages.sendToClients(packetDissipate);
-
-                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1F);
+                this.spawnElectricParticles(this, 4, 3);
                 this.discard();
             }
         }
@@ -271,7 +217,7 @@ public class ElectricBall extends ThrowableItemProjectile {
     public void setSoundEvent(SoundEvent pSoundEvent) {}
 
     @Override
-    protected float getGravity() {
-        return 0.0F;
+    protected float getEyeHeight(Pose pPose, EntityDimensions pDimensions) {
+        return 0;
     }
 }

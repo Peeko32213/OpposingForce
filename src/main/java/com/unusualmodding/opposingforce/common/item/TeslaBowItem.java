@@ -220,13 +220,14 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
         electricBall.setBaseDamage(electricBall.getBaseDamage() + 1);
 
         if (bigCharge) {
-            electricBall.setChargeScale(electricBall.getChargeScale() + ((float) chargeSize + 0.5F));
+            electricBall.setChargeScale(electricBall.getChargeScale() + ((float) chargeSize - 0.5F));
             electricBall.setBaseDamage(electricBall.getBaseDamage() * 2F - 2);
         }
 
         if (thunderCharge) {
             electricBall.setChargeScale(electricBall.getChargeScale() - 0.5F);
             electricBall.setBaseDamage(electricBall.getBaseDamage() * 2.5F - 2);
+            electricBall.setThunder(true);
         }
 
         if (bouncy) {

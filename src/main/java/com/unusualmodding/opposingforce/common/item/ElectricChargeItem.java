@@ -36,12 +36,12 @@ public class ElectricChargeItem extends Item {
         ItemStack itemstack = user.getItemInHand(hand);
         user.gameEvent(GameEvent.ITEM_INTERACT_START);
         level.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.EGG_THROW, SoundSource.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
-        user.getCooldowns().addCooldown(this, 8);
+        user.getCooldowns().addCooldown(this, 12);
+
         if (!level.isClientSide) {
-            ElectricBall charge = new ElectricBall(user, level);
-            charge.setItem(itemstack);
-            charge.shootFromRotation(user, user.getXRot(), user.getYRot(), 0.0F, 1.0F, 1.0F);
-            level.addFreshEntity(charge);
+            ElectricBall electricBall = new ElectricBall(user, level, user.position().x(), user.getEyePosition().y(), user.position().z());
+            electricBall.shootFromRotation(user, user.getXRot(), user.getYRot(), 0.0F, 1.0F, 2.0F);
+            level.addFreshEntity(electricBall);
         }
         user.awardStat(Stats.ITEM_USED.get(this));
         if (!user.getAbilities().instabuild) {

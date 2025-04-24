@@ -3,7 +3,7 @@ package com.unusualmodding.opposingforce.common.entity.custom.monster;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.SmartNearestTargetGoal;
-import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.attack.DicerAttackGoal;
+import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.dicer.DicerAttackGoal;
 import com.unusualmodding.opposingforce.common.entity.custom.base.EnhancedMonsterEntity;
 import com.unusualmodding.opposingforce.common.entity.state.EntityAction;
 import com.unusualmodding.opposingforce.common.entity.state.RandomStateGoal;

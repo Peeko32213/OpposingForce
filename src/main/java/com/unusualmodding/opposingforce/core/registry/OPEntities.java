@@ -67,10 +67,9 @@ public class OPEntities {
             () -> EntityType.Builder.of(GuzzlerEntity::new, MobCategory.MONSTER).sized(2.0F, 2.0F)
                     .build(new ResourceLocation(OpposingForce.MODID, "guzzler").toString()));
 
-    public static final RegistryObject<EntityType<ElectricBall>> ELECTRICITY_BALL = ENTITIES.register(
-            "electric_ball", () -> EntityType.Builder.<ElectricBall>of(ElectricBall::new, MobCategory.MISC)
-                    .sized(0.75F, 0.75F).clientTrackingRange(4).updateInterval(10)
-                    .build(new ResourceLocation(OpposingForce.MODID, "electric_ball").toString()));
+    public static final RegistryObject<EntityType<ElectricBall>> ELECTRICITY_BALL = ENTITIES.register("electric_ball",
+            () -> EntityType.Builder.<ElectricBall>of(ElectricBall::new, MobCategory.MISC).sized(0.5F, 0.5F)
+                    .build("electric_ball"));
 
     public static final RegistryObject<EntityType<Tomahawk>> TOMAHAWK = ENTITIES.register("tomahawk",
             () ->  EntityType.Builder.<Tomahawk>of(Tomahawk::new, MobCategory.MISC)

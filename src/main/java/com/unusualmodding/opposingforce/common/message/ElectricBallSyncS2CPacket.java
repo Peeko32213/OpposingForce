@@ -99,10 +99,8 @@ public class ElectricBallSyncS2CPacket {
         buf.writeFloat(color.z());
         buf.writeFloat(color.w());
         target.write(buf);
-         buf.writeVarInt(senderId);
-
+        buf.writeVarInt(senderId);
     }
-
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();

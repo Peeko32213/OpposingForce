@@ -1,5 +1,6 @@
 package com.unusualmodding.opposingforce.common.effect;
 
+import com.unusualmodding.opposingforce.core.registry.OPDamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,7 +13,7 @@ public class ElectrifiedEffect extends MobEffect {
 
     public void applyEffectTick(LivingEntity entity, int amplifier) {
         if (entity.isInWaterRainOrBubble()){
-            entity.hurt(entity.damageSources().magic(), 4.0F);
+            entity.hurt(entity.damageSources().source(OPDamageTypes.ELECTRIFIED), 3.0F + (amplifier * 2));
         }
     }
 
