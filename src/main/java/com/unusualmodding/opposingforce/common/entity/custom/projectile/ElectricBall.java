@@ -9,6 +9,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -29,6 +30,8 @@ public class ElectricBall extends AbstractElectricBall {
 
     private final boolean darkBlue = random.nextBoolean();
     private final boolean alphaVar = random.nextBoolean();
+
+    RandomSource rand = level.getRandom();
 
     public ElectricBall(EntityType<? extends AbstractElectricBall> entityType, Level level) {
         super(entityType, level);
@@ -101,7 +104,7 @@ public class ElectricBall extends AbstractElectricBall {
         if (this.level().getBlockState(this.blockPosition().below(0)).is(Blocks.WATER)) {
             this.spawnElectricParticles(this, 10, 6);
             if (!this.level().isClientSide) {
-                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1F);
+                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
                 this.hurtEntitiesAround(pos, this.getChargeScale() + 8.0F, this.getChargeScale() + 7.0F, true);
                 this.discard();
             }
@@ -110,7 +113,7 @@ public class ElectricBall extends AbstractElectricBall {
         if (tickCount > 300 || this.getBlockY() > this.level().getMaxBuildHeight() + 30) {
             this.spawnElectricParticles(this, 4, 3);
             if (!this.level().isClientSide) {
-                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1F);
+                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
                 this.discard();
             }
         }
@@ -167,7 +170,7 @@ public class ElectricBall extends AbstractElectricBall {
         Entity entity = entityHitResult.getEntity();
 
         if (!this.level().isClientSide) {
-            this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.6F, 1F);
+            this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.6F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
             if (!this.isBouncy()) {
                 this.spawnElectricParticles(this, 4, 3);
                 this.discard();
@@ -188,7 +191,7 @@ public class ElectricBall extends AbstractElectricBall {
                 Vec3 newVel = new Vec3(velocity.toVector3f().reflect(surfaceNormal));
                 bounce(newVel);
             } else {
-                this.level().playSound(null, pos.getX(), pos.getY(), pos.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1F);
+                this.level().playSound(null, pos.getX(), pos.getY(), pos.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
                 this.spawnElectricParticles(this, 4, 3);
                 this.discard();
             }
@@ -204,10 +207,10 @@ public class ElectricBall extends AbstractElectricBall {
         if (!level().isClientSide) {
             this.hasImpulse = true;
             if (bounces >= 0) {
-                this.playSound(OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), 0.5F, 1.25F);
+                this.playSound(OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), 0.5F, 1.25F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
             }
             if (bounces > getMaxBounces()) {
-                this.playSound(OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), 0.5F, 1.0F);
+                this.playSound(OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
                 this.spawnElectricParticles(this, 4, 3);
                 this.discard();
             }
