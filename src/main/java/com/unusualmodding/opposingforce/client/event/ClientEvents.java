@@ -110,15 +110,15 @@ public final class ClientEvents {
             return render;
         });
 
-        EntityRenderers.register(OPEntities.FETID.get(), (ctx) -> {
-            PlainGeoRenderer<FetidEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("fetid"));
-            return render;
-        });
-
-        EntityRenderers.register(OPEntities.SPINDLE.get(), (ctx) -> {
-            PlainGeoRenderer<SpindleEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("spindle"));
-            return render;
-        });
+//        EntityRenderers.register(OPEntities.FETID.get(), (ctx) -> {
+//            PlainGeoRenderer<FetidEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("fetid"));
+//            return render;
+//        });
+//
+//        EntityRenderers.register(OPEntities.SPINDLE.get(), (ctx) -> {
+//            PlainGeoRenderer<SpindleEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("spindle"));
+//            return render;
+//        });
 
         ItemBlockRenderTypes.setRenderLayer(OPBlocks.BLUE_TRUMPET.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(OPBlocks.CAVE_PATTY.get(), RenderType.cutout());

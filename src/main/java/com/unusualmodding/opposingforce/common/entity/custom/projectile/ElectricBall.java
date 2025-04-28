@@ -23,7 +23,6 @@ public class ElectricBall extends AbstractElectricBall {
     private static final EntityDataAccessor<Float> CHARGE_SCALE = SynchedEntityData.defineId(ElectricBall.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> BOUNCY = SynchedEntityData.defineId(ElectricBall.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> MAX_BOUNCES = SynchedEntityData.defineId(ElectricBall.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> THUNDER = SynchedEntityData.defineId(ElectricBall.class, EntityDataSerializers.BOOLEAN);
 
     private int bounces = 0;
     public double baseDamage = 4;
@@ -48,7 +47,6 @@ public class ElectricBall extends AbstractElectricBall {
         this.getEntityData().define(CHARGE_SCALE, 1F);
         this.getEntityData().define(BOUNCY, false);
         this.getEntityData().define(MAX_BOUNCES, 0);
-        this.getEntityData().define(THUNDER, false);
     }
 
     public float getChargeScale() {
@@ -70,13 +68,6 @@ public class ElectricBall extends AbstractElectricBall {
     }
     public void setBouncy(boolean bounce) {
         this.entityData.set(BOUNCY, bounce);
-    }
-
-    public boolean isThunder() {
-        return this.entityData.get(THUNDER);
-    }
-    public void setThunder(boolean thunder) {
-        this.entityData.set(THUNDER, thunder);
     }
 
     public void setBaseDamage(double baseDamage) {

@@ -19,14 +19,14 @@ public class OPItems {
 
     public static final RegistryObject<ForgeSpawnEggItem> BOUNCER_SPAWN_EGG = registerSpawnEggs("bouncer_spawn_egg", OPEntities.BOUNCER, 0x0f0c18, 0xedb436);
     public static final RegistryObject<ForgeSpawnEggItem> DICER_SPAWN_EGG = registerSpawnEggs("dicer_spawn_egg", OPEntities.DICER , 0x1a1818, 0xf17eeb);
-    public static final RegistryObject<ForgeSpawnEggItem> FETID_SPAWN_EGG = registerSpawnEggs("fetid_spawn_egg", OPEntities.FETID , 0x3c3625, 0xafb140);
+//    public static final RegistryObject<ForgeSpawnEggItem> FETID_SPAWN_EGG = registerSpawnEggs("fetid_spawn_egg", OPEntities.FETID , 0x3c3625, 0xafb140);
     public static final RegistryObject<ForgeSpawnEggItem> FIRESLIME_SPAWN_EGG = registerSpawnEggs("fireslime_spawn_egg", OPEntities.FIRE_SLIME , 0xdb3709, 0xffffff);
     public static final RegistryObject<ForgeSpawnEggItem> FROWZY_SPAWN_EGG = registerSpawnEggs("frowzy_spawn_egg", OPEntities.FROWZY , 0x35313b, 0x3f759f);
     public static final RegistryObject<ForgeSpawnEggItem> GUZZLER_SPAWN_EGG = registerSpawnEggs("guzzler_spawn_egg", OPEntities.GUZZLER , 0x59316a, 0xfff067);
     public static final RegistryObject<ForgeSpawnEggItem> PALE_SPIDER_SPAWN_EGG = registerSpawnEggs("pale_spider_spawn_egg", OPEntities.PALE_SPIDER , 0xc4ac7f, 0xffd731);
     public static final RegistryObject<ForgeSpawnEggItem> RAMBLE_SPAWN_EGG = registerSpawnEggs("ramble_spawn_egg", OPEntities.RAMBLE , 0x131313, 0xffffff);
     public static final RegistryObject<ForgeSpawnEggItem> SLUG_SPAWN_EGG = registerSpawnEggs("slug_spawn_egg", OPEntities.SLUG , 0x311d16, 0x7a7139);
-    public static final RegistryObject<ForgeSpawnEggItem> SPINDLE_SPAWN_EGG = registerSpawnEggs("spindle_spawn_egg", OPEntities.SPINDLE , 0x452b65, 0x3b6b64);
+//    public static final RegistryObject<ForgeSpawnEggItem> SPINDLE_SPAWN_EGG = registerSpawnEggs("spindle_spawn_egg", OPEntities.SPINDLE , 0x452b65, 0x3b6b64);
     public static final RegistryObject<ForgeSpawnEggItem> TERROR_SPAWN_EGG = registerSpawnEggs("terror_spawn_egg", OPEntities.TERROR , 0x070508, 0x54174c);
     public static final RegistryObject<ForgeSpawnEggItem> TREMBLER_SPAWN_EGG = registerSpawnEggs("trembler_spawn_egg", OPEntities.TREMBLER , 0x20281e, 0x86b5b4);
     public static final RegistryObject<ForgeSpawnEggItem> UMBER_SPIDER_SPAWN_EGG = registerSpawnEggs("umber_spider_spawn_egg", OPEntities.UMBER_SPIDER , 0x0e0909, 0x44a9f6);

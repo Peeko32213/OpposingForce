@@ -122,16 +122,15 @@ public class LanguageGenerator extends LanguageProvider {
 
         addItem(OPItems.VILE_BOULDER, "Vile Boulder");
 
-        addEntityType(OPEntities.FETID, "Fetid");
-        addItem(OPItems.FETID_SPAWN_EGG, "Fetid Spawn Egg");
-
-        addEntityType(OPEntities.SPINDLE, "Spindle");
-        addItem(OPItems.SPINDLE_SPAWN_EGG, "Spindle Spawn Egg");
+//        addEntityType(OPEntities.FETID, "Fetid");
+//        addItem(OPItems.FETID_SPAWN_EGG, "Fetid Spawn Egg");
+//
+//        addEntityType(OPEntities.SPINDLE, "Spindle");
+//        addItem(OPItems.SPINDLE_SPAWN_EGG, "Spindle Spawn Egg");
 
         addEnchantmentWithDesc(OPEnchantments.BIG_ELECTRIC_BALL.get(), "Increases the size of the fired electric charge");
         addEnchantmentWithDesc(OPEnchantments.BOUNCY_ELECTRIC_BALL.get(), "The fired electric charge bounces off blocks and passes through mobs");
         addEnchantmentWithDesc(OPEnchantments.KICKBACK.get(), "Launches the user backwards after firing");
-        addEnchantmentWithDesc(OPEnchantments.CONDUCTION.get(), "The fired electric charge chains between nearby entities");
     }
 
     @Override

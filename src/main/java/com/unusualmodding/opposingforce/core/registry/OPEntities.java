@@ -88,13 +88,14 @@ public class OPEntities {
             () -> EntityType.Builder.of(SlugEntity::new, MobCategory.MONSTER).sized(0.9F, 0.9F)
                     .build(new ResourceLocation(OpposingForce.MODID, "slug").toString()));
 
-    public static final RegistryObject<EntityType<FetidEntity>> FETID = ENTITIES.register("fetid",
-            () -> EntityType.Builder.of(FetidEntity::new, MobCategory.MONSTER).sized(0.8F, 1.9F)
-                    .build(new ResourceLocation(OpposingForce.MODID, "fetid").toString()));
-
-    public static final RegistryObject<EntityType<SpindleEntity>> SPINDLE = ENTITIES.register("spindle",
-            () -> EntityType.Builder.of(SpindleEntity::new, MobCategory.MONSTER).sized(0.9F, 5.05F)
-                    .build(new ResourceLocation(OpposingForce.MODID, "spindle").toString()));
+    // Future content
+//    public static final RegistryObject<EntityType<FetidEntity>> FETID = ENTITIES.register("fetid",
+//            () -> EntityType.Builder.of(FetidEntity::new, MobCategory.MONSTER).sized(0.8F, 1.9F)
+//                    .build(new ResourceLocation(OpposingForce.MODID, "fetid").toString()));
+//
+//    public static final RegistryObject<EntityType<SpindleEntity>> SPINDLE = ENTITIES.register("spindle",
+//            () -> EntityType.Builder.of(SpindleEntity::new, MobCategory.MONSTER).sized(0.9F, 5.05F)
+//                    .build(new ResourceLocation(OpposingForce.MODID, "spindle").toString()));
 
     private static EntityType registerEntity(EntityType.Builder builder, String entityName) {
         return builder.build(entityName);
