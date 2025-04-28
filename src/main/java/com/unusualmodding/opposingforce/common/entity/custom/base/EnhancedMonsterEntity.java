@@ -1,15 +1,21 @@
 package com.unusualmodding.opposingforce.common.entity.custom.base;
 
+import com.unusualmodding.opposingforce.common.entity.custom.monster.RambleEntity;
 import com.unusualmodding.opposingforce.common.entity.state.IStateAction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -24,6 +30,10 @@ public  abstract class EnhancedMonsterEntity extends Monster implements IStateAc
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
+    public int attackTick = 0;
+    public float attackDamage = (float) EnhancedMonsterEntity.this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
+    public float attackKnockback = (float) EnhancedMonsterEntity.this.getAttribute(Attributes.ATTACK_KNOCKBACK).getValue();
+
     protected EnhancedMonsterEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
     }
@@ -34,6 +44,20 @@ public  abstract class EnhancedMonsterEntity extends Monster implements IStateAc
         this.entityData.define(PERFORMING_ACTION, false);
         this.entityData.define(ATTACK_STATE, 0);
         this.entityData.define(RUNNING, false);
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putInt("attackState", this.getAttackState());
+        compound.putInt("attackTick", attackTick);
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.setAttackState(compound.getInt("attackState"));
+        this.attackTick = compound.getInt("attackTick");
     }
 
     public boolean getBooleanState(EntityDataAccessor<Boolean> pKey) {
@@ -48,6 +72,14 @@ public  abstract class EnhancedMonsterEntity extends Monster implements IStateAc
     }
     public void setAttackState(int attack) {
         this.entityData.set(ATTACK_STATE, attack);
+    }
+
+    public float getAttackDamage() {
+        return attackDamage;
+    }
+
+    public float getAttackKnockback() {
+        return attackKnockback;
     }
 
     @Override

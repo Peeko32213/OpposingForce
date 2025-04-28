@@ -1,35 +1,42 @@
 package com.unusualmodding.opposingforce.common.entity.custom.monster;
 
 import com.google.common.collect.ImmutableMap;
-import com.unusualmodding.opposingforce.common.entity.custom.base.AbstractMonster;
-import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.SmartNearestTargetGoal;
 import com.unusualmodding.opposingforce.common.entity.custom.base.EnhancedMonsterEntity;
 import com.unusualmodding.opposingforce.common.entity.state.StateHelper;
 import com.unusualmodding.opposingforce.common.entity.state.WeightedState;
+import com.unusualmodding.opposingforce.common.entity.util.helper.SmartBodyHelper;
+import com.unusualmodding.opposingforce.common.entity.util.navigator.SmoothGroundNavigation;
 import com.unusualmodding.opposingforce.core.registry.OPSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.stats.Stats;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraftforge.common.ToolActions;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -44,10 +51,36 @@ import java.util.List;
 
 public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable, GeoEntity {
 
-    private static final RawAnimation RAMBLE_IDLE = RawAnimation.begin().thenLoop("animation.ramble.idle");
-    private static final RawAnimation RAMBLE_FLAIL = RawAnimation.begin().thenLoop("animation.ramble.idle_flail");
+    private static final EntityDataAccessor<Boolean> FLAILING = SynchedEntityData.defineId(RambleEntity.class, EntityDataSerializers.BOOLEAN);
+
+    private int flailCooldown = 0;
+
+    private int fleeTicks = 0;
+    private Vec3 fleeFromPosition;
+
+    // Movement animations
     private static final RawAnimation RAMBLE_WALK = RawAnimation.begin().thenLoop("animation.ramble.walk");
+
+    // Idle animations
+    private static final RawAnimation RAMBLE_IDLE = RawAnimation.begin().thenLoop("animation.ramble.idle");
+
+    // Attack animations
+    private static final RawAnimation RAMBLE_FLAIL = RawAnimation.begin().thenLoop("animation.ramble.idle_flail");
     private static final RawAnimation RAMBLE_AGGRO = RawAnimation.begin().thenLoop("animation.ramble.aggro");
+
+    // Body control / navigation
+    @Override
+    protected @NotNull BodyRotationControl createBodyControl() {
+        SmartBodyHelper helper = new SmartBodyHelper(this);
+        helper.bodyLagMoving = 0.35F;
+        helper.bodyLagStill = 0.1F;
+        return helper;
+    }
+
+    @Override
+    protected @NotNull PathNavigation createNavigation(Level levelIn) {
+        return new SmoothGroundNavigation(this, levelIn);
+    }
 
     public RambleEntity(EntityType<? extends EnhancedMonsterEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -55,9 +88,10 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 50.0D)
+                .add(Attributes.MAX_HEALTH, 80.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.13F)
-                .add(Attributes.ATTACK_DAMAGE, 9.0F)
+                .add(Attributes.ATTACK_DAMAGE, 7.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.5D)
                 .add(Attributes.ARMOR,8.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE,2.0D);
     }
@@ -86,6 +120,72 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
         }
     }
 
+    protected void registerGoals() {
+        this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(3, new RambleAttackGoal());
+        this.goalSelector.addGoal(3, new RamblePanicGoal());
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(FLAILING, false);
+    }
+
+    public boolean isFlailing() {
+        return this.entityData.get(FLAILING);
+    }
+
+    public void setFlailing(boolean flailing) {
+        this.entityData.set(FLAILING, flailing);
+    }
+
+    public void tick() {
+        super.tick();
+        if (!level().isClientSide) {
+            if (fleeTicks > 0) {
+                fleeTicks--;
+            }
+        }
+        LivingEntity target = this.getTarget();
+        if (target != null && target.isAlive() && !(target instanceof Player player && player.isCreative())) {
+            if (this.getHealth() < this.getMaxHealth() * 0.3F) {
+                int i = 80 + random.nextInt(40);
+                this.fleeFromPosition = target.position();
+                this.fleeTicks = i;
+                if (target instanceof Mob mob) {
+                    mob.setTarget(null);
+                    mob.setLastHurtByMob(null);
+                    mob.setLastHurtMob(null);
+                }
+            }
+        }
+    }
+
+    public boolean hurtEntitiesAround(Vec3 center, float radius, float damageAmount, float knockbackAmount, boolean disablesShields) {
+        AABB aabb = new AABB(center.subtract(radius, radius, radius), center.add(radius, radius, radius));
+        boolean flag = false;
+        DamageSource damageSource = this.damageSources().mobAttack(this);
+        for(LivingEntity living : level().getEntitiesOfClass(LivingEntity.class, aabb, EntitySelector.NO_CREATIVE_OR_SPECTATOR)){
+            if(!living.is(this) && !living.isAlliedTo(this) && living.getType() != this.getType() && living.distanceToSqr(center.x, center.y, center.z) <= radius * radius && !(living instanceof ArmorStand)) {
+                if(living.isDamageSourceBlocked(damageSource) && disablesShields && living instanceof Player player){
+                    player.disableShield(true);
+                }
+                if(living.hurt(damageSource, damageAmount)){
+                    flag = true;
+                    living.knockback(knockbackAmount, center.x - living.getX(), center.z - living.getZ());
+                }
+            }
+        }
+        return flag;
+    }
+
+    // sounds
     protected SoundEvent getAmbientSound() {
         return OPSounds.RAMBLE_IDLE.get();
     }
@@ -98,73 +198,14 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
         return OPSounds.RAMBLE_DEATH.get();
     }
 
-    protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(3, new RambleAttackGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true));
-    }
-
-    @Override
-    public void customServerAiStep() {
-        if (this.getMoveControl().hasWanted()) {
-            this.setSprinting(this.getMoveControl().getSpeedModifier() >= 1.2D);
-        } else {
-            this.setSprinting(false);
-        }
-        super.customServerAiStep();
+    protected void playStepSound(@NotNull BlockPos p_28301_, @NotNull BlockState p_28302_) {
+        this.playSound(SoundEvents.SKELETON_STEP, 0.15F, 0.85F);
     }
 
     @Override
     protected void blockedByShield(LivingEntity defender) {
-        this.playSound(SoundEvents.RAVAGER_STUNNED, 1.0f, 1.0f);
-        this.level().broadcastEntityEvent(this, (byte) 39);
         defender.push(this);
         defender.hurtMarked = true;
-    }
-
-    public void tick() {
-        super.tick();
-        if (this.isAlive() && this.getTarget() != null && (level().getDifficulty() != Difficulty.PEACEFUL || !(this.getTarget() instanceof Player))) {
-            final float f1 = this.getYRot() * Mth.DEG_TO_RAD;
-            this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
-            if (this.distanceTo(this.getTarget()) < 3.5F && this.hasLineOfSight(this.getTarget())) {
-                boolean flag = this.getTarget().isBlocking();
-                if (flag) {
-                    if (this.getTarget() instanceof final Player player) {
-                        this.damageShieldFor(player, (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
-                    }
-                }
-            }
-        }
-    }
-
-    protected void damageShieldFor(Player holder, float damage) {
-        if (holder.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)) {
-            if (!this.level().isClientSide) {
-                holder.awardStat(Stats.ITEM_USED.get(holder.getUseItem().getItem()));
-            }
-
-            if (damage >= 3.0F) {
-                int i = 1 + Mth.floor(damage);
-                InteractionHand hand = holder.getUsedItemHand();
-                holder.getUseItem().hurtAndBreak(i, holder, (p_213833_1_) -> {
-                    p_213833_1_.broadcastBreakEvent(hand);
-                    net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem(holder, holder.getUseItem(), hand);
-                });
-                if (holder.getUseItem().isEmpty()) {
-                    if (hand == InteractionHand.MAIN_HAND) {
-                        holder.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-                    } else {
-                        holder.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
-                    }
-                    holder.playSound(SoundEvents.SHIELD_BREAK, 0.8F, 0.8F + this.level().random.nextFloat() * 0.4F);
-                }
-            }
-        }
     }
 
     // Animation sounds
@@ -173,6 +214,9 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
         if (ramble.level().isClientSide) {
             if (event.getKeyframeData().getSound().equals("ramble_flail")) {
                 ramble.level().playLocalSound(ramble.getX(), ramble.getY(), ramble.getZ(), OPSounds.RAMBLE_ATTACK.get(), ramble.getSoundSource(), 0.5F, ramble.getVoicePitch(), false);
+            }
+            if (event.getKeyframeData().getSound().equals("ramble_panic")) {
+                ramble.level().playLocalSound(ramble.getX(), ramble.getY(), ramble.getZ(), OPSounds.RAMBLE_ATTACK.get(), ramble.getSoundSource(), 0.5F, ramble.getVoicePitch() * 1.25F, false);
             }
         }
     }
@@ -189,11 +233,20 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
     }
 
     protected <E extends RambleEntity> PlayState predicate(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
-        if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F) && !this.isInWater()) {
-                event.setAndContinue(RAMBLE_WALK);
-        } else {
-            event.setAndContinue(RAMBLE_IDLE);
-            return PlayState.CONTINUE;
+        if (!this.isFlailing()) {
+            if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F) && !this.isInWater()) {
+                if (this.fleeFromPosition != null) {
+                    event.setAndContinue(RAMBLE_WALK);
+                    event.getController().setAnimationSpeed(3.0F);
+                } else {
+                    event.setAndContinue(RAMBLE_WALK);
+                    event.getController().setAnimationSpeed(1.0F);
+                }
+            } else {
+                event.setAndContinue(RAMBLE_IDLE);
+                event.getController().setAnimationSpeed(1.0F);
+                return PlayState.CONTINUE;
+            }
         }
         return PlayState.CONTINUE;
     }
@@ -203,6 +256,12 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
         int attackState = this.getAttackState();
         if (attackState == 21) {
             event.setAndContinue(RAMBLE_AGGRO);
+            event.getController().setAnimationSpeed(1.0F);
+            return PlayState.CONTINUE;
+        }
+        if (attackState == 22) {
+            event.setAndContinue(RAMBLE_FLAIL);
+            event.getController().setAnimationSpeed(1.25F);
             return PlayState.CONTINUE;
         }
         else if (attackState == 0) {
@@ -223,89 +282,141 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
     }
 
     // Goals
-    public static class RambleAttackGoal extends Goal {
+    private class RambleAttackGoal extends Goal {
 
-        protected final RambleEntity ramble;
-        private int attackTime = 0;
-
-        public RambleAttackGoal(RambleEntity ramble) {
-            this.ramble = ramble;
+        public RambleAttackGoal() {
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
 
         public boolean canUse() {
-            return ramble.getTarget() != null && ramble.getTarget().isAlive();
+            return RambleEntity.this.getTarget() != null && RambleEntity.this.getTarget().isAlive() && RambleEntity.this.getHealth() >= RambleEntity.this.getMaxHealth() * 0.3F;
         }
 
         public void start() {
-            ramble.setRunning(true);
-            ramble.setAttackState(0);
-            this.attackTime = 0;
+            RambleEntity.this.setRunning(true);
+            RambleEntity.this.setAttackState(0);
+            RambleEntity.this.attackTick = 0;
+            RambleEntity.this.flailCooldown = 0;
         }
 
         public void stop() {
-            ramble.setRunning(false);
-            ramble.setAttackState(0);
+            RambleEntity.this.setRunning(false);
+            RambleEntity.this.setFlailing(false);
+            RambleEntity.this.setAttackState(0);
         }
 
         public void tick() {
-            LivingEntity target = ramble.getTarget();
+            LivingEntity target = RambleEntity.this.getTarget();
             if (target != null) {
 
-                ramble.lookAt(ramble.getTarget(), 30F, 30F);
-                ramble.getLookControl().setLookAt(ramble.getTarget(), 30F, 30F);
+                RambleEntity.this.lookAt(RambleEntity.this.getTarget(), 30F, 30F);
+                RambleEntity.this.getLookControl().setLookAt(RambleEntity.this.getTarget(), 30F, 30F);
 
-                double distance = ramble.distanceToSqr(target.getX(), target.getY(), target.getZ());
-                int attackState = ramble.getAttackState();
+                double distance = RambleEntity.this.distanceToSqr(target.getX(), target.getY(), target.getZ());
+                int attackState = RambleEntity.this.getAttackState();
 
                 if (attackState == 21) {
                     tickFlailAttack();
-                    this.ramble.getNavigation().moveTo(target, 1D);
+                    RambleEntity.this.getNavigation().moveTo(target, 1.75F);
                 } else {
-                    this.ramble.getNavigation().moveTo(target, 1.25D);
+                    RambleEntity.this.getNavigation().moveTo(target, 1.25F);
+                    RambleEntity.this.flailCooldown = Math.max(RambleEntity.this.flailCooldown - 1, 0);
                     this.checkForCloseRangeAttack(distance);
                 }
             }
         }
 
         protected void checkForCloseRangeAttack (double distance){
-            int r = (ramble.getRandom().nextInt(100) + 1);
-            if (distance <= 5) {
-                if (r <= 40) {
-                    ramble.setAttackState(21);
-                }
-                else if (r <= 80) {
-                    ramble.setAttackState(21);
-                }
-                else {
-                    ramble.setAttackState(23);
-                }
-            }
-            else if (distance <= 7) {
-                if (r <= 20) {
-                    ramble.setAttackState(21);
-                }
-                else if (r <= 40) {
-                    ramble.setAttackState(21);
-                }
-                else {
-                    ramble.setAttackState(23);
-                }
+            if (distance <= 12 && RambleEntity.this.flailCooldown <= 0) {
+                RambleEntity.this.setAttackState(21);
             }
         }
 
         protected void tickFlailAttack () {
-            attackTime++;
-            ramble.setDeltaMovement(0, ramble.getDeltaMovement().y, 0);
+            RambleEntity.this.attackTick++;
+            Vec3 pos = RambleEntity.this.position();
+            RambleEntity.this.setFlailing(true);
 
-            if(attackTime >= 3) {
-                if (ramble.distanceTo(this.ramble.getTarget()) < 2.5f) {
-                    ramble.doHurtTarget(ramble.getTarget());
+            if(RambleEntity.this.attackTick >= 3) {
+                RambleEntity.this.hurtEntitiesAround(pos, 2.5F, RambleEntity.this.getAttackDamage(), RambleEntity.this.getAttackKnockback(), true);
+            }
+            if(RambleEntity.this.attackTick >= 60) {
+                RambleEntity.this.attackTick = 0;
+                RambleEntity.this.setAttackState(0);
+                RambleEntity.this.flailCooldown = RambleEntity.this.getRandom().nextInt(10) + 15;
+                RambleEntity.this.setFlailing(false);
+            }
+        }
+    }
+
+    private class RamblePanicGoal extends Goal {
+
+        public RamblePanicGoal() {
+            this.setFlags(EnumSet.of(Flag.MOVE));
+        }
+
+        public boolean canUse() {
+            return RambleEntity.this.fleeTicks > 0 && RambleEntity.this.fleeFromPosition != null && RambleEntity.this.getTarget() != null && RambleEntity.this.getTarget().isAlive();
+        }
+
+        public void start() {
+            RambleEntity.this.setAttackState(0);
+            RambleEntity.this.attackTick = 0;
+            RambleEntity.this.flailCooldown = 0;
+        }
+
+        public void stop() {
+            RambleEntity.this.fleeFromPosition = null;
+            RambleEntity.this.setRunning(false);
+            RambleEntity.this.setFlailing(false);
+            RambleEntity.this.setAttackState(0);
+        }
+
+        public void tick() {
+            LivingEntity targetEntity = RambleEntity.this.getTarget();
+
+            RambleEntity.this.setRunning(true);
+            if (RambleEntity.this.getNavigation().isDone()) {
+                Vec3 vec3 = LandRandomPos.getPosAway(RambleEntity.this, 4, 4, RambleEntity.this.fleeFromPosition);
+                if (vec3 != null) {
+                    RambleEntity.this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 2.5F);
                 }
             }
-            if(attackTime >= 80) {
-                attackTime = 0;
-                this.ramble.setAttackState(0);
+
+            if (targetEntity != null) {
+
+                double distance = RambleEntity.this.distanceToSqr(targetEntity.getX(), targetEntity.getY(), targetEntity.getZ());
+                int attackState = RambleEntity.this.getAttackState();
+
+                if (attackState == 22) {
+                    tickFlailPanic();
+                } else {
+                    RambleEntity.this.flailCooldown = Math.max(RambleEntity.this.flailCooldown - 1, 0);
+                    this.checkForCloseRangeAttack(distance);
+                }
+            }
+        }
+
+        protected void checkForCloseRangeAttack (double distance){
+            if (distance <= 12 && RambleEntity.this.flailCooldown <= 0) {
+                RambleEntity.this.setAttackState(22);
+            }
+        }
+
+        protected void tickFlailPanic () {
+            RambleEntity.this.attackTick++;
+            RambleEntity.this.getNavigation().stop();
+            Vec3 pos = RambleEntity.this.position();
+            RambleEntity.this.setFlailing(true);
+
+            if (RambleEntity.this.attackTick >= 3) {
+                RambleEntity.this.hurtEntitiesAround(pos, 2.5F, RambleEntity.this.getAttackDamage(), RambleEntity.this.getAttackKnockback(), true);
+            }
+            if (RambleEntity.this.attackTick >= 40) {
+                RambleEntity.this.attackTick = 0;
+                RambleEntity.this.setAttackState(0);
+                RambleEntity.this.flailCooldown = RambleEntity.this.getRandom().nextInt(30) + 20;
+                RambleEntity.this.setFlailing(false);
             }
         }
     }
