@@ -59,5 +59,4 @@ public class PlainGeoRenderer<T extends LivingEntity & GeoEntity> extends GeoEnt
     public RenderType getRenderType(T animatable, ResourceLocation texture, @org.jetbrains.annotations.Nullable MultiBufferSource bufferSource, float partialTick) {
         return RenderType.entityTranslucent(texture);
     }
-
 }
