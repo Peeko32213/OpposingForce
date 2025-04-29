@@ -13,6 +13,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -90,10 +91,10 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 80.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.13F)
-                .add(Attributes.ATTACK_DAMAGE, 7.0D)
+                .add(Attributes.ATTACK_DAMAGE, 8.0D)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5D)
                 .add(Attributes.ARMOR,8.0D)
-                .add(Attributes.KNOCKBACK_RESISTANCE,2.0D);
+                .add(Attributes.KNOCKBACK_RESISTANCE,1.0D);
     }
 
     public static <T extends Mob> boolean canSecondTierSpawn(EntityType<RambleEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -124,11 +125,18 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(3, new RambleAttackGoal());
         this.goalSelector.addGoal(3, new RamblePanicGoal());
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
+
+    public float getStepHeight() {
+        if (this.isRunning()) {
+            return 1.25F;
+        }
+        return 0.6F;
     }
 
     @Override
@@ -194,11 +202,11 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
         return flag;
     }
 
-    public boolean hurt(DamageSource damageSource, float f) {
-        if (this.isFlailing()) {
+    public boolean hurt(DamageSource source, float f) {
+        if (this.isFlailing() || source.is(DamageTypeTags.IS_PROJECTILE)) {
             f *= 0.5F;
         }
-        return super.hurt(damageSource, f);
+        return super.hurt(source, f);
     }
 
     // sounds
@@ -246,6 +254,9 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
                 if (this.isFleeing()) {
                     event.setAndContinue(RAMBLE_WALK);
                     event.getController().setAnimationSpeed(3.0F);
+                } else if (this.isRunning() && !this.isFleeing()) {
+                    event.setAndContinue(RAMBLE_WALK);
+                    event.getController().setAnimationSpeed(1.5F);
                 } else {
                     event.setAndContinue(RAMBLE_WALK);
                     event.getController().setAnimationSpeed(1.0F);
@@ -315,9 +326,9 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
 
                 if (attackState == 21) {
                     tickFlailAttack();
-                    RambleEntity.this.getNavigation().moveTo(target, 1.75F);
+                    RambleEntity.this.getNavigation().moveTo(target, 2F);
                 } else {
-                    RambleEntity.this.getNavigation().moveTo(target, 1.25F);
+                    RambleEntity.this.getNavigation().moveTo(target, 1.5F);
                     RambleEntity.this.flailCooldown = Math.max(RambleEntity.this.flailCooldown - 1, 0);
                     this.checkForCloseRangeAttack(distance);
                 }
@@ -325,7 +336,7 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
         }
 
         protected void checkForCloseRangeAttack (double distance){
-            if (distance <= 12 && RambleEntity.this.flailCooldown <= 0) {
+            if (distance <= 14 && RambleEntity.this.flailCooldown <= 0) {
                 RambleEntity.this.setAttackState(21);
             }
         }
@@ -336,12 +347,12 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
             RambleEntity.this.setFlailing(true);
 
             if(RambleEntity.this.attackTick >= 3) {
-                RambleEntity.this.hurtEntitiesAround(pos, 2.8F, RambleEntity.this.getAttackDamage(), RambleEntity.this.getAttackKnockback(), true);
+                RambleEntity.this.hurtEntitiesAround(pos, 3.2F, RambleEntity.this.getAttackDamage(), RambleEntity.this.getAttackKnockback(), true);
             }
             if(RambleEntity.this.attackTick >= 60) {
                 RambleEntity.this.attackTick = 0;
                 RambleEntity.this.setAttackState(0);
-                RambleEntity.this.flailCooldown = RambleEntity.this.getRandom().nextInt(10) + 15;
+                RambleEntity.this.flailCooldown = RambleEntity.this.getRandom().nextInt(15) + 10;
                 RambleEntity.this.setFlailing(false);
             }
         }
@@ -410,12 +421,12 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
             RambleEntity.this.setFlailing(true);
 
             if (RambleEntity.this.attackTick >= 3) {
-                RambleEntity.this.hurtEntitiesAround(pos, 2.8F, RambleEntity.this.getAttackDamage(), RambleEntity.this.getAttackKnockback(), true);
+                RambleEntity.this.hurtEntitiesAround(pos, 3.2F, RambleEntity.this.getAttackDamage(), RambleEntity.this.getAttackKnockback(), true);
             }
             if (RambleEntity.this.attackTick >= 40) {
                 RambleEntity.this.attackTick = 0;
                 RambleEntity.this.setAttackState(0);
-                RambleEntity.this.flailCooldown = RambleEntity.this.getRandom().nextInt(30) + 20;
+                RambleEntity.this.flailCooldown = RambleEntity.this.getRandom().nextInt(25) + 15;
                 RambleEntity.this.setFlailing(false);
             }
         }

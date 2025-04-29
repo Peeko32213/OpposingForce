@@ -28,7 +28,7 @@ public class OPEntities {
                     .build(new ResourceLocation(OpposingForce.MODID, "umber_spider").toString()));
 
     public static final RegistryObject<EntityType<RambleEntity>> RAMBLE = ENTITIES.register("ramble",
-            () -> EntityType.Builder.of(RambleEntity::new, MobCategory.MONSTER).sized(1.4F, 2.0F)
+            () -> EntityType.Builder.of(RambleEntity::new, MobCategory.MONSTER).sized(1.35F, 1.98F)
                     .build(new ResourceLocation(OpposingForce.MODID, "ramble").toString()));
 
     public static final RegistryObject<EntityType<DicerEntity>> DICER = ENTITIES.register("dicer",
