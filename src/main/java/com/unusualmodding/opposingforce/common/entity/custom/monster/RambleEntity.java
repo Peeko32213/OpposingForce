@@ -41,7 +41,6 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.keyframe.event.SoundKeyframeEvent;
 import software.bernie.geckolib.core.object.PlayState;
@@ -52,6 +51,7 @@ import java.util.List;
 public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable, GeoEntity {
 
     private static final EntityDataAccessor<Boolean> FLAILING = SynchedEntityData.defineId(RambleEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> FLEEING = SynchedEntityData.defineId(RambleEntity.class, EntityDataSerializers.BOOLEAN);
 
     private int flailCooldown = 0;
 
@@ -135,6 +135,7 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(FLAILING, false);
+        this.entityData.define(FLEEING, false);
     }
 
     public boolean isFlailing() {
@@ -143,6 +144,14 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
 
     public void setFlailing(boolean flailing) {
         this.entityData.set(FLAILING, flailing);
+    }
+
+    public boolean isFleeing() {
+        return this.entityData.get(FLEEING);
+    }
+
+    public void setFleeing(boolean fleeing) {
+        this.entityData.set(FLEEING, fleeing);
     }
 
     public void tick() {
@@ -185,6 +194,13 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
         return flag;
     }
 
+    public boolean hurt(DamageSource damageSource, float f) {
+        if (this.isFlailing()) {
+            f *= 0.5F;
+        }
+        return super.hurt(damageSource, f);
+    }
+
     // sounds
     protected SoundEvent getAmbientSound() {
         return OPSounds.RAMBLE_IDLE.get();
@@ -202,21 +218,15 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
         this.playSound(SoundEvents.SKELETON_STEP, 0.15F, 0.85F);
     }
 
-    @Override
-    protected void blockedByShield(LivingEntity defender) {
-        defender.push(this);
-        defender.hurtMarked = true;
-    }
-
     // Animation sounds
     private void soundListener(SoundKeyframeEvent<RambleEntity> event) {
         RambleEntity ramble = event.getAnimatable();
         if (ramble.level().isClientSide) {
             if (event.getKeyframeData().getSound().equals("ramble_flail")) {
-                ramble.level().playLocalSound(ramble.getX(), ramble.getY(), ramble.getZ(), OPSounds.RAMBLE_ATTACK.get(), ramble.getSoundSource(), 0.5F, ramble.getVoicePitch(), false);
+                ramble.level().playLocalSound(ramble.getX(), ramble.getY(), ramble.getZ(), SoundEvents.SKELETON_HURT, ramble.getSoundSource(), 0.5F, ramble.getVoicePitch() * 0.8F, false);
             }
             if (event.getKeyframeData().getSound().equals("ramble_panic")) {
-                ramble.level().playLocalSound(ramble.getX(), ramble.getY(), ramble.getZ(), OPSounds.RAMBLE_ATTACK.get(), ramble.getSoundSource(), 0.5F, ramble.getVoicePitch() * 1.25F, false);
+                ramble.level().playLocalSound(ramble.getX(), ramble.getY(), ramble.getZ(), SoundEvents.SKELETON_HURT, ramble.getSoundSource(), 0.5F, ramble.getVoicePitch(), false);
             }
         }
     }
@@ -225,17 +235,15 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
     @Override
     public void registerControllers(final AnimatableManager.ControllerRegistrar controllers) {
         AnimationController<RambleEntity> controller = new AnimationController<>(this, "controller", 5, this::predicate);
+        controller.setSoundKeyframeHandler(this::soundListener);
         controllers.add(controller);
-
-        AnimationController<RambleEntity> attack = new AnimationController<>(this, "attackController", 5, this::attackPredicate);
-        attack.setSoundKeyframeHandler(this::soundListener);
-        controllers.add(attack);
     }
 
     protected <E extends RambleEntity> PlayState predicate(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
+        int attackState = this.getAttackState();
         if (!this.isFlailing()) {
             if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F) && !this.isInWater()) {
-                if (this.fleeFromPosition != null) {
+                if (this.isFleeing()) {
                     event.setAndContinue(RAMBLE_WALK);
                     event.getController().setAnimationSpeed(3.0F);
                 } else {
@@ -247,28 +255,18 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
                 event.getController().setAnimationSpeed(1.0F);
                 return PlayState.CONTINUE;
             }
+        } else {
+            if (attackState == 21) {
+                event.setAndContinue(RAMBLE_AGGRO);
+                event.getController().setAnimationSpeed(1.0F);
+                return PlayState.CONTINUE;
+            } if (attackState == 22) {
+                event.setAndContinue(RAMBLE_FLAIL);
+                event.getController().setAnimationSpeed(1.25F);
+                return PlayState.CONTINUE;
+            }
         }
         return PlayState.CONTINUE;
-    }
-
-    // Attack animations
-    protected <E extends RambleEntity> PlayState attackPredicate(final AnimationState<E> event) {
-        int attackState = this.getAttackState();
-        if (attackState == 21) {
-            event.setAndContinue(RAMBLE_AGGRO);
-            event.getController().setAnimationSpeed(1.0F);
-            return PlayState.CONTINUE;
-        }
-        if (attackState == 22) {
-            event.setAndContinue(RAMBLE_FLAIL);
-            event.getController().setAnimationSpeed(1.25F);
-            return PlayState.CONTINUE;
-        }
-        else if (attackState == 0) {
-            event.getController().forceAnimationReset();
-            return PlayState.STOP;
-        }
-        else return PlayState.CONTINUE;
     }
 
     @Override
@@ -338,7 +336,7 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
             RambleEntity.this.setFlailing(true);
 
             if(RambleEntity.this.attackTick >= 3) {
-                RambleEntity.this.hurtEntitiesAround(pos, 2.5F, RambleEntity.this.getAttackDamage(), RambleEntity.this.getAttackKnockback(), true);
+                RambleEntity.this.hurtEntitiesAround(pos, 2.8F, RambleEntity.this.getAttackDamage(), RambleEntity.this.getAttackKnockback(), true);
             }
             if(RambleEntity.this.attackTick >= 60) {
                 RambleEntity.this.attackTick = 0;
@@ -369,6 +367,7 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
             RambleEntity.this.fleeFromPosition = null;
             RambleEntity.this.setRunning(false);
             RambleEntity.this.setFlailing(false);
+            RambleEntity.this.setFleeing(false);
             RambleEntity.this.setAttackState(0);
         }
 
@@ -376,6 +375,7 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
             LivingEntity targetEntity = RambleEntity.this.getTarget();
 
             RambleEntity.this.setRunning(true);
+            RambleEntity.this.setFleeing(true);
             if (RambleEntity.this.getNavigation().isDone()) {
                 Vec3 vec3 = LandRandomPos.getPosAway(RambleEntity.this, 4, 4, RambleEntity.this.fleeFromPosition);
                 if (vec3 != null) {
@@ -410,7 +410,7 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
             RambleEntity.this.setFlailing(true);
 
             if (RambleEntity.this.attackTick >= 3) {
-                RambleEntity.this.hurtEntitiesAround(pos, 2.5F, RambleEntity.this.getAttackDamage(), RambleEntity.this.getAttackKnockback(), true);
+                RambleEntity.this.hurtEntitiesAround(pos, 2.8F, RambleEntity.this.getAttackDamage(), RambleEntity.this.getAttackKnockback(), true);
             }
             if (RambleEntity.this.attackTick >= 40) {
                 RambleEntity.this.attackTick = 0;
