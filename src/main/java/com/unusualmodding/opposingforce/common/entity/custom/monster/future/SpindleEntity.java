@@ -1,4 +1,4 @@
-package com.unusualmodding.opposingforce.common.entity.custom.monster;
+package com.unusualmodding.opposingforce.common.entity.custom.monster.future;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -10,7 +10,6 @@ import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.SmartNeares
 import com.unusualmodding.opposingforce.common.entity.custom.base.EnhancedMonsterEntity;
 import com.unusualmodding.opposingforce.common.entity.util.helper.SmartBodyHelper;
 import com.unusualmodding.opposingforce.common.entity.util.navigator.SmoothGroundNavigation;
-import com.unusualmodding.opposingforce.core.registry.OPSounds;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -35,7 +34,6 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.keyframe.event.SoundKeyframeEvent;
 import software.bernie.geckolib.core.object.PlayState;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
 

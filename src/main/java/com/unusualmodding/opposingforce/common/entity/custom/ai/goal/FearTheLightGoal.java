@@ -1,5 +1,6 @@
 package com.unusualmodding.opposingforce.common.entity.custom.ai.goal;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.PathfinderMob;

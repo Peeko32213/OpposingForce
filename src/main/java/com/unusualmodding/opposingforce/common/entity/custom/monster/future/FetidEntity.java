@@ -1,4 +1,4 @@
-package com.unusualmodding.opposingforce.common.entity.custom.monster;
+package com.unusualmodding.opposingforce.common.entity.custom.monster.future;
 
 import com.unusualmodding.opposingforce.common.entity.custom.base.AbstractMonster;
 import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.SmartNearestTargetGoal;
