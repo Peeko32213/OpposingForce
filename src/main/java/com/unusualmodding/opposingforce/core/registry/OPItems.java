@@ -31,7 +31,7 @@ public class OPItems {
     public static final RegistryObject<ForgeSpawnEggItem> TREMBLER_SPAWN_EGG = registerSpawnEggs("trembler_spawn_egg", OPEntities.TREMBLER , 0x20281e, 0x86b5b4);
     public static final RegistryObject<ForgeSpawnEggItem> UMBER_SPIDER_SPAWN_EGG = registerSpawnEggs("umber_spider_spawn_egg", OPEntities.UMBER_SPIDER , 0x0e0909, 0x44a9f6);
     public static final RegistryObject<ForgeSpawnEggItem> VOLT_SPAWN_EGG = registerSpawnEggs("volt_spawn_egg", OPEntities.VOLT , 0x171b2d, 0x78f4d9);
-    public static final RegistryObject<ForgeSpawnEggItem> WIZZ_SPAWN_EGG = registerSpawnEggs("wizz_spawn_egg", OPEntities.WIZZ , 0x6656bb, 0xffe7f8);
+    public static final RegistryObject<ForgeSpawnEggItem> WHIZZ_SPAWN_EGG = registerSpawnEggs("whizz_spawn_egg", OPEntities.WHIZZ, 0x6656bb, 0xffe7f8);
 
     public static final RegistryObject<Item> DEEP_SILK = ITEMS.register("deep_silk",
             () -> new Item(new Item.Properties()));

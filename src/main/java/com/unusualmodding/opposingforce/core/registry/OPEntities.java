@@ -47,9 +47,9 @@ public class OPEntities {
             () -> EntityType.Builder.of(VoltEntity::new, MobCategory.MONSTER).sized(1.1F, 1.8F)
                     .build(new ResourceLocation(OpposingForce.MODID, "volt").toString()));
 
-    public static final RegistryObject<EntityType<WizzEntity>> WIZZ = ENTITIES.register("wizz",
-            () -> EntityType.Builder.of(WizzEntity::new, MobCategory.MONSTER).sized(0.5F, 0.5F)
-                    .build(new ResourceLocation(OpposingForce.MODID, "wizz").toString()));
+    public static final RegistryObject<EntityType<WhizzEntity>> WHIZZ = ENTITIES.register("whizz",
+            () -> EntityType.Builder.of(WhizzEntity::new, MobCategory.MONSTER).sized(0.5F, 0.5F)
+                    .build(new ResourceLocation(OpposingForce.MODID, "whizz").toString()));
 
     public static final RegistryObject<EntityType<HopperEntity>> BOUNCER = ENTITIES.register("bouncer",
             () -> EntityType.Builder.of(HopperEntity::new, MobCategory.MONSTER).sized(1.0F, 0.65F)

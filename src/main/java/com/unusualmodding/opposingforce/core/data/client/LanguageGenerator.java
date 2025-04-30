@@ -79,8 +79,8 @@ public class LanguageGenerator extends LanguageProvider {
         add("death.attack.hole.electrified.player", "%s met a shocking end by %s");
         addItem(OPItems.TESLA_BOW, "Tesla Bow");
 
-        addEntityType(OPEntities.WIZZ, "Whizz");
-        addItem(OPItems.WIZZ_SPAWN_EGG, "Whizz Spawn Egg");
+        addEntityType(OPEntities.WHIZZ, "Whizz");
+        addItem(OPItems.WHIZZ_SPAWN_EGG, "Whizz Spawn Egg");
 
         addEntityType(OPEntities.BOUNCER, "Bouncer");
         addItem(OPItems.BOUNCER_SPAWN_EGG, "Bouncer Spawn Egg");

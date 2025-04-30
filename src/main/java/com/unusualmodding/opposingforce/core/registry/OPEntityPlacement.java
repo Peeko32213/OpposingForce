@@ -19,7 +19,7 @@ public class OPEntityPlacement {
         SpawnPlacements.register(OPEntities.VOLT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, VoltEntity::canSecondTierSpawn);
         SpawnPlacements.register(OPEntities.BOUNCER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, HopperEntity::canFirstTierSpawn);
         SpawnPlacements.register(OPEntities.TERROR.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TerrorEntity::canWaterSpawn);
-        SpawnPlacements.register(OPEntities.WIZZ.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WizzEntity::canWhizzSpawn);
+        SpawnPlacements.register(OPEntities.WHIZZ.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WhizzEntity::canWhizzSpawn);
         SpawnPlacements.register(OPEntities.FROWZY.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FrowzyEntity::canFirstTierSpawn);
         SpawnPlacements.register(OPEntities.GUZZLER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GuzzlerEntity::canSecondTierSpawn);
         SpawnPlacements.register(OPEntities.SLUG.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SlugEntity::canFirstTierSpawn);

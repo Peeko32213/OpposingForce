@@ -2,22 +2,10 @@ package com.unusualmodding.opposingforce.core.events;
 
 import com.unusualmodding.opposingforce.OpposingForce;
 import com.unusualmodding.opposingforce.common.entity.custom.monster.*;
-import com.unusualmodding.opposingforce.common.entity.custom.projectile.ElectricBall;
 import com.unusualmodding.opposingforce.core.registry.OPEntities;
-import com.unusualmodding.opposingforce.core.registry.OPItems;
-import net.minecraft.Util;
-import net.minecraft.core.BlockSource;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Position;
-import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 @Mod.EventBusSubscriber(modid = OpposingForce.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonEvents {
@@ -55,7 +43,7 @@ public class CommonEvents {
         event.put(OPEntities.DICER.get(), DicerEntity.createAttributes().build());
         event.put(OPEntities.TERROR.get(), TerrorEntity.createAttributes().build());
         event.put(OPEntities.VOLT.get(), VoltEntity.createAttributes().build());
-        event.put(OPEntities.WIZZ.get(), WizzEntity.createAttributes().build());
+        event.put(OPEntities.WHIZZ.get(), WhizzEntity.createAttributes().build());
         event.put(OPEntities.BOUNCER.get(), HopperEntity.createAttributes().build());
         event.put(OPEntities.FROWZY.get(), FrowzyEntity.createAttributes().build());
         event.put(OPEntities.GUZZLER.get(), GuzzlerEntity.createAttributes().build());

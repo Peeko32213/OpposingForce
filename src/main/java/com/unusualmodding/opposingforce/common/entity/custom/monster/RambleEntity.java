@@ -6,8 +6,10 @@ import com.unusualmodding.opposingforce.common.entity.state.StateHelper;
 import com.unusualmodding.opposingforce.common.entity.state.WeightedState;
 import com.unusualmodding.opposingforce.common.entity.util.helper.SmartBodyHelper;
 import com.unusualmodding.opposingforce.common.entity.util.navigator.SmoothGroundNavigation;
+import com.unusualmodding.opposingforce.core.registry.OPEntities;
 import com.unusualmodding.opposingforce.core.registry.OPSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -16,6 +18,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -28,6 +31,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
@@ -46,6 +50,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.keyframe.event.SoundKeyframeEvent;
 import software.bernie.geckolib.core.object.PlayState;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -119,6 +124,34 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
                 return j <= dimension.monsterSpawnLightTest().sample(random);
             }
         }
+    }
+
+    @Nullable
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+        pSpawnData = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        RandomSource randomsource = pLevel.getRandom();
+
+        if (randomsource.nextInt(100) == 0) {
+            RambleEntity ramble = OPEntities.RAMBLE.get().create(this.level());
+            if (ramble != null) {
+                ramble.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+                ramble.finalizeSpawn(pLevel, pDifficulty, pReason, null, null);
+                ramble.startRiding(this);
+            }
+        }
+        else if (randomsource.nextInt(100) == 1) {
+            Skeleton skeleton = EntityType.SKELETON.create(this.level());
+            if (skeleton != null) {
+                skeleton.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+                skeleton.finalizeSpawn(pLevel, pDifficulty, pReason, null, null);
+                skeleton.startRiding(this);
+            }
+        }
+        return pSpawnData;
+    }
+
+    public double getPassengersRidingOffset() {
+        return this.getBbHeight() * 0.97F;
     }
 
     protected void registerGoals() {

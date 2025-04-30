@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-19T22:07:28.2398384	Registries
+// 1.20.1	2025-04-29T22:34:41.5842874	Registries
 14c4fa0b3da44b353039f8c05b60d10245e74cb1 data/opposingforce/damage_type/electrified.json
 aa529805623d9fb8e0fdd9cf84c942808ef2cd45 data/opposingforce/damage_type/tomahawk.json
 d12df77c73b17f5dd6b2cd33a2e980a2016b3052 data/opposingforce/forge/biome_modifier/add_spawn/dicer.json
@@ -12,4 +12,4 @@ d796e3aa541a7ae24554a67a004bc872d598462d data/opposingforce/forge/biome_modifier
 6c30b51f90b6d35282744ae6f6515b2c37e78e97 data/opposingforce/forge/biome_modifier/add_spawn/trembler.json
 f892bcb20a4d4bcfabbf3594606418a03411754b data/opposingforce/forge/biome_modifier/add_spawn/umber_spider.json
 42a6fd8bb507a352db14f376ed4b647ba78b052d data/opposingforce/forge/biome_modifier/add_spawn/volt.json
-aec81dfef3695f390e44b624ad7022baffca6c9f data/opposingforce/forge/biome_modifier/add_spawn/wizz.json
+9c9e1437277b7fc5477b2b4e650a19d6c1a6ef04 data/opposingforce/forge/biome_modifier/add_spawn/wizz.json

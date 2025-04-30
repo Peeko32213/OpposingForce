@@ -77,11 +77,6 @@ public final class ClientEvents {
             return render;
         });
 
-        EntityRenderers.register(OPEntities.WIZZ.get(), (ctx) -> {
-            PlainGeoRenderer<WizzEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("wizz"));
-            return render;
-        });
-
         EntityRenderers.register(OPEntities.BOUNCER.get(), (ctx) -> {
             PlainGeoRenderer<HopperEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("hopper"));
             return render;
@@ -148,5 +143,6 @@ public final class ClientEvents {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(OPEntities.ELECTRICITY_BALL.get(), ElectricBallRenderer::new);
         event.registerEntityRenderer(OPEntities.TOMAHAWK.get(), TomahawkRenderer::new);
+        event.registerEntityRenderer(OPEntities.WHIZZ.get(), WhizzRenderer::new);
     }
 }
