@@ -134,7 +134,7 @@ public class UmberSpiderEntity extends EnhancedMonsterEntity implements GeoAnima
                 return UmberSpiderEntity.this.level().getBrightness(LightLayer.BLOCK, UmberSpiderEntity.this.blockPosition()) <= LIGHT_THRESHOLD && super.canUse();
             }
         });
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 12.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this) {
             public boolean canUse() {
                 return UmberSpiderEntity.this.level().getBrightness(LightLayer.BLOCK, UmberSpiderEntity.this.blockPosition()) <= LIGHT_THRESHOLD && super.canUse();
