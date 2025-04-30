@@ -3,6 +3,7 @@ package com.unusualmodding.opposingforce.client.event;
 import com.unusualmodding.opposingforce.OpposingForce;
 import com.unusualmodding.opposingforce.client.model.DefaultModel;
 import com.unusualmodding.opposingforce.client.model.TerrorDefaultModel;
+import com.unusualmodding.opposingforce.client.model.UmberSpiderModel;
 import com.unusualmodding.opposingforce.client.particles.*;
 import com.unusualmodding.opposingforce.client.render.PlainGeoRenderer;
 import com.unusualmodding.opposingforce.client.render.*;
@@ -44,7 +45,7 @@ public final class ClientEvents {
         });
 
         EntityRenderers.register(OPEntities.UMBER_SPIDER.get(), (ctx) -> {
-            PlainGeoRenderer<UmberSpiderEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("umber_spider"));
+            PlainGeoRenderer<UmberSpiderEntity> render = new PlainGeoRenderer<>(ctx, UmberSpiderModel::new);
             render.addRenderLayer(new OPGlowingEyeLayer<>("umber_spider", render));
             return render;
         });

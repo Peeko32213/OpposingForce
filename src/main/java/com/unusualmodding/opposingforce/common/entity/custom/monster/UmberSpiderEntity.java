@@ -1,11 +1,11 @@
 package com.unusualmodding.opposingforce.common.entity.custom.monster;
 
 import com.google.common.collect.ImmutableMap;
-import com.unusualmodding.opposingforce.common.entity.custom.ai.goal.SmartNearestTargetGoal;
 import com.unusualmodding.opposingforce.common.entity.custom.base.EnhancedMonsterEntity;
 import com.unusualmodding.opposingforce.common.entity.state.StateHelper;
 import com.unusualmodding.opposingforce.common.entity.state.WeightedState;
 import com.unusualmodding.opposingforce.common.entity.util.helper.SmartBodyHelper;
+import com.unusualmodding.opposingforce.common.entity.util.navigator.SmartClimbPathNavigator;
 import com.unusualmodding.opposingforce.core.registry.OPSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -29,12 +29,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -60,8 +59,9 @@ import java.util.List;
 
 public class UmberSpiderEntity extends EnhancedMonsterEntity implements GeoAnimatable, GeoEntity {
 
+    public static final int LIGHT_THRESHOLD = 7;
     private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(UmberSpiderEntity.class, EntityDataSerializers.BYTE);
-    private static final EntityDataAccessor<Boolean> AFRAID = SynchedEntityData.defineId(UmberSpiderEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(UmberSpiderEntity.class, EntityDataSerializers.BOOLEAN);
 
     private int leapCooldown = 0;
     private int fleeLightFor = 0;
@@ -75,13 +75,13 @@ public class UmberSpiderEntity extends EnhancedMonsterEntity implements GeoAnima
     @Override
     protected @NotNull BodyRotationControl createBodyControl() {
         SmartBodyHelper helper = new SmartBodyHelper(this);
-        helper.bodyLagMoving = 0.44F;
-        helper.bodyLagStill = 0.22F;
+        helper.bodyLagMoving = 0.5F;
+        helper.bodyLagStill = 0.25F;
         return helper;
     }
 
     protected PathNavigation createNavigation(Level pLevel) {
-        return new WallClimberNavigation(this, pLevel);
+        return new SmartClimbPathNavigator(this, pLevel);
     }
 
     public UmberSpiderEntity(EntityType<? extends EnhancedMonsterEntity> pEntityType, Level pLevel) {
@@ -90,9 +90,17 @@ public class UmberSpiderEntity extends EnhancedMonsterEntity implements GeoAnima
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 32.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.27D)
-                .add(Attributes.ATTACK_DAMAGE, 4.0D);
+                .add(Attributes.MAX_HEALTH, 36.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.28F)
+                .add(Attributes.ATTACK_DAMAGE, 6.0D)
+        ;
+    }
+
+    public float getStepHeight() {
+        if (this.isRunning()) {
+            return 1.25F;
+        }
+        return 0.6F;
     }
 
     public static <T extends Mob> boolean canSecondTierSpawn(EntityType<UmberSpiderEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -120,14 +128,23 @@ public class UmberSpiderEntity extends EnhancedMonsterEntity implements GeoAnima
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8D));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1D) {
+            public boolean canUse() {
+                return UmberSpiderEntity.this.level().getBrightness(LightLayer.BLOCK, UmberSpiderEntity.this.blockPosition()) <= LIGHT_THRESHOLD && super.canUse();
+            }
+        });
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(3, new UmberSpiderAttackGoal());
-        this.goalSelector.addGoal(4, new UmberSpiderFearLightGoal());
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this) {
+            public boolean canUse() {
+                return UmberSpiderEntity.this.level().getBrightness(LightLayer.BLOCK, UmberSpiderEntity.this.blockPosition()) <= LIGHT_THRESHOLD && super.canUse();
+            }
+        });
+        this.goalSelector.addGoal(1, new UmberSpiderAttackGoal());
+        this.goalSelector.addGoal(7, new UmberSpiderFearLightGoal());
+        this.goalSelector.addGoal(5, new UmberSpiderPanicGoal());
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
     protected SoundEvent getAmbientSound() {
@@ -181,8 +198,8 @@ public class UmberSpiderEntity extends EnhancedMonsterEntity implements GeoAnima
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(CLIMBING, (byte)0);
-        this.entityData.define(AFRAID, false);
+        this.entityData.define(CLIMBING, (byte) 0);
+        this.entityData.define(ATTACKING, false);
     }
 
     @Override
@@ -195,12 +212,12 @@ public class UmberSpiderEntity extends EnhancedMonsterEntity implements GeoAnima
         super.readAdditionalSaveData(compound);
     }
 
-    public boolean isAfraid() {
-        return this.entityData.get(AFRAID);
+    public boolean isAttacking() {
+        return this.entityData.get(ATTACKING);
     }
 
-    public void setAfraid(boolean bool) {
-        this.entityData.set(AFRAID, bool);
+    public void setAttacking(boolean attacking) {
+        this.entityData.set(ATTACKING, attacking);
     }
 
     public void tick() {
@@ -213,12 +230,12 @@ public class UmberSpiderEntity extends EnhancedMonsterEntity implements GeoAnima
         RandomSource randomSource = this.getRandom();
         BlockPos pos = blockPos.offset(randomSource.nextInt(20) - 10, randomSource.nextInt(6) - 3, randomSource.nextInt(20) - 10);
 
-        int light = this.level().getBrightness(LightLayer.BLOCK, this.blockPosition());
-        int skyLight = this.level().getBrightness(LightLayer.SKY, this.blockPosition());
-        if (light > 7 || skyLight > 3) {
-            int i = 100 + random.nextInt(50);
+        if (this.level().getBrightness(LightLayer.BLOCK, this.blockPosition()) > LIGHT_THRESHOLD || this.isOnFire()) {
             this.fleeFromPosition = Vec3.atBottomCenterOf(pos);
-            this.fleeLightFor = i;
+        }
+
+        if (fleeLightFor > 0) {
+            fleeLightFor--;
         }
     }
 
@@ -241,13 +258,13 @@ public class UmberSpiderEntity extends EnhancedMonsterEntity implements GeoAnima
     }
 
     public void setClimbing(boolean pClimbing) {
-        byte b0 = this.entityData.get(CLIMBING);
+        byte climb = this.entityData.get(CLIMBING);
         if (pClimbing) {
-            b0 = (byte)(b0 | 1);
+            climb = (byte)(climb | 1);
         } else {
-            b0 = (byte)(b0 & -2);
+            climb = (byte)(climb & -2);
         }
-        this.entityData.set(CLIMBING, b0);
+        this.entityData.set(CLIMBING, climb);
     }
 
     public void makeStuckInBlock(BlockState pState, Vec3 pMotionMultiplier) {
@@ -264,30 +281,15 @@ public class UmberSpiderEntity extends EnhancedMonsterEntity implements GeoAnima
         return super.isInvulnerableTo(source) || source.is(DamageTypeTags.IS_FALL) || source.is(DamageTypes.IN_WALL);
     }
 
-    protected boolean isLightSensitive() {
+    protected boolean isSunSensitive() {
         return true;
-    }
-
-    protected boolean isLightBurnTick() {
-        float f = this.getLightLevelDependentMagicValue();
-        return !(f <= 0.5F);
     }
 
     public void aiStep() {
         if (this.isAlive()) {
-            boolean flag = this.isLightSensitive() && this.isLightBurnTick();
+            boolean flag = this.isSunSensitive() && this.isSunBurnTick();
             if (flag) {
-                ItemStack itemstack = this.getItemBySlot(EquipmentSlot.HEAD);
-                if (!itemstack.isEmpty()) {
-                    if (itemstack.isDamageableItem()) {
-                        itemstack.setDamageValue(itemstack.getDamageValue() + this.random.nextInt(2));
-                        if (itemstack.getDamageValue() >= itemstack.getMaxDamage()) {
-                            this.broadcastBreakEvent(EquipmentSlot.HEAD);
-                            this.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
-                        }
-                    }
-                    flag = false;
-                }
+                this.setSecondsOnFire(8);
             }
         }
         super.aiStep();
@@ -307,10 +309,10 @@ public class UmberSpiderEntity extends EnhancedMonsterEntity implements GeoAnima
         if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F) && !this.isInWater()) {
             if (this.isRunning()) {
                 event.setAndContinue(UMBER_SCURRY);
-                event.getController().setAnimationSpeed(1.4D);
+                event.getController().setAnimationSpeed(2.2D);
             } else {
                 event.setAndContinue(UMBER_SCURRY);
-                event.getController().setAnimationSpeed(1.0D);
+                event.getController().setAnimationSpeed(1.2D);
             }
             return PlayState.CONTINUE;
         } else {
@@ -401,23 +403,25 @@ public class UmberSpiderEntity extends EnhancedMonsterEntity implements GeoAnima
         }
 
         public boolean canUse() {
-            return UmberSpiderEntity.this.getTarget() != null && UmberSpiderEntity.this.getTarget().isAlive() && (UmberSpiderEntity.this.level().getBrightness(LightLayer.BLOCK, UmberSpiderEntity.this.blockPosition()) <= 7);
+            return UmberSpiderEntity.this.getTarget() != null && UmberSpiderEntity.this.getTarget().isAlive() && UmberSpiderEntity.this.fleeLightFor <= 0 && UmberSpiderEntity.this.getTarget().level().getBrightness(LightLayer.BLOCK, UmberSpiderEntity.this.getTarget().blockPosition()) <= LIGHT_THRESHOLD && !UmberSpiderEntity.this.isOnFire();
         }
 
         public void start() {
-            UmberSpiderEntity.this.setRunning(true);
             UmberSpiderEntity.this.setAttackState(0);
             UmberSpiderEntity.this.attackTick = 0;
         }
 
         public void stop() {
             UmberSpiderEntity.this.setRunning(false);
+            UmberSpiderEntity.this.setAttacking(false);
             UmberSpiderEntity.this.setAttackState(0);
         }
 
         public void tick() {
             LivingEntity target = UmberSpiderEntity.this.getTarget();
             if (target != null) {
+                UmberSpiderEntity.this.setAttacking(true);
+                UmberSpiderEntity.this.setRunning(true);
 
                 UmberSpiderEntity.this.lookAt(UmberSpiderEntity.this.getTarget(), 30F, 30F);
                 UmberSpiderEntity.this.getLookControl().setLookAt(UmberSpiderEntity.this.getTarget(), 30F, 30F);
@@ -427,9 +431,9 @@ public class UmberSpiderEntity extends EnhancedMonsterEntity implements GeoAnima
 
                 if (attackState == 21) {
                     tickBiteAttack();
-                    UmberSpiderEntity.this.getNavigation().moveTo(target, 1D);
+                    UmberSpiderEntity.this.getNavigation().moveTo(target, 1.3F);
                 } else {
-                    UmberSpiderEntity.this.getNavigation().moveTo(target, 1.4D);
+                    UmberSpiderEntity.this.getNavigation().moveTo(target, 1.5F);
                     UmberSpiderEntity.this.leapCooldown = Math.max(UmberSpiderEntity.this.leapCooldown - 1, 0);
                     this.checkForCloseRangeAttack(distance);
                 }
@@ -437,10 +441,10 @@ public class UmberSpiderEntity extends EnhancedMonsterEntity implements GeoAnima
         }
 
         protected void checkForCloseRangeAttack (double distance){
-            if (distance <= 4) {
+            if (distance <= 4.45D) {
                 UmberSpiderEntity.this.setAttackState(21);
             }
-            else if (distance >= 11 && distance <= 22 && UmberSpiderEntity.this.onGround()) {
+            else if (distance >= 11 && distance <= 24 && UmberSpiderEntity.this.onGround() && UmberSpiderEntity.this.leapCooldown <= 0) {
                 this.leap();
             }
         }
@@ -448,22 +452,22 @@ public class UmberSpiderEntity extends EnhancedMonsterEntity implements GeoAnima
         protected void tickBiteAttack () {
             UmberSpiderEntity.this.attackTick++;
 
-            if(UmberSpiderEntity.this.attackTick == 8) {
+            if(UmberSpiderEntity.this.attackTick == 7) {
                 if (UmberSpiderEntity.this.distanceTo(UmberSpiderEntity.this.getTarget()) < 2.44f) {
                     UmberSpiderEntity.this.doHurtTarget(UmberSpiderEntity.this.getTarget());
                 }
             }
-            if(UmberSpiderEntity.this.attackTick >= 12) {
+            if(UmberSpiderEntity.this.attackTick >= 9) {
                 UmberSpiderEntity.this.attackTick = 0;
                 UmberSpiderEntity.this.setAttackState(0);
             }
         }
 
         public void leap() {
-            Vec3 diff = new Vec3(UmberSpiderEntity.this.getTarget().getX() - UmberSpiderEntity.this.getX(), (UmberSpiderEntity.this.getTarget().getY() - UmberSpiderEntity.this.getY()) + 1.25, UmberSpiderEntity.this.getTarget().getZ() -UmberSpiderEntity.this.getZ());
-            Vec3 vel = diff.multiply(0.5D,0.4D, 0.5D).add(0,0.45,0).normalize();
+            Vec3 diff = new Vec3(UmberSpiderEntity.this.getTarget().getX() - UmberSpiderEntity.this.getX(), (UmberSpiderEntity.this.getTarget().getY() - UmberSpiderEntity.this.getY()) + 0.5, UmberSpiderEntity.this.getTarget().getZ() - UmberSpiderEntity.this.getZ());
+            Vec3 vel = diff.multiply(0.5D,0.5D, 0.5D).add(0.5D,0.5D,0.5D).normalize();
             UmberSpiderEntity.this.setDeltaMovement(vel);
-            UmberSpiderEntity.this.leapCooldown = UmberSpiderEntity.this.getRandom().nextInt(10) + 13;
+            UmberSpiderEntity.this.leapCooldown = UmberSpiderEntity.this.getRandom().nextInt(5) + 7;
         }
     }
 
@@ -473,50 +477,77 @@ public class UmberSpiderEntity extends EnhancedMonsterEntity implements GeoAnima
             this.setFlags(EnumSet.of(Flag.MOVE));
         }
 
+        public boolean canUse() {
+            return (UmberSpiderEntity.this.level().getBrightness(LightLayer.BLOCK, UmberSpiderEntity.this.blockPosition()) > LIGHT_THRESHOLD || UmberSpiderEntity.this.isOnFire()) && UmberSpiderEntity.this.fleeFromPosition != null;
+        }
+
+        public void stop() {
+            UmberSpiderEntity.this.fleeFromPosition = null;
+            UmberSpiderEntity.this.setRunning(false);
+            UmberSpiderEntity.this.fleeLightFor = 50;
+        }
+
         public void tick() {
-            LivingEntity target = UmberSpiderEntity.this.getTarget();
+            UmberSpiderEntity.this.fleeLightFor = 50;
 
             UmberSpiderEntity.this.setRunning(true);
-            UmberSpiderEntity.this.setAfraid(true);
+            UmberSpiderEntity.this.setAttacking(false);
+
             if (UmberSpiderEntity.this.getNavigation().isDone()) {
                 Vec3 vec3 = LandRandomPos.getPosAway(UmberSpiderEntity.this, 16, 8, UmberSpiderEntity.this.fleeFromPosition);
                 if (vec3 != null) {
                     UmberSpiderEntity.this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 1.5F);
                 }
             }
-//            if (target != null) {
-//
-//                UmberSpiderEntity.this.lookAt(UmberSpiderEntity.this.getTarget(), 30F, 30F);
-//                UmberSpiderEntity.this.getLookControl().setLookAt(UmberSpiderEntity.this.getTarget(), 30F, 30F);
-//
-//                double distance = UmberSpiderEntity.this.distanceToSqr(target.getX(), target.getY(), target.getZ());
-//                int attackState = UmberSpiderEntity.this.getAttackState();
-//
-//                if (attackState == 21) {
-//                    tickBiteAttack();
-//                    UmberSpiderEntity.this.getNavigation().moveTo(target, 1D);
-//                } else {
-//                    UmberSpiderEntity.this.getNavigation().moveTo(target, 1.4D);
-//                    UmberSpiderEntity.this.leapCooldown = Math.max(UmberSpiderEntity.this.leapCooldown - 1, 0);
-//                    this.checkForCloseRangeAttack(distance);
-//                }
-//            }
+        }
+    }
+
+    private class UmberSpiderPanicGoal extends Goal {
+
+        protected double posX;
+        protected double posY;
+        protected double posZ;
+
+        public UmberSpiderPanicGoal() {
+            this.setFlags(EnumSet.of(Flag.MOVE));
         }
 
         public boolean canUse() {
-            return UmberSpiderEntity.this.fleeLightFor > 0 && UmberSpiderEntity.this.fleeFromPosition != null && (UmberSpiderEntity.this.level().getBrightness(LightLayer.BLOCK, UmberSpiderEntity.this.blockPosition()) > 7) || (UmberSpiderEntity.this.level().getBrightness(LightLayer.SKY, UmberSpiderEntity.this.blockPosition()) > 3);
+            if (!this.shouldPanic()) {
+                return false;
+            } else {
+                return this.findRandomPosition();
+            }
+        }
+
+        protected boolean shouldPanic() {
+            return UmberSpiderEntity.this.getLastHurtByMob() != null && UmberSpiderEntity.this.fleeLightFor <= 0 && !UmberSpiderEntity.this.isAttacking() && !UmberSpiderEntity.this.isOnFire();
+        }
+
+        protected boolean findRandomPosition() {
+            Vec3 vec3 = LandRandomPos.getPos(UmberSpiderEntity.this, 16, 8);
+            if (vec3 == null) {
+                return false;
+            } else {
+                this.posX = vec3.x;
+                this.posY = vec3.y;
+                this.posZ = vec3.z;
+                return true;
+            }
         }
 
         public void start() {
-            UmberSpiderEntity.this.setAttackState(0);
-            UmberSpiderEntity.this.attackTick = 0;
+            UmberSpiderEntity.this.getNavigation().moveTo(this.posX, this.posY, this.posZ, 1.5F);
+            UmberSpiderEntity.this.setRunning(true);
+            UmberSpiderEntity.this.setAttacking(false);
         }
 
         public void stop() {
-            UmberSpiderEntity.this.fleeFromPosition = null;
             UmberSpiderEntity.this.setRunning(false);
-            UmberSpiderEntity.this.setAfraid(false);
-            UmberSpiderEntity.this.setAttackState(0);
+        }
+
+        public boolean canContinueToUse() {
+            return !UmberSpiderEntity.this.getNavigation().isDone();
         }
     }
 }
