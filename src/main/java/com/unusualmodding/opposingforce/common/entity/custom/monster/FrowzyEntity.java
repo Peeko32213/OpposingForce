@@ -51,7 +51,7 @@ public class FrowzyEntity extends AbstractMonster implements GeoAnimatable, GeoE
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 14.0D)
                 .add(Attributes.FOLLOW_RANGE, 45.0D)
-                .add(Attributes.MOVEMENT_SPEED, (double)0.26F)
+                .add(Attributes.MOVEMENT_SPEED, 0.26F)
                 .add(Attributes.ATTACK_DAMAGE, 4.0D)
                 .add(Attributes.ARMOR, 1.0D)
                 .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE);
@@ -60,7 +60,6 @@ public class FrowzyEntity extends AbstractMonster implements GeoAnimatable, GeoE
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new ParkourGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0, false));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));

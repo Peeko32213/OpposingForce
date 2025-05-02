@@ -1,6 +1,5 @@
 package com.unusualmodding.opposingforce.common.entity.custom.monster;
 
-
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.DataFixUtils;
 import com.unusualmodding.opposingforce.common.entity.custom.base.EnhancedMonsterEntity;
