@@ -1,233 +1,84 @@
 package com.unusualmodding.opposing_force.data;
 
-import com.mojang.logging.LogUtils;
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.registry.OPBlocks;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DoublePlantBlock;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraftforge.client.model.generators.*;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.slf4j.Logger;
 
-import static com.unusualmodding.opposing_force.OpposingForce.modPrefix;
-import static net.minecraftforge.client.model.generators.ModelProvider.BLOCK_FOLDER;
+import static com.unusualmodding.opposing_force.registry.OPBlocks.*;
 
 public class OPBlockstateProvider extends BlockStateProvider {
-    public OPBlockstateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
-        super(output, OpposingForce.MOD_ID, exFileHelper);
-    }
 
-    private static final Logger LOGGER = LogUtils.getLogger();
-
-    private String blockName(Block block) {
-        return block.getLootTable().getPath();
-    }
-
-    private ResourceLocation key(Block block) {
-        return ForgeRegistries.BLOCKS.getKey(block);
-    }
-
-    public ResourceLocation resourceBlock(String path) {
-        return new ResourceLocation(OpposingForce.MOD_ID, "block/" + path);
-    }
-
-    public ModelFile existingModel(Block block) {
-        return new ModelFile.ExistingModelFile(resourceBlock(blockName(block)), models().existingFileHelper);
-    }
-
-    public ModelFile existingModel(String path) {
-        return new ModelFile.ExistingModelFile(resourceBlock(path), models().existingFileHelper);
-    }
-
-    public void simpleBlockItem(Block block, ModelFile model) {
-        itemModels().getBuilder(key(block).getPath()).parent(model);
+    public OPBlockstateProvider(GatherDataEvent event) {
+        super(event.getGenerator().getPackOutput(), OpposingForce.MOD_ID, event.getExistingFileHelper());
     }
 
     @Override
     protected void registerStatesAndModels() {
-        createPottedPlant(OPBlocks.CAVE_PATTY, OPBlocks.POTTED_CAVE_PATTY, "cutout");
-        createPottedPlant(OPBlocks.COPPER_ENOKI, OPBlocks.POTTED_COPPER_ENOKI, "cutout");
-        createPottedPlant(OPBlocks.RAINCAP, OPBlocks.POTTED_RAINCAP, "cutout");
-        createPottedPlant(OPBlocks.CREAM_CAP, OPBlocks.POTTED_CREAM_CAP, "cutout");
-        createPottedPlant(OPBlocks.CHICKEN_OF_THE_CAVES, OPBlocks.POTTED_CHICKEN_OF_THE_CAVES, "cutout");
-        createPottedPlant(OPBlocks.PRINCESS_JELLY, OPBlocks.POTTED_PRINCESS_JELLY, "cutout");
-        createPottedPlant(OPBlocks.BLUE_TRUMPET, OPBlocks.POTTED_BLUE_TRUMPET, "cutout");
-        createPottedPlant(OPBlocks.POWDER_GNOME, OPBlocks.POTTED_POWDER_GNOME, "cutout");
+        this.pottedPlant(CAVE_PATTY, POTTED_CAVE_PATTY);
+        this.pottedPlant(COPPER_ENOKI, POTTED_COPPER_ENOKI);
+        this.pottedPlant(RAINCAP, POTTED_RAINCAP);
+        this.pottedPlant(CREAM_CAP, POTTED_CREAM_CAP);
+        this.pottedPlant(CHICKEN_OF_THE_CAVES, POTTED_CHICKEN_OF_THE_CAVES);
+        this.pottedPlant(PRINCESS_JELLY, POTTED_PRINCESS_JELLY);
+        this.pottedPlant(BLUE_TRUMPET, POTTED_BLUE_TRUMPET);
+        this.pottedPlant(POWDER_GNOME, POTTED_POWDER_GNOME);
 
-        createPottedPlant(OPBlocks.BLACKCAP, OPBlocks.POTTED_BLACKCAP, "cutout");
-        createPottedPlant(OPBlocks.CAP_OF_EYE, OPBlocks.POTTED_CAP_OF_EYE, "cutout");
-        createPottedPlant(OPBlocks.GREEN_FUNK, OPBlocks.POTTED_GREEN_FUNK, "cutout");
-        createPottedPlant(OPBlocks.LIME_NUB, OPBlocks.POTTED_LIME_NUB, "cutout");
-        createPottedPlant(OPBlocks.POP_CAP, OPBlocks.POTTED_POP_CAP, "cutout");
-        createPottedPlant(OPBlocks.PURPLE_KNOB, OPBlocks.POTTED_PURPLE_KNOB, "cutout");
-        createPottedPlant(OPBlocks.QUEEN_IN_MAGENTA, OPBlocks.POTTED_QUEEN_IN_MAGENTA, "cutout");
-        createPottedPlant(OPBlocks.SLATESHROOM, OPBlocks.POTTED_SLATESHROOM, "cutout");
-        createPottedPlant(OPBlocks.SLIPPERY_TOP, OPBlocks.POTTED_SLIPPERY_TOP, "cutout");
-        createPottedPlant(OPBlocks.WHITECAP, OPBlocks.POTTED_WHITECAP, "cutout");
-
+        this.pottedPlant(BLACKCAP, POTTED_BLACKCAP);
+        this.pottedPlant(CAP_OF_EYE, POTTED_CAP_OF_EYE);
+        this.pottedPlant(GREEN_FUNK, POTTED_GREEN_FUNK);
+        this.pottedPlant(LIME_NUB, POTTED_LIME_NUB);
+        this.pottedPlant(POP_CAP, POTTED_POP_CAP);
+        this.pottedPlant(PURPLE_KNOB, POTTED_PURPLE_KNOB);
+        this.pottedPlant(QUEEN_IN_MAGENTA, POTTED_QUEEN_IN_MAGENTA);
+        this.pottedPlant(SLATESHROOM, POTTED_SLATESHROOM);
+        this.pottedPlant(SLIPPERY_TOP, POTTED_SLIPPERY_TOP);
+        this.pottedPlant(WHITECAP, POTTED_WHITECAP);
     }
 
-
-
-    private void createPottedPlant(RegistryObject<Block> plant, RegistryObject<Block> pottedPlant, String renderType){
-        ConfiguredModel cFfile = new ConfiguredModel(pottedPlant(name(pottedPlant.get()), blockTexture(plant.get()), renderType));
-        getVariantBuilder(pottedPlant.get()).partialState().setModels(cFfile);
-        //impleBlockItem(plant.get(), file);
+    // item
+    private void itemModel(RegistryObject<Block> block) {
+        this.itemModels().withExistingParent(getItemName(block.get()), this.blockTexture(block.get()));
     }
 
-    public ModelFile pottedPlant(String name, ResourceLocation plant, String renderType) {
-        return singleTexture(name, BLOCK_FOLDER + "/flower_pot_cross", "plant", plant, renderType);
+    private void generatedItem(ItemLike item, TextureFolder folder) {
+        String name = getItemName(item);
+        this.itemModels().withExistingParent(name, "item/generated").texture("layer0", this.modLoc(folder.format(name)));
     }
 
-
-    private void createWallFan(RegistryObject<Block> b, String renderType) {
-        ModelFile file = new ConfiguredModel(wallCoral(name(b.get()), blockTexture(b.get()), renderType)).model;
-        getVariantBuilder(b.get())
-                .forAllStates(state -> ConfiguredModel.builder()
-                        .modelFile(file)
-                        .rotationY(((int) state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) % 360)
-                        .build()
-                );
-        simpleBlockItem(b.get(), file);
+    // block
+    private void pottedPlant(RegistryObject<Block> plant, RegistryObject<Block> pot) {
+        this.pot(pot, this.blockTexture(plant.get()));
+        this.simpleCross(plant);
+        this.generatedItem(plant.get(), TextureFolder.BLOCK);
     }
 
-
-
-
-    private void createTintedCross(RegistryObject<Block> b, String renderType) {
-        getVariantBuilder(b.get()).partialState().setModels(new ConfiguredModel(tintedCross(name(b.get()), blockTexture(b.get()), renderType)));
+    private void simpleCross(RegistryObject<Block> block) {
+        this.simpleBlock(block.get(), this.models().cross(getItemName(block.get()), this.blockTexture(block.get())).renderType("cutout"));
     }
 
-    public ModelFile tintedCross(String name, ResourceLocation cross, String renderType) {
-        return singleTexture(name, BLOCK_FOLDER + "/tinted_cross", "cross", cross, renderType);
-    }
-    private void createDoubleCross(RegistryObject<Block> b, String renderType) {
-        String baseName = name(b.get());
-        getVariantBuilder(b.get()).forAllStatesExcept(e -> {
-            DoubleBlockHalf val = e.getValue(DoublePlantBlock.HALF);
-            String mod = val == DoubleBlockHalf.LOWER ? "bottom" : "top";
-            ResourceLocation texture = modPrefix("block/" + baseName + "_" + mod);
-            ModelFile text = cross(baseName + "_" + mod, texture, renderType);
-            return ConfiguredModel.builder().modelFile(text).build();
-        });
-
-        //ModelFile file = models().getExistingFile(modPrefix(baseName + "_top"));
-        singleTex(b.get(), baseName + "_top");
+    private void pot(RegistryObject<Block> pot, ResourceLocation texture) {
+        ModelFile model = this.models().withExistingParent(getBlockName(pot.get()), "block/flower_pot_cross").texture("plant", texture).renderType("cutout");
+        this.simpleBlock(pot.get(), model);
     }
 
-    private void createCross(RegistryObject<Block> b, String renderType) {
-        ConfiguredModel cFfile = new ConfiguredModel(cross(name(b.get()), blockTexture(b.get()), renderType));
-        ModelFile file = cFfile.model;
-        String baseName = name(b.get());
-        getVariantBuilder(b.get()).partialState().setModels(cFfile);
-
-        singleTex(b.get(), baseName);
-        //simpleBlockItem(b.get(), file);
+    // utils
+    private static String getItemName(ItemLike item) {
+        return ForgeRegistries.ITEMS.getKey(item.asItem()).getPath();
     }
 
-    public ModelFile cross(String name, ResourceLocation cross, String renderType) {
-        return singleTexture(name, BLOCK_FOLDER + "/cross", "cross", cross, renderType);
+    private static String getBlockName(Block block) {
+        return ForgeRegistries.BLOCKS.getKey(block).getPath();
     }
 
-    private ModelFile singleTexture(String name, String parent, String textureKey, ResourceLocation texture, String renderType) {
-        return singleTexture(name, mcLoc(parent), textureKey, texture, renderType);
-    }
-
-    public ModelFile wallCoral(String name, ResourceLocation fan, String renderType) {
-        return singleTexture(name, BLOCK_FOLDER + "/coral_wall_fan", "fan", fan, renderType);
-    }
-
-    private void createCoralFan(RegistryObject<Block> b, String renderType) {
-        getVariantBuilder(b.get()).partialState().setModels(new ConfiguredModel(coralFan(name(b.get()), blockTexture(b.get()), renderType)));
-        singleTex(b.get());
-    }
-
-    public ModelFile coralFan(String name, ResourceLocation fan, String renderType) {
-        return singleTexture(name, BLOCK_FOLDER + "/coral_fan", "fan", fan, renderType);
-    }
-
-    public ModelFile singleTexture(String name, ResourceLocation parent, String textureKey, ResourceLocation texture, String renderType) {
-        return models().withExistingParent(name, parent)
-                .texture(textureKey, texture).renderType(renderType);
-    }
-
-    private BlockModelBuilder generatedWall(String name, ResourceLocation... layers) {
-        BlockModelBuilder builder = models().withExistingParent("block/" + name, "block/wall_inventory");
-        for (int i = 0; i < layers.length; i++) {
-            builder = builder.texture("layer" + i, layers[i]);
+    private enum TextureFolder {
+        ITEM, BLOCK;
+        public String format(String itemName) {
+            return this.name().toLowerCase() + '/' + itemName;
         }
-        return builder;
-    }
-
-    private BlockModelBuilder generatedSlab(String name, ResourceLocation... layers) {
-        BlockModelBuilder builder = models().withExistingParent("block/" + name, "block/slab");
-        for (int i = 0; i < layers.length; i++) {
-            builder = builder.texture("layer" + i, layers[i]);
-        }
-        return builder;
-    }
-
-    private void blockWithTop(RegistryObject<Block> blockRegistryObject) {
-        horizontalBlock(blockRegistryObject.get(), modPrefix("block/" + key(blockRegistryObject.get()).getPath()), modPrefix("block/" + key(blockRegistryObject.get()).getPath()), modPrefix("block/" + key(blockRegistryObject.get()).getPath() + "_top"));
-        simpleBlockItem(blockRegistryObject.get(), cubeAll(blockRegistryObject.get()));
-    }
-
-    private BlockModelBuilder singleTexItem(Block block, ResourceLocation name) {
-        return generated(name(block), name);
-    }
-    private BlockModelBuilder singleTexItem(Block block) {
-        return generated(name(block), new ResourceLocation(OpposingForce.MOD_ID, "item/" + name(block)));
-    }
-
-    private BlockModelBuilder singleTex(Block block) {
-        return singleTex(block,  name(block));
-    }
-
-    private BlockModelBuilder singleTex(Block block, String name) {
-        return generated(name(block), new ResourceLocation(OpposingForce.MOD_ID, "block/" + name));
-    }
-
-    private BlockModelBuilder generated(String name, ResourceLocation... layers) {
-        BlockModelBuilder builder = models().withExistingParent("item/" + name, "item/generated");
-        for (int i = 0; i < layers.length; i++) {
-            builder = builder.texture("layer" + i, layers[i]);
-        }
-        return builder;
-    }
-
-
-    public ModelFile createFlatWaterEgg(Block block, String modifier){
-        String baseName = getName(block);
-        return models().singleTexture("block/eggs/" + modifier + baseName.replace(OpposingForce.MOD_ID + ":", ""), new ResourceLocation(OpposingForce.MOD_ID, "block/template_eggs/template_flat_water_egg"), blockTextureEggs(block));
-    }
-
-    public ResourceLocation blockTextureEggs(Block block) {
-        ResourceLocation name = key(block);
-        return new ResourceLocation(name.getNamespace(), ModelProvider.BLOCK_FOLDER + "/eggs/" + name.getPath());
-    }
-    
-    private String name(Block block) {
-        return key(block).getPath();
-    }
-
-    private String getName(Block block) {
-        return key(block).toString().replace(OpposingForce.MOD_ID + ":", "");
-    }
-
-
-    private Block getBlock(ResourceLocation resourceLocation) {
-        return BuiltInRegistries.BLOCK.get(resourceLocation);
-    }
-
-    @Override
-    public String getName() {
-        return "Block States: " + OpposingForce.MOD_ID;
     }
 }

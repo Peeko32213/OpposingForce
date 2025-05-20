@@ -248,14 +248,14 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
     }
 
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return SoundEvents.SKELETON_HURT;
+        return OPSounds.RAMBLE_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
         return OPSounds.RAMBLE_DEATH.get();
     }
 
-    protected void playStepSound(@NotNull BlockPos p_28301_, @NotNull BlockState p_28302_) {
+    protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
         this.playSound(SoundEvents.SKELETON_STEP, 0.15F, 0.85F);
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 public class OPLootProvider {
-    public static LootTableProvider create(PackOutput output) {
+    public static LootTableProvider register(PackOutput output) {
         return new LootTableProvider(output, Set.of(), List.of(
                 new LootTableProvider.SubProviderEntry(OPBlockLootTableProvider::new, LootContextParamSets.BLOCK)
         ));

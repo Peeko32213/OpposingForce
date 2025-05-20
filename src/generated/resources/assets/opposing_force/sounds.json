@@ -1,0 +1,137 @@
+{
+  "dicer_attack": {
+    "sounds": [
+      "opposing_force:entity/dicer/attack_0",
+      "opposing_force:entity/dicer/attack_1"
+    ],
+    "subtitle": "subtitles.dicer_attack"
+  },
+  "dicer_death": {
+    "sounds": [
+      "opposing_force:entity/dicer/death_0"
+    ],
+    "subtitle": "subtitles.dicer_death"
+  },
+  "dicer_hurt": {
+    "sounds": [
+      "opposing_force:entity/dicer/hurt_0",
+      "opposing_force:entity/dicer/hurt_1"
+    ],
+    "subtitle": "subtitles.dicer_hurt"
+  },
+  "dicer_idle": {
+    "sounds": [
+      "opposing_force:entity/dicer/idle_0",
+      "opposing_force:entity/dicer/idle_1"
+    ],
+    "subtitle": "subtitles.dicer_idle"
+  },
+  "electrical_charge": {
+    "sounds": [
+      "opposing_force:entity/misc/electrical_charge_0"
+    ],
+    "subtitle": "subtitles.electrical_charge"
+  },
+  "electrical_charge_dissipate": {
+    "sounds": [
+      "opposing_force:entity/misc/electrical_charge_dissipate_0"
+    ],
+    "subtitle": "subtitles.electrical_charge_dissipate"
+  },
+  "ramble_attack": {
+    "sounds": [
+      "mob/skeleton/step1",
+      "mob/skeleton/step2",
+      "mob/skeleton/step3",
+      "mob/skeleton/step4"
+    ],
+    "subtitle": "subtitles.ramble_attack"
+  },
+  "ramble_death": {
+    "sounds": [
+      "opposing_force:entity/ramble/death_0"
+    ],
+    "subtitle": "subtitles.ramble_death"
+  },
+  "ramble_hurt": {
+    "sounds": [
+      {
+        "name": "mob/skeleton/hurt1",
+        "pitch": 0.65
+      },
+      {
+        "name": "mob/skeleton/hurt2",
+        "pitch": 0.65
+      },
+      {
+        "name": "mob/skeleton/hurt3",
+        "pitch": 0.65
+      },
+      {
+        "name": "mob/skeleton/hurt4",
+        "pitch": 0.65
+      }
+    ],
+    "subtitle": "subtitles.ramble_hurt"
+  },
+  "ramble_idle": {
+    "sounds": [
+      "opposing_force:entity/ramble/idle_0"
+    ],
+    "subtitle": "subtitles.ramble_idle"
+  },
+  "tesla_bow_charged": {
+    "sounds": [
+      "opposing_force:item/tesla_bow/charged_0"
+    ],
+    "subtitle": "subtitles.tesla_bow_charged"
+  },
+  "tesla_bow_shoot": {
+    "sounds": [
+      "opposing_force:item/tesla_bow/shoot_0"
+    ],
+    "subtitle": "subtitles.tesla_bow_shoot"
+  },
+  "umber_spider_death": {
+    "sounds": [
+      "opposing_force:entity/umber_spider/death_0"
+    ],
+    "subtitle": "subtitles.umber_spider_death"
+  },
+  "umber_spider_hurt": {
+    "sounds": [
+      "opposing_force:entity/umber_spider/hurt_0"
+    ],
+    "subtitle": "subtitles.umber_spider_hurt"
+  },
+  "umber_spider_idle": {
+    "sounds": [
+      "opposing_force:entity/umber_spider/idle_0"
+    ],
+    "subtitle": "subtitles.umber_spider_idle"
+  },
+  "volt_death": {
+    "sounds": [
+      "opposing_force:entity/volt/death_0"
+    ],
+    "subtitle": "subtitles.volt_death"
+  },
+  "volt_hurt": {
+    "sounds": [
+      "opposing_force:entity/volt/hurt_0"
+    ],
+    "subtitle": "subtitles.volt_hurt"
+  },
+  "volt_idle": {
+    "sounds": [
+      "opposing_force:entity/volt/idle_0"
+    ],
+    "subtitle": "subtitles.volt_idle"
+  },
+  "volt_shoot": {
+    "sounds": [
+      "opposing_force:entity/volt/shoot_0"
+    ],
+    "subtitle": "subtitles.volt_shoot"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "opposing_force:princess_jelly"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "item": "minecraft:pink_dye"
+  }
+}

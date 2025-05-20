@@ -1,32 +1,36 @@
 package com.unusualmodding.opposing_force.data;
 
-import com.mojang.logging.LogUtils;
 import com.unusualmodding.opposing_force.OPCreativeTabs;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.registry.*;
-import net.minecraft.data.PackOutput;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.LanguageProvider;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.text.WordUtils;
-import org.slf4j.Logger;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
-import static java.lang.String.format;
-
 public class OPLangProvider extends LanguageProvider {
-    public OPLangProvider(PackOutput output) {
-        super(output, OpposingForce.MOD_ID, "en_us");
+
+    public OPLangProvider(GatherDataEvent event) {
+        super(event.getGenerator().getPackOutput(), OpposingForce.MOD_ID, "en_us");
     }
-    private static final Logger LOGGER = LogUtils.getLogger();
+
     @Override
     protected void addTranslations(){
 
         addTabName(OPCreativeTabs.TAB.get(), "Opposing Force");
+
+        // blocks
+        OPBlocks.AUTO_TRANSLATE.forEach(this::forBlock);
 
         addEntityType(OPEntities.PALE_SPIDER, "Pale Spider");
         addItem(OPItems.PALE_SPIDER_SPAWN_EGG, "Pale Spider Spawn Egg");
@@ -35,32 +39,33 @@ public class OPLangProvider extends LanguageProvider {
         addItem(OPItems.UMBER_SPIDER_SPAWN_EGG, "Umber Spider Spawn Egg");
         addItem(OPItems.DEEP_SILK, "Deep Silk");
 
-        addSound(OPSounds.UMBER_SPIDER_DEATH, "Umber Spider dies");
-        addSound(OPSounds.UMBER_SPIDER_HURT, "Umber Spider hurts");
-        addSound(OPSounds.UMBER_SPIDER_IDLE, "Umber Spider groans");
-
         addEntityType(OPEntities.RAMBLE, "Ramble");
         addItem(OPItems.RAMBLE_SPAWN_EGG, "Ramble Spawn Egg");
 
-        addSound(OPSounds.RAMBLE_DEATH, "Ramble dies");
-        addSound(OPSounds.RAMBLE_ATTACK, "Ramble slices");
-        addSound(OPSounds.RAMBLE_IDLE, "Ramble clatters");
+        sound(OPSounds.DICER_DEATH, "Dicer dies");
+        sound(OPSounds.DICER_HURT, "Dicer hurts");
+        sound(OPSounds.DICER_IDLE, "Dicer screams");
+        sound(OPSounds.DICER_ATTACK, "Dicer slashes");
 
-        addSound(OPSounds.DICER_DEATH, "Dicer dies");
-        addSound(OPSounds.DICER_HURT, "Dicer hurts");
-        addSound(OPSounds.DICER_IDLE, "Dicer screams");
-        addSound(OPSounds.DICER_ATTACK, "Dicer slashes");
+        sound(OPSounds.ELECTRIC_CHARGE, "Electricity whirls");
+        sound(OPSounds.ELECTRIC_CHARGE_DISSIPATE, "Electricity dissipates");
 
-        addSound(OPSounds.VOLT_DEATH, "Volt dies");
-        addSound(OPSounds.VOLT_HURT, "Volt hurts");
-        addSound(OPSounds.VOLT_IDLE, "Volt hums");
-        addSound(OPSounds.VOLT_SHOOT, "Volt shoots");
+        sound(OPSounds.RAMBLE_HURT, "Ramble hurt");
+        sound(OPSounds.RAMBLE_DEATH, "Ramble dies");
+        sound(OPSounds.RAMBLE_ATTACK, "Ramble slices");
+        sound(OPSounds.RAMBLE_IDLE, "Ramble clatters");
 
-        addSound(OPSounds.ELECTRIC_CHARGE, "Electricity whirls");
-        addSound(OPSounds.ELECTRIC_CHARGE_DISSIPATE, "Electricity dissipates");
+        sound(OPSounds.TESLA_BOW_CHARGED, "Tesla Bow loads");
+        sound(OPSounds.TESLA_BOW_SHOOT, "Tesla Bow fires");
 
-        addSound(OPSounds.TESLA_BOW_CHARGED, "Tesla Bow loads");
-        addSound(OPSounds.TESLA_BOW_SHOOT, "Tesla Bow fires");
+        sound(OPSounds.UMBER_SPIDER_DEATH, "Umber Spider dies");
+        sound(OPSounds.UMBER_SPIDER_HURT, "Umber Spider hurts");
+        sound(OPSounds.UMBER_SPIDER_IDLE, "Umber Spider groans");
+
+        sound(OPSounds.VOLT_DEATH, "Volt dies");
+        sound(OPSounds.VOLT_HURT, "Volt hurts");
+        sound(OPSounds.VOLT_IDLE, "Volt hums");
+        sound(OPSounds.VOLT_SHOOT, "Volt shoots");
 
         addEntityType(OPEntities.DICER, "Dicer");
         addItem(OPItems.DICER_SPAWN_EGG, "Dicer Spawn Egg");
@@ -95,25 +100,6 @@ public class OPLangProvider extends LanguageProvider {
         addEntityType(OPEntities.GUZZLER, "Guzzler");
         addItem(OPItems.GUZZLER_SPAWN_EGG, "Guzzler Spawn Egg");
 
-        addBlock(OPBlocks.CAVE_PATTY, "Cave Patty");
-        addBlock(OPBlocks.COPPER_ENOKI, "Copper Enoki");
-        addBlock(OPBlocks.RAINCAP, "Rain Cap");
-        addBlock(OPBlocks.CREAM_CAP, "Cream Cap");
-        addBlock(OPBlocks.CHICKEN_OF_THE_CAVES, "Chicken of The Caves");
-        addBlock(OPBlocks.PRINCESS_JELLY, "Princess Jelly");
-        addBlock(OPBlocks.BLUE_TRUMPET, "Blue Trumpet");
-        addBlock(OPBlocks.POWDER_GNOME, "Powder Gnome");
-        addBlock(OPBlocks.BLACKCAP, "Black Cap");
-        addBlock(OPBlocks.CAP_OF_EYE, "Cap of Eye");
-        addBlock(OPBlocks.GREEN_FUNK, "Green Funk");
-        addBlock(OPBlocks.LIME_NUB, "Lime Nub");
-        addBlock(OPBlocks.POP_CAP, "Pop Cap");
-        addBlock(OPBlocks.PURPLE_KNOB, "Purple Knob");
-        addBlock(OPBlocks.QUEEN_IN_MAGENTA, "Queen in Magenta");
-        addBlock(OPBlocks.SLATESHROOM, "Slate Shroom");
-        addBlock(OPBlocks.SLIPPERY_TOP, "Slippery Top");
-        addBlock(OPBlocks.WHITECAP, "White Cap");
-
         addItem(OPItems.TOMAHAWK, "Tomahawk");
         add("death.attack.hole.tomahawk", "%s was domed by %s");
 
@@ -122,12 +108,6 @@ public class OPLangProvider extends LanguageProvider {
         addItem(OPItems.SLUG_EGGS, "Slug Eggs");
 
         addItem(OPItems.VILE_BOULDER, "Vile Boulder");
-
-//        addEntityType(OPEntities.FETID, "Fetid");
-//        addItem(OPItems.FETID_SPAWN_EGG, "Fetid Spawn Egg");
-//
-//        addEntityType(OPEntities.SPINDLE, "Spindle");
-//        addItem(OPItems.SPINDLE_SPAWN_EGG, "Spindle Spawn Egg");
 
         addEnchantmentWithDesc(OPEnchantments.BIG_ELECTRIC_BALL.get(), "Increases the size of the fired electric charge");
         addEnchantmentWithDesc(OPEnchantments.BOUNCY_ELECTRIC_BALL.get(), "The fired electric charge bounces off blocks and passes through mobs");
@@ -139,12 +119,24 @@ public class OPLangProvider extends LanguageProvider {
         return  OpposingForce.MOD_ID + " Languages: en_us";
     }
 
+    private void forBlock(Supplier<? extends Block> block) {
+        addBlock(block, OPTextUtils.createTranslation(Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block.get())).getPath()));
+    }
+
+    private void forItem(Supplier<? extends Item> item) {
+        addItem(item, OPTextUtils.createTranslation(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.get())).getPath()));
+    }
+
+    private void forEntity(Supplier<? extends EntityType<?>> entity) {
+        addEntityType(entity, OPTextUtils.createTranslation(Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(entity.get())).getPath()));
+    }
+
     public void addBETranslatable(String beName,String name){
         add(OpposingForce.MOD_ID + ".blockentity." + beName, name);
     }
 
-    public void addSound(Supplier<? extends SoundEvent> key, String name){
-        add(OpposingForce.MOD_ID + ".sound.subtitle." + key.get().getLocation().getPath(), name);
+    public void sound(Supplier<? extends SoundEvent> key, String subtitle){
+        add("subtitles." + key.get().getLocation().getPath(), subtitle);
     }
 
     private void addEnchantmentWithDesc(Enchantment enchantment, String description) {

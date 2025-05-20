@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class OPBlockLootTableProvider extends BlockLootSubProvider {
+
     private final Set<Block> knownBlocks = new HashSet<>();
     private static final LootItemCondition.Builder HAS_SILK_TOUCH = MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))));
     private static final LootItemCondition.Builder HAS_NO_SILK_TOUCH = HAS_SILK_TOUCH.invert();
