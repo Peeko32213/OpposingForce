@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/crossbow",
   "textures": {
-    "layer0": "opposingforce:item/teslabow_pulling_1"
+    "layer0": "opposing_force:item/teslabow_pulling_1"
   }
 }

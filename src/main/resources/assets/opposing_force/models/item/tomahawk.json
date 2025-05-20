@@ -1,6 +1,6 @@
 {
   "parent" : "minecraft:item/handheld",
   "textures" : {
-    "layer0" : "opposingforce:item/tomahawk"
+    "layer0" : "opposing_force:item/tomahawk"
   }
 }

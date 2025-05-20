@@ -40,10 +40,22 @@
   },
   "ramble_attack": {
     "sounds": [
-      "mob/skeleton/step1",
-      "mob/skeleton/step2",
-      "mob/skeleton/step3",
-      "mob/skeleton/step4"
+      {
+        "name": "mob/skeleton/hurt1",
+        "volume": 0.8
+      },
+      {
+        "name": "mob/skeleton/hurt2",
+        "volume": 0.8
+      },
+      {
+        "name": "mob/skeleton/hurt3",
+        "volume": 0.8
+      },
+      {
+        "name": "mob/skeleton/hurt4",
+        "volume": 0.8
+      }
     ],
     "subtitle": "subtitles.ramble_attack"
   },
@@ -57,19 +69,19 @@
     "sounds": [
       {
         "name": "mob/skeleton/hurt1",
-        "pitch": 0.65
+        "pitch": 0.7
       },
       {
         "name": "mob/skeleton/hurt2",
-        "pitch": 0.65
+        "pitch": 0.7
       },
       {
         "name": "mob/skeleton/hurt3",
-        "pitch": 0.65
+        "pitch": 0.7
       },
       {
         "name": "mob/skeleton/hurt4",
-        "pitch": 0.65
+        "pitch": 0.7
       }
     ],
     "subtitle": "subtitles.ramble_hurt"

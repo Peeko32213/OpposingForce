@@ -43,10 +43,10 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
         );
 
         this.sound(OPSounds.RAMBLE_HURT,
-                sound("mob/skeleton/hurt1").pitch(0.65f),
-                sound("mob/skeleton/hurt2").pitch(0.65f),
-                sound("mob/skeleton/hurt3").pitch(0.65f),
-                sound("mob/skeleton/hurt4").pitch(0.65f)
+                sound("mob/skeleton/hurt1").pitch(0.7f),
+                sound("mob/skeleton/hurt2").pitch(0.7f),
+                sound("mob/skeleton/hurt3").pitch(0.7f),
+                sound("mob/skeleton/hurt4").pitch(0.7f)
         );
         this.sound(OPSounds.RAMBLE_DEATH,
                 sound(OpposingForce.modPrefix("entity/ramble/death_0"))
@@ -55,10 +55,10 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound(OpposingForce.modPrefix("entity/ramble/idle_0"))
         );
         this.sound(OPSounds.RAMBLE_ATTACK,
-                sound("mob/skeleton/step1"),
-                sound("mob/skeleton/step2"),
-                sound("mob/skeleton/step3"),
-                sound("mob/skeleton/step4")
+                sound("mob/skeleton/hurt1").volume(0.8f),
+                sound("mob/skeleton/hurt2").volume(0.8f),
+                sound("mob/skeleton/hurt3").volume(0.8f),
+                sound("mob/skeleton/hurt4").volume(0.8f)
         );
 
         this.sound(OPSounds.TESLA_BOW_CHARGED,

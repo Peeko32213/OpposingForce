@@ -90,13 +90,13 @@ public class ElectricBall extends AbstractElectricBall {
         Vec3 pos = this.position();
 
         this.spawnElectricParticles(this, 1, 4);
-        this.hurtEntitiesAround(pos, this.getChargeScale() + 2.0F, this.getChargeScale() + 4.0F, false);
+        this.hurtEntitiesAround(pos, this.getChargeScale() + 1.0F, this.getChargeScale() + 2.0F, false);
 
         if (this.level().getBlockState(this.blockPosition().below(0)).is(Blocks.WATER)) {
             this.spawnElectricParticles(this, 10, 6);
             if (!this.level().isClientSide) {
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
-                this.hurtEntitiesAround(pos, this.getChargeScale() + 8.0F, this.getChargeScale() + 7.0F, true);
+                this.hurtEntitiesAround(pos, this.getChargeScale() + 5.0F, this.getChargeScale() + 4.0F, true);
                 this.discard();
             }
         }

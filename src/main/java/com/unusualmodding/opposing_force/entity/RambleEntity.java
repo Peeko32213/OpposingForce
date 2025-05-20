@@ -4,8 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.unusualmodding.opposing_force.entity.base.EnhancedMonsterEntity;
 import com.unusualmodding.opposing_force.entity.ai.state.StateHelper;
 import com.unusualmodding.opposing_force.entity.ai.state.WeightedState;
-import com.unusualmodding.opposing_force.entity.ai.util.helper.SmartBodyHelper;
-import com.unusualmodding.opposing_force.entity.ai.util.navigator.SmoothGroundNavigation;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPSounds;
 import net.minecraft.core.BlockPos;
@@ -23,11 +21,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.monster.Monster;
@@ -73,20 +69,6 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
     // Attack animations
     private static final RawAnimation RAMBLE_FLAIL = RawAnimation.begin().thenLoop("animation.ramble.idle_flail");
     private static final RawAnimation RAMBLE_AGGRO = RawAnimation.begin().thenLoop("animation.ramble.aggro");
-
-    // Body control / navigation
-    @Override
-    protected @NotNull BodyRotationControl createBodyControl() {
-        SmartBodyHelper helper = new SmartBodyHelper(this);
-        helper.bodyLagMoving = 0.35F;
-        helper.bodyLagStill = 0.1F;
-        return helper;
-    }
-
-    @Override
-    protected @NotNull PathNavigation createNavigation(Level levelIn) {
-        return new SmoothGroundNavigation(this, levelIn);
-    }
 
     public RambleEntity(EntityType<? extends EnhancedMonsterEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -156,11 +138,11 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(2, new RambleAttackGoal(this));
+        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new RamblePanicGoal(this));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(3, new RambleAttackGoal());
-        this.goalSelector.addGoal(3, new RamblePanicGoal());
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
@@ -264,10 +246,10 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
         RambleEntity ramble = event.getAnimatable();
         if (ramble.level().isClientSide) {
             if (event.getKeyframeData().getSound().equals("ramble_flail")) {
-                ramble.level().playLocalSound(ramble.getX(), ramble.getY(), ramble.getZ(), SoundEvents.SKELETON_HURT, ramble.getSoundSource(), 0.5F, ramble.getVoicePitch() * 0.8F, false);
+                ramble.level().playLocalSound(ramble.getX(), ramble.getY(), ramble.getZ(), OPSounds.RAMBLE_ATTACK.get(), ramble.getSoundSource(), 0.5F, ramble.getVoicePitch() * 0.8F, false);
             }
             if (event.getKeyframeData().getSound().equals("ramble_panic")) {
-                ramble.level().playLocalSound(ramble.getX(), ramble.getY(), ramble.getZ(), SoundEvents.SKELETON_HURT, ramble.getSoundSource(), 0.5F, ramble.getVoicePitch(), false);
+                ramble.level().playLocalSound(ramble.getX(), ramble.getY(), ramble.getZ(), OPSounds.RAMBLE_ATTACK.get(), ramble.getSoundSource(), 0.5F, ramble.getVoicePitch(), false);
             }
         }
     }
@@ -326,141 +308,147 @@ public class RambleEntity extends EnhancedMonsterEntity implements GeoAnimatable
     // Goals
     private class RambleAttackGoal extends Goal {
 
-        public RambleAttackGoal() {
+        RambleEntity ramble;
+
+        public RambleAttackGoal(RambleEntity ramble) {
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+            this.ramble = ramble;
         }
 
         public boolean canUse() {
-            return RambleEntity.this.getTarget() != null && RambleEntity.this.getTarget().isAlive() && RambleEntity.this.getHealth() >= RambleEntity.this.getMaxHealth() * 0.3F;
+            return this.ramble.getTarget() != null && this.ramble.getTarget().isAlive() && this.ramble.getHealth() >= this.ramble.getMaxHealth() * 0.3F;
         }
 
         public void start() {
-            RambleEntity.this.setRunning(true);
-            RambleEntity.this.setAttackState(0);
-            RambleEntity.this.attackTick = 0;
-            RambleEntity.this.flailCooldown = 0;
+            this.ramble.setRunning(true);
+            this.ramble.setAttackState(0);
+            this.ramble.attackTick = 0;
+            this.ramble.flailCooldown = 0;
         }
 
         public void stop() {
-            RambleEntity.this.setRunning(false);
-            RambleEntity.this.setFlailing(false);
-            RambleEntity.this.setAttackState(0);
+            this.ramble.setRunning(false);
+            this.ramble.setFlailing(false);
+            this.ramble.setAttackState(0);
         }
 
         public void tick() {
-            LivingEntity target = RambleEntity.this.getTarget();
+            LivingEntity target = this.ramble.getTarget();
             if (target != null) {
 
-                RambleEntity.this.lookAt(RambleEntity.this.getTarget(), 30F, 30F);
-                RambleEntity.this.getLookControl().setLookAt(RambleEntity.this.getTarget(), 30F, 30F);
+                this.ramble.lookAt(this.ramble.getTarget(), 30F, 30F);
+                this.ramble.getLookControl().setLookAt(this.ramble.getTarget(), 30F, 30F);
 
-                double distance = RambleEntity.this.distanceToSqr(target.getX(), target.getY(), target.getZ());
-                int attackState = RambleEntity.this.getAttackState();
+                double distance = this.ramble.distanceToSqr(target.getX(), target.getY(), target.getZ());
+                int attackState = this.ramble.getAttackState();
 
                 if (attackState == 21) {
                     tickFlailAttack();
-                    RambleEntity.this.getNavigation().moveTo(target, 2F);
+                    this.ramble.getNavigation().moveTo(target, 2F);
                 } else {
-                    RambleEntity.this.getNavigation().moveTo(target, 1.5F);
-                    RambleEntity.this.flailCooldown = Math.max(RambleEntity.this.flailCooldown - 1, 0);
+                    this.ramble.getNavigation().moveTo(target, 1.5F);
+                    this.ramble.flailCooldown = Math.max(RambleEntity.this.flailCooldown - 1, 0);
                     this.checkForCloseRangeAttack(distance);
                 }
             }
         }
 
         protected void checkForCloseRangeAttack (double distance){
-            if (distance <= 14 && RambleEntity.this.flailCooldown <= 0) {
-                RambleEntity.this.setAttackState(21);
+            if (distance <= 14 && this.ramble.flailCooldown <= 0) {
+                this.ramble.setAttackState(21);
             }
         }
 
         protected void tickFlailAttack () {
             RambleEntity.this.attackTick++;
             Vec3 pos = RambleEntity.this.position();
-            RambleEntity.this.setFlailing(true);
+            this.ramble.setFlailing(true);
 
-            if(RambleEntity.this.attackTick >= 3) {
-                RambleEntity.this.hurtEntitiesAround(pos, 3.2F, RambleEntity.this.getAttackDamage(), RambleEntity.this.getAttackKnockback(), true);
+            if(this.ramble.attackTick >= 3) {
+                this.ramble.hurtEntitiesAround(pos, 3.2F, this.ramble.getAttackDamage(), this.ramble.getAttackKnockback(), true);
             }
-            if(RambleEntity.this.attackTick >= 60) {
-                RambleEntity.this.attackTick = 0;
-                RambleEntity.this.setAttackState(0);
-                RambleEntity.this.flailCooldown = RambleEntity.this.getRandom().nextInt(15) + 10;
-                RambleEntity.this.setFlailing(false);
+            if(this.ramble.attackTick >= 60) {
+                this.ramble.attackTick = 0;
+                this.ramble.setAttackState(0);
+                this.ramble.flailCooldown = this.ramble.getRandom().nextInt(15) + 10;
+                this.ramble.setFlailing(false);
             }
         }
     }
 
     private class RamblePanicGoal extends Goal {
 
-        public RamblePanicGoal() {
+        RambleEntity ramble;
+
+        public RamblePanicGoal(RambleEntity ramble) {
             this.setFlags(EnumSet.of(Flag.MOVE));
+            this.ramble = ramble;
         }
 
         public boolean canUse() {
-            return RambleEntity.this.fleeTicks > 0 && RambleEntity.this.fleeFromPosition != null && RambleEntity.this.getTarget() != null && RambleEntity.this.getTarget().isAlive();
+            return this.ramble.fleeTicks > 0 && this.ramble.fleeFromPosition != null && this.ramble.getTarget() != null && this.ramble.getTarget().isAlive();
         }
 
         public void start() {
-            RambleEntity.this.setAttackState(0);
-            RambleEntity.this.attackTick = 0;
-            RambleEntity.this.flailCooldown = 0;
+            this.ramble.setAttackState(0);
+            this.ramble.attackTick = 0;
+            this.ramble.flailCooldown = 0;
         }
 
         public void stop() {
-            RambleEntity.this.fleeFromPosition = null;
-            RambleEntity.this.setRunning(false);
-            RambleEntity.this.setFlailing(false);
-            RambleEntity.this.setFleeing(false);
-            RambleEntity.this.setAttackState(0);
+            this.ramble.fleeFromPosition = null;
+            this.ramble.setRunning(false);
+            this.ramble.setFlailing(false);
+            this.ramble.setFleeing(false);
+            this.ramble.setAttackState(0);
         }
 
         public void tick() {
-            LivingEntity targetEntity = RambleEntity.this.getTarget();
+            LivingEntity targetEntity = this.ramble.getTarget();
 
-            RambleEntity.this.setRunning(true);
-            RambleEntity.this.setFleeing(true);
-            if (RambleEntity.this.getNavigation().isDone()) {
-                Vec3 vec3 = LandRandomPos.getPosAway(RambleEntity.this, 4, 4, RambleEntity.this.fleeFromPosition);
+            this.ramble.setRunning(true);
+            this.ramble.setFleeing(true);
+            if (this.ramble.getNavigation().isDone()) {
+                Vec3 vec3 = LandRandomPos.getPosAway(RambleEntity.this, 4, 4, this.ramble.fleeFromPosition);
                 if (vec3 != null) {
-                    RambleEntity.this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 2.5F);
+                    this.ramble.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 2.5F);
                 }
             }
 
             if (targetEntity != null) {
 
-                double distance = RambleEntity.this.distanceToSqr(targetEntity.getX(), targetEntity.getY(), targetEntity.getZ());
-                int attackState = RambleEntity.this.getAttackState();
+                double distance = this.ramble.distanceToSqr(targetEntity.getX(), targetEntity.getY(), targetEntity.getZ());
+                int attackState = this.ramble.getAttackState();
 
                 if (attackState == 22) {
                     tickFlailPanic();
                 } else {
-                    RambleEntity.this.flailCooldown = Math.max(RambleEntity.this.flailCooldown - 1, 0);
+                    this.ramble.flailCooldown = Math.max(this.ramble.flailCooldown - 1, 0);
                     this.checkForCloseRangeAttack(distance);
                 }
             }
         }
 
         protected void checkForCloseRangeAttack (double distance){
-            if (distance <= 12 && RambleEntity.this.flailCooldown <= 0) {
-                RambleEntity.this.setAttackState(22);
+            if (distance <= 12 && this.ramble.flailCooldown <= 0) {
+                this.ramble.setAttackState(22);
             }
         }
 
         protected void tickFlailPanic () {
-            RambleEntity.this.attackTick++;
-            RambleEntity.this.getNavigation().stop();
-            Vec3 pos = RambleEntity.this.position();
-            RambleEntity.this.setFlailing(true);
+            this.ramble.attackTick++;
+            this.ramble.getNavigation().stop();
+            Vec3 pos = this.ramble.position();
+            this.ramble.setFlailing(true);
 
-            if (RambleEntity.this.attackTick >= 3) {
-                RambleEntity.this.hurtEntitiesAround(pos, 3.2F, RambleEntity.this.getAttackDamage(), RambleEntity.this.getAttackKnockback(), true);
+            if (this.ramble.attackTick >= 3) {
+                this.ramble.hurtEntitiesAround(pos, 3.2F, this.ramble.getAttackDamage(), this.ramble.getAttackKnockback(), true);
             }
-            if (RambleEntity.this.attackTick >= 40) {
-                RambleEntity.this.attackTick = 0;
-                RambleEntity.this.setAttackState(0);
-                RambleEntity.this.flailCooldown = RambleEntity.this.getRandom().nextInt(25) + 15;
-                RambleEntity.this.setFlailing(false);
+            if (this.ramble.attackTick >= 40) {
+                this.ramble.attackTick = 0;
+                this.ramble.setAttackState(0);
+                this.ramble.flailCooldown = this.ramble.getRandom().nextInt(25) + 15;
+                this.ramble.setFlailing(false);
             }
         }
     }
