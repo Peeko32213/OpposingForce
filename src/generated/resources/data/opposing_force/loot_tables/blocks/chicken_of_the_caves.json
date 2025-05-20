@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "opposing_force:chicken_of_the_caves"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "opposing_force:blocks/chicken_of_the_caves"
+}

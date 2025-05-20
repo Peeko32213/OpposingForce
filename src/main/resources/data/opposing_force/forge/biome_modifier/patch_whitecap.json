@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "opposing_force:patch_whitecap",
+  "step": "vegetal_decoration"
+}

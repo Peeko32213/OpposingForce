@@ -1,7 +1,8 @@
 plugins {
     id 'eclipse'
+    id 'idea'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
 }
@@ -26,9 +27,10 @@ minecraft {
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            property 'geckolib.disable_examples=true', 'true'
 
             mods {
-                opposingforce {
+                opposing_force {
                     source sourceSets.main
                 }
             }
@@ -40,9 +42,10 @@ minecraft {
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            property 'geckolib.disable_examples=true', 'true'
 
             mods {
-                opposingforce {
+                opposing_force {
                     source sourceSets.main
                 }
             }
@@ -58,7 +61,7 @@ minecraft {
             args '--mod', "${mod_id}", '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                opposingforce {
+                opposing_force {
                     source sourceSets.main
                 }
             }

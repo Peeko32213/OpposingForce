@@ -1,0 +1,9 @@
+// 1.20.1	2025-05-20T13:48:32.086728	Tags for minecraft:worldgen/biome mod id opposing_force
+57b9bc73504d77a105ed8da0e7b56fcdf9c2c74c data/forge/tags/worldgen/biome/with_default_monster_spawns.json
+a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/dicer.json
+a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/pale_spider.json
+a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/ramble.json
+a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/tremble.json
+a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/umber_spider.json
+a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/is_deep_underground.json
+a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/is_underground.json

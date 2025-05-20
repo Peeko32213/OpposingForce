@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.unusualmodding.opposing_force.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "opposing_force.refmap.json",
+  "mixins": [
+    "server.CreeperMixin",
+    "server.CrossbowItemMixin"
+  ],
+  "client": [
+    "client.ClientPacketListenerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

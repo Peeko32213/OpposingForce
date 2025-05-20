@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "opposing_force:patch_chicken_of_the_caves",
+  "step": "vegetal_decoration"
+}

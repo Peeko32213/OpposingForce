@@ -1,6 +1,0 @@
-{
-  "type": "forge:add_features",
-  "biomes": "#minecraft:is_overworld",
-  "features": "opposingforce:patch_powder_gnome",
-  "step": "vegetal_decoration"
-}

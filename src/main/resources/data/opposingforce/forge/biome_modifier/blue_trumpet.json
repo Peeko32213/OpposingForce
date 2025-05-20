@@ -1,6 +1,0 @@
-{
-  "type": "forge:add_features",
-  "biomes": "#minecraft:is_overworld",
-  "features": "opposingforce:patch_blue_trumpet",
-  "step": "vegetal_decoration"
-}

@@ -4,8 +4,8 @@ license="MIT"
 issueTrackerURL = "https://github.com/Peeko32213/OpposingForce/issues"
 
 [[mods]]
-    modId = "opposingforce"
-    version = "0.0.0"
+    modId = "opposing_force"
+    version = "1.0.0"
     logoFile = "logo.png"
     itemIcon = "minecraft:spider_eye"
     configBackground = "minecraft:textures/block/stone.png"
@@ -15,19 +15,19 @@ issueTrackerURL = "https://github.com/Peeko32213/OpposingForce/issues"
     displayName = "Opposing Force"
     description = '''A Mod that expands the enemy variety in Minecraft!'''
 
-[[dependencies.opposingforce]] #optional
+[[dependencies.opposing_force]] #optional
 	modId="forge" #mandatory
 	mandatory=true #mandatory
 	versionRange="${forge_version_range}" #mandatory
 	ordering="NONE"
 	side="BOTH"
-[[dependencies.opposingforce]]
+[[dependencies.opposing_force]]
 	modId="minecraft"
 	mandatory=true
 	versionRange="${minecraft_version_range}"
 	ordering="NONE"
 	side="BOTH"
-[[dependencies.opposingforce]]
+[[dependencies.opposing_force]]
 	modId="geckolib"
 	mandatory=true
 	versionRange="[4.2,)"
