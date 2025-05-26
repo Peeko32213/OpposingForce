@@ -16,8 +16,11 @@ import static com.unusualmodding.opposing_force.OpposingForce.modPrefix;
 @Mod.EventBusSubscriber(modid = OpposingForce.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class OPEntities {
 
-    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES,
-            OpposingForce.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, OpposingForce.MOD_ID);
+
+    public static final RegistryObject<EntityType<EmeraldfishEntity>> EMERALDFISH = ENTITIES.register("emeraldfish",
+            () -> EntityType.Builder.of(EmeraldfishEntity::new, MobCategory.MONSTER).sized(1.0F, 1.0F)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "emeraldfish").toString()));
 
     public static final RegistryObject<EntityType<PaleSpiderEntity>> PALE_SPIDER = ENTITIES.register("pale_spider",
             () -> EntityType.Builder.of(PaleSpiderEntity::new, MobCategory.MONSTER).sized(1.0F, 1.0F)

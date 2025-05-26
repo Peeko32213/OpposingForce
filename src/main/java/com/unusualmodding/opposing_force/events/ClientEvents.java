@@ -4,6 +4,7 @@ import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.DefaultModel;
 import com.unusualmodding.opposing_force.client.models.TerrorDefaultModel;
 import com.unusualmodding.opposing_force.client.models.UmberSpiderModel;
+import com.unusualmodding.opposing_force.client.models.entity.EmeraldfishModel;
 import com.unusualmodding.opposing_force.client.particles.*;
 import com.unusualmodding.opposing_force.client.renderer.PlainGeoRenderer;
 import com.unusualmodding.opposing_force.client.renderer.*;
@@ -12,6 +13,7 @@ import com.unusualmodding.opposing_force.entity.*;
 import com.unusualmodding.opposing_force.items.OPItemProperties;
 import com.unusualmodding.opposing_force.registry.OPBlocks;
 import com.unusualmodding.opposing_force.registry.OPEntities;
+import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import com.unusualmodding.opposing_force.registry.OPParticles;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -144,5 +146,11 @@ public final class ClientEvents {
         event.registerEntityRenderer(OPEntities.ELECTRICITY_BALL.get(), ElectricBallRenderer::new);
         event.registerEntityRenderer(OPEntities.TOMAHAWK.get(), TomahawkRenderer::new);
         event.registerEntityRenderer(OPEntities.WHIZZ.get(), WhizzRenderer::new);
+        event.registerEntityRenderer(OPEntities.EMERALDFISH.get(), EmeraldfishRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(OPModelLayers.EMERALDFISH_LAYER, EmeraldfishModel::createBodyLayer);
     }
 }
