@@ -14,7 +14,6 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -40,9 +39,9 @@ public class EmeraldfishEntity extends Monster {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(1, new ClimbOnTopOfPowderSnowGoal(this, this.level()));
         this.goalSelector.addGoal(3, this.friendsGoal);
-        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, (double)1.0F, false));
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0F, false));
         this.goalSelector.addGoal(5, new EmeraldfishEntity.SilverfishMergeWithStoneGoal(this));
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(new Class[0]));
+        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Player.class, true));
     }
 
@@ -55,7 +54,7 @@ public class EmeraldfishEntity extends Monster {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, (double)8.0F).add(Attributes.MOVEMENT_SPEED, (double)0.25F).add(Attributes.ATTACK_DAMAGE, (double)1.0F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 8.0F).add(Attributes.MOVEMENT_SPEED, 0.25F).add(Attributes.ATTACK_DAMAGE, 1.0F);
     }
 
     protected Entity.MovementEmission getMovementEmission() {
@@ -85,7 +84,6 @@ public class EmeraldfishEntity extends Monster {
             if ((pSource.getEntity() != null || pSource.is(DamageTypeTags.ALWAYS_TRIGGERS_SILVERFISH)) && this.friendsGoal != null) {
                 this.friendsGoal.notifyHurt();
             }
-
             return super.hurt(pSource, pAmount);
         }
     }
@@ -104,9 +102,9 @@ public class EmeraldfishEntity extends Monster {
         return InfestedBlock.isCompatibleHostBlock(pLevel.getBlockState(pPos.below())) ? 10.0F : super.getWalkTargetValue(pPos, pLevel);
     }
 
-    public static boolean checkSilverfishSpawnRules(EntityType<Silverfish> pSilverfish, LevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
+    public static boolean checkSilverfishSpawnRules(EntityType<EmeraldfishEntity> pSilverfish, LevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
         if (checkAnyLightMonsterSpawnRules(pSilverfish, pLevel, pSpawnType, pPos, pRandom)) {
-            Player player = pLevel.getNearestPlayer((double)pPos.getX() + (double)0.5F, (double)pPos.getY() + (double)0.5F, (double)pPos.getZ() + (double)0.5F, (double)5.0F, true);
+            Player player = pLevel.getNearestPlayer((double) pPos.getX() + (double) 0.5F, (double) pPos.getY() + (double) 0.5F, (double) pPos.getZ() + (double) 0.5F, 5.0F, true);
             return player == null;
         } else {
             return false;
@@ -118,6 +116,7 @@ public class EmeraldfishEntity extends Monster {
     }
 
     static class SilverfishMergeWithStoneGoal extends RandomStrollGoal {
+
         @Nullable
         private Direction selectedDirection;
         private boolean doMerge;
@@ -158,7 +157,7 @@ public class EmeraldfishEntity extends Monster {
                 super.start();
             } else {
                 LevelAccessor levelaccessor = this.mob.level();
-                BlockPos blockpos = BlockPos.containing(this.mob.getX(), this.mob.getY() + (double)0.5F, this.mob.getZ()).relative(this.selectedDirection);
+                BlockPos blockpos = BlockPos.containing(this.mob.getX(), this.mob.getY() + (double) 0.5F, this.mob.getZ()).relative(this.selectedDirection);
                 BlockState blockstate = levelaccessor.getBlockState(blockpos);
                 if (InfestedBlock.isCompatibleHostBlock(blockstate)) {
                     levelaccessor.setBlock(blockpos, InfestedBlock.infestedStateByHost(blockstate), 3);
@@ -171,6 +170,7 @@ public class EmeraldfishEntity extends Monster {
     }
 
     static class SilverfishWakeUpFriendsGoal extends Goal {
+
         private final EmeraldfishEntity silverfish;
         private int lookForFriends;
 
@@ -208,7 +208,6 @@ public class EmeraldfishEntity extends Monster {
                                 } else {
                                     level.setBlock(blockpos1, ((InfestedBlock)block).hostStateByInfested(level.getBlockState(blockpos1)), 3);
                                 }
-
                                 if (randomsource.nextBoolean()) {
                                     return;
                                 }
@@ -217,7 +216,6 @@ public class EmeraldfishEntity extends Monster {
                     }
                 }
             }
-
         }
     }
 }
