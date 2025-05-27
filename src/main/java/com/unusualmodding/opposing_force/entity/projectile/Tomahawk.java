@@ -26,15 +26,18 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
-
 public class Tomahawk extends AbstractArrow implements ItemSupplier {
 
-    public Tomahawk(EntityType<? extends Tomahawk> type, Level worldIn) {
-        super(type, worldIn);
+    public Tomahawk(EntityType<? extends Tomahawk> type, Level level) {
+        super(type, level);
     }
 
-    public Tomahawk(Level worldIn, LivingEntity shooter) {
-        super(OPEntities.TOMAHAWK.get(), shooter, worldIn);
+    public Tomahawk(Level level, LivingEntity shooter) {
+        super(OPEntities.TOMAHAWK.get(), shooter, level);
+    }
+
+    public Tomahawk(Level pLevel, double pX, double pY, double pZ) {
+        super(OPEntities.TOMAHAWK.get(), pX, pY, pZ, pLevel);
     }
 
     @Override
@@ -115,5 +118,10 @@ public class Tomahawk extends AbstractArrow implements ItemSupplier {
     @Override
     public double getBaseDamage() {
         return 7.0D;
+    }
+
+    @Override
+    protected float getWaterInertia() {
+        return 0.75F;
     }
 }

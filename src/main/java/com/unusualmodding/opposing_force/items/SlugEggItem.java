@@ -42,6 +42,4 @@ public class SlugEggItem extends Item {
 
         return InteractionResultHolder.sidedSuccess(itemstack, worldIn.isClientSide());
     }
-
-
 }

@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force;
 
 import com.unusualmodding.opposing_force.data.*;
+import com.unusualmodding.opposing_force.events.CommonEvents;
 import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;

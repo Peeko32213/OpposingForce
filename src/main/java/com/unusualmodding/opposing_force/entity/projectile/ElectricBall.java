@@ -41,6 +41,10 @@ public class ElectricBall extends AbstractElectricBall {
         this.setOwner(entity);
     }
 
+    public ElectricBall(Level level, double x, double y, double z, Vec3 movement) {
+        super(OPEntities.ELECTRICITY_BALL.get(), x, y, z, movement, level);
+    }
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();

@@ -79,6 +79,8 @@
   "item.opposing_force.volt_spawn_egg": "Volt Spawn Egg",
   "item.opposing_force.whizz_spawn_egg": "Whizz Spawn Egg",
   "itemGroup.opposing_force": "Opposing Force",
+  "opposing_force.tomahawk_damage": " 7 Projectile Damage",
+  "opposing_force.when_thrown": "When Thrown:",
   "subtitles.dicer_attack": "Dicer slashes",
   "subtitles.dicer_death": "Dicer dies",
   "subtitles.dicer_hurt": "Dicer hurts",

@@ -26,7 +26,5 @@ public class CommonEvents {
         event.put(OPEntities.FIRE_SLIME.get(), FireSlimeEntity.createAttributes().build());
         event.put(OPEntities.SLUG.get(), SlugEntity.createAttributes().build());
         event.put(OPEntities.EMERALDFISH.get(), EmeraldfishEntity.createAttributes().build());
-
     }
-
 }

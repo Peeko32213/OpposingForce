@@ -1,16 +1,49 @@
 package com.unusualmodding.opposing_force.registry;
 
+import com.unusualmodding.opposing_force.entity.projectile.ElectricBall;
+import com.unusualmodding.opposing_force.entity.projectile.SlugEgg;
+import com.unusualmodding.opposing_force.entity.projectile.Tomahawk;
+import net.minecraft.core.Position;
+import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ComposterBlock;
-import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.phys.Vec3;
 
 public class OPCompat {
 
     public static void registerCompat() {
+        registerDispenserBehaviors();
         registerCompostables();
         registerFlammables();
+    }
+
+    public static void registerDispenserBehaviors() {
+        DispenserBlock.registerBehavior(OPItems.ELECTRIC_CHARGE.get(), new AbstractProjectileDispenseBehavior() {
+            @Override
+            protected Projectile getProjectile(Level level, Position pos, ItemStack itemStack) {
+                ElectricBall entity = new ElectricBall(level, pos.x(), pos.y(), pos.z(), Vec3.ZERO);
+                return entity;
+            }
+        });
+
+        DispenserBlock.registerBehavior(OPItems.SLUG_EGGS.get(), new AbstractProjectileDispenseBehavior() {
+            protected Projectile getProjectile(Level level, Position pos, ItemStack itemStack) {
+                return new SlugEgg(level, pos.x(), pos.y(), pos.z());
+            }
+        });
+
+        DispenserBlock.registerBehavior(OPItems.TOMAHAWK.get(), new AbstractProjectileDispenseBehavior() {
+            @Override
+            protected Projectile getProjectile(Level level, Position pos, ItemStack itemStack) {
+                Tomahawk entity = new Tomahawk(level, pos.x(), pos.y(), pos.z());
+                entity.pickup = AbstractArrow.Pickup.ALLOWED;
+                return entity;
+            }
+        });
     }
 
     public static void registerCompostables() {

@@ -27,6 +27,14 @@ public abstract class AbstractElectricBall extends AbstractHurtingProjectile imp
         this.accelerationPower = 0;
     }
 
+    public AbstractElectricBall(EntityType<? extends AbstractHurtingProjectile> entityType, double x, double y, double z, Vec3 movement, Level level) {
+        this(entityType, level);
+        this.moveTo(x, y, z, this.getYRot(), this.getXRot());
+        this.reapplyPosition();
+        this.assignDirectionalMovement(movement, this.accelerationPower);
+        this.accelerationPower = 0.0;
+    }
+
     @Override
     public boolean canCollideWith(@NotNull Entity entity) {
         return !(entity instanceof AbstractElectricBall) && super.canCollideWith(entity);
