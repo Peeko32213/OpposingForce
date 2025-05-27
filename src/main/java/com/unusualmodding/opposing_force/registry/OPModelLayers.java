@@ -10,6 +10,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class OPModelLayers {
 
     public static final ModelLayerLocation EMERALDFISH_LAYER = main("emeraldfish");
+    public static final ModelLayerLocation UMBER_SPIDER_LAYER = main("umber_spider");
+    public static final ModelLayerLocation VOLT_LAYER = main("volt");
+    public static final ModelLayerLocation WHIZZ_LAYER = main("whizz");
 
     private static ModelLayerLocation register(String id, String name) {
         return new ModelLayerLocation(new ResourceLocation(OpposingForce.MOD_ID, id), name);

@@ -3,8 +3,7 @@ package com.unusualmodding.opposing_force.events;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.DefaultModel;
 import com.unusualmodding.opposing_force.client.models.TerrorDefaultModel;
-import com.unusualmodding.opposing_force.client.models.UmberSpiderModel;
-import com.unusualmodding.opposing_force.client.models.entity.EmeraldfishModel;
+import com.unusualmodding.opposing_force.client.models.entity.*;
 import com.unusualmodding.opposing_force.client.particles.*;
 import com.unusualmodding.opposing_force.client.renderer.PlainGeoRenderer;
 import com.unusualmodding.opposing_force.client.renderer.*;
@@ -46,12 +45,6 @@ public final class ClientEvents {
             return render;
         });
 
-        EntityRenderers.register(OPEntities.UMBER_SPIDER.get(), (ctx) -> {
-            PlainGeoRenderer<UmberSpiderEntity> render = new PlainGeoRenderer<>(ctx, UmberSpiderModel::new);
-            render.addRenderLayer(new OPGlowingEyeLayer<>("umber_spider", render));
-            return render;
-        });
-
         EntityRenderers.register(OPEntities.RAMBLE.get(), (ctx) -> {
             PlainGeoRenderer<RambleEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("ramble"));
             return render;
@@ -65,11 +58,6 @@ public final class ClientEvents {
 
         EntityRenderers.register(OPEntities.TREMBLER.get(), (ctx) -> {
             PlainGeoRenderer<TremblerEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("trembler"));
-            return render;
-        });
-
-        EntityRenderers.register(OPEntities.VOLT.get(), (ctx) -> {
-            PlainGeoRenderer<VoltEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("volt"));
             return render;
         });
 
@@ -99,24 +87,12 @@ public final class ClientEvents {
             return render;
         });
 
-        EntityRenderers.register(OPEntities.SLUG_EGG.get(), (render) -> {
-            return new ThrownItemRenderer<>(render, 0.75F, true);
-        });
+        EntityRenderers.register(OPEntities.SLUG_EGG.get(), (render) -> new ThrownItemRenderer<>(render, 0.75F, true));
 
         EntityRenderers.register(OPEntities.SLUG.get(), (ctx) -> {
             PlainGeoRenderer<SlugEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("slug"));
             return render;
         });
-
-//        EntityRenderers.register(OPEntities.FETID.get(), (ctx) -> {
-//            PlainGeoRenderer<FetidEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("fetid"));
-//            return render;
-//        });
-//
-//        EntityRenderers.register(OPEntities.SPINDLE.get(), (ctx) -> {
-//            PlainGeoRenderer<SpindleEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("spindle"));
-//            return render;
-//        });
 
         ItemBlockRenderTypes.setRenderLayer(OPBlocks.BLUE_TRUMPET.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(OPBlocks.CAVE_PATTY.get(), RenderType.cutout());
@@ -138,19 +114,23 @@ public final class ClientEvents {
         ItemBlockRenderTypes.setRenderLayer(OPBlocks.SLIPPERY_TOP.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(OPBlocks.WHITECAP.get(), RenderType.cutout());
         event.enqueueWork(OPItemProperties::addItemProperties);
-
     }
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(OPEntities.ELECTRICITY_BALL.get(), ElectricBallRenderer::new);
         event.registerEntityRenderer(OPEntities.TOMAHAWK.get(), TomahawkRenderer::new);
-        event.registerEntityRenderer(OPEntities.WHIZZ.get(), WhizzRenderer::new);
         event.registerEntityRenderer(OPEntities.EMERALDFISH.get(), EmeraldfishRenderer::new);
+        event.registerEntityRenderer(OPEntities.UMBER_SPIDER.get(), UmberSpiderRenderer::new);
+        event.registerEntityRenderer(OPEntities.VOLT.get(), VoltRenderer::new);
+        event.registerEntityRenderer(OPEntities.WHIZZ.get(), WhizzRenderer::new);
     }
 
     @SubscribeEvent
     public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(OPModelLayers.EMERALDFISH_LAYER, EmeraldfishModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.UMBER_SPIDER_LAYER, UmberSpiderModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.VOLT_LAYER, VoltModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.WHIZZ_LAYER, WhizzModel::createBodyLayer);
     }
 }

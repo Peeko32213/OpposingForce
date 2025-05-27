@@ -1,34 +1,27 @@
 package com.unusualmodding.opposing_force.entity;
 
-import com.google.common.collect.ImmutableMap;
-import com.unusualmodding.opposing_force.entity.ai.goal.volt.VoltAttackGoal;
-import com.unusualmodding.opposing_force.entity.base.EnhancedMonsterEntity;
-import com.unusualmodding.opposing_force.entity.ai.goal.SmartNearestTargetGoal;
-import com.unusualmodding.opposing_force.entity.ai.state.StateHelper;
-import com.unusualmodding.opposing_force.entity.ai.state.WeightedState;
-import com.unusualmodding.opposing_force.entity.ai.util.helper.SmartBodyHelper;
-import com.unusualmodding.opposing_force.entity.ai.util.navigator.SmoothGroundNavigation;
+import com.unusualmodding.opposing_force.entity.projectile.ElectricBall;
+import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import com.unusualmodding.opposing_force.registry.OPSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -37,67 +30,88 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.keyframe.event.SoundKeyframeEvent;
-import software.bernie.geckolib.core.object.PlayState;
 
-import java.util.List;
+import java.util.EnumSet;
 
-public class VoltEntity extends EnhancedMonsterEntity {
+public class VoltEntity extends Monster {
 
-    private static final EntityDataAccessor<Boolean> LEAPING = SynchedEntityData.defineId(VoltEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(VoltEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> LEAP_COOLDOWN = SynchedEntityData.defineId(VoltEntity.class, EntityDataSerializers.INT);
 
-    private static final RawAnimation VOLT_IDLE = RawAnimation.begin().thenLoop("animation.volt.idle");
-    private static final RawAnimation VOLT_IDLE_JAW = RawAnimation.begin().thenPlay("animation.volt.idle_jaw");
-    private static final RawAnimation VOLT_WALK = RawAnimation.begin().thenLoop("animation.volt.move");
-    private static final RawAnimation VOLT_SHOOT = RawAnimation.begin().thenPlay("animation.volt.attack");
+    public final AnimationState idleAnimationState = new AnimationState();
+    public final AnimationState shootAnimationState = new AnimationState();
 
-    // Body control / navigation
-    @Override
-    protected @NotNull BodyRotationControl createBodyControl() {
-        SmartBodyHelper helper = new SmartBodyHelper(this);
-        helper.bodyLagMoving = 0.4F;
-        helper.bodyLagStill = 0.25F;
-        return helper;
-    }
-
-    @Override
-    protected @NotNull PathNavigation createNavigation(Level levelIn) {
-        return new SmoothGroundNavigation(this, levelIn);
-    }
-
-    public VoltEntity(EntityType<? extends EnhancedMonsterEntity> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public VoltEntity(EntityType<? extends Monster> entityType, Level level) {
+        super(entityType, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 12.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.1F)
-                .add(Attributes.ATTACK_DAMAGE, 8.0F);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 16.0D).add(Attributes.MOVEMENT_SPEED, 0.11F);
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new VoltAttackGoal(this));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new SmartNearestTargetGoal(this, Player.class, true));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
     }
 
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(LEAPING, false);
+        this.entityData.define(ATTACK_STATE, 0);
+        this.entityData.define(LEAP_COOLDOWN, 4 + random.nextInt(16 * 2));
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        compoundTag.putInt("AttackState", this.getAttackState());
+        compoundTag.putInt("LeapCooldown", this.getLeapCooldown());
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        this.setAttackState(compoundTag.getInt("AttackState"));
+        this.setLeapCooldown(compoundTag.getInt("LeapCooldown"));
+    }
+
+    public int getAttackState() {
+        return this.entityData.get(ATTACK_STATE);
+    }
+    public void setAttackState(int attack) {
+        this.entityData.set(ATTACK_STATE, attack);
+    }
+
+    public int getLeapCooldown() {
+        return this.entityData.get(LEAP_COOLDOWN);
+    }
+    public void setLeapCooldown(int cooldown) {
+        this.entityData.set(LEAP_COOLDOWN, cooldown);
+    }
+    public void leapCooldown() {
+        this.entityData.set(LEAP_COOLDOWN, 4 + random.nextInt(16 * 2));
     }
 
     public void tick() {
+        if (this.getLeapCooldown() > 0) {
+            this.setLeapCooldown(this.getLeapCooldown() - 1);
+        }
+
+        if (this.level().isClientSide()) {
+            this.setupAnimationStates();
+        }
         super.tick();
+    }
+
+    private void setupAnimationStates() {
+        this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
+        this.shootAnimationState.animateWhen(this.getAttackState() == 1, this.tickCount);
     }
 
     public static <T extends Mob> boolean canFirstTierSpawn(EntityType<VoltEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -137,13 +151,13 @@ public class VoltEntity extends EnhancedMonsterEntity {
         return OPSounds.VOLT_DEATH.get();
     }
 
-    protected void playStepSound(@NotNull BlockPos p_28301_, @NotNull BlockState p_28302_) {
+    protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
         this.playSound(SoundEvents.SLIME_SQUISH_SMALL, 0.2F, 0.8F);
     }
 
     @Override
     public float getSoundVolume() {
-        return 0.6F;
+        return 0.7F;
     }
 
     @Override
@@ -152,7 +166,7 @@ public class VoltEntity extends EnhancedMonsterEntity {
     }
 
     public boolean isInvulnerableTo(DamageSource source) {
-        return super.isInvulnerableTo(source) || source.is(DamageTypeTags.IS_FALL) || source.is(DamageTypes.IN_WALL) || source.is(DamageTypeTags.IS_DROWNING) ;
+        return super.isInvulnerableTo(source) || source.is(DamageTypeTags.IS_FALL) || source.is(DamageTypes.IN_WALL) || source.is(DamageTypeTags.IS_DROWNING) || source.is(OPDamageTypes.ELECTRIFIED);
     }
 
     public static <T extends Mob> boolean canSecondTierSpawn(EntityType<VoltEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -160,59 +174,101 @@ public class VoltEntity extends EnhancedMonsterEntity {
         return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 0 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
     }
 
-    @Override
-    public ImmutableMap<String, StateHelper> getStates() {
-        return null;
-    }
+    // goals
+    private static class VoltAttackGoal extends Goal {
 
-    @Override
-    public List<WeightedState<StateHelper>> getWeightedStatesToPerform() {
-        return List.of();
-    }
+        protected final VoltEntity volt;
+        private int attackTime = 0;
 
-    // Animation sounds
-    private void soundListener(SoundKeyframeEvent<VoltEntity> event) {
-        VoltEntity volt = event.getAnimatable();
-        if (volt.level().isClientSide) {
-            if (event.getKeyframeData().getSound().equals("volt_shoot")) {
-                volt.level().playLocalSound(volt.getX(), volt.getY(), volt.getZ(), OPSounds.VOLT_SHOOT.get(), volt.getSoundSource(), 0.5F, volt.getVoicePitch(), false);
+        public VoltAttackGoal(VoltEntity mob) {
+            this.volt = mob;
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        }
+
+        public boolean canUse() {
+            return this.volt.getTarget() != null && this.volt.getTarget().isAlive();
+        }
+
+        public void start() {
+            this.volt.setAggressive(true);
+            this.volt.setAttackState(0);
+            this.attackTime = 0;
+        }
+
+        public void stop() {
+            this.volt.setAggressive(false);
+            this.volt.setAttackState(0);
+        }
+
+        public void tick() {
+            LivingEntity target = this.volt.getTarget();
+            if (target != null) {
+
+                this.volt.lookAt(this.volt.getTarget(), 30F, 30F);
+                this.volt.getLookControl().setLookAt(this.volt.getTarget(), 30F, 30F);
+
+                int attackState = this.volt.getAttackState();
+                double distance = this.volt.distanceToSqr(target.getX(), target.getY(), target.getZ());
+                boolean random = this.volt.getRandom().nextBoolean();
+
+                switch (attackState) {
+                    case 1 -> tickShootAttack();
+                    case 2 -> tickLeap();
+                    default -> {
+                        this.checkForCloseRangeAttack(distance);
+                        this.volt.getMoveControl().strafe(random ? 0.3F : -0.3F, random ? 0.3F : -0.3F);
+                    }
+                }
             }
         }
-    }
 
-    // Animation control
-    @Override
-    public void registerControllers(final AnimatableManager.ControllerRegistrar controllers) {
-        AnimationController<VoltEntity> controller = new AnimationController<>(this, "controller", 5, this::predicate);
-        controllers.add(controller);
-
-        AnimationController<VoltEntity> attack = new AnimationController<>(this, "attackController", 5, this::attackPredicate);
-        attack.setSoundKeyframeHandler(this::soundListener);
-        controllers.add(attack);
-    }
-
-    protected <E extends VoltEntity> PlayState predicate(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
-        if (!(this.getAttackState() > 0)) {
-            if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
-                event.setAndContinue(VOLT_WALK);
-            } else {
-                event.setAndContinue(VOLT_IDLE);
+        protected void checkForCloseRangeAttack(double distance) {
+            if (this.volt.onGround()) {
+                this.volt.setAttackState(1);
+            }
+            if (this.volt.getLeapCooldown() <= 0 && distance <= 30) {
+                this.volt.setAttackState(2);
             }
         }
-        return PlayState.CONTINUE;
-    }
 
-    // Attack animations
-    protected <E extends VoltEntity> PlayState attackPredicate(final AnimationState<E> event) {
-        int attackState = this.getAttackState();
-        if (attackState == 21) {
-            event.setAndContinue(VOLT_SHOOT);
-            return PlayState.CONTINUE;
+        protected void tickShootAttack() {
+            this.attackTime++;
+            LivingEntity target = this.volt.getTarget();
+            this.volt.getNavigation().stop();
+
+            if (this.attackTime == 8) {
+                ElectricBall projectile = new ElectricBall(this.volt, this.volt.level(), this.volt.position().x(), this.volt.getEyePosition().y(), this.volt.position().z());
+                double tx = target.getX() - this.volt.getX();
+                double ty = target.getY() + target.getEyeHeight() - 1.1D - projectile.getY();
+                double tz = target.getZ() - this.volt.getZ();
+                float heightOffset = Mth.sqrt((float) (tx * tx + tz * tz)) * 0.01F;
+                projectile.shoot(tx, ty + heightOffset, tz, 0.6F, 1.0F);
+                this.volt.playSound(OPSounds.VOLT_SHOOT.get(), 1.0F, 1.0F / (this.volt.getRandom().nextFloat() * 0.4F + 0.8F));
+                this.volt.level().addFreshEntity(projectile);
+            }
+            if (this.attackTime >= 20) {
+                this.attackTime = 0;
+                this.volt.setAttackState(0);
+            }
         }
-        else if (attackState == 0) {
-            event.getController().forceAnimationReset();
-            return PlayState.STOP;
+
+        public void tickLeap() {
+            this.attackTime++;
+            LivingEntity target = this.volt.getTarget();
+            this.volt.getNavigation().stop();
+            float targetAngle = -1;
+            float leapYaw = (float) Math.toRadians(targetAngle + 90 + this.volt.getRandom().nextFloat() * 150 - 75);
+            if (this.volt.onGround()) {
+                float speed = 1.25F;
+                Vec3 m = this.volt.getDeltaMovement().add(speed * Math.cos(leapYaw), 0, speed * Math.sin(leapYaw));
+                this.volt.setDeltaMovement(m.x, 0.7, m.z);
+            }
+            if (target != null) this.volt.getLookControl().setLookAt(target, 30, 30);
+            if (this.attackTime >= 3) {
+                this.attackTime = 0;
+                this.volt.setAttackState(0);
+                this.volt.leapCooldown();
+            }
         }
-        else return PlayState.CONTINUE;
     }
 }

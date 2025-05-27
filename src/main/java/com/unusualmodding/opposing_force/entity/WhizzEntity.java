@@ -1,13 +1,8 @@
 package com.unusualmodding.opposing_force.entity;
 
-import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.DataFixUtils;
-import com.unusualmodding.opposing_force.entity.base.EnhancedMonsterEntity;
-import com.unusualmodding.opposing_force.entity.ai.state.StateHelper;
-import com.unusualmodding.opposing_force.entity.ai.state.WeightedState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -39,29 +34,19 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class WhizzEntity extends EnhancedMonsterEntity implements GeoAnimatable, GeoEntity {
+public class WhizzEntity extends Monster {
 
     @Nullable
     private WhizzEntity leader;
     protected int swarmSize = 1;
 
-    public float currentRoll = 0.0F;
-    public float prevTilt;
-    public float tilt;
-
-    private static final RawAnimation ALIVE = RawAnimation.begin().thenLoop("animation.wizz.alive");
+    public final AnimationState flyAnimationState = new AnimationState();
 
     @Override
     protected @NotNull PathNavigation createNavigation(Level pLevel) {
@@ -87,12 +72,7 @@ public class WhizzEntity extends EnhancedMonsterEntity implements GeoAnimatable,
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 8.0D)
-                .add(Attributes.FLYING_SPEED, 1.1F)
-                .add(Attributes.MOVEMENT_SPEED, 0.5F)
-                .add(Attributes.ATTACK_DAMAGE, 2.0D)
-        ;
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 8.0D).add(Attributes.FLYING_SPEED, 1.1F).add(Attributes.MOVEMENT_SPEED, 0.5F).add(Attributes.ATTACK_DAMAGE, 2.0D);
     }
 
     protected void registerGoals() {
@@ -113,37 +93,20 @@ public class WhizzEntity extends EnhancedMonsterEntity implements GeoAnimatable,
     public void tick() {
         super.tick();
 
+        if (this.level().isClientSide()) {
+            this.setupAnimationStates();
+        }
+
         if (this.hasFollowers() && this.level().random.nextInt(200) == 1) {
             List<? extends WhizzEntity> list = this.level().getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D));
             if (list.size() <= 1) {
                 this.swarmSize = 1;
             }
         }
+    }
 
-        prevTilt = tilt;
-        if (this.isFlying() && !this.onGround()) {
-            final float v = Mth.degreesDifference(this.getYRot(), yRotO);
-            if (Math.abs(v) > 1) {
-                if (Math.abs(tilt) < 25) {
-                    tilt -= Math.signum(v);
-                }
-            } else {
-                if (Math.abs(tilt) > 0) {
-                    final float tiltSign = Math.signum(tilt);
-                    tilt -= tiltSign * 0.85F;
-                    if (tilt * tiltSign < 0) {
-                        tilt = 0;
-                    }
-                }
-            }
-        } else {
-            tilt = 0;
-        }
-
-        float prevRoll = this.currentRoll;
-        float targetRoll = Math.max(-0.45F, Math.min(0.45F, (this.getYRot() - this.yRotO) * 0.1F));
-        targetRoll = -targetRoll;
-        this.currentRoll = prevRoll + (targetRoll - prevRoll) * 0.05F;
+    private void setupAnimationStates() {
+        this.flyAnimationState.animateWhen(this.isAlive(), this.tickCount);
     }
 
     // Swarming
@@ -230,34 +193,11 @@ public class WhizzEntity extends EnhancedMonsterEntity implements GeoAnimatable,
     protected void checkFallDamage(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
     }
 
-    protected void playStepSound(BlockPos p_28301_, BlockState p_28302_) {
+    protected void playStepSound(BlockPos pos, BlockState state) {
     }
 
     public boolean isFlying() {
         return true;
-    }
-
-    @Override
-    public ImmutableMap<String, StateHelper> getStates() {
-        return null;
-    }
-
-    @Override
-    public List<WeightedState<StateHelper>> getWeightedStatesToPerform() {
-        return List.of();
-    }
-
-    @Override
-    public void registerControllers(final AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Normal", 5, this::controller));
-    }
-
-    protected <E extends WhizzEntity> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
-        if (this.isAlive()) {
-            event.setAndContinue(ALIVE);
-            return PlayState.CONTINUE;
-        }
-        return PlayState.CONTINUE;
     }
 
     public static <T extends Mob> boolean canWhizzSpawn(EntityType<WhizzEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -316,7 +256,7 @@ public class WhizzEntity extends EnhancedMonsterEntity implements GeoAnimatable,
         }
     }
 
-    private class WhizzSwarmGoal extends Goal {
+    private static class WhizzSwarmGoal extends Goal {
 
         private final WhizzEntity whizz;
         private int timeToRecalcPath;
