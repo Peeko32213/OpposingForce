@@ -28,6 +28,6 @@ public class WhizzRenderer extends MobRenderer<WhizzEntity, WhizzModel<WhizzEnti
 
     @Override
     protected @Nullable RenderType getRenderType(WhizzEntity entity, boolean bodyVisible, boolean translucent, boolean glowing) {
-        return RenderType.entityCutout(TEXTURE);
+        return RenderType.entityCutoutNoCull(TEXTURE);
     }
 }

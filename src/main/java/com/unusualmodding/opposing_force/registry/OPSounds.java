@@ -37,6 +37,7 @@ public class OPSounds {
     public static final RegistryObject<SoundEvent> VOLT_HURT = createSoundEvent("volt_hurt");
     public static final RegistryObject<SoundEvent> VOLT_IDLE = createSoundEvent("volt_idle");
     public static final RegistryObject<SoundEvent> VOLT_SHOOT = createSoundEvent("volt_shoot");
+    public static final RegistryObject<SoundEvent> VOLT_SQUISH = createSoundEvent("volt_squish");
 
     private static RegistryObject<SoundEvent> createSoundEvent(final String soundName) {
         return DEF_REG.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(OpposingForce.MOD_ID, soundName)));

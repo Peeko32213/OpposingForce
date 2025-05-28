@@ -90,10 +90,17 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
         this.sound(OPSounds.VOLT_SHOOT,
                 sound(OpposingForce.modPrefix("entity/volt/shoot_0"))
         );
+        this.sound(OPSounds.VOLT_SQUISH,
+                sound("mob/slime/small1").pitch(0.8f),
+                sound("mob/slime/small2").pitch(0.8f),
+                sound("mob/slime/small3").pitch(0.8f),
+                sound("mob/slime/small4").pitch(0.8f),
+                sound("mob/slime/small5").pitch(0.8f)
+        );
     }
 
     private void soundDefinition(Supplier<SoundEvent> soundEvent, String subtitle, SoundDefinition.Sound... sounds) {
-        this.add(soundEvent.get(), SoundDefinition.definition().subtitle("subtitles." + subtitle).with(sounds));
+        this.add(soundEvent.get(), SoundDefinition.definition().subtitle("subtitles.opposing_force." + subtitle).with(sounds));
     }
 
     private void sound(Supplier<SoundEvent> soundEvent, SoundDefinition.Sound... sounds){

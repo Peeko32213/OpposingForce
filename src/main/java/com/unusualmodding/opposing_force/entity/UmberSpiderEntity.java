@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.unusualmodding.opposing_force.registry.OPEffects;
 import com.unusualmodding.opposing_force.registry.OPSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -8,12 +9,10 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -132,28 +131,24 @@ public class UmberSpiderEntity extends Monster {
         return 180;
     }
 
-//    public boolean doHurtTarget(Entity pEntity) {
-//        boolean flag = this.isLightSensitive() && this.isLightBurnTick();
-//        if (super.doHurtTarget(pEntity)) {
-//            if (pEntity instanceof LivingEntity) {
-//                int i = 0;
-//                if (this.level().getDifficulty() == Difficulty.NORMAL) {
-//                    i = 7;
-//                } else if (this.level().getDifficulty() == Difficulty.HARD) {
-//                    i = 15;
-//                }
-//                if (i > 0) {
-//                    ((LivingEntity)pEntity).addEffect(new MobEffectInstance(MobEffects.WITHER, i * 20, 0), this);
-//                }
-//            }
-//            this.performAttack();
-//            return true;
-//        }
-//        if (flag){
-//            this.performAttack();
-//        }
-//        return false;
-//    }
+    public boolean doHurtTarget(Entity entity) {
+        if (super.doHurtTarget(entity)) {
+            if (entity instanceof LivingEntity) {
+                int i = 0;
+                if (this.level().getDifficulty() == Difficulty.NORMAL) {
+                    i = 5;
+                } else if (this.level().getDifficulty() == Difficulty.HARD) {
+                    i = 10;
+                }
+                if (i > 0) {
+                    ((LivingEntity) entity).addEffect(new MobEffectInstance(OPEffects.GLOOM_TOXIN.get(), i * 20, 0), this);
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     @Override
     protected void defineSynchedData() {
@@ -284,10 +279,6 @@ public class UmberSpiderEntity extends Monster {
 
     public MobType getMobType() {
         return MobType.ARTHROPOD;
-    }
-
-    public boolean isInvulnerableTo(DamageSource source) {
-        return super.isInvulnerableTo(source) || source.is(DamageTypeTags.IS_FALL) || source.is(DamageTypes.IN_WALL);
     }
 
     protected boolean isSunSensitive() {

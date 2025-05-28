@@ -4,6 +4,7 @@ import com.unusualmodding.opposing_force.OPCreativeTabs;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -66,6 +67,7 @@ public class OPLangProvider extends LanguageProvider {
         sound(OPSounds.VOLT_HURT, "Volt hurts");
         sound(OPSounds.VOLT_IDLE, "Volt hums");
         sound(OPSounds.VOLT_SHOOT, "Volt shoots");
+        sound(OPSounds.VOLT_SQUISH, "Volt squishes");
 
         addEntityType(OPEntities.DICER, "Dicer");
         addItem(OPItems.DICER_SPAWN_EGG, "Dicer Spawn Egg");
@@ -80,9 +82,6 @@ public class OPLangProvider extends LanguageProvider {
         addItem(OPItems.VOLT_SPAWN_EGG, "Volt Spawn Egg");
         addEntityType(OPEntities.ELECTRICITY_BALL, "Ball of Electricity");
         addItem(OPItems.ELECTRIC_CHARGE, "Electric Charge");
-        addEffect(OPEffects.ELECTRIFIED, "Electrified");
-        add("death.attack.hole.electrified", "%s met a shocking end");
-        add("death.attack.hole.electrified.player", "%s met a shocking end by %s");
         addItem(OPItems.TESLA_BOW, "Tesla Bow");
 
         addEntityType(OPEntities.WHIZZ, "Whizz");
@@ -101,7 +100,7 @@ public class OPLangProvider extends LanguageProvider {
         addItem(OPItems.GUZZLER_SPAWN_EGG, "Guzzler Spawn Egg");
 
         addItem(OPItems.TOMAHAWK, "Tomahawk");
-        add("death.attack.hole.tomahawk", "%s was domed by %s");
+        addEntityType(OPEntities.TOMAHAWK, "Tomahawk");
 
         addEntityType(OPEntities.SLUG, "Slug");
         addItem(OPItems.SLUG_SPAWN_EGG, "Slug Spawn Egg");
@@ -109,9 +108,20 @@ public class OPLangProvider extends LanguageProvider {
 
         addItem(OPItems.VILE_BOULDER, "Vile Boulder");
 
+        // other
         addEnchantmentWithDesc(OPEnchantments.BIG_ELECTRIC_BALL.get(), "Increases the size of the fired electric charge");
         addEnchantmentWithDesc(OPEnchantments.BOUNCY_ELECTRIC_BALL.get(), "The fired electric charge bounces off blocks and passes through mobs");
         addEnchantmentWithDesc(OPEnchantments.KICKBACK.get(), "Launches the user backwards after firing");
+
+        addEffect(OPEffects.ELECTRIFIED, "Electrified");
+        addEffect(OPEffects.GLOOM_TOXIN, "Gloom Toxin");
+
+        add("death.attack.opposing_force.electrified", "%1$s met a shocking end");
+        add("death.attack.opposing_force.electrified.player", "%1$s was zapped by %2$s");
+        add("death.attack.opposing_force.gloom_toxin", "%1$s was consumed by darkness");
+        add("death.attack.opposing_force.gloom_toxin.player", "%1$s didn't reach the light");
+        add("death.attack.opposing_force.tomahawk", "%1$s was domed by %2$s");
+        add("death.attack.opposing_force.tomahawk.item", "%1$s was domed by %2$s using %3$s");
     }
 
     @Override
@@ -136,7 +146,7 @@ public class OPLangProvider extends LanguageProvider {
     }
 
     public void sound(Supplier<? extends SoundEvent> key, String subtitle){
-        add("subtitles." + key.get().getLocation().getPath(), subtitle);
+        add("subtitles.opposing_force." + key.get().getLocation().getPath(), subtitle);
     }
 
     private void addEnchantmentWithDesc(Enchantment enchantment, String description) {
@@ -151,19 +161,5 @@ public class OPLangProvider extends LanguageProvider {
 
     public void addTabName(CreativeModeTab key, String name){
         add(key.getDisplayName().getString(), name);
-    }
-
-    public void add(CreativeModeTab key, String name) {
-        add(key.getDisplayName().getString(), name);
-    }
-
-    public void addPotion(Supplier<? extends Potion> key, String name, String regName) {
-        add(key.get(), name, regName);
-    }
-
-    public void add(Potion key, String name, String regName) {
-        add("item.minecraft.potion.effect." + regName, name);
-        add("item.minecraft.splash_potion.effect." + regName, "Splash " + name);
-        add("item.minecraft.lingering_potion.effect." + regName, "Lingering " + name);
     }
 }

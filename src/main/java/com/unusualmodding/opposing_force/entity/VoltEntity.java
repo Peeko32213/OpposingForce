@@ -40,6 +40,11 @@ public class VoltEntity extends Monster {
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(VoltEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> LEAP_COOLDOWN = SynchedEntityData.defineId(VoltEntity.class, EntityDataSerializers.INT);
 
+    public float targetSquish;
+    public float squish;
+    public float oSquish;
+    private boolean wasOnGround;
+
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState shootAnimationState = new AnimationState();
 
@@ -106,12 +111,30 @@ public class VoltEntity extends Monster {
         if (this.level().isClientSide()) {
             this.setupAnimationStates();
         }
+
+        this.squish += (this.targetSquish - this.squish) * 0.5F;
+        this.oSquish = this.squish;
+
+        if (this.onGround() && !this.wasOnGround) {
+            this.playSound(OPSounds.VOLT_SQUISH.get(), 0.2F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
+            this.targetSquish = -0.5F;
+        } else if (!this.onGround() && this.wasOnGround) {
+            this.targetSquish = 1.0F;
+        }
+
+        this.wasOnGround = this.onGround();
+        this.decreaseSquish();
+
         super.tick();
     }
 
     private void setupAnimationStates() {
         this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
         this.shootAnimationState.animateWhen(this.getAttackState() == 1, this.tickCount);
+    }
+
+    protected void decreaseSquish() {
+        this.targetSquish *= 0.6F;
     }
 
     public static <T extends Mob> boolean canFirstTierSpawn(EntityType<VoltEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -152,7 +175,7 @@ public class VoltEntity extends Monster {
     }
 
     protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
-        this.playSound(SoundEvents.SLIME_SQUISH_SMALL, 0.2F, 0.8F);
+        this.playSound(OPSounds.VOLT_SQUISH.get(), 0.1F, 1.0F);
     }
 
     @Override
@@ -166,7 +189,16 @@ public class VoltEntity extends Monster {
     }
 
     public boolean isInvulnerableTo(DamageSource source) {
-        return super.isInvulnerableTo(source) || source.is(DamageTypeTags.IS_FALL) || source.is(DamageTypes.IN_WALL) || source.is(DamageTypeTags.IS_DROWNING) || source.is(OPDamageTypes.ELECTRIFIED);
+        return super.isInvulnerableTo(source) || source.is(DamageTypeTags.IS_FALL) || source.is(OPDamageTypes.ELECTRIFIED);
+    }
+
+    @Override
+    public boolean causeFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
+        return false;
+    }
+
+    @Override
+    protected void checkFallDamage(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
     }
 
     public static <T extends Mob> boolean canSecondTierSpawn(EntityType<VoltEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -260,6 +292,7 @@ public class VoltEntity extends Monster {
             float leapYaw = (float) Math.toRadians(targetAngle + 90 + this.volt.getRandom().nextFloat() * 150 - 75);
             if (this.volt.onGround()) {
                 float speed = 1.25F;
+                this.volt.playSound(OPSounds.VOLT_SQUISH.get(), 0.2F, 1.0F);
                 Vec3 m = this.volt.getDeltaMovement().add(speed * Math.cos(leapYaw), 0, speed * Math.sin(leapYaw));
                 this.volt.setDeltaMovement(m.x, 0.7, m.z);
             }

@@ -8,12 +8,12 @@ import net.minecraft.world.entity.LivingEntity;
 public class ElectrifiedEffect extends MobEffect {
 
     public ElectrifiedEffect() {
-        super(MobEffectCategory.HARMFUL, 0X0080c3);
+        super(MobEffectCategory.HARMFUL, 0x0080c3);
     }
 
     public void applyEffectTick(LivingEntity entity, int amplifier) {
-        if (entity.isInWaterRainOrBubble()){
-            entity.hurt(entity.damageSources().source(OPDamageTypes.ELECTRIFIED), 3.0F + (amplifier * 2));
+        if (entity.isInWaterRainOrBubble()) {
+            entity.hurt(entity.damageSources().source(OPDamageTypes.ELECTRIFIED), 2.0F + (amplifier * 2));
         }
     }
 
@@ -22,6 +22,6 @@ public class ElectrifiedEffect extends MobEffect {
     }
 
     public String getDescriptionId() {
-        return "hole.potion.electrified";
+        return "opposing_force.potion.electrified";
     }
 }

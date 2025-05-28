@@ -1,9 +1,8 @@
 package com.unusualmodding.opposing_force;
 
 import com.unusualmodding.opposing_force.data.*;
-import com.unusualmodding.opposing_force.events.CommonEvents;
 import com.unusualmodding.opposing_force.registry.*;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -37,7 +36,7 @@ public class OpposingForce {
         OPEntities.ENTITIES.register(bus);
         OPSounds.DEF_REG.register(bus);
         OPBlocks.BLOCKS.register(bus);
-        OPEffects.EFFECT_DEF_REG.register(bus);
+        OPEffects.MOB_EFFECT.register(bus);
         OPParticles.PARTICLE_TYPES.register(bus);
         OPEnchantments.ENCHANTMENTS.register(bus);
         OPWorldGen.register();
@@ -55,25 +54,29 @@ public class OpposingForce {
     private void dataSetup(GatherDataEvent data) {
         DataGenerator generator = data.getGenerator();
         PackOutput output = generator.getPackOutput();
-        CompletableFuture<HolderLookup.Provider> provider = data.getLookupProvider();
+        CompletableFuture<Provider> provider = data.getLookupProvider();
         ExistingFileHelper helper = data.getExistingFileHelper();
 
-        boolean client = data.includeClient();
-        generator.addProvider(client, new OPBlockstateProvider(data));
-        generator.addProvider(client, new OPItemModelProvider(data));
-        generator.addProvider(client, new OPSoundDefinitionsProvider(output, helper));
-        generator.addProvider(client, new OPLangProvider(data));
-
         boolean server = data.includeServer();
+
+        OPDatapackBuiltinEntriesProvider datapackEntries = new OPDatapackBuiltinEntriesProvider(output, provider);
+        generator.addProvider(server, datapackEntries);
+        provider = datapackEntries.getRegistryProvider();
+
         OPBlockTagProvider blockTags = new OPBlockTagProvider(output, provider, helper);
         generator.addProvider(server, blockTags);
         generator.addProvider(server, new OPItemTagProvider(output, provider, blockTags.contentsGetter(), helper));
         generator.addProvider(server, new OPEntityTagProvider(output, provider, helper));
+        generator.addProvider(server, new OPDamageTypeTagProvider(output, provider, helper));
         generator.addProvider(server, OPLootProvider.register(output));
         generator.addProvider(server, new OPRecipeProvider(output));
-        DatapackBuiltinEntriesProvider builtinProvider = new OPDatapackBuiltinEntriesProvider(output, provider);
-        generator.addProvider(true, builtinProvider);
 
+        boolean client = data.includeClient();
+
+        generator.addProvider(client, new OPBlockstateProvider(data));
+        generator.addProvider(client, new OPItemModelProvider(data));
+        generator.addProvider(client, new OPSoundDefinitionsProvider(output, helper));
+        generator.addProvider(client, new OPLangProvider(data));
     }
 
     public static ResourceLocation modPrefix(String name) {

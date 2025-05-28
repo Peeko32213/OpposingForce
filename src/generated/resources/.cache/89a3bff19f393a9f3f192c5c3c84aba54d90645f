@@ -1,0 +1,4 @@
+// 1.20.1	2025-05-28T13:20:23.4666506	Tags for minecraft:damage_type mod id opposing_force
+a12e9c427181715c0d514dc8cf00ebbb5d6f34ea data/minecraft/tags/damage_type/bypasses_armor.json
+3474151b6bbfe9da79a2f51cf1bbab5dfd1e8c75 data/minecraft/tags/damage_type/is_projectile.json
+3d0af116eca4d5cf33b52d8373616d2d3db82de8 data/minecraft/tags/damage_type/witch_resistant_to.json
