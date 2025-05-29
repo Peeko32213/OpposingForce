@@ -32,25 +32,12 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.phys.AABB;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class SlugEntity extends AbstractMonster implements GeoAnimatable, GeoEntity {
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("animation.slug.idle");
-    private static final RawAnimation MOVE = RawAnimation.begin().thenLoop("animation.slug.move");
-    private static final RawAnimation CLIMBING = RawAnimation.begin().thenLoop("animation.slug.climbing");
+public class SlugEntity extends Monster {
 
     private static final EntityDataAccessor<Byte> CLIMB_FLAG = SynchedEntityData.defineId(SlugEntity.class, EntityDataSerializers.BYTE);
 
-
-    public SlugEntity(EntityType<? extends AbstractMonster> pEntityType, Level pLevel) {
+    public SlugEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
@@ -158,31 +145,6 @@ public class SlugEntity extends AbstractMonster implements GeoAnimatable, GeoEnt
         return 0.5F;
     }
 
-    protected <E extends SlugEntity> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
-        if ((this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6 && !this.isInWater()) || this.isClimbing()) {
-            return event.setAndContinue(MOVE);
-        }
-        else if (this.isClimbing() && !this.isSwimming()) {
-            return event.setAndContinue(CLIMBING);
-        }
-        return event.setAndContinue(IDLE);
-    }
-
-    @Override
-    public void registerControllers(final AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Normal", 5, this::controller));
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.cache;
-    }
-
-    @Override
-    public double getTick(Object o) {
-        return tickCount;
-    }
-
     public static <T extends Mob> boolean canFirstTierSpawn(EntityType<SlugEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
         boolean isDeepDark = iServerWorld.getBiome(pos).is(Biomes.DEEP_DARK);
         return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 30 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
@@ -206,5 +168,4 @@ public class SlugEntity extends AbstractMonster implements GeoAnimatable, GeoEnt
             }
         }
     }
-
 }

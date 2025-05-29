@@ -103,14 +103,6 @@ public class Tomahawk extends AbstractArrow implements ItemSupplier {
     }
 
     @Override
-    protected void tickDespawn() {
-        ++this.life;
-        if (this.life >= 5000) {
-            this.discard();
-        }
-    }
-
-    @Override
     protected SoundEvent getDefaultHitGroundSoundEvent() {
         return SoundEvents.WOOD_BREAK;
     }

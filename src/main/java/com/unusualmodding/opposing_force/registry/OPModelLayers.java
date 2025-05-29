@@ -10,6 +10,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class OPModelLayers {
 
     public static final ModelLayerLocation EMERALDFISH_LAYER = main("emeraldfish");
+    public static final ModelLayerLocation SLUG_LAYER = main("slug");
+    public static final ModelLayerLocation TERROR_LAYER = main("terror");
+    public static final ModelLayerLocation TREMBLER_LAYER = main("trembler");
     public static final ModelLayerLocation UMBER_SPIDER_LAYER = main("umber_spider");
     public static final ModelLayerLocation VOLT_LAYER = main("volt");
     public static final ModelLayerLocation WHIZZ_LAYER = main("whizz");

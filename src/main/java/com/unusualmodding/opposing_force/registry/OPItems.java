@@ -25,7 +25,7 @@ public class OPItems {
     public static final RegistryObject<ForgeSpawnEggItem> RAMBLE_SPAWN_EGG = registerSpawnEgg("ramble_spawn_egg", OPEntities.RAMBLE , 0x131313, 0xffffff);
     public static final RegistryObject<ForgeSpawnEggItem> SLUG_SPAWN_EGG = registerSpawnEgg("slug_spawn_egg", OPEntities.SLUG , 0x311d16, 0x7a7139);
     public static final RegistryObject<ForgeSpawnEggItem> TERROR_SPAWN_EGG = registerSpawnEgg("terror_spawn_egg", OPEntities.TERROR , 0x070508, 0x54174c);
-    public static final RegistryObject<ForgeSpawnEggItem> TREMBLER_SPAWN_EGG = registerSpawnEgg("trembler_spawn_egg", OPEntities.TREMBLER , 0x20281e, 0x86b5b4);
+    public static final RegistryObject<ForgeSpawnEggItem> TREMBLER_SPAWN_EGG = registerSpawnEgg("trembler_spawn_egg", OPEntities.TREMBLER , 0x273030, 0x6d9288);
     public static final RegistryObject<ForgeSpawnEggItem> UMBER_SPIDER_SPAWN_EGG = registerSpawnEgg("umber_spider_spawn_egg", OPEntities.UMBER_SPIDER , 0x241d2c, 0x44a9f6);
     public static final RegistryObject<ForgeSpawnEggItem> VOLT_SPAWN_EGG = registerSpawnEgg("volt_spawn_egg", OPEntities.VOLT , 0x14152b, 0x61e7e3);
     public static final RegistryObject<ForgeSpawnEggItem> WHIZZ_SPAWN_EGG = registerSpawnEgg("whizz_spawn_egg", OPEntities.WHIZZ, 0x8a6ce0, 0xffe7f8);

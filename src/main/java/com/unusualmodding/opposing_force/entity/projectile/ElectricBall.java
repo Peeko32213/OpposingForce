@@ -197,7 +197,7 @@ public class ElectricBall extends AbstractElectricBall {
 
     private void bounce(Vec3 newVel) {
         bounces++;
-        float conservedEnergy = 1F;
+        float conservedEnergy = 0.9F;
         newVel = newVel.scale(conservedEnergy);
         this.setDeltaMovement(newVel);
 

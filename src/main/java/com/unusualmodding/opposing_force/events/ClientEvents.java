@@ -2,7 +2,6 @@ package com.unusualmodding.opposing_force.events;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.DefaultModel;
-import com.unusualmodding.opposing_force.client.models.TerrorDefaultModel;
 import com.unusualmodding.opposing_force.client.models.entity.*;
 import com.unusualmodding.opposing_force.client.particles.*;
 import com.unusualmodding.opposing_force.client.renderer.PlainGeoRenderer;
@@ -56,17 +55,6 @@ public final class ClientEvents {
             return render;
         });
 
-        EntityRenderers.register(OPEntities.TREMBLER.get(), (ctx) -> {
-            PlainGeoRenderer<TremblerEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("trembler"));
-            return render;
-        });
-
-        EntityRenderers.register(OPEntities.TERROR.get(), (ctx) -> {
-            PlainGeoRenderer<TerrorEntity> render = new PlainGeoRenderer<>(ctx, () -> new TerrorDefaultModel<>("terror"));
-            render.addRenderLayer(new OPGlowingEyeLayer<>("terror", render));
-            return render;
-        });
-
         EntityRenderers.register(OPEntities.BOUNCER.get(), (ctx) -> {
             PlainGeoRenderer<HopperEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("hopper"));
             return render;
@@ -88,11 +76,6 @@ public final class ClientEvents {
         });
 
         EntityRenderers.register(OPEntities.SLUG_EGG.get(), (render) -> new ThrownItemRenderer<>(render, 0.75F, true));
-
-        EntityRenderers.register(OPEntities.SLUG.get(), (ctx) -> {
-            PlainGeoRenderer<SlugEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("slug"));
-            return render;
-        });
 
         ItemBlockRenderTypes.setRenderLayer(OPBlocks.BLUE_TRUMPET.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(OPBlocks.CAVE_PATTY.get(), RenderType.cutout());
@@ -121,6 +104,9 @@ public final class ClientEvents {
         event.registerEntityRenderer(OPEntities.ELECTRICITY_BALL.get(), ElectricBallRenderer::new);
         event.registerEntityRenderer(OPEntities.TOMAHAWK.get(), TomahawkRenderer::new);
         event.registerEntityRenderer(OPEntities.EMERALDFISH.get(), EmeraldfishRenderer::new);
+        event.registerEntityRenderer(OPEntities.SLUG.get(), SlugRenderer::new);
+        event.registerEntityRenderer(OPEntities.TERROR.get(), TerrorRenderer::new);
+        event.registerEntityRenderer(OPEntities.TREMBLER.get(), TremblerRenderer::new);
         event.registerEntityRenderer(OPEntities.UMBER_SPIDER.get(), UmberSpiderRenderer::new);
         event.registerEntityRenderer(OPEntities.VOLT.get(), VoltRenderer::new);
         event.registerEntityRenderer(OPEntities.WHIZZ.get(), WhizzRenderer::new);
@@ -129,6 +115,9 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(OPModelLayers.EMERALDFISH_LAYER, EmeraldfishModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.SLUG_LAYER, SlugModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.TERROR_LAYER, TerrorModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.TREMBLER_LAYER, TremblerModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.UMBER_SPIDER_LAYER, UmberSpiderModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.VOLT_LAYER, VoltModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.WHIZZ_LAYER, WhizzModel::createBodyLayer);
