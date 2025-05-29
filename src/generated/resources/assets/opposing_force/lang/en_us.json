@@ -41,6 +41,7 @@
   "death.attack.opposing_force.gloom_toxin.player": "%1$s didn't reach the light",
   "death.attack.opposing_force.tomahawk": "%1$s was domed by %2$s",
   "death.attack.opposing_force.tomahawk.item": "%1$s was domed by %2$s using %3$s",
+  "effect.opposing_force.electrified": "Electrified",
   "effect.opposing_force.gloom_toxin": "Gloom Toxin",
   "enchantment.opposing_force.capacitance": "Capacitance",
   "enchantment.opposing_force.capacitance.desc": "Increases the size of the fired electric charge",
@@ -83,11 +84,11 @@
   "item.opposing_force.volt_spawn_egg": "Volt Spawn Egg",
   "item.opposing_force.whizz_spawn_egg": "Whizz Spawn Egg",
   "itemGroup.opposing_force": "Opposing Force",
-  "opposing_force.potion.electrified": "Electrified",
   "subtitles.opposing_force.dicer_attack": "Dicer slashes",
   "subtitles.opposing_force.dicer_death": "Dicer dies",
   "subtitles.opposing_force.dicer_hurt": "Dicer hurts",
   "subtitles.opposing_force.dicer_idle": "Dicer screams",
+  "subtitles.opposing_force.electric_zap": "Electric zaps",
   "subtitles.opposing_force.electrical_charge": "Electricity whirls",
   "subtitles.opposing_force.electrical_charge_dissipate": "Electricity dissipates",
   "subtitles.opposing_force.ramble_attack": "Ramble slices",
@@ -103,5 +104,9 @@
   "subtitles.opposing_force.volt_hurt": "Volt hurts",
   "subtitles.opposing_force.volt_idle": "Volt hums",
   "subtitles.opposing_force.volt_shoot": "Volt shoots",
-  "subtitles.opposing_force.volt_squish": "Volt squishes"
+  "subtitles.opposing_force.volt_squish": "Volt squishes",
+  "subtitles.opposing_force.whizz_attack": "Whizz bites",
+  "subtitles.opposing_force.whizz_death": "Whizz dies",
+  "subtitles.opposing_force.whizz_fly": "Whizz buzzes",
+  "subtitles.opposing_force.whizz_hurt": "Whizz hurts"
 }

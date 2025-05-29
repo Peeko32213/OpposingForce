@@ -1,40 +1,46 @@
 {
   "dicer_attack": {
     "sounds": [
-      "opposing_force:entity/dicer/attack_0",
-      "opposing_force:entity/dicer/attack_1"
+      "opposing_force:entity/dicer/attack1",
+      "opposing_force:entity/dicer/attack2"
     ],
     "subtitle": "subtitles.opposing_force.dicer_attack"
   },
   "dicer_death": {
     "sounds": [
-      "opposing_force:entity/dicer/death_0"
+      "opposing_force:entity/dicer/death1"
     ],
     "subtitle": "subtitles.opposing_force.dicer_death"
   },
   "dicer_hurt": {
     "sounds": [
-      "opposing_force:entity/dicer/hurt_0",
-      "opposing_force:entity/dicer/hurt_1"
+      "opposing_force:entity/dicer/hurt1",
+      "opposing_force:entity/dicer/hurt2"
     ],
     "subtitle": "subtitles.opposing_force.dicer_hurt"
   },
   "dicer_idle": {
     "sounds": [
-      "opposing_force:entity/dicer/idle_0",
-      "opposing_force:entity/dicer/idle_1"
+      "opposing_force:entity/dicer/idle1",
+      "opposing_force:entity/dicer/idle2"
     ],
     "subtitle": "subtitles.opposing_force.dicer_idle"
   },
+  "electric_zap": {
+    "sounds": [
+      "opposing_force:misc/electric_zap"
+    ],
+    "subtitle": "subtitles.opposing_force.electric_zap"
+  },
   "electrical_charge": {
     "sounds": [
-      "opposing_force:entity/misc/electrical_charge_0"
+      "opposing_force:entity/electrical_charge/loop1"
     ],
     "subtitle": "subtitles.opposing_force.electrical_charge"
   },
   "electrical_charge_dissipate": {
     "sounds": [
-      "opposing_force:entity/misc/electrical_charge_dissipate_0"
+      "opposing_force:entity/electrical_charge/dissipate1"
     ],
     "subtitle": "subtitles.opposing_force.electrical_charge_dissipate"
   },
@@ -61,7 +67,7 @@
   },
   "ramble_death": {
     "sounds": [
-      "opposing_force:entity/ramble/death_0"
+      "opposing_force:entity/ramble/death1"
     ],
     "subtitle": "subtitles.opposing_force.ramble_death"
   },
@@ -88,61 +94,61 @@
   },
   "ramble_idle": {
     "sounds": [
-      "opposing_force:entity/ramble/idle_0"
+      "opposing_force:entity/ramble/idle1"
     ],
     "subtitle": "subtitles.opposing_force.ramble_idle"
   },
   "tesla_bow_charged": {
     "sounds": [
-      "opposing_force:item/tesla_bow/charged_0"
+      "opposing_force:item/tesla_bow/charged1"
     ],
     "subtitle": "subtitles.opposing_force.tesla_bow_charged"
   },
   "tesla_bow_shoot": {
     "sounds": [
-      "opposing_force:item/tesla_bow/shoot_0"
+      "opposing_force:item/tesla_bow/shoot1"
     ],
     "subtitle": "subtitles.opposing_force.tesla_bow_shoot"
   },
   "umber_spider_death": {
     "sounds": [
-      "opposing_force:entity/umber_spider/death_0"
+      "opposing_force:entity/umber_spider/death1"
     ],
     "subtitle": "subtitles.opposing_force.umber_spider_death"
   },
   "umber_spider_hurt": {
     "sounds": [
-      "opposing_force:entity/umber_spider/hurt_0"
+      "opposing_force:entity/umber_spider/hurt1"
     ],
     "subtitle": "subtitles.opposing_force.umber_spider_hurt"
   },
   "umber_spider_idle": {
     "sounds": [
-      "opposing_force:entity/umber_spider/idle_0"
+      "opposing_force:entity/umber_spider/idle1"
     ],
     "subtitle": "subtitles.opposing_force.umber_spider_idle"
   },
   "volt_death": {
     "sounds": [
-      "opposing_force:entity/volt/death_0"
+      "opposing_force:entity/volt/death1"
     ],
     "subtitle": "subtitles.opposing_force.volt_death"
   },
   "volt_hurt": {
     "sounds": [
-      "opposing_force:entity/volt/hurt_0"
+      "opposing_force:entity/volt/hurt1"
     ],
     "subtitle": "subtitles.opposing_force.volt_hurt"
   },
   "volt_idle": {
     "sounds": [
-      "opposing_force:entity/volt/idle_0"
+      "opposing_force:entity/volt/idle1"
     ],
     "subtitle": "subtitles.opposing_force.volt_idle"
   },
   "volt_shoot": {
     "sounds": [
-      "opposing_force:entity/volt/shoot_0"
+      "opposing_force:entity/volt/shoot1"
     ],
     "subtitle": "subtitles.opposing_force.volt_shoot"
   },
@@ -170,5 +176,109 @@
       }
     ],
     "subtitle": "subtitles.opposing_force.volt_squish"
+  },
+  "whizz_attack": {
+    "sounds": [
+      {
+        "name": "block/amethyst/resonate1",
+        "pitch": 1.2
+      },
+      {
+        "name": "block/amethyst/resonate2",
+        "pitch": 1.2
+      },
+      {
+        "name": "block/amethyst/resonate3",
+        "pitch": 1.2
+      },
+      {
+        "name": "block/amethyst/resonate4",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.whizz_attack"
+  },
+  "whizz_death": {
+    "sounds": [
+      {
+        "name": "block/amethyst_cluster/break1",
+        "pitch": 1.2
+      },
+      {
+        "name": "block/amethyst_cluster/break2",
+        "pitch": 1.2
+      },
+      {
+        "name": "block/amethyst_cluster/break3",
+        "pitch": 1.2
+      },
+      {
+        "name": "block/amethyst_cluster/break4",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.whizz_death"
+  },
+  "whizz_fly": {
+    "sounds": [
+      {
+        "name": "opposing_force:entity/whizz/loop1",
+        "pitch": 0.9
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.whizz_fly"
+  },
+  "whizz_hurt": {
+    "sounds": [
+      {
+        "name": "block/amethyst/step1",
+        "pitch": 1.3
+      },
+      {
+        "name": "block/amethyst/step2",
+        "pitch": 1.3
+      },
+      {
+        "name": "block/amethyst/step3",
+        "pitch": 1.3
+      },
+      {
+        "name": "block/amethyst/step4",
+        "pitch": 1.3
+      },
+      {
+        "name": "block/amethyst/step5",
+        "pitch": 1.3
+      },
+      {
+        "name": "block/amethyst/step6",
+        "pitch": 1.3
+      },
+      {
+        "name": "block/amethyst/step7",
+        "pitch": 1.3
+      },
+      {
+        "name": "block/amethyst/step8",
+        "pitch": 1.3
+      },
+      {
+        "name": "block/amethyst/step9",
+        "pitch": 1.3
+      },
+      {
+        "name": "block/amethyst/step10",
+        "pitch": 1.3
+      },
+      {
+        "name": "block/amethyst/step11",
+        "pitch": 1.3
+      },
+      {
+        "name": "block/amethyst/step12",
+        "pitch": 1.3
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.whizz_hurt"
   }
 }

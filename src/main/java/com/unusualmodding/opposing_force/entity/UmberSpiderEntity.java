@@ -154,8 +154,8 @@ public class UmberSpiderEntity extends Monster {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(CLIMBING, (byte) 0);
-        this.entityData.define(ATTACKING, false);
         this.entityData.define(ATTACK_STATE, 0);
+        this.entityData.define(ATTACKING, false);
         this.entityData.define(LEAP_COOLDOWN, 3 + random.nextInt(8 * 2));
         this.entityData.define(LIGHT_THRESHOLD, 7);
     }
@@ -376,8 +376,8 @@ public class UmberSpiderEntity extends Monster {
             if (target != null) {
                 this.umberSpider.setAttacking(true);
 
-                this.umberSpider.lookAt(Objects.requireNonNull(this.umberSpider.getTarget()), 30F, 30F);
-                this.umberSpider.getLookControl().setLookAt(this.umberSpider.getTarget(), 30F, 30F);
+                this.umberSpider.lookAt(Objects.requireNonNull(target), 30F, 30F);
+                this.umberSpider.getLookControl().setLookAt(target, 30F, 30F);
 
                 double distance = this.umberSpider.distanceToSqr(target.getX(), target.getY(), target.getZ());
                 int attackState = this.umberSpider.getAttackState();

@@ -9,13 +9,11 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -176,11 +174,6 @@ public class VoltEntity extends Monster {
 
     protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
         this.playSound(OPSounds.VOLT_SQUISH.get(), 0.1F, 1.0F);
-    }
-
-    @Override
-    public float getSoundVolume() {
-        return 0.7F;
     }
 
     @Override

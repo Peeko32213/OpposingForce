@@ -141,12 +141,14 @@ public class ElectricBall extends AbstractElectricBall {
             if (!living.is(this) && !living.isAlliedTo(this) && living.getType() != this.getType() && living.distanceToSqr(center.x, center.y, center.z) <= radius * radius && !living.is(shooter) && !inWater) {
                 if (living.hurt(damageSource, damageAmount)) {
                     living.addEffect(new MobEffectInstance(OPEffects.ELECTRIFIED.get(), 160), shooter);
+                    this.playSound(OPSounds.ELECTRIC_ZAP.get(), 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
                     flag = true;
                 }
             }
             if (!living.is(this) && living.getType() != this.getType() && living.distanceToSqr(center.x, center.y, center.z) <= radius * radius && living.isInWaterRainOrBubble() && inWater) {
                 if (living.hurt(damageSource, damageAmount)) {
                     living.addEffect(new MobEffectInstance(OPEffects.ELECTRIFIED.get(), 160), shooter);
+                    this.playSound(OPSounds.ELECTRIC_ZAP.get(), 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
                     flag = true;
                 }
             }
@@ -165,7 +167,7 @@ public class ElectricBall extends AbstractElectricBall {
         Entity entity = entityHitResult.getEntity();
 
         if (!this.level().isClientSide) {
-            this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.6F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+            this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSounds.ELECTRIC_ZAP.get(), SoundSource.NEUTRAL, 0.6F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
             if (!this.isBouncy()) {
                 this.spawnElectricParticles(this, 4, 3);
                 this.discard();
@@ -202,7 +204,7 @@ public class ElectricBall extends AbstractElectricBall {
         if (!level().isClientSide) {
             this.hasImpulse = true;
             if (bounces >= 0) {
-                this.playSound(OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), 0.5F, 1.25F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+                this.playSound(OPSounds.ELECTRIC_ZAP.get(), 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
             }
             if (bounces > getMaxBounces()) {
                 this.playSound(OPSounds.ELECTRIC_CHARGE_DISSIPATE.get(), 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
@@ -212,7 +214,8 @@ public class ElectricBall extends AbstractElectricBall {
         }
     }
 
-    public void setSoundEvent(SoundEvent pSoundEvent) {}
+    public void setSoundEvent(SoundEvent pSoundEvent) {
+    }
 
     @Override
     protected float getEyeHeight(Pose pPose, EntityDimensions pDimensions) {

@@ -1,8 +1,13 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.mojang.datafixers.DataFixUtils;
+import com.unusualmodding.opposing_force.registry.OPSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -11,10 +16,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
@@ -37,10 +39,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class WhizzEntity extends Monster {
+
+    private static final EntityDataAccessor<Boolean> CHARGING = SynchedEntityData.defineId(WhizzEntity.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Integer> CHARGE_COOLDOWN = SynchedEntityData.defineId(WhizzEntity.class, EntityDataSerializers.INT);
 
     @Nullable
     private WhizzEntity leader;
@@ -51,8 +57,8 @@ public class WhizzEntity extends Monster {
     @Override
     protected @NotNull PathNavigation createNavigation(Level pLevel) {
         FlyingPathNavigation navigation = new FlyingPathNavigation(this, pLevel) {
-            public boolean isStableDestination(BlockPos pPos) {
-                return !level().getBlockState(pPos.below()).isAir();
+            public boolean isStableDestination(BlockPos pos) {
+                return !level().getBlockState(pos.below(2)).isAir();
             }
         };
         navigation.setCanOpenDoors(false);
@@ -72,22 +78,25 @@ public class WhizzEntity extends Monster {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 8.0D).add(Attributes.FLYING_SPEED, 1.1F).add(Attributes.MOVEMENT_SPEED, 0.5F).add(Attributes.ATTACK_DAMAGE, 2.0D);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 6.0D).add(Attributes.FLYING_SPEED, 0.9F).add(Attributes.MOVEMENT_SPEED, 0.45F).add(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(3, new FloatGoal(this));
-        this.goalSelector.addGoal(5, new WhizzWanderGoal());
-        this.goalSelector.addGoal(8, new WhizzSwarmGoal(this));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(1, new WhizzChargeAttackGoal(this));
+        this.goalSelector.addGoal(2, new WhizzWanderGoal());
+        this.goalSelector.addGoal(3, new WhizzSwarmGoal(this));
+        this.goalSelector.addGoal(4, new FloatGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0D, false));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true, false));
     }
 
     @Override
     protected float getStandingEyeHeight(Pose pPose, EntityDimensions pSize) {
-        return pSize.height * 0.5F;
+        return pSize.height * 0.6F;
+    }
+
+    public MobType getMobType() {
+        return MobType.ARTHROPOD;
     }
 
     public void tick() {
@@ -95,6 +104,10 @@ public class WhizzEntity extends Monster {
 
         if (this.level().isClientSide()) {
             this.setupAnimationStates();
+        }
+
+        if (this.getChargeCooldown() > 0) {
+            this.setChargeCooldown(this.getChargeCooldown() - 1);
         }
 
         if (this.hasFollowers() && this.level().random.nextInt(200) == 1) {
@@ -109,7 +122,57 @@ public class WhizzEntity extends Monster {
         this.flyAnimationState.animateWhen(this.isAlive(), this.tickCount);
     }
 
-    // Swarming
+    public boolean doHurtTarget(Entity entity) {
+        if (super.doHurtTarget(entity)) {
+            this.playSound(OPSounds.WHIZZ_ATTACK.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(CHARGING, true);
+        this.entityData.define(CHARGE_COOLDOWN, 8 + random.nextInt(12 * 6));
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        compoundTag.putBoolean("Charging", this.isCharging());
+        compoundTag.putInt("ChargeCooldown", this.getChargeCooldown());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        this.setCharging(compoundTag.getBoolean("Charging"));
+        this.setChargeCooldown(compoundTag.getInt("ChargeCooldown"));
+    }
+
+    public boolean isCharging() {
+        return this.entityData.get(CHARGING);
+    }
+
+    public void setCharging(boolean charging) {
+        this.entityData.set(CHARGING, charging);
+    }
+
+    public int getChargeCooldown() {
+        return this.entityData.get(CHARGE_COOLDOWN);
+    }
+
+    public void setChargeCooldown(int cooldown) {
+        this.entityData.set(CHARGE_COOLDOWN, cooldown);
+    }
+
+    public void chargeCooldown() {
+        this.entityData.set(CHARGE_COOLDOWN, 8 + random.nextInt(12 * 6));
+    }
+
+    // swarming
     public int getMaxSwarmSize() {
         return 32;
     }
@@ -122,10 +185,9 @@ public class WhizzEntity extends Monster {
         return this.leader != null && this.leader.isAlive();
     }
 
-    public WhizzEntity startFollowing(WhizzEntity entity) {
+    public void startFollowing(WhizzEntity entity) {
         this.leader = entity;
         entity.addFollower();
-        return entity;
     }
 
     public void stopFollowing() {
@@ -193,11 +255,15 @@ public class WhizzEntity extends Monster {
     protected void checkFallDamage(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
     }
 
-    protected void playStepSound(BlockPos pos, BlockState state) {
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return OPSounds.WHIZZ_HURT.get();
     }
 
-    public boolean isFlying() {
-        return true;
+    protected SoundEvent getDeathSound() {
+        return OPSounds.WHIZZ_DEATH.get();
+    }
+
+    protected void playStepSound(BlockPos pos, BlockState state) {
     }
 
     public static <T extends Mob> boolean canWhizzSpawn(EntityType<WhizzEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -225,7 +291,7 @@ public class WhizzEntity extends Monster {
         }
     }
 
-    // Goals
+    // goals
     private class WhizzWanderGoal extends Goal {
 
         public WhizzWanderGoal() {
@@ -305,6 +371,81 @@ public class WhizzEntity extends Monster {
             if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = this.adjustedTickDelay(10);
                 this.whizz.pathToLeader();
+            }
+        }
+    }
+
+    private static class WhizzChargeAttackGoal extends Goal {
+
+        protected final WhizzEntity whizz;
+        private int attackTime = 0;
+        private Vec3 chargeMotion = new Vec3(0,0,0);
+
+        public WhizzChargeAttackGoal(WhizzEntity mob) {
+            this.whizz = mob;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        }
+
+        public boolean canUse() {
+            return whizz.getTarget() != null && whizz.getTarget().isAlive();
+        }
+
+        public void start() {
+            this.whizz.setCharging(false);
+            this.attackTime = 0;
+        }
+
+        public void stop() {
+            this.whizz.setCharging(false);
+        }
+
+        public void tick() {
+            LivingEntity target = this.whizz.getTarget();
+            if (target != null) {
+                this.whizz.lookAt(Objects.requireNonNull(target), 30F, 30F);
+                this.whizz.getLookControl().setLookAt(target, 30F, 30F);
+
+                double distance = this.whizz.distanceToSqr(target.getX(), target.getY(), target.getZ());
+
+                if (this.whizz.isCharging()) {
+                    tickChargeAttack();
+                } else {
+                    if (distance <= 20 && this.whizz.getChargeCooldown() <= 0) {
+                        this.whizz.setCharging(true);
+                    }
+                    if (distance > 20) {
+                        this.whizz.getNavigation().moveTo(target, 1.2D);
+                    } else {
+                        this.whizz.getNavigation().moveTo(target, 0.2D);
+                    }
+                }
+            }
+        }
+
+        protected void tickChargeAttack() {
+            this.attackTime++;
+            this.whizz.getNavigation().stop();
+            Entity target = this.whizz.getTarget();
+
+            if (this.attackTime == 3) {
+                Vec3 targetPos = target.position();
+                double x = -(this.whizz.position().x - targetPos.x);
+                double y = -(this.whizz.position().y - targetPos.y);
+                double z = -(this.whizz.position().z - targetPos.z);
+                this.chargeMotion = new Vec3(x, y, z).normalize();
+            }
+
+            if (this.attackTime > 3 && this.attackTime < 9) {
+                this.whizz.setDeltaMovement(this.chargeMotion.x * 0.7, this.chargeMotion.y * 0.55, this.chargeMotion.z * 0.7);
+                if (this.whizz.distanceTo(Objects.requireNonNull(target)) < 1.1F) {
+                    this.whizz.doHurtTarget(target);
+                }
+            }
+
+            if (this.attackTime >= 9) {
+                this.attackTime = 0;
+                this.whizz.setCharging(false);
+                this.whizz.chargeCooldown();
             }
         }
     }

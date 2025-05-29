@@ -50,6 +50,7 @@ public class OPLangProvider extends LanguageProvider {
 
         sound(OPSounds.ELECTRIC_CHARGE, "Electricity whirls");
         sound(OPSounds.ELECTRIC_CHARGE_DISSIPATE, "Electricity dissipates");
+        sound(OPSounds.ELECTRIC_ZAP, "Electric zaps");
 
         sound(OPSounds.RAMBLE_HURT, "Ramble hurt");
         sound(OPSounds.RAMBLE_DEATH, "Ramble dies");
@@ -68,6 +69,11 @@ public class OPLangProvider extends LanguageProvider {
         sound(OPSounds.VOLT_IDLE, "Volt hums");
         sound(OPSounds.VOLT_SHOOT, "Volt shoots");
         sound(OPSounds.VOLT_SQUISH, "Volt squishes");
+
+        sound(OPSounds.WHIZZ_DEATH, "Whizz dies");
+        sound(OPSounds.WHIZZ_HURT, "Whizz hurts");
+        sound(OPSounds.WHIZZ_FLY, "Whizz buzzes");
+        sound(OPSounds.WHIZZ_ATTACK, "Whizz bites");
 
         addEntityType(OPEntities.DICER, "Dicer");
         addItem(OPItems.DICER_SPAWN_EGG, "Dicer Spawn Egg");

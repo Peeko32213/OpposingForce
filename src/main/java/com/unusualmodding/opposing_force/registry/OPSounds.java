@@ -20,6 +20,7 @@ public class OPSounds {
 
     public static final RegistryObject<SoundEvent> ELECTRIC_CHARGE = createSoundEvent("electrical_charge");
     public static final RegistryObject<SoundEvent> ELECTRIC_CHARGE_DISSIPATE = createSoundEvent("electrical_charge_dissipate");
+    public static final RegistryObject<SoundEvent> ELECTRIC_ZAP = createSoundEvent("electric_zap");
 
     public static final RegistryObject<SoundEvent> RAMBLE_HURT = createSoundEvent("ramble_hurt");
     public static final RegistryObject<SoundEvent> RAMBLE_DEATH = createSoundEvent("ramble_death");
@@ -38,6 +39,11 @@ public class OPSounds {
     public static final RegistryObject<SoundEvent> VOLT_IDLE = createSoundEvent("volt_idle");
     public static final RegistryObject<SoundEvent> VOLT_SHOOT = createSoundEvent("volt_shoot");
     public static final RegistryObject<SoundEvent> VOLT_SQUISH = createSoundEvent("volt_squish");
+
+    public static final RegistryObject<SoundEvent> WHIZZ_DEATH = createSoundEvent("whizz_death");
+    public static final RegistryObject<SoundEvent> WHIZZ_HURT = createSoundEvent("whizz_hurt");
+    public static final RegistryObject<SoundEvent> WHIZZ_FLY = createSoundEvent("whizz_fly");
+    public static final RegistryObject<SoundEvent> WHIZZ_ATTACK = createSoundEvent("whizz_attack");
 
     private static RegistryObject<SoundEvent> createSoundEvent(final String soundName) {
         return DEF_REG.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(OpposingForce.MOD_ID, soundName)));
