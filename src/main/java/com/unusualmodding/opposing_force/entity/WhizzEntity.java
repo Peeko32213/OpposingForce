@@ -1,13 +1,16 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.mojang.datafixers.DataFixUtils;
+import com.unusualmodding.opposing_force.blocks.InfestedAmethyst;
 import com.unusualmodding.opposing_force.registry.OPSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -26,14 +29,17 @@ import net.minecraft.world.entity.ai.util.HoverRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,6 +53,9 @@ public class WhizzEntity extends Monster {
 
     private static final EntityDataAccessor<Boolean> CHARGING = SynchedEntityData.defineId(WhizzEntity.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Integer> CHARGE_COOLDOWN = SynchedEntityData.defineId(WhizzEntity.class, EntityDataSerializers.INT);
+
+    @Nullable
+    private WhizzWakeUpFriendsGoal friendsGoal;
 
     @Nullable
     private WhizzEntity leader;
@@ -82,10 +91,12 @@ public class WhizzEntity extends Monster {
     }
 
     protected void registerGoals() {
+        this.friendsGoal = new WhizzWakeUpFriendsGoal(this);
         this.goalSelector.addGoal(1, new WhizzChargeAttackGoal(this));
-        this.goalSelector.addGoal(2, new WhizzWanderGoal());
+        this.goalSelector.addGoal(2, new WhizzWanderGoal(this));
         this.goalSelector.addGoal(3, new WhizzSwarmGoal(this));
-        this.goalSelector.addGoal(4, new FloatGoal(this));
+        this.goalSelector.addGoal(4, this.friendsGoal);
+        this.goalSelector.addGoal(5, new FloatGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true, false));
     }
@@ -128,6 +139,17 @@ public class WhizzEntity extends Monster {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        if (this.isInvulnerableTo(pSource)) {
+            return false;
+        } else {
+            if ((pSource.getEntity() != null || pSource.is(DamageTypeTags.ALWAYS_TRIGGERS_SILVERFISH)) && this.friendsGoal != null) {
+                this.friendsGoal.notifyHurt();
+            }
+            return super.hurt(pSource, pAmount);
         }
     }
 
@@ -294,22 +316,57 @@ public class WhizzEntity extends Monster {
     // goals
     private class WhizzWanderGoal extends Goal {
 
-        public WhizzWanderGoal() {
+        private final WhizzEntity whizz;
+
+        @Nullable
+        private Direction selectedDirection;
+        private boolean doMerge;
+
+        public WhizzWanderGoal(WhizzEntity whizz) {
+            this.whizz = whizz;
             this.setFlags(EnumSet.of(Flag.MOVE));
         }
 
         public boolean canUse() {
-            return WhizzEntity.this.getNavigation().isDone() && WhizzEntity.this.getRandom().nextInt(10) == 0;
+            if (this.whizz.getTarget() != null) {
+                return false;
+            } else if (!this.whizz.getNavigation().isDone()) {
+                return false;
+            } else {
+                RandomSource randomsource = this.whizz.getRandom();
+                if (ForgeEventFactory.getMobGriefingEvent(this.whizz.level(), this.whizz) && randomsource.nextInt(reducedTickDelay(10)) == 0) {
+                    this.selectedDirection = Direction.getRandom(randomsource);
+                    BlockPos blockpos = BlockPos.containing(this.whizz.getX(), this.whizz.getY() + (double) 0.5F, this.whizz.getZ()).relative(this.selectedDirection);
+                    BlockState blockstate = this.whizz.level().getBlockState(blockpos);
+                    if (InfestedAmethyst.isCompatibleHostBlock(blockstate)) {
+                        this.doMerge = true;
+                        return true;
+                    }
+                }
+                this.doMerge = false;
+                return this.whizz.getNavigation().isDone() && this.whizz.getRandom().nextInt(10) == 0;
+            }
         }
 
         public boolean canContinueToUse() {
-            return WhizzEntity.this.getNavigation().isInProgress();
+            return !this.doMerge && this.whizz.getNavigation().isInProgress();
         }
 
         public void start() {
-            Vec3 vec3 = this.findPos();
-            if (vec3 != null) {
-                WhizzEntity.this.getNavigation().moveTo(WhizzEntity.this.getNavigation().createPath(BlockPos.containing(vec3), 1), 1.0);
+            if (!this.doMerge) {
+                Vec3 vec3 = this.findPos();
+                if (vec3 != null) {
+                    this.whizz.getNavigation().moveTo(this.whizz.getNavigation().createPath(BlockPos.containing(vec3), 1), 1.0);
+                }
+            } else {
+                LevelAccessor levelaccessor = this.whizz.level();
+                BlockPos blockpos = BlockPos.containing(this.whizz.getX(), this.whizz.getY() + (double) 0.5F, this.whizz.getZ()).relative(this.selectedDirection);
+                BlockState blockstate = levelaccessor.getBlockState(blockpos);
+                if (InfestedAmethyst.isCompatibleHostBlock(blockstate)) {
+                    levelaccessor.setBlock(blockpos, InfestedAmethyst.infestedStateByHost(blockstate), 3);
+                    this.whizz.spawnAnim();
+                    this.whizz.discard();
+                }
             }
         }
 
@@ -349,8 +406,8 @@ public class WhizzEntity extends Monster {
                 this.nextStartTick = this.nextStartTick(this.whizz);
                 Predicate<WhizzEntity> predicate = (whizz) -> whizz.canBeFollowed() || !whizz.isFollower();
                 List<? extends WhizzEntity> list = this.whizz.level().getEntitiesOfClass(this.whizz.getClass(), this.whizz.getBoundingBox().inflate(10.0D, 10.0D, 10.0D), predicate);
-                WhizzEntity schoolingWaterAnimal = DataFixUtils.orElse(list.stream().filter(WhizzEntity::canBeFollowed).findAny(), this.whizz);
-                schoolingWaterAnimal.addFollowers(list.stream().filter((whizz) -> !whizz.isFollower()));
+                WhizzEntity whizz1 = DataFixUtils.orElse(list.stream().filter(WhizzEntity::canBeFollowed).findAny(), this.whizz);
+                whizz1.addFollowers(list.stream().filter((whizz) -> !whizz.isFollower()));
                 return this.whizz.isFollower();
             }
         }
@@ -446,6 +503,54 @@ public class WhizzEntity extends Monster {
                 this.attackTime = 0;
                 this.whizz.setCharging(false);
                 this.whizz.chargeCooldown();
+            }
+        }
+    }
+
+    private static class WhizzWakeUpFriendsGoal extends Goal {
+
+        private final WhizzEntity whizz;
+        private int lookForFriends;
+
+        public WhizzWakeUpFriendsGoal(WhizzEntity whizz) {
+            this.whizz = whizz;
+        }
+
+        public void notifyHurt() {
+            if (this.lookForFriends == 0) {
+                this.lookForFriends = this.adjustedTickDelay(10);
+            }
+        }
+
+        public boolean canUse() {
+            return this.lookForFriends > 0;
+        }
+
+        public void tick() {
+            --this.lookForFriends;
+            if (this.lookForFriends <= 0) {
+                Level level = this.whizz.level();
+                RandomSource randomsource = this.whizz.getRandom();
+                BlockPos blockpos = this.whizz.blockPosition();
+                for (int i = 0; i <= 5 && i >= -5; i = (i <= 0 ? 1 : 0) - i) {
+                    for (int j = 0; j <= 10 && j >= -10; j = (j <= 0 ? 1 : 0) - j) {
+                        for (int k = 0; k <= 10 && k >= -10; k = (k <= 0 ? 1 : 0) - k) {
+                            BlockPos blockpos1 = blockpos.offset(j, i, k);
+                            BlockState blockstate = level.getBlockState(blockpos1);
+                            Block block = blockstate.getBlock();
+                            if (block instanceof InfestedAmethyst) {
+                                if (ForgeEventFactory.getMobGriefingEvent(level, this.whizz)) {
+                                    level.destroyBlock(blockpos1, true, this.whizz);
+                                } else {
+                                    level.setBlock(blockpos1, ((InfestedAmethyst) block).hostStateByInfested(level.getBlockState(blockpos1)), 3);
+                                }
+                                if (randomsource.nextBoolean()) {
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

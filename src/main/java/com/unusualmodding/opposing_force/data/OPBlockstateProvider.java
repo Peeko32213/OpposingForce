@@ -51,6 +51,11 @@ public class OPBlockstateProvider extends BlockStateProvider {
     }
 
     // block
+    private void cubeAllBlock(RegistryObject<Block> block) {
+        this.simpleBlock(block.get());
+        this.itemModel(block);
+    }
+
     private void pottedPlant(RegistryObject<Block> plant, RegistryObject<Block> pot) {
         this.pot(pot, this.blockTexture(plant.get()));
         this.simpleCross(plant);

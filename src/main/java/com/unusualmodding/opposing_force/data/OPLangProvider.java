@@ -114,6 +114,8 @@ public class OPLangProvider extends LanguageProvider {
 
         addItem(OPItems.VILE_BOULDER, "Vile Boulder");
 
+        addBlock(OPBlocks.INFESTED_AMETHYST_BLOCK, "Infested Block of Amethyst");
+
         // other
         addEnchantmentWithDesc(OPEnchantments.BIG_ELECTRIC_BALL.get(), "Increases the size of the fired electric charge");
         addEnchantmentWithDesc(OPEnchantments.BOUNCY_ELECTRIC_BALL.get(), "The fired electric charge bounces off blocks and passes through mobs");

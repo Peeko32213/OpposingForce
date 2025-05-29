@@ -58,6 +58,8 @@ public class OPCreativeTabs {
                     output.accept(OPBlocks.SLIPPERY_TOP.get());
                     output.accept(OPBlocks.WHITECAP.get());
 
+                    output.accept(OPBlocks.INFESTED_AMETHYST_BLOCK.get());
+
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.TESLA_BOW);
                     OPEnchantments.addAllEnchantsToCreativeTab(output, EnchantmentCategory.CROSSBOW);
 
