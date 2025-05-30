@@ -12,6 +12,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -67,7 +68,7 @@ public class UmberSpiderEntity extends Monster {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 24.0D).add(Attributes.MOVEMENT_SPEED, 0.26F).add(Attributes.ATTACK_DAMAGE, 5.0D);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 24.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_DAMAGE, 5.0D);
     }
 
     public static <T extends Mob> boolean canSecondTierSpawn(EntityType<UmberSpiderEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -358,7 +359,7 @@ public class UmberSpiderEntity extends Monster {
         }
 
         public boolean canUse() {
-            return this.umberSpider.getTarget() != null && this.umberSpider.getTarget().isAlive() && this.umberSpider.fleeLightFor <= 0 && this.umberSpider.getTarget().level().getBrightness(LightLayer.BLOCK, this.umberSpider.getTarget().blockPosition()) <= this.umberSpider.getLightThreshold() && !this.umberSpider.isOnFire();
+            return !this.umberSpider.isVehicle() && this.umberSpider.getTarget() != null && this.umberSpider.getTarget().isAlive() && this.umberSpider.fleeLightFor <= 0 && this.umberSpider.getTarget().level().getBrightness(LightLayer.BLOCK, this.umberSpider.getTarget().blockPosition()) <= this.umberSpider.getLightThreshold() && !this.umberSpider.isOnFire();
         }
 
         public void start() {
@@ -382,11 +383,11 @@ public class UmberSpiderEntity extends Monster {
                 double distance = this.umberSpider.distanceToSqr(target.getX(), target.getY(), target.getZ());
                 int attackState = this.umberSpider.getAttackState();
 
+                this.umberSpider.getNavigation().moveTo(target, 1.2F);
+
                 if (attackState == 1) {
                     tickAttack();
-                    this.umberSpider.getNavigation().moveTo(target, 1.3F);
                 } else {
-                    this.umberSpider.getNavigation().moveTo(target, 1.4F);
                     this.checkForCloseRangeAttack(distance);
                 }
             }
@@ -407,6 +408,7 @@ public class UmberSpiderEntity extends Monster {
             if (this.attackTime == 4) {
                 if (this.umberSpider.distanceTo(Objects.requireNonNull(this.umberSpider.getTarget())) < 2.2f) {
                     this.umberSpider.doHurtTarget(this.umberSpider.getTarget());
+                    this.umberSpider.swing(InteractionHand.MAIN_HAND);
                 }
             }
             if (this.attackTime >= 9) {
@@ -436,7 +438,7 @@ public class UmberSpiderEntity extends Monster {
         }
 
         public boolean canUse() {
-            return (this.umberSpider.level().getBrightness(LightLayer.BLOCK, this.umberSpider.blockPosition()) > this.umberSpider.getLightThreshold() || this.umberSpider.isOnFire()) && this.umberSpider.fleeFromPosition != null;
+            return !this.umberSpider.isVehicle() && (this.umberSpider.level().getBrightness(LightLayer.BLOCK, this.umberSpider.blockPosition()) > this.umberSpider.getLightThreshold() || this.umberSpider.isOnFire()) && this.umberSpider.fleeFromPosition != null;
         }
 
         public void stop() {
@@ -479,7 +481,7 @@ public class UmberSpiderEntity extends Monster {
         }
 
         protected boolean shouldPanic() {
-            return this.umberSpider.getLastHurtByMob() != null && this.umberSpider.fleeLightFor <= 0 && !this.umberSpider.isAttacking() && !this.umberSpider.isOnFire();
+            return !this.umberSpider.isVehicle() && this.umberSpider.getLastHurtByMob() != null && this.umberSpider.fleeLightFor <= 0 && !this.umberSpider.isAttacking() && !this.umberSpider.isOnFire();
         }
 
         protected boolean findRandomPosition() {
@@ -519,7 +521,7 @@ public class UmberSpiderEntity extends Monster {
         }
 
         public boolean canUse() {
-            return this.umberSpider.level().getBrightness(LightLayer.BLOCK, this.umberSpider.blockPosition()) <= this.umberSpider.getLightThreshold() && super.canUse();
+            return !this.umberSpider.isVehicle() && this.umberSpider.level().getBrightness(LightLayer.BLOCK, this.umberSpider.blockPosition()) <= this.umberSpider.getLightThreshold() && super.canUse();
         }
     }
 
@@ -533,7 +535,7 @@ public class UmberSpiderEntity extends Monster {
         }
 
         public boolean canUse() {
-            return this.umberSpider.level().getBrightness(LightLayer.BLOCK, this.umberSpider.blockPosition()) <= this.umberSpider.getLightThreshold() && super.canUse();
+            return !this.umberSpider.isVehicle() && this.umberSpider.level().getBrightness(LightLayer.BLOCK, this.umberSpider.blockPosition()) <= this.umberSpider.getLightThreshold() && super.canUse();
         }
     }
 }

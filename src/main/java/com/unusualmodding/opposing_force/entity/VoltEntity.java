@@ -248,7 +248,7 @@ public class VoltEntity extends Monster {
         }
 
         protected void checkForCloseRangeAttack(double distance) {
-            if (this.volt.onGround()) {
+            if (this.volt.onGround() || this.volt.isInWaterOrBubble()) {
                 this.volt.setAttackState(1);
             }
             if (this.volt.getLeapCooldown() <= 0 && distance <= 30) {

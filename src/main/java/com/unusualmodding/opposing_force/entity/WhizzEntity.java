@@ -14,6 +14,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -499,6 +500,7 @@ public class WhizzEntity extends Monster {
                 this.whizz.setDeltaMovement(this.chargeMotion.x * 0.7, this.chargeMotion.y * 0.55, this.chargeMotion.z * 0.7);
                 if (this.whizz.distanceTo(Objects.requireNonNull(target)) < 1.1F) {
                     this.whizz.doHurtTarget(target);
+                    this.whizz.swing(InteractionHand.MAIN_HAND);
                 }
             }
 

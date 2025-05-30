@@ -8,9 +8,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -60,6 +60,7 @@ public class TremblerEntity extends Monster {
                 .add(Attributes.ARMOR, 20.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.13F)
                 .add(Attributes.ATTACK_DAMAGE, 6.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 1.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
     }
 
@@ -106,10 +107,11 @@ public class TremblerEntity extends Monster {
     }
 
     private void stunEffect() {
-        for (int i = 0; i < 12; i++) {
-            if (this.level().random.nextFloat() < this.getBbWidth() * 0.12F) {
-                level().addParticle(ParticleTypes.CRIT, true, this.getX(), this.getEyeY(), this.getZ(), this.getId(), this.level().random.nextFloat() * 360, 0.1);
-            }
+        if (this.random.nextInt(6) == 0) {
+            double d = this.getX() - (double) this.getBbWidth() * Math.sin(this.yBodyRot * ((float) Math.PI / 180)) + (this.random.nextDouble() * 0.6 - 0.3);
+            double e = this.getY() + (double) this.getBbHeight() - 0.3;
+            double f = this.getZ() + (double) this.getBbWidth() * Math.cos(this.yBodyRot * ((float) Math.PI / 180)) + (this.random.nextDouble() * 0.6 - 0.3);
+            this.level().addParticle(ParticleTypes.ENTITY_EFFECT, d, e, f, 0.5, 0.6, 0.5);
         }
     }
 
@@ -123,6 +125,7 @@ public class TremblerEntity extends Monster {
             defender.push(this);
             defender.hurtMarked = true;
         }
+        super.blockedByShield(defender);
     }
 
     @Override
@@ -138,22 +141,6 @@ public class TremblerEntity extends Monster {
             return false;
         }
         return Math.abs(target.getY() - this.getY()) < 3;
-    }
-
-    @Override
-    public boolean doHurtTarget(Entity target) {
-        boolean shouldHurt;
-        float damage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-        float knockback = (float) this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
-        if (shouldHurt = target.hurt(this.damageSources().mobAttack(this), damage)) {
-            if (knockback > 0 && target instanceof LivingEntity) {
-                ((LivingEntity) target).knockback(knockback * 0.5F, Mth.sin(this.getYRot() * ((float) Math.PI / 180)), -Mth.cos(this.getYRot() * ((float) Math.PI / 180)));
-                this.setDeltaMovement(this.getDeltaMovement().multiply(0.6, 1.0, 0.6));
-            }
-            this.doEnchantDamageEffects(this, target);
-            this.setLastHurtMob(target);
-        }
-        return shouldHurt;
     }
 
     public boolean hurt(DamageSource damageSource, float pAmount) {
@@ -289,7 +276,7 @@ public class TremblerEntity extends Monster {
                 if (this.trembler.isRolling()) {
                     tickRollAttack();
                 } else {
-                    if (distance <= 60 && this.trembler.getRollCooldown() <= 0 && this.trembler.isWithinYRange(target)) {
+                    if (distance <= 60 && this.trembler.getRollCooldown() <= 0 && this.trembler.isWithinYRange(target) && this.trembler.onGround()) {
                         this.trembler.setRolling(true);
                     }
                     else {
@@ -323,6 +310,7 @@ public class TremblerEntity extends Monster {
                 this.trembler.setDeltaMovement(this.rollMotion.x * 0.56, this.trembler.getDeltaMovement().y, this.rollMotion.z * 0.56);
                 if (this.trembler.distanceTo(Objects.requireNonNull(target)) < 1.1F) {
                     this.trembler.doHurtTarget(target);
+                    this.trembler.swing(InteractionHand.MAIN_HAND);
                 }
             }
 

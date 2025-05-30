@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -10,11 +10,12 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.LookControl;
-import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -28,54 +29,133 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.Objects;
 
 public class TerrorEntity extends Monster {
 
-    private static final EntityDataAccessor<Boolean> DATA_ID_MOVING = SynchedEntityData.defineId(TerrorEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(TerrorEntity.class, EntityDataSerializers.INT);
 
-    private boolean clientSideTouchedGround;
-    @Nullable
-    protected RandomStrollGoal randomStrollGoal;
+    public float prevTilt;
+    public float tilt;
+
+    public final AnimationState idleAnimationState = new AnimationState();
+    public final AnimationState flopAnimationState = new AnimationState();
+    public final AnimationState attackAnimationState = new AnimationState();
+
+    protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
+        return new WaterBoundPathNavigation(this, level);
+    }
 
     public TerrorEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        this.xpReward = 10;
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.moveControl = new TerrorEntity.TerrorMoveControl(this);
+        this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.02F, 0.1F, true);
+        this.lookControl = new SmoothSwimmingLookControl(this, 10);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 45.0D)
-                .add(Attributes.MOVEMENT_SPEED, (double)0.25F)
-                .add(Attributes.ATTACK_DAMAGE, (double)10.0F);
+                .add(Attributes.MAX_HEALTH, 28.0D)
+                .add(Attributes.MOVEMENT_SPEED, 1.0F)
+                .add(Attributes.ATTACK_DAMAGE, 7.0D);
     }
 
     protected void registerGoals() {
-        MoveTowardsRestrictionGoal movetowardsrestrictiongoal = new MoveTowardsRestrictionGoal(this, 1.0D);
-        this.randomStrollGoal = new RandomStrollGoal(this, 1.0D, 80);
-        this.goalSelector.addGoal(5, movetowardsrestrictiongoal);
-        this.goalSelector.addGoal(7, this.randomStrollGoal);
-        this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
-        this.randomStrollGoal.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-        movetowardsrestrictiongoal.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(0, new TryFindWaterGoal(this));
+        this.goalSelector.addGoal(1, new TerrorAttackGoal(this));
+        this.goalSelector.addGoal(3, new RandomSwimmingGoal(this, 1.0F, 1));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
-    protected PathNavigation createNavigation(Level pLevel) {
-        return new WaterBoundPathNavigation(this, pLevel);
+    public void travel(Vec3 pTravelVector) {
+        if (this.isEffectiveAi() && this.isInWater()) {
+            this.moveRelative(this.getSpeed(), pTravelVector);
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
+            if (this.getTarget() == null) {
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
+            }
+        } else {
+            super.travel(pTravelVector);
+        }
     }
 
+    public void tick () {
+        super.tick();
+        if (this.level().isClientSide()){
+            this.setupAnimationStates();
+        }
+
+        prevTilt = tilt;
+        if (this.isInWater() && !this.onGround()) {
+            final float v = Mth.degreesDifference(this.getYRot(), yRotO);
+            if (Math.abs(v) > 1) {
+                if (Math.abs(tilt) < 25) {
+                    tilt -= Math.signum(v);
+                }
+            } else {
+                if (Math.abs(tilt) > 0) {
+                    final float tiltSign = Math.signum(tilt);
+                    tilt -= tiltSign * 0.85F;
+                    if (tilt * tiltSign < 0) {
+                        tilt = 0;
+                    }
+                }
+            }
+        } else {
+            tilt = 0;
+        }
+
+        if (!this.isInWater() && this.onGround() && this.verticalCollision) {
+            this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F, 0.4F, (this.random.nextFloat() * 2.0F - 1.0F) * 0.05F));
+            this.setYRot(this.random.nextFloat() * 360.0F);
+            this.setOnGround(false);
+            this.hasImpulse = true;
+            this.playSound(this.getFlopSound(), this.getSoundVolume(), this.getVoicePitch());
+        }
+    }
+
+    private void setupAnimationStates() {
+        this.idleAnimationState.animateWhen(this.isInWaterOrBubble() && this.isAlive(), this.tickCount);
+        this.flopAnimationState.animateWhen(this.isAlive(), this.tickCount);
+        this.attackAnimationState.animateWhen(this.isAlive() && this.getAttackState() == 1, this.tickCount);
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(DATA_ID_MOVING, false);
+        this.entityData.define(ATTACK_STATE, 0);
     }
 
+    @Override
+    public void addAdditionalSaveData(CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        compoundTag.putInt("AttackState", this.getAttackState());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        this.setAttackState(compoundTag.getInt("AttackState"));
+    }
+
+    public int getAttackState() {
+        return this.entityData.get(ATTACK_STATE);
+    }
+
+    public void setAttackState(int attackState) {
+        this.entityData.set(ATTACK_STATE, attackState);
+    }
+
+    public boolean isPushedByFluid() {
+        return false;
+    }
 
     public boolean canBreatheUnderwater() {
         return true;
@@ -83,18 +163,6 @@ public class TerrorEntity extends Monster {
 
     public MobType getMobType() {
         return MobType.WATER;
-    }
-
-    public boolean isMoving() {
-        return this.entityData.get(DATA_ID_MOVING);
-    }
-
-    void setMoving(boolean pMoving) {
-        this.entityData.set(DATA_ID_MOVING, pMoving);
-    }
-
-    protected Entity.MovementEmission getMovementEmission() {
-        return Entity.MovementEmission.EVENTS;
     }
 
     protected float getStandingEyeHeight(Pose pPose, EntityDimensions pSize) {
@@ -105,115 +173,72 @@ public class TerrorEntity extends Monster {
         return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10.0F + pLevel.getPathfindingCostFromLightLevels(pPos) : super.getWalkTargetValue(pPos, pLevel);
     }
 
+    protected SoundEvent getFlopSound() {
+        return SoundEvents.COD_FLOP;
+    }
+
     public static boolean canWaterSpawn(EntityType<TerrorEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return pos.getY() <= iServerWorld.getSeaLevel() - 33 && iServerWorld.getRawBrightness(pos, 0) == 0 && iServerWorld.getBlockState(pos).is(Blocks.WATER);
-    }
-
-
-    public void aiStep() {
-        if (this.isAlive()) {
-            if (this.level().isClientSide) {
-                if (!this.isInWater()) {
-                    Vec3 vec3 = this.getDeltaMovement();
-                    if (vec3.y > 0.0D && this.clientSideTouchedGround && !this.isSilent()) {
-                        this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), this.getFlopSound(), this.getSoundSource(), 1.0F, 1.0F, false);
-                    }
-
-                    this.clientSideTouchedGround = vec3.y < 0.0D && this.level().loadedAndEntityCanStandOn(this.blockPosition().below(), this);
-                }
-
-                if (this.isMoving() && this.isInWater()) {
-                    Vec3 vec31 = this.getViewVector(0.0F);
-
-                    for(int i = 0; i < 2; ++i) {
-                        this.level().addParticle(ParticleTypes.BUBBLE, this.getRandomX(0.5D) - vec31.x * 1.5D, this.getRandomY() - vec31.y * 1.5D, this.getRandomZ(0.5D) - vec31.z * 1.5D, 0.0D, 0.0D, 0.0D);
-                    }
-                }
-            }
-
-            if (this.isInWaterOrBubble()) {
-                this.setAirSupply(300);
-            } else if (this.onGround()) {
-                this.setDeltaMovement(this.getDeltaMovement().add((double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.4F), 0.5D, (double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.4F)));
-                this.setYRot(this.random.nextFloat() * 360.0F);
-                this.setOnGround(false);
-                this.hasImpulse = true;
-            }
-        }
-
-        super.aiStep();
-    }
-
-    protected SoundEvent getFlopSound() {
-        return SoundEvents.GUARDIAN_FLOP;
     }
 
     public boolean checkSpawnObstruction(LevelReader pLevel) {
         return pLevel.isUnobstructed(this);
     }
 
-    public int getMaxHeadXRot() {
-        return 180;
-    }
+    // goals
+    private static class TerrorAttackGoal extends Goal {
 
-    public void travel(Vec3 pTravelVector) {
-        if (this.isControlledByLocalInstance() && this.isInWater()) {
-            this.moveRelative(0.1F, pTravelVector);
-            this.move(MoverType.SELF, this.getDeltaMovement());
-            this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
-            if (!this.isMoving() && this.getTarget() == null) {
-                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
-            }
-        } else {
-            super.travel(pTravelVector);
+        private int attackTime = 0;
+        TerrorEntity terror;
+
+        public TerrorAttackGoal(TerrorEntity terror) {
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+            this.terror = terror;
         }
 
-    }
+        public boolean canUse() {
+            return this.terror.getTarget() != null && this.terror.getTarget().isAlive();
+        }
 
-    static class TerrorMoveControl extends MoveControl {
-        private final TerrorEntity guardian;
+        public void start() {
+            this.terror.setAttackState(0);
+            this.attackTime = 0;
+        }
 
-        public TerrorMoveControl(TerrorEntity pGuardian) {
-            super(pGuardian);
-            this.guardian = pGuardian;
+        public void stop() {
+            this.terror.setAttackState(0);
         }
 
         public void tick() {
-            if (this.operation == MoveControl.Operation.MOVE_TO && !this.guardian.getNavigation().isDone()) {
-                Vec3 vec3 = new Vec3(this.wantedX - this.guardian.getX(), this.wantedY - this.guardian.getY(), this.wantedZ - this.guardian.getZ());
-                double d0 = vec3.length();
-                double d1 = vec3.x / d0;
-                double d2 = vec3.y / d0;
-                double d3 = vec3.z / d0;
-                float f = (float)(Mth.atan2(vec3.z, vec3.x) * (double)(180F / (float)Math.PI)) - 90.0F;
-                this.guardian.setYRot(this.rotlerp(this.guardian.getYRot(), f, 90.0F));
-                this.guardian.yBodyRot = this.guardian.getYRot();
-                float f1 = (float)(this.speedModifier * this.guardian.getAttributeValue(Attributes.MOVEMENT_SPEED));
-                float f2 = Mth.lerp(0.125F, this.guardian.getSpeed(), f1);
-                this.guardian.setSpeed(f2);
-                double d4 = Math.sin((double)(this.guardian.tickCount + this.guardian.getId()) * 0.5D) * 0.05D;
-                double d5 = Math.cos((double)(this.guardian.getYRot() * ((float)Math.PI / 180F)));
-                double d6 = Math.sin((double)(this.guardian.getYRot() * ((float)Math.PI / 180F)));
-                double d7 = Math.sin((double)(this.guardian.tickCount + this.guardian.getId()) * 0.75D) * 0.05D;
-                this.guardian.setDeltaMovement(this.guardian.getDeltaMovement().add(d4 * d5, d7 * (d6 + d5) * 0.25D + (double)f2 * d2 * 0.1D, d4 * d6));
-                LookControl lookcontrol = this.guardian.getLookControl();
-                double d8 = this.guardian.getX() + d1 * 2.0D;
-                double d9 = this.guardian.getEyeY() + d2 / d0;
-                double d10 = this.guardian.getZ() + d3 * 2.0D;
-                double d11 = lookcontrol.getWantedX();
-                double d12 = lookcontrol.getWantedY();
-                double d13 = lookcontrol.getWantedZ();
-                if (!lookcontrol.isLookingAtTarget()) {
-                    d11 = d8;
-                    d12 = d9;
-                    d13 = d10;
-                }
+            LivingEntity target = this.terror.getTarget();
+            if (target != null) {
+                this.terror.lookAt(this.terror.getTarget(), 30F, 30F);
+                this.terror.getLookControl().setLookAt(this.terror.getTarget(), 30F, 30F);
+                double distance = this.terror.distanceToSqr(target.getX(), target.getY(), target.getZ());
+                int attackState = this.terror.getAttackState();
 
-                this.guardian.getLookControl().setLookAt(Mth.lerp(0.125D, d11, d8), Mth.lerp(0.125D, d12, d9), Mth.lerp(0.125D, d13, d10), 10.0F, 40.0F);
-                this.guardian.setMoving(true);
-            } else {
-                this.guardian.setSpeed(0.0F);
-                this.guardian.setMoving(false);
+                if (attackState == 1) {
+                    tickAttack();
+                } else {
+                    this.terror.getNavigation().moveTo(target, 1.45D);
+                    if (distance <= 5) {
+                        this.terror.setAttackState(1);
+                    }
+                }
+            }
+        }
+
+        protected void tickAttack() {
+            attackTime++;
+            if (attackTime == 5) {
+                if (this.terror.distanceTo(Objects.requireNonNull(this.terror.getTarget())) < 2.5F) {
+                    this.terror.doHurtTarget(this.terror.getTarget());
+                    this.terror.swing(InteractionHand.MAIN_HAND);
+                }
+            }
+            if (attackTime >= 8) {
+                attackTime = 0;
+                this.terror.setAttackState(0);
             }
         }
     }
