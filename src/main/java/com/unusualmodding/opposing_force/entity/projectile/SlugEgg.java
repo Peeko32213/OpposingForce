@@ -1,4 +1,5 @@
 package com.unusualmodding.opposing_force.entity.projectile;
+
 import com.unusualmodding.opposing_force.entity.SlugEntity;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPItems;
@@ -19,8 +20,8 @@ import net.minecraftforge.network.PlayMessages;
 
 public class SlugEgg extends ThrowableItemProjectile {
 
-    public SlugEgg(EntityType p_i50154_1_, Level p_i50154_2_) {
-        super(p_i50154_1_, p_i50154_2_);
+    public SlugEgg(EntityType entity, Level level) {
+        super(entity, level);
     }
 
     public SlugEgg(Level worldIn, LivingEntity throwerIn) {
@@ -31,13 +32,13 @@ public class SlugEgg extends ThrowableItemProjectile {
         super(OPEntities.SLUG_EGG.get(), x, y, z, worldIn);
     }
 
-    public SlugEgg(PlayMessages.SpawnEntity spawnEntity, Level world) {
+    public SlugEgg(PlayMessages.SpawnEntity entity, Level world) {
         this(OPEntities.SLUG_EGG.get(), world);
     }
 
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -47,21 +48,19 @@ public class SlugEgg extends ThrowableItemProjectile {
                 this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItem()), this.getX(), this.getY(), this.getZ(), ((double) this.random.nextFloat() - 0.5D) * 0.08D, ((double) this.random.nextFloat() - 0.5D) * 0.08D, ((double) this.random.nextFloat() - 0.5D) * 0.08D);
             }
         }
-
     }
 
     protected void onHit(HitResult result) {
         super.onHit(result);
         if (!this.level().isClientSide) {
-            if (this.random.nextInt(8) == 0) {
-                SlugEntity lvt_4_1_ = OPEntities.SLUG.get().create(this.level());
-                lvt_4_1_.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-                this.level().addFreshEntity(lvt_4_1_);
+            if (this.random.nextInt(4) == 0) {
+                SlugEntity entity = OPEntities.SLUG.get().create(this.level());
+                entity.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+                this.level().addFreshEntity(entity);
             }
             this.level().broadcastEntityEvent(this, (byte) 3);
             this.remove(RemovalReason.DISCARDED);
         }
-
     }
 
     protected Item getDefaultItem() {

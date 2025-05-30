@@ -84,7 +84,7 @@ public class OPEntities {
                     .fireImmune(), "slug_egg"));
 
     public static final RegistryObject<EntityType<SlugEntity>> SLUG = ENTITIES.register("slug",
-            () -> EntityType.Builder.of(SlugEntity::new, MobCategory.MONSTER).sized(0.9F, 0.9F)
+            () -> EntityType.Builder.of(SlugEntity::new, MobCategory.MONSTER).sized(1.0F, 0.8F)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "slug").toString()));
 
     private static EntityType registerEntity(EntityType.Builder builder, String entityName) {

@@ -64,6 +64,24 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound("mob/skeleton/hurt4").volume(0.8f)
         );
 
+        this.sound(OPSounds.SLUG_HURT,
+                sound("mob/slime/big1"),
+                sound("mob/slime/big2"),
+                sound("mob/slime/big3"),
+                sound("mob/slime/big4")
+        );
+        this.sound(OPSounds.SLUG_DEATH,
+                sound("mob/slime/big1").pitch(0.8f),
+                sound("mob/slime/big2").pitch(0.8f),
+                sound("mob/slime/big3").pitch(0.8f),
+                sound("mob/slime/big4").pitch(0.8f)
+        );
+        this.sound(OPSounds.SLUG_SLIDE,
+                sound(OpposingForce.modPrefix("entity/slug/walk1")),
+                sound(OpposingForce.modPrefix("entity/slug/walk2")),
+                sound(OpposingForce.modPrefix("entity/slug/walk3"))
+        );
+
         this.sound(OPSounds.TESLA_BOW_CHARGED,
                 sound(OpposingForce.modPrefix("item/tesla_bow/charged1"))
         );

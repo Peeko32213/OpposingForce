@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.client.models.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.unusualmodding.opposing_force.client.animations.SlugAnimations;
 import com.unusualmodding.opposing_force.entity.SlugEntity;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -63,6 +64,9 @@ public class SlugModel<T extends SlugEntity> extends HierarchicalModel<T> {
 	@Override
 	public void setupAnim(SlugEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
+
+		this.animateWalk(SlugAnimations.SLIDE, limbSwing * 8, limbSwingAmount * 8, 2, 4);
+		this.animate(entity.idleAnimationState, SlugAnimations.IDLE, ageInTicks, 1);
 	}
 
 	@Override

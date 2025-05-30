@@ -57,6 +57,10 @@ public class OPLangProvider extends LanguageProvider {
         sound(OPSounds.RAMBLE_ATTACK, "Ramble slices");
         sound(OPSounds.RAMBLE_IDLE, "Ramble clatters");
 
+        sound(OPSounds.SLUG_DEATH, "Slug dies");
+        sound(OPSounds.SLUG_HURT, "Slug hurts");
+        sound(OPSounds.SLUG_SLIDE, "Footsteps");
+
         sound(OPSounds.TESLA_BOW_CHARGED, "Tesla Bow loads");
         sound(OPSounds.TESLA_BOW_SHOOT, "Tesla Bow fires");
 

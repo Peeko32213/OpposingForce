@@ -98,6 +98,44 @@
     ],
     "subtitle": "subtitles.opposing_force.ramble_idle"
   },
+  "slug_death": {
+    "sounds": [
+      {
+        "name": "mob/slime/big1",
+        "pitch": 0.8
+      },
+      {
+        "name": "mob/slime/big2",
+        "pitch": 0.8
+      },
+      {
+        "name": "mob/slime/big3",
+        "pitch": 0.8
+      },
+      {
+        "name": "mob/slime/big4",
+        "pitch": 0.8
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.slug_death"
+  },
+  "slug_hurt": {
+    "sounds": [
+      "mob/slime/big1",
+      "mob/slime/big2",
+      "mob/slime/big3",
+      "mob/slime/big4"
+    ],
+    "subtitle": "subtitles.opposing_force.slug_hurt"
+  },
+  "slug_slide": {
+    "sounds": [
+      "opposing_force:entity/slug/walk1",
+      "opposing_force:entity/slug/walk2",
+      "opposing_force:entity/slug/walk3"
+    ],
+    "subtitle": "subtitles.opposing_force.slug_slide"
+  },
   "tesla_bow_charged": {
     "sounds": [
       "opposing_force:item/tesla_bow/charged1"
