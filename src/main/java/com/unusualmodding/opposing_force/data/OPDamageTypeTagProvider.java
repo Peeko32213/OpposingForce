@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.data;
 
 import com.unusualmodding.opposing_force.OpposingForce;
+import com.unusualmodding.opposing_force.registry.tags.OPDamageTypeTags;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -23,5 +24,6 @@ public class OPDamageTypeTagProvider extends TagsProvider<DamageType> {
         this.tag(DamageTypeTags.BYPASSES_ARMOR).add(ELECTRIFIED, GLOOM_TOXIN);
         this.tag(DamageTypeTags.IS_PROJECTILE).add(TOMAHAWK);
         this.tag(DamageTypeTags.WITCH_RESISTANT_TO).add(GLOOM_TOXIN);
+        this.tag(OPDamageTypeTags.DAMAGES_ROLLING_TREMBLER).addTag(DamageTypeTags.BYPASSES_ARMOR).addTag(DamageTypeTags.BYPASSES_RESISTANCE).addTag(DamageTypeTags.BYPASSES_INVULNERABILITY).addTag(DamageTypeTags.IS_DROWNING);
     }
 }

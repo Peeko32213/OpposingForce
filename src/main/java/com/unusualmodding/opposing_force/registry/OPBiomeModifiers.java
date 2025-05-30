@@ -31,7 +31,6 @@ public class OPBiomeModifiers {
         addSpawn(context, "trembler", OPTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(OPEntities.TREMBLER.get(), 25, 1, 2));
         addSpawn(context, "umber_spider", OPTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(OPEntities.UMBER_SPIDER.get(), 50, 3, 5));
         addSpawn(context, "terror", OPTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(OPEntities.TERROR.get(), 5, 1, 2));
-        addSpawn(context, "hopper", OPTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(OPEntities.BOUNCER.get(), 50, 3, 5));
         addSpawn(context, "volt", OPTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(OPEntities.VOLT.get(), 25, 2, 3));
         addSpawn(context, "wizz", OPTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(OPEntities.WHIZZ.get(), 50, 4, 10));
         addSpawn(context, "frowzy", OPTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(OPEntities.FROWZY.get(), 50, 2, 4));

@@ -16,7 +16,6 @@ public class OPItems {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, OpposingForce.MOD_ID);
 
-    public static final RegistryObject<ForgeSpawnEggItem> BOUNCER_SPAWN_EGG = registerSpawnEgg("bouncer_spawn_egg", OPEntities.BOUNCER, 0x0f0c18, 0xedb436);
     public static final RegistryObject<ForgeSpawnEggItem> DICER_SPAWN_EGG = registerSpawnEgg("dicer_spawn_egg", OPEntities.DICER , 0x1a1818, 0xf17eeb);
     public static final RegistryObject<ForgeSpawnEggItem> FIRESLIME_SPAWN_EGG = registerSpawnEgg("fireslime_spawn_egg", OPEntities.FIRE_SLIME , 0xdb3709, 0xffffff);
     public static final RegistryObject<ForgeSpawnEggItem> FROWZY_SPAWN_EGG = registerSpawnEgg("frowzy_spawn_egg", OPEntities.FROWZY , 0x35313b, 0x3f759f);

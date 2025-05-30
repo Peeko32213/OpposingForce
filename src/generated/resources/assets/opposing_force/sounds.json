@@ -110,6 +110,31 @@
     ],
     "subtitle": "subtitles.opposing_force.tesla_bow_shoot"
   },
+  "trembler_block": {
+    "sounds": [
+      {
+        "name": "item/shield/block1",
+        "pitch": 1.2
+      },
+      {
+        "name": "item/shield/block2",
+        "pitch": 1.2
+      },
+      {
+        "name": "item/shield/block3",
+        "pitch": 1.2
+      },
+      {
+        "name": "item/shield/block4",
+        "pitch": 1.2
+      },
+      {
+        "name": "item/shield/block5",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.trembler_block"
+  },
   "umber_spider_death": {
     "sounds": [
       "opposing_force:entity/umber_spider/death1"

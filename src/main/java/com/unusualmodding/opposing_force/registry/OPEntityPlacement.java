@@ -9,15 +9,12 @@ import net.minecraft.world.level.levelgen.Heightmap;
 public class OPEntityPlacement {
 
     public  static void entityPlacement() {
-        //SpawnPlacements.register(UPEntities.STETHACANTHUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityStethacanthus::checkSurfaceWaterDinoSpawnRules);
-        //SpawnPlacements.register(UPEntities.BEELZ.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityBaseDinosaurAnimal::checkSurfaceDinoSpawnRules);
         SpawnPlacements.register(OPEntities.PALE_SPIDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PaleSpiderEntity::canFirstTierSpawn);
         SpawnPlacements.register(OPEntities.UMBER_SPIDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, UmberSpiderEntity::canSecondTierSpawn);
         SpawnPlacements.register(OPEntities.TREMBLER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TremblerEntity::canFirstTierSpawn);
         SpawnPlacements.register(OPEntities.DICER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, DicerEntity::canSecondTierSpawn);
         SpawnPlacements.register(OPEntities.RAMBLE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, RambleEntity::canSecondTierSpawn);
         SpawnPlacements.register(OPEntities.VOLT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, VoltEntity::canSecondTierSpawn);
-        SpawnPlacements.register(OPEntities.BOUNCER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, HopperEntity::canFirstTierSpawn);
         SpawnPlacements.register(OPEntities.TERROR.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TerrorEntity::canWaterSpawn);
         SpawnPlacements.register(OPEntities.WHIZZ.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WhizzEntity::canWhizzSpawn);
         SpawnPlacements.register(OPEntities.FROWZY.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FrowzyEntity::canFirstTierSpawn);

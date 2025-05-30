@@ -60,6 +60,8 @@ public class OPLangProvider extends LanguageProvider {
         sound(OPSounds.TESLA_BOW_CHARGED, "Tesla Bow loads");
         sound(OPSounds.TESLA_BOW_SHOOT, "Tesla Bow fires");
 
+        sound(OPSounds.TREMBLER_BLOCK, "Trembler blocks");
+
         sound(OPSounds.UMBER_SPIDER_DEATH, "Umber Spider dies");
         sound(OPSounds.UMBER_SPIDER_HURT, "Umber Spider hurts");
         sound(OPSounds.UMBER_SPIDER_IDLE, "Umber Spider groans");
@@ -92,9 +94,6 @@ public class OPLangProvider extends LanguageProvider {
 
         addEntityType(OPEntities.WHIZZ, "Whizz");
         addItem(OPItems.WHIZZ_SPAWN_EGG, "Whizz Spawn Egg");
-
-        addEntityType(OPEntities.BOUNCER, "Bouncer");
-        addItem(OPItems.BOUNCER_SPAWN_EGG, "Bouncer Spawn Egg");
 
         addEntityType(OPEntities.FROWZY, "Frowzy");
         addItem(OPItems.FROWZY_SPAWN_EGG, "Frowzy Spawn Egg");

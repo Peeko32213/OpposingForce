@@ -30,6 +30,8 @@ public class OPSounds {
     public static final RegistryObject<SoundEvent> TESLA_BOW_CHARGED = createSoundEvent("tesla_bow_charged");
     public static final RegistryObject<SoundEvent> TESLA_BOW_SHOOT = createSoundEvent("tesla_bow_shoot");
 
+    public static final RegistryObject<SoundEvent> TREMBLER_BLOCK = createSoundEvent("trembler_block");
+
     public static final RegistryObject<SoundEvent> UMBER_SPIDER_HURT = createSoundEvent("umber_spider_hurt");
     public static final RegistryObject<SoundEvent> UMBER_SPIDER_DEATH = createSoundEvent("umber_spider_death");
     public static final RegistryObject<SoundEvent> UMBER_SPIDER_IDLE = createSoundEvent("umber_spider_idle");

@@ -156,7 +156,7 @@ public class WhizzEntity extends Monster {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(CHARGING, true);
+        this.entityData.define(CHARGING, false);
         this.entityData.define(CHARGE_COOLDOWN, 8 + random.nextInt(12 * 6));
     }
 
@@ -459,9 +459,6 @@ public class WhizzEntity extends Monster {
         public void tick() {
             LivingEntity target = this.whizz.getTarget();
             if (target != null) {
-                this.whizz.lookAt(Objects.requireNonNull(target), 30F, 30F);
-                this.whizz.getLookControl().setLookAt(target, 30F, 30F);
-
                 double distance = this.whizz.distanceToSqr(target.getX(), target.getY(), target.getZ());
 
                 if (this.whizz.isCharging()) {
@@ -470,10 +467,14 @@ public class WhizzEntity extends Monster {
                     if (distance <= 20 && this.whizz.getChargeCooldown() <= 0) {
                         this.whizz.setCharging(true);
                     }
-                    if (distance > 20) {
-                        this.whizz.getNavigation().moveTo(target, 1.2D);
-                    } else {
-                        this.whizz.getNavigation().moveTo(target, 0.2D);
+                    else {
+                        if (distance > 20) {
+                            this.whizz.getNavigation().moveTo(target, 1.2D);
+                        } else {
+                            this.whizz.getNavigation().moveTo(target, 0.4D);
+                        }
+                        this.whizz.lookAt(Objects.requireNonNull(target), 30F, 30F);
+                        this.whizz.getLookControl().setLookAt(target, 30F, 30F);
                     }
                 }
             }
@@ -490,6 +491,8 @@ public class WhizzEntity extends Monster {
                 double y = -(this.whizz.position().y - targetPos.y);
                 double z = -(this.whizz.position().z - targetPos.z);
                 this.chargeMotion = new Vec3(x, y, z).normalize();
+                this.whizz.lookAt(Objects.requireNonNull(target), 360F, 30F);
+                this.whizz.getLookControl().setLookAt(target, 30F, 30F);
             }
 
             if (this.attackTime > 3 && this.attackTime < 9) {

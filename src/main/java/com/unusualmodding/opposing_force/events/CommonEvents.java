@@ -20,7 +20,6 @@ public class CommonEvents {
         event.put(OPEntities.TERROR.get(), TerrorEntity.createAttributes().build());
         event.put(OPEntities.VOLT.get(), VoltEntity.createAttributes().build());
         event.put(OPEntities.WHIZZ.get(), WhizzEntity.createAttributes().build());
-        event.put(OPEntities.BOUNCER.get(), HopperEntity.createAttributes().build());
         event.put(OPEntities.FROWZY.get(), FrowzyEntity.createAttributes().build());
         event.put(OPEntities.GUZZLER.get(), GuzzlerEntity.createAttributes().build());
         event.put(OPEntities.FIRE_SLIME.get(), FireSlimeEntity.createAttributes().build());

@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.client.models.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.unusualmodding.opposing_force.client.animations.TremblerAnimations;
 import com.unusualmodding.opposing_force.entity.TremblerEntity;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -51,7 +52,11 @@ public class TremblerModel<T extends TremblerEntity> extends HierarchicalModel<T
 	@Override
 	public void setupAnim(TremblerEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-
+		this.animateWalk(TremblerAnimations.SLIDE, limbSwing * 8, limbSwingAmount * 8, 2, 4);
+		this.animate(entity.idleAnimationState, TremblerAnimations.IDLE, ageInTicks, 1);
+		this.animate(entity.rollAnimationState, TremblerAnimations.ROLL, ageInTicks, 1);
+		this.Head.xRot += headPitch * ((float) Math.PI / 180f) - (headPitch * ((float) Math.PI / 180f)) / 2;
+		this.Head.yRot += netHeadYaw * ((float) Math.PI / 180f) - (netHeadYaw * ((float) Math.PI / 180f)) / 2;
 	}
 
 	@Override

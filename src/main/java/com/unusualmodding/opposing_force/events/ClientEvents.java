@@ -27,8 +27,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 @Mod.EventBusSubscriber(modid = OpposingForce.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientEvents {
 
-    public static void init(FMLClientSetupEvent event) {
-    }
 
     @SubscribeEvent
     public static void registerParticleTypes(RegisterParticleProvidersEvent event){
@@ -52,11 +50,6 @@ public final class ClientEvents {
         EntityRenderers.register(OPEntities.DICER.get(), (ctx) -> {
             PlainGeoRenderer<DicerEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("dicer"));
             render.addRenderLayer(new OPGlowingEyeLayer<>("dicer", render));
-            return render;
-        });
-
-        EntityRenderers.register(OPEntities.BOUNCER.get(), (ctx) -> {
-            PlainGeoRenderer<HopperEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("hopper"));
             return render;
         });
 
