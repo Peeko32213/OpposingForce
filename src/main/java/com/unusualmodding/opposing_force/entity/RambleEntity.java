@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.entity;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -20,9 +21,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.ai.util.LandRandomPos;
+import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Skeleton;
@@ -39,23 +38,16 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.Objects;
 
 public class RambleEntity extends Monster {
 
-    private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(RambleEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FLAILING = SynchedEntityData.defineId(RambleEntity.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Integer> FLAIL_COOLDOWN = SynchedEntityData.defineId(RambleEntity.class, EntityDataSerializers.INT);
 
-    private int fleeTicks = 0;
-    private Vec3 fleeFromPosition;
-
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState flailAnimationState = new AnimationState();
-
-    @Override
-    protected @NotNull PathNavigation createNavigation(Level levelIn) {
-        return new GroundPathNavigation(this, levelIn);
-    }
+    public final AnimationState cooldownAnimationState = new AnimationState();
 
     public RambleEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -72,10 +64,11 @@ public class RambleEntity extends Monster {
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(3, new RambleRandomStrollGoal(this));
-        this.goalSelector.addGoal(4, new RambleAttackGoal(this));
-        this.goalSelector.addGoal(5, new RamblePanicGoal(this));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new RambleAttackGoal(this));
+        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new FleeSunGoal(this, 1.2D));
+        this.goalSelector.addGoal(5, new AvoidEntityGoal<>(this, Wolf.class, 6.0F, 1.2D, 1.2D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -86,8 +79,13 @@ public class RambleEntity extends Monster {
         return MobType.UNDEAD;
     }
 
+    @Override
+    protected float getStandingEyeHeight(Pose pPose, EntityDimensions pSize) {
+        return pSize.height * 0.7F;
+    }
+
     public float getStepHeight() {
-        if (this.isRunning()) {
+        if (this.isFlailing()) {
             return 1.0F;
         }
         return 0.6F;
@@ -96,15 +94,13 @@ public class RambleEntity extends Monster {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(RUNNING, false);
         this.entityData.define(FLAILING, false);
-        this.entityData.define(FLAIL_COOLDOWN, 10 + random.nextInt(12 * 4));
+        this.entityData.define(FLAIL_COOLDOWN, 0);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        compoundTag.putBoolean("Running", this.isRunning());
         compoundTag.putBoolean("Flailing", this.isFlailing());
         compoundTag.putInt("FlailCooldown", this.getFlailCooldown());
     }
@@ -112,17 +108,8 @@ public class RambleEntity extends Monster {
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        this.setRunning(compoundTag.getBoolean("Running"));
         this.setFlailing(compoundTag.getBoolean("Flailing"));
         this.setFlailCooldown(compoundTag.getInt("FlailCooldown"));
-    }
-
-    public boolean isRunning() {
-        return this.entityData.get(RUNNING);
-    }
-
-    public void setRunning(boolean bool) {
-        this.entityData.set(RUNNING, bool);
     }
 
     public boolean isFlailing() {
@@ -142,25 +129,15 @@ public class RambleEntity extends Monster {
     }
 
     public void flailCooldown() {
-        this.entityData.set(FLAIL_COOLDOWN, 10 + random.nextInt(12 * 4));
+        this.entityData.set(FLAIL_COOLDOWN, 60);
     }
 
     public void tick() {
         super.tick();
 
-        LivingEntity target = this.getTarget();
-        if (target != null && target.isAlive() && !(target instanceof Player player && player.isCreative())) {
-            if (this.getHealth() < this.getMaxHealth() * 0.3F) {
-                this.fleeFromPosition = target.position();
-            }
-        }
-
-        if (this.fleeTicks > 0) {
-            this.fleeTicks--;
-        }
-
         if (this.getFlailCooldown() > 0) {
             this.setFlailCooldown(this.getFlailCooldown() - 1);
+            this.level().broadcastEntityEvent(this, (byte) 39);
         }
 
         if (this.level().isClientSide()) {
@@ -169,8 +146,26 @@ public class RambleEntity extends Monster {
     }
 
     private void setupAnimationStates() {
-        this.idleAnimationState.animateWhen(this.isAlive() && !this.isFlailing(), this.tickCount);
-        this.flailAnimationState.animateWhen(this.isFlailing(), this.tickCount);
+        this.idleAnimationState.animateWhen(this.isAlive() && !this.isFlailing() && this.getFlailCooldown() <= 0, this.tickCount);
+        this.cooldownAnimationState.animateWhen(this.isAlive() && !this.isFlailing() && this.getFlailCooldown() > 0, this.tickCount);
+        this.flailAnimationState.animateWhen(this.isAlive() && this.isFlailing(), this.tickCount);
+    }
+
+    private void cooldownEffect() {
+        if (this.random.nextBoolean()) {
+            double d = this.getX();
+            double e = this.getY() + (double) this.getBbHeight() + 0.2;
+            double f = this.getZ();
+            this.level().addParticle(ParticleTypes.SMOKE, d, e, f, 0.1, 0.2, 0.1);
+        }
+    }
+
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == 39) {
+            this.cooldownEffect();
+        }
+        super.handleEntityEvent(id);
     }
 
     public boolean hurtEntitiesAround(Vec3 center, float radius, boolean disablesShields) {
@@ -196,6 +191,20 @@ public class RambleEntity extends Monster {
             f *= 0.5F;
         }
         return super.hurt(source, f);
+    }
+
+    protected boolean isSunSensitive() {
+        return true;
+    }
+
+    public void aiStep() {
+        if (this.isAlive()) {
+            boolean flag = this.isSunSensitive() && this.isSunBurnTick();
+            if (flag) {
+                this.setSecondsOnFire(8);
+            }
+        }
+        super.aiStep();
     }
 
     // sounds
@@ -267,6 +276,14 @@ public class RambleEntity extends Monster {
         return this.getBbHeight() * 0.97F;
     }
 
+    public void rideTick() {
+        super.rideTick();
+        Entity entity = this.getControlledVehicle();
+        if (entity instanceof PathfinderMob pathfindermob) {
+            this.yBodyRot = pathfindermob.yBodyRot;
+        }
+    }
+
     // Goals
     private static class RambleAttackGoal extends Goal {
 
@@ -274,40 +291,42 @@ public class RambleEntity extends Monster {
         private int attackTime = 0;
 
         public RambleAttackGoal(RambleEntity ramble) {
-            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
             this.ramble = ramble;
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
 
         public boolean canUse() {
-            return !this.ramble.isVehicle() && this.ramble.getTarget() != null && this.ramble.getTarget().isAlive() && this.ramble.getHealth() >= this.ramble.getMaxHealth() * 0.3F && this.ramble.fleeFromPosition == null && this.ramble.fleeTicks <= 0;
+            return !this.ramble.isVehicle() && this.ramble.getTarget() != null && this.ramble.getTarget().isAlive();
         }
 
         public void start() {
-            this.ramble.setRunning(true);
             this.ramble.setFlailing(false);
             this.attackTime = 0;
         }
 
         public void stop() {
-            this.ramble.setRunning(false);
             this.ramble.setFlailing(false);
         }
 
         public void tick() {
             LivingEntity target = this.ramble.getTarget();
             if (target != null) {
-                this.ramble.lookAt(this.ramble.getTarget(), 30F, 30F);
-                this.ramble.getLookControl().setLookAt(this.ramble.getTarget(), 30F, 30F);
+                this.ramble.lookAt(Objects.requireNonNull(target), 30F, 30F);
+                this.ramble.getLookControl().setLookAt(target, 30F, 30F);
 
                 double distance = this.ramble.distanceToSqr(target.getX(), target.getY(), target.getZ());
 
                 if (this.ramble.isFlailing()) {
                     tickFlailAttack();
-                    this.ramble.getNavigation().moveTo(target, 2F);
+                    this.ramble.getNavigation().moveTo(target, 2.1D);
                 } else {
-                    this.ramble.getNavigation().moveTo(target, 1.5F);
-                    if (distance <= 14 && this.ramble.getFlailCooldown() <= 0) {
-                        this.ramble.setFlailing(true);
+                    if (this.ramble.getFlailCooldown() <= 0) {
+                        this.ramble.getNavigation().moveTo(target, 1.7D);
+                        if (distance <= 22) {
+                            this.ramble.setFlailing(true);
+                        }
+                    } else {
+                        this.ramble.getNavigation().stop();
                     }
                 }
             }
@@ -318,59 +337,13 @@ public class RambleEntity extends Monster {
             Vec3 pos = this.ramble.position();
 
             if (this.attackTime >= 3) {
-                this.ramble.hurtEntitiesAround(pos, 3.1F, true);
+                this.ramble.hurtEntitiesAround(pos, 2.9F, true);
             }
             if (this.attackTime >= 60) {
                 this.attackTime = 0;
                 this.ramble.flailCooldown();
                 this.ramble.setFlailing(false);
             }
-        }
-    }
-
-    private static class RamblePanicGoal extends Goal {
-
-        private final RambleEntity ramble;
-
-        public RamblePanicGoal(RambleEntity ramble) {
-            this.ramble = ramble;
-            this.setFlags(EnumSet.of(Flag.MOVE));
-        }
-
-        public boolean canUse() {
-            return !this.ramble.isVehicle() && this.ramble.fleeFromPosition != null;
-        }
-
-        public void stop() {
-            this.ramble.fleeFromPosition = null;
-            this.ramble.fleeTicks = 100;
-            this.ramble.setRunning(false);
-        }
-
-        public void tick() {
-            this.ramble.fleeTicks = 100;
-            this.ramble.setRunning(true);
-
-            if (this.ramble.getNavigation().isDone()) {
-                Vec3 vec3 = LandRandomPos.getPosAway(this.ramble, 8, 8, this.ramble.fleeFromPosition);
-                if (vec3 != null) {
-                    this.ramble.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 2.5F);
-                }
-            }
-        }
-    }
-
-    private static class RambleRandomStrollGoal extends WaterAvoidingRandomStrollGoal {
-
-        private final RambleEntity ramble;
-
-        public RambleRandomStrollGoal(RambleEntity ramble) {
-            super(ramble, 1.0D, 0.001F);
-            this.ramble = ramble;
-        }
-
-        public boolean canUse() {
-            return !this.ramble.isVehicle() && this.ramble.fleeFromPosition == null && this.ramble.fleeTicks <= 0 && super.canUse();
         }
     }
 }

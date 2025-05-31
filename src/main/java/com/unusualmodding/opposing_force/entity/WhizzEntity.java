@@ -445,7 +445,7 @@ public class WhizzEntity extends Monster {
         }
 
         public boolean canUse() {
-            return whizz.getTarget() != null && whizz.getTarget().isAlive();
+            return !this.whizz.isVehicle() && this.whizz.getTarget() != null && this.whizz.getTarget().isAlive();
         }
 
         public void start() {

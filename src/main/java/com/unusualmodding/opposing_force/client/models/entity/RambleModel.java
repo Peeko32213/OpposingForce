@@ -120,6 +120,7 @@ public class RambleModel<T extends RambleEntity> extends HierarchicalModel<T> {
 		}
 
 		this.animate(entity.idleAnimationState, RambleAnimations.IDLE, ageInTicks);
+		this.animate(entity.cooldownAnimationState, RambleAnimations.COOLDOWN, ageInTicks, 0.8F);
 	}
 
 	@Override

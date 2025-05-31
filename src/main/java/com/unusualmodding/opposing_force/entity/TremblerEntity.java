@@ -166,7 +166,7 @@ public class TremblerEntity extends Monster {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ROLLING, false);
-        this.entityData.define(ROLL_COOLDOWN, 12 + random.nextInt(16 * 8));
+        this.entityData.define(ROLL_COOLDOWN, 40);
         this.entityData.define(STUNNED_TICKS, 0);
     }
 
@@ -203,7 +203,7 @@ public class TremblerEntity extends Monster {
     }
 
     public void rollCooldown() {
-        this.entityData.set(ROLL_COOLDOWN, 12 + random.nextInt(16 * 8));
+        this.entityData.set(ROLL_COOLDOWN, 40);
     }
 
     public int getStunnedTicks() {
@@ -254,7 +254,7 @@ public class TremblerEntity extends Monster {
         }
 
         public boolean canUse() {
-            return this.trembler.getTarget() != null && this.trembler.getTarget().isAlive() && this.trembler.getStunnedTicks() <= 0;
+            return !this.trembler.isVehicle() && this.trembler.getTarget() != null && this.trembler.getTarget().isAlive() && this.trembler.getStunnedTicks() <= 0;
         }
 
         public void start() {
