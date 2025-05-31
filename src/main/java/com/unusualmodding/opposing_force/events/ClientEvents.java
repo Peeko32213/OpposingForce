@@ -42,11 +42,6 @@ public final class ClientEvents {
             return render;
         });
 
-        EntityRenderers.register(OPEntities.RAMBLE.get(), (ctx) -> {
-            PlainGeoRenderer<RambleEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("ramble"));
-            return render;
-        });
-
         EntityRenderers.register(OPEntities.DICER.get(), (ctx) -> {
             PlainGeoRenderer<DicerEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("dicer"));
             render.addRenderLayer(new OPGlowingEyeLayer<>("dicer", render));
@@ -95,10 +90,11 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(OPEntities.ELECTRICITY_BALL.get(), ElectricBallRenderer::new);
-        event.registerEntityRenderer(OPEntities.TOMAHAWK.get(), TomahawkRenderer::new);
         event.registerEntityRenderer(OPEntities.EMERALDFISH.get(), EmeraldfishRenderer::new);
+        event.registerEntityRenderer(OPEntities.RAMBLE.get(), RambleRenderer::new);
         event.registerEntityRenderer(OPEntities.SLUG.get(), SlugRenderer::new);
         event.registerEntityRenderer(OPEntities.TERROR.get(), TerrorRenderer::new);
+        event.registerEntityRenderer(OPEntities.TOMAHAWK.get(), TomahawkRenderer::new);
         event.registerEntityRenderer(OPEntities.TREMBLER.get(), TremblerRenderer::new);
         event.registerEntityRenderer(OPEntities.UMBER_SPIDER.get(), UmberSpiderRenderer::new);
         event.registerEntityRenderer(OPEntities.VOLT.get(), VoltRenderer::new);
@@ -108,6 +104,7 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(OPModelLayers.EMERALDFISH_LAYER, EmeraldfishModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.RAMBLE_LAYER, RambleModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.SLUG_LAYER, SlugModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.TERROR_LAYER, TerrorModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.TREMBLER_LAYER, TremblerModel::createBodyLayer);

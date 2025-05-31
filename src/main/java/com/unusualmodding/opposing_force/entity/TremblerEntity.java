@@ -117,15 +117,17 @@ public class TremblerEntity extends Monster {
 
     @Override
     protected void blockedByShield(LivingEntity defender) {
-        if (this.getRandom().nextBoolean()) {
-            this.stunnedTicks();
-            this.rollCooldown();
-            this.setRolling(false);
-            this.getNavigation().stop();
-            defender.push(this);
-            defender.hurtMarked = true;
-        }
+        this.stunnedTicks();
+        this.rollCooldown();
+        this.setRolling(false);
+        this.getNavigation().stop();
+        defender.push(this);
+        defender.hurtMarked = true;
         super.blockedByShield(defender);
+    }
+
+    public boolean canDisableShield() {
+        return true;
     }
 
     @Override
