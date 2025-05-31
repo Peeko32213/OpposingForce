@@ -485,7 +485,7 @@ public class UmberSpiderEntity extends Monster {
         }
 
         protected boolean findRandomPosition() {
-            Vec3 vec3 = LandRandomPos.getPos(this.umberSpider, 16, 8);
+            Vec3 vec3 = LandRandomPos.getPos(this.umberSpider, 8, 8);
             if (vec3 == null) {
                 return false;
             } else {

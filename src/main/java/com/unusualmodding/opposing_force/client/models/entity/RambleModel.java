@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.client.models.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.unusualmodding.opposing_force.client.animations.RambleAnimations;
 import com.unusualmodding.opposing_force.entity.RambleEntity;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -110,6 +111,15 @@ public class RambleModel<T extends RambleEntity> extends HierarchicalModel<T> {
 	public void setupAnim(RambleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 
+		this.animateWalk(RambleAnimations.LEGS_OVERLAY, limbSwing, limbSwingAmount, 4, 8);
+
+		if (entity.isFlailing()) {
+			this.animate(entity.flailAnimationState, RambleAnimations.FLAIL, ageInTicks, 1.5F);
+		} else {
+			this.animateWalk(RambleAnimations.WALK, limbSwing, limbSwingAmount, 2, 4);
+		}
+
+		this.animate(entity.idleAnimationState, RambleAnimations.IDLE, ageInTicks);
 	}
 
 	@Override

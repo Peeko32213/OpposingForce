@@ -10,7 +10,7 @@ import com.unusualmodding.opposing_force.entity.ai.state.RandomStateGoal;
 import com.unusualmodding.opposing_force.entity.ai.state.StateHelper;
 import com.unusualmodding.opposing_force.entity.ai.state.WeightedState;
 import com.unusualmodding.opposing_force.entity.ai.util.helper.SmartBodyHelper;
-import com.unusualmodding.opposing_force.entity.ai.util.navigator.SmoothGroundNavigation;
+import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundNavigation;
 import com.unusualmodding.opposing_force.registry.OPSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;

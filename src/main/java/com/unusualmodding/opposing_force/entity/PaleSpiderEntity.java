@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.entity.ai.util.CeilingMoveController;
-import com.unusualmodding.opposing_force.entity.ai.util.navigator.DirectPathNavigator;
+import com.unusualmodding.opposing_force.entity.ai.navigation.DirectPathNavigator;
 import com.unusualmodding.opposing_force.entity.ai.util.OPMath;
 import com.unusualmodding.opposing_force.entity.ai.goal.SmartNearestTargetGoal;
 import net.minecraft.core.BlockPos;

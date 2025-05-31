@@ -297,7 +297,8 @@ public class TremblerEntity extends Monster {
         protected void tickRollAttack() {
             this.attackTime++;
             this.trembler.getNavigation().stop();
-            Entity target = this.trembler.getTarget();
+            LivingEntity target = this.trembler.getTarget();
+            DamageSource damageSource = this.trembler.damageSources().mobAttack(this.trembler);
 
             if (this.attackTime == 12) {
                 Vec3 targetPos = target.position();
@@ -313,6 +314,9 @@ public class TremblerEntity extends Monster {
                 if (this.trembler.distanceTo(Objects.requireNonNull(target)) < 1.1F) {
                     this.trembler.doHurtTarget(target);
                     this.trembler.swing(InteractionHand.MAIN_HAND);
+                    if (target.isDamageSourceBlocked(damageSource) && target instanceof Player player){
+                        player.disableShield(false);
+                    }
                 }
             }
 

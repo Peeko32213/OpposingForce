@@ -58,8 +58,10 @@ public class TremblerModel<T extends TremblerEntity> extends HierarchicalModel<T
 		this.animate(entity.rollAnimationState, TremblerAnimations.ROLL, ageInTicks, 1);
 		this.animate(entity.stunnedAnimationState, TremblerAnimations.STUNNED, ageInTicks, 2);
 
-		this.Head.xRot += headPitch * ((float) Math.PI / 180f) - (headPitch * ((float) Math.PI / 180f)) / 2;
-		this.Head.yRot += netHeadYaw * ((float) Math.PI / 180f) - (netHeadYaw * ((float) Math.PI / 180f)) / 2;
+		if (entity.getStunnedTicks() <= 0) {
+			this.Head.xRot += headPitch * ((float) Math.PI / 180f) - (headPitch * ((float) Math.PI / 180f)) / 2;
+			this.Head.yRot += netHeadYaw * ((float) Math.PI / 180f) - (netHeadYaw * ((float) Math.PI / 180f)) / 2;
+		}
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package com.unusualmodding.opposing_force.entity.ai.util.navigator;
+package com.unusualmodding.opposing_force.entity.ai.navigation;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;

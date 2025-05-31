@@ -67,6 +67,10 @@ public class SlugEntity extends Monster {
     protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
     }
 
+    public MobType getMobType() {
+        return MobType.ARTHROPOD;
+    }
+
     @Override
     public float maxUpStep() {
         if (this.getSlugSize() > 3) {
