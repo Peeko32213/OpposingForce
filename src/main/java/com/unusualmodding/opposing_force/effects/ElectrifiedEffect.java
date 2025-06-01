@@ -19,9 +19,6 @@ public class ElectrifiedEffect extends MobEffect {
                 entity.playSound(OPSounds.ELECTRIC_ZAP.get(), 1.0F, 1.0F / (entity.getRandom().nextFloat() * 0.4F + 0.8F));
             }
         }
-        if (entity.tickCount % 100 == 0 && entity.getRandom().nextInt(2) == 0 && entity.isAlive() && !entity.isInWaterRainOrBubble()) {
-            entity.playSound(OPSounds.ELECTRIC_ZAP.get(), 1.0F, 1.0F / (entity.getRandom().nextFloat() * 0.4F + 0.8F));
-        }
     }
 
     public boolean isDurationEffectTick(int duration, int amplifier) {

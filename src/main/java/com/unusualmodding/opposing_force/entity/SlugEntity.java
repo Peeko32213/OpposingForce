@@ -2,43 +2,56 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.registry.OPSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.*;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
-import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
-public class SlugEntity extends Monster {
+public class SlugEntity extends Monster implements OwnableEntity {
 
     private static final EntityDataAccessor<Integer> SIZE = SynchedEntityData.defineId(SlugEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> MAX_GROWABLE_SIZE = SynchedEntityData.defineId(SlugEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(SlugEntity.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(SlugEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
     public final AnimationState idleAnimationState = new AnimationState();
 
@@ -62,6 +75,8 @@ public class SlugEntity extends Monster {
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, LivingEntity.class, 6.0F));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(3, new SlugOwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(4, new SlugOwnerHurtTargetGoal(this));
     }
 
     protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
@@ -88,18 +103,43 @@ public class SlugEntity extends Monster {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(SIZE, 0);
+        this.entityData.define(MAX_GROWABLE_SIZE, 0);
+        this.entityData.define(OWNER_UUID, Optional.empty());
+        this.entityData.define(DATA_FLAGS_ID, (byte) 0);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putInt("Size", this.getSlugSize());
+        compoundTag.putInt("MaxGrowableSize", this.getMaxGrowableSlugSize());
+        if (this.getOwnerUUID() != null) {
+            compoundTag.putUUID("Owner", this.getOwnerUUID());
+        }
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         this.setSlugSize(compoundTag.getInt("Size"));
+        this.setMaxGrowableSlugSize(compoundTag.getInt("MaxGrowableSize"));
+
+        UUID uuid;
+        if (compoundTag.hasUUID("Owner")) {
+            uuid = compoundTag.getUUID("Owner");
+        } else {
+            String s = compoundTag.getString("Owner");
+            uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
+        }
+
+        if (uuid != null) {
+            try {
+                this.setOwnerUUID(uuid);
+                this.setTame(true);
+            } catch (Throwable var4) {
+                this.setTame(false);
+            }
+        }
     }
 
     public void setSlugSize(int size) {
@@ -108,6 +148,23 @@ public class SlugEntity extends Monster {
 
     public int getSlugSize() {
         return this.entityData.get(SIZE);
+    }
+
+    public void setMaxGrowableSlugSize(int size) {
+        this.entityData.set(MAX_GROWABLE_SIZE, Mth.clamp(size, 0, 128));
+    }
+
+    public int getMaxGrowableSlugSize() {
+        return this.entityData.get(MAX_GROWABLE_SIZE);
+    }
+
+    @Nullable
+    public UUID getOwnerUUID() {
+        return this.entityData.get(OWNER_UUID).orElse(null);
+    }
+
+    public void setOwnerUUID(@Nullable UUID pUuid) {
+        this.entityData.set(OWNER_UUID, Optional.ofNullable(pUuid));
     }
 
     protected float getStandingEyeHeight(Pose pPose, EntityDimensions pSize) {
@@ -142,20 +199,132 @@ public class SlugEntity extends Monster {
         if (this.level().isClientSide()){
             this.setupAnimationStates();
         }
-
-        this.yBodyRot = Mth.approachDegrees(this.yBodyRotO, yBodyRot, getMaxHeadYRot());
-    }
-
-    public int getMaxHeadXRot() {
-        return 2;
-    }
-
-    public int getMaxHeadYRot() {
-        return 4;
     }
 
     private void setupAnimationStates() {
         this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
+    }
+
+    @Override
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence() || this.isTame();
+    }
+
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return !this.isTame();
+    }
+
+    public boolean isTame() {
+        return (this.entityData.get(DATA_FLAGS_ID) & 4) != 0;
+    }
+
+    public void setTame(boolean tamed) {
+        byte b = this.entityData.get(DATA_FLAGS_ID);
+        if (tamed) {
+            this.entityData.set(DATA_FLAGS_ID, (byte) (b | 4));
+        } else {
+            this.entityData.set(DATA_FLAGS_ID, (byte) (b & -5));
+        }
+    }
+
+    public void tame(Player player) {
+        this.setTame(true);
+        this.setOwnerUUID(player.getUUID());
+
+        RandomSource randomsource = this.getRandom();
+        if (randomsource.nextInt(100) == 0) {
+            this.setMaxGrowableSlugSize(8 + randomsource.nextInt(32));
+        } else {
+            this.setMaxGrowableSlugSize(1 + randomsource.nextInt(7));
+        }
+    }
+
+    public boolean canAttack(LivingEntity entity) {
+        return !this.isOwnedBy(entity) && super.canAttack(entity);
+    }
+
+    public boolean isOwnedBy(LivingEntity pEntity) {
+        return pEntity == this.getOwner();
+    }
+
+    public boolean wantsToAttack(LivingEntity entity, LivingEntity owner) {
+        return true;
+    }
+
+    public Team getTeam() {
+        if (this.isTame()) {
+            LivingEntity livingentity = this.getOwner();
+            if (livingentity != null) {
+                return livingentity.getTeam();
+            }
+        }
+        return super.getTeam();
+    }
+
+    public boolean isAlliedTo(Entity pEntity) {
+        if (this.isTame()) {
+            LivingEntity livingentity = this.getOwner();
+            if (pEntity == livingentity) {
+                return true;
+            }
+            if (livingentity != null) {
+                return livingentity.isAlliedTo(pEntity);
+            }
+        }
+        return super.isAlliedTo(pEntity);
+    }
+
+    public void die(DamageSource source) {
+        Component deathMessage = this.getCombatTracker().getDeathMessage();
+        super.die(source);
+        if (this.dead && !this.level().isClientSide && this.level().getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof ServerPlayer) {
+            this.getOwner().sendSystemMessage(deathMessage);
+        }
+    }
+
+    public boolean canBeLeashed(Player player) {
+        return !this.isLeashed() && this.isTame();
+    }
+
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        int size = this.getSlugSize();
+        if (isTame() && itemstack.is(Blocks.SLIME_BLOCK.asItem()) && this.getSlugSize() <= this.getMaxGrowableSlugSize()) {
+            if (!player.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
+            this.gameEvent(GameEvent.ENTITY_INTERACT);
+            this.setSlugSize(size + 1);
+            this.playSound(OPSounds.SLUG_EAT.get(), this.getSoundVolume(), this.getVoicePitch());
+            this.level().broadcastEntityEvent(this, (byte) 39);
+            return InteractionResult.SUCCESS;
+        }
+        if (isTame() && itemstack.is(Items.SLIME_BALL) && this.getHealth() < this.getMaxHealth()) {
+            if (!player.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
+            this.gameEvent(GameEvent.ENTITY_INTERACT);
+            this.heal(4.0F);
+            this.playSound(OPSounds.SLUG_EAT.get(), this.getSoundVolume(), this.getVoicePitch());
+            this.level().broadcastEntityEvent(this, (byte) 40);
+            return InteractionResult.SUCCESS;
+        }
+        return super.mobInteract(player, hand);
+    }
+
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == 39) {
+            for (int i = 0; i < 5; i++) {
+                level().addParticle(ParticleTypes.HAPPY_VILLAGER, this.getRandomX(0.5F), this.getY(0.8F), this.getRandomZ(0.5F), 0.0D, 0.0D, 0.0D);
+            }
+        }
+        if (id == 40) {
+            for (int i = 0; i < 5; i++) {
+                level().addParticle(ParticleTypes.HEART, this.getRandomX(0.5F), this.getY(0.8F), this.getRandomZ(0.5F), 0.0D, 0.0D, 0.0D);
+            }
+        }
+        super.handleEntityEvent(id);
     }
 
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
@@ -216,8 +385,10 @@ public class SlugEntity extends Monster {
 
         if (randomsource.nextInt(100) == 0) {
             this.setSlugSize(8 + randomsource.nextInt(32));
+            this.setMaxGrowableSlugSize(8 + randomsource.nextInt(32));
         } else {
             this.setSlugSize(randomsource.nextInt(8));
+            this.setMaxGrowableSlugSize(1 + randomsource.nextInt(7));
         }
 
         return spawnDataIn;
@@ -236,6 +407,80 @@ public class SlugEntity extends Monster {
         @Override
         protected double getAttackReachSqr(LivingEntity pAttackTarget) {
             return this.mob.getBbWidth() * 1.16F * this.mob.getBbWidth() * 0.94F + pAttackTarget.getBbWidth();
+        }
+    }
+
+    private static class SlugOwnerHurtTargetGoal extends TargetGoal {
+
+        private final SlugEntity slug;
+        private LivingEntity ownerLastHurt;
+        private int timestamp;
+
+        public SlugOwnerHurtTargetGoal(SlugEntity slug) {
+            super(slug, false);
+            this.slug = slug;
+            this.setFlags(EnumSet.of(Flag.TARGET));
+        }
+
+        public boolean canUse() {
+            if (this.slug.isTame()) {
+                LivingEntity owner = this.slug.getOwner();
+                if (owner == null) {
+                    return false;
+                } else {
+                    this.ownerLastHurt = owner.getLastHurtMob();
+                    int hurtTime = owner.getLastHurtMobTimestamp();
+                    return hurtTime != this.timestamp && this.canAttack(this.ownerLastHurt, TargetingConditions.DEFAULT) && this.slug.wantsToAttack(this.ownerLastHurt, owner);
+                }
+            } else {
+                return false;
+            }
+        }
+
+        public void start() {
+            this.mob.setTarget(this.ownerLastHurt);
+            LivingEntity owner = this.slug.getOwner();
+            if (owner != null) {
+                this.timestamp = owner.getLastHurtMobTimestamp();
+            }
+            super.start();
+        }
+    }
+
+    private static class SlugOwnerHurtByTargetGoal extends TargetGoal {
+
+        private final SlugEntity slug;
+        private LivingEntity ownerLastHurtBy;
+        private int timestamp;
+
+        public SlugOwnerHurtByTargetGoal(SlugEntity slug) {
+            super(slug, false);
+            this.slug = slug;
+            this.setFlags(EnumSet.of(Flag.TARGET));
+        }
+
+        public boolean canUse() {
+            if (this.slug.isTame()) {
+                LivingEntity owner = this.slug.getOwner();
+                if (owner == null) {
+                    return false;
+                } else {
+                    this.ownerLastHurtBy = owner.getLastHurtByMob();
+                    int $$1 = owner.getLastHurtByMobTimestamp();
+                    return $$1 != this.timestamp && this.canAttack(this.ownerLastHurtBy, TargetingConditions.DEFAULT) && this.slug.wantsToAttack(this.ownerLastHurtBy, owner);
+                }
+            } else {
+                return false;
+            }
+        }
+
+        public void start() {
+            this.mob.setTarget(this.ownerLastHurtBy);
+            LivingEntity owner = this.slug.getOwner();
+            if (owner != null) {
+                this.timestamp = owner.getLastHurtByMobTimestamp();
+            }
+            super.start();
         }
     }
 }

@@ -135,7 +135,7 @@ public class VoltEntity extends Monster {
         this.targetSquish *= 0.6F;
     }
 
-    public static <T extends Mob> boolean canFirstTierSpawn(EntityType<VoltEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
+    public static boolean canFirstTierSpawn(EntityType<VoltEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
         boolean isDeepDark = iServerWorld.getBiome(pos).is(Biomes.DEEP_DARK);
         return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 30 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
     }

@@ -7,8 +7,10 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -52,11 +54,15 @@ public class SlugEgg extends ThrowableItemProjectile {
 
     protected void onHit(HitResult result) {
         super.onHit(result);
+        Entity thrower = getOwner();
         if (!this.level().isClientSide) {
             if (this.random.nextInt(4) == 0) {
-                SlugEntity entity = OPEntities.SLUG.get().create(this.level());
-                entity.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-                this.level().addFreshEntity(entity);
+                SlugEntity slug = OPEntities.SLUG.get().create(this.level());
+                slug.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+                if (thrower instanceof Player) {
+                    slug.tame((Player) thrower);
+                }
+                this.level().addFreshEntity(slug);
             }
             this.level().broadcastEntityEvent(this, (byte) 3);
             this.remove(RemovalReason.DISCARDED);

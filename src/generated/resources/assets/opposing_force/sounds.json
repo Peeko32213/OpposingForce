@@ -119,6 +119,23 @@
     ],
     "subtitle": "subtitles.opposing_force.slug_death"
   },
+  "slug_eat": {
+    "sounds": [
+      {
+        "name": "mob/strider/eat1",
+        "pitch": 1.1
+      },
+      {
+        "name": "mob/strider/eat2",
+        "pitch": 1.1
+      },
+      {
+        "name": "mob/strider/eat3",
+        "pitch": 1.1
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.slug_eat"
+  },
   "slug_hurt": {
     "sounds": [
       "mob/slime/big1",

@@ -315,7 +315,7 @@ public class TremblerEntity extends Monster {
                     this.trembler.doHurtTarget(target);
                     this.trembler.swing(InteractionHand.MAIN_HAND);
                     if (target.isDamageSourceBlocked(damageSource) && target instanceof Player player){
-                        player.disableShield(false);
+                        player.disableShield(true);
                     }
                 }
             }

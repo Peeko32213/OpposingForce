@@ -58,7 +58,7 @@ public class RambleEntity extends Monster {
                 .add(Attributes.MAX_HEALTH, 80.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.13F)
                 .add(Attributes.ATTACK_DAMAGE, 8.0D)
-                .add(Attributes.ATTACK_KNOCKBACK, 0.5D)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.3D)
                 .add(Attributes.ARMOR,8.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE,1.0D);
     }
@@ -152,11 +152,11 @@ public class RambleEntity extends Monster {
     }
 
     private void cooldownEffect() {
-        if (this.random.nextBoolean()) {
+        if (this.random.nextBoolean() && this.isAlive()) {
             double d = this.getX();
             double e = this.getY() + (double) this.getBbHeight() + 0.2;
             double f = this.getZ();
-            this.level().addParticle(ParticleTypes.SMOKE, d, e, f, 0.1, 0.2, 0.1);
+            this.level().addParticle(ParticleTypes.CLOUD, d, e, f, 0.1, 0.2, 0.1);
         }
     }
 
@@ -273,7 +273,7 @@ public class RambleEntity extends Monster {
     }
 
     public double getPassengersRidingOffset() {
-        return this.getBbHeight() * 0.97F;
+        return this.getBbHeight() * 1.03F;
     }
 
     public void rideTick() {
@@ -338,6 +338,9 @@ public class RambleEntity extends Monster {
 
             if (this.attackTime >= 3) {
                 this.ramble.hurtEntitiesAround(pos, 2.9F, true);
+                if ((this.ramble.tickCount / 2) % 2 == 0) {
+                    this.ramble.playSound(OPSounds.RAMBLE_ATTACK.get(), 1.0F, 1.0F / (this.ramble.getRandom().nextFloat() * 0.4F + 0.8F));
+                }
             }
             if (this.attackTime >= 60) {
                 this.attackTime = 0;
