@@ -1,10 +1,10 @@
 package com.unusualmodding.opposing_force.items;
 
 import com.unusualmodding.opposing_force.enchantments.OPEnchantmentLogic;
-import com.unusualmodding.opposing_force.entity.projectile.ElectricBall;
+import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
 import com.unusualmodding.opposing_force.registry.OPEnchantments;
 import com.unusualmodding.opposing_force.registry.OPItems;
-import com.unusualmodding.opposing_force.registry.OPSounds;
+import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -90,7 +90,7 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
         if (f >= 1.0F && !CrossbowItem.isCharged(weaponItem) && this.tryLoadProjectiles(shooter, weaponItem)) {
             CrossbowItem.setCharged(weaponItem, true);
             SoundSource soundcategory = shooter instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
-            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSounds.TESLA_BOW_CHARGED.get(), soundcategory, 1.0F, 1.0F / (shooter.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F);
+            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_CHARGED.get(), soundcategory, 1.0F, 1.0F / (shooter.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F);
         }
     }
 
@@ -188,17 +188,17 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
             bigProjectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 1F, divergence);
             crossbow.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
             shooter.level().addFreshEntity(bigProjectileentity);
-            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSounds.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.25F, shootSoundPitch * 0.85F);
+            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.25F, shootSoundPitch * 0.85F);
         }
         if (!largeBall) {
             projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 1.75F, divergence);
             crossbow.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
             shooter.level().addFreshEntity(projectileentity);
-            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSounds.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, shootSoundPitch);
+            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, shootSoundPitch);
         }
     }
 
-    static ElectricBall getCharge(Level pLevel, LivingEntity pLivingEntity, ItemStack pAmmoStack, ItemStack crossbow, boolean bigCharge) {
+    static ElectricCharge getCharge(Level pLevel, LivingEntity pLivingEntity, ItemStack pAmmoStack, ItemStack crossbow, boolean bigCharge) {
 
         boolean bouncy = crossbow.getEnchantmentLevel(OPEnchantments.BOUNCY_ELECTRIC_BALL.get()) > 0;
         int bounces = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.BOUNCY_ELECTRIC_BALL.get(), crossbow);
@@ -206,7 +206,7 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
         int chargeSize = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.BIG_ELECTRIC_BALL.get(), crossbow);
 
         ElectricChargeItem arrowitem = (ElectricChargeItem)(pAmmoStack.getItem() instanceof ElectricChargeItem ? pAmmoStack.getItem() : OPItems.ELECTRIC_CHARGE);
-        ElectricBall electricBall = arrowitem.shootCharge(pLevel, pLivingEntity);
+        ElectricCharge electricBall = arrowitem.shootCharge(pLevel, pLivingEntity);
         electricBall.setSoundEvent(SoundEvents.CROSSBOW_HIT);
 
         electricBall.setBaseDamage(electricBall.getBaseDamage() + 1);

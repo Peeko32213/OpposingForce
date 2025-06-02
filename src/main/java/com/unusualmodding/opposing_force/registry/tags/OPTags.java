@@ -14,10 +14,8 @@ public class OPTags {
 
     public static final TagKey<Block> HOLE_MUSHROOM_BLOCKS = registerBlockTag("hole_mushroom_blocks");
 
-
     public static final TagKey<EntityType<?>> PALE_SPIDER = registerEntityTag("pale_spider");
     public static final TagKey<EntityType<?>> UMBER_SPIDER = registerEntityTag("umber_spider");
-
 
     public static final TagKey<Biome> IS_DEEP_UNDERGROUND = registerBiomeTag("is_deep_underground");
     public static final TagKey<Biome> IS_UNDERGROUND = registerBiomeTag("is_underground");
@@ -28,10 +26,7 @@ public class OPTags {
     public static final TagKey<Biome> HAS_TREMBLE = registerBiomeTag("has_monster/tremble");
     public static final TagKey<Biome> HAS_UMBER_SPIDER = registerBiomeTag("has_monster/umber_spider");
 
-
     public static final TagKey<Biome> WITH_DEFAULT_MONSTER_SPAWNS = TagUtilities.specialBiomeTag("forge", "with_default_monster_spawns");
-
-
 
     private static TagKey<Item> registerItemTag(String name) {
         return TagKey.create(Registries.ITEM, new ResourceLocation(OpposingForce.MOD_ID, name));

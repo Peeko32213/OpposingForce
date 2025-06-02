@@ -2,7 +2,7 @@ package com.unusualmodding.opposing_force.client.models.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.unusualmodding.opposing_force.entity.GuzzlerEntity;
+import com.unusualmodding.opposing_force.entity.Guzzler;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class GuzzlerModel<T extends GuzzlerEntity> extends HierarchicalModel<T> {
+public class GuzzlerModel<T extends Guzzler> extends HierarchicalModel<T> {
 
 	private final ModelPart root;
 	private final ModelPart Body;
@@ -46,7 +46,7 @@ public class GuzzlerModel<T extends GuzzlerEntity> extends HierarchicalModel<T> 
 	}
 
 	@Override
-	public void setupAnim(GuzzlerEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Guzzler entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 	}
 

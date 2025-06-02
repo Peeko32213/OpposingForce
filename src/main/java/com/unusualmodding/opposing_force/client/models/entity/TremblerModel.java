@@ -3,7 +3,7 @@ package com.unusualmodding.opposing_force.client.models.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.TremblerAnimations;
-import com.unusualmodding.opposing_force.entity.TremblerEntity;
+import com.unusualmodding.opposing_force.entity.Trembler;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class TremblerModel<T extends TremblerEntity> extends HierarchicalModel<T> {
+public class TremblerModel<T extends Trembler> extends HierarchicalModel<T> {
 
 	private final ModelPart root;
 	private final ModelPart Body;
@@ -50,7 +50,7 @@ public class TremblerModel<T extends TremblerEntity> extends HierarchicalModel<T
 	}
 
 	@Override
-	public void setupAnim(TremblerEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Trembler entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 
 		this.animateWalk(TremblerAnimations.SLIDE, limbSwing * 8, limbSwingAmount * 8, 2, 4);

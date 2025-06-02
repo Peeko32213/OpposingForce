@@ -13,14 +13,15 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class OPCreativeTabs {
 
-    public static final DeferredRegister<CreativeModeTab> DEF_REG = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, OpposingForce.MOD_ID);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, OpposingForce.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> TAB = DEF_REG.register(OpposingForce.MOD_ID, () -> CreativeModeTab.builder()
+    public static final RegistryObject<CreativeModeTab> TAB = CREATIVE_TABS.register(OpposingForce.MOD_ID, () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup." + OpposingForce.MOD_ID))
-            .icon(() -> new ItemStack(OPItems.SLUG_EGGS.get()))
+            .icon(() -> new ItemStack(OPItems.ELECTRIC_CHARGE.get()))
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .displayItems((enabledFeatures, output) -> {
                 for(RegistryObject<Item> item : OPItems.ITEMS.getEntries()){
+
                     // Spawn eggs
                     OPItems.ITEMS.getEntries().forEach(spawnEgg -> {
                         if ((spawnEgg.get() instanceof ForgeSpawnEggItem)) {

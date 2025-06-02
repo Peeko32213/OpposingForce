@@ -26,23 +26,23 @@
     ],
     "subtitle": "subtitles.opposing_force.dicer_idle"
   },
-  "electric_zap": {
+  "electric_charge": {
     "sounds": [
-      "opposing_force:misc/electric_zap"
+      "opposing_force:entity/electric_charge/loop1"
     ],
-    "subtitle": "subtitles.opposing_force.electric_zap"
+    "subtitle": "subtitles.opposing_force.electric_charge"
   },
-  "electrical_charge": {
+  "electric_charge_dissipate": {
     "sounds": [
-      "opposing_force:entity/electrical_charge/loop1"
+      "opposing_force:entity/electric_charge/dissipate1"
     ],
-    "subtitle": "subtitles.opposing_force.electrical_charge"
+    "subtitle": "subtitles.opposing_force.electric_charge_dissipate"
   },
-  "electrical_charge_dissipate": {
+  "electric_charge_zap": {
     "sounds": [
-      "opposing_force:entity/electrical_charge/dissipate1"
+      "opposing_force:entity/electric_charge/zap1"
     ],
-    "subtitle": "subtitles.opposing_force.electrical_charge_dissipate"
+    "subtitle": "subtitles.opposing_force.electric_charge_zap"
   },
   "ramble_attack": {
     "sounds": [

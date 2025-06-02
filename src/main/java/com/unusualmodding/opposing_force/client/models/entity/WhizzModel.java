@@ -2,9 +2,8 @@ package com.unusualmodding.opposing_force.client.models.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.unusualmodding.opposing_force.client.animations.VoltAnimations;
 import com.unusualmodding.opposing_force.client.animations.WhizzAnimations;
-import com.unusualmodding.opposing_force.entity.WhizzEntity;
+import com.unusualmodding.opposing_force.entity.Whizz;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class WhizzModel<T extends WhizzEntity> extends HierarchicalModel<T> {
+public class WhizzModel<T extends Whizz> extends HierarchicalModel<T> {
 
 	private final ModelPart root;
 	private final ModelPart Body;
@@ -81,7 +80,7 @@ public class WhizzModel<T extends WhizzEntity> extends HierarchicalModel<T> {
 	}
 
 	@Override
-	public void setupAnim(WhizzEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Whizz entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.animate(entity.flyAnimationState, WhizzAnimations.FLY, ageInTicks, 1.0F + (limbSwingAmount * 1.4F));
 	}

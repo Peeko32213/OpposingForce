@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.blocks;
 
 import com.google.common.collect.Maps;
-import com.unusualmodding.opposing_force.entity.WhizzEntity;
+import com.unusualmodding.opposing_force.entity.Whizz;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -39,7 +39,7 @@ public class InfestedAmethyst extends Block {
     }
 
     private void spawnInfestation(ServerLevel level, BlockPos pos) {
-        WhizzEntity whizz = OPEntities.WHIZZ.get().create(level);
+        Whizz whizz = OPEntities.WHIZZ.get().create(level);
         if (whizz != null) {
             whizz.moveTo((double) pos.getX() + (double) 0.5F, pos.getY(), (double) pos.getZ() + (double) 0.5F, 0.0F, 0.0F);
             level.addFreshEntity(whizz);

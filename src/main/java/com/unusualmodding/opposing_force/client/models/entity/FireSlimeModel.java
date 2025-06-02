@@ -2,7 +2,7 @@ package com.unusualmodding.opposing_force.client.models.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.unusualmodding.opposing_force.entity.FireSlimeEntity;
+import com.unusualmodding.opposing_force.entity.FireSlime;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class FireSlimeModel<T extends FireSlimeEntity> extends HierarchicalModel<T> {
+public class FireSlimeModel<T extends FireSlime> extends HierarchicalModel<T> {
 
 	private final ModelPart root;
 
@@ -28,7 +28,7 @@ public class FireSlimeModel<T extends FireSlimeEntity> extends HierarchicalModel
 	}
 
 	@Override
-	public void setupAnim(FireSlimeEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(FireSlime entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 	}
 

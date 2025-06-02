@@ -9,9 +9,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class OPEffects {
-    public static final DeferredRegister<MobEffect> MOB_EFFECT = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, OpposingForce.MOD_ID);
+    public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, OpposingForce.MOD_ID);
 
-    public static final RegistryObject<MobEffect> ELECTRIFIED = MOB_EFFECT.register("electrified", ElectrifiedEffect::new);
-    public static final RegistryObject<MobEffect> GLOOM_TOXIN = MOB_EFFECT.register("gloom_toxin", GloomToxinEffect::new);
+    public static final RegistryObject<MobEffect> ELECTRIFIED = MOB_EFFECTS.register("electrified", ElectrifiedEffect::new);
+    public static final RegistryObject<MobEffect> GLOOM_TOXIN = MOB_EFFECTS.register("gloom_toxin", GloomToxinEffect::new);
 
 }

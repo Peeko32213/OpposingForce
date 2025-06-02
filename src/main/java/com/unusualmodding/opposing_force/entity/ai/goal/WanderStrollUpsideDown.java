@@ -1,6 +1,6 @@
 package com.unusualmodding.opposing_force.entity.ai.goal;
 
-import com.unusualmodding.opposing_force.entity.PaleSpiderEntity;
+import com.unusualmodding.opposing_force.entity.PaleSpider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -12,9 +12,9 @@ import javax.annotation.Nullable;
 public class WanderStrollUpsideDown extends RandomStrollGoal {
 
 
-    private final PaleSpiderEntity spider;
+    private final PaleSpider spider;
 
-    public WanderStrollUpsideDown(PaleSpiderEntity spider, double speedModifier, int interval) {
+    public WanderStrollUpsideDown(PaleSpider spider, double speedModifier, int interval) {
         super(spider, speedModifier, interval);
         this.spider = spider;
     }
@@ -25,7 +25,7 @@ public class WanderStrollUpsideDown extends RandomStrollGoal {
             for (int i = 0; i < 15; i++) {
                 RandomSource rand = spider.getRandom();
                 BlockPos randPos = spider.blockPosition().offset(rand.nextInt(16) - 8, -2, rand.nextInt(16) - 8);
-                BlockPos lowestPos = PaleSpiderEntity.getLowestPos(spider.level(), randPos);
+                BlockPos lowestPos = PaleSpider.getLowestPos(spider.level(), randPos);
                 if (spider.level().getBlockState(lowestPos).isFaceSturdy(spider.level(), lowestPos, Direction.DOWN)) {
                     return Vec3.atCenterOf(lowestPos);
                 }

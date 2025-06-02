@@ -3,7 +3,7 @@ package com.unusualmodding.opposing_force.client.models.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.SlugAnimations;
-import com.unusualmodding.opposing_force.entity.SlugEntity;
+import com.unusualmodding.opposing_force.entity.Slug;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class SlugModel<T extends SlugEntity> extends HierarchicalModel<T> {
+public class SlugModel<T extends Slug> extends HierarchicalModel<T> {
 
 	private final ModelPart root;
 	private final ModelPart Body;
@@ -62,10 +62,10 @@ public class SlugModel<T extends SlugEntity> extends HierarchicalModel<T> {
 	}
 
 	@Override
-	public void setupAnim(SlugEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Slug entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 
-		this.animateWalk(SlugAnimations.SLIDE, limbSwing * 8, limbSwingAmount * 8, 2, 4);
+		this.animateWalk(SlugAnimations.SLIDE, limbSwing * 4, limbSwingAmount * 4, 2, 4);
 		this.animate(entity.idleAnimationState, SlugAnimations.IDLE, ageInTicks, 1);
 	}
 

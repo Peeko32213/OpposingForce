@@ -3,7 +3,7 @@ package com.unusualmodding.opposing_force.client.models.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.UmberSpiderAnimations;
-import com.unusualmodding.opposing_force.entity.UmberSpiderEntity;
+import com.unusualmodding.opposing_force.entity.UmberSpider;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class UmberSpiderModel<T extends UmberSpiderEntity> extends HierarchicalModel<T> {
+public class UmberSpiderModel<T extends UmberSpider> extends HierarchicalModel<T> {
 
 	private final ModelPart root;
 	private final ModelPart Body;
@@ -125,7 +125,7 @@ public class UmberSpiderModel<T extends UmberSpiderEntity> extends HierarchicalM
 	}
 
 	@Override
-	public void setupAnim(UmberSpiderEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(UmberSpider entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.animateWalk(UmberSpiderAnimations.SCURRY, limbSwing, limbSwingAmount, 2, 4);
 		this.animate(entity.idleAnimationState, UmberSpiderAnimations.IDLE, ageInTicks, 1);

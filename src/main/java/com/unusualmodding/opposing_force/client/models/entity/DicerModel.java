@@ -2,7 +2,7 @@ package com.unusualmodding.opposing_force.client.models.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.unusualmodding.opposing_force.entity.DicerEntity;
+import com.unusualmodding.opposing_force.entity.Dicer;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class DicerModel<T extends DicerEntity> extends HierarchicalModel<T> {
+public class DicerModel<T extends Dicer> extends HierarchicalModel<T> {
 
 	private final ModelPart root;
 	private final ModelPart body;
@@ -79,7 +79,7 @@ public class DicerModel<T extends DicerEntity> extends HierarchicalModel<T> {
 	}
 
 	@Override
-	public void setupAnim(DicerEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Dicer entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 	}
 

@@ -3,7 +3,7 @@ package com.unusualmodding.opposing_force.client.models.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.RambleAnimations;
-import com.unusualmodding.opposing_force.entity.RambleEntity;
+import com.unusualmodding.opposing_force.entity.Ramble;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class RambleModel<T extends RambleEntity> extends HierarchicalModel<T> {
+public class RambleModel<T extends Ramble> extends HierarchicalModel<T> {
 
 	private final ModelPart root;
 	private final ModelPart Body;
@@ -108,7 +108,7 @@ public class RambleModel<T extends RambleEntity> extends HierarchicalModel<T> {
 	}
 
 	@Override
-	public void setupAnim(RambleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Ramble entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 
 		this.animateWalk(RambleAnimations.LEGS_OVERLAY, limbSwing, limbSwingAmount, 4, 8);

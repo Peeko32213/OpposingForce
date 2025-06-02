@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.effects;
 
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
-import com.unusualmodding.opposing_force.registry.OPSounds;
+import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,7 +16,7 @@ public class ElectrifiedEffect extends MobEffect {
         if (entity.isInWaterRainOrBubble()) {
             entity.hurt(entity.damageSources().source(OPDamageTypes.ELECTRIFIED), 2.0F + (amplifier * 1.5F));
             if (entity.tickCount % 10 == 0 && entity.isAlive()) {
-                entity.playSound(OPSounds.ELECTRIC_ZAP.get(), 1.0F, 1.0F / (entity.getRandom().nextFloat() * 0.4F + 0.8F));
+                entity.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 1.0F, 1.0F / (entity.getRandom().nextFloat() * 0.4F + 0.8F));
             }
         }
     }

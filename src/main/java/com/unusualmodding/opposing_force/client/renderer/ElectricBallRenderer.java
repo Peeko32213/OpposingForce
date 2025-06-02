@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.unusualmodding.opposing_force.entity.projectile.ElectricBall;
+import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -11,21 +11,21 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ElectricBallRenderer extends EntityRenderer<ElectricBall> {
+public class ElectricBallRenderer extends EntityRenderer<ElectricCharge> {
 
     public ElectricBallRenderer(EntityRendererProvider.Context pContext) {
         super(pContext);
     }
 
     @Override
-    public void render(ElectricBall entity, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(ElectricCharge entity, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         if (entity.tickCount >= 2 || !(this.entityRenderDispatcher.camera.getEntity().distanceToSqr(entity) < 12.25D)) {
             super.render(entity, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
         }
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ElectricBall charge) {
+    public ResourceLocation getTextureLocation(ElectricCharge charge) {
         return TextureAtlas.LOCATION_BLOCKS;
     }
 }

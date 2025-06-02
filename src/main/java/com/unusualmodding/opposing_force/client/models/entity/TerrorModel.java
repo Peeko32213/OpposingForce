@@ -3,7 +3,7 @@ package com.unusualmodding.opposing_force.client.models.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.TerrorAnimations;
-import com.unusualmodding.opposing_force.entity.TerrorEntity;
+import com.unusualmodding.opposing_force.entity.Terror;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class TerrorModel<T extends TerrorEntity> extends HierarchicalModel<T> {
+public class TerrorModel<T extends Terror> extends HierarchicalModel<T> {
 
 	private final ModelPart root;
 	private final ModelPart swim_control;
@@ -81,7 +81,7 @@ public class TerrorModel<T extends TerrorEntity> extends HierarchicalModel<T> {
 	}
 
 	@Override
-	public void setupAnim(TerrorEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Terror entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 
 		if (entity.isInWaterOrBubble()) {

@@ -13,41 +13,35 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 @Mod(OpposingForce.MOD_ID)
-@Mod.EventBusSubscriber(modid = OpposingForce.MOD_ID)
 public class OpposingForce {
 
     public static final String MOD_ID = "opposing_force";
-    public static final Logger LOGGER = LogManager.getLogger();
 
     public OpposingForce() {
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::dataSetup);
+
+        OPBlocks.BLOCKS.register(modEventBus);
+        OPItems.ITEMS.register(modEventBus);
+        OPCreativeTabs.CREATIVE_TABS.register(modEventBus);
+        OPEffects.MOB_EFFECTS.register(modEventBus);
+        OPEntities.ENTITY_TYPES.register(modEventBus);
+        OPSoundEvents.SOUND_EVENTS.register(modEventBus);
+        OPParticles.PARTICLE_TYPES.register(modEventBus);
+        OPEnchantments.ENCHANTMENTS.register(modEventBus);
+
         MinecraftForge.EVENT_BUS.register(this);
-
-        OPItems.ITEMS.register(bus);
-        OPCreativeTabs.DEF_REG.register(bus);
-        OPEntities.ENTITIES.register(bus);
-        OPSounds.DEF_REG.register(bus);
-        OPBlocks.BLOCKS.register(bus);
-        OPEffects.MOB_EFFECT.register(bus);
-        OPParticles.PARTICLE_TYPES.register(bus);
-        OPEnchantments.ENCHANTMENTS.register(bus);
-        OPWorldGen.register();
-
-        bus.addListener(this::commonSetup);
-        bus.addListener(this::dataSetup);
     }
 
     public void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(OPEntityPlacement::entityPlacement);
         event.enqueueWork(OPCompat::registerCompat);
-        OPMessages.register();
+        OPNetwork.registerNetwork();
     }
 
     private void dataSetup(GatherDataEvent data) {
@@ -75,7 +69,7 @@ public class OpposingForce {
         generator.addProvider(client, new OPBlockstateProvider(data));
         generator.addProvider(client, new OPItemModelProvider(data));
         generator.addProvider(client, new OPSoundDefinitionsProvider(output, helper));
-        generator.addProvider(client, new OPLangProvider(data));
+        generator.addProvider(client, new OPLanguageProvider(data));
     }
 
     public static ResourceLocation modPrefix(String name) {

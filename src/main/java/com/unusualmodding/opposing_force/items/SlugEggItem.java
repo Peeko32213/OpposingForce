@@ -1,6 +1,6 @@
 package com.unusualmodding.opposing_force.items;
 
-import com.unusualmodding.opposing_force.entity.projectile.SlugEgg;
+import com.unusualmodding.opposing_force.entity.projectile.SlugEggs;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -27,7 +27,7 @@ public class SlugEggItem extends Item {
         playerIn.gameEvent(GameEvent.ITEM_INTERACT_START);
         worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.EGG_THROW, SoundSource.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
         if (!worldIn.isClientSide) {
-            SlugEgg slugEgg = new SlugEgg(worldIn, playerIn);
+            SlugEggs slugEgg = new SlugEggs(worldIn, playerIn);
             slugEgg.setItem(itemstack);
             slugEgg.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), 0.0F, 1.5F, 1.0F);
             worldIn.addFreshEntity(slugEgg);

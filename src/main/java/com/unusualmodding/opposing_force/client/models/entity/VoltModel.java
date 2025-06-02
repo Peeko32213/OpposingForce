@@ -3,7 +3,7 @@ package com.unusualmodding.opposing_force.client.models.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.VoltAnimations;
-import com.unusualmodding.opposing_force.entity.VoltEntity;
+import com.unusualmodding.opposing_force.entity.Volt;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class VoltModel<T extends VoltEntity> extends HierarchicalModel<T> {
+public class VoltModel<T extends Volt> extends HierarchicalModel<T> {
 
 	private final ModelPart root;
 	private final ModelPart Body;
@@ -98,7 +98,7 @@ public class VoltModel<T extends VoltEntity> extends HierarchicalModel<T> {
 	}
 
 	@Override
-	public void setupAnim(VoltEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Volt entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.animateWalk(VoltAnimations.SLIDE, limbSwing, limbSwingAmount, 4, 12);
 		this.animate(entity.idleAnimationState, VoltAnimations.IDLE, ageInTicks, 1);

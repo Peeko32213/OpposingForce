@@ -1,8 +1,6 @@
 package com.unusualmodding.opposing_force.items;
 
-import com.unusualmodding.opposing_force.entity.projectile.ElectricBall;
-import net.minecraft.core.Position;
-import net.minecraft.sounds.SoundEvent;
+import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -12,12 +10,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
@@ -41,7 +37,7 @@ public class ElectricChargeItem extends Item {
         user.getCooldowns().addCooldown(this, 12);
 
         if (!level.isClientSide) {
-            ElectricBall electricBall = new ElectricBall(user, level, user.position().x(), user.getEyePosition().y(), user.position().z());
+            ElectricCharge electricBall = new ElectricCharge(user, level, user.position().x(), user.getEyePosition().y(), user.position().z());
             electricBall.shootFromRotation(user, user.getXRot(), user.getYRot(), 0.0F, 1.0F, 2.0F);
             level.addFreshEntity(electricBall);
         }
@@ -54,8 +50,8 @@ public class ElectricChargeItem extends Item {
 
     // Tesla bow stuff
     @Nullable
-    public ElectricBall shootCharge(Level level, LivingEntity shooter) {
-        ElectricBall charge = this.createCharge(level);
+    public ElectricCharge shootCharge(Level level, LivingEntity shooter) {
+        ElectricCharge charge = this.createCharge(level);
         if (charge != null) {
             charge.setPos(shooter.getX(), shooter.getEyeY() - 0.1, shooter.getZ());
             charge.setOwner(shooter);
@@ -66,9 +62,9 @@ public class ElectricChargeItem extends Item {
     }
 
     @Nullable
-    public ElectricBall createCharge(Level level) {
+    public ElectricCharge createCharge(Level level) {
         Entity entity = this.getEntity().get().create(level);
-        if (entity instanceof ElectricBall charge) {
+        if (entity instanceof ElectricCharge charge) {
             return charge;
         } else {
             return null;

@@ -11,83 +11,136 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import static com.unusualmodding.opposing_force.OpposingForce.modPrefix;
-
 @Mod.EventBusSubscriber(modid = OpposingForce.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class OPEntities {
 
-    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, OpposingForce.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, OpposingForce.MOD_ID);
 
-    public static final RegistryObject<EntityType<EmeraldfishEntity>> EMERALDFISH = ENTITIES.register("emeraldfish",
-            () -> EntityType.Builder.of(EmeraldfishEntity::new, MobCategory.MONSTER).sized(1.0F, 1.0F)
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "emeraldfish").toString()));
+    public static final RegistryObject<EntityType<Dicer>> DICER = ENTITY_TYPES.register(
+            "dicer", () ->
+            EntityType.Builder.of(Dicer::new, MobCategory.MONSTER)
+                    .sized(0.7F, 2.0F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "dicer").toString())
+    );
 
-    public static final RegistryObject<EntityType<PaleSpiderEntity>> PALE_SPIDER = ENTITIES.register("pale_spider",
-            () -> EntityType.Builder.of(PaleSpiderEntity::new, MobCategory.MONSTER).sized(1.0F, 1.0F)
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "pale_spider").toString()));
+    public static final RegistryObject<EntityType<Emeraldfish>> EMERALDFISH = ENTITY_TYPES.register(
+            "emeraldfish", () ->
+            EntityType.Builder.of(Emeraldfish::new, MobCategory.MONSTER)
+                    .sized(1.0F, 1.0F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "emeraldfish").toString())
+    );
 
-    public static final RegistryObject<EntityType<UmberSpiderEntity>> UMBER_SPIDER = ENTITIES.register("umber_spider",
-            () -> EntityType.Builder.of(UmberSpiderEntity::new, MobCategory.MONSTER).sized(1.4F, 0.9F)
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "umber_spider").toString()));
+    public static final RegistryObject<EntityType<FireSlime>> FIRE_SLIME = ENTITY_TYPES.register(
+            "fire_slime", () ->
+            EntityType.Builder.of(FireSlime::new, MobCategory.MONSTER)
+                    .sized(0.6F, 0.6F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "fire_slime").toString())
+    );
 
-    public static final RegistryObject<EntityType<RambleEntity>> RAMBLE = ENTITIES.register("ramble",
-            () -> EntityType.Builder.of(RambleEntity::new, MobCategory.MONSTER).sized(1.35F, 1.98F)
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "ramble").toString()));
+    public static final RegistryObject<EntityType<Frowzy>> FROWZY = ENTITY_TYPES.register(
+            "frowzy", () ->
+            EntityType.Builder.of(Frowzy::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.9F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "frowzy").toString())
+    );
 
-    public static final RegistryObject<EntityType<DicerEntity>> DICER = ENTITIES.register("dicer",
-            () -> EntityType.Builder.of(DicerEntity::new, MobCategory.MONSTER).sized(0.7F, 2.0F)
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "dicer").toString()));
+    public static final RegistryObject<EntityType<Guzzler>> GUZZLER = ENTITY_TYPES.register(
+            "guzzler", () ->
+            EntityType.Builder.of(Guzzler::new, MobCategory.MONSTER)
+                    .sized(2.0F, 2.0F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "guzzler").toString())
+    );
 
-    public static final RegistryObject<EntityType<TremblerEntity>> TREMBLER = ENTITIES.register("trembler",
-            () -> EntityType.Builder.of(TremblerEntity::new, MobCategory.MONSTER).sized(0.9F, 1.0F)
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "trembler").toString()));
+    public static final RegistryObject<EntityType<PaleSpider>> PALE_SPIDER = ENTITY_TYPES.register(
+            "pale_spider", () ->
+            EntityType.Builder.of(PaleSpider::new, MobCategory.MONSTER)
+                    .sized(1.0F, 1.0F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "pale_spider").toString())
+    );
 
-    public static final RegistryObject<EntityType<TerrorEntity>> TERROR = ENTITIES.register("terror",
-            () -> EntityType.Builder.of(TerrorEntity::new, MobCategory.UNDERGROUND_WATER_CREATURE).sized(1.5F, 0.9F)
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "terror").toString()));
+    public static final RegistryObject<EntityType<Ramble>> RAMBLE = ENTITY_TYPES.register(
+            "ramble", () ->
+            EntityType.Builder.of(Ramble::new, MobCategory.MONSTER)
+                    .sized(1.35F, 1.98F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "ramble").toString())
+    );
 
-    public static final RegistryObject<EntityType<VoltEntity>> VOLT = ENTITIES.register("volt",
-            () -> EntityType.Builder.of(VoltEntity::new, MobCategory.MONSTER).sized(1.1F, 1.8F)
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "volt").toString()));
+    public static final RegistryObject<EntityType<Slug>> SLUG = ENTITY_TYPES.register(
+            "slug", () ->
+            EntityType.Builder.of(Slug::new, MobCategory.CREATURE)
+                    .sized(1.0F, 0.8F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "slug").toString())
+    );
 
-    public static final RegistryObject<EntityType<WhizzEntity>> WHIZZ = ENTITIES.register("whizz",
-            () -> EntityType.Builder.of(WhizzEntity::new, MobCategory.MONSTER).sized(0.5F, 0.5F)
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "whizz").toString()));
+    public static final RegistryObject<EntityType<Terror>> TERROR = ENTITY_TYPES.register(
+            "terror", () ->
+            EntityType.Builder.of(Terror::new, MobCategory.MONSTER)
+                    .sized(1.5F, 0.9F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "terror").toString())
+    );
 
-    public static final RegistryObject<EntityType<FrowzyEntity>> FROWZY = ENTITIES.register("frowzy",
-            () -> EntityType.Builder.of(FrowzyEntity::new, MobCategory.MONSTER).sized(0.6F, 1.9F)
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "frowzy").toString()));
+    public static final RegistryObject<EntityType<Trembler>> TREMBLER = ENTITY_TYPES.register(
+            "trembler", () ->
+            EntityType.Builder.of(Trembler::new, MobCategory.MONSTER)
+                    .sized(0.9F, 1.0F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "trembler").toString())
+    );
 
-    public static final RegistryObject<EntityType<FireSlimeEntity>> FIRE_SLIME = ENTITIES.register("fireslime",
-            () -> EntityType.Builder.of(FireSlimeEntity::new, MobCategory.MONSTER).sized(0.6F, 0.6F)
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "fireslime").toString()));
+    public static final RegistryObject<EntityType<UmberSpider>> UMBER_SPIDER = ENTITY_TYPES.register(
+            "umber_spider", () ->
+            EntityType.Builder.of(UmberSpider::new, MobCategory.MONSTER)
+                    .sized(1.4F, 0.9F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "umber_spider").toString())
+    );
 
-    public static final RegistryObject<EntityType<GuzzlerEntity>> GUZZLER = ENTITIES.register("guzzler",
-            () -> EntityType.Builder.of(GuzzlerEntity::new, MobCategory.MONSTER).sized(2.0F, 2.0F)
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "guzzler").toString()));
+    public static final RegistryObject<EntityType<Volt>> VOLT = ENTITY_TYPES.register(
+            "volt", () ->
+            EntityType.Builder.of(Volt::new, MobCategory.MONSTER)
+                    .sized(1.1F, 1.8F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "volt").toString())
+    );
 
-    public static final RegistryObject<EntityType<ElectricBall>> ELECTRICITY_BALL = ENTITIES.register("electric_ball",
-            () -> EntityType.Builder.<ElectricBall>of(ElectricBall::new, MobCategory.MISC).sized(0.5F, 0.5F)
-                    .build("electric_ball"));
+    public static final RegistryObject<EntityType<Whizz>> WHIZZ = ENTITY_TYPES.register(
+            "whizz", () ->
+            EntityType.Builder.of(Whizz::new, MobCategory.MONSTER)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "whizz").toString())
+    );
 
-    public static final RegistryObject<EntityType<Tomahawk>> TOMAHAWK = ENTITIES.register("tomahawk",
-            () ->  EntityType.Builder.<Tomahawk>of(Tomahawk::new, MobCategory.MISC)
+    public static final RegistryObject<EntityType<ElectricCharge>> ELECTRIC_CHARGE = ENTITY_TYPES.register(
+            "electric_charge", () ->
+            EntityType.Builder.<ElectricCharge>of(ElectricCharge::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .clientTrackingRange(4)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "electric_charge").toString())
+    );
+
+    public static final RegistryObject<EntityType<SlugEggs>> SLUG_EGGS = ENTITY_TYPES.register(
+            "slug_eggs", () ->
+            EntityType.Builder.<SlugEggs>of(SlugEggs::new, MobCategory.MISC)
+                    .sized(0.25f, 0.25f)
+                    .clientTrackingRange(4)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "slug_eggs").toString())
+    );
+
+    public static final RegistryObject<EntityType<Tomahawk>> TOMAHAWK = ENTITY_TYPES.register(
+            "tomahawk", () ->
+            EntityType.Builder.<Tomahawk>of(Tomahawk::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F)
                     .clientTrackingRange(4)
-                    .updateInterval(10)
-                    .build(modPrefix("tomahawk").toString()));
-
-    public static final RegistryObject<EntityType<SlugEgg>> SLUG_EGG = ENTITIES.register("slug_egg",
-            () -> registerEntity(EntityType.Builder.of(SlugEgg::new, MobCategory.MISC)
-                    .sized(0.5F, 0.5F)
-                    .setCustomClientFactory(SlugEgg::new)
-                    .fireImmune(), "slug_egg"));
-
-    public static final RegistryObject<EntityType<SlugEntity>> SLUG = ENTITIES.register("slug",
-            () -> EntityType.Builder.of(SlugEntity::new, MobCategory.MONSTER).sized(1.0F, 0.8F)
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "slug").toString()));
-
-    private static EntityType registerEntity(EntityType.Builder builder, String entityName) {
-        return builder.build(entityName);
-    }
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "tomahawk").toString())
+    );
 }
