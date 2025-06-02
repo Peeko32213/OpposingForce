@@ -1,13 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
-import com.unusualmodding.opposing_force.entity.ai.state.EntityAction;
-import com.unusualmodding.opposing_force.entity.ai.state.RandomStateGoal;
-import com.unusualmodding.opposing_force.entity.ai.state.StateHelper;
-import com.unusualmodding.opposing_force.entity.ai.state.WeightedState;
-import com.unusualmodding.opposing_force.entity.base.EnhancedMonsterEntity;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,14 +14,10 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.level.Level;
@@ -39,71 +28,16 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Set;
 
-public class GuzzlerEntity extends EnhancedMonsterEntity implements GeoAnimatable, GeoEntity {
+public class GuzzlerEntity extends Monster {
 
     private static final EntityDataAccessor<Boolean> DATA_IS_CHARGING = SynchedEntityData.defineId(GuzzlerEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> IS_SHOOTING = SynchedEntityData.defineId(GuzzlerEntity.class, EntityDataSerializers.INT);
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
-    private static final RawAnimation IDLE_1 = RawAnimation.begin().thenLoop("animation.guzzler.idle_1");
-    private static final RawAnimation IDLE_2 = RawAnimation.begin().thenLoop("animation.guzzler.idle_2");
-    private static final RawAnimation IDLE_3 = RawAnimation.begin().thenLoop("animation.guzzler.idle_3");
-    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("animation.guzzler.walk");
-    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("animation.guzzler.attack");
-
-    private static final RawAnimation STAGGERED = RawAnimation.begin().thenLoop("animation.guzzler.staggered");
-
-    private static final EntityDataAccessor<Boolean> IDLE_1_AC = SynchedEntityData.defineId(GuzzlerEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> IDLE_2_AC = SynchedEntityData.defineId(GuzzlerEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> IDLE_3_AC = SynchedEntityData.defineId(GuzzlerEntity.class, EntityDataSerializers.BOOLEAN);
-
-    private static final EntityAction GUZZLER_IDLE_1_ACTION = new EntityAction(0, (e) -> {}, 1);
-    private static final StateHelper GUZZLER_IDLE_1_STATE =
-            StateHelper.Builder.state(IDLE_1_AC, "guzzler_idle_1")
-                    .playTime(70)
-                    .stopTime(100)
-                    .affectsAI(true)
-                    .affectedFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK))
-                    .entityAction(GUZZLER_IDLE_1_ACTION)
-                    .build();
-
-    private static final EntityAction GUZZLER_IDLE_2_ACTION = new EntityAction(0, (e) -> {}, 1);
-    private static final StateHelper GUZZLER_IDLE_2_STATE =
-            StateHelper.Builder.state(IDLE_2_AC, "guzzler_idle_2")
-                    .playTime(70)
-                    .stopTime(100)
-                    .affectsAI(true)
-                    .affectedFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK))
-                    .entityAction(GUZZLER_IDLE_2_ACTION)
-                    .build();
-
-    private static final EntityAction GUZZLER_IDLE_3_ACTION = new EntityAction(0, (e) -> {}, 1);
-    private static final StateHelper GUZZLER_IDLE_3_STATE =
-            StateHelper.Builder.state(IDLE_3_AC, "guzzler_idle_3")
-                    .playTime(70)
-                    .stopTime(100)
-                    .affectsAI(true)
-                    .affectedFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK))
-                    .entityAction(GUZZLER_IDLE_3_ACTION)
-                    .build();
-
-    private int shootCooldown = 0;
-
-    public GuzzlerEntity(EntityType<? extends EnhancedMonsterEntity> pEntityType, Level pLevel) {
+    public GuzzlerEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
@@ -112,17 +46,16 @@ public class GuzzlerEntity extends EnhancedMonsterEntity implements GeoAnimatabl
                 .add(Attributes.MAX_HEALTH, 100.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.11D)
                 .add(Attributes.ATTACK_DAMAGE, 12.0D)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 1.5D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
                 .add(Attributes.ARMOR, 12.0D);
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new RandomStateGoal<>(this));
-        this.goalSelector.addGoal(1, new GuzzlerEntity.GuzzlerShootingGoal(this, 0.5F, 30, 16));
-        this.goalSelector.addGoal(7, new RandomStrollGoal(this, 1.0D, 60));
-        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Strider.class, 8.0F));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new GuzzlerShootingGoal(this, 0.5F, 30, 16));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
@@ -196,7 +129,6 @@ public class GuzzlerEntity extends EnhancedMonsterEntity implements GeoAnimatabl
             pole.setYRot(this.getYRot() % 360.0F);
             pole.setXRot(Mth.clamp(this.getYRot(), -90.0F, 90.0F) % 360.0F);
             if (!this.level().isClientSide) {
-                triggerAnim("attack", "animation.guzzler.attack");
                 this.level().addFreshEntity(pole);
             }
             setShootCooldown(30 + this.getRandom().nextInt(10));
@@ -232,29 +164,6 @@ public class GuzzlerEntity extends EnhancedMonsterEntity implements GeoAnimatabl
         super.defineSynchedData();
         this.entityData.define(DATA_IS_CHARGING, false);
         this.entityData.define(IS_SHOOTING, 0);
-        this.entityData.define(IDLE_1_AC, false);
-        this.entityData.define(IDLE_2_AC, false);
-        this.entityData.define(IDLE_3_AC, false);
-
-
-    }
-
-    @Override
-    public ImmutableMap<String, StateHelper> getStates() {
-        return ImmutableMap.of(
-                GUZZLER_IDLE_1_STATE.getName(), GUZZLER_IDLE_1_STATE,
-                GUZZLER_IDLE_2_STATE.getName(), GUZZLER_IDLE_2_STATE,
-                GUZZLER_IDLE_3_STATE.getName(), GUZZLER_IDLE_3_STATE
-        );
-    }
-
-    @Override
-    public List<WeightedState<StateHelper>> getWeightedStatesToPerform() {
-        return ImmutableList.of(
-                WeightedState.of(GUZZLER_IDLE_1_STATE, 77),
-                WeightedState.of(GUZZLER_IDLE_2_STATE, 15),
-                WeightedState.of(GUZZLER_IDLE_3_STATE, 10)
-        );
     }
 
     public static <T extends Mob> boolean canSecondTierSpawn(EntityType<GuzzlerEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -402,49 +311,5 @@ public class GuzzlerEntity extends EnhancedMonsterEntity implements GeoAnimatabl
                 this.entity.setCharging(this.chargeTime > 5);
             }
         }
-    }
-
-    protected <E extends GuzzlerEntity> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
-        if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6   && !getBooleanState(IDLE_2_AC) && !getBooleanState(IDLE_3_AC)) {
-            event.setAndContinue(WALK);
-            return PlayState.CONTINUE;
-        }
-
-
-
-        if (this.isCharging()) {
-            event.setAndContinue(ATTACK);
-            return PlayState.CONTINUE;
-        }
-
-
-        if (getBooleanState(IDLE_2_AC)) {
-            return event.setAndContinue(IDLE_2);
-        }
-        if (getBooleanState(IDLE_3_AC)) {
-            return event.setAndContinue(IDLE_3);
-        }
-            return event.setAndContinue(IDLE_1);
-
-    }
-
-    @Override
-    public void registerControllers(final AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Normal", 5, this::controller));
-        controllers.add(new AnimationController<>(this, "attack", 0, event -> {
-            return PlayState.STOP;
-        }).triggerableAnim("animation.guzzler.attack", ATTACK));
-        //controllers.add(new AnimationController<>(this, "Shooting", 5, this::attackController));
-    }
-
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.cache;
-    }
-
-    @Override
-    public double getTick(Object o) {
-        return tickCount;
     }
 }

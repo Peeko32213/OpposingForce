@@ -1,4 +1,4 @@
-package com.unusualmodding.opposing_force.entity.ai.util;
+package com.unusualmodding.opposing_force.entity.ai.navigation;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
@@ -6,7 +6,7 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class CeilingMoveController  extends MoveControl {
+public class CeilingMoveController extends MoveControl {
     private final Mob parentEntity;
     private final float speedGeneral;
     private final boolean shouldLookAtTarget;

@@ -28,10 +28,3 @@ issueTrackerURL = "https://github.com/Peeko32213/OpposingForce/issues"
 	versionRange = "[47,)"
 	ordering = "NONE"
 	side = "BOTH"
-
-[[dependencies.opposing_force]]
-	modId = "geckolib"
-	mandatory = true
-	versionRange = "[4.2,)"
-	ordering = "BEFORE"
-	side = "BOTH"

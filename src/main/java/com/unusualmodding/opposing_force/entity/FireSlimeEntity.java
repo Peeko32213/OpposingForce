@@ -1,6 +1,5 @@
 package com.unusualmodding.opposing_force.entity;
 
-import com.unusualmodding.opposing_force.entity.base.AbstractMonster;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -19,6 +18,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
@@ -29,31 +29,22 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ToolActions;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Optional;
 import java.util.UUID;
 
-public class FireSlimeEntity extends AbstractMonster implements GeoAnimatable, GeoEntity {
+public class FireSlimeEntity extends Monster {
+
     private static final EntityDataAccessor<Boolean> DESPAWN_SOON = SynchedEntityData.defineId(FireSlimeEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> LAUNCHED = SynchedEntityData.defineId(FireSlimeEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<UUID>> PARENT_UUID = SynchedEntityData.defineId(FireSlimeEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private static final RawAnimation MOVE = RawAnimation.begin().thenLoop("animation.fireslime.idle");
     private int ricochetCount = 0;
     private int despawnTimer = 0;
 
-    public FireSlimeEntity(EntityType<? extends FireSlimeEntity> pEntityType, Level pLevel) {
+    public FireSlimeEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.fixupDimensions();
         this.moveControl = new FireSlimeEntity.FireSlimeMoveControl(this);
@@ -71,9 +62,7 @@ public class FireSlimeEntity extends AbstractMonster implements GeoAnimatable, G
         this.goalSelector.addGoal(2, new FireSlimeEntity.FireSlimeAttackGoal(this));
         this.goalSelector.addGoal(3, new FireSlimeEntity.FireSlimeRandomDirectionGoal(this));
         this.goalSelector.addGoal(5, new FireSlimeEntity.FireSlimeKeepOnJumpingGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (p_289461_) -> {
-            return Math.abs(p_289461_.getY() - this.getY()) <= 4.0D;
-        }));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (p_289461_) -> Math.abs(p_289461_.getY() - this.getY()) <= 4.0D));
     }
 
     public void playerTouch(Player pEntity) {
@@ -503,24 +492,4 @@ public class FireSlimeEntity extends AbstractMonster implements GeoAnimatable, G
         this.setDespawnSoon(true);
         this.entityData.set(LAUNCHED, true);
     }
-
-    protected <E extends FireSlimeEntity> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
-        return  event.setAndContinue(MOVE);
-    }
-
-    @Override
-    public void registerControllers(final AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Normal", 5, this::controller));
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.cache;
-    }
-
-    @Override
-    public double getTick(Object o) {
-        return tickCount;
-    }
-
 }

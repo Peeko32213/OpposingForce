@@ -1,6 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
-import com.unusualmodding.opposing_force.entity.ai.util.CeilingMoveController;
+import com.unusualmodding.opposing_force.entity.ai.navigation.CeilingMoveController;
 import com.unusualmodding.opposing_force.entity.ai.navigation.DirectPathNavigator;
 import com.unusualmodding.opposing_force.entity.ai.util.OPMath;
 import com.unusualmodding.opposing_force.entity.ai.goal.SmartNearestTargetGoal;
@@ -42,27 +42,12 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Random;
 
-public class PaleSpiderEntity extends Spider implements GeoAnimatable, GeoEntity {
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private static final RawAnimation SCURRY = RawAnimation.begin().thenLoop("animation.pale_spider.scurry");
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("animation.pale_spider.idle");
-    private static final RawAnimation BITE = RawAnimation.begin().thenLoop("animation.pale_spider.bite");
-    private static final RawAnimation SCURRY_UPSIDE_DOWN = RawAnimation.begin().thenLoop("animation.pale_spider.scurry_upside_down");
-    private static final RawAnimation IDLE_UPSIDE_DOWN = RawAnimation.begin().thenLoop("animation.pale_spider.idle_upside_down");
-    private static final RawAnimation BITE_UPSIDE_DOWN = RawAnimation.begin().thenLoop("animation.pale_spider.bite_upside_down");
+public class PaleSpiderEntity extends Spider {
 
     private static final EntityDataAccessor<Boolean> UPSIDE_DOWN = SynchedEntityData.defineId(PaleSpiderEntity.class, EntityDataSerializers.BOOLEAN);
 
@@ -404,25 +389,6 @@ public class PaleSpiderEntity extends Spider implements GeoAnimatable, GeoEntity
                 }
             }
         }
-
-    }
-
-        protected <E extends PaleSpiderEntity> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
-        if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F) && !this.isUpsideDown()) {
-            event.setAndContinue(SCURRY);
-            event.getController().setAnimationSpeed(1.8D);
-            return PlayState.CONTINUE;
-        }
-        else if (!(event.getLimbSwingAmount() > -0.06F && event.getLimbSwingAmount() < 0.06F) && this.isUpsideDown() & !this.isInWaterOrBubble() && !this.isClimbing()){
-            event.setAndContinue(SCURRY_UPSIDE_DOWN);
-            event.getController().setAnimationSpeed(1.8D);
-            return PlayState.CONTINUE;
-        }
-        else if (this.isUpsideDown() & !this.isInWaterOrBubble() && !this.isClimbing()){
-            event.setAndContinue(IDLE_UPSIDE_DOWN);
-            return PlayState.CONTINUE;
-        }
-        return  event.setAndContinue(IDLE);
     }
 
     @Nullable
@@ -463,29 +429,4 @@ public class PaleSpiderEntity extends Spider implements GeoAnimatable, GeoEntity
 
         }
     }
-
-    protected <E extends PaleSpiderEntity> PlayState attackController(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
-        if (this.swinging && event.getController().getAnimationState().equals(AnimationController.State.PAUSED) && attackCooldown == 0) {
-            return event.setAndContinue(BITE);
-        }
-        return PlayState.CONTINUE;
-    }
-
-    @Override
-    public void registerControllers(final AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Normal", 5, this::controller));
-        controllers.add(new AnimationController<>(this, "Attack", 5, this::attackController));
-    }
-
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.cache;
-    }
-
-    @Override
-    public double getTick(Object o) {
-        return tickCount;
-    }
-
 }

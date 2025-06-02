@@ -9,7 +9,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class OPModelLayers {
 
+    public static final ModelLayerLocation DICER_LAYER = main("dicer");
     public static final ModelLayerLocation EMERALDFISH_LAYER = main("emeraldfish");
+    public static final ModelLayerLocation FIRE_SLIME_LAYER = main("fire_slime");
+    public static final ModelLayerLocation FROWZY_LAYER = main("frowzy");
+    public static final ModelLayerLocation GUZZLER_LAYER = main("guzzler");
+    public static final ModelLayerLocation PALE_SPIDER_LAYER = main("pale_spider");
     public static final ModelLayerLocation RAMBLE_LAYER = main("ramble");
     public static final ModelLayerLocation SLUG_LAYER = main("slug");
     public static final ModelLayerLocation TERROR_LAYER = main("terror");

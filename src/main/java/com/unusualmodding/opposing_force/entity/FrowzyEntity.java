@@ -1,6 +1,5 @@
 package com.unusualmodding.opposing_force.entity;
 
-import com.unusualmodding.opposing_force.entity.base.AbstractMonster;
 import com.unusualmodding.opposing_force.entity.ai.goal.ParkourGoal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -27,25 +26,12 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.dimension.DimensionType;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class FrowzyEntity extends AbstractMonster implements GeoAnimatable, GeoEntity {
+public class FrowzyEntity extends Monster {
 
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("animation.frowzy.idle");
-    private static final RawAnimation RUN = RawAnimation.begin().thenLoop("animation.frowzy.run");
-    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("animation.frowzy.attack");
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    public FrowzyEntity(EntityType<? extends AbstractMonster> pEntityType, Level pLevel) {
+    public FrowzyEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
-
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
@@ -56,7 +42,6 @@ public class FrowzyEntity extends AbstractMonster implements GeoAnimatable, GeoE
                 .add(Attributes.ARMOR, 1.0D)
                 .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE);
     }
-
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new ParkourGoal(this));
@@ -73,41 +58,6 @@ public class FrowzyEntity extends AbstractMonster implements GeoAnimatable, GeoE
     @Override
     public boolean isAlliedTo(Entity pEntity) {
         return pEntity.is(this);
-    }
-
-
-    protected <E extends FrowzyEntity> PlayState controller(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
-        if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
-            event.setAndContinue(RUN);
-            return PlayState.CONTINUE;
-        }
-        return  event.setAndContinue(IDLE);
-    }
-
-    protected <E extends FrowzyEntity> PlayState attackController(final software.bernie.geckolib.core.animation.AnimationState<E> event) {
-        if (this.swinging) {
-            event.setAndContinue(ATTACK);
-            return PlayState.CONTINUE;
-
-        }
-        event.getController().forceAnimationReset();
-        return PlayState.STOP;
-    }
-
-    @Override
-    public void registerControllers(final AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Normal", 5, this::controller));
-        controllers.add(new AnimationController<>(this, "Attack", 0, this::attackController));
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.cache;
-    }
-
-    @Override
-    public double getTick(Object o) {
-        return tickCount;
     }
 
     public static <T extends Mob> boolean canFirstTierSpawn(EntityType<FrowzyEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {

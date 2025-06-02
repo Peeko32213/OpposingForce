@@ -30,7 +30,6 @@ public class OPWeaponEnchantment extends Enchantment {
         return levels;
     }
 
-
     protected boolean checkCompatibility(Enchantment enchantment) {
         return this != enchantment && OPEnchantments.areCompatible(this, enchantment);
     }

@@ -1,14 +1,10 @@
 package com.unusualmodding.opposing_force.events;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.client.models.DefaultModel;
 import com.unusualmodding.opposing_force.client.models.entity.*;
 import com.unusualmodding.opposing_force.client.particles.*;
-import com.unusualmodding.opposing_force.client.renderer.PlainGeoRenderer;
 import com.unusualmodding.opposing_force.client.renderer.*;
-import com.unusualmodding.opposing_force.client.renderer.layer.OPGlowingEyeLayer;
-import com.unusualmodding.opposing_force.entity.*;
-import com.unusualmodding.opposing_force.items.OPItemProperties;
+import com.unusualmodding.opposing_force.registry.OPItemProperties;
 import com.unusualmodding.opposing_force.registry.OPBlocks;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPModelLayers;
@@ -36,33 +32,6 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void onClientSetup(final FMLClientSetupEvent event) {
 
-        EntityRenderers.register(OPEntities.PALE_SPIDER.get(), (ctx) -> {
-            PlainGeoRenderer<PaleSpiderEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("pale_spider"));
-            render.addRenderLayer(new OPGlowingEyeLayer<>("pale_spider", render));
-            return render;
-        });
-
-        EntityRenderers.register(OPEntities.DICER.get(), (ctx) -> {
-            PlainGeoRenderer<DicerEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("dicer"));
-            render.addRenderLayer(new OPGlowingEyeLayer<>("dicer", render));
-            return render;
-        });
-
-        EntityRenderers.register(OPEntities.FROWZY.get(), (ctx) -> {
-            PlainGeoRenderer<FrowzyEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("frowzy"));
-            return render;
-        });
-
-        EntityRenderers.register(OPEntities.FIRE_SLIME.get(), (ctx) -> {
-            PlainGeoRenderer<FireSlimeEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("fireslime"));
-            return render;
-        });
-
-        EntityRenderers.register(OPEntities.GUZZLER.get(), (ctx) -> {
-            PlainGeoRenderer<GuzzlerEntity> render = new PlainGeoRenderer<>(ctx, () -> new DefaultModel<>("guzzler"));
-            return render;
-        });
-
         EntityRenderers.register(OPEntities.SLUG_EGG.get(), (render) -> new ThrownItemRenderer<>(render, 0.75F, true));
 
         ItemBlockRenderTypes.setRenderLayer(OPBlocks.BLUE_TRUMPET.get(), RenderType.cutout());
@@ -89,8 +58,13 @@ public final class ClientEvents {
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(OPEntities.DICER.get(), DicerRenderer::new);
         event.registerEntityRenderer(OPEntities.ELECTRICITY_BALL.get(), ElectricBallRenderer::new);
         event.registerEntityRenderer(OPEntities.EMERALDFISH.get(), EmeraldfishRenderer::new);
+        event.registerEntityRenderer(OPEntities.FIRE_SLIME.get(), FireSlimeRenderer::new);
+        event.registerEntityRenderer(OPEntities.FROWZY.get(), FrowzyRenderer::new);
+        event.registerEntityRenderer(OPEntities.GUZZLER.get(), GuzzlerRenderer::new);
+        event.registerEntityRenderer(OPEntities.PALE_SPIDER.get(), PaleSpiderRenderer::new);
         event.registerEntityRenderer(OPEntities.RAMBLE.get(), RambleRenderer::new);
         event.registerEntityRenderer(OPEntities.SLUG.get(), SlugRenderer::new);
         event.registerEntityRenderer(OPEntities.TERROR.get(), TerrorRenderer::new);
@@ -103,7 +77,12 @@ public final class ClientEvents {
 
     @SubscribeEvent
     public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(OPModelLayers.DICER_LAYER, DicerModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.EMERALDFISH_LAYER, EmeraldfishModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.FIRE_SLIME_LAYER, FireSlimeModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.FROWZY_LAYER, FrowzyModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.GUZZLER_LAYER, GuzzlerModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.PALE_SPIDER_LAYER, PaleSpiderModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.RAMBLE_LAYER, RambleModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.SLUG_LAYER, SlugModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.TERROR_LAYER, TerrorModel::createBodyLayer);
