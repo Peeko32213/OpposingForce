@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.client.renderer;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.FireSlimeModel;
 import com.unusualmodding.opposing_force.entity.FireSlime;
@@ -8,6 +9,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
@@ -28,6 +30,14 @@ public class FireSlimeRenderer extends MobRenderer<FireSlime, FireSlimeModel<Fir
 
     @Override
     protected @Nullable RenderType getRenderType(FireSlime entity, boolean bodyVisible, boolean translucent, boolean glowing) {
-        return RenderType.entityCutoutNoCull(TEXTURE);
+        return RenderType.entityCutout(TEXTURE);
+    }
+
+    protected void scale(FireSlime slime, PoseStack poseStack, float scale) {
+        poseStack.scale(0.999F, 0.999F, 0.999F);
+        poseStack.translate(0.0F, 0.005F, 0.0F);
+        float squish = Mth.lerp(scale, slime.oSquish, slime.squish) / (0.5F + 1.0F);
+        float squishScale = 1.0F / (squish + 1.0F);
+        poseStack.scale(squishScale, 1.0F / squishScale, squishScale);
     }
 }

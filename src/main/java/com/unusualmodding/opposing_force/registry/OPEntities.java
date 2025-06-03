@@ -35,7 +35,7 @@ public class OPEntities {
     public static final RegistryObject<EntityType<FireSlime>> FIRE_SLIME = ENTITY_TYPES.register(
             "fire_slime", () ->
             EntityType.Builder.of(FireSlime::new, MobCategory.MONSTER)
-                    .sized(0.6F, 0.6F)
+                    .sized(0.6875F, 0.6875F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "fire_slime").toString())
     );
@@ -51,7 +51,7 @@ public class OPEntities {
     public static final RegistryObject<EntityType<Guzzler>> GUZZLER = ENTITY_TYPES.register(
             "guzzler", () ->
             EntityType.Builder.of(Guzzler::new, MobCategory.MONSTER)
-                    .sized(2.0F, 2.0F)
+                    .sized(2.5F, 2.75F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "guzzler").toString())
     );

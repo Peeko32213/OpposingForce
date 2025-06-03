@@ -1,6 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
-import net.minecraft.core.Direction;
+import com.unusualmodding.opposing_force.registry.OPEffects;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -8,9 +8,9 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -18,17 +18,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ToolActions;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -41,75 +35,105 @@ public class FireSlime extends Monster {
     private static final EntityDataAccessor<Boolean> LAUNCHED = SynchedEntityData.defineId(FireSlime.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<UUID>> PARENT_UUID = SynchedEntityData.defineId(FireSlime.class, EntityDataSerializers.OPTIONAL_UUID);
 
-    private int ricochetCount = 0;
     private int despawnTimer = 0;
+
+    public float targetSquish;
+    public float squish;
+    public float oSquish;
+    private boolean wasOnGround;
 
     public FireSlime(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        this.fixupDimensions();
-        this.moveControl = new FireSlime.FireSlimeMoveControl(this);
+        this.moveControl = new FireSlimeMoveControl(this);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 4.0)
-                .add(Attributes.MOVEMENT_SPEED, (double)0.19F)
-                .add(Attributes.ATTACK_DAMAGE, 2.0F);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 8.0D).add(Attributes.MOVEMENT_SPEED, 0.2F).add(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FireSlime.FireSlimeFloatGoal(this));
-        this.goalSelector.addGoal(2, new FireSlime.FireSlimeAttackGoal(this));
-        this.goalSelector.addGoal(3, new FireSlime.FireSlimeRandomDirectionGoal(this));
-        this.goalSelector.addGoal(5, new FireSlime.FireSlimeKeepOnJumpingGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (p_289461_) -> Math.abs(p_289461_.getY() - this.getY()) <= 4.0D));
+        this.goalSelector.addGoal(1, new FireSlimeFloatGoal(this));
+        this.goalSelector.addGoal(2, new FireSlimeAttackGoal(this));
+        this.goalSelector.addGoal(3, new FireSlimeRandomDirectionGoal(this));
+        this.goalSelector.addGoal(4, new FireSlimeKeepOnJumpingGoal(this));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (entity) -> Math.abs(entity.getY() - this.getY()) <= (double) 4.0F));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
     }
 
-    public void playerTouch(Player pEntity) {
-        if (this.isDealsDamage()) {
-            this.dealDamage(pEntity);
+    public void playerTouch(Player player) {
+        if (this.dealsDamage()) {
+            this.dealDamage(player);
         }
-
     }
 
-    protected void dealDamage(LivingEntity pLivingEntity) {
+    protected void dealDamage(LivingEntity livingEntity) {
         if (this.isAlive()) {
-            if (this.distanceToSqr(pLivingEntity) < 0.6D && this.hasLineOfSight(pLivingEntity) && pLivingEntity.hurt(this.damageSources().mobAttack(this), this.getAttackDamage())) {
+            if (this.distanceToSqr(livingEntity) < 1.0F && this.hasLineOfSight(livingEntity) && livingEntity.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE))) {
                 this.playSound(SoundEvents.SLIME_ATTACK, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
-                this.doEnchantDamageEffects(this, pLivingEntity);
+                if (this.random.nextBoolean()) {
+                    livingEntity.setSecondsOnFire(3);
+                }
+                this.doEnchantDamageEffects(this, livingEntity);
             }
         }
-
     }
 
-    protected boolean isDealsDamage() {
+    protected boolean dealsDamage() {
         return this.isEffectiveAi();
-    }
-
-    protected float getAttackDamage() {
-        return (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
     }
 
     protected void jumpFromGround() {
         Vec3 vec3 = this.getDeltaMovement();
-        this.setDeltaMovement(vec3.x, (double)this.getJumpPower(), vec3.z);
+        this.setDeltaMovement(vec3.x, this.getJumpPower(), vec3.z);
         this.hasImpulse = true;
     }
 
-    protected int getJumpDelay() {
-        return this.random.nextInt(10) + 5;
+    public void tick() {
+        super.tick();
+
+        this.squish += (this.targetSquish - this.squish) * 0.5F;
+        this.oSquish = this.squish;
+        if (this.onGround() && !this.wasOnGround) {
+            this.playSound(this.getSquishSound(), this.getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
+            this.targetSquish = -0.5F;
+        } else if (!this.onGround() && this.wasOnGround) {
+            this.targetSquish = 1.0F;
+        }
+        this.wasOnGround = this.onGround();
+        this.decreaseSquish();
+
+        if (isDespawnSoon()) {
+            despawnTimer++;
+            if (despawnTimer > 100) {
+                despawnTimer = 0;
+                this.spawnAnim();
+                this.remove(RemovalReason.DISCARDED);
+            }
+        }
     }
 
-    protected boolean doPlayJumpSound() {
-        return true;
+    protected void decreaseSquish() {
+        this.targetSquish *= 0.6F;
+    }
+
+    protected int getJumpDelay() {
+        return this.random.nextInt(20) + 10;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource p_33631_) {
+        return SoundEvents.SLIME_HURT_SMALL;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.SLIME_DEATH_SMALL;
+    }
+
+    protected SoundEvent getSquishSound() {
+        return SoundEvents.SLIME_SQUISH_SMALL;
     }
 
     protected SoundEvent getJumpSound() {
-        return SoundEvents.SLIME_JUMP;
-    }
-
-    float getSoundPitch() {
-        return ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+        return SoundEvents.SLIME_JUMP_SMALL;
     }
 
     @Override
@@ -145,65 +169,8 @@ public class FireSlime extends Monster {
         compound.putBoolean("DespawnSoon", this.isDespawnSoon());
     }
 
-    private void onImpact(HitResult raytraceresult) {
-        HitResult.Type raytraceresult$type = raytraceresult.getType();
-        if (raytraceresult$type == HitResult.Type.ENTITY) {
-            this.onEntityHit((EntityHitResult) raytraceresult);
-        } else if (raytraceresult$type == HitResult.Type.BLOCK) {
-            BlockHitResult traceResult = (BlockHitResult) raytraceresult;
-            BlockState blockstate = this.level().getBlockState(traceResult.getBlockPos());
-            if (!blockstate.getBlockSupportShape(this.level(), traceResult.getBlockPos()).isEmpty()) {
-                Direction face = traceResult.getDirection();
-                Vec3 prevMotion = this.getDeltaMovement();
-                double motionX = prevMotion.x();
-                double motionY = prevMotion.y();
-                double motionZ = prevMotion.z();
-                switch (face) {
-                    case EAST, WEST -> motionX = -motionX;
-                    case SOUTH, NORTH -> motionZ = -motionZ;
-                    default -> motionY = -motionY;
-                }
-                this.setDeltaMovement(motionX, motionY, motionZ);
-                if (this.tickCount > 200 || ricochetCount > 20) {
-                    this.entityData.set(LAUNCHED, false);
-                } else {
-                    ricochetCount++;
-                }
-            }
-        }
-    }
-
-    protected boolean canHitEntity(Entity p_230298_1_) {
-        return !p_230298_1_.isSpectator() && !(p_230298_1_ instanceof Guzzler);
-    }
-
-    public void tick() {
-        float f = 1.0F;
-        if (entityData.get(LAUNCHED)) {
-            this.yBodyRot = this.getYRot();
-            HitResult raytraceresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-            if (raytraceresult != null && raytraceresult.getType() != HitResult.Type.MISS) {
-                this.onImpact(raytraceresult);
-            }
-            f = 0.1F;
-        }
-        super.tick();
-        final boolean liquid = this.isInWater() || this.isInLava();
-        if (this.onGround() && !this.isInWater() && !this.isInLava()) {
-            this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
-            this.setYRot( this.random.nextFloat() * 360.0F);
-            this.setOnGround(false);
-            this.hasImpulse = true;
-        }
-        this.setNoGravity(false);
-        if (isDespawnSoon()) {
-            despawnTimer++;
-            if (despawnTimer > 80) {
-                despawnTimer = 0;
-                this.spawnAnim();
-                this.remove(RemovalReason.DISCARDED);
-            }
-        }
+    protected boolean canHitEntity(Entity entity) {
+        return !entity.isSpectator() && !(entity instanceof Guzzler);
     }
 
     public Entity getParent() {
@@ -212,270 +179,6 @@ public class FireSlime extends Monster {
             return ((ServerLevel) level()).getEntity(id);
         }
         return null;
-    }
-
-    protected void damageShieldFor(Player holder, float damage) {
-        if (holder.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)) {
-            if (!this.level().isClientSide) {
-                holder.awardStat(Stats.ITEM_USED.get(holder.getUseItem().getItem()));
-            }
-
-            if (damage >= 3.0F) {
-                int i = 1 + Mth.floor(damage);
-                InteractionHand hand = holder.getUsedItemHand();
-                holder.getUseItem().hurtAndBreak(i, holder, (p_213833_1_) -> {
-                    p_213833_1_.broadcastBreakEvent(hand);
-                    net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem(holder, holder.getUseItem(), hand);
-                });
-                if (holder.getUseItem().isEmpty()) {
-                    if (hand == InteractionHand.MAIN_HAND) {
-                        holder.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-                    } else {
-                        holder.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
-                    }
-                    holder.playSound(SoundEvents.SHIELD_BREAK, 0.8F, 0.8F + this.level().random.nextFloat() * 0.4F);
-                }
-            }
-
-        }
-    }
-
-    private void onEntityHit(EntityHitResult raytraceresult) {
-        Entity entity = this.getParent();
-        if (entity instanceof LivingEntity && !this.level().isClientSide && raytraceresult.getEntity() instanceof LivingEntity target) {
-            if(!target.isBlocking()){
-                target.hurt(damageSources().mobProjectile(this, (LivingEntity)entity), 3.0F);
-                target.knockback(0.7F, entity.getX() - this.getX(), entity.getZ() - this.getZ());
-            }else{
-                if (this.getTarget() instanceof Player) {
-                    this.damageShieldFor(((Player) this.getTarget()), 3.0F);
-                }
-            }
-            this.entityData.set(LAUNCHED, false);
-        }
-    }
-
-    static class FireSlimeFloatGoal extends Goal {
-        private final FireSlime slime;
-
-        public FireSlimeFloatGoal(FireSlime pSlime) {
-            this.slime = pSlime;
-            this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE));
-            pSlime.getNavigation().setCanFloat(true);
-        }
-
-        /**
-         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
-         * method as well.
-         */
-        public boolean canUse() {
-            return (this.slime.isInWater() || this.slime.isInLava()) && this.slime.getMoveControl() instanceof FireSlime.FireSlimeMoveControl;
-        }
-
-        public boolean requiresUpdateEveryTick() {
-            return true;
-        }
-
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
-        public void tick() {
-            if (this.slime.getRandom().nextFloat() < 0.8F) {
-                this.slime.getJumpControl().jump();
-            }
-
-            MoveControl movecontrol = this.slime.getMoveControl();
-            if (movecontrol instanceof FireSlime.FireSlimeMoveControl slime$slimemovecontrol) {
-                slime$slimemovecontrol.setWantedMovement(1.2D);
-            }
-
-        }
-    }
-
-    static class FireSlimeKeepOnJumpingGoal extends Goal {
-        private final FireSlime slime;
-
-        public FireSlimeKeepOnJumpingGoal(FireSlime pSlime) {
-            this.slime = pSlime;
-            this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE));
-        }
-
-        /**
-         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
-         * method as well.
-         */
-        public boolean canUse() {
-            return !this.slime.isPassenger();
-        }
-
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
-        public void tick() {
-            MoveControl movecontrol = this.slime.getMoveControl();
-            if (movecontrol instanceof FireSlime.FireSlimeMoveControl slime$slimemovecontrol) {
-                slime$slimemovecontrol.setWantedMovement(1.0D);
-            }
-
-        }
-    }
-
-    static class FireSlimeAttackGoal extends Goal {
-        private final FireSlime slime;
-        private int growTiredTimer;
-
-        public FireSlimeAttackGoal(FireSlime pSlime) {
-            this.slime = pSlime;
-            this.setFlags(EnumSet.of(Goal.Flag.LOOK));
-        }
-
-        /**
-         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
-         * method as well.
-         */
-        public boolean canUse() {
-            LivingEntity livingentity = this.slime.getTarget();
-            if (livingentity == null) {
-                return false;
-            } else {
-                return !this.slime.canAttack(livingentity) ? false : this.slime.getMoveControl() instanceof FireSlime.FireSlimeMoveControl;
-            }
-        }
-
-        /**
-         * Execute a one shot task or start executing a continuous task
-         */
-        public void start() {
-            this.growTiredTimer = reducedTickDelay(300);
-            super.start();
-        }
-
-        /**
-         * Returns whether an in-progress EntityAIBase should continue executing
-         */
-        public boolean canContinueToUse() {
-            LivingEntity livingentity = this.slime.getTarget();
-            if (livingentity == null) {
-                return false;
-            } else if (!this.slime.canAttack(livingentity)) {
-                return false;
-            } else {
-                return --this.growTiredTimer > 0;
-            }
-        }
-
-        public boolean requiresUpdateEveryTick() {
-            return true;
-        }
-
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
-        public void tick() {
-            LivingEntity livingentity = this.slime.getTarget();
-            if (livingentity != null) {
-                this.slime.lookAt(livingentity, 10.0F, 10.0F);
-            }
-
-            MoveControl movecontrol = this.slime.getMoveControl();
-            if (movecontrol instanceof FireSlime.FireSlimeMoveControl slime$slimemovecontrol) {
-                slime$slimemovecontrol.setDirection(this.slime.getYRot(), this.slime.isDealsDamage());
-            }
-
-        }
-    }
-
-    private static class FireSlimeRandomDirectionGoal extends Goal {
-        private final FireSlime slime;
-        private float chosenDegrees;
-        private int nextRandomizeTime;
-
-        public FireSlimeRandomDirectionGoal(FireSlime pSlime) {
-            this.slime = pSlime;
-            this.setFlags(EnumSet.of(Goal.Flag.LOOK));
-        }
-
-        /**
-         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
-         * method as well.
-         */
-        public boolean canUse() {
-            return this.slime.getTarget() == null && (this.slime.onGround() || this.slime.isInWater() || this.slime.isInLava() || this.slime.hasEffect(MobEffects.LEVITATION)) && this.slime.getMoveControl() instanceof FireSlime.FireSlimeMoveControl;
-        }
-
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
-        public void tick() {
-            if (--this.nextRandomizeTime <= 0) {
-                this.nextRandomizeTime = this.adjustedTickDelay(40 + this.slime.getRandom().nextInt(60));
-                this.chosenDegrees = (float)this.slime.getRandom().nextInt(360);
-            }
-
-            MoveControl movecontrol = this.slime.getMoveControl();
-            if (movecontrol instanceof FireSlime.FireSlimeMoveControl slime$slimemovecontrol) {
-                slime$slimemovecontrol.setDirection(this.chosenDegrees, false);
-            }
-
-        }
-    }
-
-    private static class FireSlimeMoveControl extends MoveControl {
-        private float yRot;
-        private int jumpDelay;
-        private final FireSlime fireSlime;
-        private boolean isAggressive;
-
-        public FireSlimeMoveControl(FireSlime fireSlime) {
-            super(fireSlime);
-            this.fireSlime = fireSlime;
-            this.yRot = 180.0F * fireSlime.getYRot() / 3.1415927F;
-        }
-
-        public void setDirection(float f, boolean bl) {
-            this.yRot = f;
-            this.isAggressive = bl;
-        }
-
-        public void setWantedMovement(double d) {
-            this.speedModifier = d;
-            this.operation = Operation.MOVE_TO;
-        }
-
-        public void tick() {
-            float n;
-            this.mob.setYRot(this.rotlerp(this.mob.getYRot(), this.yRot, 90.0F));
-            this.mob.yHeadRot = this.mob.getYRot();
-            this.mob.yBodyRot = this.mob.getYRot();
-             {
-                if (this.operation != Operation.MOVE_TO) {
-                    this.mob.setZza(0.0F);
-                }
-                else {
-                    this.operation = Operation.WAIT;
-                    if (this.mob.onGround()) {
-                        this.mob.setSpeed((float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
-                        if (this.jumpDelay-- <= 0) {
-                            this.jumpDelay = this.fireSlime.getJumpDelay();
-                            if (this.isAggressive) {
-                                this.jumpDelay /= 3;
-                            }
-
-                            this.fireSlime.getJumpControl().jump();
-                            if (this.fireSlime.doPlayJumpSound()) {
-                                this.fireSlime.playSound(this.fireSlime.getJumpSound(), this.fireSlime.getSoundVolume(), this.fireSlime.getSoundPitch());
-                            }
-                        } else {
-                            this.fireSlime.xxa = 0.0F;
-                            this.fireSlime.zza = 0.0F;
-                            this.mob.setSpeed(0.0F);
-                        }
-                    } else {
-                        this.mob.setSpeed((float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
-                    }
-                }
-            }
-        }
     }
 
     public void shoot(double p_70186_1_, double p_70186_3_, double p_70186_5_, float p_70186_7_, float p_70186_8_) {
@@ -491,5 +194,186 @@ public class FireSlime extends Monster {
         this.yRotO = getYRot();
         this.setDespawnSoon(true);
         this.entityData.set(LAUNCHED, true);
+    }
+
+    private static class FireSlimeMoveControl extends MoveControl {
+
+        private final FireSlime slime;
+        private float yRot;
+        private int jumpDelay;
+        private boolean isAggressive;
+
+        public FireSlimeMoveControl(FireSlime slime) {
+            super(slime);
+            this.slime = slime;
+            this.yRot = 180.0F * slime.getYRot() / (float)Math.PI;
+        }
+
+        public void setDirection(float yRot, boolean isAggressive) {
+            this.yRot = yRot;
+            this.isAggressive = isAggressive;
+        }
+
+        public void setWantedMovement(double speedModifier) {
+            this.speedModifier = speedModifier;
+            this.operation = Operation.MOVE_TO;
+        }
+
+        public void tick() {
+            this.mob.setYRot(this.rotlerp(this.mob.getYRot(), this.yRot, 90.0F));
+            this.mob.yHeadRot = this.mob.getYRot();
+            this.mob.yBodyRot = this.mob.getYRot();
+            if (this.operation != Operation.MOVE_TO) {
+                this.mob.setZza(0.0F);
+            } else {
+                this.operation = Operation.WAIT;
+                if (this.mob.onGround()) {
+                    this.mob.setSpeed((float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
+                    if (this.jumpDelay-- <= 0) {
+                        this.jumpDelay = this.slime.getJumpDelay();
+                        if (this.isAggressive) {
+                            this.jumpDelay /= 3;
+                        }
+                        this.slime.getJumpControl().jump();
+                        this.slime.playSound(this.slime.getJumpSound(), this.slime.getSoundVolume(), (this.slime.random.nextFloat() - this.slime.random.nextFloat()) * 0.2F + 1.0F);
+                    } else {
+                        this.slime.xxa = 0.0F;
+                        this.slime.zza = 0.0F;
+                        this.mob.setSpeed(0.0F);
+                    }
+                } else {
+                    this.mob.setSpeed((float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
+                }
+            }
+        }
+    }
+
+    private static class FireSlimeRandomDirectionGoal extends Goal {
+
+        private final FireSlime slime;
+        private float chosenDegrees;
+        private int nextRandomizeTime;
+
+        public FireSlimeRandomDirectionGoal(FireSlime slime) {
+            this.slime = slime;
+            this.setFlags(EnumSet.of(Flag.LOOK));
+        }
+
+        public boolean canUse() {
+            return this.slime.getTarget() == null && (this.slime.onGround() || this.slime.isInWater() || this.slime.isInLava() || this.slime.hasEffect(MobEffects.LEVITATION)) && this.slime.getMoveControl() instanceof FireSlimeMoveControl;
+        }
+
+        public void tick() {
+            if (--this.nextRandomizeTime <= 0) {
+                this.nextRandomizeTime = this.adjustedTickDelay(20 + this.slime.getRandom().nextInt(30));
+                this.chosenDegrees = (float) this.slime.getRandom().nextInt(360);
+            }
+
+            MoveControl movecontrol = this.slime.getMoveControl();
+            if (movecontrol instanceof FireSlimeMoveControl fireSlimeMoveControl) {
+                fireSlimeMoveControl.setDirection(this.chosenDegrees, false);
+            }
+        }
+    }
+
+    static class FireSlimeFloatGoal extends Goal {
+
+        private final FireSlime slime;
+
+        public FireSlimeFloatGoal(FireSlime slime) {
+            this.slime = slime;
+            this.setFlags(EnumSet.of(Flag.JUMP, Flag.MOVE));
+            slime.getNavigation().setCanFloat(true);
+        }
+
+        public boolean canUse() {
+            return (this.slime.isInWater() || this.slime.isInLava()) && this.slime.getMoveControl() instanceof FireSlimeMoveControl;
+        }
+
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
+        public void tick() {
+            if (this.slime.getRandom().nextFloat() < 0.8F) {
+                this.slime.getJumpControl().jump();
+            }
+            MoveControl movecontrol = this.slime.getMoveControl();
+            if (movecontrol instanceof FireSlimeMoveControl fireSlimeMoveControl) {
+                fireSlimeMoveControl.setWantedMovement(1.2);
+            }
+        }
+    }
+
+    static class FireSlimeKeepOnJumpingGoal extends Goal {
+
+        private final FireSlime slime;
+
+        public FireSlimeKeepOnJumpingGoal(FireSlime slime) {
+            this.slime = slime;
+            this.setFlags(EnumSet.of(Flag.JUMP, Flag.MOVE));
+        }
+
+        public boolean canUse() {
+            return !this.slime.isPassenger();
+        }
+
+        public void tick() {
+            MoveControl movecontrol = this.slime.getMoveControl();
+            if (movecontrol instanceof FireSlimeMoveControl fireSlimeMoveControl) {
+                fireSlimeMoveControl.setWantedMovement(1.5F);
+            }
+        }
+    }
+
+    static class FireSlimeAttackGoal extends Goal {
+
+        private final FireSlime slime;
+        private int growTiredTimer;
+
+        public FireSlimeAttackGoal(FireSlime slime) {
+            this.slime = slime;
+            this.setFlags(EnumSet.of(Flag.LOOK));
+        }
+
+        public boolean canUse() {
+            LivingEntity livingentity = this.slime.getTarget();
+            if (livingentity == null) {
+                return false;
+            } else {
+                return this.slime.canAttack(livingentity) && this.slime.getMoveControl() instanceof FireSlimeMoveControl;
+            }
+        }
+
+        public void start() {
+            this.growTiredTimer = reducedTickDelay(300);
+            super.start();
+        }
+
+        public boolean canContinueToUse() {
+            LivingEntity livingentity = this.slime.getTarget();
+            if (livingentity == null) {
+                return false;
+            } else if (!this.slime.canAttack(livingentity)) {
+                return false;
+            } else {
+                return --this.growTiredTimer > 0;
+            }
+        }
+
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
+        public void tick() {
+            LivingEntity livingentity = this.slime.getTarget();
+            if (livingentity != null) {
+                this.slime.lookAt(livingentity, 10.0F, 10.0F);
+            }
+            MoveControl movecontrol = this.slime.getMoveControl();
+            if (movecontrol instanceof FireSlimeMoveControl fireSlimeMoveControl) {
+                fireSlimeMoveControl.setDirection(this.slime.getYRot(), this.slime.dealsDamage());
+            }
+        }
     }
 }

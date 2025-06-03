@@ -37,8 +37,12 @@ public class Guzzler extends Monster {
     private static final EntityDataAccessor<Boolean> DATA_IS_CHARGING = SynchedEntityData.defineId(Guzzler.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> IS_SHOOTING = SynchedEntityData.defineId(Guzzler.class, EntityDataSerializers.INT);
 
+    public final AnimationState idleAnimationState = new AnimationState();
+    public final AnimationState stunnedAnimationState = new AnimationState();
+
     public Guzzler(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.setMaxUpStep(1.0F);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -110,30 +114,39 @@ public class Guzzler extends Monster {
 
     public void tick() {
         super.tick();
+
+        if (this.level().isClientSide()) {
+            this.setupAnimationStates();
+        }
+
         this.checkInsideBlocks();
+
         if (getShootCooldown() > 0) {
             setShootCooldown(getShootCooldown() - 1);
         }
         if (this.getTarget() != null && getShootCooldown() == 0) {
-            FireSlime pole = OPEntities.FIRE_SLIME.get().create(level());
-            pole.setParentId(this.getUUID());
-            pole.setPos(this.getX(), this.getEyeY(), this.getZ());
+            FireSlime slime = OPEntities.FIRE_SLIME.get().create(level());
+            slime.setParentId(this.getUUID());
+            slime.setPos(this.getX(), this.getEyeY(), this.getZ());
             final double d0 = this.getTarget().getEyeY() - (double) .1F;
             final double d1 = this.getTarget().getX() - this.getX();
-            final double d2 = d0 - pole.getY();
+            final double d2 = d0 - slime.getY();
             final double d3 = this.getTarget().getZ() - this.getZ();
             final float f3 = Mth.sqrt((float) (d1 * d1 + d2 * d2 + d3 * d3)) * 0.2F;
             this.gameEvent(GameEvent.PROJECTILE_SHOOT);
             this.playSound(SoundEvents.CROSSBOW_LOADING_END, 2F, 1F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-            pole.shoot(d1, d2 + (double) f3, d3, 2F, 0F);
-            pole.setYRot(this.getYRot() % 360.0F);
-            pole.setXRot(Mth.clamp(this.getYRot(), -90.0F, 90.0F) % 360.0F);
+            slime.shoot(d1, d2 + (double) f3, d3, 2F, 0F);
+            slime.setYRot(this.getYRot() % 360.0F);
+            slime.setXRot(Mth.clamp(this.getYRot(), -90.0F, 90.0F) % 360.0F);
             if (!this.level().isClientSide) {
-                this.level().addFreshEntity(pole);
+                this.level().addFreshEntity(slime);
             }
             setShootCooldown(30 + this.getRandom().nextInt(10));
-
         }
+    }
+
+    private void setupAnimationStates() {
+        this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
     }
 
     public boolean shouldShoot() {
