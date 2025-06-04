@@ -129,7 +129,7 @@ public class Ramble extends Monster {
     }
 
     public void flailCooldown() {
-        this.entityData.set(FLAIL_COOLDOWN, 60);
+        this.entityData.set(FLAIL_COOLDOWN, 80);
     }
 
     public void tick() {
@@ -137,7 +137,6 @@ public class Ramble extends Monster {
 
         if (this.getFlailCooldown() > 0) {
             this.setFlailCooldown(this.getFlailCooldown() - 1);
-            this.level().broadcastEntityEvent(this, (byte) 39);
         }
 
         if (this.level().isClientSide()) {
@@ -149,23 +148,6 @@ public class Ramble extends Monster {
         this.idleAnimationState.animateWhen(this.isAlive() && !this.isFlailing() && this.getFlailCooldown() <= 0, this.tickCount);
         this.cooldownAnimationState.animateWhen(this.isAlive() && !this.isFlailing() && this.getFlailCooldown() > 0, this.tickCount);
         this.flailAnimationState.animateWhen(this.isAlive() && this.isFlailing(), this.tickCount);
-    }
-
-    private void cooldownEffect() {
-        if (this.random.nextBoolean() && this.isAlive()) {
-            double d = this.getX();
-            double e = this.getY() + (double) this.getBbHeight() + 0.2;
-            double f = this.getZ();
-            this.level().addParticle(ParticleTypes.CLOUD, d, e, f, 0.1, 0.2, 0.1);
-        }
-    }
-
-    @Override
-    public void handleEntityEvent(byte id) {
-        if (id == 39) {
-            this.cooldownEffect();
-        }
-        super.handleEntityEvent(id);
     }
 
     public boolean hurtEntitiesAround(Vec3 center, float radius, boolean disablesShields) {

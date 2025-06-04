@@ -75,7 +75,7 @@ public class RambleModel<T extends Ramble> extends HierarchicalModel<T> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
-		PartDefinition Body = root.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(0, 0).addBox(-10.0F, -21.05F, -10.0F, 20.0F, 21.0F, 20.0F, new CubeDeformation(0.0F)).texOffs(96, 70).addBox(-4.0F, -26.0F, -4.0F, 8.0F, 5.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -16.0F, 0.0F));
+		PartDefinition Body = root.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(0, 0).addBox(-10.0F, -21.05F, -10.0F, 20.0F, 21.0F, 20.0F, new CubeDeformation(0.0F)).texOffs(0, 41).addBox(-9.0F, -19.075F, -9.0F, 18.0F, 19.0F, 18.0F, new CubeDeformation(0.0F)).texOffs(96, 70).addBox(-4.0F, -26.0F, -4.0F, 8.0F, 5.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -16.0F, 0.0F));
 		PartDefinition FrontArm1 = Body.addOrReplaceChild("FrontArm1", CubeListBuilder.create().texOffs(2, 80).addBox(-1.0F, 14.0F, -16.0F, 2.0F, 2.0F, 14.0F, new CubeDeformation(0.0F)).texOffs(0, 0).addBox(-1.0F, 0.0F, -2.0F, 2.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)).texOffs(112, 51).addBox(-2.5F, 16.0F, -19.0F, 5.0F, 2.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(6.0F, -19.0F, -10.0F));
 		PartDefinition FrontArm2 = Body.addOrReplaceChild("FrontArm2", CubeListBuilder.create().texOffs(2, 80).mirror().addBox(-1.0F, 14.0F, -16.0F, 2.0F, 2.0F, 14.0F, new CubeDeformation(0.0F)).mirror(false).texOffs(0, 0).mirror().addBox(-1.0F, 0.0F, -2.0F, 2.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false).texOffs(112, 51).addBox(-2.5F, 16.0F, -19.0F, 5.0F, 2.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(-6.0F, -19.0F, -10.0F));
 		PartDefinition LeftArm1 = Body.addOrReplaceChild("LeftArm1", CubeListBuilder.create().texOffs(40, 110).addBox(2.0F, 14.0F, -1.0F, 16.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)).texOffs(0, 0).addBox(0.0F, 0.0F, -1.0F, 2.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)).texOffs(110, 56).addBox(18.0F, 16.0F, -2.5F, 3.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(10.0F, -19.0F, -6.0F));
@@ -84,26 +84,26 @@ public class RambleModel<T extends Ramble> extends HierarchicalModel<T> {
 		PartDefinition RightArm2 = Body.addOrReplaceChild("RightArm2", CubeListBuilder.create().texOffs(40, 110).mirror().addBox(-18.0F, 14.0F, -1.0F, 16.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false).texOffs(0, 0).mirror().addBox(-2.0F, 0.0F, -1.0F, 2.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false).texOffs(110, 56).mirror().addBox(-21.0F, 16.0F, -2.5F, 3.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(-10.0F, -19.0F, 6.0F));
 		PartDefinition BackArm1 = Body.addOrReplaceChild("BackArm1", CubeListBuilder.create().texOffs(78, 98).addBox(-1.0F, 14.0F, 2.0F, 2.0F, 2.0F, 14.0F, new CubeDeformation(0.0F)).texOffs(0, 0).addBox(-1.0F, 0.0F, 0.0F, 2.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)).texOffs(112, 63).addBox(-2.5F, 16.0F, 16.0F, 5.0F, 2.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(6.0F, -19.0F, 10.0F));
 		PartDefinition BackArm2 = Body.addOrReplaceChild("BackArm2", CubeListBuilder.create().texOffs(78, 98).mirror().addBox(-1.0F, 14.0F, 2.0F, 2.0F, 2.0F, 14.0F, new CubeDeformation(0.0F)).mirror(false).texOffs(0, 0).mirror().addBox(-1.0F, 0.0F, 0.0F, 2.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false).texOffs(112, 63).addBox(-2.5F, 16.0F, 16.0F, 5.0F, 2.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(-6.0F, -19.0F, 10.0F));
-		PartDefinition FrontHead = Body.addOrReplaceChild("FrontHead", CubeListBuilder.create().texOffs(64, 70).addBox(-4.0F, -6.0F, -8.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -4.0F, -10.05F));
-		PartDefinition LeftHead = Body.addOrReplaceChild("LeftHead", CubeListBuilder.create().texOffs(60, 0).addBox(0.0F, -6.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(10.025F, -4.0F, 0.0F));
-		PartDefinition RightHead = Body.addOrReplaceChild("RightHead", CubeListBuilder.create().texOffs(60, 0).mirror().addBox(-8.0F, -6.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(-10.025F, -4.0F, 0.0F));
-		PartDefinition BackHead = Body.addOrReplaceChild("BackHead", CubeListBuilder.create().texOffs(54, 41).addBox(-4.0F, -6.0F, 0.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -4.0F, 10.1F));
+		PartDefinition FrontHead = Body.addOrReplaceChild("FrontHead", CubeListBuilder.create().texOffs(64, 70).addBox(-4.0F, -6.0F, -8.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -4.0F, -10.0F));
+		PartDefinition LeftHead = Body.addOrReplaceChild("LeftHead", CubeListBuilder.create().texOffs(60, 0).addBox(0.0F, -6.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(10.0F, -4.0F, 0.0F));
+		PartDefinition RightHead = Body.addOrReplaceChild("RightHead", CubeListBuilder.create().texOffs(60, 0).mirror().addBox(-8.0F, -6.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(-10.0F, -4.0F, 0.0F));
+		PartDefinition BackHead = Body.addOrReplaceChild("BackHead", CubeListBuilder.create().texOffs(54, 41).addBox(-4.0F, -6.0F, 0.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -4.0F, 10.0F));
 		PartDefinition OuterLeg1 = root.addOrReplaceChild("OuterLeg1", CubeListBuilder.create(), PartPose.offset(7.0F, -16.0F, -7.0F));
 		PartDefinition Leg1 = OuterLeg1.addOrReplaceChild("Leg1", CubeListBuilder.create().texOffs(0, 41).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 		PartDefinition Fingers1 = Leg1.addOrReplaceChild("Fingers1", CubeListBuilder.create(), PartPose.offsetAndRotation(1.0F, 16.0F, -1.0F, -0.3927F, 0.0F, -0.3927F));
-		PartDefinition Fingers1_r1 = Fingers1.addOrReplaceChild("Fingers1_r1", CubeListBuilder.create().texOffs(108, 5).addBox(-2.5F, 0.0F, -6.0F, 5.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, 0.0F, 1.0F, 0.0F, -0.7854F, 0.0F));
+		PartDefinition cube_r1 = Fingers1.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(108, 5).addBox(-2.5F, 0.0F, -6.0F, 5.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, 0.0F, 1.0F, 0.0F, -0.7854F, 0.0F));
 		PartDefinition OuterLeg2 = root.addOrReplaceChild("OuterLeg2", CubeListBuilder.create(), PartPose.offset(-7.0F, -16.0F, -7.0F));
 		PartDefinition Leg2 = OuterLeg2.addOrReplaceChild("Leg2", CubeListBuilder.create().texOffs(0, 41).mirror().addBox(-1.0F, 0.0F, -1.0F, 2.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, 0.0F, 0.0F));
 		PartDefinition Fingers2 = Leg2.addOrReplaceChild("Fingers2", CubeListBuilder.create(), PartPose.offsetAndRotation(-1.0F, 16.0F, 0.0F, -0.3927F, 0.0F, 0.3927F));
-		PartDefinition Fingers2_r1 = Fingers2.addOrReplaceChild("Fingers2_r1", CubeListBuilder.create().texOffs(108, 5).mirror().addBox(-2.5F, 0.0F, -6.0F, 5.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(1.0F, 0.0F, 0.0F, 0.0F, 0.7854F, 0.0F));
+		PartDefinition cube_r2 = Fingers2.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(108, 5).mirror().addBox(-2.5F, 0.0F, -6.0F, 5.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(1.0F, 0.0F, 0.0F, 0.0F, 0.7854F, 0.0F));
 		PartDefinition OuterLeg3 = root.addOrReplaceChild("OuterLeg3", CubeListBuilder.create(), PartPose.offset(7.0F, -16.0F, 7.0F));
 		PartDefinition Leg3 = OuterLeg3.addOrReplaceChild("Leg3", CubeListBuilder.create().texOffs(0, 41).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 		PartDefinition Fingers3 = Leg3.addOrReplaceChild("Fingers3", CubeListBuilder.create(), PartPose.offsetAndRotation(1.0F, 16.0F, 0.0F, 0.3927F, 0.0F, -0.3927F));
-		PartDefinition Fingers3_r1 = Fingers3.addOrReplaceChild("Fingers3_r1", CubeListBuilder.create().texOffs(108, 12).addBox(-2.5F, 0.0F, 1.0F, 5.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, 0.0F, 0.0F, 0.0F, 0.7854F, 0.0F));
+		PartDefinition cube_r3 = Fingers3.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(108, 12).addBox(-2.5F, 0.0F, 1.0F, 5.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, 0.0F, 0.0F, 0.0F, 0.7854F, 0.0F));
 		PartDefinition OuterLeg4 = root.addOrReplaceChild("OuterLeg4", CubeListBuilder.create(), PartPose.offset(-7.0F, -16.0F, 7.0F));
 		PartDefinition Leg4 = OuterLeg4.addOrReplaceChild("Leg4", CubeListBuilder.create().texOffs(0, 41).mirror().addBox(-1.0F, 0.0F, -1.0F, 2.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, 0.0F, 0.0F));
 		PartDefinition Fingers4 = Leg4.addOrReplaceChild("Fingers4", CubeListBuilder.create(), PartPose.offsetAndRotation(-1.0F, 16.0F, 0.0F, 0.3927F, 0.0F, 0.3927F));
-		PartDefinition Fingers4_r1 = Fingers4.addOrReplaceChild("Fingers4_r1", CubeListBuilder.create().texOffs(108, 12).mirror().addBox(-2.5F, 0.0F, 1.0F, 5.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(1.0F, 0.0F, 0.0F, 0.0F, -0.7854F, 0.0F));
+		PartDefinition cube_r4 = Fingers4.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(108, 12).mirror().addBox(-2.5F, 0.0F, 1.0F, 5.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(1.0F, 0.0F, 0.0F, 0.0F, -0.7854F, 0.0F));
 		return LayerDefinition.create(meshdefinition, 128, 128);
 	}
 
@@ -120,7 +120,7 @@ public class RambleModel<T extends Ramble> extends HierarchicalModel<T> {
 		}
 
 		this.animate(entity.idleAnimationState, RambleAnimations.IDLE, ageInTicks);
-		this.animate(entity.cooldownAnimationState, RambleAnimations.COOLDOWN, ageInTicks, 0.8F);
+		this.animate(entity.cooldownAnimationState, RambleAnimations.EXHAUSTED, ageInTicks);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package com.unusualmodding.opposing_force.mixins.server;
+package com.unusualmodding.opposing_force.mixins;
 
 import com.unusualmodding.opposing_force.enchantments.OPEnchantmentLogic;
 import net.minecraft.world.InteractionHand;

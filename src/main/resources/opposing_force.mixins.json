@@ -5,8 +5,8 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "opposing_force.refmap.json",
   "mixins": [
-    "server.CreeperMixin",
-    "server.CrossbowItemMixin"
+    "CreeperMixin",
+    "CrossbowItemMixin"
   ],
   "client": [
     "client.ClientPacketListenerMixin",

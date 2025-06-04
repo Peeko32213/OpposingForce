@@ -1,4 +1,4 @@
-package com.unusualmodding.opposing_force.mixins.server;
+package com.unusualmodding.opposing_force.mixins;
 
 import com.unusualmodding.opposing_force.interfaces.CreeperExtension;
 import net.minecraft.world.entity.monster.Creeper;
