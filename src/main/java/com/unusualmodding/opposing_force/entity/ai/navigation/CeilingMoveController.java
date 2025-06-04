@@ -7,11 +7,11 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class CeilingMoveController extends MoveControl {
+
     private final Mob parentEntity;
     private final float speedGeneral;
     private final boolean shouldLookAtTarget;
     private final boolean needsYSupport;
-
 
     public CeilingMoveController(Mob bird, float speedGeneral, boolean shouldLookAtTarget, boolean needsYSupport) {
         super(bird);
@@ -58,6 +58,7 @@ public class CeilingMoveController extends MoveControl {
             this.operation = Operation.WAIT;
         }
     }
+
     private boolean canReach(Vec3 p_220673_1_, int p_220673_2_) {
         AABB axisalignedbb = this.parentEntity.getBoundingBox();
 

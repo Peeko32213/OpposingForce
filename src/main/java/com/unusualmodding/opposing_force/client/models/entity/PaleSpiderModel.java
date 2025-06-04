@@ -2,6 +2,8 @@ package com.unusualmodding.opposing_force.client.models.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.unusualmodding.opposing_force.client.animations.PaleSpiderAnimations;
+import com.unusualmodding.opposing_force.client.animations.UmberSpiderAnimations;
 import com.unusualmodding.opposing_force.entity.PaleSpider;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -102,6 +104,11 @@ public class PaleSpiderModel<T extends PaleSpider> extends HierarchicalModel<T> 
 	@Override
 	public void setupAnim(PaleSpider entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
+		this.animateWalk(PaleSpiderAnimations.SCURRY, limbSwing, limbSwingAmount, 2, 4);
+		this.animate(entity.idleAnimationState, PaleSpiderAnimations.IDLE, ageInTicks, 1);
+
+		this.Head.xRot += headPitch * ((float) Math.PI / 180) - (headPitch * ((float) Math.PI / 180)) / 2;
+		this.Head.yRot += netHeadYaw * ((float) Math.PI / 180) - (netHeadYaw * ((float) Math.PI / 180)) / 2;
 	}
 
 	@Override

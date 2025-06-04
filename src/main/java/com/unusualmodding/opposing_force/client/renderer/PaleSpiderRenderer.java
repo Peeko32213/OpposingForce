@@ -1,5 +1,7 @@
 package com.unusualmodding.opposing_force.client.renderer;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.PaleSpiderModel;
 import com.unusualmodding.opposing_force.client.renderer.layer.PaleSpiderEyesLayer;
@@ -32,4 +34,15 @@ public class PaleSpiderRenderer extends MobRenderer<PaleSpider, PaleSpiderModel<
     protected @Nullable RenderType getRenderType(PaleSpider entity, boolean bodyVisible, boolean translucent, boolean glowing) {
         return RenderType.entityCutoutNoCull(TEXTURE);
     }
+
+//    @Override
+//    protected void setupRotations(PaleSpider entity, PoseStack matrixStack, float f, float g, float h) {
+//        super.setupRotations(entity, matrixStack, f, g, h);
+//        matrixStack.scale(0.75F, 0.75F, 0.75F);
+//
+//        if (entity.isLatched()) {
+//            matrixStack.translate(0.0, 0.5, 0);
+//            matrixStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+//        }
+//    }
 }

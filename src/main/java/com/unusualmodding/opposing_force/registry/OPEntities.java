@@ -59,7 +59,7 @@ public class OPEntities {
     public static final RegistryObject<EntityType<PaleSpider>> PALE_SPIDER = ENTITY_TYPES.register(
             "pale_spider", () ->
             EntityType.Builder.of(PaleSpider::new, MobCategory.MONSTER)
-                    .sized(1.0F, 1.0F)
+                    .sized(1.0F, 0.5F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "pale_spider").toString())
     );

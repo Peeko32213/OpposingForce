@@ -71,30 +71,6 @@ public class UmberSpider extends Monster {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 24.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_DAMAGE, 5.0D);
     }
 
-    public static boolean canSpawn(EntityType<UmberSpider> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        boolean isDeepDark = iServerWorld.getBiome(pos).is(Biomes.DEEP_DARK);
-        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 0 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
-    }
-
-    public static boolean checkUndergroundMonsterSpawnRules(EntityType<? extends Monster> monster, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource p_219018_) {
-        return level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, p_219018_) && checkMobSpawnRules(monster, level, reason, pos, p_219018_);
-    }
-
-    public static boolean isDarkEnoughToSpawnNoSkylight(ServerLevelAccessor level, BlockPos pos, RandomSource random) {
-        if (level.getBrightness(LightLayer.SKY, pos) > 0) {
-            return false;
-        } else {
-            DimensionType dimension = level.dimensionType();
-            int i = dimension.monsterSpawnBlockLightLimit();
-            if (i < 15 && level.getBrightness(LightLayer.BLOCK, pos) > i) {
-                return false;
-            } else {
-                int j = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
-                return j <= dimension.monsterSpawnLightTest().sample(random);
-            }
-        }
-    }
-
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(2, new UmberSpiderRandomStrollGoal(this));
@@ -105,6 +81,10 @@ public class UmberSpider extends Monster {
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 12.0F));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
+
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions entityDimensions) {
+        return entityDimensions.height * 0.65F;
     }
 
     protected SoundEvent getAmbientSound() {
@@ -198,9 +178,11 @@ public class UmberSpider extends Monster {
     public int getLeapCooldown() {
         return this.entityData.get(LEAP_COOLDOWN);
     }
+
     public void setLeapCooldown(int cooldown) {
         this.entityData.set(LEAP_COOLDOWN, cooldown);
     }
+
     public void leapCooldown() {
         this.entityData.set(LEAP_COOLDOWN, 3 + random.nextInt(8 * 2));
     }
@@ -208,6 +190,7 @@ public class UmberSpider extends Monster {
     public int getLightThreshold() {
         return this.entityData.get(LIGHT_THRESHOLD);
     }
+
     public void setLightThreshold(int threshold) {
         this.entityData.set(LIGHT_THRESHOLD, threshold);
     }
@@ -343,6 +326,30 @@ public class UmberSpider extends Monster {
                 this.effect = MobEffects.ABSORPTION;
             } else if (i == 5) {
                 this.effect = MobEffects.JUMP;
+            }
+        }
+    }
+
+    public static boolean canSpawn(EntityType<UmberSpider> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        boolean isDeepDark = iServerWorld.getBiome(pos).is(Biomes.DEEP_DARK);
+        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 0 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
+    }
+
+    public static boolean checkUndergroundMonsterSpawnRules(EntityType<? extends Monster> monster, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource p_219018_) {
+        return level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, p_219018_) && checkMobSpawnRules(monster, level, reason, pos, p_219018_);
+    }
+
+    public static boolean isDarkEnoughToSpawnNoSkylight(ServerLevelAccessor level, BlockPos pos, RandomSource random) {
+        if (level.getBrightness(LightLayer.SKY, pos) > 0) {
+            return false;
+        } else {
+            DimensionType dimension = level.dimensionType();
+            int i = dimension.monsterSpawnBlockLightLimit();
+            if (i < 15 && level.getBrightness(LightLayer.BLOCK, pos) > i) {
+                return false;
+            } else {
+                int j = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
+                return j <= dimension.monsterSpawnLightTest().sample(random);
             }
         }
     }
