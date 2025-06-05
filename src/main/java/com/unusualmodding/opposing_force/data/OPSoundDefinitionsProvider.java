@@ -20,19 +20,22 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
     @Override
     public void registerSounds() {
         this.sound(OPSoundEvents.DICER_HURT,
-                sound(OpposingForce.modPrefix("entity/dicer/hurt1")),
-                sound(OpposingForce.modPrefix("entity/dicer/hurt2"))
+                sound(OpposingForce.modPrefix("entity/dicer/hurt1")).volume(0.9F),
+                sound(OpposingForce.modPrefix("entity/dicer/hurt2")).volume(0.9F)
         );
         this.sound(OPSoundEvents.DICER_DEATH,
-                sound(OpposingForce.modPrefix("entity/dicer/death1"))
+                sound(OpposingForce.modPrefix("entity/dicer/death1")).volume(0.9F)
         );
         this.sound(OPSoundEvents.DICER_IDLE,
-                sound(OpposingForce.modPrefix("entity/dicer/idle1")),
-                sound(OpposingForce.modPrefix("entity/dicer/idle2"))
+                sound(OpposingForce.modPrefix("entity/dicer/idle1")).volume(0.8F),
+                sound(OpposingForce.modPrefix("entity/dicer/idle2")).volume(0.8F)
         );
         this.sound(OPSoundEvents.DICER_ATTACK,
                 sound(OpposingForce.modPrefix("entity/dicer/attack1")),
                 sound(OpposingForce.modPrefix("entity/dicer/attack2"))
+        );
+        this.sound(OPSoundEvents.DICER_LASER,
+                sound(OpposingForce.modPrefix("entity/dicer/laser1"))
         );
 
         this.sound(OPSoundEvents.ELECTRIC_CHARGE,
@@ -93,6 +96,10 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound("mob/zombie/say1").pitch(1.2f),
                 sound("mob/zombie/say2").pitch(1.2f),
                 sound("mob/zombie/say3").pitch(1.2f)
+        );
+
+        this.sound(OPSoundEvents.GUZZLER_SHOOT,
+                sound("mob/ghast/fireball4").pitch(0.85f)
         );
 
         this.sound(OPSoundEvents.PALE_SPIDER_HURT,

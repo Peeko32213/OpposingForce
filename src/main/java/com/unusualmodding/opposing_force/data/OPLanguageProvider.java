@@ -54,6 +54,7 @@ public class OPLanguageProvider extends LanguageProvider {
         sound(OPSoundEvents.DICER_HURT, "Dicer hurts");
         sound(OPSoundEvents.DICER_IDLE, "Dicer screams");
         sound(OPSoundEvents.DICER_ATTACK, "Dicer slashes");
+        sound(OPSoundEvents.DICER_LASER, "Dicer lasers");
 
         sound(OPSoundEvents.ELECTRIC_CHARGE, "Electric Charge whirls");
         sound(OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE, "Electric Charge dissipates");
@@ -69,6 +70,8 @@ public class OPLanguageProvider extends LanguageProvider {
         sound(OPSoundEvents.FROWZY_DEATH, "Frowzy dies");
         sound(OPSoundEvents.FROWZY_HURT, "Frowzy hurts");
         sound(OPSoundEvents.FROWZY_IDLE, "Frowzy groans");
+
+        sound(OPSoundEvents.GUZZLER_SHOOT, "Guzzler shoots");
 
         sound(OPSoundEvents.PALE_SPIDER_DEATH, "Pale Spider dies");
         sound(OPSoundEvents.PALE_SPIDER_HURT, "Pale Spider hurts");

@@ -58,6 +58,9 @@ public class FrowzyModel<T extends Frowzy> extends HierarchicalModel<T> {
 		if (this.young) {
 			this.applyStatic(FrowzyAnimations.BABY_TRANSFORM);
 		}
+
+		this.Head.xRot += headPitch * ((float) Math.PI / 180) - (headPitch * ((float) Math.PI / 180)) / 2;
+		this.Head.yRot += netHeadYaw * ((float) Math.PI / 180) - (netHeadYaw * ((float) Math.PI / 180)) / 2;
 	}
 
 	@Override

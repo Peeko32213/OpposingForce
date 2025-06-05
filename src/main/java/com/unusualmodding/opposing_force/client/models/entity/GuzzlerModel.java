@@ -49,10 +49,9 @@ public class GuzzlerModel<T extends Guzzler> extends HierarchicalModel<T> {
 	@Override
 	public void setupAnim(Guzzler entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		this.animateWalk(GuzzlerAnimations.WALK, limbSwing * 3, limbSwingAmount * 3, 2, 4);
+		this.animateWalk(GuzzlerAnimations.WALK, limbSwing, limbSwingAmount, 5, 8);
 		this.animate(entity.idleAnimationState, GuzzlerAnimations.IDLE, ageInTicks);
-
-		this.applyStatic(GuzzlerAnimations.OPEN_JAW_TEST);
+		this.animate(entity.shootAnimationState, GuzzlerAnimations.SPIT, ageInTicks);
 	}
 
 	@Override

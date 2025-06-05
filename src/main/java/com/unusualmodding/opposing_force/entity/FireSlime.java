@@ -56,7 +56,7 @@ public class FireSlime extends Monster {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 8.0D).add(Attributes.MOVEMENT_SPEED, 0.8F).add(Attributes.ATTACK_DAMAGE, 3.0D);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 8.0D).add(Attributes.MOVEMENT_SPEED, 0.6F).add(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
     protected void registerGoals() {
@@ -76,7 +76,7 @@ public class FireSlime extends Monster {
 
     protected void dealDamage(LivingEntity livingEntity) {
         if (this.isAlive()) {
-            if (this.distanceToSqr(livingEntity) < 1.0F && this.hasLineOfSight(livingEntity) && livingEntity.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE))) {
+            if (this.distanceToSqr(livingEntity) < 1.1F && this.hasLineOfSight(livingEntity) && livingEntity.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE))) {
                 this.playSound(OPSoundEvents.FIRE_SLIME_ATTACK.get(), 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
                 if (this.random.nextBoolean()) {
                     livingEntity.setSecondsOnFire(3);
@@ -90,6 +90,12 @@ public class FireSlime extends Monster {
         return this.isEffectiveAi();
     }
 
+    @Override
+    public int getMaxFallDistance() {
+        return 7;
+    }
+
+    @Override
     protected void jumpFromGround() {
         Vec3 vec3 = this.getDeltaMovement();
         this.setDeltaMovement(vec3.x, this.getJumpPower(), vec3.z);
@@ -121,6 +127,7 @@ public class FireSlime extends Monster {
         return true;
     }
 
+    @Override
     public void tick() {
         this.squish += (this.targetSquish - this.squish) * 0.5F;
         this.oSquish = this.squish;
@@ -233,10 +240,6 @@ public class FireSlime extends Monster {
         this.despawnTimer = compoundTag.getInt("despawnTimer");
     }
 
-    protected boolean canHitEntity(Entity entity) {
-        return !entity.isSpectator() && !(entity instanceof Guzzler);
-    }
-
     public Entity getParent() {
         UUID id = getParentId();
         if (id != null && !this.level().isClientSide) {
@@ -245,12 +248,12 @@ public class FireSlime extends Monster {
         return null;
     }
 
-    public void shoot(double p_70186_1_, double p_70186_3_, double p_70186_5_, float p_70186_7_, float p_70186_8_) {
-        Vec3 lvt_9_1_ = (new Vec3(p_70186_1_, p_70186_3_, p_70186_5_)).normalize().add(this.random.nextGaussian() * 0.007499999832361937D * (double) p_70186_8_, this.random.nextGaussian() * 0.007499999832361937D * (double) p_70186_8_, this.random.nextGaussian() * 0.007499999832361937D * (double) p_70186_8_).scale(p_70186_7_);
-        this.setDeltaMovement(lvt_9_1_);
-        float lvt_10_1_ = (float) lvt_9_1_.horizontalDistanceSqr();
-        this.setYRot( (float) (Mth.atan2(lvt_9_1_.x, lvt_9_1_.z) * 57.2957763671875D));
-        this.setXRot((float) (Mth.atan2(lvt_9_1_.y, lvt_10_1_) * 57.2957763671875D));
+    public void shoot(double x, double y, double z, float scale, float speed) {
+        Vec3 vec3 = (new Vec3(x, y, z)).normalize().add(this.random.nextGaussian() * 0.008D * (double) speed, this.random.nextGaussian() * 0.008D * (double) speed, this.random.nextGaussian() * 0.008D * (double) speed).scale(scale);
+        this.setDeltaMovement(vec3);
+        float horizontalDistanceSqr = (float) vec3.horizontalDistanceSqr();
+        this.setYRot( (float) (Mth.atan2(vec3.x, vec3.z) * 55D));
+        this.setXRot((float) (Mth.atan2(vec3.y, horizontalDistanceSqr) * 55D));
         this.xRotO = this.getXRot();
         this.yBodyRot = getYRot();
         this.yHeadRot = getYRot();
@@ -394,7 +397,7 @@ public class FireSlime extends Monster {
             }
             MoveControl movecontrol = this.slime.getMoveControl();
             if (movecontrol instanceof FireSlimeMoveControl fireSlimeMoveControl) {
-                fireSlimeMoveControl.setWantedMovement(6.0F);
+                fireSlimeMoveControl.setWantedMovement(4.0F);
             }
         }
     }
@@ -415,7 +418,7 @@ public class FireSlime extends Monster {
         public void tick() {
             MoveControl movecontrol = this.slime.getMoveControl();
             if (movecontrol instanceof FireSlimeMoveControl fireSlimeMoveControl) {
-                fireSlimeMoveControl.setWantedMovement(2.0F);
+                fireSlimeMoveControl.setWantedMovement(1.0F);
             }
         }
     }

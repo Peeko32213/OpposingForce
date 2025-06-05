@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.entity.*;
+import com.unusualmodding.opposing_force.entity.misc.DicerLaser;
 import com.unusualmodding.opposing_force.entity.projectile.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -19,7 +20,7 @@ public class OPEntities {
     public static final RegistryObject<EntityType<Dicer>> DICER = ENTITY_TYPES.register(
             "dicer", () ->
             EntityType.Builder.of(Dicer::new, MobCategory.MONSTER)
-                    .sized(0.7F, 2.0F)
+                    .sized(0.7F, 2.25F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "dicer").toString())
     );
@@ -120,6 +121,15 @@ public class OPEntities {
                     .sized(0.5F, 0.5F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "whizz").toString())
+    );
+
+    public static final RegistryObject<EntityType<DicerLaser>> DICER_LASER = ENTITY_TYPES.register(
+            "dicer_laser", () ->
+                    EntityType.Builder.<DicerLaser>of(DicerLaser::new, MobCategory.MISC)
+                            .sized(0.1f, 0.1f)
+                            .setUpdateInterval(1)
+                            .fireImmune()
+                            .build(new ResourceLocation(OpposingForce.MOD_ID, "dicer_laser").toString())
     );
 
     public static final RegistryObject<EntityType<ElectricCharge>> ELECTRIC_CHARGE = ENTITY_TYPES.register(

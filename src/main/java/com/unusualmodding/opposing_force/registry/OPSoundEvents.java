@@ -17,10 +17,16 @@ public class OPSoundEvents {
     public static final RegistryObject<SoundEvent> DICER_DEATH = createSoundEvent("dicer_death");
     public static final RegistryObject<SoundEvent> DICER_IDLE = createSoundEvent("dicer_idle");
     public static final RegistryObject<SoundEvent> DICER_ATTACK = createSoundEvent("dicer_attack");
+    public static final RegistryObject<SoundEvent> DICER_LASER = createSoundEvent("dicer_laser");
 
     public static final RegistryObject<SoundEvent> ELECTRIC_CHARGE = createSoundEvent("electric_charge");
     public static final RegistryObject<SoundEvent> ELECTRIC_CHARGE_DISSIPATE = createSoundEvent("electric_charge_dissipate");
     public static final RegistryObject<SoundEvent> ELECTRIC_CHARGE_ZAP = createSoundEvent("electric_charge_zap");
+
+    public static final RegistryObject<SoundEvent> GUZZLER_HURT = createSoundEvent("guzzler_hurt");
+    public static final RegistryObject<SoundEvent> GUZZLER_DEATH = createSoundEvent("guzzler_death");
+    public static final RegistryObject<SoundEvent> GUZZLER_IDLE = createSoundEvent("guzzler_idle");
+    public static final RegistryObject<SoundEvent> GUZZLER_SHOOT = createSoundEvent("guzzler_shoot");
 
     public static final RegistryObject<SoundEvent> FIRE_SLIME_HURT = createSoundEvent("fire_slime_hurt");
     public static final RegistryObject<SoundEvent> FIRE_SLIME_DEATH = createSoundEvent("fire_slime_death");

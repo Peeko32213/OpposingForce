@@ -284,7 +284,7 @@ public class Slug extends Monster implements OwnableEntity {
             }
             this.gameEvent(GameEvent.ENTITY_INTERACT);
             this.setSlugSize(size + 1);
-            this.playSound(OPSoundEvents.SLUG_EAT.get(), this.getSoundVolume(), this.getVoicePitch());
+            this.playSound(OPSoundEvents.SLUG_EAT.get(), this.getSoundVolume(), this.getVoicePitch() / (this.getRandom().nextFloat() * 0.4F + 0.8F));
             this.level().broadcastEntityEvent(this, (byte) 39);
             return InteractionResult.SUCCESS;
         }
@@ -294,7 +294,7 @@ public class Slug extends Monster implements OwnableEntity {
             }
             this.gameEvent(GameEvent.ENTITY_INTERACT);
             this.heal(4.0F);
-            this.playSound(OPSoundEvents.SLUG_EAT.get(), this.getSoundVolume(), this.getVoicePitch());
+            this.playSound(OPSoundEvents.SLUG_EAT.get(), this.getSoundVolume(), this.getVoicePitch() / (this.getRandom().nextFloat() * 0.4F + 0.8F));
             this.level().broadcastEntityEvent(this, (byte) 40);
             return InteractionResult.SUCCESS;
         }

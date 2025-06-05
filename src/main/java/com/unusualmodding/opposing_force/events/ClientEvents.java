@@ -8,6 +8,7 @@ import com.unusualmodding.opposing_force.registry.OPItemProperties;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPEntityModelLayers;
 import com.unusualmodding.opposing_force.registry.OPParticles;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -34,6 +35,7 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(OPEntities.DICER.get(), DicerRenderer::new);
+        event.registerEntityRenderer(OPEntities.DICER_LASER.get(), DicerLaserRenderer::new);
         event.registerEntityRenderer(OPEntities.ELECTRIC_CHARGE.get(), ElectricBallRenderer::new);
         event.registerEntityRenderer(OPEntities.EMERALDFISH.get(), EmeraldfishRenderer::new);
         event.registerEntityRenderer(OPEntities.FIRE_SLIME.get(), FireSlimeRenderer::new);

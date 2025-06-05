@@ -10,12 +10,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class GuzzlerAnimations {
 
-	public static final AnimationDefinition OPEN_JAW_TEST = AnimationDefinition.Builder.withLength(0.0F).looping()
-			.addAnimation("Jaw", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-					new Keyframe(0.0F, KeyframeAnimations.degreeVec(-60.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
-			))
-			.build();
-
 	public static final AnimationDefinition IDLE = AnimationDefinition.Builder.withLength(1.25F).looping()
 		.addAnimation("Body", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),

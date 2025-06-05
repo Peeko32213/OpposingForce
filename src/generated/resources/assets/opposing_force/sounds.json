@@ -26,6 +26,12 @@
     ],
     "subtitle": "subtitles.opposing_force.dicer_idle"
   },
+  "dicer_laser": {
+    "sounds": [
+      "opposing_force:entity/dicer/laser1"
+    ],
+    "subtitle": "subtitles.opposing_force.dicer_laser"
+  },
   "electric_charge": {
     "sounds": [
       "opposing_force:entity/electric_charge/loop1"
@@ -202,6 +208,15 @@
       }
     ],
     "subtitle": "subtitles.opposing_force.frowzy_idle"
+  },
+  "guzzler_shoot": {
+    "sounds": [
+      {
+        "name": "mob/ghast/fireball4",
+        "pitch": 0.85
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.guzzler_shoot"
   },
   "pale_spider_death": {
     "sounds": [
