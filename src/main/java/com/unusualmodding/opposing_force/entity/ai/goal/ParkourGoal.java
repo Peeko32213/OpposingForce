@@ -20,8 +20,8 @@ import java.util.Optional;
 import java.util.function.BiPredicate;
 
 // CREDITS TO THE BIG BRAIN MOD FOR THE ORIGINAL CODE, WHOM WAS INSPIRED FROM "Mobs Attempt Parkour mod". TALLESTSTRED CERTAINLY HAS A BIGGER BRAIN THAN I!
-
 public class ParkourGoal extends Goal {
+
     private static final List<Integer> ALLOWED_ANGLES = Lists.newArrayList(65, 70, 75, 80);
     protected final float maxJumpVelocity;
     private final Mob mob;
@@ -34,7 +34,7 @@ public class ParkourGoal extends Goal {
     protected int findJumpTries;
     protected int failedToFindJumpCounter;
     protected long tryAgainTime;
-    private int lookTime; // This is stupid, why do I have to do this to make the mob look at a block?
+    private int lookTime;
 
     public ParkourGoal(Mob mob) {
         this.mob = mob;
@@ -70,8 +70,7 @@ public class ParkourGoal extends Goal {
         this.chosenJump = null;
         this.findJumpTries = 40;
         this.initialPosition = Optional.of(mob.position());
-        if (this.mob.getNavigation() == null)
-            return;
+        if (this.mob.getNavigation() == null) return;
         Vec3 pos = Vec3.atCenterOf(this.mob.getNavigation().getTargetPos());
         this.mob.getLookControl().setLookAt(pos.x, this.mob.getEyeY(), pos.z, 90.0F, 90.0F);
         this.mob.setYRot(this.mob.getYHeadRot());
@@ -117,14 +116,11 @@ public class ParkourGoal extends Goal {
         if (f > pMaxIncrease) {
             f = pMaxIncrease;
         }
-
         if (f < -pMaxIncrease) {
             f = -pMaxIncrease;
         }
-
         return pAngle + f;
     }
-
 
     @Override
     public void stop() {
@@ -166,14 +162,12 @@ public class ParkourGoal extends Goal {
     protected Vec3 calculateOptimalJumpVector(Mob pMob, Vec3 pTarget) {
         List<Integer> list = Lists.newArrayList(ALLOWED_ANGLES);
         Collections.shuffle(list);
-
         for (int i : list) {
             Vec3 vec3 = this.calculateJumpVectorForAngle(pMob, pTarget, i);
             if (vec3 != null) {
                 return vec3;
             }
         }
-
         return null;
     }
 
@@ -188,14 +182,14 @@ public class ParkourGoal extends Goal {
         double d1 = vec32.subtract(0.0D, vec32.y, 0.0D).lengthSqr();
         double d2 = Math.sqrt(d1);
         double d3 = vec32.y;
-        double d4 = Math.sin((double) (2.0F * f));
+        double d4 = Math.sin(2.0F * f);
         double d5 = 0.08D;
-        double d6 = Math.pow(Math.cos((double) f), 2.0D);
-        double d7 = Math.sin((double) f);
-        double d8 = Math.cos((double) f);
+        double d6 = Math.pow(Math.cos(f), 2.0D);
+        double d7 = Math.sin(f);
+        double d8 = Math.cos(f);
         double d9 = Math.sin(d0);
         double d10 = Math.cos(d0);
-        double d11 = d1 * 0.08D / (d2 * d4 - 2.0D * d3 * d6);
+        double d11 = d1 * d5 / (d2 * d4 - 2.0D * d3 * d6);
         if (d11 < 0.0D) {
             return null;
         } else {
@@ -215,7 +209,6 @@ public class ParkourGoal extends Goal {
         Vec3 leap = new Vec3(dir.x, 0.0, dir.z).normalize().scale(horzVel).yRot((float) yVel);
         float clampedYVelocity = (float) (entity.getDeltaMovement().y() < 0.1D ? leap.y : 0.0D);
 
-        // Normalize to make sure the velocity doesn't go beyond what we expect
         Vec3 horzVelocity = entity.getDeltaMovement().add(leap.x, 0.0, leap.z);
         double scale = horzVel / horzVelocity.length();
         if (scale < 1.0D) {

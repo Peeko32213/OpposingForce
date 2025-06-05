@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.client.models.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.unusualmodding.opposing_force.client.animations.FrowzyAnimations;
 import com.unusualmodding.opposing_force.entity.Frowzy;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -48,11 +49,30 @@ public class FrowzyModel<T extends Frowzy> extends HierarchicalModel<T> {
 	@Override
 	public void setupAnim(Frowzy entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
+		this.animateWalk(FrowzyAnimations.WADDLE, limbSwing, limbSwingAmount, 1, 2);
+		this.animate(entity.idleAnimationState, FrowzyAnimations.IDLE, ageInTicks);
+		this.animate(entity.attackAnimationState, FrowzyAnimations.CRASH_OUT, ageInTicks);
+
+		this.applyStatic(FrowzyAnimations.ARMS_OVERLAY);
+
+		if (this.young) {
+			this.applyStatic(FrowzyAnimations.BABY_TRANSFORM);
+		}
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int j, float f, float g, float h, float k) {
+		if (this.young) {
+			float babyScale = 0.6f;
+			float bodyYOffset = 16.0f;
+			poseStack.pushPose();
+			poseStack.scale(babyScale, babyScale, babyScale);
+			poseStack.translate(0.0f, bodyYOffset / 16.0f, 0.0f);
+			this.root().render(poseStack, vertexConsumer, i, j, f, g, h, k);
+			poseStack.popPose();
+		} else {
+			this.root().render(poseStack, vertexConsumer, i, j, f, g, h, k);
+		}
 	}
 
 	public ModelPart root() {

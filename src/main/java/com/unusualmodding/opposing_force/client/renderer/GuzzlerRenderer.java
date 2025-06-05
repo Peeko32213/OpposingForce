@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.client.renderer;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.GuzzlerModel;
+import com.unusualmodding.opposing_force.client.renderer.layer.GuzzlerGlowLayer;
 import com.unusualmodding.opposing_force.entity.Guzzler;
 import com.unusualmodding.opposing_force.registry.OPEntityModelLayers;
 import net.minecraft.client.renderer.RenderType;
@@ -19,6 +20,7 @@ public class GuzzlerRenderer extends MobRenderer<Guzzler, GuzzlerModel<Guzzler>>
 
     public GuzzlerRenderer(EntityRendererProvider.Context context) {
         super(context, new GuzzlerModel<>(context.bakeLayer(OPEntityModelLayers.GUZZLER_LAYER)), 1.1F);
+        this.addLayer(new GuzzlerGlowLayer<>(this));
     }
 
     @Override

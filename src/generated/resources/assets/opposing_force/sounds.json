@@ -44,6 +44,216 @@
     ],
     "subtitle": "subtitles.opposing_force.electric_charge_zap"
   },
+  "fire_slime_attack": {
+    "sounds": [
+      "mob/slime/attack1",
+      "mob/slime/attack2"
+    ],
+    "subtitle": "subtitles.opposing_force.fire_slime_attack"
+  },
+  "fire_slime_death": {
+    "sounds": [
+      {
+        "name": "mob/slime/small1",
+        "pitch": 0.9
+      },
+      {
+        "name": "mob/slime/small2",
+        "pitch": 0.9
+      },
+      {
+        "name": "mob/slime/small3",
+        "pitch": 0.9
+      },
+      {
+        "name": "mob/slime/small4",
+        "pitch": 0.9
+      },
+      {
+        "name": "mob/slime/small5",
+        "pitch": 0.9
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.fire_slime_death"
+  },
+  "fire_slime_hurt": {
+    "sounds": [
+      {
+        "name": "mob/slime/small1",
+        "pitch": 0.9
+      },
+      {
+        "name": "mob/slime/small2",
+        "pitch": 0.9
+      },
+      {
+        "name": "mob/slime/small3",
+        "pitch": 0.9
+      },
+      {
+        "name": "mob/slime/small4",
+        "pitch": 0.9
+      },
+      {
+        "name": "mob/slime/small5",
+        "pitch": 0.9
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.fire_slime_hurt"
+  },
+  "fire_slime_jump": {
+    "sounds": [
+      {
+        "name": "mob/slime/small1",
+        "pitch": 0.9
+      },
+      {
+        "name": "mob/slime/small2",
+        "pitch": 0.9
+      },
+      {
+        "name": "mob/slime/small3",
+        "pitch": 0.9
+      },
+      {
+        "name": "mob/slime/small4",
+        "pitch": 0.9
+      },
+      {
+        "name": "mob/slime/small5",
+        "pitch": 0.9
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.fire_slime_jump"
+  },
+  "fire_slime_pop": {
+    "sounds": [
+      {
+        "name": "liquid/lavapop",
+        "pitch": 0.9
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.fire_slime_pop"
+  },
+  "fire_slime_squish": {
+    "sounds": [
+      {
+        "name": "mob/slime/small1",
+        "pitch": 0.9
+      },
+      {
+        "name": "mob/slime/small2",
+        "pitch": 0.9
+      },
+      {
+        "name": "mob/slime/small3",
+        "pitch": 0.9
+      },
+      {
+        "name": "mob/slime/small4",
+        "pitch": 0.9
+      },
+      {
+        "name": "mob/slime/small5",
+        "pitch": 0.9
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.fire_slime_squish"
+  },
+  "frowzy_death": {
+    "sounds": [
+      {
+        "name": "mob/zombie/death",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.frowzy_death"
+  },
+  "frowzy_hurt": {
+    "sounds": [
+      {
+        "name": "mob/zombie/hurt1",
+        "pitch": 1.2
+      },
+      {
+        "name": "mob/zombie/hurt2",
+        "pitch": 1.2
+      },
+      {
+        "name": "mob/zombie/say3",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.frowzy_hurt"
+  },
+  "frowzy_idle": {
+    "sounds": [
+      {
+        "name": "mob/zombie/say1",
+        "pitch": 1.2
+      },
+      {
+        "name": "mob/zombie/say2",
+        "pitch": 1.2
+      },
+      {
+        "name": "mob/zombie/say3",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.frowzy_idle"
+  },
+  "pale_spider_death": {
+    "sounds": [
+      {
+        "name": "mob/spider/death",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.pale_spider_death"
+  },
+  "pale_spider_hurt": {
+    "sounds": [
+      {
+        "name": "mob/spider/say1",
+        "pitch": 1.2
+      },
+      {
+        "name": "mob/spider/say2",
+        "pitch": 1.2
+      },
+      {
+        "name": "mob/spider/say3",
+        "pitch": 1.2
+      },
+      {
+        "name": "mob/spider/say4",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.pale_spider_hurt"
+  },
+  "pale_spider_idle": {
+    "sounds": [
+      {
+        "name": "mob/spider/say1",
+        "pitch": 1.2
+      },
+      {
+        "name": "mob/spider/say2",
+        "pitch": 1.2
+      },
+      {
+        "name": "mob/spider/say3",
+        "pitch": 1.2
+      },
+      {
+        "name": "mob/spider/say4",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.pale_spider_idle"
+  },
   "ramble_attack": {
     "sounds": [
       {

@@ -59,6 +59,21 @@ public class OPLanguageProvider extends LanguageProvider {
         sound(OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE, "Electric Charge dissipates");
         sound(OPSoundEvents.ELECTRIC_CHARGE_ZAP, "Electric Charge zaps");
 
+        sound(OPSoundEvents.FIRE_SLIME_DEATH, "Fire Slime dies");
+        sound(OPSoundEvents.FIRE_SLIME_HURT, "Fire Slime hurts");
+        sound(OPSoundEvents.FIRE_SLIME_SQUISH, "Fire Slime squishes");
+        sound(OPSoundEvents.FIRE_SLIME_JUMP, "Fire Slime jumps");
+        sound(OPSoundEvents.FIRE_SLIME_ATTACK, "Fire Slime attacks");
+        sound(OPSoundEvents.FIRE_SLIME_POP, "Fire Slime evaporates");
+
+        sound(OPSoundEvents.FROWZY_DEATH, "Frowzy dies");
+        sound(OPSoundEvents.FROWZY_HURT, "Frowzy hurts");
+        sound(OPSoundEvents.FROWZY_IDLE, "Frowzy groans");
+
+        sound(OPSoundEvents.PALE_SPIDER_DEATH, "Pale Spider dies");
+        sound(OPSoundEvents.PALE_SPIDER_HURT, "Pale Spider hurts");
+        sound(OPSoundEvents.PALE_SPIDER_IDLE, "Pale Spider hisses");
+
         sound(OPSoundEvents.RAMBLE_HURT, "Ramble hurt");
         sound(OPSoundEvents.RAMBLE_DEATH, "Ramble dies");
         sound(OPSoundEvents.RAMBLE_ATTACK, "Ramble slices");

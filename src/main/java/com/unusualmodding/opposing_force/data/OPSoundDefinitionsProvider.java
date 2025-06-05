@@ -45,6 +45,72 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound(OpposingForce.modPrefix("entity/electric_charge/zap1"))
         );
 
+        this.sound(OPSoundEvents.FIRE_SLIME_HURT,
+                sound("mob/slime/small1").pitch(0.9f),
+                sound("mob/slime/small2").pitch(0.9f),
+                sound("mob/slime/small3").pitch(0.9f),
+                sound("mob/slime/small4").pitch(0.9f),
+                sound("mob/slime/small5").pitch(0.9f)
+        );
+        this.sound(OPSoundEvents.FIRE_SLIME_DEATH,
+                sound("mob/slime/small1").pitch(0.9f),
+                sound("mob/slime/small2").pitch(0.9f),
+                sound("mob/slime/small3").pitch(0.9f),
+                sound("mob/slime/small4").pitch(0.9f),
+                sound("mob/slime/small5").pitch(0.9f)
+        );
+        this.sound(OPSoundEvents.FIRE_SLIME_SQUISH,
+                sound("mob/slime/small1").pitch(0.9f),
+                sound("mob/slime/small2").pitch(0.9f),
+                sound("mob/slime/small3").pitch(0.9f),
+                sound("mob/slime/small4").pitch(0.9f),
+                sound("mob/slime/small5").pitch(0.9f)
+        );
+        this.sound(OPSoundEvents.FIRE_SLIME_JUMP,
+                sound("mob/slime/small1").pitch(0.9f),
+                sound("mob/slime/small2").pitch(0.9f),
+                sound("mob/slime/small3").pitch(0.9f),
+                sound("mob/slime/small4").pitch(0.9f),
+                sound("mob/slime/small5").pitch(0.9f)
+        );
+        this.sound(OPSoundEvents.FIRE_SLIME_ATTACK,
+                sound("mob/slime/attack1"),
+                sound("mob/slime/attack2")
+        );
+        this.sound(OPSoundEvents.FIRE_SLIME_POP,
+                sound("liquid/lavapop").pitch(0.9f)
+        );
+
+        this.sound(OPSoundEvents.FROWZY_HURT,
+                sound("mob/zombie/hurt1").pitch(1.2f),
+                sound("mob/zombie/hurt2").pitch(1.2f),
+                sound("mob/zombie/say3").pitch(1.2f)
+        );
+        this.sound(OPSoundEvents.FROWZY_DEATH,
+                sound("mob/zombie/death").pitch(1.2f)
+        );
+        this.sound(OPSoundEvents.FROWZY_IDLE,
+                sound("mob/zombie/say1").pitch(1.2f),
+                sound("mob/zombie/say2").pitch(1.2f),
+                sound("mob/zombie/say3").pitch(1.2f)
+        );
+
+        this.sound(OPSoundEvents.PALE_SPIDER_HURT,
+                sound("mob/spider/say1").pitch(1.2f),
+                sound("mob/spider/say2").pitch(1.2f),
+                sound("mob/spider/say3").pitch(1.2f),
+                sound("mob/spider/say4").pitch(1.2f)
+        );
+        this.sound(OPSoundEvents.PALE_SPIDER_DEATH,
+                sound("mob/spider/death").pitch(1.2f)
+        );
+        this.sound(OPSoundEvents.PALE_SPIDER_IDLE,
+                sound("mob/spider/say1").pitch(1.2f),
+                sound("mob/spider/say2").pitch(1.2f),
+                sound("mob/spider/say3").pitch(1.2f),
+                sound("mob/spider/say4").pitch(1.2f)
+        );
+
         this.sound(OPSoundEvents.RAMBLE_HURT,
                 sound("mob/skeleton/hurt1").pitch(0.7f),
                 sound("mob/skeleton/hurt2").pitch(0.7f),

@@ -37,6 +37,7 @@ public class OPEntities {
             EntityType.Builder.of(FireSlime::new, MobCategory.MONSTER)
                     .sized(0.6875F, 0.6875F)
                     .clientTrackingRange(10)
+                    .fireImmune()
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "fire_slime").toString())
     );
 
@@ -53,6 +54,7 @@ public class OPEntities {
             EntityType.Builder.of(Guzzler::new, MobCategory.MONSTER)
                     .sized(2.5F, 2.75F)
                     .clientTrackingRange(10)
+                    .fireImmune()
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "guzzler").toString())
     );
 

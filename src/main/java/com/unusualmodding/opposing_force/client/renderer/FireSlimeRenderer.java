@@ -8,6 +8,7 @@ import com.unusualmodding.opposing_force.registry.OPEntityModelLayers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
@@ -39,5 +40,9 @@ public class FireSlimeRenderer extends MobRenderer<FireSlime, FireSlimeModel<Fir
         float squish = Mth.lerp(scale, slime.oSquish, slime.squish) / (0.5F + 1.0F);
         float squishScale = 1.0F / (squish + 1.0F);
         poseStack.scale(squishScale, 1.0F / squishScale, squishScale);
+    }
+
+    protected int getBlockLightLevel(FireSlime entity, BlockPos pos) {
+        return 15;
     }
 }

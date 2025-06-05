@@ -78,7 +78,7 @@ public class UmberSpider extends Monster {
         this.goalSelector.addGoal(4, new UmberSpiderPanicGoal(this));
         this.goalSelector.addGoal(5, new UmberSpiderFearLightGoal(this));
         this.goalSelector.addGoal(6, new UmberSpiderRandomLookAroundGoal(this));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 12.0F));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 16.0F));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }

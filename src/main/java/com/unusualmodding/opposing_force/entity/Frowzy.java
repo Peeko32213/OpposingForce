@@ -1,33 +1,68 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.entity.ai.goal.ParkourGoal;
+import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.util.GoalUtils;
+import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.Turtle;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.ZombifiedPiglin;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraftforge.common.ForgeConfig;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nullable;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.function.Predicate;
 
 public class Frowzy extends Monster {
+
+    private static final EntityDataAccessor<Boolean> IS_BABY = SynchedEntityData.defineId(Frowzy.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Frowzy.class, EntityDataSerializers.INT);
+
+    private static final UUID BABY_SPEED_MODIFIER_UUID = UUID.fromString("B9766B59-9566-4402-BC1F-2EE2A276D836");
+    private static final AttributeModifier BABY_SPEED_MODIFIER = new AttributeModifier(BABY_SPEED_MODIFIER_UUID, "Baby speed boost", 0.5D, AttributeModifier.Operation.MULTIPLY_BASE);
+
+    public final AnimationState idleAnimationState = new AnimationState();
+    public final AnimationState attackAnimationState = new AnimationState();
+
+    private static final Predicate<Difficulty> DOOR_BREAKING_PREDICATE = (difficulty) -> difficulty == Difficulty.HARD;
+    private final BreakDoorGoal breakDoorGoal = new BreakDoorGoal(this, DOOR_BREAKING_PREDICATE);
+    private boolean canBreakDoors;
 
     public Frowzy(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -35,29 +70,247 @@ public class Frowzy extends Monster {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 14.0D)
-                .add(Attributes.FOLLOW_RANGE, 45.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.26F)
-                .add(Attributes.ATTACK_DAMAGE, 4.0D)
-                .add(Attributes.ARMOR, 1.0D)
-                .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE);
+                .add(Attributes.MAX_HEALTH, 16.0D)
+                .add(Attributes.FOLLOW_RANGE, 32.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.3F)
+                .add(Attributes.ATTACK_DAMAGE, 2.0D);
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new ParkourGoal(this));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0, false));
-        this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers(ZombifiedPiglin.class));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new FrowzyAttackGoal(this));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(3, new MoveThroughVillageGoal(this, 1.0D, true, 4, this::canBreakDoors));
+        this.goalSelector.addGoal(4, new FrowzyAttackTurtleEggGoal(this, 1.0D, 3));
+        this.goalSelector.addGoal(5, new ParkourGoal(this));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers(Frowzy.class));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, Turtle.class, 10, true, false, Turtle.BABY_ON_LAND_SELECTOR));
     }
 
+    protected void handleAttributes(float chance) {
+        this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).addPermanentModifier(new AttributeModifier("Random spawn bonus", this.random.nextDouble() * (double) 0.05F, AttributeModifier.Operation.ADDITION));
+        double random = this.random.nextDouble() * 1.5D * (double) chance;
+        if (random > 1.0D) {
+            this.getAttribute(Attributes.FOLLOW_RANGE).addPermanentModifier(new AttributeModifier("Random frowzy-spawn bonus", random, AttributeModifier.Operation.MULTIPLY_TOTAL));
+        }
+        if (this.random.nextFloat() < chance * 0.05F) {
+            this.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier("Leader frowzy bonus", this.random.nextDouble() * 3.0D + 1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL));
+            this.setCanBreakDoors(this.supportsBreakDoorGoal());
+        }
+    }
+
     @Override
     public boolean isAlliedTo(Entity pEntity) {
         return pEntity.is(this);
+    }
+
+    @Override
+    public MobType getMobType() {
+        return MobType.UNDEAD;
+    }
+
+    @Override
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.9F;
+    }
+
+    @Override
+    public float getScale() {
+        return this.isBaby() ? 0.6F : 1.0F;
+    }
+
+    protected boolean supportsBreakDoorGoal() {
+        return true;
+    }
+
+    @Override
+    public int getExperienceReward() {
+        if (this.isBaby()) {
+            this.xpReward = (int) ((double) this.xpReward * 2.5D);
+        }
+        return super.getExperienceReward();
+    }
+
+    @Override
+    public void aiStep() {
+        if (this.isAlive()) {
+            boolean flag = this.isSunSensitive() && this.isSunBurnTick();
+            if (flag) {
+                ItemStack itemstack = this.getItemBySlot(EquipmentSlot.HEAD);
+                if (!itemstack.isEmpty()) {
+                    if (itemstack.isDamageableItem()) {
+                        itemstack.setDamageValue(itemstack.getDamageValue() + this.random.nextInt(2));
+                        if (itemstack.getDamageValue() >= itemstack.getMaxDamage()) {
+                            this.broadcastBreakEvent(EquipmentSlot.HEAD);
+                            this.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+                        }
+                    }
+                    flag = false;
+                }
+                if (flag) {
+                    this.setSecondsOnFire(8);
+                }
+            }
+        }
+        super.aiStep();
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        if (this.level().isClientSide()) {
+            this.setupAnimationStates();
+        }
+    }
+
+    private void setupAnimationStates() {
+        this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
+        this.attackAnimationState.animateWhen(this.isAlive() && this.getAttackState() == 1, this.tickCount);
+    }
+
+    protected boolean isSunSensitive() {
+        return true;
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+        boolean flag = super.doHurtTarget(entity);
+        if (flag) {
+            float f = this.level().getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
+            if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
+                entity.setSecondsOnFire(2 * (int)f);
+            }
+        }
+        return flag;
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(IS_BABY, false);
+        this.entityData.define(ATTACK_STATE, 0);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        compoundTag.putBoolean("IsBaby", this.isBaby());
+        compoundTag.putBoolean("CanBreakDoors", this.canBreakDoors());
+        compoundTag.putInt("AttackState", this.getAttackState());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        this.setBaby(compoundTag.getBoolean("IsBaby"));
+        this.setCanBreakDoors(compoundTag.getBoolean("CanBreakDoors"));
+        this.setAttackState(compoundTag.getInt("AttackState"));
+    }
+
+    public boolean isBaby() {
+        return this.getEntityData().get(IS_BABY);
+    }
+
+    public void setBaby(boolean baby) {
+        this.getEntityData().set(IS_BABY, baby);
+        if (this.level() != null && !this.level().isClientSide) {
+            AttributeInstance attributeinstance = this.getAttribute(Attributes.MOVEMENT_SPEED);
+            attributeinstance.removeModifier(BABY_SPEED_MODIFIER);
+            if (baby) {
+                attributeinstance.addTransientModifier(BABY_SPEED_MODIFIER);
+            }
+        }
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> entityDataAccessor) {
+        if (IS_BABY.equals(entityDataAccessor)) {
+            this.refreshDimensions();
+        }
+        super.onSyncedDataUpdated(entityDataAccessor);
+    }
+
+    public static boolean getSpawnAsBabyOdds(RandomSource randomSource) {
+        return randomSource.nextFloat() < ForgeConfig.SERVER.zombieBabyChance.get();
+    }
+
+    public boolean canBreakDoors() {
+        return this.canBreakDoors;
+    }
+
+    public void setCanBreakDoors(boolean p_34337_) {
+        if (this.supportsBreakDoorGoal() && GoalUtils.hasGroundPathNavigation(this)) {
+            if (this.canBreakDoors != p_34337_) {
+                this.canBreakDoors = p_34337_;
+                ((GroundPathNavigation)this.getNavigation()).setCanOpenDoors(p_34337_);
+                if (p_34337_) {
+                    this.goalSelector.addGoal(1, this.breakDoorGoal);
+                } else {
+                    this.goalSelector.removeGoal(this.breakDoorGoal);
+                }
+            }
+        } else if (this.canBreakDoors) {
+            this.goalSelector.removeGoal(this.breakDoorGoal);
+            this.canBreakDoors = false;
+        }
+    }
+
+    public int getAttackState() {
+        return this.entityData.get(ATTACK_STATE);
+    }
+
+    public void setAttackState(int attackState) {
+        this.entityData.set(ATTACK_STATE, attackState);
+    }
+
+    public double getMyRidingOffset() {
+        return this.isBaby() ? 0.0D : -0.45D;
+    }
+
+    @Override
+    protected void dropCustomDeathLoot(DamageSource p_34291_, int p_34292_, boolean p_34293_) {
+        super.dropCustomDeathLoot(p_34291_, p_34292_, p_34293_);
+        Entity entity = p_34291_.getEntity();
+        if (entity instanceof Creeper creeper) {
+            if (creeper.canDropMobsSkull()) {
+                ItemStack itemstack = this.getSkull();
+                if (!itemstack.isEmpty()) {
+                    creeper.increaseDroppedSkulls();
+                    this.spawnAtLocation(itemstack);
+                }
+            }
+        }
+    }
+
+    protected ItemStack getSkull() {
+        return new ItemStack(Items.ZOMBIE_HEAD);
+    }
+
+    @Override
+    @Nullable
+    protected SoundEvent getAmbientSound() {
+        return OPSoundEvents.FROWZY_IDLE.get();
+    }
+
+    @Override
+    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+        return OPSoundEvents.FROWZY_HURT.get();
+    }
+
+    @Override
+    protected @NotNull SoundEvent getDeathSound() {
+        return OPSoundEvents.FROWZY_DEATH.get();
+    }
+
+    @Override
+    protected void playStepSound(@NotNull BlockPos p_34316_, @NotNull BlockState p_34317_) {
+        this.playSound(SoundEvents.ZOMBIE_STEP, 0.15F, 1.2F);
     }
 
     public static boolean canSpawn(EntityType<Frowzy> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -81,6 +334,144 @@ public class Frowzy extends Monster {
                 int j = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
                 return j <= dimension.monsterSpawnLightTest().sample(random);
             }
+        }
+    }
+
+    public static class FrowzyGroupData implements SpawnGroupData {
+        public final boolean isBaby;
+        public final boolean canSpawnJockey;
+
+        public FrowzyGroupData(boolean isBaby, boolean chickenJockeyyy) {
+            this.isBaby = isBaby;
+            this.canSpawnJockey = chickenJockeyyy;
+        }
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
+        RandomSource randomsource = level.getRandom();
+
+        groupData = super.finalizeSpawn(level, difficulty, spawnType, groupData, compoundTag);
+        float f = difficulty.getSpecialMultiplier();
+
+        if (groupData == null) {
+            groupData = new FrowzyGroupData(getSpawnAsBabyOdds(randomsource), true);
+        }
+
+        if (groupData instanceof FrowzyGroupData frowzyGroupData) {
+            if (frowzyGroupData.isBaby) {
+                this.setBaby(true);
+                if (frowzyGroupData.canSpawnJockey) {
+                    if ((double) randomsource.nextFloat() < 0.05D) {
+                        List<Chicken> list = level.getEntitiesOfClass(Chicken.class, this.getBoundingBox().inflate(5.0D, 3.0D, 5.0D), EntitySelector.ENTITY_NOT_BEING_RIDDEN);
+                        if (!list.isEmpty()) {
+                            Chicken chicken = list.get(0);
+                            chicken.setChickenJockey(true);
+                            this.startRiding(chicken);
+                        }
+                    } else if ((double) randomsource.nextFloat() < 0.05D) {
+                        Chicken chicken1 = EntityType.CHICKEN.create(this.level());
+                        if (chicken1 != null) {
+                            chicken1.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+                            chicken1.finalizeSpawn(level, difficulty, MobSpawnType.JOCKEY, null, null);
+                            chicken1.setChickenJockey(true);
+                            this.startRiding(chicken1);
+                            level.addFreshEntity(chicken1);
+                        }
+                    }
+                }
+            }
+            this.setCanBreakDoors(this.supportsBreakDoorGoal() && randomsource.nextFloat() < f * 0.1F);
+        }
+        this.handleAttributes(f);
+        return groupData;
+    }
+
+    // goals
+    private static class FrowzyAttackGoal extends Goal {
+
+        private int attackTime = 0;
+        protected final Frowzy frowzy;
+
+        public FrowzyAttackGoal(Frowzy frowzy) {
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+            this.frowzy = frowzy;
+        }
+
+        public boolean canUse() {
+            return this.frowzy.getTarget() != null && this.frowzy.getTarget().isAlive();
+        }
+
+        public void start() {
+            this.frowzy.setAttackState(0);
+            this.attackTime = 0;
+        }
+
+        public void stop() {
+            this.frowzy.setAttackState(0);
+        }
+
+        public void tick() {
+            LivingEntity target = this.frowzy.getTarget();
+            if (target != null) {
+                this.frowzy.lookAt(this.frowzy.getTarget(), 30F, 30F);
+                this.frowzy.getLookControl().setLookAt(this.frowzy.getTarget(), 30F, 30F);
+
+                double distance = this.frowzy.distanceToSqr(target.getX(), target.getY(), target.getZ());
+                int attackState = this.frowzy.getAttackState();
+
+                this.frowzy.getNavigation().moveTo(target, 1.2D);
+
+                if (attackState == 1) {
+                    tickAttack();
+                } else {
+                    if (this.frowzy.isBaby() && distance <= 0.5D) {
+                        this.frowzy.setAttackState(1);
+                    } else if (distance <= 1.5D) {
+                        this.frowzy.setAttackState(1);
+                    }
+                }
+            }
+        }
+
+        protected void tickAttack() {
+            attackTime++;
+            LivingEntity target = this.frowzy.getTarget();
+
+            if (attackTime == 3) {
+                if (this.frowzy.distanceTo(Objects.requireNonNull(target)) < getAttackReachSqr(target)) {
+                    this.frowzy.doHurtTarget(target);
+                    this.frowzy.swing(InteractionHand.MAIN_HAND);
+                }
+            }
+            if (attackTime >= 9) {
+                attackTime = 0;
+                this.frowzy.setAttackState(0);
+            }
+        }
+
+        protected double getAttackReachSqr(LivingEntity target) {
+            return this.frowzy.getBbWidth() * 2.0F * this.frowzy.getBbWidth() * 2.0F + target.getBbWidth();
+        }
+    }
+
+    private class FrowzyAttackTurtleEggGoal extends RemoveBlockGoal {
+
+        FrowzyAttackTurtleEggGoal(PathfinderMob frowzy, double speed, int chance) {
+            super(Blocks.TURTLE_EGG, frowzy, speed, chance);
+        }
+
+        public void playDestroyProgressSound(LevelAccessor level, BlockPos blockPos) {
+            level.playSound(null, blockPos, SoundEvents.ZOMBIE_DESTROY_EGG, SoundSource.HOSTILE, 0.5F, 0.9F + Frowzy.this.random.nextFloat() * 0.2F);
+        }
+
+        public void playBreakSound(Level level, BlockPos blockPos) {
+            level.playSound(null, blockPos, SoundEvents.TURTLE_EGG_BREAK, SoundSource.BLOCKS, 0.7F, 0.9F + level.random.nextFloat() * 0.2F);
+        }
+
+        public double acceptedDistance() {
+            return 1.14D;
         }
     }
 }

@@ -35,14 +35,14 @@ public class PaleSpiderRenderer extends MobRenderer<PaleSpider, PaleSpiderModel<
         return RenderType.entityCutoutNoCull(TEXTURE);
     }
 
-//    @Override
-//    protected void setupRotations(PaleSpider entity, PoseStack matrixStack, float f, float g, float h) {
-//        super.setupRotations(entity, matrixStack, f, g, h);
-//        matrixStack.scale(0.75F, 0.75F, 0.75F);
-//
-//        if (entity.isLatched()) {
-//            matrixStack.translate(0.0, 0.5, 0);
-//            matrixStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
-//        }
-//    }
+    @Override
+    protected void setupRotations(PaleSpider entity, PoseStack matrixStack, float f, float g, float h) {
+        super.setupRotations(entity, matrixStack, f, g, h);
+        matrixStack.scale(0.75F, 0.75F, 0.75F);
+
+        if (entity.isUpsideDown() && !entity.onGround()) {
+            matrixStack.translate(0.0, 0.6, 0);
+            matrixStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+        }
+    }
 }

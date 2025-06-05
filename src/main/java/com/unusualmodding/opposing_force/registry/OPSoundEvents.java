@@ -22,6 +22,21 @@ public class OPSoundEvents {
     public static final RegistryObject<SoundEvent> ELECTRIC_CHARGE_DISSIPATE = createSoundEvent("electric_charge_dissipate");
     public static final RegistryObject<SoundEvent> ELECTRIC_CHARGE_ZAP = createSoundEvent("electric_charge_zap");
 
+    public static final RegistryObject<SoundEvent> FIRE_SLIME_HURT = createSoundEvent("fire_slime_hurt");
+    public static final RegistryObject<SoundEvent> FIRE_SLIME_DEATH = createSoundEvent("fire_slime_death");
+    public static final RegistryObject<SoundEvent> FIRE_SLIME_SQUISH = createSoundEvent("fire_slime_squish");
+    public static final RegistryObject<SoundEvent> FIRE_SLIME_JUMP = createSoundEvent("fire_slime_jump");
+    public static final RegistryObject<SoundEvent> FIRE_SLIME_ATTACK = createSoundEvent("fire_slime_attack");
+    public static final RegistryObject<SoundEvent> FIRE_SLIME_POP = createSoundEvent("fire_slime_pop");
+
+    public static final RegistryObject<SoundEvent> FROWZY_HURT = createSoundEvent("frowzy_hurt");
+    public static final RegistryObject<SoundEvent> FROWZY_DEATH = createSoundEvent("frowzy_death");
+    public static final RegistryObject<SoundEvent> FROWZY_IDLE = createSoundEvent("frowzy_idle");
+
+    public static final RegistryObject<SoundEvent> PALE_SPIDER_HURT = createSoundEvent("pale_spider_hurt");
+    public static final RegistryObject<SoundEvent> PALE_SPIDER_DEATH = createSoundEvent("pale_spider_death");
+    public static final RegistryObject<SoundEvent> PALE_SPIDER_IDLE = createSoundEvent("pale_spider_idle");
+
     public static final RegistryObject<SoundEvent> RAMBLE_HURT = createSoundEvent("ramble_hurt");
     public static final RegistryObject<SoundEvent> RAMBLE_DEATH = createSoundEvent("ramble_death");
     public static final RegistryObject<SoundEvent> RAMBLE_IDLE = createSoundEvent("ramble_idle");
