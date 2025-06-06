@@ -90,7 +90,7 @@ public class DicerModel<T extends Dicer> extends HierarchicalModel<T> {
 
 		this.animate(entity.idleAnimationState, DicerAnimations.IDLE, ageInTicks);
 		this.animate(entity.sliceAnimationState, DicerAnimations.CLAW, ageInTicks, 1.25F);
-		this.animate(entity.laserAnimationState, DicerAnimations.LASER, ageInTicks);
+		this.animate(entity.laserAnimationState, DicerAnimations.LASER, ageInTicks, 0.7F);
 
 		this.Head.xRot += headPitch * ((float) Math.PI / 180) - (headPitch * ((float) Math.PI / 180)) / 2;
 		this.Head.yRot += netHeadYaw * ((float) Math.PI / 180) - (netHeadYaw * ((float) Math.PI / 180)) / 2;

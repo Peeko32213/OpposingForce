@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.entity.misc.DicerLaser;
-import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -13,7 +12,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Matrix3f;
@@ -27,9 +25,8 @@ public class DicerLaserRenderer extends EntityRenderer<DicerLaser> {
 
     private static final float TEXTURE_WIDTH = 256;
     private static final float TEXTURE_HEIGHT = 32;
-    private static final float START_RADIUS = 0.45f;
-    private static final float BEAM_RADIUS = 0.3f;
-    private boolean clearerView = false;
+    private static final float START_RADIUS = 0.6f;
+    private static final float BEAM_RADIUS = 0.43f;
 
     public DicerLaserRenderer(EntityRendererProvider.Context mgr) {
         super(mgr);
@@ -42,8 +39,6 @@ public class DicerLaserRenderer extends EntityRenderer<DicerLaser> {
 
     @Override
     public void render(DicerLaser solarBeam, float entityYaw, float delta, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-        clearerView = solarBeam.caster instanceof Player && Minecraft.getInstance().player == solarBeam.caster && Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON;
-
         double collidePosX = solarBeam.prevCollidePosX + (solarBeam.collidePosX - solarBeam.prevCollidePosX) * delta;
         double collidePosY = solarBeam.prevCollidePosY + (solarBeam.collidePosY - solarBeam.prevCollidePosY) * delta;
         double collidePosZ = solarBeam.prevCollidePosZ + (solarBeam.collidePosZ - solarBeam.prevCollidePosZ) * delta;
@@ -84,9 +79,6 @@ public class DicerLaserRenderer extends EntityRenderer<DicerLaser> {
     }
 
     private void renderStart(int frame, PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
-        if (clearerView) {
-            return;
-        }
         matrixStackIn.pushPose();
         Quaternionf quat = this.entityRenderDispatcher.cameraOrientation();
         matrixStackIn.mulPose(quat);
@@ -117,10 +109,12 @@ public class DicerLaserRenderer extends EntityRenderer<DicerLaser> {
         float minV = 16 / TEXTURE_HEIGHT + 1 / TEXTURE_HEIGHT * frame;
         float maxU = minU + 20 / TEXTURE_WIDTH;
         float maxV = minV + 1 / TEXTURE_HEIGHT;
+        float offset = 0;
+
         PoseStack.Pose matrixstack$entry = matrixStackIn.last();
         Matrix4f matrix4f = matrixstack$entry.pose();
         Matrix3f matrix3f = matrixstack$entry.normal();
-        float offset = clearerView ? -1 : 0;
+
         drawVertex(matrix4f, matrix3f, builder, -BEAM_RADIUS, offset, 0, minU, minV, 1, packedLightIn);
         drawVertex(matrix4f, matrix3f, builder, -BEAM_RADIUS, length, 0, minU, maxV, 1, packedLightIn);
         drawVertex(matrix4f, matrix3f, builder, BEAM_RADIUS, length, 0, maxU, maxV, 1, packedLightIn);
@@ -133,18 +127,15 @@ public class DicerLaserRenderer extends EntityRenderer<DicerLaser> {
         matrixStackIn.mulPose(quatFromRotationXYZ(0, 0, yaw - 90f, true));
         matrixStackIn.mulPose(quatFromRotationXYZ(-pitch, 0, 0, true));
         matrixStackIn.pushPose();
-        if (!clearerView) {
-            matrixStackIn.mulPose(quatFromRotationXYZ(0, Minecraft.getInstance().gameRenderer.getMainCamera().getXRot() + 90, 0, true));
-        }
+        matrixStackIn.mulPose(quatFromRotationXYZ(0, Minecraft.getInstance().gameRenderer.getMainCamera().getXRot() + 90, 0, true));
+
         drawBeam(length, frame, matrixStackIn, builder, packedLightIn);
         matrixStackIn.popPose();
 
-        if (!clearerView) {
-            matrixStackIn.pushPose();
-            matrixStackIn.mulPose(quatFromRotationXYZ(0, -Minecraft.getInstance().gameRenderer.getMainCamera().getXRot() - 90, 0, true));
-            drawBeam(length, frame, matrixStackIn, builder, packedLightIn);
-            matrixStackIn.popPose();
-        }
+        matrixStackIn.pushPose();
+        matrixStackIn.mulPose(quatFromRotationXYZ(0, -Minecraft.getInstance().gameRenderer.getMainCamera().getXRot() - 90, 0, true));
+        drawBeam(length, frame, matrixStackIn, builder, packedLightIn);
+        matrixStackIn.popPose();
         matrixStackIn.popPose();
     }
 

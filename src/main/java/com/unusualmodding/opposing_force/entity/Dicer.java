@@ -53,7 +53,9 @@ public class Dicer extends Monster {
     public Dicer(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
         if (level.isClientSide) {
-            this.headPos = new Vec3[]{new Vec3(0, 0, 0)};
+            this.headPos = new Vec3[] {
+                    new Vec3(0, 0, 0)
+            };
         }
     }
 
@@ -61,7 +63,8 @@ public class Dicer extends Monster {
         return Mob.createMobAttributes()
             .add(Attributes.MAX_HEALTH, 32.0D)
             .add(Attributes.MOVEMENT_SPEED, 0.18D)
-            .add(Attributes.ATTACK_DAMAGE, 8.0D);
+            .add(Attributes.ATTACK_DAMAGE, 8.0D)
+            .add(Attributes.FOLLOW_RANGE, 24.0D);
     }
 
     protected void registerGoals() {
@@ -141,8 +144,8 @@ public class Dicer extends Monster {
         return this.entityData.get(ATTACK_STATE);
     }
 
-    public void setAttackState(int attackState) {
-        this.entityData.set(ATTACK_STATE, attackState);
+    public void setAttackState(int state) {
+        this.entityData.set(ATTACK_STATE, state);
     }
 
     public int getLaserCooldown() {
@@ -205,7 +208,7 @@ public class Dicer extends Monster {
     }
 
     // goals
-    private static class DicerAttackGoal extends Goal {
+    private class DicerAttackGoal extends Goal {
 
         private int attackTime = 0;
         protected final Dicer dicer;
@@ -238,23 +241,23 @@ public class Dicer extends Monster {
                 double distance = this.dicer.distanceToSqr(target.getX(), target.getY(), target.getZ());
                 int attackState = this.dicer.getAttackState();
 
-                if (attackState == 1) {
-                    tickAttack();
-                }
-                else if (attackState == 2) {
-                    tickLaserAttack();
-                }
-                else {
-                    if (distance <= 5) {
-                        this.dicer.setAttackState(1);
-                    }
-                    else if (distance > 24 && this.dicer.getLaserCooldown() <= 0) {
-                        this.dicer.setAttackState(2);
-                    }
-                    else {
+                switch (attackState) {
+                    case 1 -> tickSliceAttack();
+                    case 2 -> tickLaserAttack();
+                    default -> {
                         this.dicer.getNavigation().moveTo(target, 2.0D);
+                        this.checkAttackRange(distance);
                     }
                 }
+            }
+        }
+
+        protected void checkAttackRange(double distance) {
+            if (distance <= 5) {
+                this.dicer.setAttackState(1);
+            }
+            if (distance > 10 && distance < 24 && this.dicer.getLaserCooldown() == 0) {
+                this.dicer.setAttackState(2);
             }
         }
 
@@ -262,7 +265,7 @@ public class Dicer extends Monster {
             return this.dicer.getAttackState() > 0;
         }
 
-        protected void tickAttack() {
+        protected void tickSliceAttack() {
             this.attackTime++;
             this.dicer.getNavigation().stop();
             if (this.attackTime == 13) {
@@ -283,30 +286,20 @@ public class Dicer extends Monster {
             LivingEntity target = this.dicer.getTarget();
 
             if (this.attackTime == 1) {
-                DicerLaser laser = new DicerLaser(
-                        OPEntities.DICER_LASER.get(),
-                        this.dicer.level(),
-                        this.dicer,
-                        this.dicer.getX() + 0.8F * Math.sin(-this.dicer.getYRot() * Math.PI / 180),
-                        this.dicer.getY() + 1.4F,
-                        this.dicer.getZ() + 0.8F * Math.cos(-this.dicer.getYRot() * Math.PI / 180),
-                        (float) ((this.dicer.yHeadRot + 90) * Math.PI / 180),
-                        (float) (-this.dicer.getXRot() * Math.PI / 180),
-                        20
-                );
+                DicerLaser laser = new DicerLaser(OPEntities.DICER_LASER.get(), Dicer.this.level(), Dicer.this, Dicer.this.getX() + 0.8F * Math.sin(-Dicer.this.getYRot() * Math.PI / 180), Dicer.this.getY() + 1.4F, Dicer.this.getZ() + 0.8F * Math.cos(-Dicer.this.getYRot() * Math.PI / 180), (float) ((Dicer.this.yHeadRot + 90) * Math.PI / 180), (float) (-Dicer.this.getXRot() * Math.PI / 180), 21, 2);
                 this.dicer.level().addFreshEntity(laser);
             }
 
-            if (this.attackTime == 6) {
+            if (this.attackTime == 13) {
                 this.dicer.playSound(OPSoundEvents.DICER_LASER.get(), 2.0F, 1.0F / (this.dicer.getRandom().nextFloat() * 0.4F + 0.8F));
             }
 
-            if (this.attackTime >= 7 && this.attackTime <= 35) {
+            if (this.attackTime >= 13 && this.attackTime <= 41) {
                 if (target != null) {
                     this.dicer.getLookControl().setLookAt(target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(), 2, 90);
                 }
             }
-            if (this.attackTime > 40) {
+            if (this.attackTime > 50) {
                 this.attackTime = 0;
                 this.dicer.setAttackState(0);
                 this.dicer.laserCooldown();

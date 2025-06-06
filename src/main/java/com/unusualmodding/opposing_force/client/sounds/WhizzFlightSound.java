@@ -10,11 +10,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class WhizzSoundInstance extends AbstractTickableSoundInstance {
+public class WhizzFlightSound extends AbstractTickableSoundInstance {
 
     protected final Whizz entity;
 
-    public WhizzSoundInstance(Whizz entity) {
+    public WhizzFlightSound(Whizz entity) {
         super(OPSoundEvents.WHIZZ_FLY.get(), SoundSource.NEUTRAL, SoundInstance.createUnseededRandom());
         this.entity = entity;
         this.x = (float) entity.getX();

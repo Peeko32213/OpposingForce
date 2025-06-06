@@ -10,11 +10,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ElectricChargeSoundInstance extends AbstractTickableSoundInstance {
+public class ElectricChargeSound extends AbstractTickableSoundInstance {
 
     protected final ElectricCharge electricBall;
 
-    public ElectricChargeSoundInstance(ElectricCharge smallElectricBall) {
+    public ElectricChargeSound(ElectricCharge smallElectricBall) {
         super(OPSoundEvents.ELECTRIC_CHARGE.get(), SoundSource.NEUTRAL, SoundInstance.createUnseededRandom());
         this.electricBall = smallElectricBall;
         this.x = (float) smallElectricBall.getX();

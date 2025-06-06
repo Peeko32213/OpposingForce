@@ -8,7 +8,6 @@ import com.unusualmodding.opposing_force.registry.OPItemProperties;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPEntityModelLayers;
 import com.unusualmodding.opposing_force.registry.OPParticles;
-import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

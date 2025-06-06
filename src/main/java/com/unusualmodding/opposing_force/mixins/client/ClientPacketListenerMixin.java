@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.mixins.client;
 
-import com.unusualmodding.opposing_force.client.sounds.ElectricChargeSoundInstance;
-import com.unusualmodding.opposing_force.client.sounds.WhizzSoundInstance;
+import com.unusualmodding.opposing_force.client.sounds.ElectricChargeSound;
+import com.unusualmodding.opposing_force.client.sounds.WhizzFlightSound;
 import com.unusualmodding.opposing_force.entity.Whizz;
 import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
 import net.minecraft.client.Minecraft;
@@ -18,10 +18,10 @@ public class ClientPacketListenerMixin {
     @Inject(at = @At(value = "HEAD"), method = "postAddEntitySoundInstance")
     private void handleAddMob(Entity entity, CallbackInfo ci) {
         if (entity instanceof ElectricCharge electricBall) {
-            Minecraft.getInstance().getSoundManager().queueTickingSound(new ElectricChargeSoundInstance(electricBall));
+            Minecraft.getInstance().getSoundManager().queueTickingSound(new ElectricChargeSound(electricBall));
         }
         if (entity instanceof Whizz whizz) {
-            Minecraft.getInstance().getSoundManager().queueTickingSound(new WhizzSoundInstance(whizz));
+            Minecraft.getInstance().getSoundManager().queueTickingSound(new WhizzFlightSound(whizz));
         }
     }
 }
