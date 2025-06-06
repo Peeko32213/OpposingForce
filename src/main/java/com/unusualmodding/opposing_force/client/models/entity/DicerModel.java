@@ -83,14 +83,16 @@ public class DicerModel<T extends Dicer> extends HierarchicalModel<T> {
 	public void setupAnim(Dicer entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 
-		if (entity.isRunning()) {
-			this.animateWalk(DicerAnimations.RUN, limbSwing, limbSwingAmount, 1, 1);
+		if (entity.getAttackState() == 0) {
+			if (entity.isRunning()) {
+				this.animateWalk(DicerAnimations.RUN, limbSwing, limbSwingAmount, 1, 1);
+			}
+			this.animateWalk(DicerAnimations.WALK, limbSwing, limbSwingAmount, 4.5F, 8);
 		}
-		this.animateWalk(DicerAnimations.WALK, limbSwing, limbSwingAmount, 4.5F, 8);
 
 		this.animate(entity.idleAnimationState, DicerAnimations.IDLE, ageInTicks);
-		this.animate(entity.sliceAnimationState, DicerAnimations.CLAW, ageInTicks, 1.25F);
-		this.animate(entity.laserAnimationState, DicerAnimations.LASER, ageInTicks, 0.7F);
+		this.animate(entity.sliceAnimationState, DicerAnimations.CLAW, ageInTicks);
+		this.animate(entity.laserAnimationState, DicerAnimations.LASER, ageInTicks);
 
 		this.Head.xRot += headPitch * ((float) Math.PI / 180) - (headPitch * ((float) Math.PI / 180)) / 2;
 		this.Head.yRot += netHeadYaw * ((float) Math.PI / 180) - (netHeadYaw * ((float) Math.PI / 180)) / 2;

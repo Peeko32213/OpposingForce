@@ -8,21 +8,36 @@
   },
   "dicer_death": {
     "sounds": [
-      "opposing_force:entity/dicer/death1"
+      {
+        "name": "opposing_force:entity/dicer/death1",
+        "volume": 0.9
+      }
     ],
     "subtitle": "subtitles.opposing_force.dicer_death"
   },
   "dicer_hurt": {
     "sounds": [
-      "opposing_force:entity/dicer/hurt1",
-      "opposing_force:entity/dicer/hurt2"
+      {
+        "name": "opposing_force:entity/dicer/hurt1",
+        "volume": 0.9
+      },
+      {
+        "name": "opposing_force:entity/dicer/hurt2",
+        "volume": 0.9
+      }
     ],
     "subtitle": "subtitles.opposing_force.dicer_hurt"
   },
   "dicer_idle": {
     "sounds": [
-      "opposing_force:entity/dicer/idle1",
-      "opposing_force:entity/dicer/idle2"
+      {
+        "name": "opposing_force:entity/dicer/idle1",
+        "volume": 0.8
+      },
+      {
+        "name": "opposing_force:entity/dicer/idle2",
+        "volume": 0.8
+      }
     ],
     "subtitle": "subtitles.opposing_force.dicer_idle"
   },

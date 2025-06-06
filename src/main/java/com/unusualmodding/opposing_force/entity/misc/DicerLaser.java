@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.entity.misc;
 
 import com.unusualmodding.opposing_force.client.utils.ControlledAnimation;
 import com.unusualmodding.opposing_force.entity.Dicer;
+import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -9,6 +10,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,7 +36,6 @@ public class DicerLaser extends Entity {
     public ControlledAnimation appear = new ControlledAnimation(3);
 
     public boolean on = true;
-    private boolean didRaytrace;
 
     public Direction blockSide = null;
 
@@ -43,7 +44,7 @@ public class DicerLaser extends Entity {
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(DicerLaser.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> HAS_PLAYER = SynchedEntityData.defineId(DicerLaser.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> CASTER = SynchedEntityData.defineId(DicerLaser.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> DAMAGE = SynchedEntityData.defineId(DicerLaser.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(DicerLaser.class, EntityDataSerializers.FLOAT);
 
     public float prevYaw;
     public float prevPitch;
@@ -121,7 +122,7 @@ public class DicerLaser extends Entity {
                 for (LivingEntity target : entities) {
                     if (caster != null) {
                         if (!this.caster.isAlliedTo(target) && target != caster) {
-                            target.hurt(damageSources().mobProjectile(this, caster), this.getDamage());
+                            target.hurt(OPDamageTypes.laser(this.level(), this, caster), this.getDamage());
                         }
                     }
                 }
@@ -151,7 +152,7 @@ public class DicerLaser extends Entity {
         this.entityData.define(YAW, 0F);
         this.entityData.define(PITCH, 0F);
         this.entityData.define(DURATION, 0);
-        this.entityData.define(DAMAGE, 0);
+        this.entityData.define(DAMAGE, 0F);
         this.entityData.define(HAS_PLAYER, false);
         this.entityData.define(CASTER, -1);
     }
@@ -184,7 +185,7 @@ public class DicerLaser extends Entity {
         return this.entityData.get(DAMAGE);
     }
 
-    public void setDamage(int damage) {
+    public void setDamage(float damage) {
         this.entityData.set(DAMAGE, damage);
     }
 
@@ -216,12 +217,7 @@ public class DicerLaser extends Entity {
         }
     }
 
-    public boolean hasDoneRaytrace() {
-        return didRaytrace;
-    }
-
     public LaserHitResult raytraceEntities(Level world, Vec3 from, Vec3 to, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox, boolean returnLastUncollidableBlock) {
-        didRaytrace = true;
         LaserHitResult result = new LaserHitResult();
         result.setBlockHit(world.clip(new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)));
         if (result.blockHit != null) {
@@ -241,7 +237,7 @@ public class DicerLaser extends Entity {
             if (entity == caster) {
                 continue;
             }
-            float pad = entity.getPickRadius() + 0.5f;
+            float pad = entity.getPickRadius() + 0.1f;
             AABB aabb = entity.getBoundingBox().inflate(pad, pad, pad);
             Optional<Vec3> hit = aabb.clip(from, to);
             if (aabb.contains(from)) {

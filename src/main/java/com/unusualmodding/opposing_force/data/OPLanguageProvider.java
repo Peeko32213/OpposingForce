@@ -121,6 +121,7 @@ public class OPLanguageProvider extends LanguageProvider {
         add("death.attack.opposing_force.electrified.player", "%1$s was zapped by %2$s");
         add("death.attack.opposing_force.gloom_toxin", "%1$s was consumed by darkness");
         add("death.attack.opposing_force.gloom_toxin.player", "%1$s didn't reach the light");
+        add("death.attack.opposing_force.laser", "%1$s was vaporized by %2$s");
         add("death.attack.opposing_force.tomahawk", "%1$s was domed by %2$s");
         add("death.attack.opposing_force.tomahawk.item", "%1$s was domed by %2$s using %3$s");
     }

@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
+import com.unusualmodding.opposing_force.entity.misc.DicerLaser;
 import com.unusualmodding.opposing_force.entity.projectile.Tomahawk;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -16,12 +17,18 @@ public class OPDamageTypes {
 
     public static final ResourceKey<DamageType> ELECTRIFIED = register("electrified");
     public static final ResourceKey<DamageType> GLOOM_TOXIN = register("gloom_toxin");
+    public static final ResourceKey<DamageType> LASER = register("laser");
     public static final ResourceKey<DamageType> TOMAHAWK = register("tomahawk");
 
     public static void bootstrap(BootstapContext<DamageType> context) {
         context.register(ELECTRIFIED, new DamageType(OpposingForce.MOD_ID + ".electrified", 0.0F));
         context.register(GLOOM_TOXIN, new DamageType(OpposingForce.MOD_ID + ".gloom_toxin", 0.0F));
+        context.register(LASER, new DamageType(OpposingForce.MOD_ID + ".laser", 0.0F));
         context.register(TOMAHAWK, new DamageType(OpposingForce.MOD_ID + ".tomahawk", 0.1F));
+    }
+
+    public static DamageSource laser(Level level, DicerLaser laser, @Nullable Entity indirectEntity) {
+        return level.damageSources().source(LASER, laser, indirectEntity);
     }
 
     public static DamageSource tomahawk(Level level, Tomahawk tomahawk, @Nullable Entity indirectEntity) {

@@ -1,6 +1,7 @@
-// 1.20.1	2025-06-02T14:19:07.1631582	Registries
+// 1.20.1	2025-06-05T22:08:40.5877327	Registries
 8871d493161af813420d4804e7cb09d21dc44df1 data/opposing_force/damage_type/electrified.json
 2aaf2641dbb20483c2095fac9f165637dae0a736 data/opposing_force/damage_type/gloom_toxin.json
+4d3a88d949ab10dcd54727bd8ed26e701b96712a data/opposing_force/damage_type/laser.json
 af1babf1bca9fd2a3be8024bdc899667e1c5612e data/opposing_force/damage_type/tomahawk.json
 016cc23bb1170837428618e8d7ed4b1254ff2b17 data/opposing_force/forge/biome_modifier/add_spawn/dicer.json
 0c817fd13e5a6d4f266847e8bae013eab96b4eb1 data/opposing_force/forge/biome_modifier/add_spawn/frowzy.json

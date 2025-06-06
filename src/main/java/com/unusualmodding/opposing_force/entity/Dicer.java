@@ -70,9 +70,9 @@ public class Dicer extends Monster {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new DicerAttackGoal(this));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
@@ -113,7 +113,7 @@ public class Dicer extends Monster {
         super.defineSynchedData();
         this.entityData.define(RUNNING, false);
         this.entityData.define(ATTACK_STATE, 0);
-        this.entityData.define(LASER_COOLDOWN, 15 * 2 * random.nextInt(8 * 2));
+        this.entityData.define(LASER_COOLDOWN, 120);
     }
 
     @Override
@@ -157,7 +157,7 @@ public class Dicer extends Monster {
     }
 
     public void laserCooldown() {
-        this.entityData.set(LASER_COOLDOWN, 15 * 2 * random.nextInt(8 * 2));
+        this.entityData.set(LASER_COOLDOWN, 120);
     }
 
     // Sounds
@@ -236,8 +236,6 @@ public class Dicer extends Monster {
         public void tick() {
             LivingEntity target = this.dicer.getTarget();
             if (target != null) {
-                this.dicer.lookAt(this.dicer.getTarget(), 30F, 30F);
-                this.dicer.getLookControl().setLookAt(this.dicer.getTarget(), 30F, 30F);
                 double distance = this.dicer.distanceToSqr(target.getX(), target.getY(), target.getZ());
                 int attackState = this.dicer.getAttackState();
 
@@ -246,6 +244,8 @@ public class Dicer extends Monster {
                     case 2 -> tickLaserAttack();
                     default -> {
                         this.dicer.getNavigation().moveTo(target, 2.0D);
+                        this.dicer.lookAt(target, 30F, 30F);
+                        this.dicer.getLookControl().setLookAt(target, 30F, 30F);
                         this.checkAttackRange(distance);
                     }
                 }
@@ -256,7 +256,7 @@ public class Dicer extends Monster {
             if (distance <= 5) {
                 this.dicer.setAttackState(1);
             }
-            if (distance > 10 && distance < 24 && this.dicer.getLaserCooldown() == 0) {
+            if (distance > 6 && distance < 80 && this.dicer.getLaserCooldown() == 0) {
                 this.dicer.setAttackState(2);
             }
         }
@@ -268,8 +268,8 @@ public class Dicer extends Monster {
         protected void tickSliceAttack() {
             this.attackTime++;
             this.dicer.getNavigation().stop();
-            if (this.attackTime == 13) {
-                if (this.dicer.distanceTo(Objects.requireNonNull(this.dicer.getTarget())) < 2.6F) {
+            if (this.attackTime == 11) {
+                if (this.dicer.distanceTo(Objects.requireNonNull(this.dicer.getTarget())) < 2.7F) {
                     this.dicer.doHurtTarget(this.dicer.getTarget());
                     this.dicer.swing(InteractionHand.MAIN_HAND);
                 }
@@ -286,17 +286,21 @@ public class Dicer extends Monster {
             LivingEntity target = this.dicer.getTarget();
 
             if (this.attackTime == 1) {
-                DicerLaser laser = new DicerLaser(OPEntities.DICER_LASER.get(), Dicer.this.level(), Dicer.this, Dicer.this.getX() + 0.8F * Math.sin(-Dicer.this.getYRot() * Math.PI / 180), Dicer.this.getY() + 1.4F, Dicer.this.getZ() + 0.8F * Math.cos(-Dicer.this.getYRot() * Math.PI / 180), (float) ((Dicer.this.yHeadRot + 90) * Math.PI / 180), (float) (-Dicer.this.getXRot() * Math.PI / 180), 21, 2);
+                DicerLaser laser = new DicerLaser(OPEntities.DICER_LASER.get(), Dicer.this.level(), Dicer.this, Dicer.this.getX() + 0.8F * Math.sin(-Dicer.this.getYRot() * Math.PI / 180), Dicer.this.getY() + 1.4F, Dicer.this.getZ() + 0.8F * Math.cos(-Dicer.this.getYRot() * Math.PI / 180), (float) ((Dicer.this.yHeadRot + 90) * Math.PI / 180), (float) (-Dicer.this.getXRot() * Math.PI / 180), 21, 3);
                 this.dicer.level().addFreshEntity(laser);
             }
 
             if (this.attackTime == 13) {
-                this.dicer.playSound(OPSoundEvents.DICER_LASER.get(), 2.0F, 1.0F / (this.dicer.getRandom().nextFloat() * 0.4F + 0.8F));
+                if (target != null) {
+                    this.dicer.playSound(OPSoundEvents.DICER_LASER.get(), 2.0F, 1.0F / (this.dicer.getRandom().nextFloat() * 0.4F + 0.8F));
+                    this.dicer.lookAt(target, 360F, 360F);
+                    this.dicer.getLookControl().setLookAt(target, 30F, 30F);
+                }
             }
 
             if (this.attackTime >= 13 && this.attackTime <= 41) {
                 if (target != null) {
-                    this.dicer.getLookControl().setLookAt(target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(), 2, 90);
+                    this.dicer.getLookControl().setLookAt(target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(), 1.5F, 80);
                 }
             }
             if (this.attackTime > 50) {
