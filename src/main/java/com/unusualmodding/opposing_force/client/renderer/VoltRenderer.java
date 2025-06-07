@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.VoltModel;
 import com.unusualmodding.opposing_force.entity.Volt;
-import com.unusualmodding.opposing_force.registry.OPEntityModelLayers;
+import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -20,7 +20,7 @@ public class VoltRenderer extends MobRenderer<Volt, VoltModel<Volt>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID,"textures/entity/volt.png");
 
     public VoltRenderer(EntityRendererProvider.Context context) {
-        super(context, new VoltModel<>(context.bakeLayer(OPEntityModelLayers.VOLT_LAYER)), 0.5F);
+        super(context, new VoltModel<>(context.bakeLayer(OPModelLayers.VOLT_LAYER)), 0.5F);
     }
 
     protected void scale(Volt entity, PoseStack poseStack, float partialTicks) {

@@ -1,6 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
-import com.unusualmodding.opposing_force.entity.misc.DicerLaser;
+import com.unusualmodding.opposing_force.entity.projectile.DicerLaser;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;

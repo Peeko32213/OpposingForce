@@ -4,7 +4,7 @@ import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.TerrorModel;
 import com.unusualmodding.opposing_force.client.renderer.layer.TerrorEyesLayer;
 import com.unusualmodding.opposing_force.entity.Terror;
-import com.unusualmodding.opposing_force.registry.OPEntityModelLayers;
+import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -19,7 +19,7 @@ public class TerrorRenderer extends MobRenderer<Terror, TerrorModel<Terror>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/terror.png");
 
     public TerrorRenderer(EntityRendererProvider.Context context) {
-        super(context, new TerrorModel<>(context.bakeLayer(OPEntityModelLayers.TERROR_LAYER)), 0.5F);
+        super(context, new TerrorModel<>(context.bakeLayer(OPModelLayers.TERROR_LAYER)), 0.5F);
         this.addLayer(new TerrorEyesLayer<>(this));
     }
 

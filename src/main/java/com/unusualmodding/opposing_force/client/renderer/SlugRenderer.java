@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.SlugModel;
 import com.unusualmodding.opposing_force.entity.Slug;
-import com.unusualmodding.opposing_force.registry.OPEntityModelLayers;
+import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -19,7 +19,7 @@ public class SlugRenderer extends MobRenderer<Slug, SlugModel<Slug>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/slug.png");
 
     public SlugRenderer(EntityRendererProvider.Context context) {
-        super(context, new SlugModel<>(context.bakeLayer(OPEntityModelLayers.SLUG_LAYER)), 0.5F);
+        super(context, new SlugModel<>(context.bakeLayer(OPModelLayers.SLUG_LAYER)), 0.5F);
     }
 
     @Override

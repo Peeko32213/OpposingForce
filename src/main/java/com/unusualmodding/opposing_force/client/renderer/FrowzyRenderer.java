@@ -3,7 +3,7 @@ package com.unusualmodding.opposing_force.client.renderer;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.FrowzyModel;
 import com.unusualmodding.opposing_force.entity.Frowzy;
-import com.unusualmodding.opposing_force.registry.OPEntityModelLayers;
+import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -18,7 +18,7 @@ public class FrowzyRenderer extends MobRenderer<Frowzy, FrowzyModel<Frowzy>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/frowzy.png");
 
     public FrowzyRenderer(EntityRendererProvider.Context context) {
-        super(context, new FrowzyModel<>(context.bakeLayer(OPEntityModelLayers.FROWZY_LAYER)), 0.4F);
+        super(context, new FrowzyModel<>(context.bakeLayer(OPModelLayers.FROWZY_LAYER)), 0.4F);
     }
 
     @Override

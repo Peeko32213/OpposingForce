@@ -29,7 +29,7 @@ public class OpposingForce {
 
         OPBlocks.BLOCKS.register(modEventBus);
         OPItems.ITEMS.register(modEventBus);
-        OPCreativeTabs.CREATIVE_TABS.register(modEventBus);
+        OPCreativeTab.CREATIVE_TABS.register(modEventBus);
         OPEffects.MOB_EFFECTS.register(modEventBus);
         OPEntities.ENTITY_TYPES.register(modEventBus);
         OPSoundEvents.SOUND_EVENTS.register(modEventBus);

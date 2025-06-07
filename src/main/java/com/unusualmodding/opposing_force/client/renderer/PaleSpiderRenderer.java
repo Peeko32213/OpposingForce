@@ -6,7 +6,7 @@ import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.PaleSpiderModel;
 import com.unusualmodding.opposing_force.client.renderer.layer.PaleSpiderEyesLayer;
 import com.unusualmodding.opposing_force.entity.PaleSpider;
-import com.unusualmodding.opposing_force.registry.OPEntityModelLayers;
+import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -21,7 +21,7 @@ public class PaleSpiderRenderer extends MobRenderer<PaleSpider, PaleSpiderModel<
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/pale_spider.png");
 
     public PaleSpiderRenderer(EntityRendererProvider.Context context) {
-        super(context, new PaleSpiderModel<>(context.bakeLayer(OPEntityModelLayers.PALE_SPIDER_LAYER)), 0.5F);
+        super(context, new PaleSpiderModel<>(context.bakeLayer(OPModelLayers.PALE_SPIDER_LAYER)), 0.5F);
         this.addLayer(new PaleSpiderEyesLayer<>(this));
     }
 

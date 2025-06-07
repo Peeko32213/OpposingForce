@@ -2,7 +2,7 @@ package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.entity.*;
-import com.unusualmodding.opposing_force.entity.misc.DicerLaser;
+import com.unusualmodding.opposing_force.entity.projectile.DicerLaser;
 import com.unusualmodding.opposing_force.entity.projectile.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;

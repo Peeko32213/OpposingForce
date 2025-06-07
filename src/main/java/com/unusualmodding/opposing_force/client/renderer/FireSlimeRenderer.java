@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.FireSlimeModel;
 import com.unusualmodding.opposing_force.entity.FireSlime;
-import com.unusualmodding.opposing_force.registry.OPEntityModelLayers;
+import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -21,7 +21,7 @@ public class FireSlimeRenderer extends MobRenderer<FireSlime, FireSlimeModel<Fir
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/fire_slime.png");
 
     public FireSlimeRenderer(EntityRendererProvider.Context context) {
-        super(context, new FireSlimeModel<>(context.bakeLayer(OPEntityModelLayers.FIRE_SLIME_LAYER)), 0.4F);
+        super(context, new FireSlimeModel<>(context.bakeLayer(OPModelLayers.FIRE_SLIME_LAYER)), 0.4F);
     }
 
     @Override

@@ -7,7 +7,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class OPEntityModelLayers {
+public class OPModelLayers {
 
     public static final ModelLayerLocation DICER_LAYER = main("dicer");
     public static final ModelLayerLocation EMERALDFISH_LAYER = main("emeraldfish");
@@ -22,6 +22,8 @@ public class OPEntityModelLayers {
     public static final ModelLayerLocation UMBER_SPIDER_LAYER = main("umber_spider");
     public static final ModelLayerLocation VOLT_LAYER = main("volt");
     public static final ModelLayerLocation WHIZZ_LAYER = main("whizz");
+
+    public static final ModelLayerLocation DEEPWOVEN_ARMOR_LAYER = main("deepwoven_armor");
 
     private static ModelLayerLocation register(String id, String name) {
         return new ModelLayerLocation(new ResourceLocation(OpposingForce.MOD_ID, id), name);

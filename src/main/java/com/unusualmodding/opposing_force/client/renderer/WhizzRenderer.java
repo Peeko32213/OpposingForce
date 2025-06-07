@@ -3,7 +3,7 @@ package com.unusualmodding.opposing_force.client.renderer;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.WhizzModel;
 import com.unusualmodding.opposing_force.entity.Whizz;
-import com.unusualmodding.opposing_force.registry.OPEntityModelLayers;
+import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -18,7 +18,7 @@ public class WhizzRenderer extends MobRenderer<Whizz, WhizzModel<Whizz>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID,"textures/entity/whizz.png");
 
     public WhizzRenderer(EntityRendererProvider.Context context) {
-        super(context, new WhizzModel<>(context.bakeLayer(OPEntityModelLayers.WHIZZ_LAYER)), 0.2F);
+        super(context, new WhizzModel<>(context.bakeLayer(OPModelLayers.WHIZZ_LAYER)), 0.2F);
     }
 
     @Override

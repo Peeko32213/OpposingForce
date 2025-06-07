@@ -1,12 +1,13 @@
 package com.unusualmodding.opposing_force.events;
 
 import com.unusualmodding.opposing_force.OpposingForce;
+import com.unusualmodding.opposing_force.client.models.armor.DeepwovenArmorModel;
 import com.unusualmodding.opposing_force.client.models.entity.*;
 import com.unusualmodding.opposing_force.client.particles.*;
 import com.unusualmodding.opposing_force.client.renderer.*;
 import com.unusualmodding.opposing_force.registry.OPItemProperties;
 import com.unusualmodding.opposing_force.registry.OPEntities;
-import com.unusualmodding.opposing_force.registry.OPEntityModelLayers;
+import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import com.unusualmodding.opposing_force.registry.OPParticles;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -54,18 +55,20 @@ public final class ClientEvents {
 
     @SubscribeEvent
     public static void registerEntityLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(OPEntityModelLayers.DICER_LAYER, DicerModel::createBodyLayer);
-        event.registerLayerDefinition(OPEntityModelLayers.EMERALDFISH_LAYER, EmeraldfishModel::createBodyLayer);
-        event.registerLayerDefinition(OPEntityModelLayers.FIRE_SLIME_LAYER, FireSlimeModel::createBodyLayer);
-        event.registerLayerDefinition(OPEntityModelLayers.FROWZY_LAYER, FrowzyModel::createBodyLayer);
-        event.registerLayerDefinition(OPEntityModelLayers.GUZZLER_LAYER, GuzzlerModel::createBodyLayer);
-        event.registerLayerDefinition(OPEntityModelLayers.PALE_SPIDER_LAYER, PaleSpiderModel::createBodyLayer);
-        event.registerLayerDefinition(OPEntityModelLayers.RAMBLE_LAYER, RambleModel::createBodyLayer);
-        event.registerLayerDefinition(OPEntityModelLayers.SLUG_LAYER, SlugModel::createBodyLayer);
-        event.registerLayerDefinition(OPEntityModelLayers.TERROR_LAYER, TerrorModel::createBodyLayer);
-        event.registerLayerDefinition(OPEntityModelLayers.TREMBLER_LAYER, TremblerModel::createBodyLayer);
-        event.registerLayerDefinition(OPEntityModelLayers.UMBER_SPIDER_LAYER, UmberSpiderModel::createBodyLayer);
-        event.registerLayerDefinition(OPEntityModelLayers.VOLT_LAYER, VoltModel::createBodyLayer);
-        event.registerLayerDefinition(OPEntityModelLayers.WHIZZ_LAYER, WhizzModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.DICER_LAYER, DicerModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.EMERALDFISH_LAYER, EmeraldfishModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.FIRE_SLIME_LAYER, FireSlimeModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.FROWZY_LAYER, FrowzyModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.GUZZLER_LAYER, GuzzlerModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.PALE_SPIDER_LAYER, PaleSpiderModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.RAMBLE_LAYER, RambleModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.SLUG_LAYER, SlugModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.TERROR_LAYER, TerrorModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.TREMBLER_LAYER, TremblerModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.UMBER_SPIDER_LAYER, UmberSpiderModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.VOLT_LAYER, VoltModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.WHIZZ_LAYER, WhizzModel::createBodyLayer);
+
+        event.registerLayerDefinition(OPModelLayers.DEEPWOVEN_ARMOR_LAYER, DeepwovenArmorModel::createArmorLayer);
     }
 }

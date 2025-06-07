@@ -4,7 +4,7 @@ import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.GuzzlerModel;
 import com.unusualmodding.opposing_force.client.renderer.layer.GuzzlerGlowLayer;
 import com.unusualmodding.opposing_force.entity.Guzzler;
-import com.unusualmodding.opposing_force.registry.OPEntityModelLayers;
+import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -19,7 +19,7 @@ public class GuzzlerRenderer extends MobRenderer<Guzzler, GuzzlerModel<Guzzler>>
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/guzzler.png");
 
     public GuzzlerRenderer(EntityRendererProvider.Context context) {
-        super(context, new GuzzlerModel<>(context.bakeLayer(OPEntityModelLayers.GUZZLER_LAYER)), 1.1F);
+        super(context, new GuzzlerModel<>(context.bakeLayer(OPModelLayers.GUZZLER_LAYER)), 1.1F);
         this.addLayer(new GuzzlerGlowLayer<>(this));
     }
 

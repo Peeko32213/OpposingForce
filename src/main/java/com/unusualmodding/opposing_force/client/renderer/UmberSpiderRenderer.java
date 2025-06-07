@@ -4,7 +4,7 @@ import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.UmberSpiderModel;
 import com.unusualmodding.opposing_force.client.renderer.layer.UmberSpiderEyesLayer;
 import com.unusualmodding.opposing_force.entity.UmberSpider;
-import com.unusualmodding.opposing_force.registry.OPEntityModelLayers;
+import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -19,7 +19,7 @@ public class UmberSpiderRenderer extends MobRenderer<UmberSpider, UmberSpiderMod
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/umber_spider.png");
 
     public UmberSpiderRenderer(EntityRendererProvider.Context context) {
-        super(context, new UmberSpiderModel<>(context.bakeLayer(OPEntityModelLayers.UMBER_SPIDER_LAYER)), 0.8F);
+        super(context, new UmberSpiderModel<>(context.bakeLayer(OPModelLayers.UMBER_SPIDER_LAYER)), 0.8F);
         this.addLayer(new UmberSpiderEyesLayer<>(this));
     }
 
