@@ -2,6 +2,9 @@ package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.items.*;
+import com.unusualmodding.opposing_force.registry.enums.OPArmorMaterials;
+import com.unusualmodding.opposing_force.registry.enums.OPItemTiers;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
@@ -36,6 +39,11 @@ public class OPItems {
     public static final RegistryObject<Item> TESLA_BOW = registerItem("tesla_bow", () -> new TeslaBowItem(new Item.Properties().stacksTo(1).durability(465)));
     public static final RegistryObject<Item> SLUG_EGGS = registerItem("slug_eggs", () -> new SlugEggItem(new Item.Properties()));
     public static final RegistryObject<Item> VILE_BOULDER = registerItem("vile_boulder", () -> new VileBoulderItem(OPItemTiers.VILE,  8, -2.4F, new Item.Properties()));
+
+    public static final RegistryObject<Item> DEEPWOVEN_HELMET = registerItemNoLang("deepwoven_helmet", ()-> new DeepwovenArmorItem(OPArmorMaterials.DEEPWOVEN, ArmorItem.Type.HELMET, new Item.Properties()));
+    public static final RegistryObject<Item> DEEPWOVEN_CHESTPLATE = registerItemNoLang("deepwoven_chestplate", ()-> new DeepwovenArmorItem(OPArmorMaterials.DEEPWOVEN, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+    public static final RegistryObject<Item> DEEPWOVEN_LEGGINGS = registerItemNoLang("deepwoven_leggings", ()-> new DeepwovenArmorItem(OPArmorMaterials.DEEPWOVEN, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+    public static final RegistryObject<Item> DEEPWOVEN_BOOTS = registerItemNoLang("deepwoven_boots", ()-> new DeepwovenArmorItem(OPArmorMaterials.DEEPWOVEN, ArmorItem.Type.BOOTS, new Item.Properties()));
 
     private static <I extends Item> RegistryObject<I> registerItem(String name, Supplier<? extends I> supplier) {
         RegistryObject<I> item = ITEMS.register(name, supplier);

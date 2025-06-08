@@ -1,5 +1,6 @@
-package com.unusualmodding.opposing_force.registry;
+package com.unusualmodding.opposing_force.registry.enums;
 
+import com.unusualmodding.opposing_force.registry.OPItems;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;

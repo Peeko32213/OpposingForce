@@ -34,6 +34,12 @@ public class OPCreativeTab {
                     output.accept(OPItems.TESLA_BOW.get());
                     output.accept(OPItems.VILE_BOULDER.get());
 
+                    // Armors
+                    output.accept(OPItems.DEEPWOVEN_HELMET.get());
+                    output.accept(OPItems.DEEPWOVEN_CHESTPLATE.get());
+                    output.accept(OPItems.DEEPWOVEN_LEGGINGS.get());
+                    output.accept(OPItems.DEEPWOVEN_BOOTS.get());
+
                     // Items
                     output.accept(OPItems.SLUG_EGGS.get());
                     output.accept(OPItems.ELECTRIC_CHARGE.get());

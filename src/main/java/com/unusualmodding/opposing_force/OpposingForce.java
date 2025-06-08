@@ -2,6 +2,8 @@ package com.unusualmodding.opposing_force;
 
 import com.unusualmodding.opposing_force.data.*;
 import com.unusualmodding.opposing_force.registry.*;
+import com.unusualmodding.opposing_force.utils.ClientProxy;
+import com.unusualmodding.opposing_force.utils.CommonProxy;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -10,7 +12,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -20,11 +24,13 @@ import java.util.concurrent.CompletableFuture;
 @Mod(OpposingForce.MOD_ID)
 public class OpposingForce {
 
+    public static final CommonProxy PROXY = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
     public static final String MOD_ID = "opposing_force";
 
     public OpposingForce() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::clientSetup);
         modEventBus.addListener(this::dataSetup);
 
         OPBlocks.BLOCKS.register(modEventBus);
@@ -37,11 +43,16 @@ public class OpposingForce {
         OPEnchantments.ENCHANTMENTS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
+        PROXY.init();
     }
 
     public void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(OPCompat::registerCompat);
         OPNetwork.registerNetwork();
+    }
+
+    private void clientSetup(final FMLClientSetupEvent event) {
+        event.enqueueWork(PROXY::clientInit);
     }
 
     private void dataSetup(GatherDataEvent data) {

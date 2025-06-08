@@ -68,7 +68,6 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.UMBER_SPIDER_LAYER, UmberSpiderModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.VOLT_LAYER, VoltModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.WHIZZ_LAYER, WhizzModel::createBodyLayer);
-
         event.registerLayerDefinition(OPModelLayers.DEEPWOVEN_ARMOR_LAYER, DeepwovenArmorModel::createArmorLayer);
     }
 }
