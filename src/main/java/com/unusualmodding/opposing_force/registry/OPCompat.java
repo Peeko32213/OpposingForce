@@ -65,6 +65,9 @@ public class OPCompat {
         registerCompostable(OPBlocks.SLATESHROOM.get(), 0.65F);
         registerCompostable(OPBlocks.SLIPPERY_TOP.get(), 0.65F);
         registerCompostable(OPBlocks.WHITECAP.get(), 0.65F);
+        registerCompostable(OPBlocks.COPPER_ENOKI_BLOCK.get(), 0.85F);
+        registerCompostable(OPBlocks.CREAM_CAP_BLOCK.get(), 0.85F);
+        registerCompostable(OPBlocks.SLIPPERY_TOP_BLOCK.get(), 0.85F);
     }
 
     public static void registerFlammables() {

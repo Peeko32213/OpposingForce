@@ -64,6 +64,9 @@ public class OPCreativeTab {
                     output.accept(OPBlocks.SLATESHROOM.get());
                     output.accept(OPBlocks.SLIPPERY_TOP.get());
                     output.accept(OPBlocks.WHITECAP.get());
+                    output.accept(OPBlocks.COPPER_ENOKI_BLOCK.get());
+                    output.accept(OPBlocks.CREAM_CAP_BLOCK.get());
+                    output.accept(OPBlocks.SLIPPERY_TOP_BLOCK.get());
 
                     output.accept(OPBlocks.INFESTED_AMETHYST_BLOCK.get());
 

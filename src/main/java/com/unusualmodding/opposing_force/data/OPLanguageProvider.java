@@ -50,6 +50,11 @@ public class OPLanguageProvider extends LanguageProvider {
         forEntity(OPEntities.SLUG_EGGS);
         forEntity(OPEntities.TOMAHAWK);
 
+        addItem(OPItems.DEEPWOVEN_HELMET, "Deepwoven Hat");
+        addItem(OPItems.DEEPWOVEN_CHESTPLATE, "Deepwoven Tunic");
+        addItem(OPItems.DEEPWOVEN_LEGGINGS, "Deepwoven Pants");
+        addItem(OPItems.DEEPWOVEN_BOOTS, "Deepwoven Boots");
+
         sound(OPSoundEvents.DICER_DEATH, "Dicer dies");
         sound(OPSoundEvents.DICER_HURT, "Dicer hurts");
         sound(OPSoundEvents.DICER_IDLE, "Dicer screams");

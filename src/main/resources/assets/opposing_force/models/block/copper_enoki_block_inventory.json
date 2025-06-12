@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "opposing_force:block/copper_enoki_block"
+  }
+}

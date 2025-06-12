@@ -41,6 +41,7 @@ public class OpposingForce {
         OPSoundEvents.SOUND_EVENTS.register(modEventBus);
         OPParticles.PARTICLE_TYPES.register(modEventBus);
         OPEnchantments.ENCHANTMENTS.register(modEventBus);
+        OPAttributes.ATTRIBUTES.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
         PROXY.init();
