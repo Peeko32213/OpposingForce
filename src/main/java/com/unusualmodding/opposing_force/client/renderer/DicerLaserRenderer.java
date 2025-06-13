@@ -26,7 +26,7 @@ public class DicerLaserRenderer extends EntityRenderer<DicerLaser> {
     private static final float TEXTURE_WIDTH = 256;
     private static final float TEXTURE_HEIGHT = 32;
     private static final float START_RADIUS = 0.6f;
-    private static final float BEAM_RADIUS = 0.43f;
+    private static final float BEAM_RADIUS = 0.3f;
 
     public DicerLaserRenderer(EntityRendererProvider.Context mgr) {
         super(mgr);
@@ -38,29 +38,29 @@ public class DicerLaserRenderer extends EntityRenderer<DicerLaser> {
     }
 
     @Override
-    public void render(DicerLaser solarBeam, float entityYaw, float delta, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-        double collidePosX = solarBeam.prevCollidePosX + (solarBeam.collidePosX - solarBeam.prevCollidePosX) * delta;
-        double collidePosY = solarBeam.prevCollidePosY + (solarBeam.collidePosY - solarBeam.prevCollidePosY) * delta;
-        double collidePosZ = solarBeam.prevCollidePosZ + (solarBeam.collidePosZ - solarBeam.prevCollidePosZ) * delta;
-        double posX = solarBeam.xo + (solarBeam.getX() - solarBeam.xo) * delta;
-        double posY = solarBeam.yo + (solarBeam.getY() - solarBeam.yo) * delta;
-        double posZ = solarBeam.zo + (solarBeam.getZ() - solarBeam.zo) * delta;
-        float yaw = solarBeam.prevYaw + (solarBeam.renderYaw - solarBeam.prevYaw) * delta;
-        float pitch = solarBeam.prevPitch + (solarBeam.renderPitch - solarBeam.prevPitch) * delta;
+    public void render(DicerLaser laser, float entityYaw, float delta, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+        double collidePosX = laser.prevCollidePosX + (laser.collidePosX - laser.prevCollidePosX) * delta;
+        double collidePosY = laser.prevCollidePosY + (laser.collidePosY - laser.prevCollidePosY) * delta;
+        double collidePosZ = laser.prevCollidePosZ + (laser.collidePosZ - laser.prevCollidePosZ) * delta;
+        double posX = laser.xo + (laser.getX() - laser.xo) * delta;
+        double posY = laser.yo + (laser.getY() - laser.yo) * delta;
+        double posZ = laser.zo + (laser.getZ() - laser.zo) * delta;
+        float yaw = laser.prevYaw + (laser.renderYaw - laser.prevYaw) * delta;
+        float pitch = laser.prevPitch + (laser.renderPitch - laser.prevPitch) * delta;
 
         float length = (float) Math.sqrt(Math.pow(collidePosX - posX, 2) + Math.pow(collidePosY - posY, 2) + Math.pow(collidePosZ - posZ, 2));
-        int frame = Mth.floor((solarBeam.appear.getTimer() - 1 + delta) * 2);
+        int frame = Mth.floor((laser.appear.getTimer() - 1 + delta) * 2);
         if (frame < 0) {
             frame = 6;
         }
-        VertexConsumer ivertexbuilder = bufferIn.getBuffer(OPRenderTypes.glowingEffect(getTextureLocation(solarBeam)));
+        VertexConsumer ivertexbuilder = bufferIn.getBuffer(OPRenderTypes.glowingEffect(getTextureLocation(laser)));
 
         renderStart(frame, matrixStackIn, ivertexbuilder, packedLightIn);
         renderBeam(length, 180f / (float) Math.PI * yaw, 180f / (float) Math.PI * pitch, frame, matrixStackIn, ivertexbuilder, packedLightIn);
 
         matrixStackIn.pushPose();
         matrixStackIn.translate(collidePosX - posX, collidePosY - posY, collidePosZ - posZ);
-        renderEnd(frame, solarBeam.blockSide, matrixStackIn, ivertexbuilder, packedLightIn);
+        renderEnd(frame, laser.blockSide, matrixStackIn, ivertexbuilder, packedLightIn);
         matrixStackIn.popPose();
     }
 

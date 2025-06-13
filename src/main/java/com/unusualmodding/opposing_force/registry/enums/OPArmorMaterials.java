@@ -1,8 +1,8 @@
 package com.unusualmodding.opposing_force.registry.enums;
 
 import com.unusualmodding.opposing_force.OpposingForce;
+import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 public enum OPArmorMaterials implements ArmorMaterial {
 
-    DEEPWOVEN ("deepwoven", 5, new int[] {2, 4, 3, 1}, 9, SoundEvents.LLAMA_SWAG, 0f, 0f, ()-> Ingredient.of(Tags.Items.LEATHER));
+    DEEPWOVEN ("deepwoven", 12, new int[] {2, 4, 3, 1}, 9, OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN.get(), 0f, 0f, ()-> Ingredient.of(Tags.Items.LEATHER));
 
     private final String name;
     private final int durabilityMultiplier;

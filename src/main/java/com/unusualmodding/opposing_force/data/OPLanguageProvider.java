@@ -55,6 +55,8 @@ public class OPLanguageProvider extends LanguageProvider {
         addItem(OPItems.DEEPWOVEN_LEGGINGS, "Deepwoven Pants");
         addItem(OPItems.DEEPWOVEN_BOOTS, "Deepwoven Boots");
 
+        sound(OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN, "Deepwoven armor rustles");
+
         sound(OPSoundEvents.DICER_DEATH, "Dicer dies");
         sound(OPSoundEvents.DICER_HURT, "Dicer hurts");
         sound(OPSoundEvents.DICER_IDLE, "Dicer screams");
@@ -129,6 +131,10 @@ public class OPLanguageProvider extends LanguageProvider {
         add("death.attack.opposing_force.laser", "%1$s was vaporized by %2$s");
         add("death.attack.opposing_force.tomahawk", "%1$s was domed by %2$s");
         add("death.attack.opposing_force.tomahawk.item", "%1$s was domed by %2$s using %3$s");
+        add("death.anonymous", "A mysterious figure met their end");
+        add("death.assassinated", "%s was slain by a mysterious figure");
+
+        add("attribute.opposing_force.name.generic.stealth", "Stealth");
     }
 
     @Override

@@ -1,4 +1,5 @@
 {
+  "attribute.opposing_force.name.generic.stealth": "Stealth",
   "block.opposing_force.blackcap": "Blackcap",
   "block.opposing_force.blue_trumpet": "Blue Trumpet",
   "block.opposing_force.cap_of_eye": "Cap Of Eye",
@@ -39,6 +40,8 @@
   "block.opposing_force.slippery_top": "Slippery Top",
   "block.opposing_force.slippery_top_block": "Slippery Top Block",
   "block.opposing_force.whitecap": "Whitecap",
+  "death.anonymous": "A mysterious figure met their end",
+  "death.assassinated": "%s was slain by a mysterious figure",
   "death.attack.opposing_force.electrified": "%1$s met a shocking end",
   "death.attack.opposing_force.electrified.player": "%1$s was zapped by %2$s",
   "death.attack.opposing_force.gloom_toxin": "%1$s was consumed by darkness",
@@ -93,6 +96,7 @@
   "item.opposing_force.volt_spawn_egg": "Volt Spawn Egg",
   "item.opposing_force.whizz_spawn_egg": "Whizz Spawn Egg",
   "itemGroup.opposing_force": "Opposing Force",
+  "subtitles.opposing_force.armor_equip_deepwoven": "Deepwoven armor rustles",
   "subtitles.opposing_force.dicer_attack": "Dicer slashes",
   "subtitles.opposing_force.dicer_death": "Dicer dies",
   "subtitles.opposing_force.dicer_hurt": "Dicer hurts",

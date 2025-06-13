@@ -19,6 +19,15 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
 
     @Override
     public void registerSounds() {
+        this.sound(OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN,
+                sound("item/armor/equip_leather1").pitch(0.88f),
+                sound("item/armor/equip_leather2").pitch(0.88f),
+                sound("item/armor/equip_leather3").pitch(0.88f),
+                sound("item/armor/equip_leather4").pitch(0.88f),
+                sound("item/armor/equip_leather5").pitch(0.88f),
+                sound("item/armor/equip_leather6").pitch(0.88f)
+        );
+
         this.sound(OPSoundEvents.DICER_HURT,
                 sound(OpposingForce.modPrefix("entity/dicer/hurt1")).volume(0.9F),
                 sound(OpposingForce.modPrefix("entity/dicer/hurt2")).volume(0.9F)

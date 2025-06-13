@@ -13,6 +13,9 @@ public class OPSoundEvents {
 
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, OpposingForce.MOD_ID);
 
+    public static final RegistryObject<SoundEvent> ARMOR_EQUIP_DEEPWOVEN = createSoundEvent("armor_equip_deepwoven");
+
+    // mobs
     public static final RegistryObject<SoundEvent> DICER_HURT = createSoundEvent("dicer_hurt");
     public static final RegistryObject<SoundEvent> DICER_DEATH = createSoundEvent("dicer_death");
     public static final RegistryObject<SoundEvent> DICER_IDLE = createSoundEvent("dicer_idle");

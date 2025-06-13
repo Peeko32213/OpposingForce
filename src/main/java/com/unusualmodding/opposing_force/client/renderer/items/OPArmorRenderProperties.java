@@ -30,7 +30,7 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
 
         final var item = itemStack.getItem();
 
-        if (item instanceof DeepwovenArmorItem){
+        if (item instanceof DeepwovenArmorItem) {
             return DEEPWOVEN_MODEL;
         }
 
