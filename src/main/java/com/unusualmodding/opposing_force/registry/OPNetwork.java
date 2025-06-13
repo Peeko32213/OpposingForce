@@ -1,8 +1,7 @@
 package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.network.ElectricChargeSyncS2CPacket;
-import com.unusualmodding.opposing_force.network.ElectricChargeDamageC2SPacket;
+import com.unusualmodding.opposing_force.network.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -33,12 +32,6 @@ public class OPNetwork {
                 .decoder(ElectricChargeSyncS2CPacket::new)
                 .encoder(ElectricChargeSyncS2CPacket::toBytes)
                 .consumerMainThread(ElectricChargeSyncS2CPacket::handle)
-                .add();
-
-        net.messageBuilder(ElectricChargeDamageC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(ElectricChargeDamageC2SPacket::new)
-                .encoder(ElectricChargeDamageC2SPacket::toBytes)
-                .consumerMainThread(ElectricChargeDamageC2SPacket::handle)
                 .add();
     }
 

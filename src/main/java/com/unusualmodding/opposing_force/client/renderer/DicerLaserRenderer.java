@@ -25,8 +25,8 @@ public class DicerLaserRenderer extends EntityRenderer<DicerLaser> {
 
     private static final float TEXTURE_WIDTH = 256;
     private static final float TEXTURE_HEIGHT = 32;
-    private static final float START_RADIUS = 0.6f;
-    private static final float BEAM_RADIUS = 0.3f;
+    private static final float START_RADIUS = 0.7f;
+    private static final float BEAM_RADIUS = 0.9f;
 
     public DicerLaserRenderer(EntityRendererProvider.Context mgr) {
         super(mgr);

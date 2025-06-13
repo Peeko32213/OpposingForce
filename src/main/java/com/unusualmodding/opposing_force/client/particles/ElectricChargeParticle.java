@@ -2,8 +2,6 @@ package com.unusualmodding.opposing_force.client.particles;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.unusualmodding.opposing_force.network.ElectricChargeDamageC2SPacket;
-import com.unusualmodding.opposing_force.registry.OPNetwork;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -139,8 +137,6 @@ public class ElectricChargeParticle extends Particle {
 
         Entity nextEntity = level.getEntity(nextId);
         if (nextEntity != null) {
-            ElectricChargeDamageC2SPacket damageC2SPacket = new ElectricChargeDamageC2SPacket(data.senderId, nextId, 5, new Vec3(0,0,0));
-            OPNetwork.sendToServer(damageC2SPacket);
             ElectricChargeParticleType.Data newData = getData(nextEntity.getId(), remaining);
 
             Minecraft.getInstance().level.addParticle(newData, true, lightningOrigin.x, lightningOrigin.y, lightningOrigin.z, 0, 0, 0);

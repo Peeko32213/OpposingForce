@@ -268,6 +268,11 @@ public class Dicer extends Monster {
         protected void tickSliceAttack() {
             this.attackTime++;
             this.dicer.getNavigation().stop();
+
+            LivingEntity target = this.dicer.getTarget();
+            this.dicer.lookAt(target, 360F, 30F);
+            this.dicer.getLookControl().setLookAt(target, 30F, 30F);
+
             if (this.attackTime == 11) {
                 if (this.dicer.distanceTo(Objects.requireNonNull(this.dicer.getTarget())) < 2.7F) {
                     this.dicer.doHurtTarget(this.dicer.getTarget());
@@ -292,7 +297,7 @@ public class Dicer extends Monster {
 
             if (this.attackTime == 13) {
                 if (target != null) {
-                    this.dicer.playSound(OPSoundEvents.DICER_LASER.get(), 2.0F, 1.0F / (this.dicer.getRandom().nextFloat() * 0.4F + 0.8F));
+                    this.dicer.playSound(OPSoundEvents.DICER_LASER.get(), 2.0F, 1.0F);
                     this.dicer.lookAt(target, 360F, 360F);
                     this.dicer.getLookControl().setLookAt(target, 30F, 30F);
                 }

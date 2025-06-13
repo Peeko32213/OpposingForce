@@ -72,7 +72,11 @@
   },
   "dicer_laser": {
     "sounds": [
-      "opposing_force:entity/dicer/laser1"
+      {
+        "name": "opposing_force:entity/dicer/laser1",
+        "pitch": 1.15,
+        "volume": 0.8
+      }
     ],
     "subtitle": "subtitles.opposing_force.dicer_laser"
   },

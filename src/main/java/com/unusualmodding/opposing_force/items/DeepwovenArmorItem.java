@@ -37,7 +37,7 @@ public class DeepwovenArmorItem extends ArmorItem {
         builder.putAll(super.getAttributeModifiers(slot, stack));
         UUID uuid = ArmorItem.ARMOR_MODIFIER_UUID_PER_TYPE.get(this.type);
         builder.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(uuid, "Movement speed", 0.04F, AttributeModifier.Operation.MULTIPLY_BASE));
-        builder.put(OPAttributes.STEALTH.get(), new AttributeModifier(uuid, "Stealth", 0.1D, AttributeModifier.Operation.ADDITION));
+        builder.put(OPAttributes.STEALTH.get(), new AttributeModifier(uuid, "Stealth", 0.15D, AttributeModifier.Operation.ADDITION));
         return slot == this.getEquipmentSlot() ? builder.build() : super.getAttributeModifiers(slot, stack);
     }
 

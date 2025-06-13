@@ -135,8 +135,9 @@ public class OPEntities {
     public static final RegistryObject<EntityType<ElectricCharge>> ELECTRIC_CHARGE = ENTITY_TYPES.register(
             "electric_charge", () ->
             EntityType.Builder.<ElectricCharge>of(ElectricCharge::new, MobCategory.MISC)
-                    .sized(0.5f, 0.5f)
+                    .sized(0.2f, 0.2f)
                     .clientTrackingRange(4)
+                    .fireImmune()
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "electric_charge").toString())
     );
 

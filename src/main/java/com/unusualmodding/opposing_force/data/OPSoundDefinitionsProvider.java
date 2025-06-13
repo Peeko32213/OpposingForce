@@ -20,12 +20,12 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
     @Override
     public void registerSounds() {
         this.sound(OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN,
-                sound("item/armor/equip_leather1").pitch(0.88f),
-                sound("item/armor/equip_leather2").pitch(0.88f),
-                sound("item/armor/equip_leather3").pitch(0.88f),
-                sound("item/armor/equip_leather4").pitch(0.88f),
-                sound("item/armor/equip_leather5").pitch(0.88f),
-                sound("item/armor/equip_leather6").pitch(0.88f)
+                sound("item/armor/equip_leather1").pitch(0.88F),
+                sound("item/armor/equip_leather2").pitch(0.88F),
+                sound("item/armor/equip_leather3").pitch(0.88F),
+                sound("item/armor/equip_leather4").pitch(0.88F),
+                sound("item/armor/equip_leather5").pitch(0.88F),
+                sound("item/armor/equip_leather6").pitch(0.88F)
         );
 
         this.sound(OPSoundEvents.DICER_HURT,
@@ -44,7 +44,7 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound(OpposingForce.modPrefix("entity/dicer/attack2"))
         );
         this.sound(OPSoundEvents.DICER_LASER,
-                sound(OpposingForce.modPrefix("entity/dicer/laser1"))
+                sound(OpposingForce.modPrefix("entity/dicer/laser1")).pitch(1.15F).volume(0.8F)
         );
 
         this.sound(OPSoundEvents.ELECTRIC_CHARGE,
@@ -58,80 +58,80 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
         );
 
         this.sound(OPSoundEvents.FIRE_SLIME_HURT,
-                sound("mob/slime/small1").pitch(0.9f),
-                sound("mob/slime/small2").pitch(0.9f),
-                sound("mob/slime/small3").pitch(0.9f),
-                sound("mob/slime/small4").pitch(0.9f),
-                sound("mob/slime/small5").pitch(0.9f)
+                sound("mob/slime/small1").pitch(0.9F),
+                sound("mob/slime/small2").pitch(0.9F),
+                sound("mob/slime/small3").pitch(0.9F),
+                sound("mob/slime/small4").pitch(0.9F),
+                sound("mob/slime/small5").pitch(0.9F)
         );
         this.sound(OPSoundEvents.FIRE_SLIME_DEATH,
-                sound("mob/slime/small1").pitch(0.9f),
-                sound("mob/slime/small2").pitch(0.9f),
-                sound("mob/slime/small3").pitch(0.9f),
-                sound("mob/slime/small4").pitch(0.9f),
-                sound("mob/slime/small5").pitch(0.9f)
+                sound("mob/slime/small1").pitch(0.9F),
+                sound("mob/slime/small2").pitch(0.9F),
+                sound("mob/slime/small3").pitch(0.9F),
+                sound("mob/slime/small4").pitch(0.9F),
+                sound("mob/slime/small5").pitch(0.9F)
         );
         this.sound(OPSoundEvents.FIRE_SLIME_SQUISH,
-                sound("mob/slime/small1").pitch(0.9f),
-                sound("mob/slime/small2").pitch(0.9f),
-                sound("mob/slime/small3").pitch(0.9f),
-                sound("mob/slime/small4").pitch(0.9f),
-                sound("mob/slime/small5").pitch(0.9f)
+                sound("mob/slime/small1").pitch(0.9F),
+                sound("mob/slime/small2").pitch(0.9F),
+                sound("mob/slime/small3").pitch(0.9F),
+                sound("mob/slime/small4").pitch(0.9F),
+                sound("mob/slime/small5").pitch(0.9F)
         );
         this.sound(OPSoundEvents.FIRE_SLIME_JUMP,
-                sound("mob/slime/small1").pitch(0.9f),
-                sound("mob/slime/small2").pitch(0.9f),
-                sound("mob/slime/small3").pitch(0.9f),
-                sound("mob/slime/small4").pitch(0.9f),
-                sound("mob/slime/small5").pitch(0.9f)
+                sound("mob/slime/small1").pitch(0.9F),
+                sound("mob/slime/small2").pitch(0.9F),
+                sound("mob/slime/small3").pitch(0.9F),
+                sound("mob/slime/small4").pitch(0.9F),
+                sound("mob/slime/small5").pitch(0.9F)
         );
         this.sound(OPSoundEvents.FIRE_SLIME_ATTACK,
                 sound("mob/slime/attack1"),
                 sound("mob/slime/attack2")
         );
         this.sound(OPSoundEvents.FIRE_SLIME_POP,
-                sound("liquid/lavapop").pitch(0.9f)
+                sound("liquid/lavapop").pitch(0.9F)
         );
 
         this.sound(OPSoundEvents.FROWZY_HURT,
-                sound("mob/zombie/hurt1").pitch(1.2f),
-                sound("mob/zombie/hurt2").pitch(1.2f),
-                sound("mob/zombie/say3").pitch(1.2f)
+                sound("mob/zombie/hurt1").pitch(1.2F),
+                sound("mob/zombie/hurt2").pitch(1.2F),
+                sound("mob/zombie/say3").pitch(1.2F)
         );
         this.sound(OPSoundEvents.FROWZY_DEATH,
-                sound("mob/zombie/death").pitch(1.2f)
+                sound("mob/zombie/death").pitch(1.2F)
         );
         this.sound(OPSoundEvents.FROWZY_IDLE,
-                sound("mob/zombie/say1").pitch(1.2f),
-                sound("mob/zombie/say2").pitch(1.2f),
-                sound("mob/zombie/say3").pitch(1.2f)
+                sound("mob/zombie/say1").pitch(1.2F),
+                sound("mob/zombie/say2").pitch(1.2F),
+                sound("mob/zombie/say3").pitch(1.2F)
         );
 
         this.sound(OPSoundEvents.GUZZLER_SHOOT,
-                sound("mob/ghast/fireball4").pitch(0.85f)
+                sound("mob/ghast/fireball4").pitch(0.85F)
         );
 
         this.sound(OPSoundEvents.PALE_SPIDER_HURT,
-                sound("mob/spider/say1").pitch(1.2f),
-                sound("mob/spider/say2").pitch(1.2f),
-                sound("mob/spider/say3").pitch(1.2f),
-                sound("mob/spider/say4").pitch(1.2f)
+                sound("mob/spider/say1").pitch(1.2F),
+                sound("mob/spider/say2").pitch(1.2F),
+                sound("mob/spider/say3").pitch(1.2F),
+                sound("mob/spider/say4").pitch(1.2F)
         );
         this.sound(OPSoundEvents.PALE_SPIDER_DEATH,
-                sound("mob/spider/death").pitch(1.2f)
+                sound("mob/spider/death").pitch(1.2F)
         );
         this.sound(OPSoundEvents.PALE_SPIDER_IDLE,
-                sound("mob/spider/say1").pitch(1.2f),
-                sound("mob/spider/say2").pitch(1.2f),
-                sound("mob/spider/say3").pitch(1.2f),
-                sound("mob/spider/say4").pitch(1.2f)
+                sound("mob/spider/say1").pitch(1.2F),
+                sound("mob/spider/say2").pitch(1.2F),
+                sound("mob/spider/say3").pitch(1.2F),
+                sound("mob/spider/say4").pitch(1.2F)
         );
 
         this.sound(OPSoundEvents.RAMBLE_HURT,
-                sound("mob/skeleton/hurt1").pitch(0.7f),
-                sound("mob/skeleton/hurt2").pitch(0.7f),
-                sound("mob/skeleton/hurt3").pitch(0.7f),
-                sound("mob/skeleton/hurt4").pitch(0.7f)
+                sound("mob/skeleton/hurt1").pitch(0.7F),
+                sound("mob/skeleton/hurt2").pitch(0.7F),
+                sound("mob/skeleton/hurt3").pitch(0.7F),
+                sound("mob/skeleton/hurt4").pitch(0.7F)
         );
         this.sound(OPSoundEvents.RAMBLE_DEATH,
                 sound(OpposingForce.modPrefix("entity/ramble/death1"))
@@ -140,10 +140,10 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound(OpposingForce.modPrefix("entity/ramble/idle1"))
         );
         this.sound(OPSoundEvents.RAMBLE_ATTACK,
-                sound("mob/skeleton/hurt1").volume(0.8f),
-                sound("mob/skeleton/hurt2").volume(0.8f),
-                sound("mob/skeleton/hurt3").volume(0.8f),
-                sound("mob/skeleton/hurt4").volume(0.8f)
+                sound("mob/skeleton/hurt1").volume(0.8F),
+                sound("mob/skeleton/hurt2").volume(0.8F),
+                sound("mob/skeleton/hurt3").volume(0.8F),
+                sound("mob/skeleton/hurt4").volume(0.8F)
         );
 
         this.sound(OPSoundEvents.SLUG_HURT,
@@ -153,10 +153,10 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound("mob/slime/big4")
         );
         this.sound(OPSoundEvents.SLUG_DEATH,
-                sound("mob/slime/big1").pitch(0.8f),
-                sound("mob/slime/big2").pitch(0.8f),
-                sound("mob/slime/big3").pitch(0.8f),
-                sound("mob/slime/big4").pitch(0.8f)
+                sound("mob/slime/big1").pitch(0.8F),
+                sound("mob/slime/big2").pitch(0.8F),
+                sound("mob/slime/big3").pitch(0.8F),
+                sound("mob/slime/big4").pitch(0.8F)
         );
         this.sound(OPSoundEvents.SLUG_SLIDE,
                 sound(OpposingForce.modPrefix("entity/slug/walk1")),
@@ -164,9 +164,9 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound(OpposingForce.modPrefix("entity/slug/walk3"))
         );
         this.sound(OPSoundEvents.SLUG_EAT,
-                sound("mob/strider/eat1").pitch(1.1f),
-                sound("mob/strider/eat2").pitch(1.1f),
-                sound("mob/strider/eat3").pitch(1.1f)
+                sound("mob/strider/eat1").pitch(1.1F),
+                sound("mob/strider/eat2").pitch(1.1F),
+                sound("mob/strider/eat3").pitch(1.1F)
         );
 
         this.sound(OPSoundEvents.TESLA_BOW_CHARGED,
@@ -177,11 +177,11 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
         );
 
         this.sound(OPSoundEvents.TREMBLER_BLOCK,
-                sound("item/shield/block1").pitch(1.2f),
-                sound("item/shield/block2").pitch(1.2f),
-                sound("item/shield/block3").pitch(1.2f),
-                sound("item/shield/block4").pitch(1.2f),
-                sound("item/shield/block5").pitch(1.2f)
+                sound("item/shield/block1").pitch(1.2F),
+                sound("item/shield/block2").pitch(1.2F),
+                sound("item/shield/block3").pitch(1.2F),
+                sound("item/shield/block4").pitch(1.2F),
+                sound("item/shield/block5").pitch(1.2F)
         );
 
         this.sound(OPSoundEvents.UMBER_SPIDER_HURT,
@@ -207,41 +207,41 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound(OpposingForce.modPrefix("entity/volt/shoot1"))
         );
         this.sound(OPSoundEvents.VOLT_SQUISH,
-                sound("mob/slime/small1").pitch(0.8f),
-                sound("mob/slime/small2").pitch(0.8f),
-                sound("mob/slime/small3").pitch(0.8f),
-                sound("mob/slime/small4").pitch(0.8f),
-                sound("mob/slime/small5").pitch(0.8f)
+                sound("mob/slime/small1").pitch(0.8F),
+                sound("mob/slime/small2").pitch(0.8F),
+                sound("mob/slime/small3").pitch(0.8F),
+                sound("mob/slime/small4").pitch(0.8F),
+                sound("mob/slime/small5").pitch(0.8F)
         );
 
         this.sound(OPSoundEvents.WHIZZ_DEATH,
-                sound("block/amethyst_cluster/break1").pitch(1.2f),
-                sound("block/amethyst_cluster/break2").pitch(1.2f),
-                sound("block/amethyst_cluster/break3").pitch(1.2f),
-                sound("block/amethyst_cluster/break4").pitch(1.2f)
+                sound("block/amethyst_cluster/break1").pitch(1.2F),
+                sound("block/amethyst_cluster/break2").pitch(1.2F),
+                sound("block/amethyst_cluster/break3").pitch(1.2F),
+                sound("block/amethyst_cluster/break4").pitch(1.2F)
         );
         this.sound(OPSoundEvents.WHIZZ_HURT,
-                sound("block/amethyst/step1").pitch(1.3f),
-                sound("block/amethyst/step2").pitch(1.3f),
-                sound("block/amethyst/step3").pitch(1.3f),
-                sound("block/amethyst/step4").pitch(1.3f),
-                sound("block/amethyst/step5").pitch(1.3f),
-                sound("block/amethyst/step6").pitch(1.3f),
-                sound("block/amethyst/step7").pitch(1.3f),
-                sound("block/amethyst/step8").pitch(1.3f),
-                sound("block/amethyst/step9").pitch(1.3f),
-                sound("block/amethyst/step10").pitch(1.3f),
-                sound("block/amethyst/step11").pitch(1.3f),
-                sound("block/amethyst/step12").pitch(1.3f)
+                sound("block/amethyst/step1").pitch(1.3F),
+                sound("block/amethyst/step2").pitch(1.3F),
+                sound("block/amethyst/step3").pitch(1.3F),
+                sound("block/amethyst/step4").pitch(1.3F),
+                sound("block/amethyst/step5").pitch(1.3F),
+                sound("block/amethyst/step6").pitch(1.3F),
+                sound("block/amethyst/step7").pitch(1.3F),
+                sound("block/amethyst/step8").pitch(1.3F),
+                sound("block/amethyst/step9").pitch(1.3F),
+                sound("block/amethyst/step10").pitch(1.3F),
+                sound("block/amethyst/step11").pitch(1.3F),
+                sound("block/amethyst/step12").pitch(1.3F)
         );
         this.sound(OPSoundEvents.WHIZZ_FLY,
-                sound(OpposingForce.modPrefix("entity/whizz/loop1")).pitch(0.9f)
+                sound(OpposingForce.modPrefix("entity/whizz/loop1")).pitch(0.9F)
         );
         this.sound(OPSoundEvents.WHIZZ_ATTACK,
-                sound("block/amethyst/resonate1").pitch(1.2f),
-                sound("block/amethyst/resonate2").pitch(1.2f),
-                sound("block/amethyst/resonate3").pitch(1.2f),
-                sound("block/amethyst/resonate4").pitch(1.2f)
+                sound("block/amethyst/resonate1").pitch(1.2F),
+                sound("block/amethyst/resonate2").pitch(1.2F),
+                sound("block/amethyst/resonate3").pitch(1.2F),
+                sound("block/amethyst/resonate4").pitch(1.2F)
         );
     }
 

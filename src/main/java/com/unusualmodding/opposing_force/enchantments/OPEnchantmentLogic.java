@@ -8,7 +8,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class OPEnchantmentLogic {
     public static void kickbackLogic (LivingEntity entity, ItemStack stack) {
-        int kickback = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.KICKBACK.get(), stack);
+        int kickback = EnchantmentHelper.getTagEnchantmentLevel(OPEnchantments.KICKBACK.get(), stack);
         if (kickback > 0) {
             Vec3 lookVec = entity.getLookAngle().multiply(-1,-1,-1);
             entity.setDeltaMovement(new Vec3(0.5 + (kickback * 0.5), 0.5 + (kickback * 0.25), 0.5 + (kickback * 0.5)).multiply(lookVec));

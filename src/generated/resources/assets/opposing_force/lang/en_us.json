@@ -40,8 +40,6 @@
   "block.opposing_force.slippery_top": "Slippery Top",
   "block.opposing_force.slippery_top_block": "Slippery Top Block",
   "block.opposing_force.whitecap": "Whitecap",
-  "death.anonymous": "A mysterious figure met their end",
-  "death.assassinated": "%s was slain by a mysterious figure",
   "death.attack.opposing_force.electrified": "%1$s met a shocking end",
   "death.attack.opposing_force.electrified.player": "%1$s was zapped by %2$s",
   "death.attack.opposing_force.gloom_toxin": "%1$s was consumed by darkness",
