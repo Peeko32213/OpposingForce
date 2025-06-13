@@ -7,6 +7,7 @@ import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -174,6 +175,8 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
 
     private void shootElectricity(Level world, LivingEntity shooter, InteractionHand handUsed, ItemStack crossbow, ItemStack projectileStack, float shootSoundPitch, float divergence, float simulated) {
 
+        RandomSource random = shooter.level.getRandom();
+
         Projectile projectileentity = getCharge(world, shooter, projectileStack, crossbow, false);
         Projectile bigProjectileentity = getCharge(world, shooter, projectileStack, crossbow, true);
 
@@ -188,13 +191,13 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
             bigProjectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 1F, divergence);
             crossbow.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
             shooter.level().addFreshEntity(bigProjectileentity);
-            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.25F, shootSoundPitch * 0.85F);
+            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.25F, 0.8F * (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
         }
         if (!largeBall) {
             projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 1.75F, divergence);
             crossbow.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
             shooter.level().addFreshEntity(projectileentity);
-            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, shootSoundPitch);
+            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
         }
     }
 

@@ -93,6 +93,7 @@ public class OPLanguageProvider extends LanguageProvider {
         sound(OPSoundEvents.SLUG_HURT, "Slug hurts");
         sound(OPSoundEvents.SLUG_SLIDE, "Footsteps");
         sound(OPSoundEvents.SLUG_EAT, "Slug eats");
+        sound(OPSoundEvents.SLUG_ATTACK, "Slug attacks");
 
         sound(OPSoundEvents.TESLA_BOW_CHARGED, "Tesla Bow loads");
         sound(OPSoundEvents.TESLA_BOW_SHOOT, "Tesla Bow fires");
@@ -123,6 +124,7 @@ public class OPLanguageProvider extends LanguageProvider {
 
         addEffect(OPEffects.ELECTRIFIED, "Electrified");
         addEffect(OPEffects.GLOOM_TOXIN, "Gloom Toxin");
+        addEffect(OPEffects.SLUG_INFESTATION, "Slug Infestation");
 
         add("death.attack.opposing_force.electrified", "%1$s met a shocking end");
         add("death.attack.opposing_force.electrified.player", "%1$s was zapped by %2$s");

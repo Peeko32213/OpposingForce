@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -38,6 +39,8 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfig;
 import org.jetbrains.annotations.NotNull;
 
@@ -48,10 +51,11 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class Frowzy extends Monster {
+public class Frowzy extends Monster implements IAnimatedAttacker {
 
     private static final EntityDataAccessor<Boolean> IS_BABY = SynchedEntityData.defineId(Frowzy.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Frowzy.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> JUMP_COOLDOWN = SynchedEntityData.defineId(Frowzy.class, EntityDataSerializers.INT);
 
     private static final UUID BABY_SPEED_MODIFIER_UUID = UUID.fromString("B9766B59-9566-4402-BC1F-2EE2A276D836");
     private static final AttributeModifier BABY_SPEED_MODIFIER = new AttributeModifier(BABY_SPEED_MODIFIER_UUID, "Baby speed boost", 0.5D, AttributeModifier.Operation.MULTIPLY_BASE);
@@ -65,6 +69,11 @@ public class Frowzy extends Monster {
 
     public Frowzy(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.DANGER_POWDER_SNOW, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.DANGER_OTHER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.DAMAGE_CAUTIOUS, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.LAVA, 0.0F);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -103,8 +112,8 @@ public class Frowzy extends Monster {
     }
 
     @Override
-    public boolean isAlliedTo(Entity pEntity) {
-        return pEntity.is(this);
+    public boolean isAlliedTo(Entity entity) {
+        return entity.is(this);
     }
 
     @Override
@@ -162,6 +171,10 @@ public class Frowzy extends Monster {
     public void tick() {
         super.tick();
 
+        if (this.getJumpCooldown() > 0) {
+            this.setJumpCooldown(this.getJumpCooldown() - 1);
+        }
+
         if (this.level().isClientSide()) {
             this.setupAnimationStates();
         }
@@ -193,6 +206,7 @@ public class Frowzy extends Monster {
         super.defineSynchedData();
         this.entityData.define(IS_BABY, false);
         this.entityData.define(ATTACK_STATE, 0);
+        this.entityData.define(JUMP_COOLDOWN, 80 + random.nextInt(30));
     }
 
     @Override
@@ -201,6 +215,7 @@ public class Frowzy extends Monster {
         compoundTag.putBoolean("IsBaby", this.isBaby());
         compoundTag.putBoolean("CanBreakDoors", this.canBreakDoors());
         compoundTag.putInt("AttackState", this.getAttackState());
+        compoundTag.putInt("JumpCooldown", this.getJumpCooldown());
     }
 
     @Override
@@ -209,6 +224,19 @@ public class Frowzy extends Monster {
         this.setBaby(compoundTag.getBoolean("IsBaby"));
         this.setCanBreakDoors(compoundTag.getBoolean("CanBreakDoors"));
         this.setAttackState(compoundTag.getInt("AttackState"));
+        this.setJumpCooldown(compoundTag.getInt("JumpCooldown"));
+    }
+
+    public int getJumpCooldown() {
+        return this.entityData.get(JUMP_COOLDOWN);
+    }
+
+    public void setJumpCooldown(int cooldown) {
+        this.entityData.set(JUMP_COOLDOWN, cooldown);
+    }
+
+    public void jumpCooldown() {
+        this.entityData.set(JUMP_COOLDOWN, 80 + random.nextInt(30));
     }
 
     public boolean isBaby() {
@@ -259,10 +287,12 @@ public class Frowzy extends Monster {
         }
     }
 
+    @Override
     public int getAttackState() {
         return this.entityData.get(ATTACK_STATE);
     }
 
+    @Override
     public void setAttackState(int attackState) {
         this.entityData.set(ATTACK_STATE, attackState);
     }
@@ -401,20 +431,39 @@ public class Frowzy extends Monster {
             return this.frowzy.getTarget() != null && this.frowzy.getTarget().isAlive();
         }
 
+        public boolean canContinueToUse() {
+            LivingEntity target = this.frowzy.getTarget();
+            if (target == null) {
+                return false;
+            } else if (!target.isAlive()) {
+                return false;
+            } else if (!this.frowzy.isWithinRestriction(target.blockPosition())) {
+                return false;
+            } else {
+                return !(target instanceof Player) || !target.isSpectator() && !((Player) target).isCreative() || !this.frowzy.getNavigation().isDone();
+            }
+        }
+
         public void start() {
+            this.frowzy.setAggressive(true);
             this.frowzy.setAttackState(0);
             this.attackTime = 0;
         }
 
         public void stop() {
+            LivingEntity target = this.frowzy.getTarget();
+            if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
+                this.frowzy.setTarget(null);
+            }
+            this.frowzy.setAggressive(false);
+            this.frowzy.getNavigation().stop();
             this.frowzy.setAttackState(0);
         }
 
         public void tick() {
             LivingEntity target = this.frowzy.getTarget();
             if (target != null) {
-                this.frowzy.lookAt(this.frowzy.getTarget(), 30F, 30F);
-                this.frowzy.getLookControl().setLookAt(this.frowzy.getTarget(), 30F, 30F);
+                this.frowzy.getLookControl().setLookAt(target.getX(), target.getEyeY(), target.getZ());
 
                 double distance = this.frowzy.distanceToSqr(target.getX(), target.getY(), target.getZ());
                 int attackState = this.frowzy.getAttackState();
@@ -424,12 +473,19 @@ public class Frowzy extends Monster {
                 if (attackState == 1) {
                     tickAttack();
                 } else {
-                    if (this.frowzy.isBaby() && distance <= 0.5D) {
-                        this.frowzy.setAttackState(1);
-                    } else if (distance <= 1.5D) {
-                        this.frowzy.setAttackState(1);
-                    }
+                    checkForCloseRangeAttack(distance);
                 }
+            }
+        }
+
+        protected void checkForCloseRangeAttack (double distance){
+            if (this.frowzy.isBaby() && distance <= 1.25D) {
+                this.frowzy.setAttackState(1);
+            } else if (distance <= 2) {
+                this.frowzy.setAttackState(1);
+            }
+            else if (distance >= 5 && distance <= 12 && this.frowzy.onGround() && this.frowzy.getJumpCooldown() <= 0) {
+                this.jump();
             }
         }
 
@@ -447,6 +503,17 @@ public class Frowzy extends Monster {
                 attackTime = 0;
                 this.frowzy.setAttackState(0);
             }
+        }
+
+        public void jump() {
+            this.frowzy.getNavigation().stop();
+            Vec3 vec3 = this.frowzy.getDeltaMovement();
+            Vec3 leapVec = new Vec3(Objects.requireNonNull(this.frowzy.getTarget()).getX() - this.frowzy.getX(), 0.0F, this.frowzy.getTarget().getZ() - this.frowzy.getZ());
+            if (leapVec.lengthSqr() > 1.0E-7) {
+                leapVec = leapVec.normalize().scale(1).add(vec3.scale(0.5));
+            }
+            this.frowzy.setDeltaMovement(leapVec.x, 0.57D, leapVec.z);
+            this.frowzy.jumpCooldown();
         }
 
         protected double getAttackReachSqr(LivingEntity target) {

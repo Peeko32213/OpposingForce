@@ -6,9 +6,9 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 
-public class ElectrifiedEffect extends MobEffect {
+public class Electrified extends MobEffect {
 
-    public ElectrifiedEffect() {
+    public Electrified() {
         super(MobEffectCategory.HARMFUL, 0x0080c3);
     }
 

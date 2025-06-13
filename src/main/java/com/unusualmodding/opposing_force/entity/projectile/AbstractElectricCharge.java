@@ -8,6 +8,7 @@ import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 import org.jetbrains.annotations.NotNull;
@@ -109,5 +110,19 @@ public abstract class AbstractElectricCharge extends AbstractHurtingProjectile i
     private void assignDirectionalMovement(Vec3 movement, double accelerationPower) {
         this.setDeltaMovement(movement.normalize().scale(accelerationPower));
         this.hasImpulse = true;
+    }
+
+    public boolean hasLineOfSight(Entity entity) {
+        if (entity.level() != this.level()) {
+            return false;
+        } else {
+            Vec3 vec3 = new Vec3(this.getX(), this.getEyeY(), this.getZ());
+            Vec3 vec31 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
+            if (vec31.distanceTo(vec3) > 128.0D) {
+                return false;
+            } else {
+                return this.level().clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
+            }
+        }
     }
 }

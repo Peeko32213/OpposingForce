@@ -57,7 +57,7 @@ public class SlugEggs extends ThrowableItemProjectile {
         super.onHit(result);
         Entity thrower = getOwner();
         if (!this.level().isClientSide) {
-            if (this.random.nextInt(4) == 0) {
+            if (this.random.nextInt(5) == 0) {
                 Slug slug = OPEntities.SLUG.get().create(this.level());
                 slug.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
                 if (thrower instanceof Player) {

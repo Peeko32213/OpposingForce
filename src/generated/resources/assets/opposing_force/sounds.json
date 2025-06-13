@@ -371,6 +371,19 @@
     ],
     "subtitle": "subtitles.opposing_force.ramble_idle"
   },
+  "slug_attack": {
+    "sounds": [
+      {
+        "name": "mob/slime/attack1",
+        "pitch": 0.84
+      },
+      {
+        "name": "mob/slime/attack2",
+        "pitch": 0.84
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.slug_attack"
+  },
   "slug_death": {
     "sounds": [
       {

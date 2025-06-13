@@ -81,20 +81,13 @@ public class ElectricCharge extends AbstractElectricCharge {
         return this.baseDamage;
     }
 
-    public void onSyncedDataUpdated(EntityDataAccessor<?> dataAccessor) {
-        if (CHARGE_SCALE.equals(dataAccessor)) {
-            this.refreshDimensions();
-        }
-        super.onSyncedDataUpdated(dataAccessor);
-    }
-
     @Override
     public void tick() {
         super.tick();
         Vec3 pos = this.position();
 
-        this.spawnElectricParticles(this, 1, 4);
-        this.hurtEntitiesAround(pos, this.getChargeScale() + 1.0F, this.getChargeScale() + 2.0F, false);
+        this.spawnElectricParticles(this, 1, 5);
+        this.hurtEntitiesAround(pos, (this.getChargeScale() / 1.5F) + 1.0F, this.getChargeScale() + 2.0F, false);
 
         if (this.level().getBlockState(this.blockPosition().below(0)).is(Blocks.WATER)) {
             this.spawnElectricParticles(this, 10, 6);
@@ -106,7 +99,7 @@ public class ElectricCharge extends AbstractElectricCharge {
         }
 
         if (tickCount > 300 || this.getBlockY() > this.level().getMaxBuildHeight() + 30) {
-            this.spawnElectricParticles(this, 4, 3);
+            this.spawnElectricParticles(this, 5, 3);
             if (!this.level().isClientSide) {
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
                 this.discard();
@@ -117,14 +110,14 @@ public class ElectricCharge extends AbstractElectricCharge {
     public void spawnElectricParticles(ElectricCharge charge, int range, float particleMax) {
         Vec3 movement = charge.getDeltaMovement();
 
-        double d0 = charge.getX() + movement.x;
-        double d1 = charge.getY() + (charge.getBbHeight() - charge.getBbHeight() / 2) + movement.y;
-        double d2 = charge.getZ() + movement.z;
+        double x = charge.getX() + movement.x;
+        double y = charge.getY() - charge.getBbHeight() + movement.y;
+        double z = charge.getZ() + movement.z;
 
         for (int i = 0; i < particleMax; i++) {
             ElectricChargeSyncS2CPacket packet = ElectricChargeSyncS2CPacket.builder()
-                    .pos(d0, d1, d2)
-                    .range((int) (range + charge.getChargeScale()))
+                    .pos(x, y, z)
+                    .range((int) (range + charge.getChargeScale() / 1.5F))
                     .size(0.12f)
                     .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
                     .build();
@@ -132,33 +125,30 @@ public class ElectricCharge extends AbstractElectricCharge {
         }
     }
 
-    public boolean hurtEntitiesAround(Vec3 center, float radius, float damageAmount, boolean inWater){
+    public boolean hurtEntitiesAround(Vec3 center, float radius, float damageAmount, boolean inWater) {
         AABB aabb = new AABB(center.subtract(radius, radius, radius), center.add(radius, radius, radius));
         Entity shooter = this.getOwner();
         boolean flag = false;
         for (LivingEntity living : level().getEntitiesOfClass(LivingEntity.class, aabb, EntitySelector.NO_CREATIVE_OR_SPECTATOR)) {
             DamageSource damageSource = this.damageSources().source(OPDamageTypes.ELECTRIFIED);
-            if (!living.is(this) && !living.isAlliedTo(this) && living.getType() != this.getType() && living.distanceToSqr(center.x, center.y, center.z) <= radius * radius && !living.is(shooter) && !inWater) {
-                if (living.hurt(damageSource, damageAmount)) {
-                    living.addEffect(new MobEffectInstance(OPEffects.ELECTRIFIED.get(), 160), shooter);
-                    this.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
-                    flag = true;
+            if (this.hasLineOfSight(living) && !living.is(this) && !living.isAlliedTo(this) && living.getType() != this.getType() && living.distanceToSqr(center.x, center.y, center.z) <= radius * radius) {
+                if (!living.is(shooter) && !inWater) {
+                    if (living.hurt(damageSource, damageAmount)) {
+                        living.addEffect(new MobEffectInstance(OPEffects.ELECTRIFIED.get(), 160), shooter);
+                        this.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+                        flag = true;
+                    }
                 }
-            }
-            if (!living.is(this) && living.getType() != this.getType() && living.distanceToSqr(center.x, center.y, center.z) <= radius * radius && living.isInWaterRainOrBubble() && inWater) {
-                if (living.hurt(damageSource, damageAmount)) {
-                    living.addEffect(new MobEffectInstance(OPEffects.ELECTRIFIED.get(), 160), shooter);
-                    this.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
-                    flag = true;
+                if (living.isInWaterRainOrBubble() && inWater) {
+                    if (living.hurt(damageSource, damageAmount)) {
+                        living.addEffect(new MobEffectInstance(OPEffects.ELECTRIFIED.get(), 200), shooter);
+                        this.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+                        flag = true;
+                    }
                 }
             }
         }
         return flag;
-    }
-
-    @Override
-    public EntityDimensions getDimensions(Pose pose) {
-        return super.getDimensions(pose).scale(this.getChargeScale());
     }
 
     @Override
@@ -169,7 +159,7 @@ public class ElectricCharge extends AbstractElectricCharge {
         if (!this.level().isClientSide) {
             this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), SoundSource.NEUTRAL, 0.6F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
             if (!this.isBouncy()) {
-                this.spawnElectricParticles(this, 4, 3);
+                this.spawnElectricParticles(this, 4, 5);
                 this.discard();
             }
         }
@@ -189,7 +179,7 @@ public class ElectricCharge extends AbstractElectricCharge {
                 bounce(newVel);
             } else {
                 this.level().playSound(null, pos.getX(), pos.getY(), pos.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
-                this.spawnElectricParticles(this, 4, 3);
+                this.spawnElectricParticles(this, 4, 5);
                 this.discard();
             }
         }
@@ -208,13 +198,13 @@ public class ElectricCharge extends AbstractElectricCharge {
             }
             if (bounces > getMaxBounces()) {
                 this.playSound(OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
-                this.spawnElectricParticles(this, 4, 3);
+                this.spawnElectricParticles(this, 4, 5);
                 this.discard();
             }
         }
     }
 
-    public void setSoundEvent(SoundEvent pSoundEvent) {
+    public void setSoundEvent(SoundEvent soundEvent) {
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
@@ -33,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumSet;
 
-public class Volt extends Monster {
+public class Volt extends Monster implements IAnimatedAttacker {
 
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Volt.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> LEAP_COOLDOWN = SynchedEntityData.defineId(Volt.class, EntityDataSerializers.INT);
@@ -84,9 +85,12 @@ public class Volt extends Monster {
         this.setLeapCooldown(compoundTag.getInt("LeapCooldown"));
     }
 
+    @Override
     public int getAttackState() {
         return this.entityData.get(ATTACK_STATE);
     }
+
+    @Override
     public void setAttackState(int attack) {
         this.entityData.set(ATTACK_STATE, attack);
     }
@@ -94,9 +98,11 @@ public class Volt extends Monster {
     public int getLeapCooldown() {
         return this.entityData.get(LEAP_COOLDOWN);
     }
+
     public void setLeapCooldown(int cooldown) {
         this.entityData.set(LEAP_COOLDOWN, cooldown);
     }
+
     public void leapCooldown() {
         this.entityData.set(LEAP_COOLDOWN, 4 + random.nextInt(16 * 2));
     }

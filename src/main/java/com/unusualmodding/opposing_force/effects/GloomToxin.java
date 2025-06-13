@@ -6,9 +6,9 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.LightLayer;
 
-public class GloomToxinEffect extends MobEffect {
+public class GloomToxin extends MobEffect {
 
-    public GloomToxinEffect() {
+    public GloomToxin() {
         super(MobEffectCategory.HARMFUL, 0x293a8e);
     }
 

@@ -168,6 +168,10 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound("mob/strider/eat2").pitch(1.1F),
                 sound("mob/strider/eat3").pitch(1.1F)
         );
+        this.sound(OPSoundEvents.SLUG_ATTACK,
+                sound("mob/slime/attack1").pitch(0.84F),
+                sound("mob/slime/attack2").pitch(0.84F)
+        );
 
         this.sound(OPSoundEvents.TESLA_BOW_CHARGED,
                 sound(OpposingForce.modPrefix("item/tesla_bow/charged1"))

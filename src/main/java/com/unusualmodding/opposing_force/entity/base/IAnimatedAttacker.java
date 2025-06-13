@@ -2,11 +2,7 @@ package com.unusualmodding.opposing_force.entity.base;
 
 public interface IAnimatedAttacker {
 
-    boolean isAttacking();
+    int getAttackState();
 
-    void setAttacking(boolean attacking);
-
-    int attackAnimationTimeout();
-
-    void setAttackAnimationTimeout(int attackAnimationTimeout);
+    void setAttackState(int attackState);
 }

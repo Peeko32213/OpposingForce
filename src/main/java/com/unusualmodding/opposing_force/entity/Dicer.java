@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.entity.projectile.DicerLaser;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
@@ -20,6 +21,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -37,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 import java.util.Objects;
 
-public class Dicer extends Monster {
+public class Dicer extends Monster implements IAnimatedAttacker {
 
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Dicer.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(Dicer.class, EntityDataSerializers.BOOLEAN);
@@ -52,6 +54,7 @@ public class Dicer extends Monster {
 
     public Dicer(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
+        this.xpReward = 5;
         if (level.isClientSide) {
             this.headPos = new Vec3[] {
                     new Vec3(0, 0, 0)
@@ -70,11 +73,12 @@ public class Dicer extends Monster {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new DicerAttackGoal(this));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
     public void tick() {
@@ -90,11 +94,13 @@ public class Dicer extends Monster {
     }
 
     private void setupAnimationStates() {
-        this.idleAnimationState.animateWhen(this.isAlive() && this.getDeltaMovement().horizontalDistanceSqr() <= 1.0E-6, this.tickCount);
-        this.sliceAnimationState.animateWhen(this.isAlive() && this.getAttackState() == 1, this.tickCount);
-        this.laserAnimationState.animateWhen(this.isAlive() && this.getAttackState() == 2, this.tickCount);
+        int attackState = this.getAttackState();
 
-        if (this.getAttackState() > 0) {
+        this.idleAnimationState.animateWhen(this.isAlive() && this.getDeltaMovement().horizontalDistanceSqr() <= 1.0E-6, this.tickCount);
+        this.sliceAnimationState.animateWhen(this.isAlive() && attackState == 1, this.tickCount);
+        this.laserAnimationState.animateWhen(this.isAlive() && attackState == 2, this.tickCount);
+
+        if (attackState > 0) {
             this.idleAnimationState.stop();
         }
     }
@@ -111,24 +117,24 @@ public class Dicer extends Monster {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(RUNNING, false);
         this.entityData.define(ATTACK_STATE, 0);
+        this.entityData.define(RUNNING, false);
         this.entityData.define(LASER_COOLDOWN, 120);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        compoundTag.putBoolean("Running", this.isRunning());
         compoundTag.putInt("AttackState", this.getAttackState());
+        compoundTag.putBoolean("Running", this.isRunning());
         compoundTag.putInt("LaserCooldown", this.getLaserCooldown());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        this.setRunning(compoundTag.getBoolean("Running"));
         this.setAttackState(compoundTag.getInt("AttackState"));
+        this.setRunning(compoundTag.getBoolean("Running"));
         this.setLaserCooldown(compoundTag.getInt("LaserCooldown"));
     }
 
@@ -138,14 +144,6 @@ public class Dicer extends Monster {
 
     public void setRunning(boolean running) {
         this.entityData.set(RUNNING, running);
-    }
-
-    public int getAttackState() {
-        return this.entityData.get(ATTACK_STATE);
-    }
-
-    public void setAttackState(int state) {
-        this.entityData.set(ATTACK_STATE, state);
     }
 
     public int getLaserCooldown() {
@@ -158,6 +156,16 @@ public class Dicer extends Monster {
 
     public void laserCooldown() {
         this.entityData.set(LASER_COOLDOWN, 120);
+    }
+
+    @Override
+    public int getAttackState() {
+        return this.entityData.get(ATTACK_STATE);
+    }
+
+    @Override
+    public void setAttackState(int state) {
+        this.entityData.set(ATTACK_STATE, state);
     }
 
     // Sounds
@@ -223,12 +231,19 @@ public class Dicer extends Monster {
         }
 
         public void start() {
+            this.dicer.setAggressive(true);
             this.dicer.setRunning(true);
             this.dicer.setAttackState(0);
             this.attackTime = 0;
         }
 
         public void stop() {
+            LivingEntity target = this.dicer.getTarget();
+            if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
+                this.dicer.setTarget(null);
+            }
+            this.dicer.setAggressive(false);
+            this.dicer.getNavigation().stop();
             this.dicer.setRunning(false);
             this.dicer.setAttackState(0);
         }

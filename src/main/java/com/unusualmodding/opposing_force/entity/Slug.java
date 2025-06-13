@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.unusualmodding.opposing_force.registry.OPEffects;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -16,6 +17,8 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -34,7 +37,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.scores.Team;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
+import net.minecraftforge.eventbus.api.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -70,10 +77,11 @@ public class Slug extends Monster implements OwnableEntity {
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, LivingEntity.class, 6.0F));
+        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        this.targetSelector.addGoal(3, new SlugOwnerHurtByTargetGoal(this));
-        this.targetSelector.addGoal(4, new SlugOwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(2, new SlugOwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(3, new SlugOwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, false, false, this::hasInfestation));
     }
 
     protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
@@ -81,6 +89,25 @@ public class Slug extends Monster implements OwnableEntity {
 
     public MobType getMobType() {
         return MobType.ARTHROPOD;
+    }
+
+    public boolean doHurtTarget(Entity entity) {
+        if (super.doHurtTarget(entity)) {
+            this.playSound(OPSoundEvents.SLUG_ATTACK.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean canBeAffected(MobEffectInstance effect) {
+        if (effect.getEffect() == OPEffects.SLUG_INFESTATION.get()) {
+            MobEffectEvent.Applicable event = new MobEffectEvent.Applicable(this, effect);
+            MinecraftForge.EVENT_BUS.post(event);
+            return event.getResult() == Event.Result.ALLOW;
+        } else {
+            return super.canBeAffected(effect);
+        }
     }
 
     @Override
@@ -198,6 +225,10 @@ public class Slug extends Monster implements OwnableEntity {
         }
     }
 
+    protected AABB getTargetSearchArea(double distance) {
+        return this.getBoundingBox().inflate(distance, 6.0F, distance);
+    }
+
     private void setupAnimationStates() {
         this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
     }
@@ -236,8 +267,13 @@ public class Slug extends Monster implements OwnableEntity {
         }
     }
 
+    @Override
     public boolean canAttack(LivingEntity entity) {
         return !this.isOwnedBy(entity) && super.canAttack(entity);
+    }
+
+    public boolean hasInfestation(LivingEntity entity) {
+        return entity.hasEffect(OPEffects.SLUG_INFESTATION.get());
     }
 
     public boolean isOwnedBy(LivingEntity pEntity) {
@@ -258,17 +294,17 @@ public class Slug extends Monster implements OwnableEntity {
         return super.getTeam();
     }
 
-    public boolean isAlliedTo(Entity pEntity) {
+    public boolean isAlliedTo(Entity entity) {
         if (this.isTame()) {
             LivingEntity livingentity = this.getOwner();
-            if (pEntity == livingentity) {
+            if (entity == livingentity) {
                 return true;
             }
             if (livingentity != null) {
-                return livingentity.isAlliedTo(pEntity);
+                return livingentity.isAlliedTo(entity);
             }
         }
-        return super.isAlliedTo(pEntity);
+        return super.isAlliedTo(entity);
     }
 
     public boolean canBeLeashed(Player player) {

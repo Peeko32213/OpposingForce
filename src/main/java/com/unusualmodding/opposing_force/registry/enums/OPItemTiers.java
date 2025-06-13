@@ -10,9 +10,7 @@ import java.util.function.Supplier;
 
 public enum OPItemTiers implements Tier {
 
-        VILE(0, 180, 3.0F, 0.0F, 10, () -> Ingredient.of(OPItems.SLUG_EGGS.get())),
-        DUMMY(0, 0, 0.0F, 0.0F, 0, () -> Ingredient.of(Items.IRON_INGOT)),
-    ;
+    VILE(0, 196, 3.0F, 0.0F, 8, () -> Ingredient.of(OPItems.SLUG_EGGS.get()));
 
     private final int level;
     private final int durability;

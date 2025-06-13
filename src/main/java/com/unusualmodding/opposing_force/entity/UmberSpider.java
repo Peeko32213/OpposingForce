@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.registry.OPEffects;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -46,7 +47,7 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Objects;
 
-public class UmberSpider extends Monster {
+public class UmberSpider extends Monster implements IAnimatedAttacker {
 
     private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(UmberSpider.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(UmberSpider.class, EntityDataSerializers.INT);
@@ -159,10 +160,12 @@ public class UmberSpider extends Monster {
         this.setLightThreshold(compoundTag.getInt("LightThreshold"));
     }
 
+    @Override
     public int getAttackState() {
         return this.entityData.get(ATTACK_STATE);
     }
 
+    @Override
     public void setAttackState(int attack) {
         this.entityData.set(ATTACK_STATE, attack);
     }
@@ -231,13 +234,13 @@ public class UmberSpider extends Monster {
         return this.isClimbing();
     }
 
-    public boolean canBeAffected(MobEffectInstance pPotioneffect) {
-        if (pPotioneffect.getEffect() == MobEffects.POISON) {
-            MobEffectEvent.Applicable event = new MobEffectEvent.Applicable(this, pPotioneffect);
+    public boolean canBeAffected(MobEffectInstance effect) {
+        if (effect.getEffect() == MobEffects.POISON || effect.getEffect() == OPEffects.GLOOM_TOXIN.get()) {
+            MobEffectEvent.Applicable event = new MobEffectEvent.Applicable(this, effect);
             MinecraftForge.EVENT_BUS.post(event);
             return event.getResult() == Event.Result.ALLOW;
         } else {
-            return super.canBeAffected(pPotioneffect);
+            return super.canBeAffected(effect);
         }
     }
 

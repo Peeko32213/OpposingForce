@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -34,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.EnumSet;
 import java.util.Objects;
 
-public class Terror extends Monster {
+public class Terror extends Monster implements IAnimatedAttacker {
 
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Terror.class, EntityDataSerializers.INT);
 
@@ -145,10 +146,12 @@ public class Terror extends Monster {
         this.setAttackState(compoundTag.getInt("AttackState"));
     }
 
+    @Override
     public int getAttackState() {
         return this.entityData.get(ATTACK_STATE);
     }
 
+    @Override
     public void setAttackState(int attackState) {
         this.entityData.set(ATTACK_STATE, attackState);
     }
