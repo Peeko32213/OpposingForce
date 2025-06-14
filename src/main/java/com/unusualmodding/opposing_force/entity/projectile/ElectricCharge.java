@@ -87,19 +87,19 @@ public class ElectricCharge extends AbstractElectricCharge {
         Vec3 pos = this.position();
 
         this.spawnElectricParticles(this, 1, 5);
-        this.hurtEntitiesAround(pos, (this.getChargeScale() / 1.5F) + 1.0F, this.getChargeScale() + 2.0F, false);
+        this.hurtEntitiesAround(pos, (this.getChargeScale()) + 1, this.getChargeScale() + 2, false);
 
         if (this.level().getBlockState(this.blockPosition().below(0)).is(Blocks.WATER)) {
             this.spawnElectricParticles(this, 10, 6);
             if (!this.level().isClientSide) {
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
-                this.hurtEntitiesAround(pos, this.getChargeScale() + 5.0F, this.getChargeScale() + 4.0F, true);
+                this.hurtEntitiesAround(pos, this.getChargeScale() + 5, this.getChargeScale() + 4, true);
                 this.discard();
             }
         }
 
         if (tickCount > 300 || this.getBlockY() > this.level().getMaxBuildHeight() + 30) {
-            this.spawnElectricParticles(this, 5, 3);
+            this.spawnElectricParticles(this, 5, 4);
             if (!this.level().isClientSide) {
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
                 this.discard();
@@ -117,7 +117,7 @@ public class ElectricCharge extends AbstractElectricCharge {
         for (int i = 0; i < particleMax; i++) {
             ElectricChargeSyncS2CPacket packet = ElectricChargeSyncS2CPacket.builder()
                     .pos(x, y, z)
-                    .range((int) (range + charge.getChargeScale() / 1.5F))
+                    .range((int) (range + charge.getChargeScale() / 1.25F))
                     .size(0.12f)
                     .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
                     .build();

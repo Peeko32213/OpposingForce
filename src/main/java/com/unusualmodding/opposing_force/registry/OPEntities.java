@@ -156,4 +156,11 @@ public class OPEntities {
                     .clientTrackingRange(4)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "tomahawk").toString())
     );
+
+    public static final RegistryObject<EntityType<TremblerShell>> TREMBLER_SHELL = ENTITY_TYPES.register(
+            "trembler_shell", () ->
+                    EntityType.Builder.<TremblerShell>of(TremblerShell::new, MobCategory.MISC)
+                            .sized(1.0F, 1.0F)
+                            .build(new ResourceLocation(OpposingForce.MOD_ID, "trembler_shell").toString())
+    );
 }

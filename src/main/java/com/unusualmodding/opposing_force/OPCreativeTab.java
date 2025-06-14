@@ -43,6 +43,8 @@ public class OPCreativeTab {
                     // Items
                     output.accept(OPItems.SLUG_EGGS.get());
                     output.accept(OPItems.ELECTRIC_CHARGE.get());
+                    output.accept(OPItems.CAPTURED_WHIZZ.get());
+                    output.accept(OPItems.TREMBLER_SHELL.get());
                     output.accept(OPItems.DEEP_SILK.get());
 
                     // Mushrooms

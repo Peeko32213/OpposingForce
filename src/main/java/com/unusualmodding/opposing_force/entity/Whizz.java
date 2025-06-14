@@ -2,14 +2,20 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.mojang.datafixers.DataFixUtils;
 import com.unusualmodding.opposing_force.blocks.InfestedAmethyst;
+import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -23,12 +29,18 @@ import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;
+import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
@@ -40,20 +52,22 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.scores.Team;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class Whizz extends Monster {
+public class Whizz extends Monster implements OwnableEntity, Bucketable {
 
     private static final EntityDataAccessor<Boolean> CHARGING = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Integer> CHARGE_COOLDOWN = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.BOOLEAN);
 
     @Nullable
     private WhizzWakeUpFriendsGoal friendsGoal;
@@ -100,11 +114,13 @@ public class Whizz extends Monster {
         this.goalSelector.addGoal(5, new FloatGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true, false));
+        this.targetSelector.addGoal(3, new WhizzOwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(4, new WhizzOwnerHurtTargetGoal(this));
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose pPose, EntityDimensions pSize) {
-        return pSize.height * 0.6F;
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.6F;
     }
 
     public MobType getMobType() {
@@ -155,10 +171,38 @@ public class Whizz extends Monster {
     }
 
     @Override
+    public boolean skipAttackInteraction(Entity entity) {
+        if (entity instanceof Player player) {
+            if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SILK_TOUCH, player.getMainHandItem()) > 0) {
+                if (!level().isClientSide && isAlive()) {
+                    ItemStack itemStack = OPItems.CAPTURED_WHIZZ.get().getDefaultInstance();
+                    if (!this.isTame()) {
+                        this.tame(player);
+                    }
+
+                    level().playSound(null, getX(), getY(), getZ(), SoundEvents.AMETHYST_CLUSTER_BREAK, getSoundSource(), 1.0F, 0.8F);
+                    if (level() instanceof ServerLevel) {
+                        ((ServerLevel) level()).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.AMETHYST_CLUSTER.defaultBlockState()), getX(), getY() + getBbHeight() / 2.0D, getZ(), 16, getBbWidth() / 4.0F, getBbHeight() / 4.0F, getBbWidth() / 4.0F, 0.05D);
+                    }
+
+                    this.saveToBucketTag(itemStack);
+                    spawnAtLocation(itemStack);
+                    discard();
+                }
+                return true;
+            }
+        }
+        return super.skipAttackInteraction(entity);
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(CHARGING, false);
         this.entityData.define(CHARGE_COOLDOWN, 8 + random.nextInt(12 * 6));
+        this.entityData.define(OWNER_UUID, Optional.empty());
+        this.entityData.define(DATA_FLAGS_ID, (byte) 0);
+        this.entityData.define(FROM_BUCKET, false);
     }
 
     @Override
@@ -166,6 +210,9 @@ public class Whizz extends Monster {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putBoolean("Charging", this.isCharging());
         compoundTag.putInt("ChargeCooldown", this.getChargeCooldown());
+        if (this.getOwnerUUID() != null) {
+            compoundTag.putUUID("Owner", this.getOwnerUUID());
+        }
     }
 
     @Override
@@ -173,6 +220,69 @@ public class Whizz extends Monster {
         super.readAdditionalSaveData(compoundTag);
         this.setCharging(compoundTag.getBoolean("Charging"));
         this.setChargeCooldown(compoundTag.getInt("ChargeCooldown"));
+
+        UUID uuid;
+        if (compoundTag.hasUUID("Owner")) {
+            uuid = compoundTag.getUUID("Owner");
+        } else {
+            String owner = compoundTag.getString("Owner");
+            uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), owner);
+        }
+
+        if (uuid != null) {
+            try {
+                this.setOwnerUUID(uuid);
+                this.setTame(true);
+            } catch (Throwable var4) {
+                this.setTame(false);
+            }
+        }
+    }
+
+    @Override
+    public void saveToBucketTag(ItemStack itemStack) {
+        CompoundTag compoundTag = itemStack.getOrCreateTag();
+        Bucketable.saveDefaultDataToBucketTag(this, itemStack);
+
+        compoundTag.putFloat("Health", this.getHealth());
+        if (this.getOwnerUUID() != null) {
+            compoundTag.putUUID("Owner", this.getOwnerUUID());
+        }
+
+        if (this.hasCustomName()) {
+            itemStack.setHoverName(this.getCustomName());
+        }
+    }
+
+    @Override
+    public void loadFromBucketTag(CompoundTag compoundTag) {
+        Bucketable.loadDefaultDataFromBucketTag(this, compoundTag);
+        UUID uuid;
+        if (compoundTag.hasUUID("Owner")) {
+            uuid = compoundTag.getUUID("Owner");
+        } else {
+            String owner = compoundTag.getString("Owner");
+            uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), owner);
+        }
+
+        if (uuid != null) {
+            try {
+                this.setOwnerUUID(uuid);
+                this.setTame(true);
+            } catch (Throwable var4) {
+                this.setTame(false);
+            }
+        }
+    }
+
+    @Override
+    public ItemStack getBucketItemStack() {
+        return new ItemStack(OPItems.CAPTURED_WHIZZ.get());
+    }
+
+    @Override
+    public SoundEvent getPickupSound() {
+        return SoundEvents.AMETHYST_BLOCK_RESONATE;
     }
 
     public boolean isCharging() {
@@ -195,7 +305,90 @@ public class Whizz extends Monster {
         this.entityData.set(CHARGE_COOLDOWN, 8 + random.nextInt(12 * 6));
     }
 
-    // swarming
+    public boolean fromBucket() {
+        return this.entityData.get(FROM_BUCKET);
+    }
+
+    public void setFromBucket(boolean fromBucket) {
+        this.entityData.set(FROM_BUCKET, fromBucket);
+    }
+
+    @Nullable
+    public UUID getOwnerUUID() {
+        return this.entityData.get(OWNER_UUID).orElse(null);
+    }
+
+    public void setOwnerUUID(@Nullable UUID pUuid) {
+        this.entityData.set(OWNER_UUID, Optional.ofNullable(pUuid));
+    }
+
+    @Override
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence() || this.isTame();
+    }
+
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return !this.isTame();
+    }
+
+    public boolean isTame() {
+        return (this.entityData.get(DATA_FLAGS_ID) & 4) != 0;
+    }
+
+    public void setTame(boolean tamed) {
+        byte b = this.entityData.get(DATA_FLAGS_ID);
+        if (tamed) {
+            this.entityData.set(DATA_FLAGS_ID, (byte) (b | 4));
+        } else {
+            this.entityData.set(DATA_FLAGS_ID, (byte) (b & -5));
+        }
+    }
+
+    public void tame(Player player) {
+        this.setTame(true);
+        this.setOwnerUUID(player.getUUID());
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity entity) {
+        return !this.isOwnedBy(entity) && super.canAttack(entity);
+    }
+
+    public boolean isOwnedBy(LivingEntity entity) {
+        return entity == this.getOwner();
+    }
+
+    public boolean wantsToAttack(LivingEntity entity, LivingEntity owner) {
+        return true;
+    }
+
+    public Team getTeam() {
+        if (this.isTame()) {
+            LivingEntity livingentity = this.getOwner();
+            if (livingentity != null) {
+                return livingentity.getTeam();
+            }
+        }
+        return super.getTeam();
+    }
+
+    public boolean isAlliedTo(Entity entity) {
+        if (this.isTame()) {
+            LivingEntity livingentity = this.getOwner();
+            if (entity == livingentity) {
+                return true;
+            }
+            if (livingentity != null) {
+                return livingentity.isAlliedTo(entity);
+            }
+        }
+        return super.isAlliedTo(entity);
+    }
+
+    public boolean canBeLeashed(Player player) {
+        return !this.isLeashed() && this.isTame();
+    }
+
     public int getMaxSwarmSize() {
         return 32;
     }
@@ -441,7 +634,7 @@ public class Whizz extends Monster {
 
         public WhizzChargeAttackGoal(Whizz mob) {
             this.whizz = mob;
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
 
         public boolean canUse() {
@@ -528,7 +721,7 @@ public class Whizz extends Monster {
         }
 
         public boolean canUse() {
-            return this.lookForFriends > 0;
+            return this.lookForFriends > 0 && !this.whizz.isTame();
         }
 
         public void tick() {
@@ -557,6 +750,80 @@ public class Whizz extends Monster {
                     }
                 }
             }
+        }
+    }
+
+    private static class WhizzOwnerHurtTargetGoal extends TargetGoal {
+
+        private final Whizz whizz;
+        private LivingEntity ownerLastHurt;
+        private int timestamp;
+
+        public WhizzOwnerHurtTargetGoal(Whizz whizz) {
+            super(whizz, false);
+            this.whizz = whizz;
+            this.setFlags(EnumSet.of(Flag.TARGET));
+        }
+
+        public boolean canUse() {
+            if (this.whizz.isTame()) {
+                LivingEntity owner = this.whizz.getOwner();
+                if (owner == null) {
+                    return false;
+                } else {
+                    this.ownerLastHurt = owner.getLastHurtMob();
+                    int hurtTime = owner.getLastHurtMobTimestamp();
+                    return hurtTime != this.timestamp && this.canAttack(this.ownerLastHurt, TargetingConditions.DEFAULT) && this.whizz.wantsToAttack(this.ownerLastHurt, owner);
+                }
+            } else {
+                return false;
+            }
+        }
+
+        public void start() {
+            this.mob.setTarget(this.ownerLastHurt);
+            LivingEntity owner = this.whizz.getOwner();
+            if (owner != null) {
+                this.timestamp = owner.getLastHurtMobTimestamp();
+            }
+            super.start();
+        }
+    }
+
+    private static class WhizzOwnerHurtByTargetGoal extends TargetGoal {
+
+        private final Whizz whizz;
+        private LivingEntity ownerLastHurtBy;
+        private int timestamp;
+
+        public WhizzOwnerHurtByTargetGoal(Whizz whizz) {
+            super(whizz, false);
+            this.whizz = whizz;
+            this.setFlags(EnumSet.of(Flag.TARGET));
+        }
+
+        public boolean canUse() {
+            if (this.whizz.isTame()) {
+                LivingEntity owner = this.whizz.getOwner();
+                if (owner == null) {
+                    return false;
+                } else {
+                    this.ownerLastHurtBy = owner.getLastHurtByMob();
+                    int hurtTime = owner.getLastHurtByMobTimestamp();
+                    return hurtTime != this.timestamp && this.canAttack(this.ownerLastHurtBy, TargetingConditions.DEFAULT) && this.whizz.wantsToAttack(this.ownerLastHurtBy, owner);
+                }
+            } else {
+                return false;
+            }
+        }
+
+        public void start() {
+            this.mob.setTarget(this.ownerLastHurtBy);
+            LivingEntity owner = this.whizz.getOwner();
+            if (owner != null) {
+                this.timestamp = owner.getLastHurtByMobTimestamp();
+            }
+            super.start();
         }
     }
 }

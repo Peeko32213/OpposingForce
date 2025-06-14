@@ -26,6 +26,8 @@ public class OPItemModelProvider extends ItemModelProvider {
         item(DEEP_SILK);
         item(ELECTRIC_CHARGE);
         item(SLUG_EGGS);
+        item(CAPTURED_WHIZZ);
+        item(TREMBLER_SHELL);
 
         // spawn eggs
         for (Item item : BuiltInRegistries.ITEM) {
@@ -36,7 +38,7 @@ public class OPItemModelProvider extends ItemModelProvider {
     }
 
     // item
-    private ItemModelBuilder item(RegistryObject<Item> item) {
+    private ItemModelBuilder item(RegistryObject<?> item) {
         return generated(item.getId().getPath(), modLoc("item/" + item.getId().getPath()));
     }
 

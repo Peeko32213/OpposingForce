@@ -25,6 +25,6 @@ public class OPDamageTypeTagProvider extends TagsProvider<DamageType> {
         this.tag(DamageTypeTags.IS_PROJECTILE).add(TOMAHAWK).add(LASER);
         this.tag(DamageTypeTags.NO_IMPACT).add(LASER);
         this.tag(DamageTypeTags.WITCH_RESISTANT_TO).add(GLOOM_TOXIN);
-        this.tag(OPDamageTypeTags.DAMAGES_ROLLING_TREMBLER).addTag(DamageTypeTags.BYPASSES_ARMOR).addTag(DamageTypeTags.BYPASSES_RESISTANCE).addTag(DamageTypeTags.BYPASSES_INVULNERABILITY).addTag(DamageTypeTags.IS_DROWNING);
+        this.tag(OPDamageTypeTags.DAMAGES_ROLLING_TREMBLER).addTag(DamageTypeTags.BYPASSES_ARMOR).addTag(DamageTypeTags.BYPASSES_RESISTANCE).addTag(DamageTypeTags.BYPASSES_INVULNERABILITY).addTag(DamageTypeTags.IS_DROWNING).addTag(DamageTypeTags.IS_FIRE).addTag(DamageTypeTags.IS_LIGHTNING);
     }
 }

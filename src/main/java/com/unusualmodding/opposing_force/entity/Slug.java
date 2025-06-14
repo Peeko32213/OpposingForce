@@ -18,13 +18,13 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.monster.Evoker;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -37,7 +37,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
@@ -55,6 +54,9 @@ public class Slug extends Monster implements OwnableEntity {
     private static final EntityDataAccessor<Integer> MAX_GROWABLE_SIZE = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Boolean> FROM_INFESTATION = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.BOOLEAN);
+
+    private int limitedLifeTicks = 0;
 
     public final AnimationState idleAnimationState = new AnimationState();
 
@@ -77,7 +79,7 @@ public class Slug extends Monster implements OwnableEntity {
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, LivingEntity.class, 6.0F));
-        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, true, this::isInfestationSlug));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new SlugOwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new SlugOwnerHurtTargetGoal(this));
@@ -130,6 +132,7 @@ public class Slug extends Monster implements OwnableEntity {
         this.entityData.define(MAX_GROWABLE_SIZE, 0);
         this.entityData.define(OWNER_UUID, Optional.empty());
         this.entityData.define(DATA_FLAGS_ID, (byte) 0);
+        this.entityData.define(FROM_INFESTATION, false);
     }
 
     @Override
@@ -137,6 +140,9 @@ public class Slug extends Monster implements OwnableEntity {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putInt("Size", this.getSlugSize());
         compoundTag.putInt("MaxGrowableSize", this.getMaxGrowableSlugSize());
+        compoundTag.putBoolean("FromInfestation", this.isFromInfestation());
+        compoundTag.putInt("LifeTicks", this.limitedLifeTicks);
+
         if (this.getOwnerUUID() != null) {
             compoundTag.putUUID("Owner", this.getOwnerUUID());
         }
@@ -147,6 +153,8 @@ public class Slug extends Monster implements OwnableEntity {
         super.readAdditionalSaveData(compoundTag);
         this.setSlugSize(compoundTag.getInt("Size"));
         this.setMaxGrowableSlugSize(compoundTag.getInt("MaxGrowableSize"));
+        this.setFromInfestation(compoundTag.getBoolean("FromInfestation"));
+        this.limitedLifeTicks = compoundTag.getInt("LifeTicks");
 
         UUID uuid;
         if (compoundTag.hasUUID("Owner")) {
@@ -191,8 +199,16 @@ public class Slug extends Monster implements OwnableEntity {
         this.entityData.set(OWNER_UUID, Optional.ofNullable(pUuid));
     }
 
-    protected float getStandingEyeHeight(Pose pPose, EntityDimensions pSize) {
-        return pSize.height * 0.44F;
+    public boolean isFromInfestation() {
+        return this.entityData.get(FROM_INFESTATION);
+    }
+
+    public void setFromInfestation(boolean infestation) {
+        this.entityData.set(FROM_INFESTATION, infestation);
+    }
+
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.44F;
     }
 
     private void updateSlugAttributes() {
@@ -220,13 +236,18 @@ public class Slug extends Monster implements OwnableEntity {
     @Override
     public void tick() {
         super.tick();
+
+        if (this.isFromInfestation()) {
+            this.limitedLifeTicks++;
+            if (this.limitedLifeTicks > 600) {
+                this.limitedLifeTicks = 580;
+                this.hurt(this.damageSources().starve(), 1.0F);
+            }
+        }
+
         if (this.level().isClientSide()){
             this.setupAnimationStates();
         }
-    }
-
-    protected AABB getTargetSearchArea(double distance) {
-        return this.getBoundingBox().inflate(distance, 6.0F, distance);
     }
 
     private void setupAnimationStates() {
@@ -274,6 +295,10 @@ public class Slug extends Monster implements OwnableEntity {
 
     public boolean hasInfestation(LivingEntity entity) {
         return entity.hasEffect(OPEffects.SLUG_INFESTATION.get());
+    }
+
+    public boolean isInfestationSlug(LivingEntity entity) {
+        return !this.isFromInfestation();
     }
 
     public boolean isOwnedBy(LivingEntity pEntity) {
@@ -422,16 +447,16 @@ public class Slug extends Monster implements OwnableEntity {
     // goals
     private static class SlugAttackGoal extends MeleeAttackGoal {
 
-        Slug slug;
+        protected final Slug slug;
 
         public SlugAttackGoal(Slug slug) {
-            super(slug, 1.22, false);
+            super(slug, 1.2D, false);
             this.slug = slug;
         }
 
         @Override
         protected double getAttackReachSqr(LivingEntity pAttackTarget) {
-            return this.mob.getBbWidth() * 1.16F * this.mob.getBbWidth() * 0.94F + pAttackTarget.getBbWidth();
+            return this.slug.getBbWidth() * 1.2F * this.slug.getBbWidth() * 1F + pAttackTarget.getBbWidth();
         }
     }
 

@@ -26,7 +26,7 @@ public class SlugInfestation extends MobEffect {
     }
 
     public static void onMobHurt(LivingEntity livingEntity, int amplifier) {
-        if (livingEntity.getRandom().nextFloat() <= 0.6F) {
+        if (livingEntity.getRandom().nextFloat() <= 0.4F) {
             int i = Mth.randomBetweenInclusive(livingEntity.getRandom(), 1, amplifier + 2);
 
             for (int j = 0; j < i; j++) {
@@ -43,6 +43,7 @@ public class SlugInfestation extends MobEffect {
             Vector3f vector3f = entity.getLookAngle().toVector3f().mul(0.3F).mul(1.0F, 1.5F, 1.0F).rotateY(f1);
             slug.moveTo(x, y, z, level.getRandom().nextFloat() * 360.0F, 0.0F);
             slug.setDeltaMovement(new Vec3(vector3f));
+            slug.setFromInfestation(true);
             level.addFreshEntity(slug);
             slug.playSound(OPSoundEvents.SLUG_ATTACK.get());
         }
