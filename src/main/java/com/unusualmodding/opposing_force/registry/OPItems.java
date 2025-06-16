@@ -4,12 +4,9 @@ import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.items.*;
 import com.unusualmodding.opposing_force.registry.enums.OPArmorMaterials;
 import com.unusualmodding.opposing_force.registry.enums.OPItemTiers;
-import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -39,12 +36,12 @@ public class OPItems {
 
     public static final RegistryObject<Item> DEEP_SILK = registerItem("deep_silk", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> ELECTRIC_CHARGE = registerItem("electric_charge", () -> new ElectricChargeItem(OPEntities.ELECTRIC_CHARGE, (new Item.Properties())));
-    public static final RegistryObject<Item> TOMAHAWK =  registerItem("tomahawk", () -> new TomahawkItem(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> TOMAHAWK =  registerItem("tomahawk", () -> new TomahawkItem(new Item.Properties()));
     public static final RegistryObject<Item> TESLA_BOW = registerItem("tesla_bow", () -> new TeslaBowItem(new Item.Properties().stacksTo(1).durability(465)));
     public static final RegistryObject<Item> SLUG_EGGS = registerItem("slug_eggs", () -> new SlugEggItem(new Item.Properties()));
     public static final RegistryObject<Item> VILE_BOULDER = registerItem("vile_boulder", () -> new VileBoulderItem(OPItemTiers.VILE,  7, -3.1F, new Item.Properties()));
     public static final RegistryObject<Item> CAPTURED_WHIZZ = registerItem("captured_whizz", () -> new MobItem(OPEntities.WHIZZ::get, SoundEvents.AMETHYST_BLOCK_RESONATE, new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> TREMBLER_SHELL = registerItem("trembler_shell", () -> new Item(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> TREMBLER_SHELL = registerItem("trembler_shell", () -> new TremblerShellItem(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<Item> UMBER_FANG = registerItem("umber_fang", () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> DEEPWOVEN_HAT = registerItem("deepwoven_hat", ()-> new DeepwovenArmorItem(OPArmorMaterials.DEEPWOVEN, ArmorItem.Type.HELMET, new Item.Properties()));

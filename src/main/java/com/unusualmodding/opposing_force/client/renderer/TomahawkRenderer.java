@@ -33,35 +33,36 @@ public class TomahawkRenderer extends EntityRenderer<Tomahawk> {
     }
 
     @Override
-    public void render(Tomahawk entity, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(Tomahawk entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn) {
         if (entity.tickCount >= 2 || !(this.entityRenderDispatcher.camera.getEntity().distanceToSqr(entity) < 12.25D)) {
-            matrixStackIn.pushPose();
+            poseStack.pushPose();
 
             float tomahawkScale = 1.5F;
-            matrixStackIn.scale(this.scale, this.scale, this.scale);
-            matrixStackIn.scale(tomahawkScale, tomahawkScale, tomahawkScale);
+            poseStack.scale(this.scale, this.scale, this.scale);
+            poseStack.scale(tomahawkScale, tomahawkScale, tomahawkScale);
 
             if (!entity.inGround) {
-                matrixStackIn.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
-                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
-                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(-135.0F));
+                poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(-135.0F));
 
-                matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F));
-                matrixStackIn.translate(0.0F, -0.175F, 0.0F);
+                poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+                poseStack.translate(0.0F, -0.175F, 0.0F);
 
-                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(-(entity.tickCount + partialTicks) * -45 % 360));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(-(entity.tickCount + partialTicks) * -75 % 360));
+            } else {
+                poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
+
+                poseStack.mulPose(Axis.ZP.rotationDegrees(-140.0F));
+
+                poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+                poseStack.translate(0.0F, -0.175F, 0.0F);
             }
-            else {
-                matrixStackIn.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
-                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
-                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(-135.0F));
 
-                matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F));
-                matrixStackIn.translate(0.0F, -0.175F, 0.0F);
-            }
-            this.itemRenderer.renderStatic(entity.getItem(), ItemDisplayContext.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, entity.level(), entity.getId());
-            matrixStackIn.popPose();
-            super.render(entity, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+            this.itemRenderer.renderStatic(entity.getItem(), ItemDisplayContext.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, poseStack, bufferIn, entity.level(), entity.getId());
+            poseStack.popPose();
+            super.render(entity, entityYaw, partialTicks, poseStack, bufferIn, packedLightIn);
         }
     }
 

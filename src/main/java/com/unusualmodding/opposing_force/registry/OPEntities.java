@@ -125,11 +125,11 @@ public class OPEntities {
 
     public static final RegistryObject<EntityType<DicerLaser>> DICER_LASER = ENTITY_TYPES.register(
             "dicer_laser", () ->
-                    EntityType.Builder.<DicerLaser>of(DicerLaser::new, MobCategory.MISC)
-                            .sized(0.1f, 0.1f)
-                            .setUpdateInterval(1)
-                            .fireImmune()
-                            .build(new ResourceLocation(OpposingForce.MOD_ID, "dicer_laser").toString())
+            EntityType.Builder.<DicerLaser>of(DicerLaser::new, MobCategory.MISC)
+                    .sized(0.1f, 0.1f)
+                    .setUpdateInterval(1)
+                    .fireImmune()
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "dicer_laser").toString())
     );
 
     public static final RegistryObject<EntityType<ElectricCharge>> ELECTRIC_CHARGE = ENTITY_TYPES.register(
@@ -159,8 +159,8 @@ public class OPEntities {
 
     public static final RegistryObject<EntityType<TremblerShell>> TREMBLER_SHELL = ENTITY_TYPES.register(
             "trembler_shell", () ->
-                    EntityType.Builder.<TremblerShell>of(TremblerShell::new, MobCategory.MISC)
-                            .sized(1.0F, 1.0F)
-                            .build(new ResourceLocation(OpposingForce.MOD_ID, "trembler_shell").toString())
+            EntityType.Builder.<TremblerShell>of(TremblerShell::new, MobCategory.MISC)
+                    .sized(0.75F, 0.75F)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "trembler_shell").toString())
     );
 }

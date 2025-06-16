@@ -1,32 +1,54 @@
 package com.unusualmodding.opposing_force.entity.projectile;
 
 import com.unusualmodding.opposing_force.registry.OPEntities;
-import com.unusualmodding.opposing_force.registry.OPItems;
-import net.minecraft.BlockUtil;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import com.unusualmodding.opposing_force.registry.OPEntityData;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.fluids.FluidType;
+import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class TremblerShell extends Entity {
 
-    public TremblerShell(EntityType<? extends TremblerShell> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
-        this.blocksBuilding = true;
+    private static final EntityDataAccessor<Optional<Vec3>> SPIN_AROUND = SynchedEntityData.defineId(TremblerShell.class, OPEntityData.OPTIONAL_VEC_3.get());
+    private static final EntityDataAccessor<Float> SPIN_RADIUS = SynchedEntityData.defineId(TremblerShell.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> SPIN_SPEED = SynchedEntityData.defineId(TremblerShell.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> START_ANGLE = SynchedEntityData.defineId(TremblerShell.class, EntityDataSerializers.FLOAT);
+
+    @Nullable
+    private LivingEntity owner;
+    @Nullable
+    private UUID ownerUUID;
+
+    private float startAngle;
+    private float spinAngle;
+    private int lSteps;
+    private double lx;
+    private double ly;
+    private double lz;
+    private double lyr;
+    private double lxr;
+    private double lxd;
+    private double lyd;
+    private double lzd;
+
+    public TremblerShell(EntityType<? extends TremblerShell> entityType, Level level) {
+        super(entityType, level);
     }
 
     public TremblerShell(PlayMessages.SpawnEntity spawnEntity, Level level) {
@@ -34,166 +56,177 @@ public class TremblerShell extends Entity {
     }
 
     @Override
-    protected float getEyeHeight(Pose pPose, EntityDimensions pSize) {
-        return pSize.height;
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
-    @Override
-    public boolean canBeCollidedWith() {
-        return this.isAlive();
+    public void setOwner(@Nullable LivingEntity living) {
+        this.owner = living;
+        this.ownerUUID = living == null ? null : living.getUUID();
     }
 
-    @Override
-    public void push(double pX, double pY, double pZ) {
+    @Nullable
+    public LivingEntity getOwner() {
+        if (this.owner == null && this.ownerUUID != null && this.level() instanceof ServerLevel) {
+            Entity entity = ((ServerLevel) this.level()).getEntity(this.ownerUUID);
+            if (entity instanceof LivingEntity) {
+                this.owner = (LivingEntity) entity;
+            }
+        }
+        return this.owner;
     }
 
-    @Override
-    protected Vec3 getRelativePortalPosition(Direction.Axis pAxis, BlockUtil.FoundRectangle pPortal) {
-        return LivingEntity.resetForwardDirectionOfRelativePortalPosition(super.getRelativePortalPosition(pAxis, pPortal));
+    public void tick() {
+        super.tick();
+
+        this.setSpinRadius(3F);
+        this.setSpinSpeed(7F);
+        Vec3 encirclePos = this.getSpinAroundPosition();
+        if (this.level().isClientSide) {
+            if (this.lSteps > 0) {
+                double d5 = this.getX() + (this.lx - this.getX()) / (double) this.lSteps;
+                double d6 = this.getY() + (this.ly - this.getY()) / (double) this.lSteps;
+                double d7 = this.getZ() + (this.lz - this.getZ()) / (double) this.lSteps;
+                this.setYRot(Mth.wrapDegrees((float) this.lyr));
+                this.setXRot(this.getXRot() + (float) (this.lxr - (double) this.getXRot()) / (float) this.lSteps);
+                --this.lSteps;
+                this.setPos(d5, d6, d7);
+            } else {
+                this.reapplyPosition();
+            }
+        } else {
+            this.reapplyPosition();
+            this.setRot(this.getYRot(), this.getXRot());
+            Entity owner = getOwner();
+            if (owner instanceof Mob mob) {
+                LivingEntity target = mob.getTarget();
+                if (target != null && encirclePos != null) {
+                    Vec3 add = target.getEyePosition().subtract(encirclePos);
+                    if (add.length() > 1.0F) {
+                        add = add.normalize();
+                    }
+                    this.setSpinAroundPosition(encirclePos.add(add.scale(0.05F)));
+                }
+            } else if (owner instanceof Player player) {
+                Vec3 playerPos = player.position().add(0, player.getBbHeight() * 0.45F, 0);
+                this.setSpinAroundPosition(playerPos);
+            }
+        }
+
+        if (!level().isClientSide) {
+            Vec3 vec3 = new Vec3(0, 0, -0.01F * this.getSpinSpeed()).yRot((float) -Math.toRadians(this.getYRot()));
+            this.setDeltaMovement(this.getDeltaMovement().add(vec3));
+            if (!this.isNoGravity()) {
+                this.setDeltaMovement(this.getDeltaMovement().scale(0.9F).add(0.0D, -0.15D, 0.0D));
+            }
+            if (this.verticalCollision) {
+                this.setDeltaMovement(this.getDeltaMovement().add(0, 0.15F, 0).multiply(0.4D, 1.0D, 0.4D));
+            }
+            this.move(MoverType.SELF, getDeltaMovement());
+        }
+        hurtEntities();
     }
 
-    public Item getDropItem() {
-        return OPItems.TREMBLER_SHELL.get();
-    }
-
-    @Override
-    public boolean isPickable() {
-        return !this.isRemoved();
-    }
-
-    @Override
-    protected void defineSynchedData() {
-
-    }
-
-    @Override
-    protected void readAdditionalSaveData(CompoundTag p_20052_) {
-
-    }
-
-    @Override
-    protected void addAdditionalSaveData(CompoundTag p_20139_) {
-
-    }
-
-    private void hitShield(List<Entity> pEntities) {
-        for (Entity entity : pEntities) {
-            if (entity instanceof Player player) {
-                if (player.isBlocking()) {
-                    double x = player.getX() - this.getX();
-                    double z = player.getZ() - this.getZ();
-                    double shellX = this.getX() - player.getX();
-                    double shellZ = this.getZ() - player.getZ();
-                    double d2 = Math.max(x * x + z * z, 0.001D);
-
-                    this.setDeltaMovement(shellX / d2 * 0.4D, 0.005D, shellZ / d2 * 0.4D);
-
-                    player.getCooldowns().addCooldown(player.getUseItem().getItem(), 100);
-                    player.stopUsingItem();
-                    player.level().broadcastEntityEvent(player, (byte) 30);
+    private void hurtEntities() {
+        AABB bashBox = this.getBoundingBox();
+        DamageSource source = damageSources().mobProjectile(this, owner);
+        for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, bashBox)) {
+            if (!isAlliedTo(entity) && (owner != null && !entity.is(owner) && !entity.isAlliedTo(owner))) {
+                if (entity.hurt(source, 3.0F)) {
+                    entity.knockback(0.3F, this.getX() - entity.getX(), this.getZ() - entity.getZ());
                 }
             }
         }
     }
 
-    private void knockBack(List<Entity> pEntities) {
-        for (Entity entity : pEntities) {
-            if (entity instanceof LivingEntity) {
-                double x = entity.getX() - this.getX();
-                double z = entity.getZ() - this.getZ();
-                double shellX = this.getX() - entity.getX();
-                double shellZ = this.getZ() - entity.getZ();
-                double d2 = Math.max(x * x + z * z, 0.001D);
-
-                this.setDeltaMovement(shellX / d2 * 0.4D, 0.005D, shellZ / d2 * 0.4D);
-                entity.push(x / d2 * 0.05D, 0.005D, z / d2 * 0.05D);
-            }
-        }
-    }
-
-    public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
-        Vec3 vec3 = (new Vec3(x, y, z)).normalize().add(this.random.triangle(0.0D, 0.0172275D * (double) inaccuracy), this.random.triangle(0.0D, 0.0172275D * (double) inaccuracy), this.random.triangle(0.0D, 0.0172275D * (double) inaccuracy)).scale((double) velocity);
-        this.setDeltaMovement(vec3);
-        double d0 = vec3.horizontalDistance();
-        this.setYRot((float)(Mth.atan2(vec3.x, vec3.z) * (double)(180F / (float)Math.PI)));
-        this.setXRot((float)(Mth.atan2(vec3.y, d0) * (double)(180F / (float)Math.PI)));
-        this.yRotO = this.getYRot();
-        this.xRotO = this.getXRot();
-    }
-
-    protected static BlockHitResult getTremblerShellPOVHitResult(Level pLevel, Entity entity, ClipContext.Fluid pFluidMode) {
-        float xRot = entity.getXRot();
-        float yRot = entity.getYRot();
-        Vec3 vec3 = entity.getEyePosition();
-        float f2 = Mth.cos(-yRot * ((float)Math.PI / 180F) - (float)Math.PI);
-        float f3 = Mth.sin(-yRot * ((float)Math.PI / 180F) - (float)Math.PI);
-        float f4 = -Mth.cos(-xRot * ((float)Math.PI / 180F));
-        float f5 = Mth.sin(-xRot * ((float)Math.PI / 180F));
-        float f6 = f3 * f4;
-        float f7 = f2 * f4;
-        double range = 1.15;
-        Vec3 vec31 = vec3.add((double)f6 * range, (double)f5 * range, (double)f7 * range);
-        return pLevel.clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, pFluidMode, entity));
-    }
-
-    private void blockKnockBack() {
-        Vec3 vec3 = this.getDeltaMovement();
-        BlockHitResult hitResult = getTremblerShellPOVHitResult(this.level(), this, ClipContext.Fluid.NONE);
-
-        if (hitResult.getType() == HitResult.Type.BLOCK) {
-            if (hitResult.getDirection().getAxis() == Direction.Axis.X) {
-                this.shoot(this.getDeltaMovement().reverse().x, vec3.y, vec3.z, 0.80F, 0F);
-                this.setYRot(this.getYRot() + 180);
-                this.yRotO = this.getYRot();
-            }
-            if (hitResult.getDirection().getAxis() == Direction.Axis.Z) {
-                this.shoot(vec3.x, vec3.y, this.getDeltaMovement().reverse().z, 0.80F, 0F);
-            }
-        }
+    @Override
+    protected void defineSynchedData() {
+        this.entityData.define(SPIN_AROUND, Optional.empty());
+        this.entityData.define(SPIN_RADIUS, 1.0F);
+        this.entityData.define(SPIN_SPEED, 1.0F);
+        this.entityData.define(START_ANGLE, 0.0F);
     }
 
     @Override
-    public void tick() {
-        super.tick();
-
-        Level level = this.level();
-
-        if (!this.isNoGravity()) {
-            double yVelocity = -0.04D;
-            FluidType fluidType = this.getEyeInFluidType();
-
-            if (fluidType != ForgeMod.EMPTY_TYPE.get()) {
-                yVelocity *= this.getFluidMotionScale(fluidType);
-            }
-
-            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, yVelocity, 0.0D));
+    protected void readAdditionalSaveData(CompoundTag compoundTag) {
+        if (compoundTag.hasUUID("Owner")) {
+            this.ownerUUID = compoundTag.getUUID("Owner");
         }
-
-        BlockPos bottomPosition = this.getBlockPosBelowThatAffectsMyMovement();
-        float friction = this.onGround() ? level.getBlockState(bottomPosition).getFriction(level, bottomPosition, this) * 1.55F : 1.55F;
-        float defaultFriction = this.level().getBlockState(bottomPosition).getFriction(level, bottomPosition, this);
-
-        double y = this.getDeltaMovement().get(Direction.Axis.Y);
-        if (y == -0.04 && !this.isInFluidType() && defaultFriction == 0.6F) {
-            this.setDeltaMovement(this.getDeltaMovement().multiply(friction, 0.98D, friction));
+        if (compoundTag.contains("AroundX") && compoundTag.contains("AroundY") && compoundTag.contains("AroundZ")) {
+            this.setSpinAroundPosition(new Vec3(compoundTag.getDouble("AroundX"), compoundTag.getDouble("AroundZ"), compoundTag.getDouble("AroundZ")));
         }
-        if (this.isInFluidType()) {
-            this.setDeltaMovement(this.getDeltaMovement().multiply(0.85, 1, 0.85));
-        }
-
-
-        if (this.getDeltaMovement() != Vec3.ZERO) {
-            this.move(MoverType.SELF, this.getDeltaMovement());
-        }
-
-        if (this.isInLava()) {
-            this.lavaHurt();
-            this.fallDistance *= 0.5F;
-        }
+        this.setSpinSpeed(compoundTag.getFloat("SpinSpeed"));
+        this.setSpinRadius(compoundTag.getFloat("SpinRadius"));
+        this.setStartAngle(compoundTag.getFloat("StartAngle"));
+        this.spinAngle = compoundTag.getFloat("SpinAngle");
     }
 
     @Override
-    public ItemStack getPickResult() {
-        return new ItemStack(this.getDropItem());
+    protected void addAdditionalSaveData(CompoundTag compoundTag) {
+        if (this.ownerUUID != null) {
+            compoundTag.putUUID("Owner", this.ownerUUID);
+        }
+        Vec3 vec3 = getSpinAroundPosition();
+        if (vec3 != null) {
+            compoundTag.putDouble("AroundX", vec3.x);
+            compoundTag.putDouble("AroundY", vec3.y);
+            compoundTag.putDouble("AroundZ", vec3.z);
+        }
+        compoundTag.putFloat("SpinSpeed", this.getSpinSpeed());
+        compoundTag.putFloat("SpinRadius", this.getSpinRadius());
+        compoundTag.putFloat("StartAngle", this.getStartAngle());
+        compoundTag.putFloat("SpinAngle", this.spinAngle);
+    }
+
+    @Nullable
+    public Vec3 getSpinAroundPosition() {
+        return this.entityData.get(SPIN_AROUND).orElse(null);
+    }
+
+    public void setSpinAroundPosition(@Nullable Vec3 vec3) {
+        this.entityData.set(SPIN_AROUND, Optional.ofNullable(vec3));
+    }
+
+    public float getSpinSpeed() {
+        return this.entityData.get(SPIN_SPEED);
+    }
+
+    public void setSpinSpeed(float spinSpeed) {
+        this.entityData.set(SPIN_SPEED, spinSpeed);
+    }
+
+    public float getSpinRadius() {
+        return this.entityData.get(SPIN_RADIUS);
+    }
+
+    public void setSpinRadius(float spinRadius) {
+        this.entityData.set(SPIN_RADIUS, spinRadius);
+    }
+
+    public float getStartAngle() {
+        return this.entityData.get(START_ANGLE);
+    }
+
+    public void setStartAngle(float f) {
+        this.entityData.set(START_ANGLE, f);
+    }
+
+    @Override
+    public void lerpTo(double x, double y, double z, float yr, float xr, int steps, boolean b) {
+        this.lx = x;
+        this.ly = y;
+        this.lz = z;
+        this.lyr = yr;
+        this.lxr = xr;
+        this.lSteps = steps;
+        this.setDeltaMovement(this.lxd, this.lyd, this.lzd);
+    }
+
+    @Override
+    public void lerpMotion(double lerpX, double lerpY, double lerpZ) {
+        this.lxd = lerpX;
+        this.lyd = lerpY;
+        this.lzd = lerpZ;
+        this.setDeltaMovement(this.lxd, this.lyd, this.lzd);
     }
 }
