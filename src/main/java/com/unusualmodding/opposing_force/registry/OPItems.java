@@ -4,13 +4,13 @@ import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.items.*;
 import com.unusualmodding.opposing_force.registry.enums.OPArmorMaterials;
 import com.unusualmodding.opposing_force.registry.enums.OPItemTiers;
+import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -45,11 +45,12 @@ public class OPItems {
     public static final RegistryObject<Item> VILE_BOULDER = registerItem("vile_boulder", () -> new VileBoulderItem(OPItemTiers.VILE,  7, -3.1F, new Item.Properties()));
     public static final RegistryObject<Item> CAPTURED_WHIZZ = registerItem("captured_whizz", () -> new MobItem(OPEntities.WHIZZ::get, SoundEvents.AMETHYST_BLOCK_RESONATE, new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> TREMBLER_SHELL = registerItem("trembler_shell", () -> new Item(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> UMBER_FANG = registerItem("umber_fang", () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> DEEPWOVEN_HELMET = registerItemNoLang("deepwoven_helmet", ()-> new DeepwovenArmorItem(OPArmorMaterials.DEEPWOVEN, ArmorItem.Type.HELMET, new Item.Properties()));
-    public static final RegistryObject<Item> DEEPWOVEN_CHESTPLATE = registerItemNoLang("deepwoven_chestplate", ()-> new DeepwovenArmorItem(OPArmorMaterials.DEEPWOVEN, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final RegistryObject<Item> DEEPWOVEN_LEGGINGS = registerItemNoLang("deepwoven_leggings", ()-> new DeepwovenArmorItem(OPArmorMaterials.DEEPWOVEN, ArmorItem.Type.LEGGINGS, new Item.Properties()));
-    public static final RegistryObject<Item> DEEPWOVEN_BOOTS = registerItemNoLang("deepwoven_boots", ()-> new DeepwovenArmorItem(OPArmorMaterials.DEEPWOVEN, ArmorItem.Type.BOOTS, new Item.Properties()));
+    public static final RegistryObject<Item> DEEPWOVEN_HAT = registerItem("deepwoven_hat", ()-> new DeepwovenArmorItem(OPArmorMaterials.DEEPWOVEN, ArmorItem.Type.HELMET, new Item.Properties()));
+    public static final RegistryObject<Item> DEEPWOVEN_TUNIC = registerItem("deepwoven_tunic", ()-> new DeepwovenArmorItem(OPArmorMaterials.DEEPWOVEN, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+    public static final RegistryObject<Item> DEEPWOVEN_PANTS = registerItem("deepwoven_pants", ()-> new DeepwovenArmorItem(OPArmorMaterials.DEEPWOVEN, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+    public static final RegistryObject<Item> DEEPWOVEN_BOOTS = registerItem("deepwoven_boots", ()-> new DeepwovenArmorItem(OPArmorMaterials.DEEPWOVEN, ArmorItem.Type.BOOTS, new Item.Properties()));
 
     private static <I extends Item> RegistryObject<I> registerItem(String name, Supplier<? extends I> supplier) {
         RegistryObject<I> item = ITEMS.register(name, supplier);

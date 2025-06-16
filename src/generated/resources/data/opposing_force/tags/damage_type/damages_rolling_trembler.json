@@ -3,6 +3,8 @@
     "#minecraft:bypasses_armor",
     "#minecraft:bypasses_resistance",
     "#minecraft:bypasses_invulnerability",
-    "#minecraft:is_drowning"
+    "#minecraft:is_drowning",
+    "#minecraft:is_fire",
+    "#minecraft:is_lightning"
   ]
 }

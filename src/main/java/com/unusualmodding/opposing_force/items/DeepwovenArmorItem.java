@@ -48,7 +48,7 @@ public class DeepwovenArmorItem extends ArmorItem {
 
     @SubscribeEvent
     public static void hoodEquippedEvent(LivingEquipmentChangeEvent event) {
-        if (event.getTo().is(OPItems.DEEPWOVEN_HELMET.get()) || event.getFrom().is(OPItems.DEEPWOVEN_HELMET.get())) {
+        if (event.getTo().is(OPItems.DEEPWOVEN_HAT.get()) || event.getFrom().is(OPItems.DEEPWOVEN_HAT.get())) {
             if (event.getEntity() instanceof Player player) {
                 player.refreshDisplayName();
             }

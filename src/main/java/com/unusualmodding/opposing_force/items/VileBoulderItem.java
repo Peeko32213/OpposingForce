@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.items;
 
+import com.unusualmodding.opposing_force.entity.Slug;
 import com.unusualmodding.opposing_force.registry.OPEffects;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
@@ -22,7 +23,7 @@ public class VileBoulderItem extends SwordItem {
         boolean result = super.hurtEnemy(itemStack, target, attacker);
 
         if (result) {
-            if (target.getRandom().nextBoolean() && !target.hasEffect(OPEffects.SLUG_INFESTATION.get())) {
+            if (target.getRandom().nextBoolean() && !target.hasEffect(OPEffects.SLUG_INFESTATION.get()) && !(target instanceof Slug)) {
                 target.addEffect(new MobEffectInstance(OPEffects.SLUG_INFESTATION.get(), 240, 0, false, true));
                 target.playSound(OPSoundEvents.SLUG_ATTACK.get(), 1.5F, 1);
 

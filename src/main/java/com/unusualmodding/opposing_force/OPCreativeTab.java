@@ -1,8 +1,6 @@
 package com.unusualmodding.opposing_force;
 
-import com.unusualmodding.opposing_force.registry.OPBlocks;
-import com.unusualmodding.opposing_force.registry.OPEnchantments;
-import com.unusualmodding.opposing_force.registry.OPItems;
+import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
@@ -17,7 +15,7 @@ public class OPCreativeTab {
 
     public static final RegistryObject<CreativeModeTab> TAB = CREATIVE_TABS.register(OpposingForce.MOD_ID, () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup." + OpposingForce.MOD_ID))
-            .icon(() -> new ItemStack(OPItems.ELECTRIC_CHARGE.get()))
+            .icon(() -> new ItemStack(OPItems.CAPTURED_WHIZZ.get()))
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .displayItems((enabledFeatures, output) -> {
                 for(RegistryObject<Item> item : OPItems.ITEMS.getEntries()){
@@ -35,9 +33,9 @@ public class OPCreativeTab {
                     output.accept(OPItems.VILE_BOULDER.get());
 
                     // Armors
-                    output.accept(OPItems.DEEPWOVEN_HELMET.get());
-                    output.accept(OPItems.DEEPWOVEN_CHESTPLATE.get());
-                    output.accept(OPItems.DEEPWOVEN_LEGGINGS.get());
+                    output.accept(OPItems.DEEPWOVEN_HAT.get());
+                    output.accept(OPItems.DEEPWOVEN_TUNIC.get());
+                    output.accept(OPItems.DEEPWOVEN_PANTS.get());
                     output.accept(OPItems.DEEPWOVEN_BOOTS.get());
 
                     // Items
@@ -46,6 +44,7 @@ public class OPCreativeTab {
                     output.accept(OPItems.CAPTURED_WHIZZ.get());
                     output.accept(OPItems.TREMBLER_SHELL.get());
                     output.accept(OPItems.DEEP_SILK.get());
+                    output.accept(OPItems.UMBER_FANG.get());
 
                     // Mushrooms
                     output.accept(OPBlocks.BLACKCAP.get());
@@ -74,6 +73,24 @@ public class OPCreativeTab {
 
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.TESLA_BOW);
                     OPEnchantments.addAllEnchantsToCreativeTab(output, EnchantmentCategory.CROSSBOW);
+
+                    output.accept(OPBrewingRecipes.registerPotion(OPPotions.GLOOM_TOXIN_POTION.get()));
+                    output.accept(OPBrewingRecipes.registerPotion(OPPotions.LONG_GLOOM_TOXIN_POTION.get()));
+                    output.accept(OPBrewingRecipes.registerPotion(OPPotions.STRONG_GLOOM_TOXIN_POTION.get()));
+                    output.accept(OPBrewingRecipes.registerSplashPotion(OPPotions.GLOOM_TOXIN_POTION.get()));
+                    output.accept(OPBrewingRecipes.registerSplashPotion(OPPotions.LONG_GLOOM_TOXIN_POTION.get()));
+                    output.accept(OPBrewingRecipes.registerSplashPotion(OPPotions.STRONG_GLOOM_TOXIN_POTION.get()));
+                    output.accept(OPBrewingRecipes.registerLingeringPotion(OPPotions.GLOOM_TOXIN_POTION.get()));
+                    output.accept(OPBrewingRecipes.registerLingeringPotion(OPPotions.LONG_GLOOM_TOXIN_POTION.get()));
+                    output.accept(OPBrewingRecipes.registerLingeringPotion(OPPotions.STRONG_GLOOM_TOXIN_POTION.get()));
+                    output.accept(OPBrewingRecipes.registerTippedArrow(OPPotions.GLOOM_TOXIN_POTION.get()));
+                    output.accept(OPBrewingRecipes.registerTippedArrow(OPPotions.LONG_GLOOM_TOXIN_POTION.get()));
+                    output.accept(OPBrewingRecipes.registerTippedArrow(OPPotions.STRONG_GLOOM_TOXIN_POTION.get()));
+
+                    output.accept(OPBrewingRecipes.registerPotion(OPPotions.SLUG_INFESTATION_POTION.get()));
+                    output.accept(OPBrewingRecipes.registerSplashPotion(OPPotions.SLUG_INFESTATION_POTION.get()));
+                    output.accept(OPBrewingRecipes.registerLingeringPotion(OPPotions.SLUG_INFESTATION_POTION.get()));
+                    output.accept(OPBrewingRecipes.registerTippedArrow(OPPotions.SLUG_INFESTATION_POTION.get()));
 
                     // Unsorted stuff
                     if (!(item.get() instanceof ForgeSpawnEggItem)) {

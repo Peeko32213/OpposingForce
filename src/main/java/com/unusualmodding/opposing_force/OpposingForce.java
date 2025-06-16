@@ -41,6 +41,7 @@ public class OpposingForce {
         OPSoundEvents.SOUND_EVENTS.register(modEventBus);
         OPParticles.PARTICLE_TYPES.register(modEventBus);
         OPEnchantments.ENCHANTMENTS.register(modEventBus);
+        OPPotions.POTIONS.register(modEventBus);
         OPAttributes.ATTRIBUTES.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
@@ -48,12 +49,17 @@ public class OpposingForce {
     }
 
     public void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(OPCompat::registerCompat);
+        event.enqueueWork(() -> {
+            OPCompat.registerCompat();
+            OPBrewingRecipes.registerPotionRecipes();
+        });
         OPNetwork.registerNetwork();
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
-        event.enqueueWork(PROXY::clientInit);
+        event.enqueueWork(() -> {
+            PROXY.clientInit();
+        });
     }
 
     private void dataSetup(GatherDataEvent data) {

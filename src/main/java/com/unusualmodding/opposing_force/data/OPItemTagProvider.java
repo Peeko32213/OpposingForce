@@ -23,26 +23,25 @@ public class OPItemTagProvider extends ItemTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
 
         this.tag(ItemTags.FREEZE_IMMUNE_WEARABLES).add(
-                DEEPWOVEN_HELMET.get(),
-                DEEPWOVEN_CHESTPLATE.get(),
-                DEEPWOVEN_LEGGINGS.get(),
+                DEEPWOVEN_HAT.get(),
+                DEEPWOVEN_TUNIC.get(),
+                DEEPWOVEN_PANTS.get(),
                 DEEPWOVEN_BOOTS.get()
         );
 
         this.tag(Tags.Items.ARMORS).add(
-                DEEPWOVEN_HELMET.get(),
-                DEEPWOVEN_CHESTPLATE.get(),
-                DEEPWOVEN_LEGGINGS.get(),
+                DEEPWOVEN_HAT.get(),
+                DEEPWOVEN_TUNIC.get(),
+                DEEPWOVEN_PANTS.get(),
                 DEEPWOVEN_BOOTS.get()
         );
 
-        this.tag(Tags.Items.ARMORS_HELMETS).add(DEEPWOVEN_HELMET.get());
+        this.tag(Tags.Items.ARMORS_HELMETS).add(DEEPWOVEN_HAT.get());
 
-        this.tag(Tags.Items.ARMORS_CHESTPLATES).add(DEEPWOVEN_CHESTPLATE.get());
+        this.tag(Tags.Items.ARMORS_CHESTPLATES).add(DEEPWOVEN_TUNIC.get());
 
-        this.tag(Tags.Items.ARMORS_LEGGINGS).add(DEEPWOVEN_LEGGINGS.get());
+        this.tag(Tags.Items.ARMORS_LEGGINGS).add(DEEPWOVEN_PANTS.get());
 
         this.tag(Tags.Items.ARMORS_BOOTS).add(DEEPWOVEN_BOOTS.get());
-
     }
 }

@@ -7,6 +7,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.LanguageProvider;
@@ -29,8 +30,8 @@ public class OPLanguageProvider extends LanguageProvider {
         addTabName(OPCreativeTab.TAB.get(), "Opposing Force");
 
         // blocks
-        OPBlocks.AUTO_TRANSLATE.forEach(this::forBlock);
-        OPItems.AUTO_TRANSLATE.forEach(this::forItem);
+        OPBlocks.AUTO_TRANSLATE.forEach(this::forBlocks);
+        OPItems.AUTO_TRANSLATE.forEach(this::forItems);
 
         forEntity(OPEntities.DICER);
         forEntity(OPEntities.EMERALDFISH);
@@ -50,10 +51,11 @@ public class OPLanguageProvider extends LanguageProvider {
         forEntity(OPEntities.SLUG_EGGS);
         forEntity(OPEntities.TOMAHAWK);
 
-        addItem(OPItems.DEEPWOVEN_HELMET, "Deepwoven Hat");
-        addItem(OPItems.DEEPWOVEN_CHESTPLATE, "Deepwoven Tunic");
-        addItem(OPItems.DEEPWOVEN_LEGGINGS, "Deepwoven Pants");
-        addItem(OPItems.DEEPWOVEN_BOOTS, "Deepwoven Boots");
+        potion(OPPotions.GLOOM_TOXIN_POTION, "Gloom Toxin", "gloom_toxin");
+        potion(OPPotions.LONG_GLOOM_TOXIN_POTION, "Gloom Toxin", "long_gloom_toxin");
+        potion(OPPotions.STRONG_GLOOM_TOXIN_POTION, "Gloom Toxin", "strong_gloom_toxin");
+
+        potion(OPPotions.SLUG_INFESTATION_POTION, "Slug Infestation", "slug_infestation");
 
         sound(OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN, "Deepwoven armor rustles");
 
@@ -142,11 +144,11 @@ public class OPLanguageProvider extends LanguageProvider {
         return  OpposingForce.MOD_ID + " Languages: en_us";
     }
 
-    private void forBlock(Supplier<? extends Block> block) {
+    private void forBlocks(Supplier<? extends Block> block) {
         addBlock(block, OPTextUtils.createTranslation(Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block.get())).getPath()));
     }
 
-    private void forItem(Supplier<? extends Item> item) {
+    private void forItems(Supplier<? extends Item> item) {
         addItem(item, OPTextUtils.createTranslation(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.get())).getPath()));
     }
 
@@ -170,6 +172,17 @@ public class OPLanguageProvider extends LanguageProvider {
 
     private String formatEnchantment(String path) {
         return WordUtils.capitalizeFully(path.replace("_", " ")).replace("Of ", "of ");
+    }
+
+    public void potion(Supplier<? extends Potion> key, String name, String regName) {
+        potions(key.get(), name, regName);
+    }
+
+    public void potions(Potion key, String name, String regName) {
+        add("item.minecraft.potion.effect." + regName, "Potion of " + name);
+        add("item.minecraft.splash_potion.effect." + regName, "Splash Potion of " + name);
+        add("item.minecraft.lingering_potion.effect." + regName, "Lingering Potion of " + name);
+        add("item.minecraft.tipped_arrow.effect." + regName, "Arrow of " + name);
     }
 
     public void addTabName(CreativeModeTab key, String name){

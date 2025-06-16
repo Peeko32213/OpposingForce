@@ -9,7 +9,7 @@ import net.minecraft.world.level.LightLayer;
 public class GloomToxin extends MobEffect {
 
     public GloomToxin() {
-        super(MobEffectCategory.HARMFUL, 0x293a8e);
+        super(MobEffectCategory.HARMFUL, 0x6349af);
     }
 
     public void applyEffectTick(LivingEntity entity, int pAmplifier) {

@@ -71,6 +71,11 @@ public class OPBlockstateProvider extends BlockStateProvider {
         this.simpleBlock(pot.get(), model);
     }
 
+    public void skull(RegistryObject<Block> block) {
+        this.simpleBlock(block.get(), models().getExistingFile(new ResourceLocation("minecraft", "block/skull")));
+        this.itemModels().withExistingParent(getItemName(block.get()), "item/template_skull");
+    }
+
     // utils
     private static String getItemName(ItemLike item) {
         return ForgeRegistries.ITEMS.getKey(item.asItem()).getPath();

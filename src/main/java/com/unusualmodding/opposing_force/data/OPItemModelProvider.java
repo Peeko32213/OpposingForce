@@ -23,11 +23,17 @@ public class OPItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+
         item(DEEP_SILK);
         item(ELECTRIC_CHARGE);
         item(SLUG_EGGS);
         item(CAPTURED_WHIZZ);
         item(TREMBLER_SHELL);
+        item(DEEPWOVEN_HAT);
+        item(DEEPWOVEN_TUNIC);
+        item(DEEPWOVEN_PANTS);
+        item(DEEPWOVEN_BOOTS);
+        item(UMBER_FANG);
 
         // spawn eggs
         for (Item item : BuiltInRegistries.ITEM) {

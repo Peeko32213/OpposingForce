@@ -1,5 +1,9 @@
-// 1.20.1	2025-06-13T22:33:59.3483573	Item Models: opposing_force
+// 1.20.1	2025-06-15T22:00:57.7316287	Item Models: opposing_force
 0242899276479e640e0948ff9d1431d301c73e3a assets/opposing_force/models/item/captured_whizz.json
+99bee2bc20935c1aecb77ae575b7005d27ce12b6 assets/opposing_force/models/item/deepwoven_boots.json
+e54baee97cf734ca4015adce401a3abbf106e572 assets/opposing_force/models/item/deepwoven_hat.json
+ecd83fcd2c47c326b88af905eee3e52b7bae38aa assets/opposing_force/models/item/deepwoven_pants.json
+d256aa1ba7cda7ec587416f75d5e16d43f31a091 assets/opposing_force/models/item/deepwoven_tunic.json
 242c968fa341fc83d5cb31a05b42e4d6e004e755 assets/opposing_force/models/item/deep_silk.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/dicer_spawn_egg.json
 9c7be6622d0582d8e8d5505b874ffd4a754cbd34 assets/opposing_force/models/item/electric_charge.json
@@ -13,6 +17,7 @@ deec1139d8d36146c792e92079fb5535113b1445 assets/opposing_force/models/item/slug_
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/terror_spawn_egg.json
 0769a06d3845b62c24c0187116be1a5038deeeaf assets/opposing_force/models/item/trembler_shell.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/trembler_spawn_egg.json
+7cc18f3a72e3c25eaa7a34deafa686dadc0f497a assets/opposing_force/models/item/umber_fang.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/umber_spider_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/volt_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/whizz_spawn_egg.json
