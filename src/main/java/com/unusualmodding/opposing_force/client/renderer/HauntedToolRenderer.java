@@ -35,13 +35,14 @@ public class HauntedToolRenderer extends EntityRenderer<HauntedTool> {
         poseStack.translate(0, 0.05F + Math.sin(ageInTicks * 0.1F) * 0.15F, 0);
 
         if (entity.isAttacking()) {
+            poseStack.mulPose(Axis.XP.rotationDegrees(ageInTicks * -4.0F * 8));
         }
 
         poseStack.mulPose(Axis.YN.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 180.0F));
         poseStack.mulPose(Axis.XN.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
 
-        poseStack.translate(0, strikeProgress * 0.1F, strikeProgress * 0.2F);
-        poseStack.mulPose(Axis.XN.rotationDegrees(strikeProgress * 90F));
+//        poseStack.translate(0, strikeProgress * 0.1F, strikeProgress * 0.2F);
+//        poseStack.mulPose(Axis.XN.rotationDegrees(strikeProgress * 90F));
 
         Minecraft.getInstance().getItemRenderer().render(itemStack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, false, poseStack, source, i, OverlayTexture.NO_OVERLAY, bakedModel);
 
