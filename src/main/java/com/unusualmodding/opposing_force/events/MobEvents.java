@@ -35,6 +35,7 @@ public class MobEvents {
         event.put(OPEntities.FIRE_SLIME.get(), FireSlime.createAttributes().build());
         event.put(OPEntities.FROWZY.get(), Frowzy.createAttributes().build());
         event.put(OPEntities.GUZZLER.get(), Guzzler.createAttributes().build());
+        event.put(OPEntities.HAUNTED_TOOL.get(), HauntedTool.createAttributes().build());
         event.put(OPEntities.PALE_SPIDER.get(), PaleSpider.createAttributes().build());
         event.put(OPEntities.RAMBLE.get(), Ramble.createAttributes().build());
         event.put(OPEntities.SLUG.get(), Slug.createAttributes().build());

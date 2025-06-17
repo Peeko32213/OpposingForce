@@ -59,6 +59,15 @@ public class OPEntities {
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "guzzler").toString())
     );
 
+    public static final RegistryObject<EntityType<HauntedTool>> HAUNTED_TOOL = ENTITY_TYPES.register(
+            "haunted_tool", () ->
+            EntityType.Builder.of(HauntedTool::new, MobCategory.MONSTER)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(10)
+                    .fireImmune()
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "haunted_tool").toString())
+    );
+
     public static final RegistryObject<EntityType<PaleSpider>> PALE_SPIDER = ENTITY_TYPES.register(
             "pale_spider", () ->
             EntityType.Builder.of(PaleSpider::new, MobCategory.MONSTER)

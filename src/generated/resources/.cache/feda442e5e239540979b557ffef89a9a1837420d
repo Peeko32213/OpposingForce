@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-15T22:00:57.7316287	Item Models: opposing_force
+// 1.20.1	2025-06-16T17:47:14.5488401	Item Models: opposing_force
 0242899276479e640e0948ff9d1431d301c73e3a assets/opposing_force/models/item/captured_whizz.json
 99bee2bc20935c1aecb77ae575b7005d27ce12b6 assets/opposing_force/models/item/deepwoven_boots.json
 e54baee97cf734ca4015adce401a3abbf106e572 assets/opposing_force/models/item/deepwoven_hat.json
@@ -10,6 +10,7 @@ d256aa1ba7cda7ec587416f75d5e16d43f31a091 assets/opposing_force/models/item/deepw
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/fire_slime_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/frowzy_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/guzzler_spawn_egg.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/haunted_tool_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/pale_spider_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/ramble_spawn_egg.json
 deec1139d8d36146c792e92079fb5535113b1445 assets/opposing_force/models/item/slug_eggs.json
