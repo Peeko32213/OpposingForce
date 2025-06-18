@@ -482,7 +482,8 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
     protected void playStepSound(BlockPos pos, BlockState state) {
     }
 
-    public static boolean canSpawn(EntityType<Whizz> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
+    @SuppressWarnings("unused")
+    public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
         boolean isDeepDark = iServerWorld.getBiome(pos).is(Biomes.DEEP_DARK);
         boolean spawnBlock = iServerWorld.getBlockState(pos.below()).is(Blocks.AMETHYST_BLOCK);
         return reason == MobSpawnType.SPAWNER || spawnBlock || !iServerWorld.canSeeSky(pos) && pos.getY() <= 0 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
