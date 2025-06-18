@@ -418,7 +418,7 @@ public class Slug extends Monster implements OwnableEntity {
     }
 
     @SuppressWarnings("unused")
-    public static boolean canSpawn(EntityType<Slug> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
     }
 

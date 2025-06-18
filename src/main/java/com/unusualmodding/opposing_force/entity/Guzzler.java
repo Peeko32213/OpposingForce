@@ -192,11 +192,11 @@ public class Guzzler extends Monster {
     }
 
     @SuppressWarnings("unused")
-    public static boolean canSpawn(EntityType<Guzzler> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return checkGuzzlerSpawnRules(entityType, level, spawnType, pos, random);
     }
 
-    public static boolean checkGuzzlerSpawnRules(EntityType<Guzzler> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean checkGuzzlerSpawnRules(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return pos.getY() <= -16 && (random.nextInt(10) == 0 || pos.getY() <= 0) && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random);
     }
 

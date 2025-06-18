@@ -245,11 +245,11 @@ public class PaleSpider extends Monster {
     }
 
     @SuppressWarnings("unused")
-    public static boolean canSpawn(EntityType<PaleSpider> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return checkPaleSpiderSpawnRules(entityType, level, spawnType, pos, random);
     }
 
-    public static boolean checkPaleSpiderSpawnRules(EntityType<PaleSpider> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean checkPaleSpiderSpawnRules(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return pos.getY() <= 48 && (random.nextInt(10) == 0 || pos.getY() <= 0) && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random);
     }
 

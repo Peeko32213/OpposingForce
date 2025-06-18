@@ -219,11 +219,11 @@ public class Trembler extends Monster {
     }
 
     @SuppressWarnings("unused")
-    public static boolean canSpawn(EntityType<Trembler> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return checkTremblerSpawnRules(entityType, level, spawnType, pos, random);
     }
 
-    public static boolean checkTremblerSpawnRules(EntityType<Trembler> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean checkTremblerSpawnRules(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return pos.getY() <= 0 && (random.nextInt(10) == 0 || pos.getY() <= 0) && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random);
     }
 

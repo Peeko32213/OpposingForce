@@ -340,11 +340,11 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
         this.playSound(SoundEvents.ZOMBIE_STEP, 0.15F, 1.2F);
     }
 
-    public static boolean canSpawn(EntityType<Frowzy> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return checkFrowzySpawnRules(entityType, level, spawnType, pos, random);
     }
 
-    public static boolean checkFrowzySpawnRules(EntityType<Frowzy> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean checkFrowzySpawnRules(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return pos.getY() <= 32 && (random.nextInt(10) == 0 || pos.getY() <= 0) && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random);
     }
 

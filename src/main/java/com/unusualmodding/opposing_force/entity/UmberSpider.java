@@ -314,11 +314,11 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
     }
 
     @SuppressWarnings("unused")
-    public static boolean canSpawn(EntityType<UmberSpider> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return checkUmberSpiderSpawnRules(entityType, level, spawnType, pos, random);
     }
 
-    public static boolean checkUmberSpiderSpawnRules(EntityType<UmberSpider> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean checkUmberSpiderSpawnRules(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return pos.getY() <= -16 && (random.nextInt(10) == 0 || pos.getY() <= 0) && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random);
     }
 

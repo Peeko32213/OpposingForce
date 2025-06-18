@@ -222,7 +222,7 @@ public class Ramble extends Monster {
     }
 
     @SuppressWarnings("unused")
-    public static boolean canSpawn(EntityType<Ramble> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
     }
 
