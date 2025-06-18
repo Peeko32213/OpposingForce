@@ -5,6 +5,6 @@
     "type": "opposing_force:slug",
     "maxCount": 4,
     "minCount": 4,
-    "weight": 50
+    "weight": 90
   }
 }

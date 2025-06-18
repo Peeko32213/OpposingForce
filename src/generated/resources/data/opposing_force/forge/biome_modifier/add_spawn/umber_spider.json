@@ -3,8 +3,8 @@
   "biomes": "#opposing_force:has_monster/umber_spider",
   "spawners": {
     "type": "opposing_force:umber_spider",
-    "maxCount": 2,
-    "minCount": 2,
-    "weight": 15
+    "maxCount": 4,
+    "minCount": 4,
+    "weight": 80
   }
 }

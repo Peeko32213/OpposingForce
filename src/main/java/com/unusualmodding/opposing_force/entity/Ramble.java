@@ -54,8 +54,8 @@ public class Ramble extends Monster {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 70.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.13F)
-                .add(Attributes.ATTACK_DAMAGE, 8.0D)
-                .add(Attributes.ATTACK_KNOCKBACK, 0.3D)
+                .add(Attributes.ATTACK_DAMAGE, 7.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.2D)
                 .add(Attributes.KNOCKBACK_RESISTANCE,1.0D);
     }
 
