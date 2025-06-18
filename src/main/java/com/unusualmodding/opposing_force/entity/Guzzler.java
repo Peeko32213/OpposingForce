@@ -71,6 +71,11 @@ public class Guzzler extends Monster {
     }
 
     @Override
+    public boolean isPushable() {
+        return false;
+    }
+
+    @Override
     public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
 
         Vec3[] avector3d = new Vec3[] {

@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.unusualmodding.opposing_force.registry.OPEffects;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -12,6 +13,7 @@ import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -55,8 +57,9 @@ public class Slug extends Monster implements OwnableEntity {
 
     public final AnimationState idleAnimationState = new AnimationState();
 
-    public Slug(EntityType<? extends Monster> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public Slug(EntityType<? extends Monster> entityType, Level level) {
+        super(entityType, level);
+        this.fixupDimensions();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -121,11 +124,6 @@ public class Slug extends Monster implements OwnableEntity {
     }
 
     @Override
-    public int getExperienceReward() {
-        return this.getSlugSize() * 2 + 2;
-    }
-
-    @Override
     protected void dropFromLootTable(DamageSource source, boolean drops) {
         int extraEggs = this.getSlugSize() / 3;
         if (this.getSlugSize() > 3) {
@@ -133,6 +131,16 @@ public class Slug extends Monster implements OwnableEntity {
                 super.dropFromLootTable(source, drops);
             }
         }
+    }
+
+    @Override
+    public boolean canBeCollidedWith() {
+        return this.getSlugSize() > 8;
+    }
+
+    @Override
+    public boolean isPushable() {
+        return this.getSlugSize() <= 8;
     }
 
     @Override
@@ -148,7 +156,7 @@ public class Slug extends Monster implements OwnableEntity {
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        compoundTag.putInt("Size", this.getSlugSize());
+        compoundTag.putInt("Size", this.getSlugSize() - 1);
         compoundTag.putInt("MaxGrowableSize", this.getMaxGrowableSlugSize());
         compoundTag.putBoolean("FromInfestation", this.isFromInfestation());
         compoundTag.putInt("LifeTicks", this.limitedLifeTicks);
@@ -160,8 +168,8 @@ public class Slug extends Monster implements OwnableEntity {
 
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
+        this.setSlugSize(compoundTag.getInt("Size") + 1);
         super.readAdditionalSaveData(compoundTag);
-        this.setSlugSize(compoundTag.getInt("Size"));
         this.setMaxGrowableSlugSize(compoundTag.getInt("MaxGrowableSize"));
         this.setFromInfestation(compoundTag.getBoolean("FromInfestation"));
         this.limitedLifeTicks = compoundTag.getInt("LifeTicks");
@@ -184,8 +192,26 @@ public class Slug extends Monster implements OwnableEntity {
         }
     }
 
+    @VisibleForTesting
     public void setSlugSize(int size) {
-        this.entityData.set(SIZE, Mth.clamp(size, 0, 128));
+        int maxSize = Mth.clamp(size, 1, 127);
+        this.entityData.set(SIZE, maxSize);
+        this.reapplyPosition();
+        this.refreshDimensions();
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(8 + this.getSlugSize() * 4);
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(2 + this.getSlugSize() * 0.5F);
+        this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(0.02 + this.getSlugSize() * 0.02);
+        this.setHealth(this.getMaxHealth());
+        this.xpReward = maxSize;
+    }
+
+    @Override
+    public void refreshDimensions() {
+        double x = this.getX();
+        double y = this.getY();
+        double z = this.getZ();
+        super.refreshDimensions();
+        this.setPos(x, y, z);
     }
 
     public int getSlugSize() {
@@ -223,20 +249,11 @@ public class Slug extends Monster implements OwnableEntity {
         return dimensions.height * 0.44F;
     }
 
-    private void updateSlugAttributes() {
-        this.refreshDimensions();
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(2 + this.getSlugSize() * 0.5F);
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(8 + this.getSlugSize() * 4);
-        this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(0.02 + this.getSlugSize() * 0.02);
-        this.setHealth((float) this.getAttribute(Attributes.MAX_HEALTH).getBaseValue());
-    }
-
-    @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> pKey) {
-        if (SIZE.equals(pKey)) {
-            this.updateSlugAttributes();
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        if (SIZE.equals(key)) {
+            this.refreshDimensions();
         }
-        super.onSyncedDataUpdated(pKey);
+        super.onSyncedDataUpdated(key);
     }
 
     @Override
@@ -419,24 +436,25 @@ public class Slug extends Monster implements OwnableEntity {
 
     @SuppressWarnings("unused")
     public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
+        return level.getBlockState(pos.below()).canOcclude() && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(level, pos, random);
     }
 
     @Override
     @Nullable
-    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor worldIn, @NotNull DifficultyInstance difficultyIn, @NotNull MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-        spawnDataIn = super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
-        RandomSource randomsource = worldIn.getRandom();
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag compoundTag) {
+        RandomSource random = level.getRandom();
 
-        if (randomsource.nextInt(100) == 0) {
-            this.setSlugSize(8 + randomsource.nextInt(32));
-            this.setMaxGrowableSlugSize(8 + randomsource.nextInt(32));
+        if (random.nextFloat() < 0.5F * difficulty.getSpecialMultiplier()) {
+            if (random.nextInt(100) == 0) {
+                this.setSlugSize(8 + random.nextInt(32));
+                this.setMaxGrowableSlugSize(8 + random.nextInt(32));
+            }
         } else {
-            this.setSlugSize(randomsource.nextInt(8));
-            this.setMaxGrowableSlugSize(1 + randomsource.nextInt(7));
+            this.setSlugSize(random.nextInt(8));
+            this.setMaxGrowableSlugSize(1 + random.nextInt(7));
         }
 
-        return spawnDataIn;
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
     }
 
     // goals
@@ -451,7 +469,7 @@ public class Slug extends Monster implements OwnableEntity {
 
         @Override
         protected double getAttackReachSqr(LivingEntity pAttackTarget) {
-            return this.slug.getBbWidth() * 1.2F * this.slug.getBbWidth() * 1F + pAttackTarget.getBbWidth();
+            return this.slug.getBbWidth() * 1.2F * this.slug.getBbWidth() * 1.2F + pAttackTarget.getBbWidth();
         }
     }
 

@@ -72,7 +72,13 @@ public class OPMushroomBlock extends BushBlock implements BonemealableBlock {
         level.removeBlock(pos, false);
         Holder<ConfiguredFeature<?, ?>> feature = null;
 
+        if (state.is(OPBlocks.COPPER_ENOKI.get())) feature = (level.registryAccess().registry(Registries.CONFIGURED_FEATURE).flatMap(registry -> registry.getHolder(ResourceKey.create(Registries.CONFIGURED_FEATURE, modPrefix("giant_copper_enoki")))).get());
         if (state.is(OPBlocks.CREAM_CAP.get())) feature = (level.registryAccess().registry(Registries.CONFIGURED_FEATURE).flatMap(registry -> registry.getHolder(ResourceKey.create(Registries.CONFIGURED_FEATURE, modPrefix("giant_cream_cap")))).get());
+        if (state.is(OPBlocks.SLIPPERY_TOP.get())) feature = (level.registryAccess().registry(Registries.CONFIGURED_FEATURE).flatMap(registry -> registry.getHolder(ResourceKey.create(Registries.CONFIGURED_FEATURE, modPrefix("giant_slippery_top")))).get());
+        if (state.is(OPBlocks.POWDER_GNOME.get())) feature = (level.registryAccess().registry(Registries.CONFIGURED_FEATURE).flatMap(registry -> registry.getHolder(ResourceKey.create(Registries.CONFIGURED_FEATURE, modPrefix("giant_powder_gnome")))).get());
+        if (state.is(OPBlocks.CAVE_PATTY.get())) feature = (level.registryAccess().registry(Registries.CONFIGURED_FEATURE).flatMap(registry -> registry.getHolder(ResourceKey.create(Registries.CONFIGURED_FEATURE, modPrefix("giant_cave_patty")))).get());
+        if (state.is(OPBlocks.PURPLE_KNOB.get())) feature = (level.registryAccess().registry(Registries.CONFIGURED_FEATURE).flatMap(registry -> registry.getHolder(ResourceKey.create(Registries.CONFIGURED_FEATURE, modPrefix("giant_purple_knob")))).get());
+        if (state.is(OPBlocks.RAINCAP.get())) feature = (level.registryAccess().registry(Registries.CONFIGURED_FEATURE).flatMap(registry -> registry.getHolder(ResourceKey.create(Registries.CONFIGURED_FEATURE, modPrefix("giant_raincap")))).get());
 
         if (feature != null) {
             if ((feature.value()).place(level, level.getChunkSource().getGenerator(), random, pos)) {

@@ -393,7 +393,7 @@ public class PaleSpider extends Monster {
                 if (distance < 1.6D && this.attackCooldown == 0) {
                     this.spider.doHurtTarget(target);
                     this.spider.swing(InteractionHand.MAIN_HAND);
-                    this.attackCooldown = 24;
+                    this.attackCooldown = 20;
                 }
             }
         }

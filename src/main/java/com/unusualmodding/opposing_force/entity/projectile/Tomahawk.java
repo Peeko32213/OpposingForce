@@ -109,7 +109,7 @@ public class Tomahawk extends AbstractArrow implements ItemSupplier {
 
     @Override
     public double getBaseDamage() {
-        return 7.0D;
+        return 6.0D;
     }
 
     @Override

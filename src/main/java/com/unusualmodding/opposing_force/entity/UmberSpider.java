@@ -383,6 +383,11 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
             }
         }
 
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
         protected void checkForCloseRangeAttack (double distance){
             if (distance <= 4.1D) {
                 this.umberSpider.setAttackState(1);
@@ -401,7 +406,7 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
                     this.umberSpider.swing(InteractionHand.MAIN_HAND);
                 }
             }
-            if (this.attackTime >= 9) {
+            if (this.attackTime >= 20) {
                 this.attackTime = 0;
                 this.umberSpider.setAttackState(0);
             }

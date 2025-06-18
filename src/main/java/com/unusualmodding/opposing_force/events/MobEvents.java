@@ -17,17 +17,17 @@ public class MobEvents {
 
     @SubscribeEvent
     public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
-        event.register(DICER.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, Dicer::canSpawn, Operation.OR);
-        event.register(FROWZY.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, Frowzy::canSpawn, Operation.OR);
-        event.register(GUZZLER.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, Guzzler::canSpawn, Operation.OR);
-        event.register(PALE_SPIDER.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, PaleSpider::canSpawn, Operation.OR);
-        event.register(RAMBLE.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, Ramble::canSpawn, Operation.OR);
-        event.register(SLUG.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, Slug::canSpawn, Operation.OR);
-        event.register(TERROR.get(), IN_WATER, MOTION_BLOCKING_NO_LEAVES, Terror::canSpawn, Operation.OR);
-        event.register(TREMBLER.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, Trembler::canSpawn, Operation.OR);
-        event.register(UMBER_SPIDER.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, UmberSpider::canSpawn, Operation.OR);
-        event.register(VOLT.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, Volt::canSpawn, Operation.OR);
-        event.register(WHIZZ.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, Whizz::canSpawn, Operation.OR);
+        event.register(DICER.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, Dicer::canSpawn, Operation.AND);
+        event.register(FROWZY.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, Frowzy::canSpawn, Operation.AND);
+        event.register(GUZZLER.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, Guzzler::canSpawn, Operation.AND);
+        event.register(PALE_SPIDER.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, PaleSpider::canSpawn, Operation.AND);
+        event.register(RAMBLE.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, Ramble::canSpawn, Operation.AND);
+        event.register(SLUG.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, Slug::canSpawn, Operation.AND);
+        event.register(TERROR.get(), IN_WATER, MOTION_BLOCKING_NO_LEAVES, Terror::canSpawn, Operation.AND);
+        event.register(TREMBLER.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, Trembler::canSpawn, Operation.AND);
+        event.register(UMBER_SPIDER.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, UmberSpider::canSpawn, Operation.AND);
+        event.register(VOLT.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, Volt::canSpawn, Operation.AND);
+        event.register(WHIZZ.get(), ON_GROUND, MOTION_BLOCKING_NO_LEAVES, Whizz::canSpawn, Operation.AND);
     }
 
     @SubscribeEvent

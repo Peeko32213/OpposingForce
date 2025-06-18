@@ -185,8 +185,8 @@ public class Terror extends Monster implements IAnimatedAttacker {
         return pos.getY() <= 0 && level.getRawBrightness(pos, 0) == 0 && level.getBlockState(pos).is(Blocks.WATER);
     }
 
-    public boolean checkSpawnObstruction(LevelReader pLevel) {
-        return pLevel.isUnobstructed(this);
+    public boolean checkSpawnObstruction(LevelReader level) {
+        return level.isUnobstructed(this);
     }
 
     // goals
