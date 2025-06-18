@@ -28,7 +28,6 @@ public class OPItemModelProvider extends ItemModelProvider {
         item(ELECTRIC_CHARGE);
         item(SLUG_EGGS);
         item(CAPTURED_WHIZZ);
-        item(TREMBLER_SHELL);
         item(DEEPWOVEN_HAT);
         item(DEEPWOVEN_TUNIC);
         item(DEEPWOVEN_PANTS);

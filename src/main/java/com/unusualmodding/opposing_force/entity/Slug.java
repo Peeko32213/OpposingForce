@@ -12,7 +12,6 @@ import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -24,18 +23,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.entity.monster.Evoker;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.common.MinecraftForge;
@@ -73,6 +68,7 @@ public class Slug extends Monster implements OwnableEntity {
                 .add(Attributes.FOLLOW_RANGE, 16.0D);
     }
 
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(3, new SlugAttackGoal(this));
@@ -86,13 +82,16 @@ public class Slug extends Monster implements OwnableEntity {
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, false, false, this::hasInfestation));
     }
 
+    @Override
     protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
     }
 
+    @Override
     public MobType getMobType() {
         return MobType.ARTHROPOD;
     }
 
+    @Override
     public boolean doHurtTarget(Entity entity) {
         if (super.doHurtTarget(entity)) {
             this.playSound(OPSoundEvents.SLUG_ATTACK.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
@@ -102,6 +101,7 @@ public class Slug extends Monster implements OwnableEntity {
         }
     }
 
+    @Override
     public boolean canBeAffected(MobEffectInstance effect) {
         if (effect.getEffect() == OPEffects.SLUG_INFESTATION.get()) {
             MobEffectEvent.Applicable event = new MobEffectEvent.Applicable(this, effect);
@@ -123,6 +123,16 @@ public class Slug extends Monster implements OwnableEntity {
     @Override
     public int getExperienceReward() {
         return this.getSlugSize() * 2 + 2;
+    }
+
+    @Override
+    protected void dropFromLootTable(DamageSource source, boolean drops) {
+        int extraEggs = this.getSlugSize() / 3;
+        if (this.getSlugSize() > 3) {
+            for (int i = 0; i < extraEggs; i++) {
+                super.dropFromLootTable(source, drops);
+            }
+        }
     }
 
     @Override
@@ -190,6 +200,7 @@ public class Slug extends Monster implements OwnableEntity {
         return this.entityData.get(MAX_GROWABLE_SIZE);
     }
 
+    @Override
     @Nullable
     public UUID getOwnerUUID() {
         return this.entityData.get(OWNER_UUID).orElse(null);
@@ -207,6 +218,7 @@ public class Slug extends Monster implements OwnableEntity {
         this.entityData.set(FROM_INFESTATION, infestation);
     }
 
+    @Override
     protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
         return dimensions.height * 0.44F;
     }
@@ -219,6 +231,7 @@ public class Slug extends Monster implements OwnableEntity {
         this.setHealth((float) this.getAttribute(Attributes.MAX_HEALTH).getBaseValue());
     }
 
+    @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> pKey) {
         if (SIZE.equals(pKey)) {
             this.updateSlugAttributes();
@@ -226,6 +239,7 @@ public class Slug extends Monster implements OwnableEntity {
         super.onSyncedDataUpdated(pKey);
     }
 
+    @Override
     public EntityDimensions getDimensions(Pose pPose) {
         int size = this.getSlugSize();
         EntityDimensions dimensions = super.getDimensions(pPose);
@@ -403,28 +417,9 @@ public class Slug extends Monster implements OwnableEntity {
         }
     }
 
-    public static boolean canSpawn(EntityType<Slug> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        boolean isDeepDark = iServerWorld.getBiome(pos).is(Biomes.DEEP_DARK);
-        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 30 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
-    }
-
-    public static boolean checkUndergroundMonsterSpawnRules(EntityType<? extends Monster> monster, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource p_219018_) {
-        return level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, p_219018_) && checkMobSpawnRules(monster, level, reason, pos, p_219018_);
-    }
-
-    public static boolean isDarkEnoughToSpawnNoSkylight(ServerLevelAccessor level, BlockPos pos, RandomSource random) {
-        if (level.getBrightness(LightLayer.SKY, pos) > 0) {
-            return false;
-        } else {
-            DimensionType dimension = level.dimensionType();
-            int i = dimension.monsterSpawnBlockLightLimit();
-            if (i < 15 && level.getBrightness(LightLayer.BLOCK, pos) > i) {
-                return false;
-            } else {
-                int j = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
-                return j <= dimension.monsterSpawnLightTest().sample(random);
-            }
-        }
+    @SuppressWarnings("unused")
+    public static boolean canSpawn(EntityType<Slug> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
     }
 
     @Override

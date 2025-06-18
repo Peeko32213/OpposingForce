@@ -1,0 +1,23 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "opposing_force:block/trembler_shell",
+      "y": 90,
+      "uvlock": false
+    },
+    "facing=north": {
+      "model": "opposing_force:block/trembler_shell",
+      "uvlock": false
+    },
+    "facing=south": {
+      "model": "opposing_force:block/trembler_shell",
+      "y": 180,
+      "uvlock": false
+    },
+    "facing=west": {
+      "model": "opposing_force:block/trembler_shell",
+      "y": 270,
+      "uvlock": false
+    }
+  }
+}

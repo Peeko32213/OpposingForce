@@ -1,10 +1,10 @@
 {
   "type": "forge:add_spawns",
-  "biomes": "#forge:with_default_monster_spawns",
+  "biomes": "#opposing_force:has_monster/pale_spider",
   "spawners": {
     "type": "opposing_force:pale_spider",
-    "maxCount": 5,
-    "minCount": 3,
-    "weight": 50
+    "maxCount": 4,
+    "minCount": 4,
+    "weight": 25
   }
 }

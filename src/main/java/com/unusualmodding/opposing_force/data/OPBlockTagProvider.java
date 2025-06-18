@@ -1,7 +1,6 @@
 package com.unusualmodding.opposing_force.data;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.registry.tags.OPTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
@@ -11,26 +10,55 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
+import static com.unusualmodding.opposing_force.registry.OPBlocks.*;
+
 public class OPBlockTagProvider extends BlockTagsProvider {
-    public OPBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, OpposingForce.MOD_ID, existingFileHelper);
+
+    public OPBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
+        super(output, provider, OpposingForce.MOD_ID, helper);
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider pProvider) {
+    protected void addTags(HolderLookup.Provider provider) {
 
-        tag(OPTags.HOLE_MUSHROOM_BLOCKS)
-                .addTag(BlockTags.MUSHROOM_GROW_BLOCK)
-                .addTag(BlockTags.BASE_STONE_OVERWORLD)
+        this.tag(BlockTags.MINEABLE_WITH_AXE).add(
+                CREAM_CAP_BLOCK.get(),
+                COPPER_ENOKI_BLOCK.get(),
+                SLIPPERY_TOP_BLOCK.get(),
 
-        ;
+                CAP_OF_EYE.get(),
+                CAVE_PATTY.get(),
+                CHICKEN_OF_THE_CAVES.get(),
+                COPPER_ENOKI.get(),
+                CREAM_CAP.get(),
+                POWDER_GNOME.get(),
+                PURPLE_KNOB.get(),
+                RAINCAP.get(),
+                SLIPPERY_TOP.get()
+        );
 
+        this.tag(BlockTags.ENDERMAN_HOLDABLE).add(
+                CAP_OF_EYE.get(),
+                CAVE_PATTY.get(),
+                CHICKEN_OF_THE_CAVES.get(),
+                COPPER_ENOKI.get(),
+                CREAM_CAP.get(),
+                POWDER_GNOME.get(),
+                PURPLE_KNOB.get(),
+                RAINCAP.get(),
+                SLIPPERY_TOP.get()
+        );
 
-    }
-
-
-    @Override
-    public String getName() {
-        return OpposingForce.MOD_ID + " Block Tags";
+        this.tag(BlockTags.SWORD_EFFICIENT).add(
+                CAP_OF_EYE.get(),
+                CAVE_PATTY.get(),
+                CHICKEN_OF_THE_CAVES.get(),
+                COPPER_ENOKI.get(),
+                CREAM_CAP.get(),
+                POWDER_GNOME.get(),
+                PURPLE_KNOB.get(),
+                RAINCAP.get(),
+                SLIPPERY_TOP.get()
+        );
     }
 }

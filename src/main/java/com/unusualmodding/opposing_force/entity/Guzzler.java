@@ -26,7 +26,6 @@ import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
@@ -41,7 +40,6 @@ public class Guzzler extends Monster {
     private static final EntityDataAccessor<Integer> SHOOT_COOLDOWN = SynchedEntityData.defineId(Guzzler.class, EntityDataSerializers.INT);
 
     public final AnimationState idleAnimationState = new AnimationState();
-    public final AnimationState stunnedAnimationState = new AnimationState();
     public final AnimationState shootAnimationState = new AnimationState();
 
     public Guzzler(EntityType<? extends Monster> pEntityType, Level pLevel) {
@@ -193,13 +191,13 @@ public class Guzzler extends Monster {
         super.handleEntityEvent(id);
     }
 
-    public static boolean canSpawn(EntityType<Guzzler> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        boolean isDeepDark = iServerWorld.getBiome(pos).is(Biomes.DEEP_DARK);
-        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 0 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
+    @SuppressWarnings("unused")
+    public static boolean canSpawn(EntityType<Guzzler> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return checkGuzzlerSpawnRules(entityType, level, spawnType, pos, random);
     }
 
-    public static boolean checkUndergroundMonsterSpawnRules(EntityType<? extends Monster> monster, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource p_219018_) {
-        return level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, p_219018_) && checkMobSpawnRules(monster, level, reason, pos, p_219018_);
+    public static boolean checkGuzzlerSpawnRules(EntityType<Guzzler> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return pos.getY() <= -16 && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random);
     }
 
     public static boolean isDarkEnoughToSpawnNoSkylight(ServerLevelAccessor level, BlockPos pos, RandomSource random) {
@@ -207,12 +205,12 @@ public class Guzzler extends Monster {
             return false;
         } else {
             DimensionType dimension = level.dimensionType();
-            int i = dimension.monsterSpawnBlockLightLimit();
-            if (i < 15 && level.getBrightness(LightLayer.BLOCK, pos) > i) {
+            int lightLimit = dimension.monsterSpawnBlockLightLimit();
+            if (lightLimit < 15 && level.getBrightness(LightLayer.BLOCK, pos) > lightLimit) {
                 return false;
             } else {
-                int j = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
-                return j <= dimension.monsterSpawnLightTest().sample(random);
+                int lightTest = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
+                return lightTest <= dimension.monsterSpawnLightTest().sample(random);
             }
         }
     }

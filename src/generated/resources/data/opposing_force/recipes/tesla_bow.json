@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/gold"
+    },
+    "A": {
+      "item": "opposing_force:electric_charge"
+    },
+    "X": {
+      "item": "opposing_force:deep_silk"
+    },
+    "Y": {
+      "tag": "forge:rods/wooden"
+    },
+    "Z": {
+      "item": "minecraft:tripwire_hook"
+    }
+  },
+  "pattern": [
+    "#A#",
+    "XZX",
+    " Y "
+  ],
+  "result": {
+    "item": "opposing_force:tesla_bow"
+  },
+  "show_notification": true
+}

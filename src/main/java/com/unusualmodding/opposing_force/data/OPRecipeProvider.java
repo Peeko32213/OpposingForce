@@ -2,53 +2,44 @@ package com.unusualmodding.opposing_force.data;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.registry.OPBlocks;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 
 import java.util.function.Consumer;
 
-import static com.unusualmodding.opposing_force.OpposingForce.modPrefix;
+import static com.unusualmodding.opposing_force.registry.OPItems.*;
+import static net.minecraft.data.recipes.RecipeCategory.COMBAT;
+import static net.minecraft.data.recipes.RecipeCategory.MISC;
 
 public class OPRecipeProvider extends RecipeProvider implements IConditionBuilder {
 
-    public OPRecipeProvider(PackOutput pGenerator) {
-        super(pGenerator);
+    public OPRecipeProvider(PackOutput output) {
+        super(output);
     }
-
-    public static final int FAST_COOKING = 100;        // 5 seconds
-    public static final int NORMAL_COOKING = 200;    // 10 seconds
-    public static final int SLOW_COOKING = 400;        // 20 seconds
 
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
-        makeDye(consumer, Items.PINK_DYE, OPBlocks.PRINCESS_JELLY.get());
-        makeDye(consumer, Items.YELLOW_DYE, OPBlocks.CHICKEN_OF_THE_CAVES.get());
-        makeDye(consumer, Items.BLUE_DYE, OPBlocks.BLUE_TRUMPET.get());
+        ShapelessRecipeBuilder.shapeless(MISC, Items.GUNPOWDER).requires(OPBlocks.POWDER_GNOME.get()).unlockedBy("has_powder_gnome", has(OPBlocks.POWDER_GNOME.get())).save(consumer);
+
+        ShapedRecipeBuilder.shaped(COMBAT, TESLA_BOW.get()).define('#', Tags.Items.INGOTS_GOLD).define('X', DEEP_SILK.get()).define('Y', Tags.Items.RODS_WOODEN).define('Z', Blocks.TRIPWIRE_HOOK).define('A', ELECTRIC_CHARGE.get()).pattern("#A#").pattern("XZX").pattern(" Y ").unlockedBy("has_electric_charge", has(ELECTRIC_CHARGE.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, TOMAHAWK.get(), 4).define('#', Tags.Items.INGOTS_IRON).define('X', Tags.Items.NUGGETS_IRON).define('Y', Tags.Items.RODS_WOODEN).pattern("##").pattern("XY").unlockedBy("has_iron_ingot", has(Tags.Items.INGOTS_IRON)).save(consumer);
+
+        ShapedRecipeBuilder.shaped(COMBAT, DEEPWOVEN_HAT.get()).define('#', DEEP_SILK.get()).pattern("###").pattern("# #").unlockedBy("has_deep_silk", has(DEEP_SILK.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, DEEPWOVEN_TUNIC.get()).define('#', DEEP_SILK.get()).pattern("# #").pattern("###").pattern("###").unlockedBy("has_deep_silk", has(DEEP_SILK.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, DEEPWOVEN_PANTS.get()).define('#', DEEP_SILK.get()).pattern("###").pattern("# #").pattern("# #").unlockedBy("has_deep_silk", has(DEEP_SILK.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, DEEPWOVEN_BOOTS.get()).define('#', DEEP_SILK.get()).pattern("# #").pattern("# #").unlockedBy("has_deep_silk", has(DEEP_SILK.get())).save(consumer);
+
     }
 
-    private void smeltingRecipes(Consumer<FinishedRecipe> consumer) {
-    }
-
-    //Wrappers for conditionals
     private void wrap(RecipeBuilder builder, String name, Consumer<FinishedRecipe> consumer, ICondition... conds) {
         wrap(builder, OpposingForce.MOD_ID, name, consumer, conds);
-    }
-
-    protected static String getEntityName(EntityType<?> pItemLike) {
-        return BuiltInRegistries.ENTITY_TYPE.getKey(pItemLike).getPath();
-    }
-
-    private ResourceLocation name(String name) {
-        return new ResourceLocation(OpposingForce.MOD_ID, name);
     }
 
     private void wrap(RecipeBuilder builder, String modid, String name, Consumer<FinishedRecipe> consumer, ICondition... conds) {
@@ -63,30 +54,7 @@ public class OPRecipeProvider extends RecipeProvider implements IConditionBuilde
         }
         FinishedRecipe[] recipe = new FinishedRecipe[1];
         builder.save(f -> recipe[0] = f, loc);
-        cond.addRecipe(recipe[0])
-                .generateAdvancement()
-                .build(consumer, loc);
-    }
-
-
-    public void makeDye(Consumer<FinishedRecipe> c, Item plankOut, Block logIn) {
-
-        ResourceLocation rl = key(plankOut);
-        ResourceLocation rl2 = key(logIn);
-
-        String name = rl.getPath() + "_from_" + rl2.getPath();
-
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, plankOut, 4)
-                .requires(logIn)
-                .unlockedBy("has_flower", has(logIn))
-                .save(c, modPrefix(name));
-    }
-
-    public ResourceLocation key(Item item) {
-        return BuiltInRegistries.ITEM.getKey(item);
-    }
-    public ResourceLocation key(Block item) {
-        return BuiltInRegistries.BLOCK.getKey(item);
+        cond.addRecipe(recipe[0]).generateAdvancement().build(consumer, loc);
     }
 }
 

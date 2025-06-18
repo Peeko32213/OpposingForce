@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "opposing_force:block/queen_in_magenta"
-  }
-}

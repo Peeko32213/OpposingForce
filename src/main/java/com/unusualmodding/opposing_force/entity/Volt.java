@@ -26,7 +26,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.phys.Vec3;
@@ -141,30 +140,6 @@ public class Volt extends Monster implements IAnimatedAttacker {
         this.targetSquish *= 0.6F;
     }
 
-    public static boolean canFirstTierSpawn(EntityType<Volt> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        boolean isDeepDark = iServerWorld.getBiome(pos).is(Biomes.DEEP_DARK);
-        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 30 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
-    }
-
-    public static boolean checkUndergroundMonsterSpawnRules(EntityType<? extends Monster> monster, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource p_219018_) {
-        return level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, p_219018_) && checkMobSpawnRules(monster, level, reason, pos, p_219018_);
-    }
-
-    public static boolean isDarkEnoughToSpawnNoSkylight(ServerLevelAccessor level, BlockPos pos, RandomSource random) {
-        if (level.getBrightness(LightLayer.SKY, pos) > 0) {
-            return false;
-        } else {
-            DimensionType dimension = level.dimensionType();
-            int i = dimension.monsterSpawnBlockLightLimit();
-            if (i < 15 && level.getBrightness(LightLayer.BLOCK, pos) > i) {
-                return false;
-            } else {
-                int j = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
-                return j <= dimension.monsterSpawnLightTest().sample(random);
-            }
-        }
-    }
-
     // Sounds
     protected SoundEvent getAmbientSound() {
         return OPSoundEvents.VOLT_IDLE.get();
@@ -200,9 +175,28 @@ public class Volt extends Monster implements IAnimatedAttacker {
     protected void checkFallDamage(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
     }
 
-    public static boolean canSpawn(EntityType<Volt> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        boolean isDeepDark = iServerWorld.getBiome(pos).is(Biomes.DEEP_DARK);
-        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 0 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
+    @SuppressWarnings("unused")
+    public static boolean canSpawn(EntityType<Volt> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return checkVoltSpawnRules(entityType, level, spawnType, pos, random);
+    }
+
+    public static boolean checkVoltSpawnRules(EntityType<Volt> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return pos.getY() <= 16 && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random);
+    }
+
+    public static boolean isDarkEnoughToSpawnNoSkylight(ServerLevelAccessor level, BlockPos pos, RandomSource random) {
+        if (level.getBrightness(LightLayer.SKY, pos) > 0) {
+            return false;
+        } else {
+            DimensionType dimension = level.dimensionType();
+            int lightLimit = dimension.monsterSpawnBlockLightLimit();
+            if (lightLimit < 15 && level.getBrightness(LightLayer.BLOCK, pos) > lightLimit) {
+                return false;
+            } else {
+                int lightTest = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
+                return lightTest <= dimension.monsterSpawnLightTest().sample(random);
+            }
+        }
     }
 
     // goals

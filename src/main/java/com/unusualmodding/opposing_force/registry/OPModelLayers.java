@@ -23,8 +23,6 @@ public class OPModelLayers {
     public static final ModelLayerLocation VOLT_LAYER = main("volt");
     public static final ModelLayerLocation WHIZZ_LAYER = main("whizz");
 
-    public static final ModelLayerLocation TREMBLER_SHELL_LAYER = main("trembler_shell");
-
     public static final ModelLayerLocation DEEPWOVEN_ARMOR_LAYER = main("deepwoven_armor");
 
     private static ModelLayerLocation register(String id, String name) {

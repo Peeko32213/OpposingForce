@@ -1,10 +1,10 @@
 {
   "type": "forge:add_spawns",
-  "biomes": "#forge:with_default_monster_spawns",
+  "biomes": "#opposing_force:has_monster/dicer",
   "spawners": {
     "type": "opposing_force:dicer",
-    "maxCount": 2,
+    "maxCount": 1,
     "minCount": 1,
-    "weight": 25
+    "weight": 5
   }
 }

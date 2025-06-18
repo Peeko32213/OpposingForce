@@ -1,9 +1,9 @@
 {
   "type": "forge:add_spawns",
-  "biomes": "#forge:with_default_monster_spawns",
+  "biomes": "#opposing_force:has_monster/ramble",
   "spawners": {
     "type": "opposing_force:ramble",
-    "maxCount": 2,
+    "maxCount": 1,
     "minCount": 1,
     "weight": 10
   }

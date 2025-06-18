@@ -1,6 +1,6 @@
 {
   "type": "forge:add_spawns",
-  "biomes": "#forge:with_default_monster_spawns",
+  "biomes": "#opposing_force:has_monster/guzzler",
   "spawners": {
     "type": "opposing_force:guzzler",
     "maxCount": 1,

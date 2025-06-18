@@ -29,12 +29,12 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -244,29 +244,13 @@ public class PaleSpider extends Monster {
         }
     }
 
-    public static class PaleSpiderEffectsGroupData implements SpawnGroupData {
-        @Nullable
-        public MobEffect effect;
-
-        public void setRandomEffect(RandomSource pRandom) {
-            int i = pRandom.nextInt(4);
-            if (i <= 1) {
-                this.effect = MobEffects.JUMP;
-            } else if (i == 2) {
-                this.effect = MobEffects.MOVEMENT_SPEED;
-            } else if (i == 3) {
-                this.effect = MobEffects.FIRE_RESISTANCE;
-            }
-        }
+    @SuppressWarnings("unused")
+    public static boolean canSpawn(EntityType<PaleSpider> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return checkPaleSpiderSpawnRules(entityType, level, spawnType, pos, random);
     }
 
-    public static boolean canSpawn(EntityType<PaleSpider> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        boolean isDeepDark = iServerWorld.getBiome(pos).is(Biomes.DEEP_DARK);
-        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 30 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
-    }
-
-    public static boolean checkUndergroundMonsterSpawnRules(EntityType<? extends Monster> monster, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource p_219018_) {
-        return level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, p_219018_) && checkMobSpawnRules(monster, level, reason, pos, p_219018_);
+    public static boolean checkPaleSpiderSpawnRules(EntityType<PaleSpider> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return (pos.getY() <= 48 && pos.getY() > -24) && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random);
     }
 
     public static boolean isDarkEnoughToSpawnNoSkylight(ServerLevelAccessor level, BlockPos pos, RandomSource random) {
@@ -274,38 +258,28 @@ public class PaleSpider extends Monster {
             return false;
         } else {
             DimensionType dimension = level.dimensionType();
-            int i = dimension.monsterSpawnBlockLightLimit();
-            if (i < 15 && level.getBrightness(LightLayer.BLOCK, pos) > i) {
+            int lightLimit = dimension.monsterSpawnBlockLightLimit();
+            if (lightLimit < 15 && level.getBrightness(LightLayer.BLOCK, pos) > lightLimit) {
                 return false;
             } else {
-                int j = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
-                return j <= dimension.monsterSpawnLightTest().sample(random);
+                int lightTest = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
+                return lightTest <= dimension.monsterSpawnLightTest().sample(random);
             }
         }
-    }
-
-    private void doInitialPosing(LevelAccessor world) {
-        BlockPos upperPos = this.getPositionAbove().above();
-        BlockPos highest = getLowestPos(world, upperPos);
-        this.setPos(highest.getX() + 0.5F, highest.getY(), highest.getZ() + 0.5F);
     }
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag compoundTag) {
-        if (spawnType == MobSpawnType.NATURAL) {
-            doInitialPosing(level);
-        }
-
         RandomSource randomsource = level.getRandom();
 
         if (spawnData == null) {
-            spawnData = new PaleSpiderEffectsGroupData();
+            spawnData = new Spider.SpiderEffectsGroupData();
             if (level.getDifficulty() == Difficulty.HARD && randomsource.nextFloat() < 0.1F * difficulty.getSpecialMultiplier()) {
-                ((PaleSpiderEffectsGroupData) spawnData).setRandomEffect(randomsource);
+                ((Spider.SpiderEffectsGroupData) spawnData).setRandomEffect(randomsource);
             }
         }
 
-        if (spawnData instanceof PaleSpiderEffectsGroupData spiderEffectsGroupData) {
+        if (spawnData instanceof Spider.SpiderEffectsGroupData spiderEffectsGroupData) {
             MobEffect mobeffect = spiderEffectsGroupData.effect;
             if (mobeffect != null) {
                 this.addEffect(new MobEffectInstance(mobeffect, -1));

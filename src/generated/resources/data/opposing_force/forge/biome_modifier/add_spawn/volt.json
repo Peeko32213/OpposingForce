@@ -1,10 +1,10 @@
 {
   "type": "forge:add_spawns",
-  "biomes": "#forge:with_default_monster_spawns",
+  "biomes": "#opposing_force:has_monster/volt",
   "spawners": {
     "type": "opposing_force:volt",
-    "maxCount": 3,
-    "minCount": 2,
-    "weight": 25
+    "maxCount": 4,
+    "minCount": 4,
+    "weight": 10
   }
 }

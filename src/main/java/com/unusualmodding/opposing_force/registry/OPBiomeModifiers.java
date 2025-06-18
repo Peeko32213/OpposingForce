@@ -1,45 +1,64 @@
 package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.registry.tags.OPTags;
+import com.unusualmodding.opposing_force.registry.tags.OPBiomeTags;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.placement.CavePlacements;
+import net.minecraft.data.worldgen.placement.OrePlacements;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.common.world.BiomeModifier;
-import net.minecraftforge.common.world.ForgeBiomeModifiers;
+import net.minecraftforge.common.world.ForgeBiomeModifiers.*;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static net.minecraft.world.level.levelgen.GenerationStep.Decoration.*;
 
 @Mod.EventBusSubscriber(modid = OpposingForce.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class OPBiomeModifiers {
 
     public static void bootstrap(BootstapContext<BiomeModifier> context) {
-        addSpawn(context, "dicer", OPTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(OPEntities.DICER.get(), 25, 1, 2));
-        addSpawn(context, "pale_spider", OPTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(OPEntities.PALE_SPIDER.get(), 50, 3, 5));
-        addSpawn(context, "ramble", OPTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(OPEntities.RAMBLE.get(), 10, 1, 2));
-        addSpawn(context, "trembler", OPTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(OPEntities.TREMBLER.get(), 25, 1, 2));
-        addSpawn(context, "umber_spider", OPTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(OPEntities.UMBER_SPIDER.get(), 50, 3, 5));
-        addSpawn(context, "terror", OPTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(OPEntities.TERROR.get(), 5, 1, 2));
-        addSpawn(context, "volt", OPTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(OPEntities.VOLT.get(), 25, 2, 3));
-        addSpawn(context, "wizz", OPTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(OPEntities.WHIZZ.get(), 50, 4, 10));
-        addSpawn(context, "frowzy", OPTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(OPEntities.FROWZY.get(), 50, 2, 4));
-        addSpawn(context, "guzzler", OPTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(OPEntities.GUZZLER.get(), 5, 1, 1));
-        addSpawn(context, "slug", OPTags.WITH_DEFAULT_MONSTER_SPAWNS, new MobSpawnSettings.SpawnerData(OPEntities.SLUG.get(), 50, 1, 5));
+        addSpawn(context, "dicer", OPBiomeTags.HAS_DICER, new MobSpawnSettings.SpawnerData(OPEntities.DICER.get(), 5, 1, 1));
+        addSpawn(context, "frowzy", OPBiomeTags.HAS_FROWZY, new MobSpawnSettings.SpawnerData(OPEntities.FROWZY.get(), 25, 4, 4));
+        addSpawn(context, "guzzler", OPBiomeTags.HAS_GUZZLER, new MobSpawnSettings.SpawnerData(OPEntities.GUZZLER.get(), 5, 1, 1));
+        addSpawn(context, "pale_spider", OPBiomeTags.HAS_PALE_SPIDER, new MobSpawnSettings.SpawnerData(OPEntities.PALE_SPIDER.get(), 25, 4, 4));
+        addSpawn(context, "ramble", OPBiomeTags.HAS_RAMBLE, new MobSpawnSettings.SpawnerData(OPEntities.RAMBLE.get(), 10, 1, 1));
+        addSpawn(context, "slug", OPBiomeTags.HAS_SLUG, new MobSpawnSettings.SpawnerData(OPEntities.SLUG.get(), 50, 4, 4));
+        addSpawn(context, "terror", OPBiomeTags.HAS_TERROR, new MobSpawnSettings.SpawnerData(OPEntities.TERROR.get(), 5, 1, 1));
+        addSpawn(context, "trembler", OPBiomeTags.HAS_TREMBLER, new MobSpawnSettings.SpawnerData(OPEntities.TREMBLER.get(), 10, 1, 1));
+        addSpawn(context, "umber_spider", OPBiomeTags.HAS_UMBER_SPIDER, new MobSpawnSettings.SpawnerData(OPEntities.UMBER_SPIDER.get(), 15, 2, 2));
+        addSpawn(context, "volt", OPBiomeTags.HAS_VOLT, new MobSpawnSettings.SpawnerData(OPEntities.VOLT.get(), 10, 4, 4));
+
+        removeFeature(context, "amethyst_geode", BiomeTags.IS_OVERWORLD, LOCAL_MODIFICATIONS, CavePlacements.AMETHYST_GEODE);
     }
 
     private static void addSpawn(BootstapContext<BiomeModifier> context, String name, TagKey<Biome> biomes, MobSpawnSettings.SpawnerData... spawns) {
-        register(context, "add_spawn/" + name, () -> new ForgeBiomeModifiers.AddSpawnsBiomeModifier(context.lookup(Registries.BIOME).getOrThrow(biomes), List.of(spawns)));
+        register(context, "add_spawn/" + name, () -> new AddSpawnsBiomeModifier(context.lookup(Registries.BIOME).getOrThrow(biomes), List.of(spawns)));
+    }
+
+    @SafeVarargs
+    private static void addFeature(BootstapContext<BiomeModifier> context, String name, TagKey<Biome> biomes, GenerationStep.Decoration step, ResourceKey<PlacedFeature>... features) {
+        register(context, "add_feature/" + name, () -> new AddFeaturesBiomeModifier(context.lookup(Registries.BIOME).getOrThrow(biomes), featureSet(context, features), step));
+    }
+
+    @SafeVarargs
+    private static void removeFeature(BootstapContext<BiomeModifier> context, String name, TagKey<Biome> biomes, GenerationStep.Decoration step, ResourceKey<PlacedFeature>... features) {
+        register(context, "remove_feature/" + name, () -> new RemoveFeaturesBiomeModifier(context.lookup(Registries.BIOME).getOrThrow(biomes), featureSet(context, features), Set.of(step)));
     }
 
     private static void register(BootstapContext<BiomeModifier> context, String name, Supplier<? extends BiomeModifier> modifier) {
@@ -50,5 +69,4 @@ public class OPBiomeModifiers {
     private static HolderSet<PlacedFeature> featureSet(BootstapContext<?> context, ResourceKey<PlacedFeature>... features) {
         return HolderSet.direct(Stream.of(features).map(placedFeatureKey -> context.lookup(Registries.PLACED_FEATURE).getOrThrow(placedFeatureKey)).collect(Collectors.toList()));
     }
-
 }

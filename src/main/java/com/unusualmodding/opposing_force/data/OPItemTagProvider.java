@@ -1,11 +1,14 @@
 package com.unusualmodding.opposing_force.data;
 
 import com.unusualmodding.opposing_force.OpposingForce;
+import com.unusualmodding.opposing_force.registry.OPBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -43,5 +46,21 @@ public class OPItemTagProvider extends ItemTagsProvider {
         this.tag(Tags.Items.ARMORS_LEGGINGS).add(DEEPWOVEN_PANTS.get());
 
         this.tag(Tags.Items.ARMORS_BOOTS).add(DEEPWOVEN_BOOTS.get());
+
+        this.tag(Tags.Items.STRING).add(DEEP_SILK.get());
+
+        this.tag(Tags.Items.EGGS).add(SLUG_EGGS.get());
+
+        this.tag(Tags.Items.MUSHROOMS).add(
+                OPBlocks.CAP_OF_EYE.get().asItem(),
+                OPBlocks.CAVE_PATTY.get().asItem(),
+                OPBlocks.CHICKEN_OF_THE_CAVES.get().asItem(),
+                OPBlocks.COPPER_ENOKI.get().asItem(),
+                OPBlocks.CREAM_CAP.get().asItem(),
+                OPBlocks.POWDER_GNOME.get().asItem(),
+                OPBlocks.PURPLE_KNOB.get().asItem(),
+                OPBlocks.RAINCAP.get().asItem(),
+                OPBlocks.SLIPPERY_TOP.get().asItem()
+        );
     }
 }

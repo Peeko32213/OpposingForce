@@ -1,6 +1,5 @@
 package com.unusualmodding.opposing_force.data;
 
-
 import com.unusualmodding.opposing_force.registry.OPBlocks;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -46,39 +45,21 @@ public class OPBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(OPBlocks.CREAM_CAP.get());
         dropSelf(OPBlocks.CHICKEN_OF_THE_CAVES.get());
         dropSelf(OPBlocks.COPPER_ENOKI.get());
-        dropSelf(OPBlocks.BLUE_TRUMPET.get());
         dropSelf(OPBlocks.RAINCAP.get());
-        dropSelf(OPBlocks.PRINCESS_JELLY.get());
         dropSelf(OPBlocks.POWDER_GNOME.get());
-        dropSelf(OPBlocks.BLACKCAP.get());
         dropSelf(OPBlocks.CAP_OF_EYE.get());
-        dropSelf(OPBlocks.GREEN_FUNK.get());
-        dropSelf(OPBlocks.LIME_NUB.get());
-        dropSelf(OPBlocks.POP_CAP.get());
         dropSelf(OPBlocks.PURPLE_KNOB.get());
-        dropSelf(OPBlocks.QUEEN_IN_MAGENTA.get());
-        dropSelf(OPBlocks.SLATESHROOM.get());
         dropSelf(OPBlocks.SLIPPERY_TOP.get());
-        dropSelf(OPBlocks.WHITECAP.get());
 
         createPotFlowerItemTable(OPBlocks.POTTED_CAVE_PATTY.get(), OPBlocks.CAVE_PATTY.get());
         createPotFlowerItemTable(OPBlocks.POTTED_CREAM_CAP.get(), OPBlocks.CREAM_CAP.get());
         createPotFlowerItemTable(OPBlocks.POTTED_CHICKEN_OF_THE_CAVES.get(), OPBlocks.CHICKEN_OF_THE_CAVES.get());
         createPotFlowerItemTable(OPBlocks.POTTED_COPPER_ENOKI.get(), OPBlocks.COPPER_ENOKI.get());
-        createPotFlowerItemTable(OPBlocks.POTTED_BLUE_TRUMPET.get(), OPBlocks.BLUE_TRUMPET.get());
         createPotFlowerItemTable(OPBlocks.POTTED_RAINCAP.get(), OPBlocks.RAINCAP.get());
-        createPotFlowerItemTable(OPBlocks.POTTED_PRINCESS_JELLY.get(), OPBlocks.PRINCESS_JELLY.get());
         createPotFlowerItemTable(OPBlocks.POTTED_POWDER_GNOME.get(), OPBlocks.POWDER_GNOME.get());
-        createPotFlowerItemTable(OPBlocks.POTTED_BLACKCAP.get(), OPBlocks.BLACKCAP.get());
         createPotFlowerItemTable(OPBlocks.POTTED_CAP_OF_EYE.get(), OPBlocks.CAP_OF_EYE.get());
-        createPotFlowerItemTable(OPBlocks.POTTED_GREEN_FUNK.get(), OPBlocks.GREEN_FUNK.get());
-        createPotFlowerItemTable(OPBlocks.POTTED_LIME_NUB.get(), OPBlocks.LIME_NUB.get());
-        createPotFlowerItemTable(OPBlocks.POTTED_POP_CAP.get(), OPBlocks.POP_CAP.get());
         createPotFlowerItemTable(OPBlocks.POTTED_PURPLE_KNOB.get(), OPBlocks.PURPLE_KNOB.get());
-        createPotFlowerItemTable(OPBlocks.POTTED_QUEEN_IN_MAGENTA.get(), OPBlocks.QUEEN_IN_MAGENTA.get());
-        createPotFlowerItemTable(OPBlocks.POTTED_SLATESHROOM.get(), OPBlocks.SLATESHROOM.get());
         createPotFlowerItemTable(OPBlocks.POTTED_SLIPPERY_TOP.get(), OPBlocks.SLIPPERY_TOP.get());
-        createPotFlowerItemTable(OPBlocks.POTTED_WHITECAP.get(), OPBlocks.WHITECAP.get());
 
     }
     protected void createPotFlowerItemTable(Block flowerpotBlock, ItemLike pItem) {

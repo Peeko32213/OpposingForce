@@ -65,6 +65,7 @@ public class OPEntities {
                     .sized(0.5F, 0.5F)
                     .clientTrackingRange(10)
                     .fireImmune()
+                    .noSummon()
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "haunted_tool").toString())
     );
 
@@ -164,12 +165,5 @@ public class OPEntities {
                     .sized(0.25F, 0.25F)
                     .clientTrackingRange(4)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "tomahawk").toString())
-    );
-
-    public static final RegistryObject<EntityType<TremblerShell>> TREMBLER_SHELL = ENTITY_TYPES.register(
-            "trembler_shell", () ->
-            EntityType.Builder.<TremblerShell>of(TremblerShell::new, MobCategory.MISC)
-                    .sized(0.75F, 0.75F)
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "trembler_shell").toString())
     );
 }

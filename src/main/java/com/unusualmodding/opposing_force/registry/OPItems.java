@@ -25,7 +25,7 @@ public class OPItems {
     public static final RegistryObject<Item> FIRE_SLIME_SPAWN_EGG = registerSpawnEggItem("fire_slime", OPEntities.FIRE_SLIME , 0xdb3709, 0xfee44e);
     public static final RegistryObject<Item> FROWZY_SPAWN_EGG = registerSpawnEggItem("frowzy", OPEntities.FROWZY , 0x35313b, 0x3f759f);
     public static final RegistryObject<Item> GUZZLER_SPAWN_EGG = registerSpawnEggItem("guzzler", OPEntities.GUZZLER , 0x06030b, 0x59316a);
-    public static final RegistryObject<Item> HAUNTED_TOOL_SPAWN_EGG = registerSpawnEggItem("haunted_tool", OPEntities.HAUNTED_TOOL , 0x33ebcb, 0x0e3f36);
+//    public static final RegistryObject<Item> HAUNTED_TOOL_SPAWN_EGG = registerSpawnEggItem("haunted_tool", OPEntities.HAUNTED_TOOL , 0x33ebcb, 0x0e3f36);
     public static final RegistryObject<Item> PALE_SPIDER_SPAWN_EGG = registerSpawnEggItem("pale_spider", OPEntities.PALE_SPIDER , 0xbb9c75, 0xffd731);
     public static final RegistryObject<Item> RAMBLE_SPAWN_EGG = registerSpawnEggItem("ramble", OPEntities.RAMBLE , 0x131313, 0xffffff);
     public static final RegistryObject<Item> SLUG_SPAWN_EGG = registerSpawnEggItem("slug", OPEntities.SLUG , 0x311d16, 0x7a7139);
@@ -42,7 +42,6 @@ public class OPItems {
     public static final RegistryObject<Item> SLUG_EGGS = registerItem("slug_eggs", () -> new SlugEggItem(new Item.Properties()));
     public static final RegistryObject<Item> VILE_BOULDER = registerItem("vile_boulder", () -> new VileBoulderItem(OPItemTiers.VILE,  7, -3.1F, new Item.Properties()));
     public static final RegistryObject<Item> CAPTURED_WHIZZ = registerItem("captured_whizz", () -> new MobItem(OPEntities.WHIZZ::get, SoundEvents.AMETHYST_BLOCK_RESONATE, new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> TREMBLER_SHELL = registerItem("trembler_shell", () -> new TremblerShellItem(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<Item> UMBER_FANG = registerItem("umber_fang", () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> DEEPWOVEN_HAT = registerItem("deepwoven_hat", ()-> new DeepwovenArmorItem(OPArmorMaterials.DEEPWOVEN, ArmorItem.Type.HELMET, new Item.Properties()));

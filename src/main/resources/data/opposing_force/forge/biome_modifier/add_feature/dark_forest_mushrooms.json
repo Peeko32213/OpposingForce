@@ -1,0 +1,12 @@
+{
+  "type": "forge:add_features",
+  "biomes": "minecraft:dark_forest",
+  "features": [
+    "opposing_force:brown_mushroom_dark_forest",
+    "opposing_force:red_mushroom_dark_forest",
+    "opposing_force:cream_cap"
+  ],
+  "step": "vegetal_decoration"
+}
+
+

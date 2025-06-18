@@ -46,7 +46,6 @@ public final class ClientEvents {
         event.registerEntityRenderer(OPEntities.TERROR.get(), TerrorRenderer::new);
         event.registerEntityRenderer(OPEntities.TOMAHAWK.get(), TomahawkRenderer::new);
         event.registerEntityRenderer(OPEntities.TREMBLER.get(), TremblerRenderer::new);
-        event.registerEntityRenderer(OPEntities.TREMBLER_SHELL.get(), TremblerShellRenderer::new);
         event.registerEntityRenderer(OPEntities.UMBER_SPIDER.get(), UmberSpiderRenderer::new);
         event.registerEntityRenderer(OPEntities.VOLT.get(), VoltRenderer::new);
         event.registerEntityRenderer(OPEntities.WHIZZ.get(), WhizzRenderer::new);
@@ -67,8 +66,6 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.UMBER_SPIDER_LAYER, UmberSpiderModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.VOLT_LAYER, VoltModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.WHIZZ_LAYER, WhizzModel::createBodyLayer);
-
-        event.registerLayerDefinition(OPModelLayers.TREMBLER_SHELL_LAYER, TremblerShellModel::createBodyLayer);
 
         event.registerLayerDefinition(OPModelLayers.DEEPWOVEN_ARMOR_LAYER, DeepwovenArmorModel::createArmorLayer);
     }

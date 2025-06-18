@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_jungle",
+  "features": [
+    "opposing_force:slippery_top"
+  ],
+  "step": "vegetal_decoration"
+}
+
+

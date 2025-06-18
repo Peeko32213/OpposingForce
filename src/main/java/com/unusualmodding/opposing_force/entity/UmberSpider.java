@@ -29,11 +29,11 @@ import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -60,8 +60,8 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
 
     public final AnimationState idleAnimationState = new AnimationState();
 
-    protected PathNavigation createNavigation(Level pLevel) {
-        return new WallClimberNavigation(this, pLevel);
+    protected PathNavigation createNavigation(Level level) {
+        return new WallClimberNavigation(this, level);
     }
 
     public UmberSpider(EntityType<? extends Monster> pEntityType, Level pLevel) {
@@ -297,14 +297,14 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
         }
 
         if (pSpawnData == null) {
-            pSpawnData = new UmberSpider.UmberSpiderEffectsGroupData();
+            pSpawnData = new Spider.SpiderEffectsGroupData();
             if (pLevel.getDifficulty() == Difficulty.HARD && randomsource.nextFloat() < 0.1F * pDifficulty.getSpecialMultiplier()) {
-                ((UmberSpider.UmberSpiderEffectsGroupData)pSpawnData).setRandomEffect(randomsource);
+                ((Spider.SpiderEffectsGroupData)pSpawnData).setRandomEffect(randomsource);
             }
         }
 
-        if (pSpawnData instanceof UmberSpider.UmberSpiderEffectsGroupData spider$spidereffectsgroupdata) {
-            MobEffect mobeffect = spider$spidereffectsgroupdata.effect;
+        if (pSpawnData instanceof Spider.SpiderEffectsGroupData spiderEffectsGroupData) {
+            MobEffect mobeffect = spiderEffectsGroupData.effect;
             if (mobeffect != null) {
                 this.addEffect(new MobEffectInstance(mobeffect, -1));
             }
@@ -313,33 +313,13 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
         return pSpawnData;
     }
 
-    public static class UmberSpiderEffectsGroupData implements SpawnGroupData {
-        @Nullable
-        public MobEffect effect;
-
-        public void setRandomEffect(RandomSource pRandom) {
-            int i = pRandom.nextInt(6);
-            if (i <= 1) {
-                this.effect = MobEffects.DAMAGE_BOOST;
-            } else if (i == 2) {
-                this.effect = MobEffects.REGENERATION;
-            } else if (i == 3) {
-                this.effect = MobEffects.DAMAGE_RESISTANCE;
-            } else if (i == 4) {
-                this.effect = MobEffects.ABSORPTION;
-            } else if (i == 5) {
-                this.effect = MobEffects.JUMP;
-            }
-        }
+    @SuppressWarnings("unused")
+    public static boolean canSpawn(EntityType<UmberSpider> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return checkUmberSpiderSpawnRules(entityType, level, spawnType, pos, random);
     }
 
-    public static boolean canSpawn(EntityType<UmberSpider> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        boolean isDeepDark = iServerWorld.getBiome(pos).is(Biomes.DEEP_DARK);
-        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 0 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
-    }
-
-    public static boolean checkUndergroundMonsterSpawnRules(EntityType<? extends Monster> monster, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource p_219018_) {
-        return level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, p_219018_) && checkMobSpawnRules(monster, level, reason, pos, p_219018_);
+    public static boolean checkUmberSpiderSpawnRules(EntityType<UmberSpider> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return pos.getY() <= -24 && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random);
     }
 
     public static boolean isDarkEnoughToSpawnNoSkylight(ServerLevelAccessor level, BlockPos pos, RandomSource random) {
@@ -347,12 +327,12 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
             return false;
         } else {
             DimensionType dimension = level.dimensionType();
-            int i = dimension.monsterSpawnBlockLightLimit();
-            if (i < 15 && level.getBrightness(LightLayer.BLOCK, pos) > i) {
+            int lightLimit = dimension.monsterSpawnBlockLightLimit();
+            if (lightLimit < 15 && level.getBrightness(LightLayer.BLOCK, pos) > lightLimit) {
                 return false;
             } else {
-                int j = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
-                return j <= dimension.monsterSpawnLightTest().sample(random);
+                int lightTest = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
+                return lightTest <= dimension.monsterSpawnLightTest().sample(random);
             }
         }
     }

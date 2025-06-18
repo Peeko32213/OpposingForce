@@ -3,7 +3,6 @@ package com.unusualmodding.opposing_force.entity;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -12,7 +11,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -23,15 +21,14 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -84,6 +81,7 @@ public class Ramble extends Monster {
         return pSize.height * 0.7F;
     }
 
+    @Override
     public float getStepHeight() {
         if (this.isFlailing()) {
             return 1.0F;
@@ -132,6 +130,7 @@ public class Ramble extends Monster {
         this.entityData.set(FLAIL_COOLDOWN, 80);
     }
 
+    @Override
     public void tick() {
         super.tick();
 
@@ -168,6 +167,7 @@ public class Ramble extends Monster {
         return flag;
     }
 
+    @Override
     public boolean hurt(DamageSource source, float f) {
         if (this.isFlailing() || source.is(DamageTypeTags.IS_PROJECTILE)) {
             f *= 0.5F;
@@ -179,6 +179,7 @@ public class Ramble extends Monster {
         return true;
     }
 
+    @Override
     public void aiStep() {
         if (this.isAlive()) {
             boolean flag = this.isSunSensitive() && this.isSunBurnTick();
@@ -187,6 +188,21 @@ public class Ramble extends Monster {
             }
         }
         super.aiStep();
+    }
+
+    @Override
+    protected void dropCustomDeathLoot(DamageSource source, int damage, boolean drops) {
+        super.dropCustomDeathLoot(source, damage, drops);
+        Entity entity = source.getEntity();
+        int skullDrops = 1 + random.nextInt(3);
+        if (entity instanceof Creeper creeper) {
+            if (creeper.canDropMobsSkull()) {
+                for (int i = 0; i < skullDrops; i++) {
+                    creeper.increaseDroppedSkulls();
+                    this.spawnAtLocation(Items.SKELETON_SKULL);
+                }
+            }
+        }
     }
 
     // sounds
@@ -206,28 +222,9 @@ public class Ramble extends Monster {
         this.playSound(SoundEvents.SKELETON_STEP, 0.15F, 0.85F);
     }
 
-    public static boolean canSpawn(EntityType<Ramble> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        boolean isDeepDark = iServerWorld.getBiome(pos).is(Biomes.DEEP_DARK);
-        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 0 && checkUndergroundMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && !isDeepDark;
-    }
-
-    public static boolean checkUndergroundMonsterSpawnRules(EntityType<? extends Monster> monster, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource p_219018_) {
-        return level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, p_219018_) && checkMobSpawnRules(monster, level, reason, pos, p_219018_);
-    }
-
-    public static boolean isDarkEnoughToSpawnNoSkylight(ServerLevelAccessor level, BlockPos pos, RandomSource random) {
-        if (level.getBrightness(LightLayer.SKY, pos) > 0) {
-            return false;
-        } else {
-            DimensionType dimension = level.dimensionType();
-            int i = dimension.monsterSpawnBlockLightLimit();
-            if (i < 15 && level.getBrightness(LightLayer.BLOCK, pos) > i) {
-                return false;
-            } else {
-                int j = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
-                return j <= dimension.monsterSpawnLightTest().sample(random);
-            }
-        }
+    @SuppressWarnings("unused")
+    public static boolean canSpawn(EntityType<Ramble> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
     }
 
     @Nullable

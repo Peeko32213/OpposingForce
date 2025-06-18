@@ -1,0 +1,9 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "opposing_force:amethyst_geode",
+    "opposing_force:infested_amethyst_geode"
+  ],
+  "step": "local_modifications"
+}

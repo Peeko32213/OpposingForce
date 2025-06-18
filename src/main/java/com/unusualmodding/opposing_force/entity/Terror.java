@@ -168,20 +168,21 @@ public class Terror extends Monster implements IAnimatedAttacker {
         return MobType.WATER;
     }
 
-    protected float getStandingEyeHeight(Pose pPose, EntityDimensions pSize) {
-        return pSize.height * 0.5F;
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.5F;
     }
 
-    public float getWalkTargetValue(BlockPos pPos, LevelReader pLevel) {
-        return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10.0F + pLevel.getPathfindingCostFromLightLevels(pPos) : super.getWalkTargetValue(pPos, pLevel);
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return level.getFluidState(pos).is(FluidTags.WATER) ? 10.0F + level.getPathfindingCostFromLightLevels(pos) : super.getWalkTargetValue(pos, level);
     }
 
     protected SoundEvent getFlopSound() {
         return SoundEvents.COD_FLOP;
     }
 
-    public static boolean canSpawn(EntityType<Terror> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return pos.getY() <= iServerWorld.getSeaLevel() - 33 && iServerWorld.getRawBrightness(pos, 0) == 0 && iServerWorld.getBlockState(pos).is(Blocks.WATER);
+    @SuppressWarnings("unused")
+    public static boolean canSpawn(EntityType<Terror> entityType, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        return pos.getY() <= -16 && level.getRawBrightness(pos, 0) == 0 && level.getBlockState(pos).is(Blocks.WATER);
     }
 
     public boolean checkSpawnObstruction(LevelReader pLevel) {

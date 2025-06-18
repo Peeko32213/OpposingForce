@@ -43,7 +43,6 @@ public class OpposingForce {
         OPEnchantments.ENCHANTMENTS.register(modEventBus);
         OPPotions.POTIONS.register(modEventBus);
         OPAttributes.ATTRIBUTES.register(modEventBus);
-        OPEntityData.ENTITY_DATA.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
         PROXY.init();
@@ -79,6 +78,8 @@ public class OpposingForce {
         generator.addProvider(server, blockTags);
         generator.addProvider(server, new OPItemTagProvider(output, provider, blockTags.contentsGetter(), helper));
         generator.addProvider(server, new OPEntityTagProvider(output, provider, helper));
+        generator.addProvider(server, new OPBiomeTagProvider(output, provider, helper));
+
         generator.addProvider(server, new OPDamageTypeTagProvider(output, provider, helper));
         generator.addProvider(server, OPLootProvider.register(output));
         generator.addProvider(server, new OPRecipeProvider(output));
