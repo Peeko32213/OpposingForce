@@ -43,6 +43,7 @@ public class OpposingForce {
         OPEnchantments.ENCHANTMENTS.register(modEventBus);
         OPPotions.POTIONS.register(modEventBus);
         OPAttributes.ATTRIBUTES.register(modEventBus);
+        OPLootModifiers.LOOT_MODIFIERS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
         PROXY.init();

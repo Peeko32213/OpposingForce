@@ -320,7 +320,7 @@ public class Trembler extends Monster {
                 }
             }
 
-            if (this.attackTime >= 69) {
+            if (this.attackTime >= 69 || this.trembler.horizontalCollision) {
                 this.attackTime = 0;
                 this.trembler.setRolling(false);
                 this.trembler.rollCooldown();

@@ -1,6 +1,9 @@
 {
   "parent": "item/handheld",
   "loader": "forge:separate_transforms",
+  "textures": {
+    "layer0": "opposing_force:item/vile_boulder_gui"
+  },
   "base": {
     "parent": "opposing_force:item/vile_boulder_handheld"
   },

@@ -21,7 +21,7 @@ mixin {
 
 version = "${project.minecraft}-${project.modVersion}"
 group = "com.unusualmodding"
-archivesBaseName = project.modId
+archivesBaseName = "Opposing-Force"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
