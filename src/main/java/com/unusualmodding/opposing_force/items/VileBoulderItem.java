@@ -24,7 +24,7 @@ public class VileBoulderItem extends SwordItem {
 
         if (result) {
             if (target.getRandom().nextBoolean() && !target.hasEffect(OPEffects.SLUG_INFESTATION.get()) && !(target instanceof Slug)) {
-                target.addEffect(new MobEffectInstance(OPEffects.SLUG_INFESTATION.get(), 240, 0, false, true));
+                target.addEffect(new MobEffectInstance(OPEffects.SLUG_INFESTATION.get(), 300, 0, false, true));
                 target.playSound(OPSoundEvents.SLUG_ATTACK.get(), 1.5F, 1);
 
                 for (int i = 0; i < 16; i++) {

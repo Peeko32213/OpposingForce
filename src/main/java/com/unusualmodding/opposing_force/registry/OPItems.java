@@ -40,7 +40,7 @@ public class OPItems {
     public static final RegistryObject<Item> TOMAHAWK =  registerItem("tomahawk", () -> new TomahawkItem(new Item.Properties()));
     public static final RegistryObject<Item> TESLA_BOW = registerItem("tesla_bow", () -> new TeslaBowItem(new Item.Properties().stacksTo(1).durability(465)));
     public static final RegistryObject<Item> SLUG_EGGS = registerItem("slug_eggs", () -> new SlugEggItem(new Item.Properties()));
-    public static final RegistryObject<Item> VILE_BOULDER = registerItem("vile_boulder", () -> new VileBoulderItem(OPItemTiers.VILE,  7, -3.1F, new Item.Properties()));
+    public static final RegistryObject<Item> VILE_BOULDER = registerItem("vile_boulder", () -> new VileBoulderItem(OPItemTiers.VILE,  7, -3.2F, new Item.Properties()));
     public static final RegistryObject<Item> CAPTURED_WHIZZ = registerItem("captured_whizz", () -> new MobItem(OPEntities.WHIZZ::get, SoundEvents.AMETHYST_BLOCK_RESONATE, new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> UMBER_FANG = registerItem("umber_fang", () -> new Item(new Item.Properties()));
 

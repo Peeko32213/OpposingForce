@@ -193,7 +193,7 @@ public class Terror extends Monster implements IAnimatedAttacker {
     private static class TerrorAttackGoal extends Goal {
 
         private int attackTime = 0;
-        Terror terror;
+        protected final Terror terror;
 
         public TerrorAttackGoal(Terror terror) {
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
@@ -204,12 +204,32 @@ public class Terror extends Monster implements IAnimatedAttacker {
             return this.terror.getTarget() != null && this.terror.getTarget().isAlive();
         }
 
+        public boolean canContinueToUse() {
+            LivingEntity target = this.terror.getTarget();
+            if (target == null) {
+                return false;
+            } else if (!target.isAlive()) {
+                return false;
+            } else if (!this.terror.isWithinRestriction(target.blockPosition())) {
+                return false;
+            } else {
+                return !(target instanceof Player) || !target.isSpectator() && !((Player) target).isCreative() || !this.terror.getNavigation().isDone();
+            }
+        }
+
         public void start() {
+            this.terror.setAggressive(true);
             this.terror.setAttackState(0);
             this.attackTime = 0;
         }
 
         public void stop() {
+            LivingEntity target = this.terror.getTarget();
+            if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
+                this.terror.setTarget(null);
+            }
+            this.terror.setAggressive(false);
+            this.terror.getNavigation().stop();
             this.terror.setAttackState(0);
         }
 
@@ -232,18 +252,28 @@ public class Terror extends Monster implements IAnimatedAttacker {
             }
         }
 
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
         protected void tickAttack() {
             attackTime++;
-            if (attackTime == 5) {
-                if (this.terror.distanceTo(Objects.requireNonNull(this.terror.getTarget())) < 2.5F) {
-                    this.terror.doHurtTarget(this.terror.getTarget());
+            LivingEntity target = this.terror.getTarget();
+
+            if (attackTime == 8) {
+                if (this.terror.distanceTo(Objects.requireNonNull(target)) < getAttackReachSqr(target)) {
+                    this.terror.doHurtTarget(target);
                     this.terror.swing(InteractionHand.MAIN_HAND);
                 }
             }
-            if (attackTime >= 8) {
+            if (attackTime >= 20) {
                 attackTime = 0;
                 this.terror.setAttackState(0);
             }
+        }
+
+        protected double getAttackReachSqr(LivingEntity target) {
+            return this.terror.getBbWidth() * 2.0F * this.terror.getBbWidth() * 2.0F + target.getBbWidth();
         }
     }
 }

@@ -87,8 +87,8 @@ public class OPEntities {
 
     public static final RegistryObject<EntityType<Slug>> SLUG = ENTITY_TYPES.register(
             "slug", () ->
-            EntityType.Builder.of(Slug::new, MobCategory.CREATURE)
-                    .sized(1.0F, 0.8F)
+            EntityType.Builder.of(Slug::new, MobCategory.MONSTER)
+                    .sized(1.0F, 0.9F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "slug").toString())
     );

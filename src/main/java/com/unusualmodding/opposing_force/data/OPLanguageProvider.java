@@ -128,6 +128,11 @@ public class OPLanguageProvider extends LanguageProvider {
         addEffect(OPEffects.GLOOM_TOXIN, "Gloom Toxin");
         addEffect(OPEffects.SLUG_INFESTATION, "Slug Infestation");
 
+        // jeed compat
+        add("effect.opposing_force.electrified.description", "Inflicts lethal damage over time while in water or rain; higher levels do more damage per second.");
+        add("effect.opposing_force.gloom_toxin.description", "Inflicts lethal damage over time while in light levels of 7 or less; higher levels do more damage per second.");
+        add("effect.opposing_force.slug_infestation.description", "Decreases walking speed and gives the entity a 25% chance to spawn between 1 and 2 slugs when hurt; higher levels increase the amount of slugs spawned.");
+
         add("death.attack.opposing_force.electrified", "%1$s met a shocking end");
         add("death.attack.opposing_force.electrified.player", "%1$s was zapped by %2$s");
         add("death.attack.opposing_force.gloom_toxin", "%1$s was consumed by darkness");

@@ -28,7 +28,7 @@ public class DeepwovenArmorModel extends HumanoidModel {
 
 		head.addOrReplaceChild("helmet", CubeListBuilder.create()
 				.texOffs(5, 40).addBox(-5.0F, -2.0F, -5.0F, 10.0F, 3.0F, 10.0F, new CubeDeformation(0.01F))
-				.texOffs(48, 27).addBox(-3.0F, -3.25F, -4.0F, 6.0F, 4.0F, 0.0F, new CubeDeformation(0.2F))
+				.texOffs(48, 27).addBox(-3.0F, -3.25F, -4.0F, 6.0F, 4.0F, 0.0F, new CubeDeformation(0.55F))
 				.texOffs(45, 40).addBox(-2.0F, -16.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.3F))
 				.texOffs(5, 24).addBox(-7.0F, -9.0F, -7.0F, 14.0F, 2.0F, 14.0F, new CubeDeformation(0.02F))
 				.texOffs(4, 54).addBox(-7.0F, -10.0F, -7.0F, 14.0F, 1.0F, 0.0F, new CubeDeformation(0.02F))

@@ -3,8 +3,8 @@
   "biomes": "#opposing_force:has_monster/slug",
   "spawners": {
     "type": "opposing_force:slug",
-    "maxCount": 4,
-    "minCount": 4,
-    "weight": 100
+    "maxCount": 2,
+    "minCount": 2,
+    "weight": 40
   }
 }

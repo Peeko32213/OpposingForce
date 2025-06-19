@@ -126,7 +126,7 @@ public class Slug extends Monster implements OwnableEntity {
     @Override
     protected void dropFromLootTable(DamageSource source, boolean drops) {
         int extraEggs = this.getSlugSize() / 3;
-        if (this.getSlugSize() > 3) {
+        if (this.getSlugSize() > 4) {
             for (int i = 0; i < extraEggs; i++) {
                 super.dropFromLootTable(source, drops);
             }
@@ -432,11 +432,6 @@ public class Slug extends Monster implements OwnableEntity {
         } else {
             return 0.3F;
         }
-    }
-
-    @SuppressWarnings("unused")
-    public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level.getBlockState(pos.below()).canOcclude() && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(level, pos, random);
     }
 
     @Override

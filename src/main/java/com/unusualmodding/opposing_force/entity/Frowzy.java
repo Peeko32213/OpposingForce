@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.unusualmodding.opposing_force.entity.ai.goal.AttackGoal;
 import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -44,7 +45,6 @@ import net.minecraftforge.common.ForgeConfig;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -415,49 +415,16 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
     }
 
     // goals
-    private static class FrowzyAttackGoal extends Goal {
+    private static class FrowzyAttackGoal extends AttackGoal {
 
-        private int attackTime = 0;
         protected final Frowzy frowzy;
 
         public FrowzyAttackGoal(Frowzy frowzy) {
-            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+            super(frowzy);
             this.frowzy = frowzy;
         }
 
-        public boolean canUse() {
-            return this.frowzy.getTarget() != null && this.frowzy.getTarget().isAlive();
-        }
-
-        public boolean canContinueToUse() {
-            LivingEntity target = this.frowzy.getTarget();
-            if (target == null) {
-                return false;
-            } else if (!target.isAlive()) {
-                return false;
-            } else if (!this.frowzy.isWithinRestriction(target.blockPosition())) {
-                return false;
-            } else {
-                return !(target instanceof Player) || !target.isSpectator() && !((Player) target).isCreative() || !this.frowzy.getNavigation().isDone();
-            }
-        }
-
-        public void start() {
-            this.frowzy.setAggressive(true);
-            this.frowzy.setAttackState(0);
-            this.attackTime = 0;
-        }
-
-        public void stop() {
-            LivingEntity target = this.frowzy.getTarget();
-            if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
-                this.frowzy.setTarget(null);
-            }
-            this.frowzy.setAggressive(false);
-            this.frowzy.getNavigation().stop();
-            this.frowzy.setAttackState(0);
-        }
-
+        @Override
         public void tick() {
             LivingEntity target = this.frowzy.getTarget();
             if (target != null) {
@@ -476,7 +443,7 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
             }
         }
 
-        protected void checkForCloseRangeAttack (double distance){
+        protected void checkForCloseRangeAttack (double distance) {
             if (this.frowzy.isBaby() && distance <= 1.25D) {
                 this.frowzy.setAttackState(1);
             } else if (distance <= 2) {
@@ -491,13 +458,13 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
             attackTime++;
             LivingEntity target = this.frowzy.getTarget();
 
-            if (attackTime == 3) {
+            if (attackTime == 5) {
                 if (this.frowzy.distanceTo(Objects.requireNonNull(target)) < getAttackReachSqr(target)) {
                     this.frowzy.doHurtTarget(target);
                     this.frowzy.swing(InteractionHand.MAIN_HAND);
                 }
             }
-            if (attackTime >= 9) {
+            if (attackTime >= 20) {
                 attackTime = 0;
                 this.frowzy.setAttackState(0);
             }
@@ -512,10 +479,6 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
             }
             this.frowzy.setDeltaMovement(leapVec.x, 0.57D, leapVec.z);
             this.frowzy.jumpCooldown();
-        }
-
-        protected double getAttackReachSqr(LivingEntity target) {
-            return this.frowzy.getBbWidth() * 2.0F * this.frowzy.getBbWidth() * 2.0F + target.getBbWidth();
         }
     }
 

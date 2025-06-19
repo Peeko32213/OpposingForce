@@ -221,11 +221,6 @@ public class Ramble extends Monster {
         this.playSound(SoundEvents.SKELETON_STEP, 0.15F, 0.85F);
     }
 
-    @SuppressWarnings("unused")
-    public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
-    }
-
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         pSpawnData = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);

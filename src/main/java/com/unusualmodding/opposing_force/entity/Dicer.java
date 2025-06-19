@@ -191,11 +191,6 @@ public class Dicer extends Monster implements IAnimatedAttacker {
         this.playSound(SoundEvents.ZOMBIE_STEP, 0.1F, 1.3F);
     }
 
-    @SuppressWarnings("unused")
-    public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
-    }
-
     // goals
     private class DicerAttackGoal extends Goal {
 
