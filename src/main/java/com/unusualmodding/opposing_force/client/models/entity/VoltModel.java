@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.client.models.entity;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.VoltAnimations;
@@ -10,6 +11,8 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
@@ -39,6 +42,7 @@ public class VoltModel<T extends Volt> extends HierarchicalModel<T> {
 	private final ModelPart TailPart4;
 	private final ModelPart TailPart5;
 	private final ModelPart TailPart6;
+	private final List<ModelPart> pulsatingLayerModelParts;
 
 	public VoltModel(ModelPart root) {
 		this.root = root.getChild("root");
@@ -65,6 +69,7 @@ public class VoltModel<T extends Volt> extends HierarchicalModel<T> {
 		this.TailPart4 = this.TailPart3.getChild("TailPart4");
 		this.TailPart5 = this.TailPart4.getChild("TailPart5");
 		this.TailPart6 = this.TailPart5.getChild("TailPart6");
+		this.pulsatingLayerModelParts = ImmutableList.of(this.Body, this.Eye1, this.EyePart1, this.Eye2, this.EyePart2, this.Wing1, this.WingMid1, this.WingBottom1, this.WingTip1, this.Wing2, this.WingMid2, this.WingBottom2, this.WingTip2, this.MantaThing1, this.MantaThing2, this.TailPart1, this.TailPart2, this.TailPart3, this.TailPart6);
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -113,5 +118,9 @@ public class VoltModel<T extends Volt> extends HierarchicalModel<T> {
 	@Override
 	public ModelPart root() {
 		return this.root;
+	}
+
+	public List<ModelPart> getPulsatingLayerModelParts() {
+		return this.pulsatingLayerModelParts;
 	}
 }
