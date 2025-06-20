@@ -52,7 +52,7 @@ public class Ramble extends Monster {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 70.0D)
+                .add(Attributes.MAX_HEALTH, 50.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.13F)
                 .add(Attributes.ATTACK_DAMAGE, 7.0D)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.2D)
