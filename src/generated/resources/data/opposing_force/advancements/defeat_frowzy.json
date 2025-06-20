@@ -1,0 +1,40 @@
+{
+  "parent": "opposing_force:root",
+  "criteria": {
+    "defeat_frowzy": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "opposing_force:frowzy"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.opposing_force.defeat_frowzy.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:beetroot"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.opposing_force.defeat_frowzy"
+    }
+  },
+  "requirements": [
+    [
+      "defeat_frowzy"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,40 @@
+{
+  "parent": "opposing_force:root",
+  "criteria": {
+    "defeat_dicer": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "opposing_force:dicer"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.opposing_force.defeat_dicer.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "opposing_force:dicer_spawn_egg"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.opposing_force.defeat_dicer"
+    }
+  },
+  "requirements": [
+    [
+      "defeat_dicer"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

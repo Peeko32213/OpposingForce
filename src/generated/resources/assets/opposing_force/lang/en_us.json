@@ -1,4 +1,10 @@
 {
+  "advancement.opposing_force.defeat_dicer": "Slay Queen",
+  "advancement.opposing_force.defeat_dicer.desc": "Defeat a Dicer",
+  "advancement.opposing_force.defeat_trembler": "Spin to Win",
+  "advancement.opposing_force.defeat_trembler.desc": "Defeat a Trembler",
+  "advancement.opposing_force.root": "Opposing Force",
+  "advancement.opposing_force.root.desc": "Discover unique and challenging mobs throughout the world",
   "attribute.opposing_force.name.generic.stealth": "Stealth",
   "block.opposing_force.cap_of_eye": "Cap Of Eye",
   "block.opposing_force.cave_patty": "Cave Patty",

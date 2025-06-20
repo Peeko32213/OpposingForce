@@ -1,0 +1,40 @@
+{
+  "parent": "opposing_force:root",
+  "criteria": {
+    "defeat_guzzler": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "opposing_force:guzzler"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.opposing_force.defeat_guzzler.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "opposing_force:guzzler_spawn_egg"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.opposing_force.defeat_guzzler"
+    }
+  },
+  "requirements": [
+    [
+      "defeat_guzzler"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

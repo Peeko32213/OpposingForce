@@ -27,121 +27,130 @@ public class OPLanguageProvider extends LanguageProvider {
     @Override
     protected void addTranslations(){
 
-        addTabName(OPCreativeTab.TAB.get(), "Opposing Force");
+        this.addTabName(OPCreativeTab.TAB.get(), "Opposing Force");
 
         // blocks
         OPBlocks.AUTO_TRANSLATE.forEach(this::forBlocks);
         OPItems.AUTO_TRANSLATE.forEach(this::forItems);
 
-        forEntity(OPEntities.DICER);
-        forEntity(OPEntities.EMERALDFISH);
-        forEntity(OPEntities.FIRE_SLIME);
-        forEntity(OPEntities.FROWZY);
-        forEntity(OPEntities.GUZZLER);
-        forEntity(OPEntities.PALE_SPIDER);
-        forEntity(OPEntities.RAMBLE);
-        forEntity(OPEntities.SLUG);
-        forEntity(OPEntities.TERROR);
-        forEntity(OPEntities.TREMBLER);
-        forEntity(OPEntities.UMBER_SPIDER);
-        forEntity(OPEntities.VOLT);
-        forEntity(OPEntities.WHIZZ);
+        this.forEntity(OPEntities.DICER);
+        this.forEntity(OPEntities.EMERALDFISH);
+        this.forEntity(OPEntities.FIRE_SLIME);
+        this.forEntity(OPEntities.FROWZY);
+        this.forEntity(OPEntities.GUZZLER);
+        this.forEntity(OPEntities.PALE_SPIDER);
+        this.forEntity(OPEntities.RAMBLE);
+        this.forEntity(OPEntities.SLUG);
+        this.forEntity(OPEntities.TERROR);
+        this.forEntity(OPEntities.TREMBLER);
+        this.forEntity(OPEntities.UMBER_SPIDER);
+        this.forEntity(OPEntities.VOLT);
+        this.forEntity(OPEntities.WHIZZ);
 
-        forEntity(OPEntities.ELECTRIC_CHARGE);
-        forEntity(OPEntities.SLUG_EGGS);
-        forEntity(OPEntities.TOMAHAWK);
+        this.forEntity(OPEntities.ELECTRIC_CHARGE);
+        this.forEntity(OPEntities.SLUG_EGGS);
+        this.forEntity(OPEntities.TOMAHAWK);
 
-        potion(OPPotions.GLOOM_TOXIN_POTION, "Gloom Toxin", "gloom_toxin");
-        potion(OPPotions.LONG_GLOOM_TOXIN_POTION, "Gloom Toxin", "long_gloom_toxin");
-        potion(OPPotions.STRONG_GLOOM_TOXIN_POTION, "Gloom Toxin", "strong_gloom_toxin");
+        this.potion(OPPotions.GLOOM_TOXIN_POTION, "Gloom Toxin", "gloom_toxin");
+        this.potion(OPPotions.LONG_GLOOM_TOXIN_POTION, "Gloom Toxin", "long_gloom_toxin");
+        this.potion(OPPotions.STRONG_GLOOM_TOXIN_POTION, "Gloom Toxin", "strong_gloom_toxin");
 
-        potion(OPPotions.SLUG_INFESTATION_POTION, "Slug Infestation", "slug_infestation");
+        this.potion(OPPotions.SLUG_INFESTATION_POTION, "Slug Infestation", "slug_infestation");
 
-        sound(OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN, "Deepwoven armor rustles");
+        this.sound(OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN, "Deepwoven armor rustles");
 
-        sound(OPSoundEvents.DICER_DEATH, "Dicer dies");
-        sound(OPSoundEvents.DICER_HURT, "Dicer hurts");
-        sound(OPSoundEvents.DICER_IDLE, "Dicer screams");
-        sound(OPSoundEvents.DICER_ATTACK, "Dicer slashes");
-        sound(OPSoundEvents.DICER_LASER, "Dicer lasers");
+        this.sound(OPSoundEvents.DICER_DEATH, "Dicer dies");
+        this.sound(OPSoundEvents.DICER_HURT, "Dicer hurts");
+        this.sound(OPSoundEvents.DICER_IDLE, "Dicer screams");
+        this.sound(OPSoundEvents.DICER_ATTACK, "Dicer slashes");
+        this.sound(OPSoundEvents.DICER_LASER, "Dicer lasers");
 
-        sound(OPSoundEvents.ELECTRIC_CHARGE, "Electric Charge whirls");
-        sound(OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE, "Electric Charge dissipates");
-        sound(OPSoundEvents.ELECTRIC_CHARGE_ZAP, "Electric Charge zaps");
+        this.sound(OPSoundEvents.ELECTRIC_CHARGE, "Electric Charge whirls");
+        this.sound(OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE, "Electric Charge dissipates");
+        this.sound(OPSoundEvents.ELECTRIC_CHARGE_ZAP, "Electric Charge zaps");
 
-        sound(OPSoundEvents.FIRE_SLIME_DEATH, "Fire Slime dies");
-        sound(OPSoundEvents.FIRE_SLIME_HURT, "Fire Slime hurts");
-        sound(OPSoundEvents.FIRE_SLIME_SQUISH, "Fire Slime squishes");
-        sound(OPSoundEvents.FIRE_SLIME_JUMP, "Fire Slime jumps");
-        sound(OPSoundEvents.FIRE_SLIME_ATTACK, "Fire Slime attacks");
-        sound(OPSoundEvents.FIRE_SLIME_POP, "Fire Slime evaporates");
+        this.sound(OPSoundEvents.FIRE_SLIME_DEATH, "Fire Slime dies");
+        this.sound(OPSoundEvents.FIRE_SLIME_HURT, "Fire Slime hurts");
+        this.sound(OPSoundEvents.FIRE_SLIME_SQUISH, "Fire Slime squishes");
+        this.sound(OPSoundEvents.FIRE_SLIME_JUMP, "Fire Slime jumps");
+        this.sound(OPSoundEvents.FIRE_SLIME_ATTACK, "Fire Slime attacks");
+        this.sound(OPSoundEvents.FIRE_SLIME_POP, "Fire Slime evaporates");
 
-        sound(OPSoundEvents.FROWZY_DEATH, "Frowzy dies");
-        sound(OPSoundEvents.FROWZY_HURT, "Frowzy hurts");
-        sound(OPSoundEvents.FROWZY_IDLE, "Frowzy groans");
+        this.sound(OPSoundEvents.FROWZY_DEATH, "Frowzy dies");
+        this.sound(OPSoundEvents.FROWZY_HURT, "Frowzy hurts");
+        this.sound(OPSoundEvents.FROWZY_IDLE, "Frowzy groans");
 
-        sound(OPSoundEvents.GUZZLER_SHOOT, "Guzzler shoots");
+        this.sound(OPSoundEvents.GUZZLER_SHOOT, "Guzzler shoots");
 
-        sound(OPSoundEvents.PALE_SPIDER_DEATH, "Pale Spider dies");
-        sound(OPSoundEvents.PALE_SPIDER_HURT, "Pale Spider hurts");
-        sound(OPSoundEvents.PALE_SPIDER_IDLE, "Pale Spider hisses");
+        this.sound(OPSoundEvents.PALE_SPIDER_DEATH, "Pale Spider dies");
+        this.sound(OPSoundEvents.PALE_SPIDER_HURT, "Pale Spider hurts");
+        this.sound(OPSoundEvents.PALE_SPIDER_IDLE, "Pale Spider hisses");
 
-        sound(OPSoundEvents.RAMBLE_HURT, "Ramble hurt");
-        sound(OPSoundEvents.RAMBLE_DEATH, "Ramble dies");
-        sound(OPSoundEvents.RAMBLE_ATTACK, "Ramble slices");
-        sound(OPSoundEvents.RAMBLE_IDLE, "Ramble clatters");
+        this.sound(OPSoundEvents.RAMBLE_HURT, "Ramble hurt");
+        this.sound(OPSoundEvents.RAMBLE_DEATH, "Ramble dies");
+        this.sound(OPSoundEvents.RAMBLE_ATTACK, "Ramble slices");
+        this.sound(OPSoundEvents.RAMBLE_IDLE, "Ramble clatters");
 
-        sound(OPSoundEvents.SLUG_DEATH, "Slug dies");
-        sound(OPSoundEvents.SLUG_HURT, "Slug hurts");
-        sound(OPSoundEvents.SLUG_SLIDE, "Footsteps");
-        sound(OPSoundEvents.SLUG_EAT, "Slug eats");
-        sound(OPSoundEvents.SLUG_ATTACK, "Slug attacks");
+        this.sound(OPSoundEvents.SLUG_DEATH, "Slug dies");
+        this.sound(OPSoundEvents.SLUG_HURT, "Slug hurts");
+        this.sound(OPSoundEvents.SLUG_SLIDE, "Footsteps");
+        this.sound(OPSoundEvents.SLUG_EAT, "Slug eats");
+        this.sound(OPSoundEvents.SLUG_ATTACK, "Slug attacks");
 
-        sound(OPSoundEvents.TESLA_BOW_CHARGED, "Tesla Bow loads");
-        sound(OPSoundEvents.TESLA_BOW_SHOOT, "Tesla Bow fires");
+        this.sound(OPSoundEvents.TESLA_BOW_CHARGED, "Tesla Bow loads");
+        this.sound(OPSoundEvents.TESLA_BOW_SHOOT, "Tesla Bow fires");
 
-        sound(OPSoundEvents.TREMBLER_BLOCK, "Trembler blocks");
+        this.sound(OPSoundEvents.TREMBLER_BLOCK, "Trembler blocks");
 
-        sound(OPSoundEvents.UMBER_SPIDER_DEATH, "Umber Spider dies");
-        sound(OPSoundEvents.UMBER_SPIDER_HURT, "Umber Spider hurts");
-        sound(OPSoundEvents.UMBER_SPIDER_IDLE, "Umber Spider groans");
+        this.sound(OPSoundEvents.UMBER_SPIDER_DEATH, "Umber Spider dies");
+        this.sound(OPSoundEvents.UMBER_SPIDER_HURT, "Umber Spider hurts");
+        this.sound(OPSoundEvents.UMBER_SPIDER_IDLE, "Umber Spider groans");
 
-        sound(OPSoundEvents.VOLT_DEATH, "Volt dies");
-        sound(OPSoundEvents.VOLT_HURT, "Volt hurts");
-        sound(OPSoundEvents.VOLT_IDLE, "Volt hums");
-        sound(OPSoundEvents.VOLT_SHOOT, "Volt shoots");
-        sound(OPSoundEvents.VOLT_SQUISH, "Volt squishes");
+        this.sound(OPSoundEvents.VOLT_DEATH, "Volt dies");
+        this.sound(OPSoundEvents.VOLT_HURT, "Volt hurts");
+        this.sound(OPSoundEvents.VOLT_IDLE, "Volt hums");
+        this.sound(OPSoundEvents.VOLT_SHOOT, "Volt shoots");
+        this.sound(OPSoundEvents.VOLT_SQUISH, "Volt squishes");
 
-        sound(OPSoundEvents.WHIZZ_DEATH, "Whizz dies");
-        sound(OPSoundEvents.WHIZZ_HURT, "Whizz hurts");
-        sound(OPSoundEvents.WHIZZ_FLY, "Whizz buzzes");
-        sound(OPSoundEvents.WHIZZ_ATTACK, "Whizz bites");
+        this.sound(OPSoundEvents.WHIZZ_DEATH, "Whizz dies");
+        this.sound(OPSoundEvents.WHIZZ_HURT, "Whizz hurts");
+        this.sound(OPSoundEvents.WHIZZ_FLY, "Whizz buzzes");
+        this.sound(OPSoundEvents.WHIZZ_ATTACK, "Whizz bites");
 
-        addBlock(OPBlocks.INFESTED_AMETHYST_BLOCK, "Infested Block of Amethyst");
+        this.addBlock(OPBlocks.INFESTED_AMETHYST_BLOCK, "Infested Block of Amethyst");
 
         // other
-        addEnchantmentWithDesc(OPEnchantments.BIG_ELECTRIC_BALL.get(), "Increases the size of the fired electric charge");
-        addEnchantmentWithDesc(OPEnchantments.BOUNCY_ELECTRIC_BALL.get(), "The fired electric charge bounces off blocks and passes through mobs");
-        addEnchantmentWithDesc(OPEnchantments.KICKBACK.get(), "Launches the user backwards after firing");
+        this.addEnchantmentWithDesc(OPEnchantments.BIG_ELECTRIC_BALL.get(), "Increases the size of the fired electric charge");
+        this.addEnchantmentWithDesc(OPEnchantments.BOUNCY_ELECTRIC_BALL.get(), "The fired electric charge bounces off blocks and passes through mobs");
+        this.addEnchantmentWithDesc(OPEnchantments.KICKBACK.get(), "Launches the user backwards after firing");
 
-        addEffect(OPEffects.ELECTRIFIED, "Electrified");
-        addEffect(OPEffects.GLOOM_TOXIN, "Gloom Toxin");
-        addEffect(OPEffects.SLUG_INFESTATION, "Slug Infestation");
+        this.addEffect(OPEffects.ELECTRIFIED, "Electrified");
+        this.addEffect(OPEffects.GLOOM_TOXIN, "Gloom Toxin");
+        this.addEffect(OPEffects.SLUG_INFESTATION, "Slug Infestation");
+
+        this.addAdvancement("root", "Opposing Force");
+        this.addAdvancementDesc("root", "Discover unique and challenging mobs throughout the world");
+
+        this.addAdvancement("defeat_dicer", "Slay Queen");
+        this.addAdvancementDesc("defeat_dicer", "Defeat a Dicer");
+
+        this.addAdvancement("defeat_trembler", "Spin to Win");
+        this.addAdvancementDesc("defeat_trembler", "Defeat a Trembler");
 
         // jeed compat
-        add("effect.opposing_force.electrified.description", "Inflicts lethal damage over time while in water or rain; higher levels do more damage per second.");
-        add("effect.opposing_force.gloom_toxin.description", "Inflicts lethal damage over time while in light levels of 7 or less; higher levels do more damage per second.");
-        add("effect.opposing_force.slug_infestation.description", "Decreases walking speed and gives the entity a 25% chance to spawn between 1 and 2 slugs when hurt; higher levels increase the amount of slugs spawned.");
+        this.add("effect.opposing_force.electrified.description", "Inflicts lethal damage over time while in water or rain; higher levels do more damage per second.");
+        this.add("effect.opposing_force.gloom_toxin.description", "Inflicts lethal damage over time while in light levels of 7 or less; higher levels do more damage per second.");
+        this.add("effect.opposing_force.slug_infestation.description", "Decreases walking speed and gives the entity a 25% chance to spawn between 1 and 2 slugs when hurt; higher levels increase the amount of slugs spawned.");
 
-        add("death.attack.opposing_force.electrified", "%1$s met a shocking end");
-        add("death.attack.opposing_force.electrified.player", "%1$s was zapped by %2$s");
-        add("death.attack.opposing_force.gloom_toxin", "%1$s was consumed by darkness");
-        add("death.attack.opposing_force.gloom_toxin.player", "%1$s didn't reach the light");
-        add("death.attack.opposing_force.laser", "%1$s was vaporized by %2$s");
-        add("death.attack.opposing_force.tomahawk", "%1$s was domed by %2$s");
-        add("death.attack.opposing_force.tomahawk.item", "%1$s was domed by %2$s using %3$s");
+        this.add("death.attack.opposing_force.electrified", "%1$s met a shocking end");
+        this.add("death.attack.opposing_force.electrified.player", "%1$s was zapped by %2$s");
+        this.add("death.attack.opposing_force.gloom_toxin", "%1$s was consumed by darkness");
+        this.add("death.attack.opposing_force.gloom_toxin.player", "%1$s didn't reach the light");
+        this.add("death.attack.opposing_force.laser", "%1$s was vaporized by %2$s");
+        this.add("death.attack.opposing_force.tomahawk", "%1$s was domed by %2$s");
+        this.add("death.attack.opposing_force.tomahawk.item", "%1$s was domed by %2$s using %3$s");
 
-        add("attribute.opposing_force.name.generic.stealth", "Stealth");
+        this.add("attribute.opposing_force.name.generic.stealth", "Stealth");
     }
 
     @Override
@@ -192,5 +201,13 @@ public class OPLanguageProvider extends LanguageProvider {
 
     public void addTabName(CreativeModeTab key, String name){
         add(key.getDisplayName().getString(), name);
+    }
+
+    public void addAdvancement(String key, String name) {
+        this.add("advancement." + OpposingForce.MOD_ID + "." + key, name);
+    }
+
+    public void addAdvancementDesc(String key, String name) {
+        this.add("advancement." + OpposingForce.MOD_ID + "." + key + ".desc", name);
     }
 }
