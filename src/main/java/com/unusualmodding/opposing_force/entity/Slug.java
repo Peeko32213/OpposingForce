@@ -439,11 +439,11 @@ public class Slug extends Monster implements OwnableEntity {
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag compoundTag) {
         RandomSource random = level.getRandom();
 
-        if (random.nextFloat() < 0.5F * difficulty.getSpecialMultiplier()) {
-            if (random.nextInt(100) == 0) {
+        if (random.nextInt(100) == 0) {
+            if (random.nextFloat() < 0.5F * difficulty.getSpecialMultiplier()) {
                 this.setSlugSize(8 + random.nextInt(32));
-                this.setMaxGrowableSlugSize(8 + random.nextInt(32));
             }
+            this.setMaxGrowableSlugSize(8 + random.nextInt(32));
         } else {
             this.setSlugSize(random.nextInt(8));
             this.setMaxGrowableSlugSize(1 + random.nextInt(7));
