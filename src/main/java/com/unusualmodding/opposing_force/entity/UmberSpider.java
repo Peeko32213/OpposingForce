@@ -413,10 +413,13 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
         }
 
         public void leap() {
+            LivingEntity target = this.umberSpider.getTarget();
             Vec3 vec3 = this.umberSpider.getDeltaMovement();
-            Vec3 leapVec = new Vec3(Objects.requireNonNull(this.umberSpider.getTarget()).getX() - this.umberSpider.getX(), 0.0F, this.umberSpider.getTarget().getZ() - this.umberSpider.getZ());
+            Vec3 leapVec = new Vec3(Objects.requireNonNull(target).getX() - this.umberSpider.getX(), 0.0F, target.getZ() - this.umberSpider.getZ());
             if (leapVec.lengthSqr() > 1.0E-7) {
                 leapVec = leapVec.normalize().scale(0.4).add(vec3.scale(0.2));
+                this.umberSpider.lookAt(Objects.requireNonNull(target), 30F, 30F);
+                this.umberSpider.getLookControl().setLookAt(target, 30F, 30F);
             }
             this.umberSpider.setDeltaMovement(leapVec.x, 0.4D, leapVec.z);
             this.umberSpider.leapCooldown();
