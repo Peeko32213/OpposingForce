@@ -29,7 +29,7 @@ public class OPSoundEvents {
     public static final RegistryObject<SoundEvent> GUZZLER_HURT = createSoundEvent("guzzler_hurt");
     public static final RegistryObject<SoundEvent> GUZZLER_DEATH = createSoundEvent("guzzler_death");
     public static final RegistryObject<SoundEvent> GUZZLER_IDLE = createSoundEvent("guzzler_idle");
-    public static final RegistryObject<SoundEvent> GUZZLER_SHOOT = createSoundEvent("guzzler_shoot");
+    public static final RegistryObject<SoundEvent> GUZZLER_SPEW = createSoundEvent("guzzler_spew");
 
     public static final RegistryObject<SoundEvent> FIRE_SLIME_HURT = createSoundEvent("fire_slime_hurt");
     public static final RegistryObject<SoundEvent> FIRE_SLIME_DEATH = createSoundEvent("fire_slime_death");

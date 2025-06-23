@@ -72,18 +72,10 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound("mob/slime/small5").pitch(0.9F)
         );
         this.sound(OPSoundEvents.FIRE_SLIME_SQUISH,
-                sound("mob/slime/small1").pitch(0.9F),
-                sound("mob/slime/small2").pitch(0.9F),
-                sound("mob/slime/small3").pitch(0.9F),
-                sound("mob/slime/small4").pitch(0.9F),
-                sound("mob/slime/small5").pitch(0.9F)
+                sound(OpposingForce.modPrefix("entity/fire_slime/jump1"))
         );
         this.sound(OPSoundEvents.FIRE_SLIME_JUMP,
-                sound("mob/slime/small1").pitch(0.9F),
-                sound("mob/slime/small2").pitch(0.9F),
-                sound("mob/slime/small3").pitch(0.9F),
-                sound("mob/slime/small4").pitch(0.9F),
-                sound("mob/slime/small5").pitch(0.9F)
+                sound(OpposingForce.modPrefix("entity/fire_slime/jump1"))
         );
         this.sound(OPSoundEvents.FIRE_SLIME_ATTACK,
                 sound("mob/slime/attack1"),
@@ -107,8 +99,11 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound("mob/zombie/say3").pitch(1.2F)
         );
 
-        this.sound(OPSoundEvents.GUZZLER_SHOOT,
-                sound("mob/ghast/fireball4").pitch(0.85F)
+        this.sound(OPSoundEvents.GUZZLER_IDLE,
+                sound(OpposingForce.modPrefix("entity/guzzler/idle1"))
+        );
+        this.sound(OPSoundEvents.GUZZLER_SPEW,
+                sound(OpposingForce.modPrefix("entity/guzzler/spew1"))
         );
 
         this.sound(OPSoundEvents.PALE_SPIDER_HURT,

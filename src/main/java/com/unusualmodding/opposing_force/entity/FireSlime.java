@@ -172,7 +172,6 @@ public class FireSlime extends Monster {
                 this.remove(RemovalReason.DISCARDED);
             }
         }
-
         super.tick();
     }
 

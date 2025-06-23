@@ -10,10 +10,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -26,21 +29,23 @@ import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumSet;
 import java.util.Set;
 
 public class Guzzler extends Monster {
 
-    private static final EntityDataAccessor<Boolean> SHOOTING = SynchedEntityData.defineId(Guzzler.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> SHOOT_COOLDOWN = SynchedEntityData.defineId(Guzzler.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> SPEWING = SynchedEntityData.defineId(Guzzler.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> SPEW_COOLDOWN = SynchedEntityData.defineId(Guzzler.class, EntityDataSerializers.INT);
 
     public final AnimationState idleAnimationState = new AnimationState();
-    public final AnimationState shootAnimationState = new AnimationState();
+    public final AnimationState spewAnimationState = new AnimationState();
 
     public Guzzler(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -50,7 +55,7 @@ public class Guzzler extends Monster {
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 80.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.11D)
+                .add(Attributes.MOVEMENT_SPEED, 0.13D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D)
                 .add(Attributes.FOLLOW_RANGE, 24.0D);
     }
@@ -121,8 +126,8 @@ public class Guzzler extends Monster {
     public void tick() {
         super.tick();
 
-        if (this.getShootCooldown() > 0) {
-            this.setShootCooldown(this.getShootCooldown() - 1);
+        if (this.getSpewCooldown() > 0) {
+            this.setSpewCooldown(this.getSpewCooldown() - 1);
         }
 
         if (this.level().isClientSide()) {
@@ -132,50 +137,50 @@ public class Guzzler extends Monster {
 
     private void setupAnimationStates() {
         this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
-        this.shootAnimationState.animateWhen(this.isAlive() && this.isShooting(), this.tickCount);
+        this.spewAnimationState.animateWhen(this.isAlive() && this.isSpewing(), this.tickCount);
     }
 
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(SHOOTING, false);
-        this.entityData.define(SHOOT_COOLDOWN, 18 + random.nextInt(6 * 5));
+        this.entityData.define(SPEWING, false);
+        this.entityData.define(SPEW_COOLDOWN, 18 + random.nextInt(6 * 5));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        compoundTag.putBoolean("Shooting", this.isShooting());
-        compoundTag.putInt("ShootCooldown", this.getShootCooldown());
+        compoundTag.putBoolean("Spewing", this.isSpewing());
+        compoundTag.putInt("SpewCooldown", this.getSpewCooldown());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        this.setShooting(compoundTag.getBoolean("Shooting"));
-        this.setShootCooldown(compoundTag.getInt("ShootCooldown"));
+        this.setSpewing(compoundTag.getBoolean("Spewing"));
+        this.setSpewCooldown(compoundTag.getInt("SpewCooldown"));
     }
 
-    public boolean isShooting() {
-        return this.entityData.get(SHOOTING);
+    public boolean isSpewing() {
+        return this.entityData.get(SPEWING);
     }
 
-    public void setShooting(boolean shooting) {
-        this.entityData.set(SHOOTING, shooting);
+    public void setSpewing(boolean spewing) {
+        this.entityData.set(SPEWING, spewing);
     }
 
-    public int getShootCooldown() {
-        return this.entityData.get(SHOOT_COOLDOWN);
+    public int getSpewCooldown() {
+        return this.entityData.get(SPEW_COOLDOWN);
     }
 
-    public void setShootCooldown(int cooldown) {
-        this.entityData.set(SHOOT_COOLDOWN, cooldown);
+    public void setSpewCooldown(int cooldown) {
+        this.entityData.set(SPEW_COOLDOWN, cooldown);
     }
 
-    public void shootCooldown() {
-        this.entityData.set(SHOOT_COOLDOWN, 18);
+    public void spewCooldown() {
+        this.entityData.set(SPEW_COOLDOWN, 18);
     }
 
-    public boolean shouldShoot() {
+    public boolean shouldSpew() {
         return true;
     }
 
@@ -194,6 +199,31 @@ public class Guzzler extends Monster {
             this.guzzleEffect();
         }
         super.handleEntityEvent(id);
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return OPSoundEvents.GUZZLER_IDLE.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return OPSoundEvents.GUZZLER_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return OPSoundEvents.GUZZLER_DEATH.get();
+    }
+
+    @Override
+    protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
+        this.playSound(SoundEvents.POLAR_BEAR_STEP, 0.15F, 0.8F);
+    }
+
+    @Override
+    public int getAmbientSoundInterval() {
+        return 140;
     }
 
     @SuppressWarnings("unused")
@@ -243,7 +273,7 @@ public class Guzzler extends Monster {
         }
 
         protected boolean isShooting() {
-            return this.guzzler.shouldShoot();
+            return this.guzzler.shouldSpew();
         }
 
         public boolean canContinueToUse() {
@@ -253,14 +283,14 @@ public class Guzzler extends Monster {
         public void start() {
             super.start();
             this.guzzler.setAggressive(true);
-            this.guzzler.setShooting(false);
+            this.guzzler.setSpewing(false);
             this.attackTime = 0;
         }
 
         public void stop() {
             super.stop();
             this.guzzler.setAggressive(false);
-            this.guzzler.setShooting(false);
+            this.guzzler.setSpewing(false);
             this.attackTime = 0;
             this.seeTime = 0;
         }
@@ -314,18 +344,18 @@ public class Guzzler extends Monster {
                     this.guzzler.getLookControl().setLookAt(target, 30.0F, 30.0F);
                 }
 
-                if (this.guzzler.isShooting()) {
+                if (this.guzzler.isSpewing()) {
                     tickSpitAttack();
                 } else {
-                    if (this.guzzler.getShootCooldown() <= 0) {
-                        this.guzzler.setShooting(true);
+                    if (this.guzzler.getSpewCooldown() <= 0) {
+                        this.guzzler.setSpewing(true);
                     }
                 }
             }
         }
 
         public boolean requiresUpdateEveryTick() {
-            return this.guzzler.isShooting();
+            return this.guzzler.isSpewing();
         }
 
         protected void tickSpitAttack() {
@@ -341,7 +371,7 @@ public class Guzzler extends Monster {
                 final double d3 = this.guzzler.getTarget().getZ() - this.guzzler.getZ();
                 final float f3 = Mth.sqrt((float) (d1 * d1 + d2 * d2 + d3 * d3)) * 0.23F;
                 this.guzzler.gameEvent(GameEvent.PROJECTILE_SHOOT);
-                this.guzzler.playSound(OPSoundEvents.GUZZLER_SHOOT.get(), 2.0F, 1.0F / (this.guzzler.getRandom().nextFloat() * 0.4F + 0.8F));
+                this.guzzler.playSound(OPSoundEvents.GUZZLER_SPEW.get(), 2.0F, 1.0F / (this.guzzler.getRandom().nextFloat() * 0.4F + 0.8F));
                 slime.shoot(d1, d2 + (double) f3, d3, 1.5F, 0.0F);
                 slime.setYRot(this.guzzler.getYRot() % 360.0F);
                 slime.setXRot(Mth.clamp(this.guzzler.getYRot(), -90.0F, 90.0F) % 360.0F);
@@ -356,8 +386,8 @@ public class Guzzler extends Monster {
 
             if (attackTime > 15) {
                 this.attackTime = 0;
-                this.guzzler.shootCooldown();
-                this.guzzler.setShooting(false);
+                this.guzzler.spewCooldown();
+                this.guzzler.setSpewing(false);
             }
         }
     }

@@ -157,26 +157,7 @@
   },
   "fire_slime_jump": {
     "sounds": [
-      {
-        "name": "mob/slime/small1",
-        "pitch": 0.9
-      },
-      {
-        "name": "mob/slime/small2",
-        "pitch": 0.9
-      },
-      {
-        "name": "mob/slime/small3",
-        "pitch": 0.9
-      },
-      {
-        "name": "mob/slime/small4",
-        "pitch": 0.9
-      },
-      {
-        "name": "mob/slime/small5",
-        "pitch": 0.9
-      }
+      "opposing_force:entity/fire_slime/jump1"
     ],
     "subtitle": "subtitles.opposing_force.fire_slime_jump"
   },
@@ -191,26 +172,7 @@
   },
   "fire_slime_squish": {
     "sounds": [
-      {
-        "name": "mob/slime/small1",
-        "pitch": 0.9
-      },
-      {
-        "name": "mob/slime/small2",
-        "pitch": 0.9
-      },
-      {
-        "name": "mob/slime/small3",
-        "pitch": 0.9
-      },
-      {
-        "name": "mob/slime/small4",
-        "pitch": 0.9
-      },
-      {
-        "name": "mob/slime/small5",
-        "pitch": 0.9
-      }
+      "opposing_force:entity/fire_slime/jump1"
     ],
     "subtitle": "subtitles.opposing_force.fire_slime_squish"
   },
@@ -257,14 +219,17 @@
     ],
     "subtitle": "subtitles.opposing_force.frowzy_idle"
   },
-  "guzzler_shoot": {
+  "guzzler_idle": {
     "sounds": [
-      {
-        "name": "mob/ghast/fireball4",
-        "pitch": 0.85
-      }
+      "opposing_force:entity/guzzler/idle1"
     ],
-    "subtitle": "subtitles.opposing_force.guzzler_shoot"
+    "subtitle": "subtitles.opposing_force.guzzler_idle"
+  },
+  "guzzler_spew": {
+    "sounds": [
+      "opposing_force:entity/guzzler/spew1"
+    ],
+    "subtitle": "subtitles.opposing_force.guzzler_spew"
   },
   "pale_spider_death": {
     "sounds": [

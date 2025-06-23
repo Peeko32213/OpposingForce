@@ -51,7 +51,7 @@ public class GuzzlerModel<T extends Guzzler> extends HierarchicalModel<T> {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.animateWalk(GuzzlerAnimations.WALK, limbSwing, limbSwingAmount, 5, 8);
 		this.animate(entity.idleAnimationState, GuzzlerAnimations.IDLE, ageInTicks);
-		this.animate(entity.shootAnimationState, GuzzlerAnimations.SPIT, ageInTicks);
+		this.animate(entity.spewAnimationState, GuzzlerAnimations.SPIT, ageInTicks);
 	}
 
 	@Override
