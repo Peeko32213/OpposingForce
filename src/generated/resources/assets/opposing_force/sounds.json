@@ -219,6 +219,21 @@
     ],
     "subtitle": "subtitles.opposing_force.frowzy_idle"
   },
+  "guzzler_death": {
+    "sounds": [
+      "opposing_force:entity/guzzler/death1"
+    ],
+    "subtitle": "subtitles.opposing_force.guzzler_death"
+  },
+  "guzzler_hurt": {
+    "sounds": [
+      {
+        "name": "opposing_force:entity/guzzler/hurt1",
+        "volume": 0.6
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.guzzler_hurt"
+  },
   "guzzler_idle": {
     "sounds": [
       "opposing_force:entity/guzzler/idle1"

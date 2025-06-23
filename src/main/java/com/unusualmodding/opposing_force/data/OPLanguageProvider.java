@@ -80,6 +80,8 @@ public class OPLanguageProvider extends LanguageProvider {
         this.sound(OPSoundEvents.FROWZY_HURT, "Frowzy hurts");
         this.sound(OPSoundEvents.FROWZY_IDLE, "Frowzy groans");
 
+        this.sound(OPSoundEvents.GUZZLER_HURT, "Guzzler hurt");
+        this.sound(OPSoundEvents.GUZZLER_DEATH, "Guzzler dies");
         this.sound(OPSoundEvents.GUZZLER_IDLE, "Guzzler groans");
         this.sound(OPSoundEvents.GUZZLER_SPEW, "Guzzler spews");
 

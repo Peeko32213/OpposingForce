@@ -99,6 +99,12 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound("mob/zombie/say3").pitch(1.2F)
         );
 
+        this.sound(OPSoundEvents.GUZZLER_HURT,
+                sound(OpposingForce.modPrefix("entity/guzzler/hurt1")).volume(0.6F)
+        );
+        this.sound(OPSoundEvents.GUZZLER_DEATH,
+                sound(OpposingForce.modPrefix("entity/guzzler/death1"))
+        );
         this.sound(OPSoundEvents.GUZZLER_IDLE,
                 sound(OpposingForce.modPrefix("entity/guzzler/idle1"))
         );
