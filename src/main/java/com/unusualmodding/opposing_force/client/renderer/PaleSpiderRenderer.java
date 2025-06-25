@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 @OnlyIn(Dist.CLIENT)
 public class PaleSpiderRenderer extends MobRenderer<PaleSpider, PaleSpiderModel<PaleSpider>> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/pale_spider.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/pale_spider/pale_spider.png");
 
     public PaleSpiderRenderer(EntityRendererProvider.Context context) {
         super(context, new PaleSpiderModel<>(context.bakeLayer(OPModelLayers.PALE_SPIDER_LAYER)), 0.5F);

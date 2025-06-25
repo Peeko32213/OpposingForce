@@ -15,7 +15,7 @@ public class WhizzFlightSound extends AbstractTickableSoundInstance {
     protected final Whizz entity;
 
     public WhizzFlightSound(Whizz entity) {
-        super(OPSoundEvents.WHIZZ_FLY.get(), SoundSource.NEUTRAL, SoundInstance.createUnseededRandom());
+        super(OPSoundEvents.WHIZZ_FLY.get(), SoundSource.HOSTILE, SoundInstance.createUnseededRandom());
         this.entity = entity;
         this.x = (float) entity.getX();
         this.y = (float) entity.getY();

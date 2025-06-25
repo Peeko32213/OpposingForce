@@ -155,9 +155,21 @@
     ],
     "subtitle": "subtitles.opposing_force.fire_slime_hurt"
   },
+  "fire_slime_idle": {
+    "sounds": [
+      {
+        "name": "opposing_force:entity/fire_slime/idle1",
+        "volume": 0.3
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.fire_slime_idle"
+  },
   "fire_slime_jump": {
     "sounds": [
-      "opposing_force:entity/fire_slime/jump1"
+      {
+        "name": "opposing_force:entity/fire_slime/jump1",
+        "volume": 0.35
+      }
     ],
     "subtitle": "subtitles.opposing_force.fire_slime_jump"
   },
@@ -172,52 +184,51 @@
   },
   "fire_slime_squish": {
     "sounds": [
-      "opposing_force:entity/fire_slime/jump1"
+      {
+        "name": "opposing_force:entity/fire_slime/jump1",
+        "volume": 0.35
+      }
     ],
     "subtitle": "subtitles.opposing_force.fire_slime_squish"
   },
+  "frowzy_attack": {
+    "sounds": [
+      "opposing_force:entity/frowzy/attack1",
+      "opposing_force:entity/frowzy/attack2",
+      "opposing_force:entity/frowzy/attack3"
+    ],
+    "subtitle": "subtitles.opposing_force.frowzy_attack"
+  },
   "frowzy_death": {
     "sounds": [
-      {
-        "name": "mob/zombie/death",
-        "pitch": 1.2
-      }
+      "opposing_force:entity/frowzy/death1"
     ],
     "subtitle": "subtitles.opposing_force.frowzy_death"
   },
   "frowzy_hurt": {
     "sounds": [
-      {
-        "name": "mob/zombie/hurt1",
-        "pitch": 1.2
-      },
-      {
-        "name": "mob/zombie/hurt2",
-        "pitch": 1.2
-      },
-      {
-        "name": "mob/zombie/say3",
-        "pitch": 1.2
-      }
+      "opposing_force:entity/frowzy/hurt1",
+      "opposing_force:entity/frowzy/hurt2",
+      "opposing_force:entity/frowzy/hurt3"
     ],
     "subtitle": "subtitles.opposing_force.frowzy_hurt"
   },
   "frowzy_idle": {
     "sounds": [
-      {
-        "name": "mob/zombie/say1",
-        "pitch": 1.2
-      },
-      {
-        "name": "mob/zombie/say2",
-        "pitch": 1.2
-      },
-      {
-        "name": "mob/zombie/say3",
-        "pitch": 1.2
-      }
+      "opposing_force:entity/frowzy/idle1",
+      "opposing_force:entity/frowzy/idle2",
+      "opposing_force:entity/frowzy/idle3"
     ],
     "subtitle": "subtitles.opposing_force.frowzy_idle"
+  },
+  "frowzy_run": {
+    "sounds": [
+      {
+        "name": "opposing_force:entity/frowzy/run1",
+        "volume": 0.6
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.frowzy_run"
   },
   "guzzler_death": {
     "sounds": [
@@ -229,7 +240,7 @@
     "sounds": [
       {
         "name": "opposing_force:entity/guzzler/hurt1",
-        "volume": 0.6
+        "volume": 0.75
       }
     ],
     "subtitle": "subtitles.opposing_force.guzzler_hurt"

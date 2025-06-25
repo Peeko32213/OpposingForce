@@ -1,39 +1,39 @@
 {
   "parent": "opposing_force:root",
   "criteria": {
-    "defeat_dicer": {
+    "tame_slug": {
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "opposing_force:dicer"
+              "type": "opposing_force:slug"
             }
           }
         ]
       },
-      "trigger": "minecraft:player_killed_entity"
+      "trigger": "minecraft:tame_animal"
     }
   },
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancement.opposing_force.defeat_dicer.desc"
+      "translate": "advancement.opposing_force.tame_slug.desc"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "opposing_force:dicer_spawn_egg"
+      "item": "opposing_force:slug_eggs"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancement.opposing_force.defeat_dicer"
+      "translate": "advancement.opposing_force.tame_slug"
     }
   },
   "requirements": [
     [
-      "defeat_dicer"
+      "tame_slug"
     ]
   ],
   "sends_telemetry_event": true

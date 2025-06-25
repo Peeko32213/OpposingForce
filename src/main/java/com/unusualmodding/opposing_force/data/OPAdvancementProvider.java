@@ -6,8 +6,8 @@ import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.KilledTrigger;
+import net.minecraft.advancements.RequirementsStrategy;
+import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
@@ -40,54 +40,72 @@ public class OPAdvancementProvider implements AdvancementGenerator {
                 .addCriterion("root", KilledTrigger.TriggerInstance.playerKilledEntity())
                 .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "root"), helper);
 
-        Advancement defeatDicer = Advancement.Builder.advancement()
+        Advancement igniteFireSlime = Advancement.Builder.advancement()
                 .parent(root)
-                .display(OPItems.DICER_SPAWN_EGG.get(),
-                        Component.translatable("advancement.opposing_force.defeat_dicer"),
-                        Component.translatable("advancement.opposing_force.defeat_dicer.desc"),
+                .display(Items.MAGMA_CREAM,
+                        Component.translatable("advancement.opposing_force.ignite_fire_slime"),
+                        Component.translatable("advancement.opposing_force.ignite_fire_slime.desc"),
                         null,
                         FrameType.TASK, true, true, false)
-                .addCriterion("defeat_dicer", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(OPEntities.DICER.get())))
-                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "defeat_dicer"), helper);
+                .addCriterion("ignite_fire_slime", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(
+                        ItemPredicate.Builder.item().of(Items.MAGMA_CREAM),
+                        EntityPredicate.wrap(EntityPredicate.Builder.entity().of(OPEntities.FIRE_SLIME.get()).build())))
+                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "ignite_fire_slime"), helper);
 
-        Advancement defeatFrowzy = Advancement.Builder.advancement()
+        Advancement tameSlug = Advancement.Builder.advancement()
                 .parent(root)
-                .display(Items.BEETROOT,
-                        Component.translatable("advancement.opposing_force.defeat_frowzy"),
-                        Component.translatable("advancement.opposing_force.defeat_frowzy.desc"),
+                .display(OPItems.SLUG_EGGS.get(),
+                        Component.translatable("advancement.opposing_force.tame_slug"),
+                        Component.translatable("advancement.opposing_force.tame_slug.desc"),
                         null,
                         FrameType.TASK, true, true, false)
-                .addCriterion("defeat_frowzy", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(OPEntities.FROWZY.get())))
-                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "defeat_frowzy"), helper);
+                .addCriterion("tame_slug", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(OPEntities.SLUG.get()).build()))
+                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "tame_slug"), helper);
 
-        Advancement defeatGuzzler = Advancement.Builder.advancement()
+        Advancement growSlug = Advancement.Builder.advancement()
+                .parent(tameSlug)
+                .display(Items.SLIME_BLOCK,
+                        Component.translatable("advancement.opposing_force.grow_slug"),
+                        Component.translatable("advancement.opposing_force.grow_slug.desc"),
+                        null,
+                        FrameType.TASK, true, true, false)
+                .addCriterion("grow_slug", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(
+                        ItemPredicate.Builder.item().of(Items.SLIME_BLOCK),
+                        EntityPredicate.wrap(EntityPredicate.Builder.entity().of(OPEntities.SLUG.get()).build())))
+                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "grow_slug"), helper);
+
+        Advancement captureWhizz = Advancement.Builder.advancement()
                 .parent(root)
-                .display(OPItems.GUZZLER_SPAWN_EGG.get(),
-                        Component.translatable("advancement.opposing_force.defeat_guzzler"),
-                        Component.translatable("advancement.opposing_force.defeat_guzzler.desc"),
+                .display(OPItems.CAPTURED_WHIZZ.get(),
+                        Component.translatable("advancement.opposing_force.capture_whizz"),
+                        Component.translatable("advancement.opposing_force.capture_whizz.desc"),
                         null,
                         FrameType.TASK, true, true, false)
-                .addCriterion("defeat_guzzler", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(OPEntities.GUZZLER.get())))
-                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "defeat_guzzler"), helper);
+                .addCriterion("capture_whizz", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.CAPTURED_WHIZZ.get()))
+                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "capture_whizz"), helper);
 
-        Advancement defeatFireSlime = Advancement.Builder.advancement()
-                .parent(defeatGuzzler)
-                .display(OPItems.FIRE_SLIME_SPAWN_EGG.get(),
-                        Component.translatable("advancement.opposing_force.defeat_fire_slime"),
-                        Component.translatable("advancement.opposing_force.defeat_fire_slime.desc"),
+        Advancement deepWovenArmor = Advancement.Builder.advancement()
+                .parent(root)
+                .display(OPItems.DEEPWOVEN_HAT.get(),
+                        Component.translatable("advancement.opposing_force.deepwoven_armor"),
+                        Component.translatable("advancement.opposing_force.deepwoven_armor.desc"),
                         null,
                         FrameType.TASK, true, true, false)
-                .addCriterion("defeat_fire_slime", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(OPEntities.FIRE_SLIME.get())))
-                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "defeat_fire_slime"), helper);
+                .requirements(RequirementsStrategy.OR)
+                    .addCriterion("deepwoven_hat", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.DEEPWOVEN_HAT.get()))
+                    .addCriterion("deepwoven_tunic", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.DEEPWOVEN_TUNIC.get()))
+                    .addCriterion("deepwoven_pants", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.DEEPWOVEN_PANTS.get()))
+                    .addCriterion("deepwoven_boots", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.DEEPWOVEN_BOOTS.get()))
+                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "deepwoven_armor"), helper);
 
-        Advancement defeatTembler = Advancement.Builder.advancement()
+        Advancement tremblerShell = Advancement.Builder.advancement()
                 .parent(root)
                 .display(OPBlocks.TREMBLER_SHELL.get(),
-                        Component.translatable("advancement.opposing_force.defeat_trembler"),
-                        Component.translatable("advancement.opposing_force.defeat_trembler.desc"),
+                        Component.translatable("advancement.opposing_force.trembler_shell"),
+                        Component.translatable("advancement.opposing_force.trembler_shell.desc"),
                         null,
                         FrameType.TASK, true, true, false)
-                .addCriterion("defeat_trembler", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(OPEntities.TREMBLER.get())))
-                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "defeat_trembler"), helper);
+                .addCriterion("trembler_shell", InventoryChangeTrigger.TriggerInstance.hasItems(OPBlocks.TREMBLER_SHELL.get()))
+                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "trembler_shell"), helper);
     }
 }

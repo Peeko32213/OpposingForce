@@ -71,11 +71,14 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound("mob/slime/small4").pitch(0.9F),
                 sound("mob/slime/small5").pitch(0.9F)
         );
+        this.sound(OPSoundEvents.FIRE_SLIME_IDLE,
+                sound(OpposingForce.modPrefix("entity/fire_slime/idle1")).volume(0.3F)
+        );
         this.sound(OPSoundEvents.FIRE_SLIME_SQUISH,
-                sound(OpposingForce.modPrefix("entity/fire_slime/jump1"))
+                sound(OpposingForce.modPrefix("entity/fire_slime/jump1")).volume(0.35F)
         );
         this.sound(OPSoundEvents.FIRE_SLIME_JUMP,
-                sound(OpposingForce.modPrefix("entity/fire_slime/jump1"))
+                sound(OpposingForce.modPrefix("entity/fire_slime/jump1")).volume(0.35F)
         );
         this.sound(OPSoundEvents.FIRE_SLIME_ATTACK,
                 sound("mob/slime/attack1"),
@@ -86,21 +89,29 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
         );
 
         this.sound(OPSoundEvents.FROWZY_HURT,
-                sound("mob/zombie/hurt1").pitch(1.2F),
-                sound("mob/zombie/hurt2").pitch(1.2F),
-                sound("mob/zombie/say3").pitch(1.2F)
+                sound(OpposingForce.modPrefix("entity/frowzy/hurt1")),
+                sound(OpposingForce.modPrefix("entity/frowzy/hurt2")),
+                sound(OpposingForce.modPrefix("entity/frowzy/hurt3"))
         );
         this.sound(OPSoundEvents.FROWZY_DEATH,
-                sound("mob/zombie/death").pitch(1.2F)
+                sound(OpposingForce.modPrefix("entity/frowzy/death1"))
         );
         this.sound(OPSoundEvents.FROWZY_IDLE,
-                sound("mob/zombie/say1").pitch(1.2F),
-                sound("mob/zombie/say2").pitch(1.2F),
-                sound("mob/zombie/say3").pitch(1.2F)
+                sound(OpposingForce.modPrefix("entity/frowzy/idle1")),
+                sound(OpposingForce.modPrefix("entity/frowzy/idle2")),
+                sound(OpposingForce.modPrefix("entity/frowzy/idle3"))
+        );
+        this.sound(OPSoundEvents.FROWZY_ATTACK,
+                sound(OpposingForce.modPrefix("entity/frowzy/attack1")),
+                sound(OpposingForce.modPrefix("entity/frowzy/attack2")),
+                sound(OpposingForce.modPrefix("entity/frowzy/attack3"))
+        );
+        this.sound(OPSoundEvents.FROWZY_RUN,
+                sound(OpposingForce.modPrefix("entity/frowzy/run1")).volume(0.6F)
         );
 
         this.sound(OPSoundEvents.GUZZLER_HURT,
-                sound(OpposingForce.modPrefix("entity/guzzler/hurt1")).volume(0.6F)
+                sound(OpposingForce.modPrefix("entity/guzzler/hurt1")).volume(0.75F)
         );
         this.sound(OPSoundEvents.GUZZLER_DEATH,
                 sound(OpposingForce.modPrefix("entity/guzzler/death1"))

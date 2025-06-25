@@ -33,6 +33,7 @@ public class OPSoundEvents {
 
     public static final RegistryObject<SoundEvent> FIRE_SLIME_HURT = createSoundEvent("fire_slime_hurt");
     public static final RegistryObject<SoundEvent> FIRE_SLIME_DEATH = createSoundEvent("fire_slime_death");
+    public static final RegistryObject<SoundEvent> FIRE_SLIME_IDLE = createSoundEvent("fire_slime_idle");
     public static final RegistryObject<SoundEvent> FIRE_SLIME_SQUISH = createSoundEvent("fire_slime_squish");
     public static final RegistryObject<SoundEvent> FIRE_SLIME_JUMP = createSoundEvent("fire_slime_jump");
     public static final RegistryObject<SoundEvent> FIRE_SLIME_ATTACK = createSoundEvent("fire_slime_attack");
@@ -41,6 +42,8 @@ public class OPSoundEvents {
     public static final RegistryObject<SoundEvent> FROWZY_HURT = createSoundEvent("frowzy_hurt");
     public static final RegistryObject<SoundEvent> FROWZY_DEATH = createSoundEvent("frowzy_death");
     public static final RegistryObject<SoundEvent> FROWZY_IDLE = createSoundEvent("frowzy_idle");
+    public static final RegistryObject<SoundEvent> FROWZY_ATTACK = createSoundEvent("frowzy_attack");
+    public static final RegistryObject<SoundEvent> FROWZY_RUN = createSoundEvent("frowzy_run");
 
     public static final RegistryObject<SoundEvent> PALE_SPIDER_HURT = createSoundEvent("pale_spider_hurt");
     public static final RegistryObject<SoundEvent> PALE_SPIDER_DEATH = createSoundEvent("pale_spider_death");

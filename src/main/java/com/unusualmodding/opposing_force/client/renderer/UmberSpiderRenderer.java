@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 @OnlyIn(Dist.CLIENT)
 public class UmberSpiderRenderer extends MobRenderer<UmberSpider, UmberSpiderModel<UmberSpider>> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/umber_spider.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/umber_spider/umber_spider.png");
 
     public UmberSpiderRenderer(EntityRendererProvider.Context context) {
         super(context, new UmberSpiderModel<>(context.bakeLayer(OPModelLayers.UMBER_SPIDER_LAYER)), 0.8F);

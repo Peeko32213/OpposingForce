@@ -80,6 +80,7 @@ public class Dicer extends Monster implements IAnimatedAttacker {
         return 1;
     }
 
+    @Override
     public void tick() {
         super.tick();
 
@@ -104,6 +105,7 @@ public class Dicer extends Monster implements IAnimatedAttacker {
         }
     }
 
+    @Override
     public boolean doHurtTarget(Entity entity) {
         if (super.doHurtTarget(entity)) {
             this.playSound(OPSoundEvents.DICER_ATTACK.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));

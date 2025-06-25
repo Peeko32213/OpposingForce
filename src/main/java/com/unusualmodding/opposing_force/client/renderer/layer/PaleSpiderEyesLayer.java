@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class PaleSpiderEyesLayer<T extends PaleSpider, M extends PaleSpiderModel<T>> extends EyesLayer<T, M> {
 
-    private static final RenderType SPIDER_EYES = RenderType.eyes(new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/pale_spider_eyes.png"));
+    private static final RenderType SPIDER_EYES = RenderType.eyes(new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/pale_spider/pale_spider_eyes.png"));
 
     public PaleSpiderEyesLayer(RenderLayerParent<T, M> parentModel) {
         super(parentModel);

@@ -66,8 +66,10 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
     private final BreakDoorGoal breakDoorGoal = new BreakDoorGoal(this, DOOR_BREAKING_PREDICATE);
     private boolean canBreakDoors;
 
-    public Frowzy(EntityType<? extends Monster> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    private int runTimer = 0;
+
+    public Frowzy(EntityType<? extends Monster> entityType, Level level) {
+        super(entityType, level);
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.DANGER_POWDER_SNOW, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.DANGER_OTHER, 0.0F);
@@ -83,6 +85,7 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
                 .add(Attributes.ATTACK_DAMAGE, 2.0D);
     }
 
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new FrowzyAttackGoal(this));
@@ -177,6 +180,16 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
         if (this.level().isClientSide()) {
             this.setupAnimationStates();
         }
+
+        if (this.getTarget() != null) {
+            this.runTimer++;
+            if (this.runTimer == 1) {
+                playSound(OPSoundEvents.FROWZY_RUN.get(), 1.0F, 1.0F);
+            }
+            if (this.runTimer > 320) {
+                this.runTimer = 0;
+            }
+        }
     }
 
     private void setupAnimationStates() {
@@ -192,9 +205,9 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
     public boolean doHurtTarget(Entity entity) {
         boolean flag = super.doHurtTarget(entity);
         if (flag) {
-            float f = this.level().getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
-            if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
-                entity.setSecondsOnFire(2 * (int)f);
+            float difficulty = this.level().getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
+            if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < difficulty * 0.3F) {
+                entity.setSecondsOnFire(2 * (int) difficulty);
             }
         }
         return flag;
@@ -205,7 +218,7 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
         super.defineSynchedData();
         this.entityData.define(IS_BABY, false);
         this.entityData.define(ATTACK_STATE, 0);
-        this.entityData.define(JUMP_COOLDOWN, 80 + random.nextInt(30));
+        this.entityData.define(JUMP_COOLDOWN, 80 + random.nextInt(80));
     }
 
     @Override
@@ -235,7 +248,7 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
     }
 
     public void jumpCooldown() {
-        this.entityData.set(JUMP_COOLDOWN, 80 + random.nextInt(30));
+        this.entityData.set(JUMP_COOLDOWN, 80 + random.nextInt(80));
     }
 
     public boolean isBaby() {
@@ -296,14 +309,15 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
         this.entityData.set(ATTACK_STATE, attackState);
     }
 
+    @Override
     public double getMyRidingOffset() {
         return this.isBaby() ? 0.0D : -0.45D;
     }
 
     @Override
-    protected void dropCustomDeathLoot(DamageSource p_34291_, int p_34292_, boolean p_34293_) {
-        super.dropCustomDeathLoot(p_34291_, p_34292_, p_34293_);
-        Entity entity = p_34291_.getEntity();
+    protected void dropCustomDeathLoot(DamageSource damageSource, int p_34292_, boolean p_34293_) {
+        super.dropCustomDeathLoot(damageSource, p_34292_, p_34293_);
+        Entity entity = damageSource.getEntity();
         if (entity instanceof Creeper creeper) {
             if (creeper.canDropMobsSkull()) {
                 ItemStack itemstack = this.getSkull();
@@ -457,6 +471,10 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
         protected void tickAttack() {
             attackTime++;
             LivingEntity target = this.frowzy.getTarget();
+
+            if (attackTime == 1) {
+                this.frowzy.playSound(OPSoundEvents.FROWZY_ATTACK.get(), 1.0F, 1.0F);
+            }
 
             if (attackTime == 5) {
                 if (this.frowzy.distanceTo(Objects.requireNonNull(target)) < getAttackReachSqr(target)) {

@@ -1,39 +1,44 @@
 {
   "parent": "opposing_force:root",
   "criteria": {
-    "defeat_trembler": {
+    "ignite_fire_slime": {
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "opposing_force:trembler"
+              "type": "opposing_force:fire_slime"
             }
           }
-        ]
+        ],
+        "item": {
+          "items": [
+            "minecraft:magma_cream"
+          ]
+        }
       },
-      "trigger": "minecraft:player_killed_entity"
+      "trigger": "minecraft:player_interacted_with_entity"
     }
   },
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancement.opposing_force.defeat_trembler.desc"
+      "translate": "advancement.opposing_force.ignite_fire_slime.desc"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "opposing_force:trembler_shell"
+      "item": "minecraft:magma_cream"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancement.opposing_force.defeat_trembler"
+      "translate": "advancement.opposing_force.ignite_fire_slime"
     }
   },
   "requirements": [
     [
-      "defeat_trembler"
+      "ignite_fire_slime"
     ]
   ],
   "sends_telemetry_event": true

@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 @OnlyIn(Dist.CLIENT)
 public class GuzzlerRenderer extends MobRenderer<Guzzler, GuzzlerModel<Guzzler>> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/guzzler.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/guzzler/guzzler.png");
 
     public GuzzlerRenderer(EntityRendererProvider.Context context) {
         super(context, new GuzzlerModel<>(context.bakeLayer(OPModelLayers.GUZZLER_LAYER)), 1.1F);

@@ -1,0 +1,38 @@
+{
+  "parent": "opposing_force:root",
+  "criteria": {
+    "capture_whizz": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "opposing_force:captured_whizz"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.opposing_force.capture_whizz.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "opposing_force:captured_whizz"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.opposing_force.capture_whizz"
+    }
+  },
+  "requirements": [
+    [
+      "capture_whizz"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,7 +1,6 @@
 package com.unusualmodding.opposing_force.mixins.client;
 
-import com.unusualmodding.opposing_force.client.sounds.ElectricChargeSound;
-import com.unusualmodding.opposing_force.client.sounds.WhizzFlightSound;
+import com.unusualmodding.opposing_force.client.sounds.*;
 import com.unusualmodding.opposing_force.entity.Whizz;
 import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
 import net.minecraft.client.Minecraft;

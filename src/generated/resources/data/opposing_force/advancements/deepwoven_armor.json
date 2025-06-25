@@ -1,0 +1,78 @@
+{
+  "parent": "opposing_force:root",
+  "criteria": {
+    "deepwoven_boots": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "opposing_force:deepwoven_boots"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "deepwoven_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "opposing_force:deepwoven_hat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "deepwoven_pants": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "opposing_force:deepwoven_pants"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "deepwoven_tunic": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "opposing_force:deepwoven_tunic"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.opposing_force.deepwoven_armor.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "opposing_force:deepwoven_hat",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.opposing_force.deepwoven_armor"
+    }
+  },
+  "requirements": [
+    [
+      "deepwoven_hat",
+      "deepwoven_tunic",
+      "deepwoven_pants",
+      "deepwoven_boots"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

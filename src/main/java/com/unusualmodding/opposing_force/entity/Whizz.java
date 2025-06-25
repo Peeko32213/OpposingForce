@@ -38,6 +38,7 @@ import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -169,7 +170,7 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
     @Override
     public boolean skipAttackInteraction(Entity entity) {
         if (entity instanceof Player player) {
-            if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SILK_TOUCH, player.getMainHandItem()) > 0) {
+            if (player.getMainHandItem().isCorrectToolForDrops(Blocks.AMETHYST_BLOCK.defaultBlockState()) && EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SILK_TOUCH, player.getMainHandItem()) > 0) {
                 if (!level().isClientSide && isAlive()) {
                     ItemStack itemStack = OPItems.CAPTURED_WHIZZ.get().getDefaultInstance();
                     if (!this.isTame()) {

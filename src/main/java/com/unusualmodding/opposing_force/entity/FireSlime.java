@@ -183,10 +183,18 @@ public class FireSlime extends Monster {
         return this.random.nextInt(20) + 14;
     }
 
-    protected SoundEvent getHurtSound(DamageSource p_33631_) {
+    @Override
+    @Nullable
+    protected SoundEvent getAmbientSound() {
+        return OPSoundEvents.FIRE_SLIME_IDLE.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
         return OPSoundEvents.FIRE_SLIME_HURT.get();
     }
 
+    @Override
     protected SoundEvent getDeathSound() {
         return OPSoundEvents.FIRE_SLIME_DEATH.get();
     }
@@ -197,6 +205,11 @@ public class FireSlime extends Monster {
 
     protected SoundEvent getJumpSound() {
         return OPSoundEvents.FIRE_SLIME_JUMP.get();
+    }
+
+    @Override
+    public int getAmbientSoundInterval() {
+        return 360;
     }
 
     @Nullable

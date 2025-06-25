@@ -21,7 +21,7 @@ import org.joml.Quaternionf;
 @OnlyIn(Dist.CLIENT)
 public class DicerLaserRenderer extends EntityRenderer<DicerLaser> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/dicer_laser.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/dicer/dicer_laser.png");
 
     private static final float TEXTURE_WIDTH = 256;
     private static final float TEXTURE_HEIGHT = 32;

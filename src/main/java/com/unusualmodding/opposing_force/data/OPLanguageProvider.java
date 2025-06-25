@@ -71,6 +71,7 @@ public class OPLanguageProvider extends LanguageProvider {
 
         this.sound(OPSoundEvents.FIRE_SLIME_DEATH, "Fire Slime dies");
         this.sound(OPSoundEvents.FIRE_SLIME_HURT, "Fire Slime hurts");
+        this.sound(OPSoundEvents.FIRE_SLIME_IDLE, "Fire Slime sizzles");
         this.sound(OPSoundEvents.FIRE_SLIME_SQUISH, "Fire Slime squishes");
         this.sound(OPSoundEvents.FIRE_SLIME_JUMP, "Fire Slime jumps");
         this.sound(OPSoundEvents.FIRE_SLIME_ATTACK, "Fire Slime attacks");
@@ -79,6 +80,8 @@ public class OPLanguageProvider extends LanguageProvider {
         this.sound(OPSoundEvents.FROWZY_DEATH, "Frowzy dies");
         this.sound(OPSoundEvents.FROWZY_HURT, "Frowzy hurts");
         this.sound(OPSoundEvents.FROWZY_IDLE, "Frowzy groans");
+        this.sound(OPSoundEvents.FROWZY_ATTACK, "Frowzy attacks");
+        this.sound(OPSoundEvents.FROWZY_RUN, "Frowzy pants");
 
         this.sound(OPSoundEvents.GUZZLER_HURT, "Guzzler hurt");
         this.sound(OPSoundEvents.GUZZLER_DEATH, "Guzzler dies");
@@ -134,11 +137,23 @@ public class OPLanguageProvider extends LanguageProvider {
         this.addAdvancement("root", "Opposing Force");
         this.addAdvancementDesc("root", "Discover unique and challenging mobs throughout the world");
 
-        this.addAdvancement("defeat_dicer", "Slay Queen");
-        this.addAdvancementDesc("defeat_dicer", "Defeat a Dicer");
+        this.addAdvancement("trembler_shell", "Spin to Win");
+        this.addAdvancementDesc("trembler_shell", "Defeat a Trembler and claim its shell");
 
-        this.addAdvancement("defeat_trembler", "Spin to Win");
-        this.addAdvancementDesc("defeat_trembler", "Defeat a Trembler");
+        this.addAdvancement("deepwoven_armor", "Deepwoven");
+        this.addAdvancementDesc("deepwoven_armor", "Conceal yourself with a piece Deepwoven armor");
+
+        this.addAdvancement("ignite_fire_slime", "Fire Slime");
+        this.addAdvancementDesc("ignite_fire_slime", "Reignite a Fire Slime with Magma Cream to prevent it from evaporating");
+
+        this.addAdvancement("tame_slug", "Tame Slug");
+        this.addAdvancementDesc("tame_slug", "Use Slug Eggs to spawn a tamed Slug");
+
+        this.addAdvancement("grow_slug", "Grow Slug");
+        this.addAdvancementDesc("grow_slug", "Feed a tamed Slug a Slime Block to increase its size");
+
+        this.addAdvancement("capture_whizz", "Capture Whizz");
+        this.addAdvancementDesc("capture_whizz", "Use a Silk Touch pickaxe to capture a Whizz");
 
         // jeed compat
         this.add("effect.opposing_force.electrified.description", "Inflicts lethal damage over time while in water or rain; higher levels do more damage per second.");

@@ -1,39 +1,44 @@
 {
-  "parent": "opposing_force:root",
+  "parent": "opposing_force:tame_slug",
   "criteria": {
-    "defeat_frowzy": {
+    "grow_slug": {
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "opposing_force:frowzy"
+              "type": "opposing_force:slug"
             }
           }
-        ]
+        ],
+        "item": {
+          "items": [
+            "minecraft:slime_block"
+          ]
+        }
       },
-      "trigger": "minecraft:player_killed_entity"
+      "trigger": "minecraft:player_interacted_with_entity"
     }
   },
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancement.opposing_force.defeat_frowzy.desc"
+      "translate": "advancement.opposing_force.grow_slug.desc"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "minecraft:beetroot"
+      "item": "minecraft:slime_block"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancement.opposing_force.defeat_frowzy"
+      "translate": "advancement.opposing_force.grow_slug"
     }
   },
   "requirements": [
     [
-      "defeat_frowzy"
+      "grow_slug"
     ]
   ],
   "sends_telemetry_event": true
