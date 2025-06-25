@@ -56,9 +56,9 @@ public class OPCreativeTab {
                     output.accept(OPBlocks.PURPLE_KNOB.get());
                     output.accept(OPBlocks.RAINCAP.get());
                     output.accept(OPBlocks.SLIPPERY_TOP.get());
-                    output.accept(OPBlocks.COPPER_ENOKI_BLOCK.get());
-                    output.accept(OPBlocks.CREAM_CAP_BLOCK.get());
-                    output.accept(OPBlocks.SLIPPERY_TOP_BLOCK.get());
+//                    output.accept(OPBlocks.COPPER_ENOKI_BLOCK.get());
+//                    output.accept(OPBlocks.CREAM_CAP_BLOCK.get());
+//                    output.accept(OPBlocks.SLIPPERY_TOP_BLOCK.get());
 
                     output.accept(OPBlocks.INFESTED_AMETHYST_BLOCK.get());
 
@@ -82,11 +82,6 @@ public class OPCreativeTab {
                     output.accept(OPBrewingRecipes.registerSplashPotion(OPPotions.SLUG_INFESTATION_POTION.get()));
                     output.accept(OPBrewingRecipes.registerLingeringPotion(OPPotions.SLUG_INFESTATION_POTION.get()));
                     output.accept(OPBrewingRecipes.registerTippedArrow(OPPotions.SLUG_INFESTATION_POTION.get()));
-
-                    // Unsorted stuff
-                    if (!(item.get() instanceof ForgeSpawnEggItem)) {
-                        output.accept(item.get());
-                    }
                 }
             })
             .build());

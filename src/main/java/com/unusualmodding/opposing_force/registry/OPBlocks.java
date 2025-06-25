@@ -28,30 +28,30 @@ public class OPBlocks {
     public static final RegistryObject<Block> CHICKEN_OF_THE_CAVES = registerBlock("chicken_of_the_caves", () -> new OPMushroomBlock(OPBlockProperties.mushroom(MapColor.TERRACOTTA_YELLOW), false));
     public static final RegistryObject<Block> POTTED_CHICKEN_OF_THE_CAVES = registerBlockWithoutItem("potted_chicken_of_the_caves", () -> new FlowerPotBlock(OPBlocks.CHICKEN_OF_THE_CAVES.get(), registerFlowerPot()));
 
-    public static final RegistryObject<Block> RAINCAP = registerBlock("raincap", () -> new OPMushroomBlock(OPBlockProperties.mushroom(MapColor.COLOR_PURPLE), true));
+    public static final RegistryObject<Block> RAINCAP = registerBlock("raincap", () -> new OPMushroomBlock(OPBlockProperties.mushroom(MapColor.COLOR_PURPLE), false));
     public static final RegistryObject<Block> POTTED_RAINCAP = registerBlockWithoutItem("potted_raincap", () -> new FlowerPotBlock(OPBlocks.RAINCAP.get(), registerFlowerPot()));
 
-    public static final RegistryObject<Block> CAVE_PATTY = registerBlock("cave_patty", () -> new OPMushroomBlock(OPBlockProperties.mushroom(MapColor.COLOR_BROWN), true));
+    public static final RegistryObject<Block> CAVE_PATTY = registerBlock("cave_patty", () -> new OPMushroomBlock(OPBlockProperties.mushroom(MapColor.COLOR_BROWN), false));
     public static final RegistryObject<Block> POTTED_CAVE_PATTY = registerBlockWithoutItem("potted_cave_patty", () -> new FlowerPotBlock(OPBlocks.CAVE_PATTY.get(), registerFlowerPot()));
 
-    public static final RegistryObject<Block> POWDER_GNOME = registerBlock("powder_gnome", () -> new OPMushroomBlock(OPBlockProperties.mushroom(MapColor.COLOR_RED), true));
+    public static final RegistryObject<Block> POWDER_GNOME = registerBlock("powder_gnome", () -> new OPMushroomBlock(OPBlockProperties.mushroom(MapColor.COLOR_RED), false));
     public static final RegistryObject<Block> POTTED_POWDER_GNOME = registerBlockWithoutItem("potted_powder_gnome", () -> new FlowerPotBlock(OPBlocks.POWDER_GNOME.get(), registerFlowerPot()));
 
-    public static final RegistryObject<Block> CREAM_CAP = registerBlock("cream_cap", () -> new OPMushroomBlock(OPBlockProperties.mushroom(MapColor.TERRACOTTA_WHITE), true));
+    public static final RegistryObject<Block> CREAM_CAP = registerBlock("cream_cap", () -> new OPMushroomBlock(OPBlockProperties.mushroom(MapColor.TERRACOTTA_WHITE), false));
     public static final RegistryObject<Block> POTTED_CREAM_CAP = registerBlockWithoutItem("potted_cream_cap", () -> new FlowerPotBlock(OPBlocks.CREAM_CAP.get(), registerFlowerPot()));
     public static final RegistryObject<Block> CREAM_CAP_BLOCK = registerBlock("cream_cap_block", () -> new HugeMushroomBlock(OPBlockProperties.hugeMushroomBlock(MapColor.TERRACOTTA_WHITE)));
 
-    public static final RegistryObject<Block> COPPER_ENOKI = registerBlock("copper_enoki", () -> new OPMushroomBlock(OPBlockProperties.mushroom(MapColor.COLOR_ORANGE), true));
+    public static final RegistryObject<Block> COPPER_ENOKI = registerBlock("copper_enoki", () -> new OPMushroomBlock(OPBlockProperties.mushroom(MapColor.COLOR_ORANGE), false));
     public static final RegistryObject<Block> POTTED_COPPER_ENOKI = registerBlockWithoutItem("potted_copper_enoki", () -> new FlowerPotBlock(OPBlocks.COPPER_ENOKI.get(), registerFlowerPot()));
     public static final RegistryObject<Block> COPPER_ENOKI_BLOCK = registerBlock("copper_enoki_block", () -> new HugeMushroomBlock(OPBlockProperties.hugeMushroomBlock(MapColor.COLOR_ORANGE)));
 
-    public static final RegistryObject<Block> CAP_OF_EYE = registerBlock("cap_of_eye", () -> new OPMushroomBlock(OPBlockProperties.mushroom(MapColor.COLOR_PURPLE), true));
+    public static final RegistryObject<Block> CAP_OF_EYE = registerBlock("cap_of_eye", () -> new OPMushroomBlock(OPBlockProperties.mushroom(MapColor.COLOR_PURPLE), false));
     public static final RegistryObject<Block> POTTED_CAP_OF_EYE = registerBlockWithoutItem("potted_cap_of_eye", () -> new FlowerPotBlock(OPBlocks.CAP_OF_EYE.get(), registerFlowerPot()));
 
-    public static final RegistryObject<Block> PURPLE_KNOB = registerBlock("purple_knob", () -> new OPMushroomBlock(OPBlockProperties.mushroom(MapColor.COLOR_PURPLE), true));
+    public static final RegistryObject<Block> PURPLE_KNOB = registerBlock("purple_knob", () -> new OPMushroomBlock(OPBlockProperties.mushroom(MapColor.COLOR_PURPLE), false));
     public static final RegistryObject<Block> POTTED_PURPLE_KNOB = registerBlockWithoutItem("potted_purple_knob", () -> new FlowerPotBlock(OPBlocks.PURPLE_KNOB.get(), registerFlowerPot()));
 
-    public static final RegistryObject<Block> SLIPPERY_TOP = registerBlock("slippery_top", () -> new OPMushroomBlock(OPBlockProperties.mushroom(MapColor.COLOR_YELLOW), true));
+    public static final RegistryObject<Block> SLIPPERY_TOP = registerBlock("slippery_top", () -> new OPMushroomBlock(OPBlockProperties.mushroom(MapColor.COLOR_YELLOW), false));
     public static final RegistryObject<Block> POTTED_SLIPPERY_TOP = registerBlockWithoutItem("potted_slippery_top", () -> new FlowerPotBlock(OPBlocks.SLIPPERY_TOP.get(), registerFlowerPot()));
     public static final RegistryObject<Block> SLIPPERY_TOP_BLOCK = registerBlock("slippery_top_block", () -> new HugeMushroomBlock(OPBlockProperties.hugeMushroomBlock(MapColor.COLOR_YELLOW)));
 
