@@ -48,6 +48,7 @@ public class Ramble extends Monster {
 
     public Ramble(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.xpReward = 10;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

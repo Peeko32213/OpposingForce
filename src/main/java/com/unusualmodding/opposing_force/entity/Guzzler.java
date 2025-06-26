@@ -50,6 +50,7 @@ public class Guzzler extends Monster {
     public Guzzler(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.setMaxUpStep(1);
+        this.xpReward = 10;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

@@ -181,10 +181,10 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
             this.setupAnimationStates();
         }
 
-        if (this.getTarget() != null) {
+        if (this.isAggressive() && this.isAlive()) {
             this.runTimer++;
             if (this.runTimer == 1) {
-                playSound(OPSoundEvents.FROWZY_RUN.get(), 1.0F, 1.0F);
+                playSound(OPSoundEvents.FROWZY_RUN.get(), 1.0F, this.getVoicePitch());
             }
             if (this.runTimer > 320) {
                 this.runTimer = 0;
@@ -473,7 +473,7 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
             LivingEntity target = this.frowzy.getTarget();
 
             if (attackTime == 1) {
-                this.frowzy.playSound(OPSoundEvents.FROWZY_ATTACK.get(), 1.0F, 1.0F);
+                this.frowzy.playSound(OPSoundEvents.FROWZY_ATTACK.get(), 1.0F, this.frowzy.getVoicePitch());
             }
 
             if (attackTime == 5) {

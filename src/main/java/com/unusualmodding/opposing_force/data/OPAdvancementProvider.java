@@ -35,7 +35,7 @@ public class OPAdvancementProvider implements AdvancementGenerator {
                 .display(OPBlocks.CAP_OF_EYE.get(),
                         Component.translatable("advancement.opposing_force.root"),
                         Component.translatable("advancement.opposing_force.root.desc"),
-                        new ResourceLocation("textures/block/deepslate.png"),
+                        new ResourceLocation("textures/block/gray_wool.png"),
                         FrameType.TASK, false, false, false)
                 .addCriterion("root", KilledTrigger.TriggerInstance.playerKilledEntity())
                 .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "root"), helper);

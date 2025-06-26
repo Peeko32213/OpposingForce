@@ -96,16 +96,16 @@ public class TerrorModel<T extends Terror> extends HierarchicalModel<T> {
 			this.swim_control.xRot = headPitch * (Mth.DEG_TO_RAD);
 			this.swim_control.zRot = netHeadYaw * ((Mth.DEG_TO_RAD) / 2);
 
-			this.tailRot.yRot = -(entity.tilt * (Mth.DEG_TO_RAD) / 2);
-			this.tailFinRot.yRot = -(entity.tilt * (Mth.DEG_TO_RAD) / 2);
-			this.tailRot.xRot = -(headPitch * (Mth.DEG_TO_RAD) / 4);
-			this.tailFinRot.xRot = -(headPitch * (Mth.DEG_TO_RAD) / 4);
+			this.tailRot.yRot = -(entity.tilt * (Mth.DEG_TO_RAD) / 4);
+			this.tailFinRot.yRot = -(entity.tilt * (Mth.DEG_TO_RAD) / 4);
+			this.tailRot.xRot = -(headPitch * (Mth.DEG_TO_RAD) / 8);
+			this.tailFinRot.xRot = -(headPitch * (Mth.DEG_TO_RAD) / 8);
 		}
 	}
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	public ModelPart root() {

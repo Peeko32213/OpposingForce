@@ -1,17 +1,18 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
+import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -31,6 +32,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.Objects;
@@ -46,6 +48,7 @@ public class Terror extends Monster implements IAnimatedAttacker {
     public final AnimationState flopAnimationState = new AnimationState();
     public final AnimationState attackAnimationState = new AnimationState();
 
+    @Override
     protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
         return new WaterBoundPathNavigation(this, level);
     }
@@ -64,6 +67,7 @@ public class Terror extends Monster implements IAnimatedAttacker {
                 .add(Attributes.ATTACK_DAMAGE, 7.0D);
     }
 
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new TryFindWaterGoal(this));
         this.goalSelector.addGoal(1, new TerrorAttackGoal(this));
@@ -74,6 +78,7 @@ public class Terror extends Monster implements IAnimatedAttacker {
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
+    @Override
     public void travel(Vec3 pTravelVector) {
         if (this.isEffectiveAi() && this.isInWater()) {
             this.moveRelative(this.getSpeed(), pTravelVector);
@@ -87,6 +92,7 @@ public class Terror extends Monster implements IAnimatedAttacker {
         }
     }
 
+    @Override
     public void tick () {
         super.tick();
         if (this.level().isClientSide()){
@@ -156,33 +162,59 @@ public class Terror extends Monster implements IAnimatedAttacker {
         this.entityData.set(ATTACK_STATE, attackState);
     }
 
+    @Override
     public boolean isPushedByFluid() {
         return false;
     }
 
+    @Override
     public boolean canBreatheUnderwater() {
         return true;
     }
 
+    @Override
     public MobType getMobType() {
         return MobType.WATER;
     }
 
+    @Override
     protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
         return dimensions.height * 0.5F;
     }
 
+    @Override
     public float getWalkTargetValue(BlockPos pos, LevelReader level) {
         return level.getFluidState(pos).is(FluidTags.WATER) ? 10.0F + level.getPathfindingCostFromLightLevels(pos) : super.getWalkTargetValue(pos, level);
     }
 
+    @Override
+    @Nullable
+    protected SoundEvent getAmbientSound() {
+        return OPSoundEvents.TERROR_IDLE.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return OPSoundEvents.TERROR_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return OPSoundEvents.TERROR_DEATH.get();
+    }
+
     protected SoundEvent getFlopSound() {
-        return SoundEvents.COD_FLOP;
+        return OPSoundEvents.TERROR_FLOP.get();
+    }
+
+    @Override
+    public int getAmbientSoundInterval() {
+        return 160;
     }
 
     @SuppressWarnings("unused")
     public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return pos.getY() <= 0 && level.getRawBrightness(pos, 0) == 0 && level.getBlockState(pos).is(Blocks.WATER);
+        return pos.getY() <= 20 && level.getRawBrightness(pos, 0) == 0 && level.getBlockState(pos).is(Blocks.WATER);
     }
 
     public boolean checkSpawnObstruction(LevelReader level) {

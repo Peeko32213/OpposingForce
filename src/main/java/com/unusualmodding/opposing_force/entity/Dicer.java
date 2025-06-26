@@ -48,7 +48,7 @@ public class Dicer extends Monster implements IAnimatedAttacker {
 
     public Dicer(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
-        this.xpReward = 5;
+        this.xpReward = 10;
         if (level.isClientSide) {
             this.headPos = new Vec3[] {
                     new Vec3(0, 0, 0)

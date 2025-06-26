@@ -103,6 +103,11 @@ public class OPLanguageProvider extends LanguageProvider {
         this.sound(OPSoundEvents.SLUG_EAT, "Slug eats");
         this.sound(OPSoundEvents.SLUG_ATTACK, "Slug attacks");
 
+        this.sound(OPSoundEvents.TERROR_DEATH, "Terror dies");
+        this.sound(OPSoundEvents.TERROR_HURT, "Terror hurts");
+        this.sound(OPSoundEvents.TERROR_IDLE, "Terror grumbles");
+        this.sound(OPSoundEvents.TERROR_FLOP, "Terror flops");
+
         this.sound(OPSoundEvents.TESLA_BOW_CHARGED, "Tesla Bow loads");
         this.sound(OPSoundEvents.TESLA_BOW_SHOOT, "Tesla Bow fires");
 
@@ -140,10 +145,10 @@ public class OPLanguageProvider extends LanguageProvider {
         this.addAdvancement("trembler_shell", "Spin to Win");
         this.addAdvancementDesc("trembler_shell", "Defeat a Trembler and claim its shell");
 
-        this.addAdvancement("deepwoven_armor", "Deepwoven");
+        this.addAdvancement("deepwoven_armor", "A Cozy Caver");
         this.addAdvancementDesc("deepwoven_armor", "Conceal yourself with a piece Deepwoven armor");
 
-        this.addAdvancement("ignite_fire_slime", "Fire Slime");
+        this.addAdvancement("ignite_fire_slime", "Protocol III");
         this.addAdvancementDesc("ignite_fire_slime", "Reignite a Fire Slime with Blaze Powder to prevent it from evaporating");
 
         this.addAdvancement("tame_slug", "Go my Slug");

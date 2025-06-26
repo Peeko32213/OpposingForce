@@ -47,6 +47,7 @@ public class Trembler extends Monster {
         super(pEntityType, pLevel);
         this.moveControl = new TremblerMoveControl();
         this.lookControl = new TremblerLookControl(this);
+        this.xpReward = 10;
     }
 
     @Override
