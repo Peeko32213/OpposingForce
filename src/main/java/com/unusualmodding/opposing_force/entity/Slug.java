@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.unusualmodding.opposing_force.criterion.OPCriterion;
 import com.unusualmodding.opposing_force.registry.OPEffects;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -9,11 +10,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -310,6 +311,7 @@ public class Slug extends Monster implements OwnableEntity {
     public void tame(Player player) {
         this.setTame(true);
         this.setOwnerUUID(player.getUUID());
+        if (player instanceof ServerPlayer serverPlayer) OPCriterion.TAME_SLUG.trigger(serverPlayer);
 
         RandomSource randomsource = this.getRandom();
         if (randomsource.nextInt(100) == 0) {

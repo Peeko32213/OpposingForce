@@ -42,37 +42,15 @@ public class OPAdvancementProvider implements AdvancementGenerator {
 
         Advancement igniteFireSlime = Advancement.Builder.advancement()
                 .parent(root)
-                .display(Items.MAGMA_CREAM,
+                .display(Items.BLAZE_POWDER,
                         Component.translatable("advancement.opposing_force.ignite_fire_slime"),
                         Component.translatable("advancement.opposing_force.ignite_fire_slime.desc"),
                         null,
                         FrameType.TASK, true, true, false)
                 .addCriterion("ignite_fire_slime", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(
-                        ItemPredicate.Builder.item().of(Items.MAGMA_CREAM),
+                        ItemPredicate.Builder.item().of(Items.BLAZE_POWDER),
                         EntityPredicate.wrap(EntityPredicate.Builder.entity().of(OPEntities.FIRE_SLIME.get()).build())))
                 .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "ignite_fire_slime"), helper);
-
-        Advancement tameSlug = Advancement.Builder.advancement()
-                .parent(root)
-                .display(OPItems.SLUG_EGGS.get(),
-                        Component.translatable("advancement.opposing_force.tame_slug"),
-                        Component.translatable("advancement.opposing_force.tame_slug.desc"),
-                        null,
-                        FrameType.TASK, true, true, false)
-                .addCriterion("tame_slug", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(OPEntities.SLUG.get()).build()))
-                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "tame_slug"), helper);
-
-        Advancement growSlug = Advancement.Builder.advancement()
-                .parent(tameSlug)
-                .display(Items.SLIME_BLOCK,
-                        Component.translatable("advancement.opposing_force.grow_slug"),
-                        Component.translatable("advancement.opposing_force.grow_slug.desc"),
-                        null,
-                        FrameType.TASK, true, true, false)
-                .addCriterion("grow_slug", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(
-                        ItemPredicate.Builder.item().of(Items.SLIME_BLOCK),
-                        EntityPredicate.wrap(EntityPredicate.Builder.entity().of(OPEntities.SLUG.get()).build())))
-                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "grow_slug"), helper);
 
         Advancement captureWhizz = Advancement.Builder.advancement()
                 .parent(root)

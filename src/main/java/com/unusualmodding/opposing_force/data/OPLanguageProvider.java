@@ -144,15 +144,15 @@ public class OPLanguageProvider extends LanguageProvider {
         this.addAdvancementDesc("deepwoven_armor", "Conceal yourself with a piece Deepwoven armor");
 
         this.addAdvancement("ignite_fire_slime", "Fire Slime");
-        this.addAdvancementDesc("ignite_fire_slime", "Reignite a Fire Slime with Magma Cream to prevent it from evaporating");
+        this.addAdvancementDesc("ignite_fire_slime", "Reignite a Fire Slime with Blaze Powder to prevent it from evaporating");
 
-        this.addAdvancement("tame_slug", "Tame Slug");
+        this.addAdvancement("tame_slug", "Go my Slug");
         this.addAdvancementDesc("tame_slug", "Use Slug Eggs to spawn a tamed Slug");
 
-        this.addAdvancement("grow_slug", "Grow Slug");
+        this.addAdvancement("grow_slug", "Rise, my glorious creation");
         this.addAdvancementDesc("grow_slug", "Feed a tamed Slug a Slime Block to increase its size");
 
-        this.addAdvancement("capture_whizz", "Capture Whizz");
+        this.addAdvancement("capture_whizz", "With the Whizz? No way!");
         this.addAdvancementDesc("capture_whizz", "Use a Silk Touch pickaxe to capture a Whizz");
 
         // jeed compat

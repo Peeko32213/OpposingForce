@@ -279,7 +279,7 @@ public class FireSlime extends Monster {
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        if (itemstack.is(Items.MAGMA_CREAM.asItem()) && this.shouldDespawn()) {
+        if (itemstack.is(Items.BLAZE_POWDER.asItem()) && this.shouldDespawn()) {
             if (!player.getAbilities().instabuild) {
                 itemstack.shrink(1);
             }

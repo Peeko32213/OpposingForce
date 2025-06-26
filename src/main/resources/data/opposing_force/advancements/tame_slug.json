@@ -2,18 +2,7 @@
   "parent": "opposing_force:root",
   "criteria": {
     "tame_slug": {
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "type": "opposing_force:slug"
-            }
-          }
-        ]
-      },
-      "trigger": "minecraft:tame_animal"
+      "trigger": "opposing_force:tame_slug"
     }
   },
   "display": {
