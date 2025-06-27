@@ -20,6 +20,7 @@ import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -104,12 +105,12 @@ public class Tomahawk extends AbstractArrow implements ItemSupplier {
 
     @Override
     protected SoundEvent getDefaultHitGroundSoundEvent() {
-        return SoundEvents.WOOD_BREAK;
+        return SoundEvents.CHERRY_WOOD_BREAK;
     }
 
     @Override
     public double getBaseDamage() {
-        return 6.0D;
+        return 5.0D;
     }
 
     @Override

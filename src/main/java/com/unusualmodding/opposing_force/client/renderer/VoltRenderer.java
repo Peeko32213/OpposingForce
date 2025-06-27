@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.VoltModel;
+import com.unusualmodding.opposing_force.client.renderer.layer.VoltChargedLayer;
 import com.unusualmodding.opposing_force.client.renderer.layer.VoltGlowLayer;
 import com.unusualmodding.opposing_force.entity.Volt;
 import com.unusualmodding.opposing_force.registry.OPModelLayers;
@@ -24,6 +25,7 @@ public class VoltRenderer extends MobRenderer<Volt, VoltModel<Volt>> {
     public VoltRenderer(EntityRendererProvider.Context context) {
         super(context, new VoltModel<>(context.bakeLayer(OPModelLayers.VOLT_LAYER)), 0.5F);
         this.addLayer(new VoltGlowLayer<>(this, PULSATING_GLOW_TEXTURE, (entity, p_234802_, p_234803_) -> Math.max(0.2F, Mth.cos(p_234803_ * 0.025F + (float) Math.PI * 0.85F)), VoltModel::getPulsatingLayerModelParts));
+        this.addLayer(new VoltChargedLayer(this, context.getModelSet()));
     }
 
     protected void scale(Volt entity, PoseStack poseStack, float partialTicks) {

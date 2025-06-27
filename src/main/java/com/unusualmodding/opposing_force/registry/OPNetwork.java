@@ -33,6 +33,12 @@ public class OPNetwork {
                 .encoder(ElectricChargeSyncS2CPacket::toBytes)
                 .consumerMainThread(ElectricChargeSyncS2CPacket::handle)
                 .add();
+
+        net.messageBuilder(ElectricDamageC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(ElectricDamageC2SPacket::new)
+                .encoder(ElectricDamageC2SPacket::toBytes)
+                .consumerMainThread(ElectricDamageC2SPacket::handle)
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG message) {

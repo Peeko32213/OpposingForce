@@ -4,11 +4,13 @@ import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
+import com.unusualmodding.opposing_force.registry.tags.OPDamageTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
@@ -30,13 +32,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 
-public class Volt extends Monster implements IAnimatedAttacker {
+public class Volt extends Monster implements IAnimatedAttacker, PowerableMob {
 
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Volt.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> LEAP_COOLDOWN = SynchedEntityData.defineId(Volt.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> CHARGED = SynchedEntityData.defineId(Volt.class, EntityDataSerializers.BOOLEAN);
 
     public float targetSquish;
     public float squish;
@@ -51,9 +55,10 @@ public class Volt extends Monster implements IAnimatedAttacker {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 16.0D).add(Attributes.MOVEMENT_SPEED, 0.11F);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 16.0D).add(Attributes.MOVEMENT_SPEED, 0.11F).add(Attributes.FOLLOW_RANGE, 32.0D);
     }
 
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new VoltAttackGoal(this));
@@ -64,10 +69,12 @@ public class Volt extends Monster implements IAnimatedAttacker {
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
     }
 
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ATTACK_STATE, 0);
         this.entityData.define(LEAP_COOLDOWN, 4 + random.nextInt(16 * 2));
+        this.entityData.define(CHARGED, false);
     }
 
     @Override
@@ -75,6 +82,9 @@ public class Volt extends Monster implements IAnimatedAttacker {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putInt("AttackState", this.getAttackState());
         compoundTag.putInt("LeapCooldown", this.getLeapCooldown());
+        if (this.entityData.get(CHARGED)) {
+            compoundTag.putBoolean("Charged", true);
+        }
     }
 
     @Override
@@ -82,6 +92,7 @@ public class Volt extends Monster implements IAnimatedAttacker {
         super.readAdditionalSaveData(compoundTag);
         this.setAttackState(compoundTag.getInt("AttackState"));
         this.setLeapCooldown(compoundTag.getInt("LeapCooldown"));
+        this.entityData.set(CHARGED, compoundTag.getBoolean("Charged"));
     }
 
     @Override
@@ -106,6 +117,33 @@ public class Volt extends Monster implements IAnimatedAttacker {
         this.entityData.set(LEAP_COOLDOWN, 4 + random.nextInt(16 * 2));
     }
 
+    @Override
+    public boolean isPowered() {
+        return this.entityData.get(CHARGED);
+    }
+
+    @Override
+    public void thunderHit(ServerLevel level, LightningBolt lightning) {
+        super.thunderHit(level, lightning);
+        this.entityData.set(CHARGED, true);
+        this.setRemainingFireTicks(0);
+        this.heal(this.getMaxHealth());
+    }
+
+    @Override
+    public boolean hurt(DamageSource damageSource, float amount) {
+        if (this.isInvulnerableTo(damageSource)) {
+            return false;
+        } else {
+            if (damageSource.is(OPDamageTypes.ELECTRIFIED)) {
+                this.heal(4.0F);
+                return false;
+            }
+            return super.hurt(damageSource, amount);
+        }
+    }
+
+    @Override
     public void tick() {
         if (this.getLeapCooldown() > 0) {
             this.setLeapCooldown(this.getLeapCooldown() - 1);
@@ -128,6 +166,12 @@ public class Volt extends Monster implements IAnimatedAttacker {
         this.wasOnGround = this.onGround();
         this.decreaseSquish();
 
+        if (this.isPowered()) {
+            if (this.tickCount % 100 == 0 && this.getHealth() < this.getMaxHealth()) {
+                this.heal(2);
+            }
+        }
+
         super.tick();
     }
 
@@ -140,19 +184,23 @@ public class Volt extends Monster implements IAnimatedAttacker {
         this.targetSquish *= 0.6F;
     }
 
-    // Sounds
+    @Override
+    @Nullable
     protected SoundEvent getAmbientSound() {
         return OPSoundEvents.VOLT_IDLE.get();
     }
 
+    @Override
     protected SoundEvent getHurtSound(DamageSource source) {
         return OPSoundEvents.VOLT_HURT.get();
     }
 
+    @Override
     protected SoundEvent getDeathSound() {
         return OPSoundEvents.VOLT_DEATH.get();
     }
 
+    @Override
     protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
         this.playSound(OPSoundEvents.VOLT_SQUISH.get(), 0.1F, 1.0F);
     }
@@ -162,8 +210,9 @@ public class Volt extends Monster implements IAnimatedAttacker {
         return 400;
     }
 
+    @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return super.isInvulnerableTo(source) || source.is(DamageTypeTags.IS_FALL) || source.is(OPDamageTypes.ELECTRIFIED);
+        return super.isInvulnerableTo(source) || source.is(DamageTypeTags.IS_FALL);
     }
 
     @Override
@@ -240,14 +289,14 @@ public class Volt extends Monster implements IAnimatedAttacker {
                     case 1 -> tickShootAttack();
                     case 2 -> tickLeap();
                     default -> {
-                        this.checkForCloseRangeAttack(distance);
+                        this.checkForAttack(distance);
                         this.volt.getMoveControl().strafe(random ? 0.3F : -0.3F, random ? 0.3F : -0.3F);
                     }
                 }
             }
         }
 
-        protected void checkForCloseRangeAttack(double distance) {
+        protected void checkForAttack(double distance) {
             if (this.volt.onGround() || this.volt.isInWaterOrBubble()) {
                 this.volt.setAttackState(1);
             }
@@ -268,7 +317,10 @@ public class Volt extends Monster implements IAnimatedAttacker {
                 double tz = target.getZ() - this.volt.getZ();
                 float heightOffset = Mth.sqrt((float) (tx * tx + tz * tz)) * 0.01F;
                 projectile.shoot(tx, ty + heightOffset, tz, 0.6F, 1.0F);
-                this.volt.playSound(OPSoundEvents.VOLT_SHOOT.get(), 1.0F, 1.0F / (this.volt.getRandom().nextFloat() * 0.4F + 0.8F));
+                this.volt.playSound(OPSoundEvents.VOLT_SHOOT.get(), 2.0F, 1.0F / (this.volt.getRandom().nextFloat() * 0.4F + 0.8F));
+                if (this.volt.isPowered()) {
+                    projectile.setChargeScale(2.5F);
+                }
                 this.volt.level().addFreshEntity(projectile);
             }
             if (this.attackTime >= 20) {

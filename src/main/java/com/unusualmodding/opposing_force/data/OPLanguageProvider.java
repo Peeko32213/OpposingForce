@@ -111,6 +111,10 @@ public class OPLanguageProvider extends LanguageProvider {
         this.sound(OPSoundEvents.TESLA_BOW_CHARGED, "Tesla Bow loads");
         this.sound(OPSoundEvents.TESLA_BOW_SHOOT, "Tesla Bow fires");
 
+        this.sound(OPSoundEvents.TREMBLER_DEATH, "Trembler dies");
+        this.sound(OPSoundEvents.TREMBLER_HURT, "Trembler hurts");
+        this.sound(OPSoundEvents.TREMBLER_IDLE, "Trembler hisses");
+        this.sound(OPSoundEvents.TREMBLER_IDLE_FUNNY, "TREMBLER BREATHES");
         this.sound(OPSoundEvents.TREMBLER_BLOCK, "Trembler blocks");
 
         this.sound(OPSoundEvents.UMBER_SPIDER_DEATH, "Umber Spider dies");

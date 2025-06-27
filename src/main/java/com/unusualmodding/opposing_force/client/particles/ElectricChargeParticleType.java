@@ -61,7 +61,8 @@ public class ElectricChargeParticleType extends ParticleType<ElectricChargeParti
         public final ElectricChargeTarget target;
 
         public Data(ParticleType<Data> type) {
-            this(type, -1,1, 6, 0.13f, 0.3f, 0.125f, 0.25f, 0.66f, 0.15f, new Vector4f(0.0f, 0.0f, 0.0f, 0.75f), new ElectricChargeTarget(TargetType.RANDOM, -1, Vec3.ZERO, List.of()));
+            this(type, -1,1, 6, 0.13f, 0.3f, 0.125f, 0.25f, 0.66f, 0.15f, new Vector4f(0.05f, 0.5f, 0.9f, 0.75f),
+                    new ElectricChargeTarget(TargetType.RANDOM, -1, Vec3.ZERO, List.of()));
         }
 
         public Data(ParticleType<Data> type, int senderId ,int range, int sections, float size, float pn, float sf, float bif, float bcf, float closeness, Vector4f color, ElectricChargeTarget target) {
@@ -179,6 +180,8 @@ public class ElectricChargeParticleType extends ParticleType<ElectricChargeParti
                     branchInitiationFactor, branchContinuationFactor, closeness, color,
                     new ElectricChargeTarget(target.type(), target.entityId(), target.position(), ids));
         }
+
+
 
         @Override
         public String writeToString() {

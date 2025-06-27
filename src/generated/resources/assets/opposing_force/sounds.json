@@ -514,6 +514,33 @@
     ],
     "subtitle": "subtitles.opposing_force.trembler_block"
   },
+  "trembler_death": {
+    "sounds": [
+      "opposing_force:entity/trembler/death1"
+    ],
+    "subtitle": "subtitles.opposing_force.trembler_death"
+  },
+  "trembler_hurt": {
+    "sounds": [
+      {
+        "name": "opposing_force:entity/trembler/hurt1",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.trembler_hurt"
+  },
+  "trembler_idle": {
+    "sounds": [
+      "opposing_force:entity/trembler/idle1"
+    ],
+    "subtitle": "subtitles.opposing_force.trembler_idle"
+  },
+  "trembler_idle_funny": {
+    "sounds": [
+      "opposing_force:entity/trembler/idle_funny1"
+    ],
+    "subtitle": "subtitles.opposing_force.trembler_idle_funny"
+  },
   "umber_spider_death": {
     "sounds": [
       "opposing_force:entity/umber_spider/death1"

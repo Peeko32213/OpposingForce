@@ -103,7 +103,7 @@ public abstract class AbstractElectricCharge extends AbstractHurtingProjectile i
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource source, float amount) {
+    public boolean hurt(DamageSource source, float amount) {
         return false;
     }
 

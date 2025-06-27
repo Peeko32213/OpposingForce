@@ -58,9 +58,7 @@ public class OpposingForce {
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
-        event.enqueueWork(() -> {
-            PROXY.clientInit();
-        });
+        event.enqueueWork(PROXY::clientInit);
     }
 
     private void dataSetup(GatherDataEvent data) {

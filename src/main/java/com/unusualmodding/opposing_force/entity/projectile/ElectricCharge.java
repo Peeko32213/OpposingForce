@@ -87,13 +87,13 @@ public class ElectricCharge extends AbstractElectricCharge {
         Vec3 pos = this.position();
 
         this.spawnElectricParticles(this, 1, 5);
-        this.hurtEntitiesAround(pos, (this.getChargeScale()) + 1, this.getChargeScale() + 2, false);
+        this.hurtEntitiesAround(pos, (this.getChargeScale()) + 1, (this.getChargeScale() * 2) + 2, false);
 
         if (this.level().getBlockState(this.blockPosition().below(0)).is(Blocks.WATER)) {
             this.spawnElectricParticles(this, 10, 6);
             if (!this.level().isClientSide) {
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
-                this.hurtEntitiesAround(pos, this.getChargeScale() + 5, this.getChargeScale() + 4, true);
+                this.hurtEntitiesAround(pos, this.getChargeScale() + 5, (this.getChargeScale() * 4) + 2, true);
                 this.discard();
             }
         }
@@ -114,14 +114,17 @@ public class ElectricCharge extends AbstractElectricCharge {
         double y = charge.getY() - charge.getBbHeight() + movement.y;
         double z = charge.getZ() + movement.z;
 
-        for (int i = 0; i < particleMax; i++) {
-            ElectricChargeSyncS2CPacket packet = ElectricChargeSyncS2CPacket.builder()
-                    .pos(x, y, z)
-                    .range((int) (range + charge.getChargeScale() / 1.25F))
-                    .size(0.12f)
-                    .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
-                    .build();
-            OPNetwork.sendToClients(packet);
+
+            for (int i = 0; i < particleMax; i++) {
+                if (!this.level().isClientSide) {
+                ElectricChargeSyncS2CPacket packet = ElectricChargeSyncS2CPacket.builder()
+                        .pos(x, y, z)
+                        .range((int) (range + charge.getChargeScale() / 1.25F))
+                        .size(0.12f)
+                        .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
+                        .build();
+                OPNetwork.sendToClients(packet);
+            }
         }
     }
 

@@ -68,6 +68,10 @@ public class OPSoundEvents {
     public static final RegistryObject<SoundEvent> TESLA_BOW_CHARGED = createSoundEvent("tesla_bow_charged");
     public static final RegistryObject<SoundEvent> TESLA_BOW_SHOOT = createSoundEvent("tesla_bow_shoot");
 
+    public static final RegistryObject<SoundEvent> TREMBLER_DEATH = createSoundEvent("trembler_death");
+    public static final RegistryObject<SoundEvent> TREMBLER_HURT = createSoundEvent("trembler_hurt");
+    public static final RegistryObject<SoundEvent> TREMBLER_IDLE = createSoundEvent("trembler_idle");
+    public static final RegistryObject<SoundEvent> TREMBLER_IDLE_FUNNY = createSoundEvent("trembler_idle_funny");
     public static final RegistryObject<SoundEvent> TREMBLER_BLOCK = createSoundEvent("trembler_block");
 
     public static final RegistryObject<SoundEvent> UMBER_SPIDER_HURT = createSoundEvent("umber_spider_hurt");

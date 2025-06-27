@@ -38,10 +38,10 @@ public class ElectricChargeTarget {
     }
 
     public static final Codec<ElectricChargeTarget> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        ElectricChargeParticleType.TargetType.CODEC.fieldOf("type").forGetter(ElectricChargeTarget::type),
-        Codec.INT.fieldOf("target_entity_id").forGetter(ElectricChargeTarget::entityId),
-        Vec3.CODEC.fieldOf("position").forGetter(ElectricChargeTarget::position),
-        Codec.INT.listOf().fieldOf("chain_targets").forGetter(ElectricChargeTarget::chainTargets)
+            ElectricChargeParticleType.TargetType.CODEC.fieldOf("type").forGetter(ElectricChargeTarget::type),
+            Codec.INT.fieldOf("target_entity_id").forGetter(ElectricChargeTarget::entityId),
+            Vec3.CODEC.fieldOf("position").forGetter(ElectricChargeTarget::position),
+            Codec.INT.listOf().fieldOf("chain_targets").forGetter(ElectricChargeTarget::chainTargets)
     ).apply(instance, ElectricChargeTarget::new));
 
     public void write(FriendlyByteBuf buf) {

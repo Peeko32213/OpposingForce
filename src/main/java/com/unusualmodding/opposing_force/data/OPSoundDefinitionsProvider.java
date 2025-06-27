@@ -209,6 +209,18 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound(OpposingForce.modPrefix("item/tesla_bow/shoot1"))
         );
 
+        this.sound(OPSoundEvents.TREMBLER_DEATH,
+                sound(OpposingForce.modPrefix("entity/trembler/death1"))
+        );
+        this.sound(OPSoundEvents.TREMBLER_HURT,
+                sound(OpposingForce.modPrefix("entity/trembler/hurt1")).pitch(1.2F)
+        );
+        this.sound(OPSoundEvents.TREMBLER_IDLE,
+                sound(OpposingForce.modPrefix("entity/trembler/idle1"))
+        );
+        this.sound(OPSoundEvents.TREMBLER_IDLE_FUNNY,
+                sound(OpposingForce.modPrefix("entity/trembler/idle_funny1"))
+        );
         this.sound(OPSoundEvents.TREMBLER_BLOCK,
                 sound("item/shield/block1").pitch(1.2F),
                 sound("item/shield/block2").pitch(1.2F),

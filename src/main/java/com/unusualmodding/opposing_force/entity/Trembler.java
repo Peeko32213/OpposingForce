@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
@@ -29,7 +30,10 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.EnumSet;
 import java.util.Objects;
 
@@ -84,6 +88,7 @@ public class Trembler extends Monster {
         return 0.6F;
     }
 
+    @Override
     public void tick() {
         super.tick();
 
@@ -127,6 +132,7 @@ public class Trembler extends Monster {
         super.blockedByShield(defender);
     }
 
+    @Override
     public boolean canDisableShield() {
         return true;
     }
@@ -146,6 +152,7 @@ public class Trembler extends Monster {
         return Math.abs(target.getY() - this.getY()) < 3;
     }
 
+    @Override
     public boolean hurt(DamageSource damageSource, float pAmount) {
         if (this.isInvulnerableTo(damageSource)) {
             return false;
@@ -217,6 +224,25 @@ public class Trembler extends Monster {
 
     public void stunnedTicks() {
         this.entityData.set(STUNNED_TICKS, 36 + random.nextInt(4));
+    }
+
+    @Override
+    @Nullable
+    protected SoundEvent getAmbientSound() {
+        if ((this.random.nextInt(1000) == 0 && this.getName().getString().equalsIgnoreCase("valiant")) || (LocalDate.now().getMonth() == Month.APRIL && LocalDate.now().getDayOfMonth() == 1)) {
+            return OPSoundEvents.TREMBLER_IDLE_FUNNY.get();
+        }
+        return OPSoundEvents.TREMBLER_IDLE.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return OPSoundEvents.TREMBLER_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return OPSoundEvents.TREMBLER_DEATH.get();
     }
 
     @SuppressWarnings("unused")
