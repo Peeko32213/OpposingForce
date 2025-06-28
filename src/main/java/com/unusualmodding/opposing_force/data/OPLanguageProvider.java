@@ -133,6 +133,8 @@ public class OPLanguageProvider extends LanguageProvider {
         this.sound(OPSoundEvents.WHIZZ_ATTACK, "Whizz bites");
 
         this.addBlock(OPBlocks.INFESTED_AMETHYST_BLOCK, "Infested Block of Amethyst");
+        this.addBlock(OPBlocks.DICER_HEAD, "Dicer Head");
+        this.addBlock(OPBlocks.DICER_WALL_HEAD, "Dicer Head");
 
         // other
         this.addEnchantmentWithDesc(OPEnchantments.BIG_ELECTRIC_BALL.get(), "Increases the size of the fired electric charge");

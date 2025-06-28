@@ -26,6 +26,9 @@ public class OPModelLayers {
 
     public static final ModelLayerLocation DEEPWOVEN_ARMOR_LAYER = main("deepwoven_armor");
 
+    public static final ModelLayerLocation DICER_HEAD = main("dicer_head");
+
+
     private static ModelLayerLocation register(String id, String name) {
         return new ModelLayerLocation(new ResourceLocation(OpposingForce.MOD_ID, id), name);
     }
