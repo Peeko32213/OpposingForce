@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-19T22:43:39.3332966	Registries
+// 1.20.1	2025-06-30T19:06:00.0010178	Registries
 8871d493161af813420d4804e7cb09d21dc44df1 data/opposing_force/damage_type/electrified.json
 2aaf2641dbb20483c2095fac9f165637dae0a736 data/opposing_force/damage_type/gloom_toxin.json
 4d3a88d949ab10dcd54727bd8ed26e701b96712a data/opposing_force/damage_type/laser.json
@@ -7,10 +7,10 @@ af1babf1bca9fd2a3be8024bdc899667e1c5612e data/opposing_force/damage_type/tomahaw
 3a811c99cae9885f6a9580f5c90dffe7b4bd116f data/opposing_force/forge/biome_modifier/add_spawn/frowzy.json
 1d479d591377e6630aa97609eb3f19f9e95397c9 data/opposing_force/forge/biome_modifier/add_spawn/guzzler.json
 c489acea9f3a8e37c45ef6c03be6b3fe5a1c0f8e data/opposing_force/forge/biome_modifier/add_spawn/pale_spider.json
-1758a321cbd899247be5a6d9eee67f5e6e137aa2 data/opposing_force/forge/biome_modifier/add_spawn/ramble.json
-20933258df491b243475211d9b08ccd8410befed data/opposing_force/forge/biome_modifier/add_spawn/slug.json
+202a16e12f9985d49385ff812c935a3146e63df0 data/opposing_force/forge/biome_modifier/add_spawn/ramble.json
+1c5d10633922a248bd254ae705385e7f0fc765c0 data/opposing_force/forge/biome_modifier/add_spawn/slug.json
 e1e3f2de13caf8ec7ba5fb78cbe0989dc0439a0a data/opposing_force/forge/biome_modifier/add_spawn/terror.json
 3c1452c001b306d58793e490420d671d77997187 data/opposing_force/forge/biome_modifier/add_spawn/trembler.json
-cfbf304e598c0ea2ad7d4015b6d454d1d01dcc7c data/opposing_force/forge/biome_modifier/add_spawn/umber_spider.json
+cb3e395618ae3271c4c36e6e13e0d5c13c73c3fe data/opposing_force/forge/biome_modifier/add_spawn/umber_spider.json
 cd73aaf8e54ee416020705ccc0ec59608bdf6632 data/opposing_force/forge/biome_modifier/add_spawn/volt.json
 dbcffec4b803405907a7168295384e7f0ee1cba6 data/opposing_force/forge/biome_modifier/remove_feature/amethyst_geode.json
