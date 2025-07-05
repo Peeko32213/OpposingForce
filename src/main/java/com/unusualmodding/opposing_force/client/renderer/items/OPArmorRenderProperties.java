@@ -18,7 +18,7 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
 
     public static void initializeModels() {
         init = true;
-        DEEPWOVEN_MODEL = new DeepwovenArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.DEEPWOVEN_ARMOR_LAYER));
+        DEEPWOVEN_MODEL = new DeepwovenArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.DEEPWOVEN_ARMOR));
     }
 
     @Override

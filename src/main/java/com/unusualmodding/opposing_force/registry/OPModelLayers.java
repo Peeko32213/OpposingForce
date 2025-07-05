@@ -9,25 +9,23 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class OPModelLayers {
 
-    public static final ModelLayerLocation DICER_LAYER = main("dicer");
-    public static final ModelLayerLocation EMERALDFISH_LAYER = main("emeraldfish");
-    public static final ModelLayerLocation FIRE_SLIME_LAYER = main("fire_slime");
-    public static final ModelLayerLocation FROWZY_LAYER = main("frowzy");
-    public static final ModelLayerLocation GUZZLER_LAYER = main("guzzler");
-    public static final ModelLayerLocation PALE_SPIDER_LAYER = main("pale_spider");
-    public static final ModelLayerLocation RAMBLE_LAYER = main("ramble");
-    public static final ModelLayerLocation SLUG_LAYER = main("slug");
-    public static final ModelLayerLocation TERROR_LAYER = main("terror");
-    public static final ModelLayerLocation TREMBLER_LAYER = main("trembler");
-    public static final ModelLayerLocation UMBER_SPIDER_LAYER = main("umber_spider");
-    public static final ModelLayerLocation VOLT_LAYER = main("volt");
-    public static final ModelLayerLocation VOLT_CHARGED_LAYER = register("volt", "charged_volt");
-    public static final ModelLayerLocation WHIZZ_LAYER = main("whizz");
-
-    public static final ModelLayerLocation DEEPWOVEN_ARMOR_LAYER = main("deepwoven_armor");
-
+    public static final ModelLayerLocation DICER = main("dicer");
     public static final ModelLayerLocation DICER_HEAD = main("dicer_head");
+    public static final ModelLayerLocation EMERALDFISH = main("emeraldfish");
+    public static final ModelLayerLocation FIRE_SLIME = main("fire_slime");
+    public static final ModelLayerLocation FROWZY = main("frowzy");
+    public static final ModelLayerLocation GUZZLER = main("guzzler");
+    public static final ModelLayerLocation PALE_SPIDER = main("pale_spider");
+    public static final ModelLayerLocation RAMBLE = main("ramble");
+    public static final ModelLayerLocation SLUG = main("slug");
+    public static final ModelLayerLocation TERROR = main("terror");
+    public static final ModelLayerLocation TREMBLER = main("trembler");
+    public static final ModelLayerLocation UMBER_SPIDER = main("umber_spider");
+    public static final ModelLayerLocation VOLT = main("volt");
+    public static final ModelLayerLocation VOLT_CHARGED = register("volt", "charged_volt");
+    public static final ModelLayerLocation WHIZZ = main("whizz");
 
+    public static final ModelLayerLocation DEEPWOVEN_ARMOR = main("deepwoven_armor");
 
     private static ModelLayerLocation register(String id, String name) {
         return new ModelLayerLocation(new ResourceLocation(OpposingForce.MOD_ID, id), name);

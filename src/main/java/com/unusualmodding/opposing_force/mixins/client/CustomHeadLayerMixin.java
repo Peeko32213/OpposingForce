@@ -1,10 +1,10 @@
 package com.unusualmodding.opposing_force.mixins.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.unusualmodding.opposing_force.blocks.OPHeadBlock;
-import com.unusualmodding.opposing_force.blocks.OPWallHeadBlock;
-import com.unusualmodding.opposing_force.client.models.mob_heads.OPMobModelBase;
-import com.unusualmodding.opposing_force.client.renderer.blocks.OPHeadBlockEntityRenderer;
+import com.unusualmodding.opposing_force.blocks.MobHeadBlock;
+import com.unusualmodding.opposing_force.blocks.WallMobHeadBlock;
+import com.unusualmodding.opposing_force.client.models.mob_heads.MobHeadModelBase;
+import com.unusualmodding.opposing_force.client.renderer.blocks.MobHeadBlockEntityRenderer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -20,7 +20,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.WalkAnimationState;
 import net.minecraft.world.entity.monster.ZombieVillager;
 import net.minecraft.world.entity.npc.Villager;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -37,10 +39,11 @@ import java.util.Map;
 @OnlyIn(Dist.CLIENT)
 @Mixin(CustomHeadLayer.class)
 public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends EntityModel<T> & HeadedModel> extends RenderLayer<T, M> {
+
     @Shadow @Final private float scaleX;
     @Shadow @Final private float scaleY;
     @Shadow @Final private float scaleZ;
-    @Unique private Map<OPHeadBlock.Type, OPMobModelBase> headModelBaseMap;
+    @Unique private Map<MobHeadBlock.Type, MobHeadModelBase> headModelBaseMap;
 
     public CustomHeadLayerMixin(RenderLayerParent<T, M> p_117346_) {
         super(p_117346_);
@@ -48,7 +51,7 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
 
     @Inject(at = @At("TAIL"), method = "<init>(Lnet/minecraft/client/renderer/entity/RenderLayerParent;Lnet/minecraft/client/model/geom/EntityModelSet;FFFLnet/minecraft/client/renderer/ItemInHandRenderer;)V")
     private void renderSpeciesHeads(RenderLayerParent p_234822_, EntityModelSet p_234823_, float p_234824_, float p_234825_, float p_234826_, ItemInHandRenderer p_234827_, CallbackInfo ci) {
-        this.headModelBaseMap = OPHeadBlockEntityRenderer.createMobHeadRenderers(p_234823_);
+        this.headModelBaseMap = MobHeadBlockEntityRenderer.createMobHeadRenderers(p_234823_);
     }
 
     @Inject(at = @At("HEAD"), method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V", cancellable = true)
@@ -57,7 +60,7 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
         Item item = itemstack.getItem();
         if (!itemstack.isEmpty() && item instanceof BlockItem) {
             Block block = ((BlockItem)item).getBlock();
-            if (block instanceof OPHeadBlock || block instanceof OPWallHeadBlock) {
+            if (block instanceof MobHeadBlock || block instanceof WallMobHeadBlock) {
                 ci.cancel();
                 poseStack.pushPose();
                 poseStack.scale(this.scaleX, this.scaleY, this.scaleZ);
@@ -75,21 +78,19 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
                 }
                 poseStack.translate(-0.5D, 0.0D, -0.5D);
 
-                OPHeadBlock.Type type = block instanceof OPHeadBlock ? ((OPHeadBlock)block).getType() : ((OPWallHeadBlock)block).getType();
-                OPMobModelBase skullmodelbase = this.headModelBaseMap.get(type);
-                RenderType rendertype = OPHeadBlockEntityRenderer.getRenderType(type);
+                MobHeadBlock.Type type = block instanceof MobHeadBlock ? ((MobHeadBlock)block).getType() : ((WallMobHeadBlock)block).getType();
+                MobHeadModelBase skullmodelbase = this.headModelBaseMap.get(type);
+                RenderType rendertype = MobHeadBlockEntityRenderer.getRenderType(type);
                 Entity entity = t.getVehicle();
                 WalkAnimationState walkanimationstate;
                 if (entity instanceof LivingEntity livingEntity) {
                     walkanimationstate = livingEntity.walkAnimation;
                 } else walkanimationstate = t.walkAnimation;
                 float f3 = walkanimationstate.position(v2);
-                OPHeadBlockEntityRenderer.renderMobHead(null, 180.0F, f3, poseStack, bufferSource, i, skullmodelbase, rendertype, null, type, true);
+                MobHeadBlockEntityRenderer.renderMobHead(null, 180.0F, f3, poseStack, bufferSource, i, skullmodelbase, rendertype, null, type, true);
 
                 poseStack.popPose();
             }
         }
-
     }
-
 }

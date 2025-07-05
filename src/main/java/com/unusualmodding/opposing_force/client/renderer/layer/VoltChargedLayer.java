@@ -21,7 +21,7 @@ public class VoltChargedLayer extends EnergySwirlLayer<Volt, VoltModel<Volt>> {
 
     public VoltChargedLayer(RenderLayerParent<Volt, VoltModel<Volt>> parentModel, EntityModelSet modelSet) {
         super(parentModel);
-        this.model = new VoltModel<>(modelSet.bakeLayer(OPModelLayers.VOLT_CHARGED_LAYER));
+        this.model = new VoltModel<>(modelSet.bakeLayer(OPModelLayers.VOLT_CHARGED));
     }
 
     protected float xOffset(float offset) {

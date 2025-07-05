@@ -18,7 +18,7 @@ public class RambleRenderer extends MobRenderer<Ramble, RambleModel<Ramble>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/ramble.png");
 
     public RambleRenderer(EntityRendererProvider.Context context) {
-        super(context, new RambleModel<>(context.bakeLayer(OPModelLayers.RAMBLE_LAYER)), 0.8F);
+        super(context, new RambleModel<>(context.bakeLayer(OPModelLayers.RAMBLE)), 0.8F);
     }
 
     @Override

@@ -18,7 +18,7 @@ public class WhizzRenderer extends MobRenderer<Whizz, WhizzModel<Whizz>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID,"textures/entity/whizz.png");
 
     public WhizzRenderer(EntityRendererProvider.Context context) {
-        super(context, new WhizzModel<>(context.bakeLayer(OPModelLayers.WHIZZ_LAYER)), 0.2F);
+        super(context, new WhizzModel<>(context.bakeLayer(OPModelLayers.WHIZZ)), 0.2F);
     }
 
     @Override

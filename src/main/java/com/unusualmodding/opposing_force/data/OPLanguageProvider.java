@@ -64,6 +64,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.sound(OPSoundEvents.DICER_IDLE, "Dicer screams");
         this.sound(OPSoundEvents.DICER_ATTACK, "Dicer slashes");
         this.sound(OPSoundEvents.DICER_LASER, "Dicer lasers");
+        this.sound(OPSoundEvents.NOTE_BLOCK_IMITATE_DICER, "Dicer screams");
 
         this.sound(OPSoundEvents.ELECTRIC_CHARGE, "Electric Charge whirls");
         this.sound(OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE, "Electric Charge dissipates");

@@ -41,7 +41,7 @@ public class OPBiomeModifiers {
         addSpawn(context, "slug", OPBiomeTags.HAS_SLUG, new MobSpawnSettings.SpawnerData(OPEntities.SLUG.get(), 60, 2, 2));
         addSpawn(context, "terror", OPBiomeTags.HAS_TERROR, new MobSpawnSettings.SpawnerData(OPEntities.TERROR.get(), 10, 1, 1));
         addSpawn(context, "trembler", OPBiomeTags.HAS_TREMBLER, new MobSpawnSettings.SpawnerData(OPEntities.TREMBLER.get(), 20, 1, 1));
-        addSpawn(context, "umber_spider", OPBiomeTags.HAS_UMBER_SPIDER, new MobSpawnSettings.SpawnerData(OPEntities.UMBER_SPIDER.get(), 40, 4, 4));
+        addSpawn(context, "umber_spider", OPBiomeTags.HAS_UMBER_SPIDER, new MobSpawnSettings.SpawnerData(OPEntities.UMBER_SPIDER.get(), 60, 4, 4));
         addSpawn(context, "volt", OPBiomeTags.HAS_VOLT, new MobSpawnSettings.SpawnerData(OPEntities.VOLT.get(), 10, 4, 4));
 
         removeFeature(context, "amethyst_geode", BiomeTags.IS_OVERWORLD, LOCAL_MODIFICATIONS, CavePlacements.AMETHYST_GEODE);

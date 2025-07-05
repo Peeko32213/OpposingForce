@@ -14,7 +14,7 @@ public class EmeraldfishRenderer extends MobRenderer<Emeraldfish, EmeraldfishMod
 
 
     public EmeraldfishRenderer(EntityRendererProvider.Context context) {
-        super(context, new EmeraldfishModel(context.bakeLayer(OPModelLayers.EMERALDFISH_LAYER)), 0.3F);
+        super(context, new EmeraldfishModel(context.bakeLayer(OPModelLayers.EMERALDFISH)), 0.3F);
     }
 
     protected float getFlipDegrees(Emeraldfish pLivingEntity) {

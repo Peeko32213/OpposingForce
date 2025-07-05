@@ -251,10 +251,12 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
         this.entityData.set(JUMP_COOLDOWN, 80 + random.nextInt(80));
     }
 
+    @Override
     public boolean isBaby() {
         return this.getEntityData().get(IS_BABY);
     }
 
+    @Override
     public void setBaby(boolean baby) {
         this.getEntityData().set(IS_BABY, baby);
         if (this.level() != null && !this.level().isClientSide) {

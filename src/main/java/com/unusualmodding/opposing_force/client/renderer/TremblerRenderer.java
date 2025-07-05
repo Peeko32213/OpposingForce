@@ -18,7 +18,7 @@ public class TremblerRenderer extends MobRenderer<Trembler, TremblerModel<Trembl
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/trembler.png");
 
     public TremblerRenderer(EntityRendererProvider.Context context) {
-        super(context, new TremblerModel<>(context.bakeLayer(OPModelLayers.TREMBLER_LAYER)), 0.5F);
+        super(context, new TremblerModel<>(context.bakeLayer(OPModelLayers.TREMBLER)), 0.5F);
     }
 
     @Override

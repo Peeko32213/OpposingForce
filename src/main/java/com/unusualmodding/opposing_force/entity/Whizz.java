@@ -120,10 +120,12 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
         return dimensions.height * 0.6F;
     }
 
+    @Override
     public MobType getMobType() {
         return MobType.ARTHROPOD;
     }
 
+    @Override
     public void tick() {
         super.tick();
 
@@ -147,6 +149,7 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
         this.flyAnimationState.animateWhen(this.isAlive(), this.tickCount);
     }
 
+    @Override
     public boolean doHurtTarget(Entity entity) {
         if (super.doHurtTarget(entity)) {
             this.playSound(OPSoundEvents.WHIZZ_ATTACK.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
@@ -156,6 +159,7 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
         }
     }
 
+    @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (this.isInvulnerableTo(pSource)) {
             return false;
@@ -302,10 +306,12 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
         this.entityData.set(CHARGE_COOLDOWN, 8 + random.nextInt(12 * 6));
     }
 
+    @Override
     public boolean fromBucket() {
         return this.entityData.get(FROM_BUCKET);
     }
 
+    @Override
     public void setFromBucket(boolean fromBucket) {
         this.entityData.set(FROM_BUCKET, fromBucket);
     }
@@ -324,6 +330,7 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
         return super.requiresCustomPersistence() || this.isTame();
     }
 
+    @Override
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {
         return !this.isTame();
     }
@@ -382,6 +389,7 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
         return super.isAlliedTo(entity);
     }
 
+    @Override
     public boolean canBeLeashed(Player player) {
         return !this.isLeashed() && this.isTame();
     }
@@ -390,6 +398,7 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
         return 32;
     }
 
+    @Override
     public int getMaxSpawnClusterSize() {
         return this.getMaxSwarmSize();
     }

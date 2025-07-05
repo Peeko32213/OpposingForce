@@ -41,6 +41,8 @@ public class OPBlockLootTableProvider extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
+        dropSelf(OPBlocks.TREMBLER_SHELL.get());
+
         dropSelf(OPBlocks.CAVE_PATTY.get());
         dropSelf(OPBlocks.CREAM_CAP.get());
         dropSelf(OPBlocks.CHICKEN_OF_THE_CAVES.get());

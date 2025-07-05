@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.blocks.*;
+import com.unusualmodding.opposing_force.registry.enums.OPNoteBlockInstrument;
 import net.minecraft.world.flag.FeatureFlag;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -57,9 +58,8 @@ public class OPBlocks {
 
     public static final RegistryObject<Block> TREMBLER_SHELL = registerBlock("trembler_shell", () -> new TremblerShellBlock(BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_GREEN).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.DRIPSTONE_BLOCK).requiresCorrectToolForDrops().strength(2.0F, 2.0F)));
 
-    public static final RegistryObject<Block> DICER_HEAD = BLOCKS.register("dicer_head", () -> new OPHeadBlock(OPHeadBlock.Types.DICER, BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASS).strength(1.0F).pushReaction(PushReaction.DESTROY)));
-    public static final RegistryObject<Block> DICER_WALL_HEAD = BLOCKS.register("dicer_wall_head", () -> new OPWallHeadBlock(OPHeadBlock.Types.DICER, BlockBehaviour.Properties.of().dropsLike(DICER_HEAD.get()).strength(1.0F).pushReaction(PushReaction.DESTROY)));
-
+    public static final RegistryObject<Block> DICER_HEAD = BLOCKS.register("dicer_head", () -> new MobHeadBlock(MobHeadBlock.Types.DICER, BlockBehaviour.Properties.of().instrument(OPNoteBlockInstrument.DICER.get()).strength(1.0F).pushReaction(PushReaction.DESTROY)));
+    public static final RegistryObject<Block> DICER_WALL_HEAD = BLOCKS.register("dicer_wall_head", () -> new WallMobHeadBlock(MobHeadBlock.Types.DICER, BlockBehaviour.Properties.of().dropsLike(DICER_HEAD.get()).strength(1.0F).pushReaction(PushReaction.DESTROY)));
 
     private static <B extends Block> RegistryObject<B> registerBlock(String name, Supplier<? extends B> supplier) {
         RegistryObject<B> block = BLOCKS.register(name, supplier);

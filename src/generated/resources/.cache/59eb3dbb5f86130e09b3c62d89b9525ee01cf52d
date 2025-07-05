@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-19T22:43:39.3302323	Loot Tables
+// 1.20.1	2025-07-05T14:36:59.5135016	Loot Tables
 3a0127ad0446387f5375adee0c3c13450f592c9b data/opposing_force/loot_tables/blocks/cap_of_eye.json
 162b15af82e199c4c1a6842e5e7028fa7ab9b62b data/opposing_force/loot_tables/blocks/cave_patty.json
 af5066cdeb06ad6278a4cf9f148ac541118afa50 data/opposing_force/loot_tables/blocks/chicken_of_the_caves.json
@@ -17,3 +17,4 @@ ebe3c700dcbb2f63bbedac7d663b4f12dd3813c8 data/opposing_force/loot_tables/blocks/
 34285779b28d5bba031e409ff433a44146d07f16 data/opposing_force/loot_tables/blocks/purple_knob.json
 578ad3c4d0a1e9aaea21be89e339cdb028bfdf6f data/opposing_force/loot_tables/blocks/raincap.json
 b137972ea180f8fd0105ba44281132450464f87b data/opposing_force/loot_tables/blocks/slippery_top.json
+db0f19672d9e54c25c4d43ae8e1a2684049fbc29 data/opposing_force/loot_tables/blocks/trembler_shell.json

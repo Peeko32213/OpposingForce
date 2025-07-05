@@ -18,7 +18,7 @@ public class FrowzyRenderer extends MobRenderer<Frowzy, FrowzyModel<Frowzy>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/frowzy.png");
 
     public FrowzyRenderer(EntityRendererProvider.Context context) {
-        super(context, new FrowzyModel<>(context.bakeLayer(OPModelLayers.FROWZY_LAYER)), 0.4F);
+        super(context, new FrowzyModel<>(context.bakeLayer(OPModelLayers.FROWZY)), 0.4F);
     }
 
     @Override

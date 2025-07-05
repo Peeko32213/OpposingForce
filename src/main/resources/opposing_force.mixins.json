@@ -6,10 +6,13 @@
   "refmap": "opposing_force.refmap.json",
   "mixins": [
     "CrossbowItemMixin",
-    "EntityMixin"
+    "EntityMixin",
+    "NoteBlockInstrumentMixin",
+    "NoteBlockMixin"
   ],
   "client": [
     "client.ClientPacketListenerMixin",
+    "client.CustomHeadLayerMixin",
     "client.GuiMixin"
   ],
   "injectors": {

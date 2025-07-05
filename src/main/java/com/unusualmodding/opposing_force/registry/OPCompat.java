@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.registry;
 import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
 import com.unusualmodding.opposing_force.entity.projectile.SlugEggs;
 import com.unusualmodding.opposing_force.entity.projectile.Tomahawk;
+import com.unusualmodding.opposing_force.items.MobHeadItem;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -44,6 +45,8 @@ public class OPCompat {
                 return entity;
             }
         });
+
+        DispenserBlock.registerBehavior(OPItems.DICER_HEAD.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
     }
 
     public static void registerCompostables() {

@@ -1,4 +1,5 @@
-// 1.20.1	2025-06-19T22:43:39.3302323	Tags for minecraft:block mod id opposing_force
+// 1.20.1	2025-07-05T14:36:59.5124976	Tags for minecraft:block mod id opposing_force
 9d857f8b45efe8272d410918467509e1d559891a data/minecraft/tags/blocks/enderman_holdable.json
 0256391c4f5f0e27f2618408f844305e6bd1860f data/minecraft/tags/blocks/mineable/axe.json
+b0fff070f2029ee59d7d3557d4db31a76a144e12 data/minecraft/tags/blocks/mineable/pickaxe.json
 9d857f8b45efe8272d410918467509e1d559891a data/minecraft/tags/blocks/sword_efficient.json

@@ -226,15 +226,16 @@ public class Volt extends Monster implements IAnimatedAttacker, PowerableMob {
 
     @SuppressWarnings("unused")
     public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (level.getLevel().isThundering()) return checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
         return checkVoltSpawnRules(entityType, level, spawnType, pos, random);
     }
 
     public static boolean checkVoltSpawnRules(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return pos.getY() <= 16 && (random.nextInt(10) == 0 || pos.getY() <= 0) && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random);
+        return (pos.getY() <= 16 && (random.nextInt(10) == 0 || pos.getY() <= 0) && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random));
     }
 
     public static boolean isDarkEnoughToSpawnNoSkylight(ServerLevelAccessor level, BlockPos pos, RandomSource random) {
-        if (level.getBrightness(LightLayer.SKY, pos) > 0) {
+        if (level.getBrightness(LightLayer.SKY, pos) > 0 && !level.getLevel().isThundering()) {
             return false;
         } else {
             DimensionType dimension = level.dimensionType();

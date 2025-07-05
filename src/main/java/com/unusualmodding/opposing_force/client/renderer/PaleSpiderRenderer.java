@@ -21,7 +21,7 @@ public class PaleSpiderRenderer extends MobRenderer<PaleSpider, PaleSpiderModel<
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/pale_spider/pale_spider.png");
 
     public PaleSpiderRenderer(EntityRendererProvider.Context context) {
-        super(context, new PaleSpiderModel<>(context.bakeLayer(OPModelLayers.PALE_SPIDER_LAYER)), 0.5F);
+        super(context, new PaleSpiderModel<>(context.bakeLayer(OPModelLayers.PALE_SPIDER)), 0.5F);
         this.addLayer(new PaleSpiderEyesLayer<>(this));
     }
 

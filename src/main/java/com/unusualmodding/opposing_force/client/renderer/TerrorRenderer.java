@@ -19,7 +19,7 @@ public class TerrorRenderer extends MobRenderer<Terror, TerrorModel<Terror>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/terror/terror.png");
 
     public TerrorRenderer(EntityRendererProvider.Context context) {
-        super(context, new TerrorModel<>(context.bakeLayer(OPModelLayers.TERROR_LAYER)), 0.5F);
+        super(context, new TerrorModel<>(context.bakeLayer(OPModelLayers.TERROR)), 0.5F);
         this.addLayer(new TerrorGlowLayer<>(this));
     }
 

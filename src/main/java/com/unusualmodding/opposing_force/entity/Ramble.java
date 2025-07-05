@@ -48,7 +48,7 @@ public class Ramble extends Monster {
 
     public Ramble(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        this.xpReward = 10;
+        this.xpReward = 15;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -77,8 +77,8 @@ public class Ramble extends Monster {
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose pPose, EntityDimensions pSize) {
-        return pSize.height * 0.7F;
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.7F;
     }
 
     @Override
@@ -127,7 +127,7 @@ public class Ramble extends Monster {
     }
 
     public void flailCooldown() {
-        this.entityData.set(FLAIL_COOLDOWN, 80);
+        this.entityData.set(FLAIL_COOLDOWN, 120);
     }
 
     @Override
@@ -206,23 +206,29 @@ public class Ramble extends Monster {
     }
 
     // sounds
+    @Override
+    @Nullable
     protected SoundEvent getAmbientSound() {
         return OPSoundEvents.RAMBLE_IDLE.get();
     }
 
+    @Override
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
         return OPSoundEvents.RAMBLE_HURT.get();
     }
 
+    @Override
     protected SoundEvent getDeathSound() {
         return OPSoundEvents.RAMBLE_DEATH.get();
     }
 
+    @Override
     protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
         this.playSound(SoundEvents.SKELETON_STEP, 0.15F, 0.85F);
     }
 
     @Nullable
+    @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         pSpawnData = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
         RandomSource randomsource = pLevel.getRandom();
@@ -246,10 +252,12 @@ public class Ramble extends Monster {
         return pSpawnData;
     }
 
+    @Override
     public double getPassengersRidingOffset() {
         return this.getBbHeight() * 1.03F;
     }
 
+    @Override
     public void rideTick() {
         super.rideTick();
         Entity entity = this.getControlledVehicle();

@@ -21,6 +21,10 @@ public class OPBlockTagProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
 
+        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
+                TREMBLER_SHELL.get()
+        );
+
         this.tag(BlockTags.MINEABLE_WITH_AXE).add(
                 CREAM_CAP_BLOCK.get(),
                 COPPER_ENOKI_BLOCK.get(),

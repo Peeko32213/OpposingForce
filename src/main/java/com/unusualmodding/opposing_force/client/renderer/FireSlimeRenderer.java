@@ -21,7 +21,7 @@ public class FireSlimeRenderer extends MobRenderer<FireSlime, FireSlimeModel<Fir
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/fire_slime.png");
 
     public FireSlimeRenderer(EntityRendererProvider.Context context) {
-        super(context, new FireSlimeModel<>(context.bakeLayer(OPModelLayers.FIRE_SLIME_LAYER)), 0.4F);
+        super(context, new FireSlimeModel<>(context.bakeLayer(OPModelLayers.FIRE_SLIME)), 0.4F);
     }
 
     @Override

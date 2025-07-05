@@ -23,7 +23,7 @@ public class VoltRenderer extends MobRenderer<Volt, VoltModel<Volt>> {
     private static final ResourceLocation PULSATING_GLOW_TEXTURE = new ResourceLocation(OpposingForce.MOD_ID,"textures/entity/volt/volt_glow.png");
 
     public VoltRenderer(EntityRendererProvider.Context context) {
-        super(context, new VoltModel<>(context.bakeLayer(OPModelLayers.VOLT_LAYER)), 0.5F);
+        super(context, new VoltModel<>(context.bakeLayer(OPModelLayers.VOLT)), 0.5F);
         this.addLayer(new VoltGlowLayer<>(this, PULSATING_GLOW_TEXTURE, (entity, p_234802_, p_234803_) -> Math.max(0.2F, Mth.cos(p_234803_ * 0.025F + (float) Math.PI * 0.85F)), VoltModel::getPulsatingLayerModelParts));
         this.addLayer(new VoltChargedLayer(this, context.getModelSet()));
     }

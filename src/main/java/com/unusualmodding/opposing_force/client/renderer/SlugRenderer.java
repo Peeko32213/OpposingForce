@@ -19,7 +19,7 @@ public class SlugRenderer extends MobRenderer<Slug, SlugModel<Slug>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/slug.png");
 
     public SlugRenderer(EntityRendererProvider.Context context) {
-        super(context, new SlugModel<>(context.bakeLayer(OPModelLayers.SLUG_LAYER)), 0.5F);
+        super(context, new SlugModel<>(context.bakeLayer(OPModelLayers.SLUG)), 0.5F);
     }
 
     @Override

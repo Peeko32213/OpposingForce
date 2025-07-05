@@ -19,7 +19,7 @@ public class DicerRenderer extends MobRenderer<Dicer, DicerModel<Dicer>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/dicer/dicer.png");
 
     public DicerRenderer(EntityRendererProvider.Context context) {
-        super(context, new DicerModel<>(context.bakeLayer(OPModelLayers.DICER_LAYER)), 0.5F);
+        super(context, new DicerModel<>(context.bakeLayer(OPModelLayers.DICER)), 0.5F);
         this.addLayer(new DicerEyesLayer<>(this));
     }
 
