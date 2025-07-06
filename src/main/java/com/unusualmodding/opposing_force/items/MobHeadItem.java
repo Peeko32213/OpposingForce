@@ -6,7 +6,6 @@ import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,13 +33,13 @@ public class MobHeadItem extends StandingAndWallBlockItem {
         List<LivingEntity> list = blockSource.getLevel().getEntitiesOfClass(LivingEntity.class, new AABB(blockpos), EntitySelector.NO_SPECTATORS.and(new EntitySelector.MobCanWearArmorEntitySelector(stack)));
         if (list.isEmpty()) return false;
         else {
-            LivingEntity entity = list.get(0);
+            LivingEntity livingentity = list.get(0);
             EquipmentSlot equipmentslot = Mob.getEquipmentSlotForItem(stack);
             ItemStack itemstack = stack.split(1);
-            entity.setItemSlot(equipmentslot, itemstack);
-            if (entity instanceof Mob) {
-                ((Mob) entity).setDropChance(equipmentslot, 2.0F);
-                ((Mob) entity).setPersistenceRequired();
+            livingentity.setItemSlot(equipmentslot, itemstack);
+            if (livingentity instanceof Mob) {
+                ((Mob)livingentity).setDropChance(equipmentslot, 2.0F);
+                ((Mob)livingentity).setPersistenceRequired();
             }
             return true;
         }
@@ -55,12 +54,8 @@ public class MobHeadItem extends StandingAndWallBlockItem {
         consumer.accept(new IClientItemExtensions() {
             @Override
             public OPItemRenderers getCustomRenderer() {
-                return OPItemRenderers.getInstance();
+                return OPItemRenderers.instance;
             }
         });
-    }
-
-    public SoundEvent getSound() {
-        return null;
     }
 }

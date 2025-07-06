@@ -15,11 +15,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class DicerVisorLayer<T extends Dicer, M extends DicerModel<T>> extends RenderLayer<T, M> {
+public class DicerEyesLayer<T extends Dicer, M extends DicerModel<T>> extends RenderLayer<T, M> {
 
-    private static final RenderType GLOW_TEXTURE = RenderType.entityTranslucentEmissive(new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/dicer/dicer_visor.png"));
+    private static final RenderType GLOW_TEXTURE = RenderType.entityTranslucentEmissive(new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/dicer/dicer_eyes.png"));
 
-    public DicerVisorLayer(RenderLayerParent<T, M> parentModel) {
+    public DicerEyesLayer(RenderLayerParent<T, M> parentModel) {
         super(parentModel);
     }
 

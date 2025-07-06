@@ -2,7 +2,7 @@ package com.unusualmodding.opposing_force.client.renderer;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.DicerModel;
-import com.unusualmodding.opposing_force.client.renderer.layer.DicerVisorLayer;
+import com.unusualmodding.opposing_force.client.renderer.layer.DicerEyesLayer;
 import com.unusualmodding.opposing_force.entity.Dicer;
 import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.renderer.RenderType;
@@ -20,7 +20,7 @@ public class DicerRenderer extends MobRenderer<Dicer, DicerModel<Dicer>> {
 
     public DicerRenderer(EntityRendererProvider.Context context) {
         super(context, new DicerModel<>(context.bakeLayer(OPModelLayers.DICER)), 0.5F);
-        this.addLayer(new DicerVisorLayer<>(this));
+        this.addLayer(new DicerEyesLayer<>(this));
     }
 
     @Override

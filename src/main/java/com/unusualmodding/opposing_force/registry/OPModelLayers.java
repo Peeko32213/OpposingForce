@@ -11,8 +11,6 @@ public class OPModelLayers {
 
     public static final ModelLayerLocation DICER = main("dicer");
     public static final ModelLayerLocation DICER_HEAD = main("dicer_head");
-    public static final ModelLayerLocation DICER_VISOR = main("dicer_visor");
-
     public static final ModelLayerLocation EMERALDFISH = main("emeraldfish");
     public static final ModelLayerLocation FIRE_SLIME = main("fire_slime");
     public static final ModelLayerLocation FROWZY = main("frowzy");
