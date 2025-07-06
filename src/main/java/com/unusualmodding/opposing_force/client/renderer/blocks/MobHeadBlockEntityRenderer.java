@@ -68,7 +68,10 @@ public class MobHeadBlockEntityRenderer implements BlockEntityRenderer<MobHeadBl
         if (direction == null) {
             poseStack.translate(0.5F, 0.0F, 0.5F);
         } else {
-            if (type == MobHeadBlock.Types.DICER) poseStack.translate(0.5F - (float) direction.getStepX() * 0.25F, 0.5F, 0.5F - (float) direction.getStepZ() * 0.25F);
+            if (type == MobHeadBlock.Types.DICER) {
+                poseStack.translate(0.5F - (float) direction.getStepX() * 0.25F, 0.25F, 0.5F - (float) direction.getStepZ() * 0.25F);
+            }
+
             else poseStack.translate(0.5F - (float) direction.getStepX() * 0.25F, 0.25F, 0.5F - (float) direction.getStepZ() * 0.25F);
         }
         poseStack.scale(-1.0F, -1.0F, 1.0F);
@@ -88,9 +91,14 @@ public class MobHeadBlockEntityRenderer implements BlockEntityRenderer<MobHeadBl
             }
         }
 
-        VertexConsumer vertexconsumer = multiBufferSource.getBuffer(renderType);
         modelBase.setupAnim(v1, v, 0.0F);
+        VertexConsumer vertexconsumer = multiBufferSource.getBuffer(renderType);
         modelBase.renderToBuffer(poseStack, vertexconsumer, i, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+
+        if (modelBase instanceof DicerHeadModel dicerHeadModel) {
+            dicerHeadModel.renderVisorToBuffer(poseStack, vertexconsumer, multiBufferSource, i, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        }
+
         poseStack.popPose();
     }
 

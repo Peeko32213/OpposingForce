@@ -28,10 +28,10 @@ public class WallMobHeadBlock extends BaseEntityBlock implements Equipable {
 
     private static final Map<Direction, VoxelShape> DICER_SHAPE = Maps.newEnumMap(
             ImmutableMap.of(
-            Direction.NORTH, Block.box(1.5, 0, 6, 14.5, 14.5, 16),
-            Direction.SOUTH, Block.box(1.5, 0, 0, 14.5, 14.5, 10),
-            Direction.EAST, Block.box(0, 0, 1.5, 10, 14.5, 14.5),
-            Direction.WEST, Block.box(6, 0, 1.5, 16, 14.5, 14.5)
+            Direction.NORTH, Block.box(1.5, 0, 6, 12, 8, 16),
+            Direction.SOUTH, Block.box(1.5, 0, 0, 12, 8, 10),
+            Direction.EAST, Block.box(0, 0, 1.5, 10, 8, 12),
+            Direction.WEST, Block.box(6, 0, 1.5, 16, 8, 12)
         )
     );
 

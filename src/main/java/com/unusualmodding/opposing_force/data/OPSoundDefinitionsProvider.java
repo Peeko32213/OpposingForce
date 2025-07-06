@@ -46,10 +46,6 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
         this.sound(OPSoundEvents.DICER_LASER,
                 sound(OpposingForce.modPrefix("entity/dicer/laser1")).pitch(1.15F).volume(0.8F)
         );
-        this.sound(OPSoundEvents.NOTE_BLOCK_IMITATE_DICER,
-                sound(OpposingForce.modPrefix("entity/dicer/idle1")).volume(0.8F),
-                sound(OpposingForce.modPrefix("entity/dicer/idle2")).volume(0.8F)
-        );
 
         this.sound(OPSoundEvents.ELECTRIC_CHARGE,
                 sound(OpposingForce.modPrefix("entity/electric_charge/loop1"))

@@ -58,7 +58,6 @@ public final class ClientEvents {
     public static void registerEntityLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(OPModelLayers.DICER, DicerModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.DICER_HEAD, DicerHeadModel::createBodyLayer);
-
         event.registerLayerDefinition(OPModelLayers.EMERALDFISH, EmeraldfishModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.FIRE_SLIME, FireSlimeModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.FROWZY, FrowzyModel::createBodyLayer);

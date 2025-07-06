@@ -6,9 +6,7 @@
   "refmap": "opposing_force.refmap.json",
   "mixins": [
     "CrossbowItemMixin",
-    "EntityMixin",
-    "NoteBlockInstrumentMixin",
-    "NoteBlockMixin"
+    "EntityMixin"
   ],
   "client": [
     "client.ClientPacketListenerMixin",

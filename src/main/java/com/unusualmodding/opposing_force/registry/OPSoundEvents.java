@@ -1,9 +1,6 @@
 package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -18,13 +15,11 @@ public class OPSoundEvents {
 
     public static final RegistryObject<SoundEvent> ARMOR_EQUIP_DEEPWOVEN = registerSoundEvent("armor_equip_deepwoven");
 
-    // mobs
     public static final RegistryObject<SoundEvent> DICER_HURT = registerSoundEvent("dicer_hurt");
     public static final RegistryObject<SoundEvent> DICER_DEATH = registerSoundEvent("dicer_death");
     public static final RegistryObject<SoundEvent> DICER_IDLE = registerSoundEvent("dicer_idle");
     public static final RegistryObject<SoundEvent> DICER_ATTACK = registerSoundEvent("dicer_attack");
     public static final RegistryObject<SoundEvent> DICER_LASER = registerSoundEvent("dicer_laser");
-    public static final Holder.Reference<SoundEvent> NOTE_BLOCK_IMITATE_DICER = registerSoundEventForHolder("note_block_imitate_dicer");
 
     public static final RegistryObject<SoundEvent> ELECTRIC_CHARGE = registerSoundEvent("electric_charge");
     public static final RegistryObject<SoundEvent> ELECTRIC_CHARGE_DISSIPATE = registerSoundEvent("electric_charge_dissipate");
@@ -95,9 +90,5 @@ public class OPSoundEvents {
 
     private static RegistryObject<SoundEvent> registerSoundEvent(final String soundName) {
         return SOUND_EVENTS.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(OpposingForce.MOD_ID, soundName)));
-    }
-
-    private static Holder.Reference<SoundEvent> registerSoundEventForHolder(String soundName) {
-        return Registry.registerForHolder(BuiltInRegistries.SOUND_EVENT, new ResourceLocation(OpposingForce.MOD_ID, soundName), SoundEvent.createVariableRangeEvent(new ResourceLocation(OpposingForce.MOD_ID, soundName)));
     }
 }
