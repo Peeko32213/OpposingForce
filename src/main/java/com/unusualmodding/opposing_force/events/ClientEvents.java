@@ -7,16 +7,27 @@ import com.unusualmodding.opposing_force.client.models.mob_heads.DicerHeadModel;
 import com.unusualmodding.opposing_force.client.particles.*;
 import com.unusualmodding.opposing_force.client.renderer.*;
 import com.unusualmodding.opposing_force.client.renderer.blocks.*;
+import com.unusualmodding.opposing_force.client.renderer.layer.MobHeadLayer;
 import com.unusualmodding.opposing_force.registry.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+
+import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = OpposingForce.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -57,7 +68,8 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void registerEntityLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(OPModelLayers.DICER, DicerModel::createBodyLayer);
-        event.registerLayerDefinition(OPModelLayers.DICER_HEAD, DicerHeadModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.DICER_HEAD, DicerHeadModel::createDicerHeadLayer);
+        event.registerLayerDefinition(OPModelLayers.DICER_VISOR, DicerHeadModel::createDicerVisorLayer);
 
         event.registerLayerDefinition(OPModelLayers.EMERALDFISH, EmeraldfishModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.FIRE_SLIME, FireSlimeModel::createBodyLayer);
@@ -74,11 +86,46 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.WHIZZ, WhizzModel::createBodyLayer);
 
         event.registerLayerDefinition(OPModelLayers.DEEPWOVEN_ARMOR, DeepwovenArmorModel::createArmorLayer);
-        event.registerLayerDefinition(OPModelLayers.DICER_HEAD, DicerHeadModel::createBodyLayer);
     }
 
     @SubscribeEvent
     public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(OPBlockEntityTypes.MOB_HEAD.get(), MobHeadBlockEntityRenderer::new);
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void registerEffectSkullHeadLayers(final EntityRenderersEvent.AddLayers event) {
+        Map<EntityType<?>, EntityRenderer<?>> renderers = Minecraft.getInstance().getEntityRenderDispatcher().renderers;
+        for(Map.Entry<EntityType<?>, EntityRenderer<?>> renderer : renderers.entrySet()) {
+            if (renderer.getValue() instanceof LivingEntityRenderer<?, ?> livingEntityRenderer) {
+                boolean flag = false;
+                for (RenderLayer<?, ?> layer : livingEntityRenderer.layers) {
+                    if (layer instanceof CustomHeadLayer customHeadLayer) {
+                        flag = true;
+                        customHeadLayer.skullModels = MobHeadBlockEntityRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels());
+                    }
+                }
+                if (flag) {
+                    livingEntityRenderer.addLayer(new MobHeadLayer(livingEntityRenderer, Minecraft.getInstance().getEntityModels(), Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer()));
+                }
+            }
+        }
+
+        Map<String, EntityRenderer<? extends Player>> skins = Minecraft.getInstance().getEntityRenderDispatcher().getSkinMap();
+        for(Map.Entry<String, EntityRenderer<? extends Player>> renderer : skins.entrySet()) {
+            if (renderer.getValue() instanceof LivingEntityRenderer<?, ?> livingEntityRenderer) {
+                boolean flag = false;
+                for (RenderLayer<?, ?> layer : livingEntityRenderer.layers) {
+                    if (layer instanceof CustomHeadLayer customHeadLayer) {
+                        flag = true;
+                        customHeadLayer.skullModels = MobHeadBlockEntityRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels());
+                    }
+                }
+                if (flag) {
+                    livingEntityRenderer.addLayer(new MobHeadLayer(livingEntityRenderer,Minecraft.getInstance().getEntityModels(),Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer()));
+                }
+            }
+        }
     }
 }

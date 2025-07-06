@@ -7,12 +7,10 @@
   "mixins": [
     "CrossbowItemMixin",
     "EntityMixin",
-    "NoteBlockInstrumentMixin",
-    "NoteBlockMixin"
+    "NoteBlockInstrumentMixin"
   ],
   "client": [
     "client.ClientPacketListenerMixin",
-    "client.CustomHeadLayerMixin",
     "client.GuiMixin"
   ],
   "injectors": {
