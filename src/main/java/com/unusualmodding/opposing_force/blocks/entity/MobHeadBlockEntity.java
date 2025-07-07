@@ -18,8 +18,8 @@ public class MobHeadBlockEntity extends BlockEntity {
     private int animationTickCount;
     private boolean isAnimating;
 
-    public MobHeadBlockEntity(BlockPos p_155731_, BlockState p_155732_) {
-        super(OPBlockEntityTypes.MOB_HEAD.get(), p_155731_, p_155732_);
+    public MobHeadBlockEntity(BlockPos pos, BlockState state) {
+        super(OPBlockEntityTypes.MOB_HEAD.get(), pos, state);
     }
 
     @Override

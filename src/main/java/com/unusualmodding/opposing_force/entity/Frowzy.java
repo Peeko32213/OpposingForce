@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.entity.ai.goal.AttackGoal;
 import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
+import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -317,22 +318,16 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
     }
 
     @Override
-    protected void dropCustomDeathLoot(DamageSource damageSource, int p_34292_, boolean p_34293_) {
-        super.dropCustomDeathLoot(damageSource, p_34292_, p_34293_);
+    protected void dropCustomDeathLoot(DamageSource damageSource, int amount, boolean drops) {
+        super.dropCustomDeathLoot(damageSource, amount, drops);
         Entity entity = damageSource.getEntity();
         if (entity instanceof Creeper creeper) {
             if (creeper.canDropMobsSkull()) {
-                ItemStack itemstack = this.getSkull();
-                if (!itemstack.isEmpty()) {
-                    creeper.increaseDroppedSkulls();
-                    this.spawnAtLocation(itemstack);
-                }
+                ItemStack itemstack = new ItemStack(OPItems.FROWZY_HEAD.get());
+                creeper.increaseDroppedSkulls();
+                this.spawnAtLocation(itemstack);
             }
         }
-    }
-
-    protected ItemStack getSkull() {
-        return new ItemStack(Items.ZOMBIE_HEAD);
     }
 
     @Override

@@ -8,8 +8,7 @@ import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.blocks.MobHeadBlock;
 import com.unusualmodding.opposing_force.blocks.WallMobHeadBlock;
 import com.unusualmodding.opposing_force.blocks.entity.MobHeadBlockEntity;
-import com.unusualmodding.opposing_force.client.models.mob_heads.DicerHeadModel;
-import com.unusualmodding.opposing_force.client.models.mob_heads.MobHeadModelBase;
+import com.unusualmodding.opposing_force.client.models.mob_heads.*;
 import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.Util;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -36,11 +35,15 @@ public class MobHeadBlockEntityRenderer implements BlockEntityRenderer<MobHeadBl
 
     public static final Map<MobHeadBlock.Type, ResourceLocation> SKIN_BY_TYPE = Util.make(Maps.newHashMap(), (map) -> {
         map.put(MobHeadBlock.Types.DICER, new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/dicer/dicer.png"));
+        map.put(MobHeadBlock.Types.FROWZY, new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/frowzy.png"));
+        map.put(MobHeadBlock.Types.RAMBLE, new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/ramble.png"));
     });
 
     public static Map<MobHeadBlock.Type, MobHeadModelBase> createMobHeadRenderers(EntityModelSet root) {
         ImmutableMap.Builder<MobHeadBlock.Type, MobHeadModelBase> builder = ImmutableMap.builder();
         builder.put(MobHeadBlock.Types.DICER, new DicerHeadModel(root.bakeLayer(OPModelLayers.DICER_HEAD)));
+        builder.put(MobHeadBlock.Types.FROWZY, new FrowzyHeadModel(root.bakeLayer(OPModelLayers.FROWZY_HEAD)));
+        builder.put(MobHeadBlock.Types.RAMBLE, new RambleSkullModel(root.bakeLayer(OPModelLayers.RAMBLE_SKULL)));
         return builder.build();
     }
 
@@ -66,15 +69,12 @@ public class MobHeadBlockEntityRenderer implements BlockEntityRenderer<MobHeadBl
         poseStack.pushPose();
 
         if (direction == null) {
-            poseStack.translate(0.5F, 0.0F, 0.5F);
+            poseStack.translate(0.5F, 0, 0.5F);
         } else {
-            if (type == MobHeadBlock.Types.DICER) {
-                poseStack.translate(0.5F - (float) direction.getStepX() * 0.25F, 0.25F, 0.5F - (float) direction.getStepZ() * 0.25F);
-            }
-
-            else poseStack.translate(0.5F - (float) direction.getStepX() * 0.25F, 0.25F, 0.5F - (float) direction.getStepZ() * 0.25F);
+            poseStack.translate(0.5F - (float) direction.getStepX() * 0.25F, 0.25F, 0.5F - (float) direction.getStepZ() * 0.25F);
         }
-        poseStack.scale(-1.0F, -1.0F, 1.0F);
+
+        poseStack.scale(-1, -1, 1);
 
         if (context != null) {
             if (type == MobHeadBlock.Types.DICER) {
@@ -82,21 +82,36 @@ public class MobHeadBlockEntityRenderer implements BlockEntityRenderer<MobHeadBl
                     poseStack.scale(0.9F, 0.9F, 0.9F);
                 }
             }
+            if (type == MobHeadBlock.Types.FROWZY) {
+                if (context == ItemDisplayContext.GUI) {
+                    poseStack.scale(1, 1, 1);
+                }
+            }
+            if (type == MobHeadBlock.Types.RAMBLE) {
+                if (context == ItemDisplayContext.GUI) {
+                    poseStack.scale(1, 1, 1);
+                }
+            }
         }
 
         if (isLayer) {
             if (type == MobHeadBlock.Types.DICER) {
-                poseStack.scale(1F, 1.15F,1F);
-                poseStack.translate(0F, 0.05F, 0F);
+                poseStack.scale(1, 1,1);
+            }
+            if (type == MobHeadBlock.Types.FROWZY) {
+                poseStack.scale(1, 1,1);
+            }
+            if (type == MobHeadBlock.Types.RAMBLE) {
+                poseStack.scale(1, 1,1);
             }
         }
 
-        modelBase.setupAnim(v1, v, 0.0F);
+        modelBase.setupAnim(v1, v, 0);
         VertexConsumer vertexconsumer = multiBufferSource.getBuffer(renderType);
-        modelBase.renderToBuffer(poseStack, vertexconsumer, i, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        modelBase.renderToBuffer(poseStack, vertexconsumer, i, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
 
         if (modelBase instanceof DicerHeadModel dicerHeadModel) {
-            dicerHeadModel.renderVisorToBuffer(poseStack, vertexconsumer, multiBufferSource, i, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            dicerHeadModel.renderVisorToBuffer(poseStack, vertexconsumer, multiBufferSource, i, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
         }
 
         poseStack.popPose();

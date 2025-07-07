@@ -50,20 +50,21 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
     }
 
     @Inject(at = @At("TAIL"), method = "<init>(Lnet/minecraft/client/renderer/entity/RenderLayerParent;Lnet/minecraft/client/model/geom/EntityModelSet;FFFLnet/minecraft/client/renderer/ItemInHandRenderer;)V")
-    private void renderSpeciesHeads(RenderLayerParent p_234822_, EntityModelSet p_234823_, float p_234824_, float p_234825_, float p_234826_, ItemInHandRenderer p_234827_, CallbackInfo ci) {
-        this.headModelBaseMap = MobHeadBlockEntityRenderer.createMobHeadRenderers(p_234823_);
+    private void renderHeads(RenderLayerParent parent, EntityModelSet modelSet, float p_234824_, float p_234825_, float p_234826_, ItemInHandRenderer handRenderer, CallbackInfo callbackInfo) {
+        this.headModelBaseMap = MobHeadBlockEntityRenderer.createMobHeadRenderers(modelSet);
     }
 
     @Inject(at = @At("HEAD"), method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V", cancellable = true)
-    private void renderSpeciesHeads(PoseStack poseStack, MultiBufferSource bufferSource, int i, T t, float v, float v1, float v2, float v3, float v4, float v5, CallbackInfo ci) {
+    private void renderHeads(PoseStack poseStack, MultiBufferSource bufferSource, int i, T t, float v, float v1, float v2, float v3, float v4, float v5, CallbackInfo callbackInfo) {
         ItemStack itemstack = t.getItemBySlot(EquipmentSlot.HEAD);
         Item item = itemstack.getItem();
         if (!itemstack.isEmpty() && item instanceof BlockItem) {
             Block block = ((BlockItem)item).getBlock();
             if (block instanceof MobHeadBlock || block instanceof WallMobHeadBlock) {
-                ci.cancel();
+                callbackInfo.cancel();
                 poseStack.pushPose();
                 poseStack.scale(this.scaleX, this.scaleY, this.scaleZ);
+
                 boolean flag = t instanceof Villager || t instanceof ZombieVillager;
                 if (t.isBaby() && !(t instanceof Villager)) {
                     poseStack.translate(0.0F, 0.03125F, 0.0F);
@@ -78,15 +79,17 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
                 }
                 poseStack.translate(-0.5D, 0.0D, -0.5D);
 
-                MobHeadBlock.Type type = block instanceof MobHeadBlock ? ((MobHeadBlock)block).getType() : ((WallMobHeadBlock)block).getType();
+                MobHeadBlock.Type type = block instanceof MobHeadBlock ? ((MobHeadBlock) block).getType() : ((WallMobHeadBlock) block).getType();
                 MobHeadModelBase skullmodelbase = this.headModelBaseMap.get(type);
                 RenderType rendertype = MobHeadBlockEntityRenderer.getRenderType(type);
                 Entity entity = t.getVehicle();
+
                 WalkAnimationState walkanimationstate;
                 if (entity instanceof LivingEntity livingEntity) {
                     walkanimationstate = livingEntity.walkAnimation;
                 } else walkanimationstate = t.walkAnimation;
                 float f3 = walkanimationstate.position(v2);
+
                 MobHeadBlockEntityRenderer.renderMobHead(null, 180.0F, f3, poseStack, bufferSource, i, skullmodelbase, rendertype, null, type, true);
 
                 poseStack.popPose();

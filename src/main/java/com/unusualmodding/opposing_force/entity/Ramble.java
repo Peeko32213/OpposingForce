@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.registry.OPEntities;
+import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +26,6 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -45,6 +45,7 @@ public class Ramble extends Monster {
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState flailAnimationState = new AnimationState();
     public final AnimationState cooldownAnimationState = new AnimationState();
+    private int idleAnimationTimeout = 0;
 
     public Ramble(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -144,7 +145,12 @@ public class Ramble extends Monster {
     }
 
     private void setupAnimationStates() {
-        this.idleAnimationState.animateWhen(this.isAlive() && !this.isFlailing() && this.getFlailCooldown() <= 0, this.tickCount);
+        if (this.idleAnimationTimeout == 0) {
+            this.idleAnimationTimeout = 80;
+            this.idleAnimationState.start(this.tickCount);
+        } else {
+            --this.idleAnimationTimeout;
+        }
         this.cooldownAnimationState.animateWhen(this.isAlive() && !this.isFlailing() && this.getFlailCooldown() > 0, this.tickCount);
         this.flailAnimationState.animateWhen(this.isAlive() && this.isFlailing(), this.tickCount);
     }
@@ -199,7 +205,7 @@ public class Ramble extends Monster {
             if (creeper.canDropMobsSkull()) {
                 for (int i = 0; i < skullDrops; i++) {
                     creeper.increaseDroppedSkulls();
-                    this.spawnAtLocation(Items.SKELETON_SKULL);
+                    this.spawnAtLocation(OPItems.RAMBLE_SKULL.get());
                 }
             }
         }

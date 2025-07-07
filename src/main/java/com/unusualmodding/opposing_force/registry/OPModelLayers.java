@@ -11,13 +11,14 @@ public class OPModelLayers {
 
     public static final ModelLayerLocation DICER = main("dicer");
     public static final ModelLayerLocation DICER_HEAD = main("dicer_head");
-
     public static final ModelLayerLocation EMERALDFISH = main("emeraldfish");
     public static final ModelLayerLocation FIRE_SLIME = main("fire_slime");
     public static final ModelLayerLocation FROWZY = main("frowzy");
+    public static final ModelLayerLocation FROWZY_HEAD = main("frowzy_head");
     public static final ModelLayerLocation GUZZLER = main("guzzler");
     public static final ModelLayerLocation PALE_SPIDER = main("pale_spider");
     public static final ModelLayerLocation RAMBLE = main("ramble");
+    public static final ModelLayerLocation RAMBLE_SKULL = main("ramble_skull");
     public static final ModelLayerLocation SLUG = main("slug");
     public static final ModelLayerLocation TERROR = main("terror");
     public static final ModelLayerLocation TREMBLER = main("trembler");

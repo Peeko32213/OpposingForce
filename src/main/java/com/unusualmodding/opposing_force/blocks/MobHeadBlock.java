@@ -28,7 +28,7 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
     private static final int ROTATIONS = MAX + 1;
     public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
 
-    protected static final VoxelShape DICER_SHAPE = Block.box(4, 0, 4, 12, 8, 12);
+    protected static final VoxelShape SHAPE = Block.box(4, 0, 4, 12, 8, 12);
 
     public MobHeadBlock(Type type, Properties properties) {
         super(properties);
@@ -38,7 +38,7 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
-        return DICER_SHAPE;
+        return SHAPE;
     }
 
     @Override
@@ -89,6 +89,8 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
     }
 
     public enum Types implements Type {
-        DICER
+        DICER,
+        FROWZY,
+        RAMBLE
     }
 }

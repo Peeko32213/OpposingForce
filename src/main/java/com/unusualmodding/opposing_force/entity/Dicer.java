@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.entity;
 import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.entity.projectile.DicerLaser;
 import com.unusualmodding.opposing_force.registry.OPEntities;
+import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -20,8 +21,11 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -169,7 +173,6 @@ public class Dicer extends Monster implements IAnimatedAttacker {
         this.entityData.set(ATTACK_STATE, state);
     }
 
-    // Sounds
     @Override
     @Nullable
     protected SoundEvent getAmbientSound() {
@@ -189,6 +192,19 @@ public class Dicer extends Monster implements IAnimatedAttacker {
     @Override
     protected void playStepSound(@NotNull BlockPos p_28301_, @NotNull BlockState p_28302_) {
         this.playSound(SoundEvents.ZOMBIE_STEP, 0.1F, 1.3F);
+    }
+
+    @Override
+    protected void dropCustomDeathLoot(DamageSource damageSource, int amount, boolean drops) {
+        super.dropCustomDeathLoot(damageSource, amount, drops);
+        Entity entity = damageSource.getEntity();
+        if (entity instanceof Creeper creeper) {
+            if (creeper.canDropMobsSkull()) {
+                ItemStack itemstack = new ItemStack(OPItems.DICER_HEAD.get());
+                creeper.increaseDroppedSkulls();
+                this.spawnAtLocation(itemstack);
+            }
+        }
     }
 
     // goals

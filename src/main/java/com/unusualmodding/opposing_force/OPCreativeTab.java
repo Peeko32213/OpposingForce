@@ -63,6 +63,8 @@ public class OPCreativeTab {
                     output.accept(OPBlocks.INFESTED_AMETHYST_BLOCK.get());
 
                     output.accept(OPItems.DICER_HEAD.get());
+                    output.accept(OPItems.FROWZY_HEAD.get());
+                    output.accept(OPItems.RAMBLE_SKULL.get());
 
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.TESLA_BOW);
                     OPEnchantments.addAllEnchantsToCreativeTab(output, EnchantmentCategory.CROSSBOW);

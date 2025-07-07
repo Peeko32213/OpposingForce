@@ -26,12 +26,12 @@ public class WallMobHeadBlock extends BaseEntityBlock implements Equipable {
     private final MobHeadBlock.Type type;
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
-    private static final Map<Direction, VoxelShape> DICER_SHAPE = Maps.newEnumMap(
+    private static final Map<Direction, VoxelShape> SHAPE = Maps.newEnumMap(
             ImmutableMap.of(
-            Direction.NORTH, Block.box(1.5, 0, 6, 12, 8, 16),
-            Direction.SOUTH, Block.box(1.5, 0, 0, 12, 8, 10),
-            Direction.EAST, Block.box(0, 0, 1.5, 10, 8, 12),
-            Direction.WEST, Block.box(6, 0, 1.5, 16, 8, 12)
+            Direction.NORTH, Block.box(4, 4, 8, 12, 12, 16),
+            Direction.SOUTH, Block.box(4, 4, 0, 12, 12, 8),
+            Direction.EAST, Block.box(0, 4, 4, 8, 12, 12),
+            Direction.WEST, Block.box(8, 4, 4, 16, 12, 12)
         )
     );
 
@@ -43,7 +43,7 @@ public class WallMobHeadBlock extends BaseEntityBlock implements Equipable {
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
-        return DICER_SHAPE.get(state.getValue(FACING));
+        return SHAPE.get(state.getValue(FACING));
     }
 
     @Override

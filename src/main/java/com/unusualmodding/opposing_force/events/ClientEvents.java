@@ -3,7 +3,7 @@ package com.unusualmodding.opposing_force.events;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.armor.DeepwovenArmorModel;
 import com.unusualmodding.opposing_force.client.models.entity.*;
-import com.unusualmodding.opposing_force.client.models.mob_heads.DicerHeadModel;
+import com.unusualmodding.opposing_force.client.models.mob_heads.*;
 import com.unusualmodding.opposing_force.client.particles.*;
 import com.unusualmodding.opposing_force.client.renderer.*;
 import com.unusualmodding.opposing_force.client.renderer.blocks.*;
@@ -61,9 +61,11 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.EMERALDFISH, EmeraldfishModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.FIRE_SLIME, FireSlimeModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.FROWZY, FrowzyModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.FROWZY_HEAD, FrowzyHeadModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.GUZZLER, GuzzlerModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.PALE_SPIDER, PaleSpiderModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.RAMBLE, RambleModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.RAMBLE_SKULL, RambleSkullModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.SLUG, SlugModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.TERROR, TerrorModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.TREMBLER, TremblerModel::createBodyLayer);
@@ -73,7 +75,6 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.WHIZZ, WhizzModel::createBodyLayer);
 
         event.registerLayerDefinition(OPModelLayers.DEEPWOVEN_ARMOR, DeepwovenArmorModel::createArmorLayer);
-        event.registerLayerDefinition(OPModelLayers.DICER_HEAD, DicerHeadModel::createBodyLayer);
     }
 
     @SubscribeEvent

@@ -57,8 +57,14 @@ public class OPBlocks {
 
     public static final RegistryObject<Block> TREMBLER_SHELL = registerBlock("trembler_shell", () -> new TremblerShellBlock(BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_GREEN).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.DRIPSTONE_BLOCK).requiresCorrectToolForDrops().strength(2.0F, 2.0F)));
 
-    public static final RegistryObject<Block> DICER_HEAD = BLOCKS.register("dicer_head", () -> new MobHeadBlock(MobHeadBlock.Types.DICER, BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CUSTOM_HEAD).strength(1.0F).pushReaction(PushReaction.DESTROY)));
-    public static final RegistryObject<Block> DICER_WALL_HEAD = BLOCKS.register("dicer_wall_head", () -> new WallMobHeadBlock(MobHeadBlock.Types.DICER, BlockBehaviour.Properties.of().dropsLike(DICER_HEAD.get()).strength(1.0F).pushReaction(PushReaction.DESTROY)));
+    public static final RegistryObject<Block> DICER_HEAD = registerBlockWithoutItemNoLang("dicer_head", () -> new MobHeadBlock(MobHeadBlock.Types.DICER, BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CUSTOM_HEAD).strength(1.0F).pushReaction(PushReaction.DESTROY)));
+    public static final RegistryObject<Block> DICER_WALL_HEAD = registerBlockWithoutItemNoLang("dicer_wall_head", () -> new WallMobHeadBlock(MobHeadBlock.Types.DICER, BlockBehaviour.Properties.of().dropsLike(DICER_HEAD.get()).strength(1.0F).pushReaction(PushReaction.DESTROY)));
+
+    public static final RegistryObject<Block> FROWZY_HEAD = registerBlockWithoutItemNoLang("frowzy_head", () -> new MobHeadBlock(MobHeadBlock.Types.FROWZY, BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CUSTOM_HEAD).strength(1.0F).pushReaction(PushReaction.DESTROY)));
+    public static final RegistryObject<Block> FROWZY_WALL_HEAD = registerBlockWithoutItemNoLang("frowzy_wall_head", () -> new WallMobHeadBlock(MobHeadBlock.Types.FROWZY, BlockBehaviour.Properties.of().dropsLike(FROWZY_HEAD.get()).strength(1.0F).pushReaction(PushReaction.DESTROY)));
+
+    public static final RegistryObject<Block> RAMBLE_SKULL = registerBlockWithoutItemNoLang("ramble_skull", () -> new MobHeadBlock(MobHeadBlock.Types.RAMBLE, BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CUSTOM_HEAD).strength(1.0F).pushReaction(PushReaction.DESTROY)));
+    public static final RegistryObject<Block> RAMBLE_WALL_SKULL = registerBlockWithoutItemNoLang("ramble_wall_skull", () -> new WallMobHeadBlock(MobHeadBlock.Types.RAMBLE, BlockBehaviour.Properties.of().dropsLike(RAMBLE_SKULL.get()).strength(1.0F).pushReaction(PushReaction.DESTROY)));
 
     private static <B extends Block> RegistryObject<B> registerBlock(String name, Supplier<? extends B> supplier) {
         RegistryObject<B> block = BLOCKS.register(name, supplier);
@@ -76,6 +82,11 @@ public class OPBlocks {
     private static <B extends Block> RegistryObject<B> registerBlockWithoutItem(String name, Supplier<? extends B> supplier) {
         RegistryObject<B> block = BLOCKS.register(name, supplier);
         AUTO_TRANSLATE.add(block);
+        return block;
+    }
+
+    private static <B extends Block> RegistryObject<B> registerBlockWithoutItemNoLang(String name, Supplier<? extends B> supplier) {
+        RegistryObject<B> block = BLOCKS.register(name, supplier);
         return block;
     }
 
