@@ -8,6 +8,7 @@ import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -100,5 +101,13 @@ public class FrowzyModel<T extends Frowzy> extends HierarchicalModel<T> {
 
 	public ModelPart root() {
 		return this.root;
+	}
+
+	public void translateToHand(HumanoidArm humanoidArm, PoseStack poseStack) {
+		this.getArm(humanoidArm).translateAndRotate(poseStack);
+	}
+
+	protected ModelPart getArm(HumanoidArm humanoidArm) {
+		return humanoidArm == HumanoidArm.LEFT ? this.Arm1 : this.Arm2;
 	}
 }

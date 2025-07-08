@@ -1,4 +1,4 @@
-package com.unusualmodding.opposing_force.client.renderer.layer;
+package com.unusualmodding.opposing_force.client.renderer.layers;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;

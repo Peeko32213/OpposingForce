@@ -1,4 +1,4 @@
-package com.unusualmodding.opposing_force.client.renderer.layer;
+package com.unusualmodding.opposing_force.client.renderer.layers;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.PaleSpiderModel;

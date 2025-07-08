@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.PaleSpiderModel;
-import com.unusualmodding.opposing_force.client.renderer.layer.PaleSpiderEyesLayer;
+import com.unusualmodding.opposing_force.client.renderer.layers.PaleSpiderEyesLayer;
 import com.unusualmodding.opposing_force.entity.PaleSpider;
 import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.renderer.RenderType;

@@ -2,7 +2,7 @@ package com.unusualmodding.opposing_force.client.renderer;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.UmberSpiderModel;
-import com.unusualmodding.opposing_force.client.renderer.layer.UmberSpiderEyesLayer;
+import com.unusualmodding.opposing_force.client.renderer.layers.UmberSpiderEyesLayer;
 import com.unusualmodding.opposing_force.entity.UmberSpider;
 import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.renderer.RenderType;

@@ -2,7 +2,7 @@ package com.unusualmodding.opposing_force.client.renderer;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.DicerModel;
-import com.unusualmodding.opposing_force.client.renderer.layer.DicerVisorLayer;
+import com.unusualmodding.opposing_force.client.renderer.layers.DicerVisorLayer;
 import com.unusualmodding.opposing_force.entity.Dicer;
 import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.renderer.RenderType;

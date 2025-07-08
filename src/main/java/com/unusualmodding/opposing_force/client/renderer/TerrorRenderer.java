@@ -2,7 +2,7 @@ package com.unusualmodding.opposing_force.client.renderer;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.TerrorModel;
-import com.unusualmodding.opposing_force.client.renderer.layer.TerrorGlowLayer;
+import com.unusualmodding.opposing_force.client.renderer.layers.TerrorGlowLayer;
 import com.unusualmodding.opposing_force.entity.Terror;
 import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.renderer.RenderType;

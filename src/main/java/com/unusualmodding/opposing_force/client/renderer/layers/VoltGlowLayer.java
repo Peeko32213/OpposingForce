@@ -1,4 +1,4 @@
-package com.unusualmodding.opposing_force.client.renderer.layer;
+package com.unusualmodding.opposing_force.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
