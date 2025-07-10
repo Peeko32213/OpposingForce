@@ -3,7 +3,6 @@ package com.unusualmodding.opposing_force.entity;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -13,13 +12,9 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -35,21 +30,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.MobEffectEvent;
-import net.minecraftforge.eventbus.api.Event;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Random;
 
-public class PaleSpider extends Monster {
+public class PaleSpider extends Spider {
 
     private static final EntityDataAccessor<Boolean> UPSIDE_DOWN = SynchedEntityData.defineId(PaleSpider.class, EntityDataSerializers.BOOLEAN);
 
@@ -59,7 +50,7 @@ public class PaleSpider extends Monster {
 
     public final AnimationState idleAnimationState = new AnimationState();
 
-    public PaleSpider(EntityType<? extends Monster> pEntityType, Level pLevel) {
+    public PaleSpider(EntityType<? extends Spider> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         switchNavigator(true);
     }
@@ -68,6 +59,7 @@ public class PaleSpider extends Monster {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 12.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new PaleSpiderAttackGoal(this));
@@ -91,17 +83,21 @@ public class PaleSpider extends Monster {
         }
     }
 
+    @Override
     public boolean isInvulnerableTo(DamageSource source) {
         return super.isInvulnerableTo(source) || source.is(DamageTypeTags.IS_FALL) || source.is(DamageTypes.IN_WALL);
     }
 
+    @Override
     protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
     }
 
+    @Override
     protected float getStandingEyeHeight(Pose pose, EntityDimensions entityDimensions) {
         return entityDimensions.height * 0.65F;
     }
 
+    @Override
     public void tick() {
         super.tick();
 
@@ -118,7 +114,7 @@ public class PaleSpider extends Monster {
             if (jumpingUp && this.getY() > worldHeight.getY()) {
                 jumpingUp = false;
             }
-            if (this.onGround() && (target == null || !target.isAlive()) && random.nextInt(300) == 0 && this.onGround() && !this.isUpsideDown() && this.getY() + 2 < worldHeight.getY() || jumpingUp) {
+            if (this.onGround() && (target == null || !target.isAlive()) && random.nextInt(300) == 0 && this.onGround() && !this.isUpsideDown() && this.getY() + 2 < worldHeight.getY() || jumpingUp && !this.hasControllingPassenger()) {
                 this.setDeltaMovement(this.getDeltaMovement().add(0, 2F, 0));
                 jumpingUp = true;
             }
@@ -169,6 +165,7 @@ public class PaleSpider extends Monster {
         this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
     }
 
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(UPSIDE_DOWN, false);
@@ -203,45 +200,30 @@ public class PaleSpider extends Monster {
         return pos;
     }
 
+    @Override
     protected SoundEvent getAmbientSound() {
         return OPSoundEvents.PALE_SPIDER_IDLE.get();
     }
 
+    @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
         return OPSoundEvents.PALE_SPIDER_HURT.get();
     }
 
+    @Override
     protected SoundEvent getDeathSound() {
         return OPSoundEvents.PALE_SPIDER_DEATH.get();
     }
 
+    @Override
     protected void playStepSound(BlockPos blockPos, BlockState blockState) {
         this.playSound(SoundEvents.SPIDER_STEP, 0.15F, 1.2F);
     }
 
+    @Override
     protected void playBlockFallSound() {
         this.onLand();
         super.playBlockFallSound();
-    }
-
-    public void makeStuckInBlock(BlockState blockState, Vec3 vec3) {
-        if (!blockState.is(Blocks.COBWEB)) {
-            super.makeStuckInBlock(blockState, vec3);
-        }
-    }
-
-    public MobType getMobType() {
-        return MobType.ARTHROPOD;
-    }
-
-    public boolean canBeAffected(MobEffectInstance p_33809_) {
-        if (p_33809_.getEffect() == MobEffects.POISON) {
-            MobEffectEvent.Applicable event = new MobEffectEvent.Applicable(this, p_33809_);
-            MinecraftForge.EVENT_BUS.post(event);
-            return event.getResult() == Event.Result.ALLOW;
-        } else {
-            return super.canBeAffected(p_33809_);
-        }
     }
 
     @SuppressWarnings("unused")
@@ -266,27 +248,6 @@ public class PaleSpider extends Monster {
                 return lightTest <= dimension.monsterSpawnLightTest().sample(random);
             }
         }
-    }
-
-    @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag compoundTag) {
-        RandomSource randomsource = level.getRandom();
-
-        if (spawnData == null) {
-            spawnData = new Spider.SpiderEffectsGroupData();
-            if (level.getDifficulty() == Difficulty.HARD && randomsource.nextFloat() < 0.1F * difficulty.getSpecialMultiplier()) {
-                ((Spider.SpiderEffectsGroupData) spawnData).setRandomEffect(randomsource);
-            }
-        }
-
-        if (spawnData instanceof Spider.SpiderEffectsGroupData spiderEffectsGroupData) {
-            MobEffect mobeffect = spiderEffectsGroupData.effect;
-            if (mobeffect != null) {
-                this.addEffect(new MobEffectInstance(mobeffect, -1));
-            }
-        }
-
-        return super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
     }
 
     // goals

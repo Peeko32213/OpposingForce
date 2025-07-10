@@ -12,10 +12,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -24,17 +22,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.phys.Vec3;
@@ -43,13 +37,11 @@ import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.Event;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Objects;
 
-public class UmberSpider extends Monster implements IAnimatedAttacker {
+public class UmberSpider extends Spider implements IAnimatedAttacker {
 
-    private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(UmberSpider.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(UmberSpider.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(UmberSpider.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Integer> LEAP_COOLDOWN = SynchedEntityData.defineId(UmberSpider.class, EntityDataSerializers.INT);
@@ -60,11 +52,7 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
 
     public final AnimationState idleAnimationState = new AnimationState();
 
-    protected PathNavigation createNavigation(Level level) {
-        return new WallClimberNavigation(this, level);
-    }
-
-    public UmberSpider(EntityType<? extends Monster> pEntityType, Level pLevel) {
+    public UmberSpider(EntityType<? extends Spider> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
@@ -72,6 +60,7 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_DAMAGE, 5.0D);
     }
 
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(2, new UmberSpiderRandomStrollGoal(this));
@@ -84,26 +73,32 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
+    @Override
     protected float getStandingEyeHeight(Pose pose, EntityDimensions entityDimensions) {
         return entityDimensions.height * 0.65F;
     }
 
+    @Override
     protected SoundEvent getAmbientSound() {
         return OPSoundEvents.UMBER_SPIDER_IDLE.get();
     }
 
+    @Override
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
         return OPSoundEvents.UMBER_SPIDER_HURT.get();
     }
 
+    @Override
     protected SoundEvent getDeathSound() {
         return OPSoundEvents.UMBER_SPIDER_DEATH.get();
     }
 
+    @Override
     protected void playStepSound(@NotNull BlockPos p_28301_, @NotNull BlockState p_28302_) {
         this.playSound(SoundEvents.SPIDER_STEP, 0.1F, 0.8F);
     }
 
+    @Override
     public double getPassengersRidingOffset() {
         return this.getBbHeight() * 0.5F;
     }
@@ -113,6 +108,7 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
         return 180;
     }
 
+    @Override
     public boolean doHurtTarget(Entity entity) {
         if (super.doHurtTarget(entity)) {
             if (entity instanceof LivingEntity) {
@@ -135,7 +131,6 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(CLIMBING, (byte) 0);
         this.entityData.define(ATTACK_STATE, 0);
         this.entityData.define(ATTACKING, false);
         this.entityData.define(LEAP_COOLDOWN, 3 + random.nextInt(8 * 2));
@@ -198,6 +193,7 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
         this.entityData.set(LIGHT_THRESHOLD, threshold);
     }
 
+    @Override
     public void tick() {
         super.tick();
 
@@ -212,6 +208,35 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
         if (this.getLeapCooldown() > 0) {
             this.setLeapCooldown(this.getLeapCooldown() - 1);
         }
+    }
+
+    private void setupAnimationStates() {
+        this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
+    }
+
+    @Override
+    public boolean canBeAffected(MobEffectInstance effect) {
+        if (effect.getEffect() == MobEffects.POISON || effect.getEffect() == OPEffects.GLOOM_TOXIN.get()) {
+            MobEffectEvent.Applicable event = new MobEffectEvent.Applicable(this, effect);
+            MinecraftForge.EVENT_BUS.post(event);
+            return event.getResult() == Event.Result.ALLOW;
+        } else {
+            return super.canBeAffected(effect);
+        }
+    }
+
+    protected boolean isSunSensitive() {
+        return true;
+    }
+
+    @Override
+    public void aiStep() {
+        if (this.isAlive()) {
+            boolean flag = this.isSunSensitive() && this.isSunBurnTick();
+            if (flag) {
+                this.setSecondsOnFire(8);
+            }
+        }
 
         BlockPos blockPos = this.blockPosition();
         RandomSource randomSource = this.getRandom();
@@ -224,93 +249,7 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
         if (fleeLightFor > 0) {
             fleeLightFor--;
         }
-    }
-
-    private void setupAnimationStates() {
-        this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
-    }
-
-    public boolean onClimbable() {
-        return this.isClimbing();
-    }
-
-    public boolean canBeAffected(MobEffectInstance effect) {
-        if (effect.getEffect() == MobEffects.POISON || effect.getEffect() == OPEffects.GLOOM_TOXIN.get()) {
-            MobEffectEvent.Applicable event = new MobEffectEvent.Applicable(this, effect);
-            MinecraftForge.EVENT_BUS.post(event);
-            return event.getResult() == Event.Result.ALLOW;
-        } else {
-            return super.canBeAffected(effect);
-        }
-    }
-
-    public boolean isClimbing() {
-        return (this.entityData.get(CLIMBING) & 1) != 0;
-    }
-
-    public void setClimbing(boolean pClimbing) {
-        byte climb = this.entityData.get(CLIMBING);
-        if (pClimbing) {
-            climb = (byte)(climb | 1);
-        } else {
-            climb = (byte)(climb & -2);
-        }
-        this.entityData.set(CLIMBING, climb);
-    }
-
-    public void makeStuckInBlock(BlockState pState, Vec3 pMotionMultiplier) {
-        if (!pState.is(Blocks.COBWEB)) {
-            super.makeStuckInBlock(pState, pMotionMultiplier);
-        }
-    }
-
-    public MobType getMobType() {
-        return MobType.ARTHROPOD;
-    }
-
-    protected boolean isSunSensitive() {
-        return true;
-    }
-
-    public void aiStep() {
-        if (this.isAlive()) {
-            boolean flag = this.isSunSensitive() && this.isSunBurnTick();
-            if (flag) {
-                this.setSecondsOnFire(8);
-            }
-        }
         super.aiStep();
-    }
-
-    @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
-        pSpawnData = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
-        RandomSource randomsource = pLevel.getRandom();
-
-        if (randomsource.nextInt(100) == 0) {
-            Skeleton skeleton = EntityType.SKELETON.create(this.level());
-            if (skeleton != null) {
-                skeleton.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-                skeleton.finalizeSpawn(pLevel, pDifficulty, pReason, null, null);
-                skeleton.startRiding(this);
-            }
-        }
-
-        if (pSpawnData == null) {
-            pSpawnData = new Spider.SpiderEffectsGroupData();
-            if (pLevel.getDifficulty() == Difficulty.HARD && randomsource.nextFloat() < 0.1F * pDifficulty.getSpecialMultiplier()) {
-                ((Spider.SpiderEffectsGroupData)pSpawnData).setRandomEffect(randomsource);
-            }
-        }
-
-        if (pSpawnData instanceof Spider.SpiderEffectsGroupData spiderEffectsGroupData) {
-            MobEffect mobeffect = spiderEffectsGroupData.effect;
-            if (mobeffect != null) {
-                this.addEffect(new MobEffectInstance(mobeffect, -1));
-            }
-        }
-
-        return pSpawnData;
     }
 
     @SuppressWarnings("unused")
@@ -338,7 +277,7 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
     }
 
     // goals
-    private static class UmberSpiderAttackGoal extends Goal {
+    static class UmberSpiderAttackGoal extends Goal {
 
         private final UmberSpider umberSpider;
         private int attackTime = 0;
@@ -426,9 +365,9 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
         }
     }
 
-    private static class UmberSpiderFearLightGoal extends Goal {
+    static class UmberSpiderFearLightGoal extends Goal {
 
-        private final UmberSpider umberSpider;
+        protected final UmberSpider umberSpider;
 
         public UmberSpiderFearLightGoal(UmberSpider mob) {
             this.umberSpider = mob;
@@ -457,9 +396,9 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
         }
     }
 
-    private static class UmberSpiderPanicGoal extends Goal {
+    static class UmberSpiderPanicGoal extends Goal {
 
-        private final UmberSpider umberSpider;
+        protected final UmberSpider umberSpider;
 
         protected double posX;
         protected double posY;
@@ -508,9 +447,9 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
         }
     }
 
-    private static class UmberSpiderRandomLookAroundGoal extends RandomLookAroundGoal {
+    static class UmberSpiderRandomLookAroundGoal extends RandomLookAroundGoal {
 
-        private final UmberSpider umberSpider;
+        protected final UmberSpider umberSpider;
 
         public UmberSpiderRandomLookAroundGoal(UmberSpider mob) {
             super(mob);
@@ -523,9 +462,9 @@ public class UmberSpider extends Monster implements IAnimatedAttacker {
         }
     }
 
-    private static class UmberSpiderRandomStrollGoal extends WaterAvoidingRandomStrollGoal {
+    static class UmberSpiderRandomStrollGoal extends WaterAvoidingRandomStrollGoal {
 
-        private final UmberSpider umberSpider;
+        protected final UmberSpider umberSpider;
 
         public UmberSpiderRandomStrollGoal(UmberSpider mob) {
             super(mob, 1.0D, 0.001F);
