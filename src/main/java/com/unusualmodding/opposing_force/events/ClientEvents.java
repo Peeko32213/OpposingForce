@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.events;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.client.models.armor.DeepwovenArmorModel;
+import com.unusualmodding.opposing_force.client.models.armor.*;
 import com.unusualmodding.opposing_force.client.models.entity.*;
 import com.unusualmodding.opposing_force.client.models.mob_heads.*;
 import com.unusualmodding.opposing_force.client.particles.*;

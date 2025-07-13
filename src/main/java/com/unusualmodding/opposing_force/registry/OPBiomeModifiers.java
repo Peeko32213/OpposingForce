@@ -38,7 +38,7 @@ public class OPBiomeModifiers {
         addSpawn(context, "guzzler", OPBiomeTags.HAS_GUZZLER, new MobSpawnSettings.SpawnerData(OPEntities.GUZZLER.get(), 5, 1, 1));
         addSpawn(context, "pale_spider", OPBiomeTags.HAS_PALE_SPIDER, new MobSpawnSettings.SpawnerData(OPEntities.PALE_SPIDER.get(), 60, 4, 4));
         addSpawn(context, "ramble", OPBiomeTags.HAS_RAMBLE, new MobSpawnSettings.SpawnerData(OPEntities.RAMBLE.get(), 15, 1, 1));
-        addSpawn(context, "slug", OPBiomeTags.HAS_SLUG, new MobSpawnSettings.SpawnerData(OPEntities.SLUG.get(), 60, 2, 2));
+        addSpawn(context, "slug", OPBiomeTags.HAS_SLUG, new MobSpawnSettings.SpawnerData(OPEntities.SLUG.get(), 50, 2, 2));
         addSpawn(context, "terror", OPBiomeTags.HAS_TERROR, new MobSpawnSettings.SpawnerData(OPEntities.TERROR.get(), 10, 1, 1));
         addSpawn(context, "trembler", OPBiomeTags.HAS_TREMBLER, new MobSpawnSettings.SpawnerData(OPEntities.TREMBLER.get(), 20, 1, 1));
         addSpawn(context, "umber_spider", OPBiomeTags.HAS_UMBER_SPIDER, new MobSpawnSettings.SpawnerData(OPEntities.UMBER_SPIDER.get(), 60, 4, 4));
