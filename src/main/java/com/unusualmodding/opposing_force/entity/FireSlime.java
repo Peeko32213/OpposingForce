@@ -152,7 +152,7 @@ public class FireSlime extends Monster {
 
         if (this.shouldDespawn()) {
             this.despawnTimer++;
-            if (this.despawnTimer > 90) {
+            if (this.despawnTimer > 160) {
                 this.navigation.stop();
                 if (this.getTarget() != null) {
                     this.setTarget(null);
@@ -165,7 +165,7 @@ public class FireSlime extends Monster {
                     this.level().addParticle(ParticleTypes.LAVA, this.getX(), this.getRandomY() + 0.5D - d1 * 10.0D, this.getZ(), d0, d1, d2);
                 }
             }
-            if (this.despawnTimer > 120) {
+            if (this.despawnTimer > 200) {
                 this.despawnTimer = 0;
                 this.playSound(OPSoundEvents.FIRE_SLIME_POP.get(), this.getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
                 this.spawnAnim();
