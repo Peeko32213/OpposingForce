@@ -55,6 +55,12 @@ public class OPItems {
     public static final RegistryObject<Item> FROWZY_HEAD = registerItemNoLang("frowzy_head", () -> new MobHeadItem(OPBlocks.FROWZY_HEAD.get(), OPBlocks.FROWZY_WALL_HEAD.get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
     public static final RegistryObject<Item> RAMBLE_SKULL = registerItemNoLang("ramble_skull", () -> new MobHeadItem(OPBlocks.RAMBLE_SKULL.get(), OPBlocks.RAMBLE_WALL_SKULL.get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
 
+    public static final RegistryObject<Item> WOODEN_MASK = registerItem("wooden_mask", ()-> new WoodenArmorItem(OPArmorMaterials.WOODEN, ArmorItem.Type.HELMET, new Item.Properties()));
+    public static final RegistryObject<Item> WOODEN_CHESTPLATE = registerItem("wooden_chestplate", ()-> new WoodenArmorItem(OPArmorMaterials.WOODEN, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+    public static final RegistryObject<Item> WOODEN_COVER = registerItem("wooden_cover", ()-> new WoodenArmorItem(OPArmorMaterials.WOODEN, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+    public static final RegistryObject<Item> WOODEN_BOOTS = registerItem("wooden_boots", ()-> new WoodenArmorItem(OPArmorMaterials.WOODEN, ArmorItem.Type.BOOTS, new Item.Properties()));
+
+
     private static <I extends Item> RegistryObject<I> registerItem(String name, Supplier<? extends I> supplier) {
         RegistryObject<I> item = ITEMS.register(name, supplier);
         AUTO_TRANSLATE.add(item);

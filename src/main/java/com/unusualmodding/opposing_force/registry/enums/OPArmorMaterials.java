@@ -12,7 +12,11 @@ import java.util.function.Supplier;
 
 public enum OPArmorMaterials implements ArmorMaterial {
 
-    DEEPWOVEN ("deepwoven", 12, new int[] {2, 4, 3, 1}, 9, OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN.get(), 0f, 0f, ()-> Ingredient.of(Tags.Items.LEATHER));
+    DEEPWOVEN ("deepwoven", 12, new int[] {2, 4, 3, 1}, 9, OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN.get(), 0f, 0f, ()-> Ingredient.of(Tags.Items.LEATHER)),
+
+    WOODEN ("wooden", 6, new int[] {1, 2, 2, 1}, 9, OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN.get(), 0f, 0f, ()-> Ingredient.of(Tags.Items.LEATHER))
+
+    ;
 
     private final String name;
     private final int durabilityMultiplier;

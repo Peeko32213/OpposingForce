@@ -36,16 +36,20 @@ public class OPItemTagProvider extends ItemTagsProvider {
                 DEEPWOVEN_HAT.get(),
                 DEEPWOVEN_TUNIC.get(),
                 DEEPWOVEN_PANTS.get(),
-                DEEPWOVEN_BOOTS.get()
+                DEEPWOVEN_BOOTS.get(),
+                WOODEN_MASK.get(),
+                WOODEN_CHESTPLATE.get(),
+                WOODEN_COVER.get(),
+                WOODEN_BOOTS.get()
         );
 
-        this.tag(Tags.Items.ARMORS_HELMETS).add(DEEPWOVEN_HAT.get());
+        this.tag(Tags.Items.ARMORS_HELMETS).add(DEEPWOVEN_HAT.get()).add(WOODEN_MASK.get());
 
-        this.tag(Tags.Items.ARMORS_CHESTPLATES).add(DEEPWOVEN_TUNIC.get());
+        this.tag(Tags.Items.ARMORS_CHESTPLATES).add(DEEPWOVEN_TUNIC.get()).add(WOODEN_CHESTPLATE.get());
 
-        this.tag(Tags.Items.ARMORS_LEGGINGS).add(DEEPWOVEN_PANTS.get());
+        this.tag(Tags.Items.ARMORS_LEGGINGS).add(DEEPWOVEN_PANTS.get()).add(WOODEN_COVER.get());
 
-        this.tag(Tags.Items.ARMORS_BOOTS).add(DEEPWOVEN_BOOTS.get());
+        this.tag(Tags.Items.ARMORS_BOOTS).add(DEEPWOVEN_BOOTS.get()).add(WOODEN_BOOTS.get());
 
         this.tag(Tags.Items.STRING).add(DEEP_SILK.get());
 

@@ -28,6 +28,7 @@ public class OPModelLayers {
     public static final ModelLayerLocation WHIZZ = main("whizz");
 
     public static final ModelLayerLocation DEEPWOVEN_ARMOR = main("deepwoven_armor");
+    public static final ModelLayerLocation WOODEN_ARMOR = main("wooden_armor");
 
     private static ModelLayerLocation register(String id, String name) {
         return new ModelLayerLocation(new ResourceLocation(OpposingForce.MOD_ID, id), name);

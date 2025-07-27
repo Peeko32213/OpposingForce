@@ -38,6 +38,11 @@ public class OPCreativeTab {
                     output.accept(OPItems.DEEPWOVEN_PANTS.get());
                     output.accept(OPItems.DEEPWOVEN_BOOTS.get());
 
+                    output.accept(OPItems.WOODEN_MASK.get());
+                    output.accept(OPItems.WOODEN_CHESTPLATE.get());
+                    output.accept(OPItems.WOODEN_COVER.get());
+                    output.accept(OPItems.WOODEN_BOOTS.get());
+
                     // Items
                     output.accept(OPItems.SLUG_EGGS.get());
                     output.accept(OPItems.ELECTRIC_CHARGE.get());

@@ -33,6 +33,10 @@ public class OPItemModelProvider extends ItemModelProvider {
         item(DEEPWOVEN_PANTS);
         item(DEEPWOVEN_BOOTS);
         item(UMBER_FANG);
+        item(WOODEN_MASK);
+        item(WOODEN_CHESTPLATE);
+        item(WOODEN_COVER);
+        item(WOODEN_BOOTS);
 
         // spawn eggs
         for (Item item : BuiltInRegistries.ITEM) {
