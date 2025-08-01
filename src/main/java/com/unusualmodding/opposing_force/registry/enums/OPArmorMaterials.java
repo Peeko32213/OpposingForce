@@ -19,8 +19,6 @@ public enum OPArmorMaterials implements ArmorMaterial {
     EMERALD ("emerald", 33, new int[] {3, 6, 8, 3}, 15, OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN.get(), 2.0f, 0f, ()-> Ingredient.of(Tags.Items.GEMS_EMERALD)),
 
     STONE ("stone", 33, new int[] {3, 6, 8, 3}, 2, OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN.get(), 4.0f, 2.0f, ()-> Ingredient.of(Tags.Items.STONE))
-
-
     ;
 
     private final String name;
