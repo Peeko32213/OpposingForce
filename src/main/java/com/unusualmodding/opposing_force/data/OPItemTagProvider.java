@@ -40,16 +40,24 @@ public class OPItemTagProvider extends ItemTagsProvider {
                 WOODEN_MASK.get(),
                 WOODEN_CHESTPLATE.get(),
                 WOODEN_COVER.get(),
-                WOODEN_BOOTS.get()
+                WOODEN_BOOTS.get(),
+                EMERALD_MASK.get(),
+                EMERALD_CHESTPLATE.get(),
+                EMERALD_LEGGINGS.get(),
+                EMERALD_BOOTS.get(),
+                STONE_HELMET.get(),
+                STONE_CHESTPLATE.get(),
+                STONE_LEGGINGS.get(),
+                STONE_BOOTS.get()
         );
 
-        this.tag(Tags.Items.ARMORS_HELMETS).add(DEEPWOVEN_HAT.get()).add(WOODEN_MASK.get());
+        this.tag(Tags.Items.ARMORS_HELMETS).add(DEEPWOVEN_HAT.get()).add(WOODEN_MASK.get()).add(EMERALD_MASK.get()).add(STONE_HELMET.get());
 
-        this.tag(Tags.Items.ARMORS_CHESTPLATES).add(DEEPWOVEN_TUNIC.get()).add(WOODEN_CHESTPLATE.get());
+        this.tag(Tags.Items.ARMORS_CHESTPLATES).add(DEEPWOVEN_TUNIC.get()).add(WOODEN_CHESTPLATE.get()).add(EMERALD_CHESTPLATE.get()).add(STONE_CHESTPLATE.get());
 
-        this.tag(Tags.Items.ARMORS_LEGGINGS).add(DEEPWOVEN_PANTS.get()).add(WOODEN_COVER.get());
+        this.tag(Tags.Items.ARMORS_LEGGINGS).add(DEEPWOVEN_PANTS.get()).add(WOODEN_COVER.get()).add(EMERALD_LEGGINGS.get()).add(STONE_LEGGINGS.get());
 
-        this.tag(Tags.Items.ARMORS_BOOTS).add(DEEPWOVEN_BOOTS.get()).add(WOODEN_BOOTS.get());
+        this.tag(Tags.Items.ARMORS_BOOTS).add(DEEPWOVEN_BOOTS.get()).add(WOODEN_BOOTS.get()).add(EMERALD_BOOTS.get()).add(STONE_BOOTS.get());
 
         this.tag(Tags.Items.STRING).add(DEEP_SILK.get());
 

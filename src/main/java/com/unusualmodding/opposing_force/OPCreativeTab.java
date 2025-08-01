@@ -43,6 +43,17 @@ public class OPCreativeTab {
                     output.accept(OPItems.WOODEN_COVER.get());
                     output.accept(OPItems.WOODEN_BOOTS.get());
 
+                    output.accept(OPItems.EMERALD_MASK.get());
+                    output.accept(OPItems.EMERALD_CHESTPLATE.get());
+                    output.accept(OPItems.EMERALD_LEGGINGS.get());
+                    output.accept(OPItems.EMERALD_BOOTS.get());
+
+                    output.accept(OPItems.STONE_HELMET.get());
+                    output.accept(OPItems.STONE_CHESTPLATE.get());
+                    output.accept(OPItems.STONE_LEGGINGS.get());
+                    output.accept(OPItems.STONE_BOOTS.get());
+
+
                     // Items
                     output.accept(OPItems.SLUG_EGGS.get());
                     output.accept(OPItems.ELECTRIC_CHARGE.get());

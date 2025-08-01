@@ -14,7 +14,12 @@ public enum OPArmorMaterials implements ArmorMaterial {
 
     DEEPWOVEN ("deepwoven", 12, new int[] {2, 4, 3, 1}, 9, OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN.get(), 0f, 0f, ()-> Ingredient.of(Tags.Items.LEATHER)),
 
-    WOODEN ("wooden", 6, new int[] {1, 2, 2, 1}, 9, OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN.get(), 0f, 0f, ()-> Ingredient.of(Tags.Items.LEATHER))
+    WOODEN ("wooden", 6, new int[] {1, 2, 2, 1}, 9, OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN.get(), 0f, 0f, ()-> Ingredient.of(Tags.Items.LEATHER)),
+
+    EMERALD ("emerald", 33, new int[] {3, 6, 8, 3}, 15, OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN.get(), 2.0f, 0f, ()-> Ingredient.of(Tags.Items.GEMS_EMERALD)),
+
+    STONE ("stone", 33, new int[] {3, 6, 8, 3}, 2, OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN.get(), 4.0f, 2.0f, ()-> Ingredient.of(Tags.Items.STONE))
+
 
     ;
 
