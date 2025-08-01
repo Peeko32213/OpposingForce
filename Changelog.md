@@ -7,3 +7,4 @@
 - Increased Ramble experience reward
 - Fixed Trembler Shell having no loot table
 - Fixed Trembler Shell not being mineable with pickaxes
+- Trembler rolling now has sprinting particles and sounds
