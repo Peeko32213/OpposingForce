@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force;
 
 import com.unusualmodding.opposing_force.data.*;
+import com.unusualmodding.opposing_force.events.ServerEvents;
 import com.unusualmodding.opposing_force.registry.*;
 import com.unusualmodding.opposing_force.utils.ClientProxy;
 import com.unusualmodding.opposing_force.utils.CommonProxy;
@@ -45,6 +46,7 @@ public class OpposingForce {
         OPAttributes.ATTRIBUTES.register(modEventBus);
         OPLootModifiers.LOOT_MODIFIERS.register(modEventBus);
         OPBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
+        MinecraftForge.EVENT_BUS.register(new ServerEvents());
 
         MinecraftForge.EVENT_BUS.register(this);
         PROXY.init();

@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
@@ -29,8 +30,11 @@ public class StoneArmorItem extends ArmorItem {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.putAll(super.getAttributeModifiers(slot, stack));
         UUID uuid = ArmorItem.ARMOR_MODIFIER_UUID_PER_TYPE.get(this.type);
+        builder.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(uuid, "Movement speed", -0.20F, AttributeModifier.Operation.MULTIPLY_BASE));
+
         return slot == this.getEquipmentSlot() ? builder.build() : super.getAttributeModifiers(slot, stack);
     }
+
 
     @OnlyIn(Dist.CLIENT)
     @Override
