@@ -9,6 +9,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
@@ -28,8 +29,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
@@ -46,6 +51,8 @@ public class Trembler extends Monster {
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState rollAnimationState = new AnimationState();
     public final AnimationState stunnedAnimationState = new AnimationState();
+
+    private int idleAnimationTimeout = 0;
 
     public Trembler(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -106,7 +113,12 @@ public class Trembler extends Monster {
     }
 
     private void setupAnimationStates() {
-        this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
+        if (this.idleAnimationTimeout == 0) {
+            this.idleAnimationTimeout = 144;
+            this.idleAnimationState.start(this.tickCount);
+        } else {
+            --this.idleAnimationTimeout;
+        }
         this.rollAnimationState.animateWhen(this.isRolling() && this.isAlive(), this.tickCount);
         this.stunnedAnimationState.animateWhen(this.getStunnedTicks() > 0 && this.isAlive(), this.tickCount);
     }
@@ -244,6 +256,22 @@ public class Trembler extends Monster {
         return OPSoundEvents.TREMBLER_DEATH.get();
     }
 
+    @Override
+    protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
+        SoundType soundtype = state.getSoundType(this.level, pos, this);
+        if (this.isRolling()) {
+            this.playSound(SoundEvents.DRIPSTONE_BLOCK_STEP, 0.4F, (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 0.9F);
+            this.playSound(soundtype.getStepSound(), 0.1F, soundtype.getPitch());
+        } else {
+            this.playSound(OPSoundEvents.SLUG_SLIDE.get(), 0.15F, 0.9F);
+        }
+    }
+
+    @Override
+    public int getAmbientSoundInterval() {
+        return 200;
+    }
+
     @SuppressWarnings("unused")
     public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return checkTremblerSpawnRules(entityType, level, spawnType, pos, random);
@@ -285,11 +313,13 @@ public class Trembler extends Monster {
 
         public void start() {
             this.trembler.setRolling(false);
+            this.trembler.setSprinting(false);
             this.attackTime = 0;
         }
 
         public void stop() {
             this.trembler.setRolling(false);
+            this.trembler.setSprinting(false);
         }
 
         public boolean requiresUpdateEveryTick() {
@@ -333,6 +363,7 @@ public class Trembler extends Monster {
                 this.rollMotion = new Vec3(x, this.trembler.getDeltaMovement().y, z).normalize();
                 this.trembler.lookAt(Objects.requireNonNull(target), 360F, 30F);
                 this.trembler.getLookControl().setLookAt(target, 30F, 30F);
+                this.trembler.setSprinting(true);
             }
 
             if (this.attackTime > 12 && this.attackTime < 48 + this.trembler.getRandom().nextInt(4)) {
@@ -344,6 +375,10 @@ public class Trembler extends Monster {
                         player.disableShield(true);
                     }
                 }
+            }
+
+            if (attackTime > 53 || this.trembler.horizontalCollision) {
+                this.trembler.setSprinting(false);
             }
 
             if (this.attackTime >= 69 || this.trembler.horizontalCollision) {
