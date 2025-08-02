@@ -58,6 +58,9 @@ public class OPLanguageProvider extends LanguageProvider {
         this.potion(OPPotions.SLUG_INFESTATION_POTION, "Slug Infestation", "slug_infestation");
 
         this.sound(OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN, "Deepwoven armor rustles");
+        this.sound(OPSoundEvents.ARMOR_EQUIP_WOODEN, "Wooden armor knocks");
+        this.sound(OPSoundEvents.ARMOR_EQUIP_STONE, "Stone armor clanks");
+        this.sound(OPSoundEvents.ARMOR_EQUIP_EMERALD, "Emerald armor clanks");
 
         this.sound(OPSoundEvents.DICER_DEATH, "Dicer dies");
         this.sound(OPSoundEvents.DICER_HURT, "Dicer hurts");
@@ -187,6 +190,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.add("death.attack.opposing_force.tomahawk.item", "%1$s was domed by %2$s using %3$s");
 
         this.add("attribute.opposing_force.name.generic.stealth", "Stealth");
+        this.add("attribute.opposing_force.name.generic.electric_resistance", "Electric Resistance");
     }
 
     @Override

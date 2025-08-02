@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.items;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.unusualmodding.opposing_force.OpposingForce;
+import com.unusualmodding.opposing_force.registry.OPAttributes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -30,11 +31,10 @@ public class StoneArmorItem extends ArmorItem {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.putAll(super.getAttributeModifiers(slot, stack));
         UUID uuid = ArmorItem.ARMOR_MODIFIER_UUID_PER_TYPE.get(this.type);
-        builder.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(uuid, "Movement speed", -0.10F, AttributeModifier.Operation.MULTIPLY_BASE));
-
+        builder.put(OPAttributes.ELECTRIC_RESISTANCE.get(), new AttributeModifier(uuid, "Electric resistance", 0.15F, AttributeModifier.Operation.MULTIPLY_BASE));
+        builder.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(uuid, "Movement speed", -0.1F, AttributeModifier.Operation.MULTIPLY_BASE));
         return slot == this.getEquipmentSlot() ? builder.build() : super.getAttributeModifiers(slot, stack);
     }
-
 
     @OnlyIn(Dist.CLIENT)
     @Override

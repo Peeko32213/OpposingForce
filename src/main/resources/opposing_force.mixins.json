@@ -6,12 +6,14 @@
   "refmap": "opposing_force.refmap.json",
   "mixins": [
     "CrossbowItemMixin",
-    "EntityMixin"
+    "EntityMixin",
+    "LivingEntityMixin"
   ],
   "client": [
     "client.ClientPacketListenerMixin",
     "client.CustomHeadLayerMixin",
-    "client.GuiMixin"
+    "client.GuiMixin",
+    "client.LocalPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

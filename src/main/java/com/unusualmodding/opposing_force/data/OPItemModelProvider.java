@@ -33,18 +33,18 @@ public class OPItemModelProvider extends ItemModelProvider {
         item(DEEPWOVEN_PANTS);
         item(DEEPWOVEN_BOOTS);
         item(UMBER_FANG);
-        item(WOODEN_MASK);
-        item(WOODEN_CHESTPLATE);
-        item(WOODEN_COVER);
-        item(WOODEN_BOOTS);
-        item(EMERALD_MASK);
-        item(EMERALD_CHESTPLATE);
-        item(EMERALD_LEGGINGS);
-        item(EMERALD_BOOTS);
-        item(STONE_HELMET);
-        item(STONE_CHESTPLATE);
-        item(STONE_LEGGINGS);
-        item(STONE_BOOTS);
+//        item(WOODEN_MASK);
+//        item(WOODEN_CHESTPLATE);
+//        item(WOODEN_COVER);
+//        item(WOODEN_BOOTS);
+//        item(EMERALD_MASK);
+//        item(EMERALD_CHESTPLATE);
+//        item(EMERALD_LEGGINGS);
+//        item(EMERALD_BOOTS);
+//        item(STONE_HELMET);
+//        item(STONE_CHESTPLATE);
+//        item(STONE_LEGGINGS);
+//        item(STONE_BOOTS);
 
         // spawn eggs
         for (Item item : BuiltInRegistries.ITEM) {

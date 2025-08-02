@@ -3,6 +3,18 @@
     "opposing_force:deepwoven_hat",
     "opposing_force:deepwoven_tunic",
     "opposing_force:deepwoven_pants",
-    "opposing_force:deepwoven_boots"
+    "opposing_force:deepwoven_boots",
+    "opposing_force:wooden_mask",
+    "opposing_force:wooden_chestplate",
+    "opposing_force:wooden_cover",
+    "opposing_force:wooden_boots",
+    "opposing_force:emerald_mask",
+    "opposing_force:emerald_chestplate",
+    "opposing_force:emerald_leggings",
+    "opposing_force:emerald_boots",
+    "opposing_force:stone_helmet",
+    "opposing_force:stone_chestplate",
+    "opposing_force:stone_leggings",
+    "opposing_force:stone_boots"
   ]
 }

@@ -1,7 +1,6 @@
 package com.unusualmodding.opposing_force.events;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import com.unusualmodding.opposing_force.registry.OPEffects;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import net.minecraft.util.Mth;
@@ -25,7 +24,6 @@ public class ServerEvents {
         if (entity instanceof Player player) {
             if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() == OPItems.STONE_HELMET.get() && player.getItemBySlot(EquipmentSlot.CHEST).getItem() == OPItems.STONE_CHESTPLATE.get() && player.getItemBySlot(EquipmentSlot.LEGS).getItem() == OPItems.STONE_LEGGINGS.get() && player.getItemBySlot(EquipmentSlot.FEET).getItem() == OPItems.STONE_BOOTS.get()) {
                 event.getEntity().removeEffect(OPEffects.ELECTRIFIED.get());
-                player.setSprinting(false);
             }
         }
     }
@@ -38,16 +36,13 @@ public class ServerEvents {
         float f = effectInstance == null ? 0.0F : (float) (effectInstance.getAmplifier() + 1);
         int damage = Mth.ceil((event.getDistance() - 3.0F - f) * event.getDamageMultiplier());
         if (entity instanceof Player player) {
-            if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() == OPItems.STONE_HELMET.get() && player.getItemBySlot(EquipmentSlot.CHEST).getItem() == OPItems.STONE_CHESTPLATE.get() && player.getItemBySlot(EquipmentSlot.LEGS).getItem() == OPItems.STONE_LEGGINGS.get() && player.getItemBySlot(EquipmentSlot.FEET).getItem() == OPItems.STONE_BOOTS.get()) {
+            if (player.getItemBySlot(EquipmentSlot.FEET).getItem() == OPItems.STONE_BOOTS.get()) {
                 if (damage > 0) {
                     for (LivingEntity target : world.getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(1.0D, 0.0D, 1.0D))) {
-                        if (entity != target)
-                            target.hurt(target.damageSources().fall(), damage);
+                        if (entity != target) target.hurt(target.damageSources().fall(), damage);
                     }
+                }
             }
         }
-        }
     }
-
-
 }
