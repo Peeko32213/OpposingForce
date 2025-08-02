@@ -19,12 +19,15 @@ public class OPDamageTypes {
     public static final ResourceKey<DamageType> GLOOM_TOXIN = register("gloom_toxin");
     public static final ResourceKey<DamageType> LASER = register("laser");
     public static final ResourceKey<DamageType> TOMAHAWK = register("tomahawk");
+    public static final ResourceKey<DamageType> STONE_FALL = register("stone_fall");
 
     public static void bootstrap(BootstapContext<DamageType> context) {
         context.register(ELECTRIFIED, new DamageType(OpposingForce.MOD_ID + ".electrified", 0.0F));
         context.register(GLOOM_TOXIN, new DamageType(OpposingForce.MOD_ID + ".gloom_toxin", 0.0F));
         context.register(LASER, new DamageType(OpposingForce.MOD_ID + ".laser", 0.0F));
         context.register(TOMAHAWK, new DamageType(OpposingForce.MOD_ID + ".tomahawk", 0.1F));
+        context.register(STONE_FALL, new DamageType(OpposingForce.MOD_ID + ".stone_fall", 0.0F));
+
     }
 
     public static DamageSource laser(Level level, DicerLaser laser, @Nullable Entity indirectEntity) {
@@ -33,6 +36,10 @@ public class OPDamageTypes {
 
     public static DamageSource tomahawk(Level level, Tomahawk tomahawk, @Nullable Entity indirectEntity) {
         return level.damageSources().source(TOMAHAWK, tomahawk, indirectEntity);
+    }
+
+    public static DamageSource stone_fall(Level level, Entity causingEntity, @Nullable Entity directEntity) {
+        return level.damageSources().source(STONE_FALL, causingEntity, directEntity);
     }
 
     public static ResourceKey<DamageType> register(String name) {
