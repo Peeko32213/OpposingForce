@@ -15,6 +15,7 @@ import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -42,6 +43,7 @@ import net.minecraftforge.eventbus.api.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Optional;
 import java.util.UUID;
@@ -98,6 +100,21 @@ public class Slug extends Monster implements OwnableEntity {
     @Override
     public boolean doHurtTarget(Entity entity) {
         if (super.doHurtTarget(entity)) {
+            int i = 0;
+            Collection<MobEffectInstance> collection = this.getActiveEffects();
+            if (this.level().getDifficulty() == Difficulty.NORMAL) {
+                i = 5;
+            } else if (this.level().getDifficulty() == Difficulty.HARD) {
+                i = 10;
+            }
+            if (i > 0) {
+                if (!collection.isEmpty()) {
+                    for (MobEffectInstance mobeffectinstance : collection) {
+                        ((LivingEntity) entity).addEffect(new MobEffectInstance(mobeffectinstance.getEffect(), i * 20, 0), this);
+                    }
+                    this.removeAllEffects();
+                }
+            }
             this.playSound(OPSoundEvents.SLUG_ATTACK.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
             return true;
         } else {

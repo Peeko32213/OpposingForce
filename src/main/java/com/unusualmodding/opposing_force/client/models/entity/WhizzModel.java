@@ -82,7 +82,9 @@ public class WhizzModel<T extends Whizz> extends HierarchicalModel<T> {
 	@Override
 	public void setupAnim(Whizz entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		this.animate(entity.flyAnimationState, WhizzAnimations.FLY, ageInTicks, 1.0F + (limbSwingAmount * 1.4F));
+		this.animateWalk(WhizzAnimations.MANDIBLES, limbSwing, limbSwingAmount, 2, 12);
+		this.animate(entity.flyAnimationState, WhizzAnimations.FLY, ageInTicks, 1.25F);
+		this.animate(entity.flyAnimationState, WhizzAnimations.WINGS, ageInTicks, 2.25F);
 	}
 
 	@Override

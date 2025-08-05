@@ -56,15 +56,15 @@ public class Terror extends Monster implements IAnimatedAttacker {
     public Terror(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.02F, 0.1F, true);
+        this.moveControl = new SmoothSwimmingMoveControl(this, 128, 10, 0.02F, 0.1F, true);
         this.lookControl = new SmoothSwimmingLookControl(this, 10);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 20.0D)
-                .add(Attributes.MOVEMENT_SPEED, 1.0F)
-                .add(Attributes.ATTACK_DAMAGE, 7.0D);
+                .add(Attributes.MOVEMENT_SPEED, 0.8F)
+                .add(Attributes.ATTACK_DAMAGE, 5.0D);
     }
 
     @Override
@@ -214,7 +214,7 @@ public class Terror extends Monster implements IAnimatedAttacker {
 
     @SuppressWarnings("unused")
     public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return pos.getY() <= 20 && level.getRawBrightness(pos, 0) == 0 && level.getBlockState(pos).is(Blocks.WATER);
+        return pos.getY() <= 18 && level.getRawBrightness(pos, 0) == 0 && level.getRandom().nextFloat() <= 0.4F && level.getBlockState(pos).is(Blocks.WATER);
     }
 
     public boolean checkSpawnObstruction(LevelReader level) {
@@ -268,16 +268,17 @@ public class Terror extends Monster implements IAnimatedAttacker {
         public void tick() {
             LivingEntity target = this.terror.getTarget();
             if (target != null) {
-                this.terror.lookAt(this.terror.getTarget(), 30F, 30F);
-                this.terror.getLookControl().setLookAt(this.terror.getTarget(), 30F, 30F);
                 double distance = this.terror.distanceToSqr(target.getX(), target.getY(), target.getZ());
                 int attackState = this.terror.getAttackState();
+                this.terror.lookAt(this.terror.getTarget(), 30F, 30F);
+                this.terror.getLookControl().setLookAt(this.terror.getTarget(), 30F, 30F);
 
                 if (attackState == 1) {
                     tickAttack();
                 } else {
-                    this.terror.getNavigation().moveTo(target, 1.45D);
-                    if (distance <= 5) {
+                    this.terror.getNavigation().moveTo(target, 1.0D);
+
+                    if (distance <= 20) {
                         this.terror.setAttackState(1);
                     }
                 }
@@ -291,6 +292,15 @@ public class Terror extends Monster implements IAnimatedAttacker {
         protected void tickAttack() {
             attackTime++;
             LivingEntity target = this.terror.getTarget();
+            this.terror.getNavigation().stop();
+
+            if (this.attackTime == 4) {
+                if (!this.terror.isInWater()) {
+                    this.terror.addDeltaMovement(this.terror.getLookAngle().scale(2.0D).multiply(0.2D, 0.3D, 0.2D));
+                } else {
+                    this.terror.addDeltaMovement(this.terror.getLookAngle().scale(2.0D).multiply(0.3D, 0.4D, 0.3D));
+                }
+            }
 
             if (attackTime == 8) {
                 if (this.terror.distanceTo(Objects.requireNonNull(target)) < getAttackReachSqr(target)) {
@@ -298,14 +308,14 @@ public class Terror extends Monster implements IAnimatedAttacker {
                     this.terror.swing(InteractionHand.MAIN_HAND);
                 }
             }
-            if (attackTime >= 20) {
+            if (attackTime >= 28) {
                 attackTime = 0;
                 this.terror.setAttackState(0);
             }
         }
 
         protected double getAttackReachSqr(LivingEntity target) {
-            return this.terror.getBbWidth() * 2.0F * this.terror.getBbWidth() * 2.0F + target.getBbWidth();
+            return this.terror.getBbWidth() * 0.8F * this.terror.getBbWidth() * 0.8F + target.getBbWidth();
         }
     }
 }

@@ -280,6 +280,10 @@ public class Dicer extends Monster implements IAnimatedAttacker {
             this.dicer.lookAt(target, 360F, 30F);
             this.dicer.getLookControl().setLookAt(target, 30F, 30F);
 
+            if (this.attackTime == 9) {
+                this.dicer.addDeltaMovement(this.dicer.getLookAngle().scale(2.0D).multiply(0.3D, 0, 0.3D));
+            }
+
             if (this.attackTime == 11) {
                 if (this.dicer.distanceTo(Objects.requireNonNull(this.dicer.getTarget())) < 2.7F) {
                     this.dicer.doHurtTarget(this.dicer.getTarget());
@@ -312,7 +316,7 @@ public class Dicer extends Monster implements IAnimatedAttacker {
 
             if (this.attackTime >= 13 && this.attackTime <= 41) {
                 if (target != null) {
-                    this.dicer.getLookControl().setLookAt(target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(), 1.5F, 80);
+                    this.dicer.getLookControl().setLookAt(target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(), 2, 80);
                 }
             }
             if (this.attackTime > 50) {

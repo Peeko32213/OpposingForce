@@ -8,3 +8,16 @@
 - Fixed Trembler Shell having no loot table
 - Fixed Trembler Shell not being mineable with pickaxes
 - Trembler rolling now has sprinting particles and sounds
+- Fire Slimes target whatever the Guzzler is targeting instead of just players
+- Guzzlers shoot fire slimes slightly less far
+- Slugs with effects will transfer their effects to their target on hit
+- Dicer slash attack moves it forward slightly
+- Guzzlers perform a stomp attack if their target gets too close
+- Guzzlers have a longer spew cooldown
+- Terrors move slower when attacking
+- Terrors perform a small dash forward when attacking
+- Reduced Terror movement speed
+- Reduced terror damage
+- Whizz start charging from further away
+- Reduced Whizz charge cooldown 
+- Whizzes circle around targets rather than always moving towards them

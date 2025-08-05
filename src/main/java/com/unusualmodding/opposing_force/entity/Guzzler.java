@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.google.common.collect.Sets;
+import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -39,10 +40,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.EnumSet;
 import java.util.Set;
 
-public class Guzzler extends Monster {
+public class Guzzler extends Monster implements IAnimatedAttacker {
 
-    private static final EntityDataAccessor<Boolean> SPEWING = SynchedEntityData.defineId(Guzzler.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> SPEW_COOLDOWN = SynchedEntityData.defineId(Guzzler.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Guzzler.class, EntityDataSerializers.INT);
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState spewAnimationState = new AnimationState();
@@ -57,16 +58,17 @@ public class Guzzler extends Monster {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 80.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.13D)
+                .add(Attributes.ATTACK_DAMAGE, 5.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D)
                 .add(Attributes.FOLLOW_RANGE, 32.0D);
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new GuzzlerSpitGoal(this, 0.5F, 22));
-        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(1, new GuzzlerAttackGoal(this, 0.5F, 22));
+        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
@@ -138,35 +140,27 @@ public class Guzzler extends Monster {
 
     private void setupAnimationStates() {
         this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
-        this.spewAnimationState.animateWhen(this.isAlive() && this.isSpewing(), this.tickCount);
+        this.spewAnimationState.animateWhen(this.isAlive() && this.getAttackState() == 1, this.tickCount);
     }
 
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(SPEWING, false);
+        this.entityData.define(ATTACK_STATE, 0);
         this.entityData.define(SPEW_COOLDOWN, 18 + random.nextInt(6 * 5));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        compoundTag.putBoolean("Spewing", this.isSpewing());
+        compoundTag.putInt("AttackState", this.getAttackState());
         compoundTag.putInt("SpewCooldown", this.getSpewCooldown());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        this.setSpewing(compoundTag.getBoolean("Spewing"));
+        this.setAttackState(compoundTag.getInt("AttackState"));
         this.setSpewCooldown(compoundTag.getInt("SpewCooldown"));
-    }
-
-    public boolean isSpewing() {
-        return this.entityData.get(SPEWING);
-    }
-
-    public void setSpewing(boolean spewing) {
-        this.entityData.set(SPEWING, spewing);
     }
 
     public int getSpewCooldown() {
@@ -178,11 +172,21 @@ public class Guzzler extends Monster {
     }
 
     public void spewCooldown() {
-        this.entityData.set(SPEW_COOLDOWN, 18);
+        this.entityData.set(SPEW_COOLDOWN, 28);
     }
 
     public boolean shouldSpew() {
         return true;
+    }
+
+    @Override
+    public int getAttackState() {
+        return this.entityData.get(ATTACK_STATE);
+    }
+
+    @Override
+    public void setAttackState(int attackState) {
+        this.entityData.set(ATTACK_STATE, attackState);
     }
 
     private void guzzleEffect() {
@@ -251,7 +255,7 @@ public class Guzzler extends Monster {
         }
     }
 
-    private class GuzzlerSpitGoal extends Goal {
+    private class GuzzlerAttackGoal extends Goal {
 
         private final Guzzler guzzler;
         private final double speed;
@@ -262,7 +266,7 @@ public class Guzzler extends Monster {
         private int strafingTime = -1;
         private int attackTime = 0;
 
-        public GuzzlerSpitGoal(Guzzler guzzler, double speed, float maxAttackDistanceIn) {
+        public GuzzlerAttackGoal(Guzzler guzzler, double speed, float maxAttackDistanceIn) {
             this.guzzler = guzzler;
             this.speed = speed;
             this.maxAttackDistance = maxAttackDistanceIn * maxAttackDistanceIn;
@@ -284,15 +288,14 @@ public class Guzzler extends Monster {
         public void start() {
             super.start();
             this.guzzler.setAggressive(true);
-            this.guzzler.setSpewing(false);
+            this.guzzler.setAttackState(0);
             this.attackTime = 0;
         }
 
         public void stop() {
             super.stop();
             this.guzzler.setAggressive(false);
-            this.guzzler.setSpewing(false);
-            this.attackTime = 0;
+            this.guzzler.setAttackState(0);
             this.seeTime = 0;
         }
 
@@ -339,24 +342,32 @@ public class Guzzler extends Monster {
                         this.strafingBackwards = true;
                     }
 
-                    this.guzzler.getMoveControl().strafe(this.strafingBackwards ? -0.5F : 0.5F, this.strafingClockwise ? 0.5F : -0.5F);
+                    if (this.guzzler.getAttackState() != 2) {
+                        this.guzzler.getMoveControl().strafe(this.strafingBackwards ? -0.5F : 0.5F, this.strafingClockwise ? 0.5F : -0.5F);
+                    }
                     this.guzzler.lookAt(target, 30.0F, 30.0F);
                 } else {
                     this.guzzler.getLookControl().setLookAt(target, 30.0F, 30.0F);
                 }
 
-                if (this.guzzler.isSpewing()) {
+                if (this.guzzler.getAttackState() == 1) {
                     tickSpitAttack();
+                } else if (this.guzzler.getAttackState() == 2) {
+                    tickStompAttack();
                 } else {
-                    if (this.guzzler.getSpewCooldown() <= 0) {
-                        this.guzzler.setSpewing(true);
+                    if (distance > 8.5F) {
+                        if (this.guzzler.getSpewCooldown() <= 0) {
+                            this.guzzler.setAttackState(1);
+                        }
+                    } else {
+                        this.guzzler.setAttackState(2);
                     }
                 }
             }
         }
 
         public boolean requiresUpdateEveryTick() {
-            return this.guzzler.isSpewing();
+            return true;
         }
 
         protected void tickSpitAttack() {
@@ -373,7 +384,7 @@ public class Guzzler extends Monster {
                 final float f3 = Mth.sqrt((float) (d1 * d1 + d2 * d2 + d3 * d3)) * 0.23F;
                 this.guzzler.gameEvent(GameEvent.PROJECTILE_SHOOT);
                 this.guzzler.playSound(OPSoundEvents.GUZZLER_SPEW.get(), 2.0F, 1.0F / (this.guzzler.getRandom().nextFloat() * 0.4F + 0.8F));
-                slime.shoot(d1, d2 + (double) f3, d3, 1.5F, 0.0F);
+                slime.shoot(d1, d2 + (double) f3, d3, 1.3F, 0.0F);
                 slime.setYRot(this.guzzler.getYRot() % 360.0F);
                 slime.setXRot(Mth.clamp(this.guzzler.getYRot(), -90.0F, 90.0F) % 360.0F);
                 if (!this.guzzler.level().isClientSide) {
@@ -388,7 +399,36 @@ public class Guzzler extends Monster {
             if (attackTime > 15) {
                 this.attackTime = 0;
                 this.guzzler.spewCooldown();
-                this.guzzler.setSpewing(false);
+                this.guzzler.setAttackState(0);
+            }
+        }
+
+        protected void tickStompAttack() {
+            this.attackTime++;
+            this.guzzler.getNavigation().stop();
+            this.guzzler.setDeltaMovement(0.0F, this.guzzler.getDeltaMovement().y, 0.0F);
+
+            if (this.attackTime == 7) {
+                for (LivingEntity entity : this.guzzler.level().getEntitiesOfClass(LivingEntity.class, this.guzzler.getBoundingBox().inflate(6.0D))) {
+
+                    boolean reachable = entity.getY() > this.guzzler.getY() && entity.distanceTo(this.guzzler) > 6;
+                    boolean self = entity instanceof Guzzler || entity instanceof FireSlime;
+
+                    if (self || reachable) continue;
+
+                    Vec3 vec3 = this.guzzler.position().add(0.0, 1.6F, 0.0);
+                    Vec3 vec32 = entity.getEyePosition().subtract(vec3);
+                    Vec3 vec33 = vec32.normalize();
+                    this.guzzler.doHurtTarget(entity);
+                    double knockbackResistanceY = 0.35 * (1.0 - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
+                    double knockbackResistance = 2 * (1.0 - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
+                    entity.push(vec33.x() * knockbackResistance, vec33.y() * knockbackResistanceY, vec33.z() * knockbackResistance);
+                }
+            }
+
+            if (this.attackTime > 7) {
+                this.attackTime = 0;
+                this.guzzler.setAttackState(0);
             }
         }
     }

@@ -17,6 +17,7 @@ import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -200,7 +201,7 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(CHARGING, false);
-        this.entityData.define(CHARGE_COOLDOWN, 8 + random.nextInt(12 * 6));
+        this.entityData.define(CHARGE_COOLDOWN, 8 + random.nextInt(8 * 4));
         this.entityData.define(OWNER_UUID, Optional.empty());
         this.entityData.define(DATA_FLAGS_ID, (byte) 0);
         this.entityData.define(FROM_BUCKET, false);
@@ -303,7 +304,7 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
     }
 
     public void chargeCooldown() {
-        this.entityData.set(CHARGE_COOLDOWN, 8 + random.nextInt(12 * 6));
+        this.entityData.set(CHARGE_COOLDOWN, 8 + random.nextInt(8 * 4));
     }
 
     @Override
@@ -614,78 +615,114 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
 
         protected final Whizz whizz;
         private int attackTime = 0;
-        private Vec3 chargeMotion = new Vec3(0,0,0);
+        float circlingTime = 0;
+        float circleDistance = 5;
+        float maxCirclingTime = 80;
+        boolean clockwise = false;
 
         public WhizzChargeAttackGoal(Whizz mob) {
             this.whizz = mob;
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
 
+        @Override
         public boolean canUse() {
             return !this.whizz.isVehicle() && this.whizz.getTarget() != null && this.whizz.getTarget().isAlive();
         }
 
+        @Override
         public void start() {
             this.whizz.setCharging(false);
             this.attackTime = 0;
+            resetCircle();
         }
 
+        @Override
         public void stop() {
             this.whizz.setCharging(false);
+            resetCircle();
         }
 
+        public void resetCircle() {
+            this.circlingTime = 0;
+            this.maxCirclingTime = 160 + this.whizz.random.nextInt(80);
+            this.circleDistance = 5 + this.whizz.random.nextFloat() * 5;
+            this.clockwise = this.whizz.random.nextBoolean();
+        }
+
+        @Override
         public void tick() {
             LivingEntity target = this.whizz.getTarget();
             if (target != null) {
                 double distance = this.whizz.distanceToSqr(target.getX(), target.getY(), target.getZ());
-
                 if (this.whizz.isCharging()) {
                     tickChargeAttack();
                 } else {
-                    if (distance <= 20 && this.whizz.getChargeCooldown() <= 0) {
+                    if (distance <= 16 && this.whizz.getChargeCooldown() <= 0) {
                         this.whizz.setCharging(true);
-                    }
-                    else {
-                        if (distance > 20) {
-                            this.whizz.getNavigation().moveTo(target, 1.2D);
+                    } else {
+                        if (distance > 16 && this.circlingTime < this.maxCirclingTime) {
+                            circlingTime++;
+                            BlockPos circlePos = getCirclePos(target);
+                            if (circlePos != null){
+                                this.whizz.getNavigation().moveTo(circlePos.getX() + 0.5D, circlePos.getY() + 0.5D, circlePos.getZ() + 0.5D, 1.0D);
+                            }
                         } else {
-                            this.whizz.getNavigation().moveTo(target, 0.4D);
+                            this.whizz.getNavigation().moveTo(target, 0.75D);
+                            this.whizz.lookAt(Objects.requireNonNull(target), 30F, 30F);
+                            this.whizz.getLookControl().setLookAt(target, 30F, 30F);
+                            resetCircle();
                         }
-                        this.whizz.lookAt(Objects.requireNonNull(target), 30F, 30F);
-                        this.whizz.getLookControl().setLookAt(target, 30F, 30F);
                     }
                 }
             }
+        }
+
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
         }
 
         protected void tickChargeAttack() {
             this.attackTime++;
             this.whizz.getNavigation().stop();
-            Entity target = this.whizz.getTarget();
+            LivingEntity target = this.whizz.getTarget();
 
-            if (this.attackTime == 3) {
-                Vec3 targetPos = target.position();
-                double x = -(this.whizz.position().x - targetPos.x);
-                double y = -(this.whizz.position().y - targetPos.y);
-                double z = -(this.whizz.position().z - targetPos.z);
-                this.chargeMotion = new Vec3(x, y, z).normalize();
-                this.whizz.lookAt(Objects.requireNonNull(target), 360F, 30F);
-                this.whizz.getLookControl().setLookAt(target, 30F, 30F);
+            if (this.attackTime == 5) {
+                this.whizz.lookAt(Objects.requireNonNull(target), 360F, 360F);
+                this.whizz.getLookControl().setLookAt(target, 360F, 360F);
+                this.whizz.addDeltaMovement(this.whizz.getLookAngle().scale(2.0D).multiply(0.5D, 0.2D, 0.5D));
             }
 
-            if (this.attackTime > 3 && this.attackTime < 9) {
-                this.whizz.setDeltaMovement(this.chargeMotion.x * 0.7, this.chargeMotion.y * 0.55, this.chargeMotion.z * 0.7);
-                if (this.whizz.distanceTo(Objects.requireNonNull(target)) < 1.1F) {
+            if (this.attackTime >= 5 && this.attackTime < 40) {
+                if (this.whizz.distanceTo(Objects.requireNonNull(target)) < getAttackReachSqr(target)) {
                     this.whizz.doHurtTarget(target);
                     this.whizz.swing(InteractionHand.MAIN_HAND);
                 }
             }
 
-            if (this.attackTime >= 9) {
+            if (this.attackTime >= 42) {
                 this.attackTime = 0;
                 this.whizz.setCharging(false);
                 this.whizz.chargeCooldown();
+                resetCircle();
             }
+        }
+
+        protected double getAttackReachSqr(LivingEntity target) {
+            return this.whizz.getBbWidth() * 2.0F * this.whizz.getBbWidth() * 2.0F + target.getBbWidth();
+        }
+
+        public BlockPos getCirclePos(LivingEntity target) {
+            float angle = (0.0174532925F * (clockwise ? -circlingTime : circlingTime));
+            double extraX = circleDistance * Mth.sin((angle));
+            double extraZ = circleDistance * Mth.cos(angle);
+            BlockPos ground = fromCoords(target.getX() + 0.5F + extraX, this.whizz.getY(), target.getZ() + 0.5F + extraZ);
+            return ground;
+        }
+
+        public static BlockPos fromCoords(double x, double y, double z){
+            return new BlockPos((int) x, (int) y, (int) z);
         }
     }
 

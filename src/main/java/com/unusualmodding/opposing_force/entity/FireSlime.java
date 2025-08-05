@@ -1,6 +1,9 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.google.common.collect.Lists;
+import com.unusualmodding.opposing_force.entity.ai.goal.AttackGoal;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
+import net.minecraft.Util;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -21,6 +24,8 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.TargetGoal;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -28,12 +33,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BooleanSupplier;
@@ -68,22 +75,20 @@ public class FireSlime extends Monster {
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (entity) -> Math.abs(entity.getY() - this.getY()) <= (double) 4.0F));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+        this.targetSelector.addGoal(4, new FireSlimeCopyTargetGoal(this));
     }
 
-    public void playerTouch(Player player) {
-        if (this.dealsDamage()) {
-            this.dealDamage(player);
-        }
-    }
-
-    protected void dealDamage(LivingEntity livingEntity) {
+    protected void dealDamage() {
         if (this.isAlive()) {
-            if (this.distanceToSqr(livingEntity) < 1.1F && this.hasLineOfSight(livingEntity) && livingEntity.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE))) {
-                this.playSound(OPSoundEvents.FIRE_SLIME_ATTACK.get(), 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
-                if (this.random.nextBoolean()) {
-                    livingEntity.setSecondsOnFire(3);
+            LivingEntity target = this.getTarget();
+            if (target != null) {
+                if (this.distanceToSqr(target) < 1.1F && this.hasLineOfSight(target) && target.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE))) {
+                    this.playSound(OPSoundEvents.FIRE_SLIME_ATTACK.get(), 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+                    if (this.random.nextBoolean()) {
+                        target.setSecondsOnFire(3);
+                    }
+                    this.doEnchantDamageEffects(this, target);
                 }
-                this.doEnchantDamageEffects(this, livingEntity);
             }
         }
     }
@@ -94,7 +99,7 @@ public class FireSlime extends Monster {
 
     @Override
     public int getMaxFallDistance() {
-        return 7;
+        return 10;
     }
 
     @Override
@@ -480,11 +485,33 @@ public class FireSlime extends Monster {
             LivingEntity livingentity = this.slime.getTarget();
             if (livingentity != null) {
                 this.slime.lookAt(livingentity, 10.0F, 10.0F);
+                this.slime.dealDamage();
             }
             MoveControl movecontrol = this.slime.getMoveControl();
             if (movecontrol instanceof FireSlimeMoveControl fireSlimeMoveControl) {
                 fireSlimeMoveControl.setDirection(this.slime.getYRot(), this.slime.dealsDamage());
             }
+        }
+    }
+
+    public static class FireSlimeCopyTargetGoal extends TargetGoal {
+
+        private final FireSlime slime;
+
+        public FireSlimeCopyTargetGoal(FireSlime slime) {
+            super(slime, false);
+            this.slime = slime;
+        }
+
+        public boolean canUse() {
+            return this.slime.getParent() instanceof Mob parent && parent.getTarget() != null;
+        }
+
+        public void start() {
+            var target = ((Mob) this.slime.getParent()).getTarget();
+            this.slime.setTarget(target);
+            this.slime.getBrain().setMemoryWithExpiry(MemoryModuleType.ATTACK_TARGET, target, 200L);
+            super.start();
         }
     }
 }
