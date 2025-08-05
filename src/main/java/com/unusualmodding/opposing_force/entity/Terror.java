@@ -214,7 +214,7 @@ public class Terror extends Monster implements IAnimatedAttacker {
 
     @SuppressWarnings("unused")
     public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return pos.getY() <= 18 && level.getRawBrightness(pos, 0) == 0 && level.getRandom().nextFloat() <= 0.4F && level.getBlockState(pos).is(Blocks.WATER);
+        return pos.getY() <= 0 && level.getRawBrightness(pos, 0) == 0 && level.getRandom().nextFloat() <= 0.4F && level.getBlockState(pos).is(Blocks.WATER);
     }
 
     public boolean checkSpawnObstruction(LevelReader level) {
