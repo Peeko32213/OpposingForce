@@ -21,3 +21,5 @@
 - Whizz start charging from further away
 - Reduced Whizz charge cooldown 
 - Whizzes circle around targets rather than always moving towards them
+- Terrors spawn lower down in the world
+- Infested amethyst geodes have significantly more infested amethyst blocks
