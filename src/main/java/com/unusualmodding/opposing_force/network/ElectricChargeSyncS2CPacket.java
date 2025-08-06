@@ -122,13 +122,13 @@ public class ElectricChargeSyncS2CPacket {
 
         private int senderId = -1;
         private int range = 1;
-        private int sections = 6;
+        private int sections = 8;
         private float size = 0.13f;
-        private float parallelNoise = 0.3f;
-        private float spreadFactor = 0.125f;
-        private float branchInitiationFactor = 0.25f;
-        private float branchContinuationFactor = 0.66f;
-        private float closeness = 0.15f;
+        private float parallelNoise = 0.15f;
+        private float spreadFactor = 0.1f;
+        private float branchInitiationFactor = 0.2f;
+        private float branchContinuationFactor = 0.7f;
+        private float closeness = 0.55f;
         private Vector4f color = new Vector4f(0.1f, 0.8f, 0.1f, 0.75f);
 
         private ElectricChargeParticleType.TargetType targetType = ElectricChargeParticleType.TargetType.RANDOM;

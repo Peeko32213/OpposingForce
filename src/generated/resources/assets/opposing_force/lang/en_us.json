@@ -61,6 +61,8 @@
   "enchantment.opposing_force.capacitance.desc": "Increases the size of the fired electric charge",
   "enchantment.opposing_force.kickback": "Kickback",
   "enchantment.opposing_force.kickback.desc": "Launches the user backwards after firing",
+  "enchantment.opposing_force.quasar": "Quasar",
+  "enchantment.opposing_force.quasar.desc": "The fired electric charge changes color rapidly and pulls mobs towards it",
   "enchantment.opposing_force.rebound": "Rebound",
   "enchantment.opposing_force.rebound.desc": "The fired electric charge bounces off blocks and passes through mobs",
   "entity.opposing_force.dicer": "Dicer",

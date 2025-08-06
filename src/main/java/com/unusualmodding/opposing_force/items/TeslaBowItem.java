@@ -180,7 +180,8 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
         Projectile projectileentity = getCharge(world, shooter, projectileStack, crossbow, false);
         Projectile bigProjectileentity = getCharge(world, shooter, projectileStack, crossbow, true);
 
-        boolean largeBall = crossbow.getEnchantmentLevel(OPEnchantments.BIG_ELECTRIC_BALL.get()) > 0;
+        boolean largeBall = crossbow.getEnchantmentLevel(OPEnchantments.CAPACITANCE.get()) > 0;
+        boolean rainbow = crossbow.getEnchantmentLevel(OPEnchantments.QUASAR.get()) > 0;
 
         Vec3 vec31 = shooter.getUpVector(1.0F);
         Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(simulated * ((float) Math.PI / 180F), vec31.x, vec31.y, vec31.z);
@@ -188,41 +189,50 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
         Vector3f vector3f = vec3.toVector3f().rotate(quaternionf);
 
         if (largeBall) {
-            bigProjectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 1F, divergence);
+            bigProjectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.8F, divergence);
             crossbow.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
             shooter.level().addFreshEntity(bigProjectileentity);
             world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.25F, 0.8F * (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
         }
         if (!largeBall) {
-            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 1.75F, divergence);
+            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 1.25F, divergence);
             crossbow.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
             shooter.level().addFreshEntity(projectileentity);
             world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+        }
+        if (rainbow) {
+            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.6F, divergence);
+            crossbow.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
+            shooter.level().addFreshEntity(projectileentity);
+            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.1F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
         }
     }
 
     static ElectricCharge getCharge(Level pLevel, LivingEntity pLivingEntity, ItemStack pAmmoStack, ItemStack crossbow, boolean bigCharge) {
 
-        boolean bouncy = crossbow.getEnchantmentLevel(OPEnchantments.BOUNCY_ELECTRIC_BALL.get()) > 0;
-        int bounces = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.BOUNCY_ELECTRIC_BALL.get(), crossbow);
+        boolean bouncy = crossbow.getEnchantmentLevel(OPEnchantments.REBOUND.get()) > 0;
+        boolean rainbow = crossbow.getEnchantmentLevel(OPEnchantments.QUASAR.get()) > 0;
+        int bounces = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.REBOUND.get(), crossbow);
 
-        int chargeSize = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.BIG_ELECTRIC_BALL.get(), crossbow);
+        int chargeSize = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.CAPACITANCE.get(), crossbow);
 
         ElectricChargeItem arrowitem = (ElectricChargeItem)(pAmmoStack.getItem() instanceof ElectricChargeItem ? pAmmoStack.getItem() : OPItems.ELECTRIC_CHARGE);
-        ElectricCharge electricBall = arrowitem.shootCharge(pLevel, pLivingEntity);
-        electricBall.setSoundEvent(SoundEvents.CROSSBOW_HIT);
-
-        electricBall.setBaseDamage(electricBall.getBaseDamage() + 1);
+        ElectricCharge electricCharge = arrowitem.shootCharge(pLevel, pLivingEntity);
+        electricCharge.setSoundEvent(SoundEvents.CROSSBOW_HIT);
 
         if (bigCharge) {
-            electricBall.setChargeScale(electricBall.getChargeScale() + ((float) chargeSize - 0.5F));
-            electricBall.setBaseDamage(electricBall.getBaseDamage() * 2F - 2);
+            electricCharge.setChargeScale(electricCharge.getChargeScale() + ((float) chargeSize - 0.5F));
         }
 
         if (bouncy) {
-            electricBall.setMaxBounces(1 + bounces);
-            electricBall.setBouncy(true);
+            electricCharge.setMaxBounces(1 + bounces);
+            electricCharge.setBouncy(true);
         }
-        return electricBall;
+
+        if (rainbow) {
+            electricCharge.setChargeScale(electricCharge.getChargeScale() + 2.0F);
+            electricCharge.setQuasar(true);
+        }
+        return electricCharge;
     }
 }

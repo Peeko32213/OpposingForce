@@ -23,12 +23,9 @@ public class ElectricCharge extends AbstractElectricCharge {
     private static final EntityDataAccessor<Float> CHARGE_SCALE = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> BOUNCY = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> MAX_BOUNCES = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> QUASAR = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.BOOLEAN);
 
     private int bounces = 0;
-    public double baseDamage = 4;
-
-    private final boolean darkBlue = random.nextBoolean();
-    private final boolean alphaVar = random.nextBoolean();
 
     RandomSource rand = level.getRandom();
 
@@ -50,6 +47,7 @@ public class ElectricCharge extends AbstractElectricCharge {
         super.defineSynchedData();
         this.getEntityData().define(CHARGE_SCALE, 1F);
         this.getEntityData().define(BOUNCY, false);
+        this.getEntityData().define(QUASAR, false);
         this.getEntityData().define(MAX_BOUNCES, 0);
     }
 
@@ -74,11 +72,11 @@ public class ElectricCharge extends AbstractElectricCharge {
         this.entityData.set(BOUNCY, bounce);
     }
 
-    public void setBaseDamage(double baseDamage) {
-        this.baseDamage = baseDamage;
+    public boolean isQuasar() {
+        return this.entityData.get(QUASAR);
     }
-    public double getBaseDamage() {
-        return this.baseDamage;
+    public void setQuasar(boolean quasar) {
+        this.entityData.set(QUASAR, quasar);
     }
 
     @Override
@@ -86,42 +84,86 @@ public class ElectricCharge extends AbstractElectricCharge {
         super.tick();
         Vec3 pos = this.position();
 
-        this.spawnElectricParticles(this, 1, 5);
-        this.hurtEntitiesAround(pos, (this.getChargeScale()) + 1, (this.getChargeScale() * 2) + 2, false);
+        this.spawnElectricParticles(this, 1 + rand.nextInt(3), 0, 12);
+        if (this.isQuasar()) {
+            this.hurtEntitiesAround(pos, (this.getChargeScale()) + 1.2F, 4, false);
+        } else {
+            this.hurtEntitiesAround(pos, (this.getChargeScale()) + 1.2F, (this.getChargeScale() * 2) + 2, false);
+        }
 
         if (this.level().getBlockState(this.blockPosition().below(0)).is(Blocks.WATER)) {
-            this.spawnElectricParticles(this, 10, 6);
+            this.spawnElectricParticles(this, 7 + rand.nextInt(5), 0, 16);
             if (!this.level().isClientSide) {
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
-                this.hurtEntitiesAround(pos, this.getChargeScale() + 5, (this.getChargeScale() * 4) + 2, true);
+                if (this.isQuasar()) {
+                    this.hurtEntitiesAround(pos, this.getChargeScale() + 5.2F, 8, true);
+                } else {
+                    this.hurtEntitiesAround(pos, this.getChargeScale() + 5.2F, (this.getChargeScale() * 4) + 2, true);
+                }
                 this.discard();
             }
         }
 
-        if (tickCount > 300 || this.getBlockY() > this.level().getMaxBuildHeight() + 30) {
-            this.spawnElectricParticles(this, 5, 4);
+        if (tickCount > (this.isQuasar() ? 50 : 300) || this.getBlockY() > this.level().getMaxBuildHeight() + 30) {
+            this.spawnElectricParticles(this, 4 + rand.nextInt(3), 0, 12);
             if (!this.level().isClientSide) {
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
                 this.discard();
+            }
+        }
+
+        if (this.isQuasar()) {
+            AABB bashBox = this.getBoundingBox().inflate(8 + this.getChargeScale(), 8 + this.getChargeScale(), 8 + this.getChargeScale());
+            for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, bashBox)) {
+                if (entity != getOwner()) {
+                    Vec3 center = bashBox.getCenter();
+                    float distance = (float) center.distanceTo(entity.position());
+                    if (distance > (this.getChargeScale() * 3)) {
+                        continue;
+                    }
+                    float f = 1 - distance / (this.getChargeScale() * 3);
+                    float scale = f * f * f * f * 0.22F;
+
+                    Vec3 diff = center.subtract(entity.position()).scale(scale);
+                    entity.push(diff.x, diff.y, diff.z);
+                    entity.resetFallDistance();
+                }
             }
         }
     }
 
-    public void spawnElectricParticles(ElectricCharge charge, int range, float particleMax) {
+    public void spawnElectricParticles(ElectricCharge charge, int range, float yHeight, float particleMax) {
         Vec3 movement = charge.getDeltaMovement();
 
         double x = charge.getX() + movement.x;
-        double y = charge.getY() - charge.getBbHeight() + movement.y;
+        double y = charge.getY() - (charge.getBbHeight() + movement.y) + yHeight;
         double z = charge.getZ() + movement.z;
-
 
             for (int i = 0; i < particleMax; i++) {
                 if (!this.level().isClientSide) {
                 ElectricChargeSyncS2CPacket packet = ElectricChargeSyncS2CPacket.builder()
                         .pos(x, y, z)
                         .range((int) (range + charge.getChargeScale() / 1.25F))
-                        .size(0.12f)
-                        .color(darkBlue ? 0.051f : 0.227f, darkBlue ? 0.173f : 0.592f, darkBlue ? 0.384f : 0.718f, alphaVar ? 0.66f : 0.53f)
+                        .size(0.08F)
+                        .color(this.isQuasar() ? 0.1F + rand.nextFloat() : 0.3F + (rand.nextFloat() / 8), this.isQuasar() ? 0.1F + rand.nextFloat() : 0.5F + (rand.nextFloat() / 8), this.isQuasar() ? 0.1F + rand.nextFloat() : 0.8F + (rand.nextFloat() / 8), 1F)
+                        .build();
+                OPNetwork.sendToClients(packet);
+            }
+        }
+    }
+
+    public void livingSpawnElectricParticles(LivingEntity entity, int range, float particleMax) {
+        double x = entity.getX();
+        double y = entity.getBbHeight() / 2;
+        double z = entity.getZ();
+
+        for (int i = 0; i < particleMax; i++) {
+            if (!this.level().isClientSide) {
+                ElectricChargeSyncS2CPacket packet = ElectricChargeSyncS2CPacket.builder()
+                        .pos(x, y, z)
+                        .range((int) (range + this.getChargeScale() / 1.25F))
+                        .size(0.08F)
+                        .color(this.isQuasar() ? 0.1F + rand.nextFloat() : 0.3F + (rand.nextFloat() / 8), this.isQuasar() ? 0.1F + rand.nextFloat() : 0.5F + (rand.nextFloat() / 8), this.isQuasar() ? 0.1F + rand.nextFloat() : 0.8F + (rand.nextFloat() / 8), 1F)
                         .build();
                 OPNetwork.sendToClients(packet);
             }
@@ -137,6 +179,7 @@ public class ElectricCharge extends AbstractElectricCharge {
             if (this.hasLineOfSight(living) && !living.is(this) && !living.isAlliedTo(this) && living.getType() != this.getType() && living.distanceToSqr(center.x, center.y, center.z) <= radius * radius) {
                 if (!living.is(shooter) && !inWater) {
                     if (living.hurt(damageSource, damageAmount)) {
+                        this.livingSpawnElectricParticles(living, 1 + rand.nextInt(3), 12);
                         living.addEffect(new MobEffectInstance(OPEffects.ELECTRIFIED.get(), 160), shooter);
                         this.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
                         flag = true;
@@ -144,6 +187,7 @@ public class ElectricCharge extends AbstractElectricCharge {
                 }
                 if (living.isInWaterRainOrBubble() && inWater) {
                     if (living.hurt(damageSource, damageAmount)) {
+                        this.livingSpawnElectricParticles(living, 1 + rand.nextInt(3), 12);
                         living.addEffect(new MobEffectInstance(OPEffects.ELECTRIFIED.get(), 200), shooter);
                         this.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
                         flag = true;
@@ -160,9 +204,9 @@ public class ElectricCharge extends AbstractElectricCharge {
         Entity entity = entityHitResult.getEntity();
 
         if (!this.level().isClientSide) {
-            this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), SoundSource.NEUTRAL, 0.6F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
-            if (!this.isBouncy()) {
-                this.spawnElectricParticles(this, 4, 5);
+            this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), SoundSource.NEUTRAL, 1.0F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+            if (!this.isBouncy() && !this.isQuasar()) {
+                this.livingSpawnElectricParticles((LivingEntity) entity, 2 + rand.nextInt(2), 12);
                 this.discard();
             }
         }
@@ -181,8 +225,8 @@ public class ElectricCharge extends AbstractElectricCharge {
                 Vec3 newVel = new Vec3(velocity.toVector3f().reflect(surfaceNormal));
                 bounce(newVel);
             } else {
-                this.level().playSound(null, pos.getX(), pos.getY(), pos.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
-                this.spawnElectricParticles(this, 4, 5);
+                this.level().playSound(null, pos.getX(), pos.getY(), pos.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 1.0F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+                this.spawnElectricParticles(this, 1 + rand.nextInt(3), 0.3F, 12);
                 this.discard();
             }
         }
@@ -201,7 +245,7 @@ public class ElectricCharge extends AbstractElectricCharge {
             }
             if (bounces > getMaxBounces()) {
                 this.playSound(OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
-                this.spawnElectricParticles(this, 4, 5);
+                this.spawnElectricParticles(this, 1 + rand.nextInt(3), 0.3F, 12);
                 this.discard();
             }
         }

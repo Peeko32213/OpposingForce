@@ -23,3 +23,7 @@
 - Whizzes circle around targets rather than always moving towards them
 - Terrors spawn lower down in the world
 - Infested amethyst geodes have significantly more infested amethyst blocks
+- Tweaked electric charge particles
+- Reduced speed of thrown electric charges and tesla bow shots
+- Added the Quasar enchantment for tesla bow
+  - Quasar pulls entities towards the electric charge and makes the charge rapidly change color

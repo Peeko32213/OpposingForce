@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.unusualmodding.opposing_force.criterion.OPCriterion;
+import com.unusualmodding.opposing_force.registry.OPCriterion;
 import com.unusualmodding.opposing_force.registry.OPEffects;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;

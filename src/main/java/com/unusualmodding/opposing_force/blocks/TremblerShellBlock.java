@@ -30,10 +30,12 @@ public class TremblerShellBlock extends FallingBlock implements SimpleWaterlogge
         this.registerDefaultState(this.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH).setValue(BlockStateProperties.WATERLOGGED, false));
     }
 
+    @Override
     protected void falling(FallingBlockEntity fallingBlockEntity) {
         fallingBlockEntity.setHurtsEntities(1.5F, 60);
     }
 
+    @Override
     public void onLand(Level level, BlockPos pos, BlockState state, BlockState state1, FallingBlockEntity fallingBlockEntity) {
         if (!fallingBlockEntity.isSilent()) {
             level.playSound(fallingBlockEntity, pos, SoundEvents.DRIPSTONE_BLOCK_FALL, SoundSource.BLOCKS, 1.0F, 0.6F);

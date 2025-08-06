@@ -38,7 +38,7 @@ public class ElectricChargeItem extends Item {
 
         if (!level.isClientSide) {
             ElectricCharge electricBall = new ElectricCharge(user, level, user.position().x(), user.getEyePosition().y(), user.position().z());
-            electricBall.shootFromRotation(user, user.getXRot(), user.getYRot(), 0.0F, 1.0F, 2.0F);
+            electricBall.shootFromRotation(user, user.getXRot(), user.getYRot(), 0.0F, 1.0F, 1.0F);
             level.addFreshEntity(electricBall);
         }
         user.awardStat(Stats.ITEM_USED.get(this));

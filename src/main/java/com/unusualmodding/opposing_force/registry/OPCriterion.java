@@ -1,7 +1,6 @@
-package com.unusualmodding.opposing_force.criterion;
+package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.registry.OPCriteriaTriggers;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraftforge.fml.common.Mod;
 
