@@ -56,7 +56,7 @@ public class CloudBootsItem extends ArmorItem {
     public void onArmorTick(ItemStack stack, Level level, Player player) {
         if ((player.fallDistance > 0.0F || player.isSprinting()) && !player.onClimbable()) {
             for (int i = 0; i < 3; i++) {
-                player.level().addParticle(ParticleTypes.CLOUD, player.position().x, player.position().y + 0.1D, player.position().z, (level.getRandom().nextFloat() - 0.5F) / 4.0F, 0.05D, (level.getRandom().nextFloat() - 0.5F) / 4.0F);
+                player.level().addParticle(ParticleTypes.CLOUD, player.position().x, player.position().y + (player.onGround() ? 0.15D : 0), player.position().z, (level.getRandom().nextFloat() - 0.5F) / 3.0F, 0.06D, (level.getRandom().nextFloat() - 0.5F) / 3.0F);
             }
         }
         player.resetFallDistance();
