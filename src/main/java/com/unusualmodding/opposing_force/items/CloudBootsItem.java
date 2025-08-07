@@ -49,7 +49,7 @@ public class CloudBootsItem extends ArmorItem {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return enchantment == Enchantments.BINDING_CURSE || enchantment == Enchantments.THORNS || enchantment.category == EnchantmentCategory.BREAKABLE;
+        return enchantment == Enchantments.BINDING_CURSE || enchantment == Enchantments.VANISHING_CURSE || enchantment.category == EnchantmentCategory.BREAKABLE;
     }
 
     @Override
