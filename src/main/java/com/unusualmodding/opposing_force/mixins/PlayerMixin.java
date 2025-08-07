@@ -29,7 +29,7 @@ public abstract class PlayerMixin extends LivingEntity {
     protected void getFlyingSpeed(CallbackInfoReturnable<Float> callbackInfoReturnable) {
         if (this.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof CloudBootsItem) {
             if (!this.isPassenger() && !this.getAbilities().flying) {
-                callbackInfoReturnable.setReturnValue(0.05F);
+                callbackInfoReturnable.setReturnValue(this.isSprinting() ? 0.065F : 0.06F);
             }
         }
     }

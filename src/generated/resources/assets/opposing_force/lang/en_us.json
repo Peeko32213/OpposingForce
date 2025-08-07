@@ -65,6 +65,8 @@
   "enchantment.opposing_force.quasar.desc": "The fired electric charge changes color rapidly and pulls mobs towards it",
   "enchantment.opposing_force.rebound": "Rebound",
   "enchantment.opposing_force.rebound.desc": "The fired electric charge bounces off blocks and passes through mobs",
+  "enchantment.opposing_force.static_attraction": "Static Attraction",
+  "enchantment.opposing_force.static_attraction.desc": "The fired electric charge seeks out nearby entities",
   "entity.opposing_force.dicer": "Dicer",
   "entity.opposing_force.electric_charge": "Electric Charge",
   "entity.opposing_force.emeraldfish": "Emeraldfish",

@@ -12,7 +12,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Vanishable;
@@ -170,15 +169,16 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
         CrossbowItem.onCrossbowShot(world, shooter, crossbow);
     }
 
-    private void shootElectricity(Level world, LivingEntity shooter, InteractionHand handUsed, ItemStack crossbow, ItemStack projectileStack, float shootSoundPitch, float divergence, float simulated) {
+    private void shootElectricity(Level level, LivingEntity shooter, InteractionHand handUsed, ItemStack crossbow, ItemStack projectileStack, float shootSoundPitch, float divergence, float simulated) {
 
         RandomSource random = shooter.level.getRandom();
 
-        Projectile projectileentity = getCharge(world, shooter, projectileStack, crossbow, false);
-        Projectile bigProjectileentity = getCharge(world, shooter, projectileStack, crossbow, true);
+        ElectricCharge projectileentity = getCharge(level, shooter, projectileStack, crossbow, false);
+        ElectricCharge bigProjectileentity = getCharge(level, shooter, projectileStack, crossbow, true);
 
         boolean largeBall = crossbow.getEnchantmentLevel(OPEnchantments.CAPACITANCE.get()) > 0;
         boolean rainbow = crossbow.getEnchantmentLevel(OPEnchantments.QUASAR.get()) > 0;
+        boolean seeking = crossbow.getEnchantmentLevel(OPEnchantments.STATIC_ATTRACTION.get()) > 0;
 
         Vec3 vec31 = shooter.getUpVector(1.0F);
         Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(simulated * ((float) Math.PI / 180F), vec31.x, vec31.y, vec31.z);
@@ -186,29 +186,34 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
         Vector3f vector3f = vec3.toVector3f().rotate(quaternionf);
 
         if (largeBall) {
-            bigProjectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.8F, divergence);
+            bigProjectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.6F, divergence);
             crossbow.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
             shooter.level().addFreshEntity(bigProjectileentity);
-            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.25F, 0.8F * (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
-        }
-        if (!largeBall) {
-            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 1.25F, divergence);
+            level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 0.6F * (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+        } else if (rainbow) {
+            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.5F, divergence);
             crossbow.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
             shooter.level().addFreshEntity(projectileentity);
-            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
-        }
-        if (rainbow) {
-            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.6F, divergence);
+            level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 0.8F * (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+        } else if (seeking) {
+            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.7F, divergence);
             crossbow.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
             shooter.level().addFreshEntity(projectileentity);
-            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.1F, 0.6F * (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+            level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 0.9F * (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+        } else {
+            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 1.2F, divergence);
+            crossbow.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
+            shooter.level().addFreshEntity(projectileentity);
+            level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
         }
     }
 
-    static ElectricCharge getCharge(Level pLevel, LivingEntity pLivingEntity, ItemStack pAmmoStack, ItemStack crossbow, boolean bigCharge) {
+    public static ElectricCharge getCharge(Level pLevel, LivingEntity pLivingEntity, ItemStack pAmmoStack, ItemStack crossbow, boolean bigCharge) {
 
         boolean bouncy = crossbow.getEnchantmentLevel(OPEnchantments.REBOUND.get()) > 0;
         boolean rainbow = crossbow.getEnchantmentLevel(OPEnchantments.QUASAR.get()) > 0;
+        boolean seeking = crossbow.getEnchantmentLevel(OPEnchantments.STATIC_ATTRACTION.get()) > 0;
+
         int bounces = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.REBOUND.get(), crossbow);
 
         int chargeSize = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.CAPACITANCE.get(), crossbow);
@@ -229,6 +234,11 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
         if (rainbow) {
             electricCharge.setChargeScale(electricCharge.getChargeScale() + 2.0F);
             electricCharge.setQuasar(true);
+        }
+
+        if (seeking) {
+            electricCharge.setChargeScale(electricCharge.getChargeScale());
+            electricCharge.setStaticAttraction(true);
         }
         return electricCharge;
     }

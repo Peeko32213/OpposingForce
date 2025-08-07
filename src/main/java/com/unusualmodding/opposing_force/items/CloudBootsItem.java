@@ -43,7 +43,7 @@ public class CloudBootsItem extends ArmorItem {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.putAll(super.getAttributeModifiers(slot, stack));
         UUID uuid = ArmorItem.ARMOR_MODIFIER_UUID_PER_TYPE.get(this.type);
-        builder.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(uuid, "Movement speed", 0.25F, AttributeModifier.Operation.MULTIPLY_BASE));
+        builder.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(uuid, "Movement speed", 0.1F, AttributeModifier.Operation.MULTIPLY_BASE));
         return slot == this.getEquipmentSlot() ? builder.build() : super.getAttributeModifiers(slot, stack);
     }
 
@@ -53,17 +53,13 @@ public class CloudBootsItem extends ArmorItem {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int itemSlot, boolean isSelected) {
-        if (entity instanceof Player player) {
-            if (player.getItemBySlot(EquipmentSlot.FEET).getItem() == this) {
-                if ((!player.onGround() || player.isSprinting()) && !player.onClimbable()) {
-                    if (!level.isClientSide() && level instanceof ServerLevel server) {
-                        server.sendParticles(ParticleTypes.CLOUD, player.xo, player.yo, player.zo, 1, 0, -0.25D, 0, 0.01);
-                    }
-                }
-                player.resetFallDistance();
+    public void onArmorTick(ItemStack stack, Level level, Player player) {
+        if ((player.fallDistance > 0.0F || player.isSprinting()) && !player.onClimbable()) {
+            for (int i = 0; i < 3; i++) {
+                player.level().addParticle(ParticleTypes.CLOUD, player.position().x, player.position().y + 0.1D, player.position().z, (level.getRandom().nextFloat() - 0.5F) / 4.0F, 0.05D, (level.getRandom().nextFloat() - 0.5F) / 4.0F);
             }
         }
+        player.resetFallDistance();
     }
 
     @OnlyIn(Dist.CLIENT)
