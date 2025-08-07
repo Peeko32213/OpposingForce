@@ -22,7 +22,7 @@ public class ElectricChargeSound extends AbstractTickableSoundInstance {
         this.z = (float) electricCharge.getZ();
         this.looping = true;
         this.delay = 0;
-        this.volume = 2.0F;
+        this.volume = 2.25F;
     }
 
     @Override

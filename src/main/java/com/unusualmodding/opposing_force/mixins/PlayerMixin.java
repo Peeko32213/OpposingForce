@@ -4,6 +4,7 @@ import com.unusualmodding.opposing_force.items.CloudBootsItem;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -18,6 +19,8 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @Shadow public abstract ItemStack getItemBySlot(EquipmentSlot slot);
 
+    @Shadow public abstract Abilities getAbilities();
+
     protected PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
         super(entityType, level);
     }
@@ -25,8 +28,8 @@ public abstract class PlayerMixin extends LivingEntity {
     @Inject(method = "getFlyingSpeed", at = @At(value = "RETURN"), cancellable = true)
     protected void getFlyingSpeed(CallbackInfoReturnable<Float> callbackInfoReturnable) {
         if (this.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof CloudBootsItem) {
-            if (!this.isPassenger()) {
-                callbackInfoReturnable.setReturnValue(this.isSprinting() ? 0.07F : 0.05F);
+            if (!this.isPassenger() && !this.getAbilities().flying) {
+                callbackInfoReturnable.setReturnValue(0.05F);
             }
         }
     }

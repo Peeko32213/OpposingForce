@@ -56,19 +56,12 @@ public class CloudBootsItem extends ArmorItem {
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int itemSlot, boolean isSelected) {
         if (entity instanceof Player player) {
             if (player.getItemBySlot(EquipmentSlot.FEET).getItem() == this) {
-                if (player.tickCount % 2 == 0) {
-                    if (!player.onGround()) {
-                        if (!level.isClientSide() && level instanceof ServerLevel server) {
-                            server.sendParticles(ParticleTypes.CLOUD, player.xo, player.yo + 0.2, player.zo, 1, 0, 0, 0, 0.01);
-                        }
-                        player.resetFallDistance();
-                    }
-                    if (player.isSprinting() && player.onGround()) {
-                        if (!level.isClientSide() && level instanceof ServerLevel server) {
-                            server.sendParticles(ParticleTypes.CLOUD, player.xo, player.yo + 0.2, player.zo, 1, 0, 0, 0, 0.01);
-                        }
+                if ((!player.onGround() || player.isSprinting()) && !player.onClimbable()) {
+                    if (!level.isClientSide() && level instanceof ServerLevel server) {
+                        server.sendParticles(ParticleTypes.CLOUD, player.xo, player.yo, player.zo, 1, 0, -0.25D, 0, 0.01);
                     }
                 }
+                player.resetFallDistance();
             }
         }
     }
