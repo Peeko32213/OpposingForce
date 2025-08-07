@@ -1,5 +1,7 @@
 package com.unusualmodding.opposing_force.entity.projectile;
 
+import com.unusualmodding.opposing_force.entity.Volt;
+import com.unusualmodding.opposing_force.utils.CreeperExtension;
 import com.unusualmodding.opposing_force.network.ElectricChargeSyncS2CPacket;
 import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.core.BlockPos;
@@ -13,6 +15,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.*;
@@ -115,7 +118,7 @@ public class ElectricCharge extends AbstractElectricCharge {
         if (this.isQuasar()) {
             AABB bashBox = this.getBoundingBox().inflate(8 + this.getChargeScale(), 8 + this.getChargeScale(), 8 + this.getChargeScale());
             for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, bashBox)) {
-                if (entity != getOwner()) {
+                if (entity != getOwner() && !(entity instanceof Volt)) {
                     Vec3 center = bashBox.getCenter();
                     float distance = (float) center.distanceTo(entity.position());
                     if (distance > (this.getChargeScale() * 3)) {
@@ -152,24 +155,6 @@ public class ElectricCharge extends AbstractElectricCharge {
         }
     }
 
-    public void livingSpawnElectricParticles(LivingEntity entity, int range, float particleMax) {
-        double x = entity.getX();
-        double y = entity.getBbHeight() / 2;
-        double z = entity.getZ();
-
-        for (int i = 0; i < particleMax; i++) {
-            if (!this.level().isClientSide) {
-                ElectricChargeSyncS2CPacket packet = ElectricChargeSyncS2CPacket.builder()
-                        .pos(x, y, z)
-                        .range((int) (range + this.getChargeScale() / 1.25F))
-                        .size(0.08F)
-                        .color(this.isQuasar() ? 0.1F + rand.nextFloat() : 0.3F + (rand.nextFloat() / 8), this.isQuasar() ? 0.1F + rand.nextFloat() : 0.5F + (rand.nextFloat() / 8), this.isQuasar() ? 0.1F + rand.nextFloat() : 0.8F + (rand.nextFloat() / 8), 1F)
-                        .build();
-                OPNetwork.sendToClients(packet);
-            }
-        }
-    }
-
     public boolean hurtEntitiesAround(Vec3 center, float radius, float damageAmount, boolean inWater) {
         AABB aabb = new AABB(center.subtract(radius, radius, radius), center.add(radius, radius, radius));
         Entity shooter = this.getOwner();
@@ -179,7 +164,7 @@ public class ElectricCharge extends AbstractElectricCharge {
             if (this.hasLineOfSight(living) && !living.is(this) && !living.isAlliedTo(this) && living.getType() != this.getType() && living.distanceToSqr(center.x, center.y, center.z) <= radius * radius) {
                 if (!living.is(shooter) && !inWater) {
                     if (living.hurt(damageSource, damageAmount)) {
-                        this.livingSpawnElectricParticles(living, 1 + rand.nextInt(3), 12);
+                        this.spawnElectricParticles(this, 4 + rand.nextInt(3), 0, 12);
                         living.addEffect(new MobEffectInstance(OPEffects.ELECTRIFIED.get(), 160), shooter);
                         this.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
                         flag = true;
@@ -187,11 +172,14 @@ public class ElectricCharge extends AbstractElectricCharge {
                 }
                 if (living.isInWaterRainOrBubble() && inWater) {
                     if (living.hurt(damageSource, damageAmount)) {
-                        this.livingSpawnElectricParticles(living, 1 + rand.nextInt(3), 12);
+                        this.spawnElectricParticles(this, 4 + rand.nextInt(3), 0, 12);
                         living.addEffect(new MobEffectInstance(OPEffects.ELECTRIFIED.get(), 200), shooter);
                         this.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 0.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
                         flag = true;
                     }
+                }
+                if (living instanceof Creeper creeper) {
+                    ((CreeperExtension) creeper).opposingForce$setCharged(true);
                 }
             }
         }
@@ -206,8 +194,11 @@ public class ElectricCharge extends AbstractElectricCharge {
         if (!this.level().isClientSide) {
             this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), SoundSource.NEUTRAL, 1.0F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
             if (!this.isBouncy() && !this.isQuasar()) {
-                this.livingSpawnElectricParticles((LivingEntity) entity, 2 + rand.nextInt(2), 12);
+                this.spawnElectricParticles(this, 4 + rand.nextInt(3), 0, 12);
                 this.discard();
+            }
+            if (entity instanceof Creeper creeper) {
+                ((CreeperExtension) creeper).opposingForce$setCharged(true);
             }
         }
     }

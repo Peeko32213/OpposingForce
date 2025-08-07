@@ -51,10 +51,7 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return enchantment.category.canEnchant(stack.getItem())
-                && enchantment != Enchantments.BINDING_CURSE
-                && enchantment != Enchantments.PIERCING
-        ;
+        return enchantment.category.canEnchant(stack.getItem()) && enchantment != Enchantments.BINDING_CURSE && enchantment != Enchantments.PIERCING;
     }
 
     public TeslaBowItem(Properties properties) {
@@ -204,7 +201,7 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
             projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.6F, divergence);
             crossbow.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
             shooter.level().addFreshEntity(projectileentity);
-            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.1F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.1F, 0.6F * (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
         }
     }
 

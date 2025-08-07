@@ -27,3 +27,4 @@
 - Reduced speed of thrown electric charges and tesla bow shots
 - Added the Quasar enchantment for tesla bow
   - Quasar pulls entities towards the electric charge and makes the charge rapidly change color
+- Increased the amount of electric charges volts drop

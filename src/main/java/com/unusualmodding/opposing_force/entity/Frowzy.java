@@ -32,6 +32,7 @@ import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -396,7 +397,7 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
             groupData = new FrowzyGroupData(getSpawnAsBabyOdds(randomsource), true);
         }
 
-        if (groupData instanceof FrowzyGroupData frowzyGroupData) {
+        if (groupData instanceof Zombie.ZombieGroupData frowzyGroupData) {
             if (frowzyGroupData.isBaby) {
                 this.setBaby(true);
                 if (frowzyGroupData.canSpawnJockey) {

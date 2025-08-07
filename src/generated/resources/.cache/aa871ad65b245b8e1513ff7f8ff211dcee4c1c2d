@@ -1,6 +1,6 @@
-// 1.20.1	2025-08-01T21:04:37.9853738	Tags for minecraft:item mod id opposing_force
-ee1f8267e0c572cc6cf8e9672bfdf125b400b285 data/forge/tags/items/armors.json
-0ff5000ed0603a0a480a86fab1d24c737e839582 data/forge/tags/items/armors/boots.json
+// 1.20.1	2025-08-06T21:03:54.4404388	Tags for minecraft:item mod id opposing_force
+0629a558c65551399bd5fd64f34e91f5039500a6 data/forge/tags/items/armors.json
+33eaf493311f5cd7b8e95f750eab451821a561eb data/forge/tags/items/armors/boots.json
 5b750b392920c5fb39220654ba6b02b0a8597a23 data/forge/tags/items/armors/chestplates.json
 67b500d87bf42f60f40f2d5f83de5d10a464932d data/forge/tags/items/armors/helmets.json
 23d8a77f11cda70a4a9b54c0b05f20fa18480b57 data/forge/tags/items/armors/leggings.json

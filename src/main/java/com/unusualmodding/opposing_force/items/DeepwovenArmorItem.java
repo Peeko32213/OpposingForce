@@ -3,8 +3,13 @@ package com.unusualmodding.opposing_force.items;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.unusualmodding.opposing_force.OpposingForce;
+import com.unusualmodding.opposing_force.client.models.armor.base.OPArmorModel;
+import com.unusualmodding.opposing_force.events.ClientEvents;
 import com.unusualmodding.opposing_force.registry.OPAttributes;
 import com.unusualmodding.opposing_force.registry.OPItems;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,8 +25,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -58,18 +63,26 @@ public class DeepwovenArmorItem extends ArmorItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept((IClientItemExtensions) OpposingForce.PROXY.getArmorRenderProperties());
+        consumer.accept(new IClientItemExtensions() {
+            @Override
+            public OPArmorModel getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel humanoidModel) {
+                float pticks = Minecraft.getInstance().getFrameTime();
+                float f = Mth.rotLerp(pticks, entity.yBodyRotO, entity.yBodyRot);
+                float f1 = Mth.rotLerp(pticks, entity.yHeadRotO, entity.yHeadRot);
+                float netHeadYaw = f1 - f;
+                float netHeadPitch = Mth.lerp(pticks, entity.xRotO, entity.getXRot());
+                OPArmorModel model = ClientEvents.DEEPWOVEN_ARMOR;
+                model.slot = armorSlot;
+                model.copyFromDefault(humanoidModel);
+                model.setupAnim(entity, entity.walkAnimation.position(), entity.walkAnimation.speed(), entity.tickCount + pticks, netHeadYaw, netHeadPitch);
+                return model;
+            }
+        });
     }
 
     @Nullable
+    @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-        if (slot == EquipmentSlot.HEAD) {
-            return OpposingForce.MOD_ID + ":textures/models/armor/deepwoven_layer_3.png";
-        }
-        if (slot == EquipmentSlot.LEGS) {
-            return OpposingForce.MOD_ID + ":textures/models/armor/deepwoven_layer_2.png";
-        } else {
-            return OpposingForce.MOD_ID + ":textures/models/armor/deepwoven_layer_1.png";
-        }
+        return OpposingForce.MOD_ID + ":textures/models/armor/deepwoven_armor.png";
     }
 }

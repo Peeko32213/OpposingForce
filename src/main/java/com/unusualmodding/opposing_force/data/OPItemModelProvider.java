@@ -33,6 +33,13 @@ public class OPItemModelProvider extends ItemModelProvider {
         item(DEEPWOVEN_PANTS);
         item(DEEPWOVEN_BOOTS);
         item(UMBER_FANG);
+
+        handheldItem(EMERALD_SWORD);
+        handheldItem(EMERALD_PICKAXE);
+        handheldItem(EMERALD_AXE);
+        handheldItem(EMERALD_SHOVEL);
+        handheldItem(EMERALD_HOE);
+
 //        item(WOODEN_MASK);
 //        item(WOODEN_CHESTPLATE);
 //        item(WOODEN_COVER);
@@ -59,9 +66,21 @@ public class OPItemModelProvider extends ItemModelProvider {
         return generated(item.getId().getPath(), modLoc("item/" + item.getId().getPath()));
     }
 
+    private ItemModelBuilder handheldItem(RegistryObject<?> item) {
+        return handheld(item.getId().getPath(), modLoc("item/" + item.getId().getPath()));
+    }
+
     // utils
     private ItemModelBuilder generated(String name, ResourceLocation... layers) {
         ItemModelBuilder builder = withExistingParent(name, "item/generated");
+        for (int i = 0; i < layers.length; i++) {
+            builder = builder.texture("layer" + i, layers[i]);
+        }
+        return builder;
+    }
+
+    private ItemModelBuilder handheld(String name, ResourceLocation... layers) {
+        ItemModelBuilder builder = withExistingParent(name, "item/handheld");
         for (int i = 0; i < layers.length; i++) {
             builder = builder.texture("layer" + i, layers[i]);
         }

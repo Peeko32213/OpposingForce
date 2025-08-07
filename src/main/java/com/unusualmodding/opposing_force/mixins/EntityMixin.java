@@ -23,7 +23,7 @@ public abstract class EntityMixin {
     @Inject(method = "playStepSound", at = @At("HEAD"), cancellable = true)
     private void playStepSound(BlockPos pos, BlockState state, CallbackInfo callback) {
 
-        float volumeModifier = 0.15F;
+        float volumeModifier;
 
         if ((Entity) (Object) this instanceof LivingEntity mob) {
             if (mob.getItemBySlot(EquipmentSlot.FEET).getItem() == OPItems.DEEPWOVEN_BOOTS.get()) {

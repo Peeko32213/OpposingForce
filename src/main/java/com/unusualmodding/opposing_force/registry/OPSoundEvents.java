@@ -17,6 +17,7 @@ public class OPSoundEvents {
     public static final RegistryObject<SoundEvent> ARMOR_EQUIP_WOODEN = registerSoundEvent("armor_equip_wooden");
     public static final RegistryObject<SoundEvent> ARMOR_EQUIP_STONE = registerSoundEvent("armor_equip_stone");
     public static final RegistryObject<SoundEvent> ARMOR_EQUIP_EMERALD = registerSoundEvent("armor_equip_emerald");
+    public static final RegistryObject<SoundEvent> ARMOR_EQUIP_COUD_BOOTS = registerSoundEvent("armor_equip_cloud_boots");
 
     public static final RegistryObject<SoundEvent> DICER_HURT = registerSoundEvent("dicer_hurt");
     public static final RegistryObject<SoundEvent> DICER_DEATH = registerSoundEvent("dicer_death");

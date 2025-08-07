@@ -61,6 +61,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.sound(OPSoundEvents.ARMOR_EQUIP_WOODEN, "Wooden armor knocks");
         this.sound(OPSoundEvents.ARMOR_EQUIP_STONE, "Stone armor clanks");
         this.sound(OPSoundEvents.ARMOR_EQUIP_EMERALD, "Emerald armor clanks");
+        this.sound(OPSoundEvents.ARMOR_EQUIP_COUD_BOOTS, "Cloud boots flutter");
 
         this.sound(OPSoundEvents.DICER_DEATH, "Dicer dies");
         this.sound(OPSoundEvents.DICER_HURT, "Dicer hurts");
@@ -192,6 +193,8 @@ public class OPLanguageProvider extends LanguageProvider {
 
         this.add("attribute.opposing_force.name.generic.stealth", "Stealth");
         this.add("attribute.opposing_force.name.generic.electric_resistance", "Electric Resistance");
+
+        add("item.opposing_force.cloud_boots.desc", "+Light as a Feather");
     }
 
     @Override

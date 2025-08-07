@@ -6,9 +6,7 @@ import com.unusualmodding.opposing_force.registry.enums.OPArmorMaterials;
 import com.unusualmodding.opposing_force.registry.enums.OPItemTiers;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -65,11 +63,18 @@ public class OPItems {
     public static final RegistryObject<Item> EMERALD_LEGGINGS = registerItem("emerald_leggings", ()-> new EmeraldArmorItem(OPArmorMaterials.EMERALD, ArmorItem.Type.LEGGINGS, new Item.Properties()));
     public static final RegistryObject<Item> EMERALD_BOOTS = registerItem("emerald_boots", ()-> new EmeraldArmorItem(OPArmorMaterials.EMERALD, ArmorItem.Type.BOOTS, new Item.Properties()));
 
+    public static final RegistryObject<Item> EMERALD_SWORD = registerItem("emerald_sword", ()-> new SwordItem(Tiers.DIAMOND, 3, -2.4F, new Item.Properties()));
+    public static final RegistryObject<Item> EMERALD_PICKAXE = registerItem("emerald_pickaxe", ()-> new PickaxeItem(Tiers.DIAMOND, 1, -2.8F, new Item.Properties()));
+    public static final RegistryObject<Item> EMERALD_AXE = registerItem("emerald_axe", ()-> new AxeItem(Tiers.DIAMOND, 5, -3F, new Item.Properties()));
+    public static final RegistryObject<Item> EMERALD_SHOVEL = registerItem("emerald_shovel", ()-> new ShovelItem(Tiers.DIAMOND, 1.5F, -3F, new Item.Properties()));
+    public static final RegistryObject<Item> EMERALD_HOE = registerItem("emerald_hoe", ()-> new HoeItem(Tiers.DIAMOND, -4, 0F, new Item.Properties()));
+
     public static final RegistryObject<Item> STONE_HELMET = registerItem("stone_helmet", ()-> new StoneArmorItem(OPArmorMaterials.STONE, ArmorItem.Type.HELMET, new Item.Properties()));
     public static final RegistryObject<Item> STONE_CHESTPLATE = registerItem("stone_chestplate", ()-> new StoneArmorItem(OPArmorMaterials.STONE, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
     public static final RegistryObject<Item> STONE_LEGGINGS = registerItem("stone_leggings", ()-> new StoneArmorItem(OPArmorMaterials.STONE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
     public static final RegistryObject<Item> STONE_BOOTS = registerItem("stone_boots", ()-> new StoneArmorItem(OPArmorMaterials.STONE, ArmorItem.Type.BOOTS, new Item.Properties()));
 
+    public static final RegistryObject<Item> CLOUD_BOOTS = registerItem("cloud_boots", ()-> new CloudBootsItem(OPArmorMaterials.CLOUD_BOOTS, new Item.Properties()));
 
     private static <I extends Item> RegistryObject<I> registerItem(String name, Supplier<? extends I> supplier) {
         RegistryObject<I> item = ITEMS.register(name, supplier);

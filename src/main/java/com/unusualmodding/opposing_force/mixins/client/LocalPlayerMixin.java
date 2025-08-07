@@ -10,11 +10,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LocalPlayer.class)
 public class LocalPlayerMixin {
-    @Inject(at = @At("HEAD"), method = "hasEnoughImpulseToStartSprinting", cancellable = true)
-    private void hasEnoughImpulseToStartSprinting(CallbackInfoReturnable<Boolean> callbackInfo) {
-        if (((LocalPlayer) (Object) this).getItemBySlot(EquipmentSlot.HEAD).getItem() == OPItems.STONE_HELMET.get() && ((LocalPlayer) (Object) this).getItemBySlot(EquipmentSlot.CHEST).getItem() == OPItems.STONE_CHESTPLATE.get() && ((LocalPlayer) (Object) this).getItemBySlot(EquipmentSlot.LEGS).getItem() == OPItems.STONE_LEGGINGS.get() && ((LocalPlayer) (Object) this).getItemBySlot(EquipmentSlot.FEET).getItem() == OPItems.STONE_BOOTS.get()) {
-            callbackInfo.setReturnValue(false);
-        }
-    }
+//    @Inject(at = @At("HEAD"), method = "hasEnoughImpulseToStartSprinting", cancellable = true)
+//    private void hasEnoughImpulseToStartSprinting(CallbackInfoReturnable<Boolean> callbackInfo) {
+//        if (((LocalPlayer) (Object) this).getItemBySlot(EquipmentSlot.HEAD).getItem() == OPItems.STONE_HELMET.get() && ((LocalPlayer) (Object) this).getItemBySlot(EquipmentSlot.CHEST).getItem() == OPItems.STONE_CHESTPLATE.get() && ((LocalPlayer) (Object) this).getItemBySlot(EquipmentSlot.LEGS).getItem() == OPItems.STONE_LEGGINGS.get() && ((LocalPlayer) (Object) this).getItemBySlot(EquipmentSlot.FEET).getItem() == OPItems.STONE_BOOTS.get()) {
+//            callbackInfo.setReturnValue(false);
+//        }
+//    }
 }
 

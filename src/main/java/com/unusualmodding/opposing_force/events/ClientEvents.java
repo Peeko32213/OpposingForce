@@ -55,7 +55,7 @@ public final class ClientEvents {
     }
 
     @SubscribeEvent
-    public static void registerEntityLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
+    public static void registerEntityLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(OPModelLayers.DICER, DicerModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.DICER_HEAD, DicerHeadModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.EMERALDFISH, EmeraldfishModel::createBodyLayer);
@@ -73,12 +73,30 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.VOLT, () -> VoltModel.createBodyLayer(new CubeDeformation(0.0F)));
         event.registerLayerDefinition(OPModelLayers.VOLT_CHARGED, () -> VoltModel.createBodyLayer(new CubeDeformation(0.5F)));
         event.registerLayerDefinition(OPModelLayers.WHIZZ, WhizzModel::createBodyLayer);
+    }
 
+    public static CloudBootsModel CLOUD_BOOTS;
+    public static DeepwovenArmorModel DEEPWOVEN_ARMOR;
+    public static EmeraldArmorModel EMERALD_ARMOR;
+    public static StoneArmorModel STONE_ARMOR;
+    public static WoodenArmorModel WOODEN_ARMOR;
+
+    @SubscribeEvent
+    public static void registerArmorLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(OPModelLayers.CLOUD_BOOTS, CloudBootsModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.DEEPWOVEN_ARMOR, DeepwovenArmorModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.WOODEN_ARMOR, WoodenArmorModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.EMERALD_ARMOR, EmeraldArmorModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.STONE_ARMOR, StoneArmorModel::createArmorLayer);
+    }
 
+    @SubscribeEvent
+    public static void registerArmorLayers(EntityRenderersEvent.AddLayers event) {
+        CLOUD_BOOTS = new CloudBootsModel(event.getEntityModels().bakeLayer(OPModelLayers.CLOUD_BOOTS));
+        DEEPWOVEN_ARMOR = new DeepwovenArmorModel(event.getEntityModels().bakeLayer(OPModelLayers.DEEPWOVEN_ARMOR));
+        EMERALD_ARMOR = new EmeraldArmorModel(event.getEntityModels().bakeLayer(OPModelLayers.EMERALD_ARMOR));
+        STONE_ARMOR = new StoneArmorModel(event.getEntityModels().bakeLayer(OPModelLayers.STONE_ARMOR));
+        WOODEN_ARMOR = new WoodenArmorModel(event.getEntityModels().bakeLayer(OPModelLayers.WOODEN_ARMOR));
     }
 
     @SubscribeEvent

@@ -31,6 +31,11 @@ public class OPCreativeTab {
                     output.accept(OPItems.TOMAHAWK.get());
                     output.accept(OPItems.TESLA_BOW.get());
                     output.accept(OPItems.VILE_BOULDER.get());
+                    output.accept(OPItems.EMERALD_SWORD.get());
+                    output.accept(OPItems.EMERALD_PICKAXE.get());
+                    output.accept(OPItems.EMERALD_AXE.get());
+                    output.accept(OPItems.EMERALD_SHOVEL.get());
+                    output.accept(OPItems.EMERALD_HOE.get());
 
                     // Armors
                     output.accept(OPItems.DEEPWOVEN_HAT.get());
@@ -53,6 +58,7 @@ public class OPCreativeTab {
                     output.accept(OPItems.STONE_LEGGINGS.get());
                     output.accept(OPItems.STONE_BOOTS.get());
 
+                    output.accept(OPItems.CLOUD_BOOTS.get());
 
                     // Items
                     output.accept(OPItems.SLUG_EGGS.get());

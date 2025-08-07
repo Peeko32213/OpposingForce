@@ -1,8 +1,10 @@
 package com.unusualmodding.opposing_force.registry.enums;
 
 import com.unusualmodding.opposing_force.OpposingForce;
+import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -12,14 +14,11 @@ import java.util.function.Supplier;
 
 public enum OPArmorMaterials implements ArmorMaterial {
 
-    DEEPWOVEN ("deepwoven", 12, new int[] {2, 4, 3, 1}, 9, OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN.get(), 0f, 0f, ()-> Ingredient.of(Tags.Items.LEATHER)),
-
-    WOODEN ("wooden", 6, new int[] {1, 2, 2, 1}, 9, OPSoundEvents.ARMOR_EQUIP_WOODEN.get(), 0f, 0f, ()-> Ingredient.of(Tags.Items.LEATHER)),
-
-    EMERALD ("emerald", 33, new int[] {3, 6, 8, 3}, 15, OPSoundEvents.ARMOR_EQUIP_EMERALD.get(), 0f, 0f, ()-> Ingredient.of(Tags.Items.GEMS_EMERALD)),
-
-    STONE ("stone", 33, new int[] {3, 7, 6, 2}, 5, OPSoundEvents.ARMOR_EQUIP_STONE.get(), 2.0f, 0.15f, ()-> Ingredient.of(Tags.Items.STONE))
-    ;
+    DEEPWOVEN ("deepwoven", 12, new int[] {2, 4, 3, 1}, 12, OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN.get(), 0F, 0F, ()-> Ingredient.of(OPItems.DEEP_SILK.get())),
+    WOODEN ("wooden", 6, new int[] {1, 3, 2, 1}, 9, OPSoundEvents.ARMOR_EQUIP_WOODEN.get(), 0F, 0F, ()-> Ingredient.of(ItemTags.PLANKS)),
+    EMERALD ("emerald", 28, new int[] {3, 8, 6, 3}, 20, OPSoundEvents.ARMOR_EQUIP_EMERALD.get(), 0F, 0F, ()-> Ingredient.of(Tags.Items.GEMS_EMERALD)),
+    STONE ("stone", 8, new int[] {3, 7, 5, 2}, 5, OPSoundEvents.ARMOR_EQUIP_STONE.get(), 2.5F, 0.15F, ()-> Ingredient.of(Tags.Items.STONE)),
+    CLOUD_BOOTS ("cloud_boots", 10, new int[] {0, 0, 0, 0}, 0, OPSoundEvents.ARMOR_EQUIP_COUD_BOOTS.get(), 0F, 0F, ()-> Ingredient.of(Tags.Items.FEATHERS));
 
     private final String name;
     private final int durabilityMultiplier;

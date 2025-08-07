@@ -55,6 +55,15 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound("item/armor/equip_leather6").pitch(0.88F)
         );
 
+        this.sound(OPSoundEvents.ARMOR_EQUIP_COUD_BOOTS,
+                sound("item/armor/equip_leather1").pitch(0.88F),
+                sound("item/armor/equip_leather2").pitch(0.88F),
+                sound("item/armor/equip_leather3").pitch(0.88F),
+                sound("item/armor/equip_leather4").pitch(0.88F),
+                sound("item/armor/equip_leather5").pitch(0.88F),
+                sound("item/armor/equip_leather6").pitch(0.88F)
+        );
+
         this.sound(OPSoundEvents.DICER_HURT,
                 sound(OpposingForce.modPrefix("entity/dicer/hurt1")).volume(0.9F),
                 sound(OpposingForce.modPrefix("entity/dicer/hurt2")).volume(0.9F)
