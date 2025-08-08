@@ -194,6 +194,7 @@ public class OPLanguageProvider extends LanguageProvider {
 
         this.add("attribute.opposing_force.name.generic.stealth", "Stealth");
         this.add("attribute.opposing_force.name.generic.electric_resistance", "Electric Resistance");
+        this.add("attribute.opposing_force.name.generic.bulk", "Bulk");
 
         add("item.opposing_force.cloud_boots.desc", "+Light as a Feather");
     }

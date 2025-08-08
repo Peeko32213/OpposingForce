@@ -8,6 +8,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
@@ -26,6 +27,20 @@ public class OPDamageTypeTagProvider extends TagsProvider<DamageType> {
         this.tag(DamageTypeTags.NO_IMPACT).add(LASER);
         this.tag(DamageTypeTags.IS_FALL).add(STONE_FALL);
         this.tag(DamageTypeTags.WITCH_RESISTANT_TO).add(GLOOM_TOXIN);
-        this.tag(OPDamageTypeTags.DAMAGES_ROLLING_TREMBLER).addTag(DamageTypeTags.BYPASSES_ARMOR).addTag(DamageTypeTags.BYPASSES_RESISTANCE).addTag(DamageTypeTags.BYPASSES_INVULNERABILITY).addTag(DamageTypeTags.IS_DROWNING).addTag(DamageTypeTags.IS_FIRE).addTag(DamageTypeTags.IS_LIGHTNING);
+
+        this.tag(OPDamageTypeTags.DAMAGES_ROLLING_TREMBLER)
+                .addTag(DamageTypeTags.BYPASSES_ARMOR).addTag(DamageTypeTags.BYPASSES_RESISTANCE)
+                .addTag(DamageTypeTags.BYPASSES_INVULNERABILITY).addTag(DamageTypeTags.IS_DROWNING)
+                .addTag(DamageTypeTags.IS_FIRE)
+                .addTag(DamageTypeTags.IS_LIGHTNING);
+
+        this.tag(OPDamageTypeTags.BULK_RESISTS)
+                .addTag(DamageTypeTags.IS_PROJECTILE)
+                .addTag(DamageTypeTags.IS_EXPLOSION)
+                .add(DamageTypes.MOB_ATTACK)
+                .add(DamageTypes.GENERIC)
+                .add(DamageTypes.PLAYER_ATTACK)
+                .add(DamageTypes.SONIC_BOOM);
+
     }
 }

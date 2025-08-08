@@ -11,6 +11,8 @@ public class OPAttributes {
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, OpposingForce.MOD_ID);
 
     public static final RegistryObject<Attribute> STEALTH = ATTRIBUTES.register("stealth", () -> new RangedAttribute("attribute.opposing_force.name.generic.stealth", 0.0D, 0.0D, 1.0D));
-    public static final RegistryObject<Attribute> ELECTRIC_RESISTANCE = ATTRIBUTES.register("electric_resistance", () -> new RangedAttribute("attribute.opposing_force.name.generic.electric_resistance", 0.0D, 0.0D, 30.0D));
+    public static final RegistryObject<Attribute> ELECTRIC_RESISTANCE = ATTRIBUTES.register("electric_resistance", () -> new RangedAttribute("attribute.opposing_force.name.generic.electric_resistance", 0.0D, 0.0D, 1.0D));
+    public static final RegistryObject<Attribute> BULK = ATTRIBUTES.register("bulk", () -> new RangedAttribute("attribute.opposing_force.name.generic.bulk", 0.0D, 0.0D, 1.0D));
+    public static final RegistryObject<Attribute> AIR_SPEED = ATTRIBUTES.register("air_speed", () -> new RangedAttribute("attribute.opposing_force.name.generic.air_speed", 0.0D, 0.0D, 1.0D));
 
 }

@@ -13,6 +13,7 @@
   "advancement.opposing_force.tame_slug.desc": "Use Slug Eggs to spawn a tamed Slug",
   "advancement.opposing_force.trembler_shell": "Spin to Win",
   "advancement.opposing_force.trembler_shell.desc": "Defeat a Trembler and claim its shell",
+  "attribute.opposing_force.name.generic.bulk": "Bulk",
   "attribute.opposing_force.name.generic.electric_resistance": "Electric Resistance",
   "attribute.opposing_force.name.generic.stealth": "Stealth",
   "block.opposing_force.cap_of_eye": "Cap Of Eye",

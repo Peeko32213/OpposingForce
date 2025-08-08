@@ -4,6 +4,7 @@ import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.registry.OPAttributes;
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import com.unusualmodding.opposing_force.registry.OPEffects;
+import com.unusualmodding.opposing_force.registry.tags.OPDamageTypeTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -64,6 +65,22 @@ public class MiscEvents {
 
             if (electricResistance > 0.0F) {
                 event.setAmount(event.getAmount() - event.getAmount() * electricResistance);
+            }
+        }
+        if (source.is(OPDamageTypeTags.BULK_RESISTS)) {
+            float bulk = 0.0F;
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                if (slot.getType() == EquipmentSlot.Type.ARMOR) {
+                    ItemStack stack = target.getItemBySlot(slot);
+                    Collection<AttributeModifier> bulk1 = stack.getAttributeModifiers(slot).get(OPAttributes.BULK.get());
+                    if (!bulk1.isEmpty()) {
+                        bulk += (float) bulk1.stream().mapToDouble(AttributeModifier::getAmount).sum();
+                    }
+                }
+            }
+
+            if (bulk > 0.0F) {
+                event.setAmount(event.getAmount() - event.getAmount() * bulk);
             }
         }
     }
