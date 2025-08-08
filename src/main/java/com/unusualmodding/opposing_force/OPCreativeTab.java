@@ -30,6 +30,7 @@ public class OPCreativeTab {
                     // Weapons
                     output.accept(OPItems.TOMAHAWK.get());
                     output.accept(OPItems.TESLA_BOW.get());
+                    output.accept(OPItems.BLASTER.get());
                     output.accept(OPItems.VILE_BOULDER.get());
                     output.accept(OPItems.EMERALD_SWORD.get());
                     output.accept(OPItems.EMERALD_PICKAXE.get());
