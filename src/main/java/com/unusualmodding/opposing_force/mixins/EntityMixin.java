@@ -28,7 +28,7 @@ public abstract class EntityMixin {
         if ((Entity) (Object) this instanceof LivingEntity mob) {
             if (mob.getItemBySlot(EquipmentSlot.FEET).getItem() == OPItems.DEEPWOVEN_BOOTS.get()) {
                 callback.cancel();
-                volumeModifier = 0.015F;
+                volumeModifier = 0.01F;
                 SoundType soundtype = state.getSoundType(mob.level, pos, mob);
                 this.playSound(soundtype.getStepSound(), soundtype.getVolume() * volumeModifier, soundtype.getPitch());
             }

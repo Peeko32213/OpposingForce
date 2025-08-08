@@ -29,21 +29,17 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
         );
 
         this.sound(OPSoundEvents.ARMOR_EQUIP_WOODEN,
-                sound("item/armor/equip_leather1").pitch(0.88F),
-                sound("item/armor/equip_leather2").pitch(0.88F),
-                sound("item/armor/equip_leather3").pitch(0.88F),
-                sound("item/armor/equip_leather4").pitch(0.88F),
-                sound("item/armor/equip_leather5").pitch(0.88F),
-                sound("item/armor/equip_leather6").pitch(0.88F)
+                sound("dig/wood1").pitch(0.8F),
+                sound("dig/wood2").pitch(0.8F),
+                sound("dig/wood3").pitch(0.8F),
+                sound("dig/wood4").pitch(0.8F)
         );
 
         this.sound(OPSoundEvents.ARMOR_EQUIP_STONE,
-                sound("item/armor/equip_leather1").pitch(0.88F),
-                sound("item/armor/equip_leather2").pitch(0.88F),
-                sound("item/armor/equip_leather3").pitch(0.88F),
-                sound("item/armor/equip_leather4").pitch(0.88F),
-                sound("item/armor/equip_leather5").pitch(0.88F),
-                sound("item/armor/equip_leather6").pitch(0.88F)
+                sound("dig/stone1").pitch(0.8F),
+                sound("dig/stone2").pitch(0.8F),
+                sound("dig/stone3").pitch(0.8F),
+                sound("dig/stone4").pitch(0.8F)
         );
 
         this.sound(OPSoundEvents.ARMOR_EQUIP_EMERALD,

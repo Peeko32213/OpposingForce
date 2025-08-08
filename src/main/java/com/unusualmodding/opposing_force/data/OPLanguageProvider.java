@@ -193,8 +193,10 @@ public class OPLanguageProvider extends LanguageProvider {
         this.add("death.attack.opposing_force.tomahawk.item", "%1$s was domed by %2$s using %3$s");
 
         this.add("attribute.opposing_force.name.generic.stealth", "Stealth");
-        this.add("attribute.opposing_force.name.generic.electric_resistance", "Electric Resistance");
+        this.add("attribute.opposing_force.name.generic.electric_resistance", "Electricity Resistance");
         this.add("attribute.opposing_force.name.generic.bulk", "Bulk");
+        this.add("attribute.opposing_force.name.generic.jump_power", "Jump Power");
+        this.add("attribute.opposing_force.name.generic.air_speed", "Air Speed");
 
         add("item.opposing_force.cloud_boots.desc", "+Light as a Feather");
     }

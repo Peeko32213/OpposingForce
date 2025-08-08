@@ -3,15 +3,10 @@ package com.unusualmodding.opposing_force.items;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.client.models.armor.base.OPArmorModel;
-import com.unusualmodding.opposing_force.events.ClientEvents;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.HumanoidModel;
+import com.unusualmodding.opposing_force.registry.OPAttributes;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -23,13 +18,10 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 public class CloudBootsItem extends ArmorItem {
 
@@ -43,6 +35,8 @@ public class CloudBootsItem extends ArmorItem {
         builder.putAll(super.getAttributeModifiers(slot, stack));
         UUID uuid = ArmorItem.ARMOR_MODIFIER_UUID_PER_TYPE.get(this.type);
         builder.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(uuid, "Movement speed", 0.2F, AttributeModifier.Operation.MULTIPLY_BASE));
+        builder.put(OPAttributes.AIR_SPEED.get(), new AttributeModifier(uuid, "Air speed", 0.4F, AttributeModifier.Operation.MULTIPLY_BASE));
+        builder.put(OPAttributes.JUMP_POWER.get(), new AttributeModifier(uuid, "Jump power", 5.0F, AttributeModifier.Operation.ADDITION));
         return slot == this.getEquipmentSlot() ? builder.build() : super.getAttributeModifiers(slot, stack);
     }
 
@@ -61,30 +55,16 @@ public class CloudBootsItem extends ArmorItem {
         player.resetFallDistance();
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new IClientItemExtensions() {
-            @Override
-            public OPArmorModel getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel humanoidModel) {
-                float ticks = Minecraft.getInstance().getFrameTime();
-                float yBodyRot = Mth.rotLerp(ticks, entity.yBodyRotO, entity.yBodyRot);
-                float yHeadRot = Mth.rotLerp(ticks, entity.yHeadRotO, entity.yHeadRot);
-                float netHeadYaw = yHeadRot - yBodyRot;
-                float netHeadPitch = Mth.lerp(ticks, entity.xRotO, entity.getXRot());
-                OPArmorModel model = ClientEvents.CLOUD_BOOTS;
-                model.slot = armorSlot;
-                model.copyFromDefault(humanoidModel);
-                model.setupAnim(entity, entity.walkAnimation.position(), entity.walkAnimation.speed(), entity.tickCount + ticks, netHeadYaw, netHeadPitch);
-                return model;
-            }
-        });
+    public void initializeClient(java.util.function.Consumer<IClientItemExtensions> consumer) {
+        consumer.accept((IClientItemExtensions) OpposingForce.PROXY.getArmorRenderProperties());
     }
+
 
     @Nullable
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-        return OpposingForce.MOD_ID + ":textures/models/armor/cloud_boots.png";
+        return OpposingForce.MOD_ID + ":textures/models/armor/cloud_boots_layer_1.png";
     }
 
 //    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> component, TooltipFlag flag) {

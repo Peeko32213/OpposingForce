@@ -1,16 +1,18 @@
 package com.unusualmodding.opposing_force;
 
 import com.unusualmodding.opposing_force.data.*;
-import com.unusualmodding.opposing_force.events.ServerEvents;
 import com.unusualmodding.opposing_force.registry.*;
+import com.unusualmodding.opposing_force.utils.*;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -22,6 +24,7 @@ import java.util.concurrent.CompletableFuture;
 @Mod(OpposingForce.MOD_ID)
 public class OpposingForce {
 
+    public static final CommonProxy PROXY = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
     public static final String MOD_ID = "opposing_force";
 
     public OpposingForce() {
@@ -42,7 +45,6 @@ public class OpposingForce {
         OPAttributes.ATTRIBUTES.register(modEventBus);
         OPLootModifiers.LOOT_MODIFIERS.register(modEventBus);
         OPBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
-        MinecraftForge.EVENT_BUS.register(new ServerEvents());
 
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -56,6 +58,7 @@ public class OpposingForce {
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
+        event.enqueueWork(PROXY::clientInit);
     }
 
     private void dataSetup(GatherDataEvent data) {

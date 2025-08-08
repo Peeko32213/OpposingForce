@@ -1,94 +1,65 @@
 package com.unusualmodding.opposing_force.client.models.armor;
 
-import com.google.common.collect.ImmutableList;
-import com.unusualmodding.opposing_force.client.models.armor.base.OPArmorModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
 
-public class CloudBootsModel extends OPArmorModel {
+public class CloudBootsModel extends HumanoidModel {
 
 	public ModelPart right_wing;
 	public ModelPart left_wing;
 
 	public CloudBootsModel(ModelPart root) {
         super(root);
-        this.right_wing = root.getChild("right_wing");
-		this.left_wing = root.getChild("left_wing");
-	}
-
-	@Override
-	public void copyFromDefault(HumanoidModel model) {
-		super.copyFromDefault(model);
-		this.right_wing.copyFrom(rightFoot);
-		this.left_wing.copyFrom(leftFoot);
-	}
-
-	@Override
-	protected Iterable<ModelPart> bodyParts() {
-		if (slot == EquipmentSlot.CHEST) {
-			return ImmutableList.of(body, leftArm, rightArm);
-		} else if (slot == EquipmentSlot.LEGS) {
-			return ImmutableList.of(leftLegging, rightLegging, leggings);
-		} else if (slot == EquipmentSlot.FEET) {
-			return ImmutableList.of(leftFoot, rightFoot, right_wing, left_wing);
-		} else return ImmutableList.of();
+        this.right_wing = root.getChild("right_leg").getChild("right_wing");
+		this.left_wing = root.getChild("left_leg").getChild("left_wing");
 	}
 
 	public static LayerDefinition createArmorLayer() {
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(new CubeDeformation(0.0F), 0.0F);
-		PartDefinition root = createHumanoidModel(meshdefinition);
+		PartDefinition root = meshdefinition.getRoot();
 
-		PartDefinition head = root.getChild("head");
-		PartDefinition body = root.getChild("body");
-		PartDefinition leggings = root.getChild("leggings");
-		PartDefinition right_legging = root.getChild("right_legging");
-		PartDefinition right_foot = root.getChild("right_foot");
-		PartDefinition right_arm = root.getChild("right_arm");
-		PartDefinition left_legging = root.getChild("left_legging");
-		PartDefinition left_foot = root.getChild("left_foot");
-		PartDefinition left_arm = root.getChild("left_arm");
+		PartDefinition rightBoot = root.getChild("right_leg");
+		PartDefinition leftBoot = root.getChild("left_leg");
 
-		right_foot.addOrReplaceChild("right_boot", CubeListBuilder.create()
-				.texOffs(0, 16).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.501F))
+		rightBoot.addOrReplaceChild("right_boot", CubeListBuilder.create()
+				.texOffs(18, 0).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.5F))
 				.texOffs(0, 0).addBox(-3.5F, 8.0F, -3.0F, 6.0F, 2.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.ZERO);
-		left_foot.addOrReplaceChild("left_boot", CubeListBuilder.create()
+		leftBoot.addOrReplaceChild("left_boot", CubeListBuilder.create()
 				.texOffs(0, 8).addBox(-2.5F, 8.0F, -3.0F, 6.0F, 2.0F, 6.0F, new CubeDeformation(0.01F))
-				.texOffs(16, 16).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.502F)), PartPose.ZERO);
+				.texOffs(34, 0).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.5F)), PartPose.ZERO);
 
-		PartDefinition right_wing = root.addOrReplaceChild("right_wing", new CubeListBuilder(), PartPose.ZERO);
-		right_wing.addOrReplaceChild("right_wing", CubeListBuilder.create().texOffs(0, 22).addBox(0.0F, -5.0F, 0.0F, 0.0F, 6.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(-2.525F, 11F, 2.25F));
-
-		PartDefinition left_wing = root.addOrReplaceChild("left_wing", new CubeListBuilder(), PartPose.ZERO);
-		left_wing.addOrReplaceChild("left_wing", CubeListBuilder.create().texOffs(0, 22).mirror().addBox(0.0F, -5.0F, 0.0F, 0.0F, 6.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(2.525F, 11F, 2.25F));
+		rightBoot.addOrReplaceChild("right_wing", CubeListBuilder.create()
+				.texOffs(28, 3).addBox(0.0F, -5.0F, 0.0F, 0.0F, 6.0F, 5.0F, new CubeDeformation(0.01F)), PartPose.offset(0F, 11.0F, 0F));
+		leftBoot.addOrReplaceChild("left_wing", CubeListBuilder.create()
+				.texOffs(28, 3).mirror().addBox(0.0F, -5.0F, 0.0F, 0.0F, 6.0F, 5.0F, new CubeDeformation(0.01F)).mirror(false), PartPose.offset(0F, 11.0F, 0F));
 
 		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 
-	@Override
-	public void setupAnim(LivingEntity livingEntity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public CloudBootsModel withAnimations(LivingEntity entity) {
+		float partialTicks = Minecraft.getInstance().getFrameTime();
+		float ageInTicks  = entity.tickCount + partialTicks;
 
-		float partialTicks = Minecraft.getInstance().getDeltaFrameTime();
-		float f = livingEntity.tickCount + partialTicks;
+		float fly = Mth.sin(ageInTicks * 0.2F) * 0.3F;
 
-		float fly = Mth.cos(f * 0.2F) * 0.1F;
-		float fly2 = fly * 0.35F;
+		this.right_wing.x = -2.5F;
+		this.left_wing.x = 2.5F;
+		this.right_wing.z = 2.25F;
+		this.left_wing.z = 2.25F;
 
-//		right_wing.yRot = 0.5672F + fly2;
-//		left_wing.yRot = -0.5672F - fly2;
-//
-//		if (!livingEntity.onGround()) {
-//			fly = (1 + Mth.sin(ageInTicks * 1.2F)) * 0.8F;
-//			fly2 = fly;
-//		}
-
-//		this.leaf.xRot = (float) -(limbSwingAmount * Math.toRadians(80) + Mth.cos(limbSwing * 0.3F) * 0.2F * limbSwingAmount);
-
-		super.setupAnim(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+		if (entity instanceof ArmorStand) {
+			this.right_wing.yRot = 0.0F;
+			this.left_wing.yRot = 0.0F;
+		} else {
+			this.right_wing.yRot = -fly;
+			this.left_wing.yRot = fly;
+		}
+		return this;
 	}
 }

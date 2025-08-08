@@ -75,7 +75,7 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.WHIZZ, WhizzModel::createBodyLayer);
     }
 
-    public static CloudBootsModel CLOUD_BOOTS;
+//    public static CloudBootsModel CLOUD_BOOTS;
     public static DeepwovenArmorModel DEEPWOVEN_ARMOR;
     public static EmeraldArmorModel EMERALD_ARMOR;
     public static StoneArmorModel STONE_ARMOR;
@@ -92,7 +92,7 @@ public final class ClientEvents {
 
     @SubscribeEvent
     public static void registerArmorLayers(EntityRenderersEvent.AddLayers event) {
-        CLOUD_BOOTS = new CloudBootsModel(event.getEntityModels().bakeLayer(OPModelLayers.CLOUD_BOOTS));
+//        CLOUD_BOOTS = new CloudBootsModel(event.getEntityModels().bakeLayer(OPModelLayers.CLOUD_BOOTS));
         DEEPWOVEN_ARMOR = new DeepwovenArmorModel(event.getEntityModels().bakeLayer(OPModelLayers.DEEPWOVEN_ARMOR));
         EMERALD_ARMOR = new EmeraldArmorModel(event.getEntityModels().bakeLayer(OPModelLayers.EMERALD_ARMOR));
         STONE_ARMOR = new StoneArmorModel(event.getEntityModels().bakeLayer(OPModelLayers.STONE_ARMOR));

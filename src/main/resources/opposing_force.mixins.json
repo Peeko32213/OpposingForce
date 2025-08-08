@@ -8,13 +8,13 @@
     "CreeperMixin",
     "CrossbowItemMixin",
     "EntityMixin",
-    "LivingEntityMixin",
     "PlayerMixin"
   ],
   "client": [
     "client.ClientPacketListenerMixin",
     "client.CustomHeadLayerMixin",
     "client.GuiMixin",
+    "client.HumanoidArmorLayerMixin",
     "client.LocalPlayerMixin"
   ],
   "injectors": {

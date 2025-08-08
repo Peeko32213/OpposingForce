@@ -1,7 +1,6 @@
 package com.unusualmodding.opposing_force.events;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.registry.OPEffects;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -10,23 +9,12 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = OpposingForce.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ServerEvents {
-
-    @SubscribeEvent
-    public void onLivingUpdateEvent(LivingEvent.LivingTickEvent event) {
-        final var entity = event.getEntity();
-        if (entity instanceof Player player) {
-            if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() == OPItems.STONE_HELMET.get() && player.getItemBySlot(EquipmentSlot.CHEST).getItem() == OPItems.STONE_CHESTPLATE.get() && player.getItemBySlot(EquipmentSlot.LEGS).getItem() == OPItems.STONE_LEGGINGS.get() && player.getItemBySlot(EquipmentSlot.FEET).getItem() == OPItems.STONE_BOOTS.get()) {
-                event.getEntity().removeEffect(OPEffects.ELECTRIFIED.get());
-            }
-        }
-    }
 
     @SubscribeEvent
     public static void onLivingFall(LivingFallEvent event) {
