@@ -8,8 +8,6 @@
     "CreeperMixin",
     "CrossbowItemMixin",
     "EntityMixin",
-    "FoodDataMixin",
-    "ItemMixin",
     "LivingEntityMixin",
     "PlayerMixin"
   ],
