@@ -5,6 +5,7 @@ import com.unusualmodding.opposing_force.enchantments.*;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
@@ -22,6 +23,7 @@ public class OPEnchantments {
     public static final EnchantmentCategory TESLA_BOW = EnchantmentCategory.create("tesla_bow", (item -> item == OPItems.TESLA_BOW.get()));
     public static final EnchantmentCategory VILE_BOULDER = EnchantmentCategory.create("vile_boulder", (item -> item == OPItems.VILE_BOULDER.get()));
     public static final EnchantmentCategory BLASTER = EnchantmentCategory.create("blaster", (item -> item == OPItems.BLASTER.get()));
+    public static final EnchantmentCategory GOLD_ARMOR = EnchantmentCategory.create("gold_armor", (item -> item == Items.GOLDEN_HELMET));
 
     public static final RegistryObject<Enchantment> CAPACITANCE = ENCHANTMENTS.register("capacitance", () -> new OPEnchantment("capacitance", Enchantment.Rarity.RARE, TESLA_BOW, 3, 20, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> QUASAR = ENCHANTMENTS.register("quasar", () -> new TrueTreasureEnchantment("quasar", Enchantment.Rarity.VERY_RARE, TESLA_BOW, 1, 30, EquipmentSlot.MAINHAND));
@@ -30,9 +32,12 @@ public class OPEnchantments {
 
     public static final RegistryObject<Enchantment> PLAGUE = ENCHANTMENTS.register("plague", () -> new OPEnchantment("plague", Enchantment.Rarity.RARE, VILE_BOULDER, 2, 20, EquipmentSlot.MAINHAND));
 
-    public static final RegistryObject<Enchantment> BURST = ENCHANTMENTS.register("burst", () -> new OPEnchantment("burst", Enchantment.Rarity.RARE, BLASTER, 2, 20, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> DISRUPTOR = ENCHANTMENTS.register("disruptor", () -> new OPEnchantment("disruptor", Enchantment.Rarity.RARE, BLASTER, 5, 20, EquipmentSlot.MAINHAND));
 
     public static final RegistryObject<Enchantment> KICKBACK = ENCHANTMENTS.register("kickback", () -> new OPEnchantment("kickback", Enchantment.Rarity.RARE, EnchantmentCategory.CROSSBOW, 4, 20, EquipmentSlot.MAINHAND));
+
+    public static final RegistryObject<Enchantment> TEST = ENCHANTMENTS.register("test", () -> new OPEnchantment("test", Enchantment.Rarity.RARE, GOLD_ARMOR, 4, 20, EquipmentSlot.HEAD));
+
 
     public static boolean areCompatible(OPEnchantment enchantment1, Enchantment enchantment2) {
         if (enchantment1 == KICKBACK.get() && (enchantment2 == Enchantments.QUICK_CHARGE)) {

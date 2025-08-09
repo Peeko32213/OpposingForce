@@ -42,6 +42,13 @@ public class BlasterItem extends Item {
 
             laserBolt.setYRot(yRot);
             laserBolt.setXRot(xRot);
+            laserBolt.setOwner(player);
+
+            if (itemstack.getEnchantmentLevel(OPEnchantments.DISRUPTOR.get()) > 0) {
+                laserBolt.setDisruptor(true);
+                laserBolt.setDisruptorLevel(itemstack.getEnchantmentLevel(OPEnchantments.DISRUPTOR.get()));
+            }
+
             level.addFreshEntity(laserBolt);
         }
         player.awardStat(Stats.ITEM_USED.get(this));
