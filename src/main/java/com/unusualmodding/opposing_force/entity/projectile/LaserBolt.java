@@ -18,7 +18,9 @@ import net.minecraftforge.network.PlayMessages;
 public class LaserBolt extends AbstractFrictionlessProjectile {
 
     private static final EntityDataAccessor<Integer> DISRUPTOR_LEVEL = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> IS_DISRUPTOR = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DISRUPTOR = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> RAPID_FIRE = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> LIGHTSPEED = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
 
     RandomSource rand = level.getRandom();
 
@@ -50,16 +52,18 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.getEntityData().define(IS_DISRUPTOR, false);
+        this.getEntityData().define(DISRUPTOR, false);
+        this.getEntityData().define(RAPID_FIRE, false);
+        this.getEntityData().define(LIGHTSPEED, false);
         this.getEntityData().define(DISRUPTOR_LEVEL, 0);
     }
 
     public boolean isDisruptor() {
-        return this.entityData.get(IS_DISRUPTOR);
+        return this.entityData.get(DISRUPTOR);
     }
 
     public void setDisruptor(boolean disruptor) {
-        this.entityData.set(IS_DISRUPTOR, disruptor);
+        this.entityData.set(DISRUPTOR, disruptor);
     }
 
     public int getDisruptorLevel() {
@@ -68,6 +72,22 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
 
     public void setDisruptorLevel(int disruptorLevel) {
         this.entityData.set(DISRUPTOR_LEVEL, disruptorLevel);
+    }
+
+    public boolean isRapidFire() {
+        return this.entityData.get(RAPID_FIRE);
+    }
+
+    public void setRapidFire(boolean rapidFire) {
+        this.entityData.set(RAPID_FIRE, rapidFire);
+    }
+
+    public boolean isLightspeed() {
+        return this.entityData.get(LIGHTSPEED);
+    }
+
+    public void setLightspeed(boolean lightspeed) {
+        this.entityData.set(LIGHTSPEED, lightspeed);
     }
 
     @Override
@@ -87,10 +107,21 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
         super.onHitEntity(entityHitResult);
         Entity entity = entityHitResult.getEntity();
         DamageSource damageSource = this.damageSources().source(OPDamageTypes.LASER);
+        float damage;
 
         if (!this.level().isClientSide) {
             this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
-            entity.hurt(damageSource, 5);
+            if (this.isRapidFire()) {
+                damage = 3.0F;
+                entity.hurt(damageSource, damage);
+                entity.invulnerableTime -= 5;
+            } else if (this.isLightspeed()) {
+                damage = 8.0F;
+                entity.hurt(damageSource, damage);
+            } else {
+                damage = 5.0F;
+                entity.hurt(damageSource, damage);
+            }
             if (this.isDisruptor()) {
                 for (int i = 0; i < 2 + this.getDisruptorLevel(); i++) {
                     LaserBolt laserBolt = OPEntities.LASER_BOLT.get().create(level());

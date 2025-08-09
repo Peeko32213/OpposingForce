@@ -32,11 +32,11 @@ public class OPEnchantments {
 
     public static final RegistryObject<Enchantment> PLAGUE = ENCHANTMENTS.register("plague", () -> new OPEnchantment("plague", Enchantment.Rarity.RARE, VILE_BOULDER, 2, 20, EquipmentSlot.MAINHAND));
 
-    public static final RegistryObject<Enchantment> DISRUPTOR = ENCHANTMENTS.register("disruptor", () -> new OPEnchantment("disruptor", Enchantment.Rarity.RARE, BLASTER, 5, 20, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> SPLITTING = ENCHANTMENTS.register("splitting", () -> new OPEnchantment("splitting", Enchantment.Rarity.RARE, BLASTER, 5, 20, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> RAPID_FIRE = ENCHANTMENTS.register("rapid_fire", () -> new OPEnchantment("rapid_fire", Enchantment.Rarity.RARE, BLASTER, 3, 20, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> LIGHTSPEED = ENCHANTMENTS.register("lightspeed", () -> new TreasureEnchantment("lightspeed", Enchantment.Rarity.VERY_RARE, BLASTER, 1, 30, EquipmentSlot.MAINHAND));
 
     public static final RegistryObject<Enchantment> KICKBACK = ENCHANTMENTS.register("kickback", () -> new OPEnchantment("kickback", Enchantment.Rarity.RARE, EnchantmentCategory.CROSSBOW, 4, 20, EquipmentSlot.MAINHAND));
-
-    public static final RegistryObject<Enchantment> TEST = ENCHANTMENTS.register("test", () -> new OPEnchantment("test", Enchantment.Rarity.RARE, GOLD_ARMOR, 4, 20, EquipmentSlot.HEAD));
 
     public static boolean areCompatible(OPEnchantment enchantment1, Enchantment enchantment2) {
         if (enchantment1 == KICKBACK.get() && (enchantment2 == Enchantments.QUICK_CHARGE)) {
@@ -49,6 +49,9 @@ public class OPEnchantments {
             return false;
         }
         if (enchantment1 == STATIC_ATTRACTION.get() && (enchantment2 == CAPACITANCE.get() || enchantment2 == QUASAR.get() || enchantment2 == REBOUND.get())) {
+            return false;
+        }
+        if (enchantment1 == LIGHTSPEED.get() && (enchantment2 == RAPID_FIRE.get())) {
             return false;
         }
         return true;

@@ -158,6 +158,9 @@ public class OPLanguageProvider extends LanguageProvider {
         this.addEnchantmentWithDesc(OPEnchantments.QUASAR.get(), "The fired electric charge changes color rapidly and pulls mobs towards it");
         this.addEnchantmentWithDesc(OPEnchantments.STATIC_ATTRACTION.get(), "The fired electric charge seeks out nearby entities");
         this.addEnchantmentWithDesc(OPEnchantments.PLAGUE.get(), "Increases the level of slug infestation inflicted");
+        this.addEnchantmentWithDesc(OPEnchantments.RAPID_FIRE.get(), "Increases the fire rate of the blaster at the cost of damage per shot");
+        this.addEnchantmentWithDesc(OPEnchantments.SPLITTING.get(), "Fired laser bolts split into multiple laser bolts on hit");
+        this.addEnchantmentWithDesc(OPEnchantments.LIGHTSPEED.get(), "Fired laser bolts go much faster and deal more damage");
 
         this.addEffect(OPEffects.ELECTRIFIED, "Electrified");
         this.addEffect(OPEffects.GLOOM_TOXIN, "Gloom Toxin");

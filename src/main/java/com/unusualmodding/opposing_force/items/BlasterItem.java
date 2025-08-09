@@ -29,8 +29,8 @@ public class BlasterItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), OPSoundEvents.BLASTER_SHOOT.get(), SoundSource.PLAYERS, 1.0F, (level.getRandom().nextFloat() * 0.5F + 0.8F));
-        player.getCooldowns().addCooldown(this, 15);
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), OPSoundEvents.BLASTER_SHOOT.get(), SoundSource.PLAYERS, 1.0F, (level.getRandom().nextFloat() * 0.5F + (itemstack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) > 0 ? 1F : 0.8F)));
+        player.getCooldowns().addCooldown(this, (itemstack.getEnchantmentLevel(OPEnchantments.LIGHTSPEED.get()) > 0 ? 30 : 15 - (itemstack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) * 3)));
 
         if (!level.isClientSide()) {
             Vec3 vector3d = player.getViewVector(1.0F);
@@ -43,15 +43,23 @@ public class BlasterItem extends Item {
             Vec3 laserPos = player.position().add(0, player.getBbHeight() * 0.8F, 0).add(relativePos);
             laserBolt.setPos(laserPos);
 
-            laserBolt.shootFromRotation(laserBolt, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 0.5F);
+            if (itemstack.getEnchantmentLevel(OPEnchantments.LIGHTSPEED.get()) > 0) {
+                laserBolt.shootFromRotation(laserBolt, player.getXRot(), player.getYRot(), 0.0F, 0.1F, 0.5F);
+                laserBolt.setLightspeed(true);
+            } else {
+                laserBolt.shootFromRotation(laserBolt, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 0.5F);
+            }
 
             laserBolt.setYRot(yRot);
             laserBolt.setXRot(xRot);
             laserBolt.setOwner(player);
 
-            if (itemstack.getEnchantmentLevel(OPEnchantments.DISRUPTOR.get()) > 0) {
+            if (itemstack.getEnchantmentLevel(OPEnchantments.SPLITTING.get()) > 0) {
                 laserBolt.setDisruptor(true);
-                laserBolt.setDisruptorLevel(itemstack.getEnchantmentLevel(OPEnchantments.DISRUPTOR.get()));
+                laserBolt.setDisruptorLevel(itemstack.getEnchantmentLevel(OPEnchantments.SPLITTING.get()));
+            }
+            if (itemstack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) > 0) {
+                laserBolt.setRapidFire(true);
             }
 
             level.addFreshEntity(laserBolt);
