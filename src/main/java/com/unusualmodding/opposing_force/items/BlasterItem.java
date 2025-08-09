@@ -2,8 +2,8 @@ package com.unusualmodding.opposing_force.items;
 
 import com.unusualmodding.opposing_force.entity.projectile.LaserBolt;
 import com.unusualmodding.opposing_force.registry.OPEnchantments;
+import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
@@ -12,6 +12,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -19,6 +20,10 @@ public class BlasterItem extends Item {
 
     public BlasterItem(Properties properties) {
         super(properties);
+    }
+
+    public UseAnim getUseAnimation(ItemStack stack) {
+        return UseAnim.NONE;
     }
 
     @Override
@@ -56,5 +61,14 @@ public class BlasterItem extends Item {
             itemstack.hurtAndBreak(1, player, (player1) -> player1.broadcastBreakEvent(hand));
         }
         return InteractionResultHolder.sidedSuccess(itemstack, false);
+    }
+
+    public int getUseDuration(ItemStack stack) {
+        return 72000;
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return !oldStack.is(OPItems.BLASTER.get()) || !newStack.is(OPItems.BLASTER.get());
     }
 }

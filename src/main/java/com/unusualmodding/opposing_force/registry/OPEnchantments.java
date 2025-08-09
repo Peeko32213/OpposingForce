@@ -38,7 +38,6 @@ public class OPEnchantments {
 
     public static final RegistryObject<Enchantment> TEST = ENCHANTMENTS.register("test", () -> new OPEnchantment("test", Enchantment.Rarity.RARE, GOLD_ARMOR, 4, 20, EquipmentSlot.HEAD));
 
-
     public static boolean areCompatible(OPEnchantment enchantment1, Enchantment enchantment2) {
         if (enchantment1 == KICKBACK.get() && (enchantment2 == Enchantments.QUICK_CHARGE)) {
             return false;
