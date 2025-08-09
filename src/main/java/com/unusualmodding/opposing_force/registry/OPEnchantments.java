@@ -20,11 +20,17 @@ public class OPEnchantments {
     public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, OpposingForce.MOD_ID);
 
     public static final EnchantmentCategory TESLA_BOW = EnchantmentCategory.create("tesla_bow", (item -> item == OPItems.TESLA_BOW.get()));
+    public static final EnchantmentCategory VILE_BOULDER = EnchantmentCategory.create("vile_boulder", (item -> item == OPItems.VILE_BOULDER.get()));
+    public static final EnchantmentCategory BLASTER = EnchantmentCategory.create("blaster", (item -> item == OPItems.BLASTER.get()));
 
     public static final RegistryObject<Enchantment> CAPACITANCE = ENCHANTMENTS.register("capacitance", () -> new OPEnchantment("capacitance", Enchantment.Rarity.RARE, TESLA_BOW, 3, 20, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> QUASAR = ENCHANTMENTS.register("quasar", () -> new OPEnchantment("quasar", Enchantment.Rarity.VERY_RARE, TESLA_BOW, 1, 30, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> QUASAR = ENCHANTMENTS.register("quasar", () -> new TrueTreasureEnchantment("quasar", Enchantment.Rarity.VERY_RARE, TESLA_BOW, 1, 30, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> REBOUND = ENCHANTMENTS.register("rebound", () -> new OPEnchantment("rebound", Enchantment.Rarity.UNCOMMON, TESLA_BOW, 4, 15, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> STATIC_ATTRACTION = ENCHANTMENTS.register("static_attraction", () -> new OPEnchantment("static_attraction", Enchantment.Rarity.VERY_RARE, TESLA_BOW, 1, 25, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> STATIC_ATTRACTION = ENCHANTMENTS.register("static_attraction", () -> new TreasureEnchantment("static_attraction", Enchantment.Rarity.VERY_RARE, TESLA_BOW, 1, 25, EquipmentSlot.MAINHAND));
+
+    public static final RegistryObject<Enchantment> PLAGUE = ENCHANTMENTS.register("plague", () -> new OPEnchantment("plague", Enchantment.Rarity.RARE, VILE_BOULDER, 2, 20, EquipmentSlot.MAINHAND));
+
+    public static final RegistryObject<Enchantment> BURST = ENCHANTMENTS.register("burst", () -> new OPEnchantment("burst", Enchantment.Rarity.RARE, BLASTER, 2, 20, EquipmentSlot.MAINHAND));
 
     public static final RegistryObject<Enchantment> KICKBACK = ENCHANTMENTS.register("kickback", () -> new OPEnchantment("kickback", Enchantment.Rarity.RARE, EnchantmentCategory.CROSSBOW, 4, 20, EquipmentSlot.MAINHAND));
 

@@ -11,24 +11,25 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
+import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AbstractElectricCharge extends AbstractHurtingProjectile implements ItemSupplier {
+public abstract class AbstractFrictionlessProjectile extends AbstractHurtingProjectile implements ItemSupplier {
 
     public double accelerationPower = 0.1;
 
-    protected AbstractElectricCharge(EntityType<? extends AbstractHurtingProjectile> entityType, Level level) {
+    protected AbstractFrictionlessProjectile(EntityType<? extends AbstractHurtingProjectile> entityType, Level level) {
         super(entityType, level);
         accelerationPower = 0.0;
     }
 
-    protected AbstractElectricCharge(EntityType<? extends AbstractHurtingProjectile> entityType, Level level, Entity owner, double x, double y, double z) {
+    protected AbstractFrictionlessProjectile(EntityType<? extends AbstractHurtingProjectile> entityType, Level level, Entity owner, double x, double y, double z) {
         this(entityType, level);
         this.setPos(x, y, z);
         this.accelerationPower = 0;
     }
 
-    public AbstractElectricCharge(EntityType<? extends AbstractHurtingProjectile> entityType, double x, double y, double z, Vec3 movement, Level level) {
+    public AbstractFrictionlessProjectile(EntityType<? extends AbstractHurtingProjectile> entityType, double x, double y, double z, Vec3 movement, Level level) {
         this(entityType, level);
         this.moveTo(x, y, z, this.getYRot(), this.getXRot());
         this.reapplyPosition();
@@ -38,12 +39,12 @@ public abstract class AbstractElectricCharge extends AbstractHurtingProjectile i
 
     @Override
     public boolean canCollideWith(@NotNull Entity entity) {
-        return !(entity instanceof AbstractElectricCharge) && super.canCollideWith(entity);
+        return !(entity instanceof AbstractFrictionlessProjectile) && super.canCollideWith(entity);
     }
 
     @Override
     protected boolean canHitEntity(@NotNull Entity target) {
-        if (target instanceof AbstractElectricCharge) {
+        if (target instanceof AbstractFrictionlessProjectile) {
             return false;
         } else {
             return super.canHitEntity(target);
@@ -76,7 +77,7 @@ public abstract class AbstractElectricCharge extends AbstractHurtingProjectile i
             Entity entity = this.getOwner();
             if (this.level().isClientSide || (entity == null || !entity.isRemoved()) && this.level().hasChunkAt(this.blockPosition())) {
                 HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-                if (hitresult.getType() != HitResult.Type.MISS && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
+                if (hitresult.getType() != HitResult.Type.MISS && !ForgeEventFactory.onProjectileImpact(this, hitresult)) {
                     this.onHit(hitresult);
                 }
 

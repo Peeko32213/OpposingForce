@@ -36,7 +36,8 @@ public final class ClientEvents {
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(OPEntities.DICER.get(), DicerRenderer::new);
         event.registerEntityRenderer(OPEntities.DICER_LASER.get(), DicerLaserRenderer::new);
-        event.registerEntityRenderer(OPEntities.ELECTRIC_CHARGE.get(), ElectricBallRenderer::new);
+        event.registerEntityRenderer(OPEntities.ELECTRIC_CHARGE.get(), ElectricChargeRenderer::new);
+        event.registerEntityRenderer(OPEntities.LASER_BOLT.get(), LaserBoltRenderer::new);
         event.registerEntityRenderer(OPEntities.EMERALDFISH.get(), EmeraldfishRenderer::new);
         event.registerEntityRenderer(OPEntities.FIRE_SLIME.get(), FireSlimeRenderer::new);
         event.registerEntityRenderer(OPEntities.FROWZY.get(), FrowzyRenderer::new);
@@ -73,9 +74,9 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.VOLT, () -> VoltModel.createBodyLayer(new CubeDeformation(0.0F)));
         event.registerLayerDefinition(OPModelLayers.VOLT_CHARGED, () -> VoltModel.createBodyLayer(new CubeDeformation(0.5F)));
         event.registerLayerDefinition(OPModelLayers.WHIZZ, WhizzModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.LASER_BOLT, LaserBoltModel::createProjectileLayer);
     }
 
-//    public static CloudBootsModel CLOUD_BOOTS;
     public static DeepwovenArmorModel DEEPWOVEN_ARMOR;
     public static EmeraldArmorModel EMERALD_ARMOR;
     public static StoneArmorModel STONE_ARMOR;
@@ -92,7 +93,6 @@ public final class ClientEvents {
 
     @SubscribeEvent
     public static void registerArmorLayers(EntityRenderersEvent.AddLayers event) {
-//        CLOUD_BOOTS = new CloudBootsModel(event.getEntityModels().bakeLayer(OPModelLayers.CLOUD_BOOTS));
         DEEPWOVEN_ARMOR = new DeepwovenArmorModel(event.getEntityModels().bakeLayer(OPModelLayers.DEEPWOVEN_ARMOR));
         EMERALD_ARMOR = new EmeraldArmorModel(event.getEntityModels().bakeLayer(OPModelLayers.EMERALD_ARMOR));
         STONE_ARMOR = new StoneArmorModel(event.getEntityModels().bakeLayer(OPModelLayers.STONE_ARMOR));

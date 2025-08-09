@@ -27,7 +27,6 @@ public class OPDamageTypes {
         context.register(LASER, new DamageType(OpposingForce.MOD_ID + ".laser", 0.0F));
         context.register(TOMAHAWK, new DamageType(OpposingForce.MOD_ID + ".tomahawk", 0.1F));
         context.register(STONE_FALL, new DamageType(OpposingForce.MOD_ID + ".stone_fall", 0.0F));
-
     }
 
     public static DamageSource laser(Level level, DicerLaser laser, @Nullable Entity indirectEntity) {

@@ -147,8 +147,19 @@ public class OPEntities {
             EntityType.Builder.<ElectricCharge>of(ElectricCharge::new, MobCategory.MISC)
                     .sized(0.1f, 0.1f)
                     .clientTrackingRange(4)
+                    .setShouldReceiveVelocityUpdates(true)
                     .fireImmune()
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "electric_charge").toString())
+    );
+
+    public static final RegistryObject<EntityType<LaserBolt>> LASER_BOLT = ENTITY_TYPES.register(
+            "laser_bolt", () ->
+                    EntityType.Builder.<LaserBolt>of(LaserBolt::new, MobCategory.MISC)
+                            .sized(0.4f, 0.4f)
+                            .clientTrackingRange(4)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .fireImmune()
+                            .build(new ResourceLocation(OpposingForce.MOD_ID, "laser_bolt").toString())
     );
 
     public static final RegistryObject<EntityType<SlugEggs>> SLUG_EGGS = ENTITY_TYPES.register(

@@ -128,6 +128,15 @@
     ],
     "subtitle": "subtitles.opposing_force.armor_equip_wooden"
   },
+  "blaster_shoot": {
+    "sounds": [
+      {
+        "name": "opposing_force:item/blaster/shoot1",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.blaster_shoot"
+  },
   "dicer_attack": {
     "sounds": [
       "opposing_force:entity/dicer/attack1",
@@ -356,6 +365,15 @@
       "opposing_force:entity/guzzler/spew1"
     ],
     "subtitle": "subtitles.opposing_force.guzzler_spew"
+  },
+  "laser_bolt_impact": {
+    "sounds": [
+      {
+        "name": "opposing_force:entity/laser_bolt/impact1",
+        "pitch": 1.1
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.laser_bolt_impact"
   },
   "pale_spider_death": {
     "sounds": [

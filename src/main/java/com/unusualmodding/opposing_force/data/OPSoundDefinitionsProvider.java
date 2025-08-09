@@ -320,6 +320,14 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound("block/amethyst/resonate3").pitch(1.2F),
                 sound("block/amethyst/resonate4").pitch(1.2F)
         );
+
+        this.sound(OPSoundEvents.LASER_BOLT_IMPACT,
+                sound(OpposingForce.modPrefix("entity/laser_bolt/impact1")).pitch(1.1F)
+        );
+
+        this.sound(OPSoundEvents.BLASTER_SHOOT,
+                sound(OpposingForce.modPrefix("item/blaster/shoot1")).pitch(1.2F)
+        );
     }
 
     private void soundDefinition(Supplier<SoundEvent> soundEvent, String subtitle, SoundDefinition.Sound... sounds) {

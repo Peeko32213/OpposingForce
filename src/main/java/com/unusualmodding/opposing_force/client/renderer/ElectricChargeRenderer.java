@@ -11,9 +11,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ElectricBallRenderer extends EntityRenderer<ElectricCharge> {
+public class ElectricChargeRenderer extends EntityRenderer<ElectricCharge> {
 
-    public ElectricBallRenderer(EntityRendererProvider.Context pContext) {
+    public ElectricChargeRenderer(EntityRendererProvider.Context pContext) {
         super(pContext);
     }
 

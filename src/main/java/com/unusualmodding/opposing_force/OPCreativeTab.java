@@ -90,6 +90,7 @@ public class OPCreativeTab {
                     output.accept(OPItems.RAMBLE_SKULL.get());
 
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.TESLA_BOW);
+                    OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.VILE_BOULDER);
                     OPEnchantments.addAllEnchantsToCreativeTab(output, EnchantmentCategory.CROSSBOW);
 
                     output.accept(OPBrewingRecipes.registerPotion(OPPotions.GLOOM_TOXIN_POTION.get()));

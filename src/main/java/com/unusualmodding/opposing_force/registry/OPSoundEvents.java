@@ -92,6 +92,10 @@ public class OPSoundEvents {
     public static final RegistryObject<SoundEvent> WHIZZ_FLY = registerSoundEvent("whizz_fly");
     public static final RegistryObject<SoundEvent> WHIZZ_ATTACK = registerSoundEvent("whizz_attack");
 
+    public static final RegistryObject<SoundEvent> LASER_BOLT_IMPACT = registerSoundEvent("laser_bolt_impact");
+
+    public static final RegistryObject<SoundEvent> BLASTER_SHOOT = registerSoundEvent("blaster_shoot");
+
     private static RegistryObject<SoundEvent> registerSoundEvent(final String soundName) {
         return SOUND_EVENTS.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(OpposingForce.MOD_ID, soundName)));
     }

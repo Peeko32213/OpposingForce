@@ -26,7 +26,7 @@ public class SlugInfestation extends MobEffect {
     }
 
     public static void onMobHurt(LivingEntity livingEntity, int amplifier) {
-        if (livingEntity.getRandom().nextFloat() <= 0.25F) {
+        if (livingEntity.getRandom().nextFloat() <= 0.3F + ((float) (amplifier + 1) / 10)) {
             int i = Mth.randomBetweenInclusive(livingEntity.getRandom(), 1, amplifier + 2);
 
             for (int j = 0; j < i; j++) {

@@ -136,6 +136,10 @@ public class OPLanguageProvider extends LanguageProvider {
         this.sound(OPSoundEvents.WHIZZ_FLY, "Whizz buzzes");
         this.sound(OPSoundEvents.WHIZZ_ATTACK, "Whizz bites");
 
+        this.sound(OPSoundEvents.LASER_BOLT_IMPACT, "Laser impacts");
+
+        this.sound(OPSoundEvents.BLASTER_SHOOT, "Blaster shoots");
+
         this.addBlock(OPBlocks.INFESTED_AMETHYST_BLOCK, "Infested Block of Amethyst");
 
         this.addBlock(OPBlocks.DICER_HEAD, "Dicer Head");
@@ -153,6 +157,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.addEnchantmentWithDesc(OPEnchantments.KICKBACK.get(), "Launches the user backwards after firing");
         this.addEnchantmentWithDesc(OPEnchantments.QUASAR.get(), "The fired electric charge changes color rapidly and pulls mobs towards it");
         this.addEnchantmentWithDesc(OPEnchantments.STATIC_ATTRACTION.get(), "The fired electric charge seeks out nearby entities");
+        this.addEnchantmentWithDesc(OPEnchantments.PLAGUE.get(), "Increases the level of slug infestation inflicted");
 
         this.addEffect(OPEffects.ELECTRIFIED, "Electrified");
         this.addEffect(OPEffects.GLOOM_TOXIN, "Gloom Toxin");

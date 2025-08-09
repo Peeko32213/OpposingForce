@@ -25,7 +25,7 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class ElectricCharge extends AbstractElectricCharge {
+public class ElectricCharge extends AbstractFrictionlessProjectile {
 
     private static final EntityDataAccessor<Float> CHARGE_SCALE = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> MAX_BOUNCES = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.INT);
@@ -37,7 +37,7 @@ public class ElectricCharge extends AbstractElectricCharge {
     RandomSource rand = level.getRandom();
     private int bounces = 0;
 
-    public ElectricCharge(EntityType<? extends AbstractElectricCharge> entityType, Level level) {
+    public ElectricCharge(EntityType<? extends AbstractFrictionlessProjectile> entityType, Level level) {
         super(entityType, level);
     }
 

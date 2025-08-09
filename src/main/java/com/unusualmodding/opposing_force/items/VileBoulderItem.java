@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.items;
 
 import com.unusualmodding.opposing_force.entity.Slug;
 import com.unusualmodding.opposing_force.registry.OPEffects;
+import com.unusualmodding.opposing_force.registry.OPEnchantments;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -19,12 +20,12 @@ public class VileBoulderItem extends SwordItem {
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
-        boolean result = super.hurtEnemy(itemStack, target, attacker);
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        boolean result = super.hurtEnemy(stack, target, attacker);
 
         if (result) {
             if (target.getRandom().nextBoolean() && !target.hasEffect(OPEffects.SLUG_INFESTATION.get()) && !(target instanceof Slug)) {
-                target.addEffect(new MobEffectInstance(OPEffects.SLUG_INFESTATION.get(), 300, 0, false, true));
+                target.addEffect(new MobEffectInstance(OPEffects.SLUG_INFESTATION.get(), 300, stack.getEnchantmentLevel(OPEnchantments.PLAGUE.get()), false, true));
                 target.playSound(OPSoundEvents.SLUG_ATTACK.get(), 1.5F, 1);
 
                 for (int i = 0; i < 16; i++) {

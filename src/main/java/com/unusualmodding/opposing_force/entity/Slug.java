@@ -143,8 +143,8 @@ public class Slug extends Monster implements OwnableEntity {
 
     @Override
     protected void dropFromLootTable(DamageSource source, boolean drops) {
-        int extraEggs = this.getSlugSize() / 3;
-        if (this.getSlugSize() > 4) {
+        int extraEggs = this.getSlugSize() / 2;
+        if (this.getSlugSize() > 3) {
             for (int i = 0; i < extraEggs; i++) {
                 super.dropFromLootTable(source, drops);
             }
