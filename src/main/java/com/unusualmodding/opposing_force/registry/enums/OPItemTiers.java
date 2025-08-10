@@ -2,15 +2,16 @@ package com.unusualmodding.opposing_force.registry.enums;
 
 import com.unusualmodding.opposing_force.registry.OPItems;
 import net.minecraft.util.LazyLoadedValue;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.common.Tags;
 
 import java.util.function.Supplier;
 
 public enum OPItemTiers implements Tier {
 
-    VILE(0, 196, 3.0F, 0.0F, 8, () -> Ingredient.of(OPItems.SLUG_EGGS.get()));
+    VILE(0, 196, 3.0F, 0.0F, 8, () -> Ingredient.of(OPItems.SLUG_EGGS.get())),
+    EMERALD(3, 1561, 8.0F, 3.0F, 14, () -> Ingredient.of(Tags.Items.GEMS_EMERALD));
 
     private final int level;
     private final int durability;

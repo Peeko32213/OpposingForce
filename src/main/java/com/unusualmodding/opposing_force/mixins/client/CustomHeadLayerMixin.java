@@ -45,23 +45,23 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
     @Shadow @Final private float scaleZ;
     @Unique private Map<MobHeadBlock.Type, MobHeadModelBase> headModelBaseMap;
 
-    public CustomHeadLayerMixin(RenderLayerParent<T, M> p_117346_) {
-        super(p_117346_);
+    public CustomHeadLayerMixin(RenderLayerParent<T, M> renderLayerParent) {
+        super(renderLayerParent);
     }
 
     @Inject(at = @At("TAIL"), method = "<init>(Lnet/minecraft/client/renderer/entity/RenderLayerParent;Lnet/minecraft/client/model/geom/EntityModelSet;FFFLnet/minecraft/client/renderer/ItemInHandRenderer;)V")
-    private void renderHeads(RenderLayerParent parent, EntityModelSet modelSet, float p_234824_, float p_234825_, float p_234826_, ItemInHandRenderer handRenderer, CallbackInfo callbackInfo) {
+    private void opposingForce$renderHeads(RenderLayerParent parent, EntityModelSet modelSet, float p_234824_, float p_234825_, float p_234826_, ItemInHandRenderer handRenderer, CallbackInfo ci) {
         this.headModelBaseMap = MobHeadBlockEntityRenderer.createMobHeadRenderers(modelSet);
     }
 
     @Inject(at = @At("HEAD"), method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V", cancellable = true)
-    private void renderHeads(PoseStack poseStack, MultiBufferSource bufferSource, int i, T t, float v, float v1, float v2, float v3, float v4, float v5, CallbackInfo callbackInfo) {
+    private void opposingForce$renderHeads(PoseStack poseStack, MultiBufferSource bufferSource, int i, T t, float v, float v1, float v2, float v3, float v4, float v5, CallbackInfo ci) {
         ItemStack itemstack = t.getItemBySlot(EquipmentSlot.HEAD);
         Item item = itemstack.getItem();
         if (!itemstack.isEmpty() && item instanceof BlockItem) {
             Block block = ((BlockItem)item).getBlock();
             if (block instanceof MobHeadBlock || block instanceof WallMobHeadBlock) {
-                callbackInfo.cancel();
+                ci.cancel();
                 poseStack.pushPose();
                 poseStack.scale(this.scaleX, this.scaleY, this.scaleZ);
 

@@ -5,14 +5,18 @@ import com.unusualmodding.opposing_force.registry.OPAttributes;
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import com.unusualmodding.opposing_force.registry.OPEffects;
 import com.unusualmodding.opposing_force.registry.tags.OPDamageTypeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import com.unusualmodding.opposing_force.effects.*;
@@ -26,9 +30,9 @@ public class AttributeEvents {
     public static void onLivingVisibility(LivingEvent.LivingVisibilityEvent event) {
         if (event.getLookingEntity() != null) {
             double attributeValue = 0.0D;
-            for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
-                ItemStack stack = event.getEntity().getItemBySlot(equipmentSlot);
-                Collection<AttributeModifier> modifiers = stack.getAttributeModifiers(equipmentSlot).get(OPAttributes.STEALTH.get());
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                ItemStack stack = event.getEntity().getItemBySlot(slot);
+                Collection<AttributeModifier> modifiers = stack.getAttributeModifiers(slot).get(OPAttributes.STEALTH.get());
                 if (!modifiers.isEmpty()) {
                     attributeValue += modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum();
                 }
@@ -53,12 +57,10 @@ public class AttributeEvents {
         if (source.is(OPDamageTypes.ELECTRIFIED)) {
             float electricResistance = 0.0F;
             for (EquipmentSlot slot : EquipmentSlot.values()) {
-                if (slot.getType() == EquipmentSlot.Type.ARMOR) {
-                    ItemStack stack = target.getItemBySlot(slot);
-                    Collection<AttributeModifier> electricResistance1 = stack.getAttributeModifiers(slot).get(OPAttributes.ELECTRIC_RESISTANCE.get());
-                    if (!electricResistance1.isEmpty()) {
-                        electricResistance += (float) electricResistance1.stream().mapToDouble(AttributeModifier::getAmount).sum();
-                    }
+                ItemStack stack = target.getItemBySlot(slot);
+                Collection<AttributeModifier> modifiers = stack.getAttributeModifiers(slot).get(OPAttributes.ELECTRIC_RESISTANCE.get());
+                if (!modifiers.isEmpty()) {
+                    electricResistance += (float) modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum();
                 }
             }
 
@@ -69,12 +71,10 @@ public class AttributeEvents {
         if (source.is(OPDamageTypeTags.BULK_RESISTS)) {
             float bulk = 0.0F;
             for (EquipmentSlot slot : EquipmentSlot.values()) {
-                if (slot.getType() == EquipmentSlot.Type.ARMOR) {
-                    ItemStack stack = target.getItemBySlot(slot);
-                    Collection<AttributeModifier> bulkAmount = stack.getAttributeModifiers(slot).get(OPAttributes.BULK.get());
-                    if (!bulkAmount.isEmpty()) {
-                        bulk += (float) bulkAmount.stream().mapToDouble(AttributeModifier::getAmount).sum();
-                    }
+                ItemStack stack = target.getItemBySlot(slot);
+                Collection<AttributeModifier> modifiers = stack.getAttributeModifiers(slot).get(OPAttributes.BULK.get());
+                if (!modifiers.isEmpty()) {
+                    bulk += (float) modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum();
                 }
             }
 
@@ -91,19 +91,54 @@ public class AttributeEvents {
         float jumpPower = 0.0F;
 
         for (EquipmentSlot slot : EquipmentSlot.values()) {
-            if (slot.getType() == EquipmentSlot.Type.ARMOR) {
-                ItemStack stack = entity.getItemBySlot(slot);
-
-                Collection<AttributeModifier> jumpPowerAmount = stack.getAttributeModifiers(slot).get(OPAttributes.JUMP_POWER.get());
-                if (!jumpPowerAmount.isEmpty()) {
-                    jumpPower += (float) jumpPowerAmount.stream().mapToDouble(AttributeModifier::getAmount).sum();
-                }
+            ItemStack stack = entity.getItemBySlot(slot);
+            Collection<AttributeModifier> modifiers = stack.getAttributeModifiers(slot).get(OPAttributes.JUMP_POWER.get());
+            if (!modifiers.isEmpty()) {
+                jumpPower += (float) modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum();
             }
         }
 
         float jumpPowerModifier = jumpPower / 10;
         if (jumpPower > 0.0F) {
             entity.setDeltaMovement(entity.getDeltaMovement().x(), entity.getDeltaMovement().y() + jumpPowerModifier, entity.getDeltaMovement().z());
+        }
+    }
+
+    @SubscribeEvent
+    public static void bonusXPBlock(BlockEvent.BreakEvent event) {
+        Player player = event.getPlayer();
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            ItemStack stack = player.getItemBySlot(slot);
+            Collection<AttributeModifier> modifiers = stack.getAttributeModifiers(slot).get(OPAttributes.EXPERIENCE_GAIN.get());
+            if (!modifiers.isEmpty()) {
+                float experienceBoost = event.getExpToDrop() * (float) modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum();
+                int base = Mth.floor(experienceBoost);
+                float bonus = Mth.frac(experienceBoost);
+                if (bonus != 0.0F && Math.random() < bonus) {
+                    ++base;
+                }
+                event.setExpToDrop(event.getExpToDrop() + base);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void bonusXPMobs(LivingExperienceDropEvent event) {
+        Player player = event.getAttackingPlayer();
+        if (player != null) {
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                ItemStack stack = player.getItemBySlot(slot);
+                Collection<AttributeModifier> modifiers = stack.getAttributeModifiers(slot).get(OPAttributes.EXPERIENCE_GAIN.get());
+                if (!modifiers.isEmpty()) {
+                    float experienceBoost = (float) (event.getDroppedExperience() * modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum());
+                    int base = Mth.floor(experienceBoost);
+                    float bonus = Mth.frac(experienceBoost);
+                    if (bonus != 0.0F && Math.random() < bonus) {
+                        ++base;
+                    }
+                    event.setDroppedExperience(event.getDroppedExperience() + base);
+                }
+            }
         }
     }
 }

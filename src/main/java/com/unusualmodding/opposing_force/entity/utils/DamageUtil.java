@@ -1,4 +1,4 @@
-package com.unusualmodding.opposing_force.entity.util;
+package com.unusualmodding.opposing_force.entity.utils;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;

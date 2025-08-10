@@ -21,13 +21,12 @@ public abstract class EntityMixin {
     public abstract void playSound(SoundEvent soundEvent, float pVolume, float pPitch);
 
     @Inject(method = "playStepSound", at = @At("HEAD"), cancellable = true)
-    private void playStepSound(BlockPos pos, BlockState state, CallbackInfo callback) {
-
+    private void opposingForce$playStepSound(BlockPos pos, BlockState state, CallbackInfo ci) {
         float volumeModifier;
 
         if ((Entity) (Object) this instanceof LivingEntity mob) {
             if (mob.getItemBySlot(EquipmentSlot.FEET).getItem() == OPItems.DEEPWOVEN_BOOTS.get()) {
-                callback.cancel();
+                ci.cancel();
                 volumeModifier = 0.01F;
                 SoundType soundtype = state.getSoundType(mob.level, pos, mob);
                 this.playSound(soundtype.getStepSound(), soundtype.getVolume() * volumeModifier, soundtype.getPitch());

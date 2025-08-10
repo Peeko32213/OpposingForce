@@ -3,7 +3,7 @@ package com.unusualmodding.opposing_force.mixins.client;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.unusualmodding.opposing_force.client.renderer.items.OPArmorRenderProperties;
-import com.unusualmodding.opposing_force.items.interfaces.ICustomArmorRender;
+import com.unusualmodding.opposing_force.items.interfaces.CustomArmorRender;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -46,7 +46,7 @@ public abstract class HumanoidArmorLayerMixin extends RenderLayer {
     @Inject(method = {"renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;)V"}, at = @At(value = "HEAD"), cancellable = true)
     private void opposingForce$renderArmorPiece(PoseStack poseStack, MultiBufferSource multiBufferSource, LivingEntity livingEntity, EquipmentSlot equipmentSlot, int light, HumanoidModel humanoidModel, CallbackInfo ci) {
         ItemStack itemstack = livingEntity.getItemBySlot(equipmentSlot);
-        if (itemstack.getItem() instanceof ICustomArmorRender) {
+        if (itemstack.getItem() instanceof CustomArmorRender) {
             ci.cancel();
             lastArmorItemStackRendered = livingEntity.getItemBySlot(equipmentSlot);
             Item item = itemstack.getItem();

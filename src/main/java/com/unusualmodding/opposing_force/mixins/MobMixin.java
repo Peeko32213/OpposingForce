@@ -25,7 +25,7 @@ public abstract class MobMixin extends LivingEntity {
     }
 
     @Inject(method = "populateDefaultEquipmentSlots", at = @At("TAIL"))
-    private void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty, CallbackInfo info) {
+    private void opposingForce$populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty, CallbackInfo ci) {
         if (random.nextFloat() < 0.5F) {
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (slot.getType() == EquipmentSlot.Type.ARMOR) {

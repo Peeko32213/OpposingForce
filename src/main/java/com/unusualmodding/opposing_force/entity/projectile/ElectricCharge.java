@@ -166,7 +166,7 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
                 if (dotProduct > 0.5) {
                     Vec3 newMotion = courseVec.scale(courseLength / totalLength).add(targetVec.scale(courseLength / totalLength));
                     if (tickCount % 8 == 0) {
-                        this.setDeltaMovement(newMotion.add(0, 0.005F, 0));
+                        this.setDeltaMovement(newMotion.add(0, 0, 0));
                     }
                 } else if (!this.level().isClientSide()) {
                     this.setTarget(null);
@@ -240,9 +240,9 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult entityHitResult) {
-        super.onHitEntity(entityHitResult);
-        Entity entity = entityHitResult.getEntity();
+    protected void onHitEntity(EntityHitResult result) {
+        super.onHitEntity(result);
+        Entity entity = result.getEntity();
 
         if (!this.level().isClientSide) {
             this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
@@ -304,7 +304,7 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
         }
 
         if (target == null) {
-            AABB positionBB = this.getBoundingBox().inflate(4 + this.getChargeScale(), 4 + this.getChargeScale(), 4 + this.getChargeScale());
+            AABB positionBB = this.getBoundingBox().inflate(6 + this.getChargeScale(), 6 + this.getChargeScale(), 6 + this.getChargeScale());
 
             AABB targetBB = positionBB;
 

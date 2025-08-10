@@ -1,6 +1,7 @@
 {
   "values": [
     "opposing_force:tomahawk",
-    "opposing_force:laser"
+    "opposing_force:laser",
+    "opposing_force:laser_bolt"
   ]
 }

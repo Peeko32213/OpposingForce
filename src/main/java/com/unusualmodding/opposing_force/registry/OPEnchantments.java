@@ -34,7 +34,6 @@ public class OPEnchantments {
 
     public static final RegistryObject<Enchantment> SPLITTING = ENCHANTMENTS.register("splitting", () -> new OPEnchantment("splitting", Enchantment.Rarity.RARE, BLASTER, 5, 20, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> RAPID_FIRE = ENCHANTMENTS.register("rapid_fire", () -> new OPEnchantment("rapid_fire", Enchantment.Rarity.RARE, BLASTER, 3, 20, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> LIGHTSPEED = ENCHANTMENTS.register("lightspeed", () -> new TreasureEnchantment("lightspeed", Enchantment.Rarity.VERY_RARE, BLASTER, 1, 30, EquipmentSlot.MAINHAND));
 
     public static final RegistryObject<Enchantment> KICKBACK = ENCHANTMENTS.register("kickback", () -> new OPEnchantment("kickback", Enchantment.Rarity.RARE, EnchantmentCategory.CROSSBOW, 4, 20, EquipmentSlot.MAINHAND));
 
@@ -48,10 +47,7 @@ public class OPEnchantments {
         if (enchantment1 == QUASAR.get() && (enchantment2 == Enchantments.MULTISHOT || enchantment2 == CAPACITANCE.get() || enchantment2 == Enchantments.QUICK_CHARGE || enchantment2 == REBOUND.get())) {
             return false;
         }
-        if (enchantment1 == STATIC_ATTRACTION.get() && (enchantment2 == CAPACITANCE.get() || enchantment2 == QUASAR.get() || enchantment2 == REBOUND.get())) {
-            return false;
-        }
-        if (enchantment1 == LIGHTSPEED.get() && (enchantment2 == RAPID_FIRE.get())) {
+        if (enchantment1 == STATIC_ATTRACTION.get() && (enchantment2 == CAPACITANCE.get() || enchantment2 == QUASAR.get())) {
             return false;
         }
         return true;

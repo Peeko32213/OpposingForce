@@ -1,6 +1,6 @@
 package com.unusualmodding.opposing_force.network;
 
-import com.unusualmodding.opposing_force.entity.util.DamageUtil;
+import com.unusualmodding.opposing_force.entity.utils.DamageUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;

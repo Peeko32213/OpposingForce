@@ -59,23 +59,23 @@ public class OPItems {
     public static final RegistryObject<Item> WOODEN_COVER = registerItem("wooden_cover", ()-> new WoodenArmorItem(OPArmorMaterials.WOODEN, ArmorItem.Type.LEGGINGS, new Item.Properties()));
     public static final RegistryObject<Item> WOODEN_BOOTS = registerItem("wooden_boots", ()-> new WoodenArmorItem(OPArmorMaterials.WOODEN, ArmorItem.Type.BOOTS, new Item.Properties()));
 
-    public static final RegistryObject<Item> EMERALD_MASK = registerItem("emerald_mask", ()-> new EmeraldArmorItem(OPArmorMaterials.EMERALD, ArmorItem.Type.HELMET, new Item.Properties()));
-    public static final RegistryObject<Item> EMERALD_CHESTPLATE = registerItem("emerald_chestplate", ()-> new EmeraldArmorItem(OPArmorMaterials.EMERALD, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final RegistryObject<Item> EMERALD_LEGGINGS = registerItem("emerald_leggings", ()-> new EmeraldArmorItem(OPArmorMaterials.EMERALD, ArmorItem.Type.LEGGINGS, new Item.Properties()));
-    public static final RegistryObject<Item> EMERALD_BOOTS = registerItem("emerald_boots", ()-> new EmeraldArmorItem(OPArmorMaterials.EMERALD, ArmorItem.Type.BOOTS, new Item.Properties()));
+    public static final RegistryObject<Item> EMERALD_MASK = registerItem("emerald_mask", ()-> new EmeraldArmorItem(OPArmorMaterials.EMERALD, ArmorItem.Type.HELMET, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERALD_CHESTPLATE = registerItem("emerald_chestplate", ()-> new EmeraldArmorItem(OPArmorMaterials.EMERALD, ArmorItem.Type.CHESTPLATE, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERALD_LEGGINGS = registerItem("emerald_leggings", ()-> new EmeraldArmorItem(OPArmorMaterials.EMERALD, ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERALD_BOOTS = registerItem("emerald_boots", ()-> new EmeraldArmorItem(OPArmorMaterials.EMERALD, ArmorItem.Type.BOOTS, new Item.Properties().rarity(Rarity.UNCOMMON)));
 
-    public static final RegistryObject<Item> EMERALD_SWORD = registerItem("emerald_sword", ()-> new SwordItem(Tiers.DIAMOND, 3, -2.4F, new Item.Properties()));
-    public static final RegistryObject<Item> EMERALD_PICKAXE = registerItem("emerald_pickaxe", ()-> new PickaxeItem(Tiers.DIAMOND, 1, -2.8F, new Item.Properties()));
-    public static final RegistryObject<Item> EMERALD_AXE = registerItem("emerald_axe", ()-> new AxeItem(Tiers.DIAMOND, 5, -3F, new Item.Properties()));
-    public static final RegistryObject<Item> EMERALD_SHOVEL = registerItem("emerald_shovel", ()-> new ShovelItem(Tiers.DIAMOND, 1.5F, -3F, new Item.Properties()));
-    public static final RegistryObject<Item> EMERALD_HOE = registerItem("emerald_hoe", ()-> new HoeItem(Tiers.DIAMOND, -4, 0F, new Item.Properties()));
+    public static final RegistryObject<Item> EMERALD_SWORD = registerItem("emerald_sword", ()-> new EmeraldSwordItem(OPItemTiers.EMERALD, 3, -2.4F, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERALD_PICKAXE = registerItem("emerald_pickaxe", ()-> new EmeraldPickaxeItem(OPItemTiers.EMERALD, 1, -2.8F, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERALD_AXE = registerItem("emerald_axe", ()-> new EmeraldAxeItem(OPItemTiers.EMERALD, 5, -3F, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERALD_SHOVEL = registerItem("emerald_shovel", ()-> new EmeraldShovelItem(OPItemTiers.EMERALD, 1.5F, -3F, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERALD_HOE = registerItem("emerald_hoe", ()-> new EmeraldHoeItem(OPItemTiers.EMERALD, -3, 0F, new Item.Properties().rarity(Rarity.UNCOMMON)));
 
     public static final RegistryObject<Item> STONE_HELMET = registerItem("stone_helmet", ()-> new StoneArmorItem(OPArmorMaterials.STONE, ArmorItem.Type.HELMET, new Item.Properties()));
     public static final RegistryObject<Item> STONE_CHESTPLATE = registerItem("stone_chestplate", ()-> new StoneArmorItem(OPArmorMaterials.STONE, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
     public static final RegistryObject<Item> STONE_LEGGINGS = registerItem("stone_leggings", ()-> new StoneArmorItem(OPArmorMaterials.STONE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
     public static final RegistryObject<Item> STONE_BOOTS = registerItem("stone_boots", ()-> new StoneArmorItem(OPArmorMaterials.STONE, ArmorItem.Type.BOOTS, new Item.Properties()));
 
-    public static final RegistryObject<Item> CLOUD_BOOTS = registerItem("cloud_boots", ()-> new CloudBootsItem(OPArmorMaterials.CLOUD_BOOTS, new Item.Properties()));
+    public static final RegistryObject<Item> CLOUD_BOOTS = registerItem("cloud_boots", ()-> new CloudBootsItem(OPArmorMaterials.CLOUD_BOOTS, new Item.Properties().rarity(Rarity.RARE)));
 
     private static <I extends Item> RegistryObject<I> registerItem(String name, Supplier<? extends I> supplier) {
         RegistryObject<I> item = ITEMS.register(name, supplier);

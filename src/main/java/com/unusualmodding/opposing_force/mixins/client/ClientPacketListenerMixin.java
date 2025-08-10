@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ClientPacketListenerMixin {
 
     @Inject(at = @At(value = "HEAD"), method = "postAddEntitySoundInstance")
-    private void handleAddMob(Entity entity, CallbackInfo ci) {
+    private void opposingForce$postAddEntitySoundInstance(Entity entity, CallbackInfo ci) {
         if (entity instanceof ElectricCharge electricBall) {
             Minecraft.getInstance().getSoundManager().queueTickingSound(new ElectricChargeSound(electricBall));
         }

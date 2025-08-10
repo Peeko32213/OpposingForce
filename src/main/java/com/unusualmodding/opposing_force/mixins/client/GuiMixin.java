@@ -10,6 +10,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
 import org.apache.commons.lang3.tuple.Pair;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -17,20 +18,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Gui.class)
 public class GuiMixin {
 
-    private static boolean drawForHeartType(Gui.HeartType type) {
+    @Unique
+    private static boolean opposingForce$drawForHeartType(Gui.HeartType type) {
         return type != Gui.HeartType.CONTAINER && type != Gui.HeartType.ABSORBING && type != Gui.HeartType.FROZEN;
     }
 
-    private static boolean hasAnyCustomHearts(Player player) {
+    @Unique
+    private static boolean opposingForce$hasAnyCustomHearts(Player player) {
         if (player.hasEffect(OPEffects.ELECTRIFIED.get())) {
             return true;
         }
         return player.hasEffect(OPEffects.GLOOM_TOXIN.get());
     }
 
-    @Inject(method = "renderHeart(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/gui/Gui$HeartType;IIIZZ)V", at = @At("HEAD"), cancellable = true)
-    private void renderHeart(GuiGraphics stack, Gui.HeartType __, int x, int y, int v, boolean blinking, boolean halfHeart, CallbackInfo cbi) {
-        if (!blinking && drawForHeartType(__) && Minecraft.getInstance().cameraEntity instanceof Player player && hasAnyCustomHearts(player)) {
+    @Inject(method = "renderHeart", at = @At("HEAD"), cancellable = true)
+    private void opposingForce$renderHeart(GuiGraphics stack, Gui.HeartType __, int x, int y, int v, boolean blinking, boolean halfHeart, CallbackInfo cbi) {
+        if (!blinking && opposingForce$drawForHeartType(__) && Minecraft.getInstance().cameraEntity instanceof Player player && opposingForce$hasAnyCustomHearts(player)) {
 
             GloomToxinHeartType gloomToxin = GloomToxinHeartType.getType(player);
             ElectrifiedHeartType electrified = ElectrifiedHeartType.getType(player);

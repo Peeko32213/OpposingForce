@@ -9,13 +9,17 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.text.WordUtils;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Supplier;
 
 public class OPLanguageProvider extends LanguageProvider {
@@ -160,7 +164,6 @@ public class OPLanguageProvider extends LanguageProvider {
         this.addEnchantmentWithDesc(OPEnchantments.PLAGUE.get(), "Increases the level of slug infestation inflicted");
         this.addEnchantmentWithDesc(OPEnchantments.RAPID_FIRE.get(), "Increases the fire rate of the blaster at the cost of damage per shot");
         this.addEnchantmentWithDesc(OPEnchantments.SPLITTING.get(), "Fired laser bolts split into multiple laser bolts on hit");
-        this.addEnchantmentWithDesc(OPEnchantments.LIGHTSPEED.get(), "Fired laser bolts go much faster and deal more damage");
 
         this.addEffect(OPEffects.ELECTRIFIED, "Electrified");
         this.addEffect(OPEffects.GLOOM_TOXIN, "Gloom Toxin");
@@ -199,12 +202,17 @@ public class OPLanguageProvider extends LanguageProvider {
         this.add("death.attack.opposing_force.laser", "%1$s was vaporized by %2$s");
         this.add("death.attack.opposing_force.tomahawk", "%1$s was domed by %2$s");
         this.add("death.attack.opposing_force.tomahawk.item", "%1$s was domed by %2$s using %3$s");
+        this.add("death.attack.opposing_force.laser_bolt", "%1$s was blasted by %2$s");
+        this.add("death.attack.opposing_force.laser_bolt.item", "%1$s was blasted by %2$s using %3$s");
 
-        this.add("attribute.opposing_force.name.generic.stealth", "Stealth");
-        this.add("attribute.opposing_force.name.generic.electric_resistance", "Electricity Resistance");
-        this.add("attribute.opposing_force.name.generic.bulk", "Bulk");
-        this.add("attribute.opposing_force.name.generic.jump_power", "Jump Power");
-        this.add("attribute.opposing_force.name.generic.air_speed", "Air Speed");
+        this.add("attribute.name.opposing_force.stealth", "Stealth");
+        this.add("attribute.name.opposing_force.electric_resistance", "Electricity Resistance");
+        this.add("attribute.name.opposing_force.bulk", "Bulk");
+        this.add("attribute.name.opposing_force.jump_power", "Jump Power");
+        this.add("attribute.name.opposing_force.air_speed", "Air Speed");
+        this.add("attribute.name.opposing_force.experience_gain", "Experience Gain");
+        this.add("attribute.name.opposing_force.fortune", "Fortune");
+        this.add("attribute.name.opposing_force.villager_reputation", "Villager Reputation");
 
         add("item.opposing_force.cloud_boots.desc", "+Light as a Feather");
     }

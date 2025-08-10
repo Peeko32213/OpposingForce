@@ -5,19 +5,21 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "opposing_force.refmap.json",
   "mixins": [
+    "ApplyBonusCountMixin",
     "CreeperMixin",
     "CrossbowItemMixin",
+    "EnchantmentHelperMixin",
     "EntityMixin",
     "MobMixin",
-    "PlayerMixin"
+    "PlayerMixin",
+    "VillagerMixin"
   ],
   "client": [
     "client.ClientPacketListenerMixin",
     "client.CustomHeadLayerMixin",
     "client.GuiMixin",
     "client.HumanoidArmorLayerMixin",
-    "client.HumanoidModelMixin",
-    "client.LocalPlayerMixin"
+    "client.HumanoidModelMixin"
   ],
   "injectors": {
     "defaultRequire": 1

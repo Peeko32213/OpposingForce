@@ -20,7 +20,6 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
     private static final EntityDataAccessor<Integer> DISRUPTOR_LEVEL = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DISRUPTOR = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> RAPID_FIRE = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> LIGHTSPEED = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
 
     RandomSource rand = level.getRandom();
 
@@ -54,7 +53,6 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
         super.defineSynchedData();
         this.getEntityData().define(DISRUPTOR, false);
         this.getEntityData().define(RAPID_FIRE, false);
-        this.getEntityData().define(LIGHTSPEED, false);
         this.getEntityData().define(DISRUPTOR_LEVEL, 0);
     }
 
@@ -82,14 +80,6 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
         this.entityData.set(RAPID_FIRE, rapidFire);
     }
 
-    public boolean isLightspeed() {
-        return this.entityData.get(LIGHTSPEED);
-    }
-
-    public void setLightspeed(boolean lightspeed) {
-        this.entityData.set(LIGHTSPEED, lightspeed);
-    }
-
     @Override
     public void tick() {
         super.tick();
@@ -106,7 +96,7 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
     protected void onHitEntity(EntityHitResult entityHitResult) {
         super.onHitEntity(entityHitResult);
         Entity entity = entityHitResult.getEntity();
-        DamageSource damageSource = this.damageSources().source(OPDamageTypes.LASER);
+        DamageSource damageSource = this.damageSources().source(OPDamageTypes.LASER_BOLT);
         float damage;
 
         if (!this.level().isClientSide) {
@@ -115,9 +105,6 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
                 damage = 3.0F;
                 entity.hurt(damageSource, damage);
                 entity.invulnerableTime -= 5;
-            } else if (this.isLightspeed()) {
-                damage = 8.0F;
-                entity.hurt(damageSource, damage);
             } else {
                 damage = 5.0F;
                 entity.hurt(damageSource, damage);

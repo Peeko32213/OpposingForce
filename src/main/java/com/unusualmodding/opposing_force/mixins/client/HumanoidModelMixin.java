@@ -25,8 +25,8 @@ public abstract class HumanoidModelMixin extends Model {
         super(renderType);
     }
 
-    @Inject(at = @At("HEAD"), method = "poseRightArm(Lnet/minecraft/world/entity/LivingEntity;)V", cancellable = true)
-    private void citadel_poseRightArm(LivingEntity entity, CallbackInfo callbackInfo) {
+    @Inject(at = @At("HEAD"), method = "poseRightArm", cancellable = true)
+    private void opposingForce$poseRightArm(LivingEntity entity, CallbackInfo callbackInfo) {
         PoseHandEvent event = new PoseHandEvent(entity, (HumanoidModel) ((Model) this), false);
         MinecraftForge.EVENT_BUS.post(event);
         if (event.getResult() == Event.Result.ALLOW) {
@@ -34,8 +34,8 @@ public abstract class HumanoidModelMixin extends Model {
         }
     }
 
-    @Inject(at = @At("HEAD"), method = "poseLeftArm(Lnet/minecraft/world/entity/LivingEntity;)V", cancellable = true)
-    private void citadel_poseLeftArm(LivingEntity entity, CallbackInfo callbackInfo) {
+    @Inject(at = @At("HEAD"), method = "poseLeftArm", cancellable = true)
+    private void opposingForce$poseLeftArm(LivingEntity entity, CallbackInfo callbackInfo) {
         PoseHandEvent event = new PoseHandEvent(entity, (HumanoidModel) ((Model) this), true);
         MinecraftForge.EVENT_BUS.post(event);
         if (event.getResult() == Event.Result.ALLOW) {

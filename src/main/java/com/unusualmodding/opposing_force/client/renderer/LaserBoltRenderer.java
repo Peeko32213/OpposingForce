@@ -34,11 +34,7 @@ public class LaserBoltRenderer extends EntityRenderer<LaserBolt> {
     public void render(LaserBolt laserBolt, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         VertexConsumer VertexConsumer = buffer.getBuffer(OPRenderTypes.glowingEyes(this.getTextureLocation(laserBolt)));
-        if (laserBolt.isLightspeed()) {
-            poseStack.scale(-2.0F, -2.0F, 2.0F);
-        } else {
-            poseStack.scale(-1.0F, -1.0F, 1.0F);
-        }
+        poseStack.scale(-1.0F, -1.0F, 1.0F);
         float f = Mth.rotLerp(partialTicks, laserBolt.yRotO, laserBolt.getYRot());
         float f1 = Mth.lerp(partialTicks, laserBolt.xRotO, laserBolt.getXRot());
         this.model.setupRotation(f, f1);

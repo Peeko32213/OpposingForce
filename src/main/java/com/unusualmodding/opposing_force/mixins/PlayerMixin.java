@@ -1,6 +1,5 @@
 package com.unusualmodding.opposing_force.mixins;
 
-import com.unusualmodding.opposing_force.items.CloudBootsItem;
 import com.unusualmodding.opposing_force.registry.OPAttributes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -30,25 +29,23 @@ public abstract class PlayerMixin extends LivingEntity {
     }
 
     @Inject(method = "getFlyingSpeed", at = @At(value = "RETURN"), cancellable = true)
-    protected void getFlyingSpeed(CallbackInfoReturnable<Float> callbackInfoReturnable) {
+    protected void opposingForce$getFlyingSpeed(CallbackInfoReturnable<Float> cir) {
         if (!this.isPassenger() && !this.getAbilities().flying) {
             float airSpeed = 0.0F;
             for (EquipmentSlot slot : EquipmentSlot.values()) {
-                if (slot.getType() == EquipmentSlot.Type.ARMOR) {
-                    ItemStack stack = this.getItemBySlot(slot);
-                    Collection<AttributeModifier> airSpeedAmount = stack.getAttributeModifiers(slot).get(OPAttributes.AIR_SPEED.get());
-                    if (!airSpeedAmount.isEmpty()) {
-                        airSpeed += (float) airSpeedAmount.stream().mapToDouble(AttributeModifier::getAmount).sum();
-                    }
+                ItemStack stack = this.getItemBySlot(slot);
+                Collection<AttributeModifier> modifiers = stack.getAttributeModifiers(slot).get(OPAttributes.AIR_SPEED.get());
+                if (!modifiers.isEmpty()) {
+                    airSpeed += (float) modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum();
                 }
             }
 
             float airSpeedModifier = airSpeed / 10;
             if (airSpeed > 0.0F) {
                 if (this.isSprinting()) {
-                    callbackInfoReturnable.setReturnValue(Math.max(0.025999999F + airSpeedModifier, 0.005F));
+                    cir.setReturnValue(Math.max(0.025999999F + airSpeedModifier, 0.005F));
                 } else {
-                    callbackInfoReturnable.setReturnValue(Math.max(0.02F + airSpeedModifier, 0.005F));
+                    cir.setReturnValue(Math.max(0.02F + airSpeedModifier, 0.005F));
                 }
             }
         }

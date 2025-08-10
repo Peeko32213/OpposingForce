@@ -4,7 +4,6 @@
     "#minecraft:is_explosion",
     "minecraft:mob_attack",
     "minecraft:generic",
-    "minecraft:player_attack",
-    "minecraft:sonic_boom"
+    "minecraft:player_attack"
   ]
 }
