@@ -36,7 +36,7 @@ public class EmeraldArmorItem extends ArmorItem {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.putAll(super.getAttributeModifiers(slot, stack));
         UUID uuid = ArmorItem.ARMOR_MODIFIER_UUID_PER_TYPE.get(this.type);
-        builder.put(OPAttributes.EXPERIENCE_GAIN.get(), new AttributeModifier(uuid, "Experience gain", 0.4F, AttributeModifier.Operation.MULTIPLY_BASE));
+        builder.put(OPAttributes.EXPERIENCE_GAIN.get(), new AttributeModifier(uuid, "Experience gain", 0.25F, AttributeModifier.Operation.MULTIPLY_BASE));
         builder.put(OPAttributes.VILLAGER_REPUTATION.get(), new AttributeModifier(uuid, "Villager reputation", 10F, AttributeModifier.Operation.ADDITION));
         return slot == this.getEquipmentSlot() ? builder.build() : super.getAttributeModifiers(slot, stack);
     }
