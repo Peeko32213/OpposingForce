@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.entity.projectile;
 import com.unusualmodding.opposing_force.client.utils.ControlledAnimation;
 import com.unusualmodding.opposing_force.entity.Dicer;
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
+import com.unusualmodding.opposing_force.registry.OPParticles;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -115,7 +116,7 @@ public class DicerLaser extends Entity {
             this.calculateEndPos();
             List<LivingEntity> entities = raytraceEntities(level(), new Vec3(getX(), getY(), getZ()), new Vec3(endPosX, endPosY, endPosZ), false, true, true).entities;
             if (blockSide != null) {
-                spawnExplosionParticles(2);
+                spawnExplosionParticles(12);
             }
             if (!level().isClientSide) {
                 for (LivingEntity target : entities) {
@@ -139,10 +140,7 @@ public class DicerLaser extends Entity {
             float motionY = random.nextFloat() * 0.08F;
             float motionX = velocity * Mth.cos(yaw);
             float motionZ = velocity * Mth.sin(yaw);
-            level().addParticle(ParticleTypes.FLAME, collidePosX, collidePosY + 0.1, collidePosZ, motionX, motionY, motionZ);
-        }
-        for (int i = 0; i < amount / 2; i++) {
-            level().addParticle(ParticleTypes.LAVA, collidePosX, collidePosY + 0.1, collidePosZ, 0, 0, 0);
+            level().addParticle(OPParticles.LASER_BOLT_DUST.get(), collidePosX, collidePosY + 0.1, collidePosZ, motionX, motionY, motionZ);
         }
     }
 

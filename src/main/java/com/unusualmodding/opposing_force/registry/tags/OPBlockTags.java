@@ -8,8 +8,6 @@ import net.minecraft.world.level.block.Block;
 
 public class OPBlockTags {
 
-    public static final TagKey<Block> HOLE_MUSHROOM_BLOCKS = registerBlockTag("hole_mushroom_blocks");
-
     private static TagKey<Block> registerBlockTag(String name) {
         return TagKey.create(Registries.BLOCK, new ResourceLocation(OpposingForce.MOD_ID, name));
     }

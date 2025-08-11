@@ -100,7 +100,7 @@ public class ElectricChargeSyncS2CPacket {
         context.enqueueWork(() -> {
             ClientLevel level = Minecraft.getInstance().level;
             if (level != null) {
-                ElectricChargeParticleType.Data data = new ElectricChargeParticleType.Data(OPParticles.ELECTRIC_ORB.get(),
+                ElectricChargeParticleType.Data data = new ElectricChargeParticleType.Data(OPParticles.ELECTRIC_CHARGE.get(),
                         senderId,
                         range, sections, size, parallelNoise, spreadFactor,
                         branchInitiationFactor, branchContinuationFactor, closeness,

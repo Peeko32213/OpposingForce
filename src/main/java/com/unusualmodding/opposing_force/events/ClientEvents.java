@@ -29,7 +29,8 @@ public final class ClientEvents {
 
     @SubscribeEvent
     public static void registerParticleTypes(RegisterParticleProvidersEvent event){
-        event.registerSpecial(OPParticles.ELECTRIC_ORB.get(), new ElectricChargeParticle.ElectricOrbFactory());
+        event.registerSpecial(OPParticles.ELECTRIC_CHARGE.get(), new ElectricChargeParticle.Factory());
+        event.registerSpriteSet(OPParticles.LASER_BOLT_DUST.get(), LaserBoltDustParticle.Factory::new);
     }
 
     @SubscribeEvent

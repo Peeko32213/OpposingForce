@@ -121,7 +121,7 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
             }
         }
 
-        if (tickCount > (this.isQuasar() ? 50 : 300) || this.getBlockY() > this.level().getMaxBuildHeight() + 30) {
+        if (tickCount > (this.isQuasar() ? 50 : 200) || this.getBlockY() > this.level().getMaxBuildHeight() + 30) {
             this.spawnElectricParticles(this, 4 + rand.nextInt(3), 0, 12);
             if (!this.level().isClientSide) {
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 2.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);

@@ -83,9 +83,9 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
     @Override
     public void tick() {
         super.tick();
-
-        if (tickCount > 200 || this.getBlockY() > this.level().getMaxBuildHeight() + 30) {
+        if (tickCount > 160 || this.getBlockY() > this.level().getMaxBuildHeight() + 30) {
             if (!this.level().isClientSide) {
+                this.level().broadcastEntityEvent(this, (byte) 3);
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
                 this.discard();
             }
@@ -101,6 +101,7 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
 
         if (!this.level().isClientSide) {
             this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+            this.level().broadcastEntityEvent(this, (byte) 3);
             if (this.isRapidFire()) {
                 damage = 3.0F;
                 entity.hurt(damageSource, damage);
@@ -142,6 +143,7 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
         BlockPos pos = result.getBlockPos();
 
         if (!this.level().isClientSide) {
+            this.level().broadcastEntityEvent(this, (byte) 3);
             this.level().playSound(null, pos.getX(), pos.getY(), pos.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
             this.discard();
         }
@@ -150,5 +152,14 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
     @Override
     protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
         return 0;
+    }
+
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == 3) {
+            for (int i = 0; i < 9; ++i) {
+                this.level().addParticle(OPParticles.LASER_BOLT_DUST.get(), this.getX(), this.getY(), this.getZ(), 0.0, 0.0, 0.0);
+            }
+        }
     }
 }

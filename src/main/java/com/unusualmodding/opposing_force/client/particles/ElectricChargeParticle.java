@@ -188,8 +188,8 @@ public class ElectricChargeParticle extends Particle {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static class ElectricOrbFactory implements ParticleProvider<ElectricChargeParticleType.Data> {
-        public ElectricOrbFactory() {}
+    public static class Factory implements ParticleProvider<ElectricChargeParticleType.Data> {
+        public Factory() {}
 
         @Override
         public Particle createParticle(ElectricChargeParticleType.Data data, ClientLevel level, double x, double y, double z, double xd, double yd, double zd) {
