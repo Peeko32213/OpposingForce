@@ -19,6 +19,7 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.common.ForgeMod;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -37,6 +38,7 @@ public class CloudBootsItem extends ArmorItem {
         builder.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(uuid, "Movement speed", 0.2F, AttributeModifier.Operation.MULTIPLY_BASE));
         builder.put(OPAttributes.AIR_SPEED.get(), new AttributeModifier(uuid, "Air speed", 0.4F, AttributeModifier.Operation.MULTIPLY_BASE));
         builder.put(OPAttributes.JUMP_POWER.get(), new AttributeModifier(uuid, "Jump power", 5.0F, AttributeModifier.Operation.ADDITION));
+        builder.put(ForgeMod.STEP_HEIGHT_ADDITION.get(), new AttributeModifier(uuid, "Step height", 1.0F, AttributeModifier.Operation.ADDITION));
         return slot == this.getEquipmentSlot() ? builder.build() : super.getAttributeModifiers(slot, stack);
     }
 

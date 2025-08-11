@@ -208,6 +208,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.add("attribute.name.opposing_force.air_speed", "Air Speed");
         this.add("attribute.name.opposing_force.experience_gain", "Experience Gain");
         this.add("attribute.name.opposing_force.fortune", "Fortune");
+        this.add("attribute.name.opposing_force.looting", "Looting");
         this.add("attribute.name.opposing_force.villager_reputation", "Villager Reputation");
 
         add("item.opposing_force.cloud_boots.desc", "+Light as a Feather");

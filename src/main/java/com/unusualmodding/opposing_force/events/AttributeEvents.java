@@ -14,9 +14,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import com.unusualmodding.opposing_force.effects.*;
@@ -105,39 +104,19 @@ public class AttributeEvents {
     }
 
     @SubscribeEvent
-    public static void bonusXPBlock(BlockEvent.BreakEvent event) {
-        Player player = event.getPlayer();
+    public static void increaseXpGained(PlayerXpEvent.XpChange event) {
+        Player player = event.getEntity();
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             ItemStack stack = player.getItemBySlot(slot);
             Collection<AttributeModifier> modifiers = stack.getAttributeModifiers(slot).get(OPAttributes.EXPERIENCE_GAIN.get());
             if (!modifiers.isEmpty()) {
-                float experienceBoost = event.getExpToDrop() * (float) modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum();
+                float experienceBoost = event.getAmount() * (float) modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum();
                 int base = Mth.floor(experienceBoost);
                 float bonus = Mth.frac(experienceBoost);
                 if (bonus != 0.0F && Math.random() < bonus) {
                     ++base;
                 }
-                event.setExpToDrop(event.getExpToDrop() + base);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void bonusXPMobs(LivingExperienceDropEvent event) {
-        Player player = event.getAttackingPlayer();
-        if (player != null) {
-            for (EquipmentSlot slot : EquipmentSlot.values()) {
-                ItemStack stack = player.getItemBySlot(slot);
-                Collection<AttributeModifier> modifiers = stack.getAttributeModifiers(slot).get(OPAttributes.EXPERIENCE_GAIN.get());
-                if (!modifiers.isEmpty()) {
-                    float experienceBoost = (float) (event.getDroppedExperience() * modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum());
-                    int base = Mth.floor(experienceBoost);
-                    float bonus = Mth.frac(experienceBoost);
-                    if (bonus != 0.0F && Math.random() < bonus) {
-                        ++base;
-                    }
-                    event.setDroppedExperience(event.getDroppedExperience() + base);
-                }
+                event.setAmount(event.getAmount() + base);
             }
         }
     }

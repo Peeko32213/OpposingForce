@@ -24,6 +24,7 @@ public class OPAttributes {
     public static final RegistryObject<Attribute> JUMP_POWER = registerAttribute("jump_power", (id) -> new RangedAttribute(id, 0.0D, 0.0D, 2048.0D).setSyncable(true));
     public static final RegistryObject<Attribute> EXPERIENCE_GAIN = registerAttribute("experience_gain", (id) -> new RangedAttribute(id, 0.0D, 0.0D, 2048.0D).setSyncable(true));
     public static final RegistryObject<Attribute> FORTUNE = registerAttribute("fortune", (id) -> new RangedAttribute(id, 0.0D, 0.0D, 2048.0D).setSyncable(true));
+    public static final RegistryObject<Attribute> LOOTING = registerAttribute("looting", (id) -> new RangedAttribute(id, 0.0D, 0.0D, 2048.0D).setSyncable(true));
     public static final RegistryObject<Attribute> VILLAGER_REPUTATION = registerAttribute("villager_reputation", (id) -> new RangedAttribute(id, 0.0D, 0.0D, 2048.0D).setSyncable(true));
 
     public static RegistryObject<Attribute> registerAttribute(String name, Function<String, Attribute> attribute) {
@@ -40,6 +41,7 @@ public class OPAttributes {
             event.add(entity, JUMP_POWER.get());
             event.add(entity, EXPERIENCE_GAIN.get());
             event.add(entity, FORTUNE.get());
+            event.add(entity, LOOTING.get());
             event.add(entity, VILLAGER_REPUTATION.get());
         });
     }

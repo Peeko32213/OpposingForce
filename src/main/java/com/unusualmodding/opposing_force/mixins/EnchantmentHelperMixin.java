@@ -20,7 +20,7 @@ public class EnchantmentHelperMixin {
         int looting = 0;
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             ItemStack stack = entity.getItemBySlot(slot);
-            Collection<AttributeModifier> modifiers = stack.getAttributeModifiers(slot).get(OPAttributes.FORTUNE.get());
+            Collection<AttributeModifier> modifiers = stack.getAttributeModifiers(slot).get(OPAttributes.LOOTING.get());
             if (!modifiers.isEmpty()) {
                 looting += (int) modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum();
             }
