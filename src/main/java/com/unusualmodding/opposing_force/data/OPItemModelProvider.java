@@ -44,10 +44,10 @@ public class OPItemModelProvider extends ItemModelProvider {
 //        item(WOODEN_CHESTPLATE);
 //        item(WOODEN_COVER);
 //        item(WOODEN_BOOTS);
-//        item(EMERALD_MASK);
-//        item(EMERALD_CHESTPLATE);
-//        item(EMERALD_LEGGINGS);
-//        item(EMERALD_BOOTS);
+        item(EMERALD_MASK);
+        item(EMERALD_CHESTPLATE);
+        item(EMERALD_LEGGINGS);
+        item(EMERALD_BOOTS);
 //        item(STONE_HELMET);
 //        item(STONE_CHESTPLATE);
 //        item(STONE_LEGGINGS);

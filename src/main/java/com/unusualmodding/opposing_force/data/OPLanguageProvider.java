@@ -9,17 +9,13 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.text.WordUtils;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.Supplier;
 
 public class OPLanguageProvider extends LanguageProvider {
