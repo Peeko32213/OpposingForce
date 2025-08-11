@@ -43,12 +43,12 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
         );
 
         this.sound(OPSoundEvents.ARMOR_EQUIP_EMERALD,
-                sound("item/armor/equip_leather1").pitch(0.88F),
-                sound("item/armor/equip_leather2").pitch(0.88F),
-                sound("item/armor/equip_leather3").pitch(0.88F),
-                sound("item/armor/equip_leather4").pitch(0.88F),
-                sound("item/armor/equip_leather5").pitch(0.88F),
-                sound("item/armor/equip_leather6").pitch(0.88F)
+                sound("item/armor/equip_diamond1").pitch(0.9F),
+                sound("item/armor/equip_diamond2").pitch(0.9F),
+                sound("item/armor/equip_diamond3").pitch(0.9F),
+                sound("item/armor/equip_diamond4").pitch(0.9F),
+                sound("item/armor/equip_diamond5").pitch(0.9F),
+                sound("item/armor/equip_diamond6").pitch(0.9F)
         );
 
         this.sound(OPSoundEvents.ARMOR_EQUIP_COUD_BOOTS,
