@@ -5,6 +5,7 @@ import com.unusualmodding.opposing_force.registry.OPBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
@@ -35,6 +36,16 @@ public class OPRecipeProvider extends RecipeProvider implements IConditionBuilde
         ShapedRecipeBuilder.shaped(COMBAT, DEEPWOVEN_TUNIC.get()).define('#', DEEP_SILK.get()).pattern("# #").pattern("###").pattern("###").unlockedBy("has_deep_silk", has(DEEP_SILK.get())).save(consumer);
         ShapedRecipeBuilder.shaped(COMBAT, DEEPWOVEN_PANTS.get()).define('#', DEEP_SILK.get()).pattern("###").pattern("# #").pattern("# #").unlockedBy("has_deep_silk", has(DEEP_SILK.get())).save(consumer);
         ShapedRecipeBuilder.shaped(COMBAT, DEEPWOVEN_BOOTS.get()).define('#', DEEP_SILK.get()).pattern("# #").pattern("# #").unlockedBy("has_deep_silk", has(DEEP_SILK.get())).save(consumer);
+
+        ShapedRecipeBuilder.shaped(COMBAT, WOODEN_MASK.get()).define('#', ItemTags.LOGS_THAT_BURN).pattern("###").pattern("# #").unlockedBy("has_burnable_wood", has(ItemTags.LOGS_THAT_BURN)).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, WOODEN_CHESTPLATE.get()).define('#', ItemTags.LOGS_THAT_BURN).pattern("# #").pattern("###").pattern("###").unlockedBy("has_burnable_wood", has(ItemTags.LOGS_THAT_BURN)).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, WOODEN_COVER.get()).define('#', ItemTags.LOGS_THAT_BURN).pattern("###").pattern("# #").pattern("# #").unlockedBy("has_burnable_wood", has(ItemTags.LOGS_THAT_BURN)).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, WOODEN_BOOTS.get()).define('#', ItemTags.LOGS_THAT_BURN).pattern("# #").pattern("# #").unlockedBy("has_burnable_wood", has(ItemTags.LOGS_THAT_BURN)).save(consumer);
+
+        ShapedRecipeBuilder.shaped(COMBAT, STONE_HELMET.get()).define('#', ItemTags.STONE_TOOL_MATERIALS).pattern("###").pattern("# #").unlockedBy("has_cobbled_stone", has(ItemTags.STONE_TOOL_MATERIALS)).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, STONE_CHESTPLATE.get()).define('#', ItemTags.STONE_TOOL_MATERIALS).pattern("# #").pattern("###").pattern("###").unlockedBy("has_cobbled_stone", has(ItemTags.STONE_TOOL_MATERIALS)).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, STONE_LEGGINGS.get()).define('#', ItemTags.STONE_TOOL_MATERIALS).pattern("###").pattern("# #").pattern("# #").unlockedBy("has_cobbled_stone", has(ItemTags.STONE_TOOL_MATERIALS)).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, STONE_BOOTS.get()).define('#', ItemTags.STONE_TOOL_MATERIALS).pattern("# #").pattern("# #").unlockedBy("has_cobbled_stone", has(ItemTags.STONE_TOOL_MATERIALS)).save(consumer);
 
     }
 

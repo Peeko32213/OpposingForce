@@ -1,33 +1,4 @@
 {
-  "armor_equip_cloud_boots": {
-    "sounds": [
-      {
-        "name": "item/armor/equip_leather1",
-        "pitch": 0.88
-      },
-      {
-        "name": "item/armor/equip_leather2",
-        "pitch": 0.88
-      },
-      {
-        "name": "item/armor/equip_leather3",
-        "pitch": 0.88
-      },
-      {
-        "name": "item/armor/equip_leather4",
-        "pitch": 0.88
-      },
-      {
-        "name": "item/armor/equip_leather5",
-        "pitch": 0.88
-      },
-      {
-        "name": "item/armor/equip_leather6",
-        "pitch": 0.88
-      }
-    ],
-    "subtitle": "subtitles.opposing_force.armor_equip_cloud_boots"
-  },
   "armor_equip_deepwoven": {
     "sounds": [
       {
@@ -85,6 +56,35 @@
       }
     ],
     "subtitle": "subtitles.opposing_force.armor_equip_emerald"
+  },
+  "armor_equip_moon_shoes": {
+    "sounds": [
+      {
+        "name": "item/armor/equip_leather1",
+        "pitch": 0.88
+      },
+      {
+        "name": "item/armor/equip_leather2",
+        "pitch": 0.88
+      },
+      {
+        "name": "item/armor/equip_leather3",
+        "pitch": 0.88
+      },
+      {
+        "name": "item/armor/equip_leather4",
+        "pitch": 0.88
+      },
+      {
+        "name": "item/armor/equip_leather5",
+        "pitch": 0.88
+      },
+      {
+        "name": "item/armor/equip_leather6",
+        "pitch": 0.88
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.armor_equip_moon_shoes"
   },
   "armor_equip_stone": {
     "sounds": [

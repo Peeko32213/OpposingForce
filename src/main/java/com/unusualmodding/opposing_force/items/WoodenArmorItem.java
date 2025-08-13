@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.armor.base.OPArmorModel;
 import com.unusualmodding.opposing_force.events.ClientEvents;
+import com.unusualmodding.opposing_force.registry.OPAttributes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.util.Mth;
@@ -35,6 +36,7 @@ public class WoodenArmorItem extends ArmorItem {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.putAll(super.getAttributeModifiers(slot, stack));
         UUID uuid = ArmorItem.ARMOR_MODIFIER_UUID_PER_TYPE.get(this.type);
+        builder.put(OPAttributes.VEGAN_NOURISHMENT.get(), new AttributeModifier(uuid, "Vegan nourishment", 1.0F, AttributeModifier.Operation.ADDITION));
         return slot == this.getEquipmentSlot() ? builder.build() : super.getAttributeModifiers(slot, stack);
     }
 

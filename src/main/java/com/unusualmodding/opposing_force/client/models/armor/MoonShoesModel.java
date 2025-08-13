@@ -9,12 +9,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 
-public class CloudBootsModel extends HumanoidModel {
+public class MoonShoesModel extends HumanoidModel {
 
 	public ModelPart right_wing;
 	public ModelPart left_wing;
 
-	public CloudBootsModel(ModelPart root) {
+	public MoonShoesModel(ModelPart root) {
         super(root);
         this.right_wing = root.getChild("right_leg").getChild("right_wing");
 		this.left_wing = root.getChild("left_leg").getChild("left_wing");
@@ -42,7 +42,7 @@ public class CloudBootsModel extends HumanoidModel {
 		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 
-	public CloudBootsModel withAnimations(LivingEntity entity) {
+	public MoonShoesModel withAnimations(LivingEntity entity) {
 		float partialTicks = Minecraft.getInstance().getFrameTime();
 		float ageInTicks  = entity.tickCount + partialTicks;
 

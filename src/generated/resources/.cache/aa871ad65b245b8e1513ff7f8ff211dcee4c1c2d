@@ -1,11 +1,15 @@
-// 1.20.1	2025-08-10T20:20:17.3217755	Tags for minecraft:item mod id opposing_force
-0629a558c65551399bd5fd64f34e91f5039500a6 data/forge/tags/items/armors.json
-33eaf493311f5cd7b8e95f750eab451821a561eb data/forge/tags/items/armors/boots.json
+// 1.20.1	2025-08-13T13:05:26.3706129	Tags for minecraft:item mod id opposing_force
+77ac89a930866cc64d9a879f8e79db163ce2486e data/forge/tags/items/armors.json
+c88cff156ae7bbec38b2b021e6a64c4b2e1360aa data/forge/tags/items/armors/boots.json
 5b750b392920c5fb39220654ba6b02b0a8597a23 data/forge/tags/items/armors/chestplates.json
 67b500d87bf42f60f40f2d5f83de5d10a464932d data/forge/tags/items/armors/helmets.json
 23d8a77f11cda70a4a9b54c0b05f20fa18480b57 data/forge/tags/items/armors/leggings.json
+02dfdb41688ccea8169a8d046943461f0aa3c361 data/forge/tags/items/berries.json
 e0d067eb5cc3823e9509f98b04be972a1122c97f data/forge/tags/items/eggs.json
+42b3a843ae5c2cee54bdafa9cd297c82b89453fc data/forge/tags/items/fruits.json
 9d857f8b45efe8272d410918467509e1d559891a data/forge/tags/items/mushrooms.json
 a2d00b55f4c69960705082de27c7029716fc570a data/forge/tags/items/string.json
+f651379db3bd93084b50c5759f13066cb9859ee2 data/forge/tags/items/vegetables.json
 77911999257dc499a1d4b88ec283f161f967ff86 data/minecraft/tags/items/freeze_immune_wearables.json
 5db69586b6c50b2befacf44de1aedc4a5af092fe data/opposing_force/tags/items/blaster_ammo.json
+73b65f8cc30505320b7b2a992214c6ab931aa2e1 data/opposing_force/tags/items/vegan_food.json

@@ -85,7 +85,7 @@ public final class ClientEvents {
 
     @SubscribeEvent
     public static void registerArmorLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(OPModelLayers.CLOUD_BOOTS, CloudBootsModel::createArmorLayer);
+        event.registerLayerDefinition(OPModelLayers.MOON_SHOES, MoonShoesModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.DEEPWOVEN_ARMOR, DeepwovenArmorModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.WOODEN_ARMOR, WoodenArmorModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.EMERALD_ARMOR, EmeraldArmorModel::createArmorLayer);

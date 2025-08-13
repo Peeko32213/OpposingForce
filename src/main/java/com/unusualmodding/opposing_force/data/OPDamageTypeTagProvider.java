@@ -38,6 +38,7 @@ public class OPDamageTypeTagProvider extends TagsProvider<DamageType> {
                 .addTag(DamageTypeTags.IS_PROJECTILE)
                 .addTag(DamageTypeTags.IS_EXPLOSION)
                 .add(DamageTypes.MOB_ATTACK)
+                .add(DamageTypes.MOB_ATTACK_NO_AGGRO)
                 .add(DamageTypes.GENERIC)
                 .add(DamageTypes.PLAYER_ATTACK);
 

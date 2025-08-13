@@ -26,6 +26,7 @@ public class OPAttributes {
     public static final RegistryObject<Attribute> FORTUNE = registerAttribute("fortune", (id) -> new RangedAttribute(id, 0.0D, 0.0D, 2048.0D).setSyncable(true));
     public static final RegistryObject<Attribute> LOOTING = registerAttribute("looting", (id) -> new RangedAttribute(id, 0.0D, 0.0D, 2048.0D).setSyncable(true));
     public static final RegistryObject<Attribute> VILLAGER_REPUTATION = registerAttribute("villager_reputation", (id) -> new RangedAttribute(id, 0.0D, 0.0D, 2048.0D).setSyncable(true));
+    public static final RegistryObject<Attribute> VEGAN_NOURISHMENT = registerAttribute("vegan_nourishment", (id) -> new RangedAttribute(id, 0.0D, 0.0D, 2048.0D).setSyncable(true));
 
     public static RegistryObject<Attribute> registerAttribute(String name, Function<String, Attribute> attribute) {
         return ATTRIBUTES.register(name, () -> attribute.apply("attribute.name." + OpposingForce.MOD_ID + "." + name));
@@ -43,6 +44,7 @@ public class OPAttributes {
             event.add(entity, FORTUNE.get());
             event.add(entity, LOOTING.get());
             event.add(entity, VILLAGER_REPUTATION.get());
+            event.add(entity, VEGAN_NOURISHMENT.get());
         });
     }
 }

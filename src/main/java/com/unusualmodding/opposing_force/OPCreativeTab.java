@@ -49,7 +49,7 @@ public class OPCreativeTab {
                     output.accept(OPItems.STONE_LEGGINGS.get());
                     output.accept(OPItems.STONE_BOOTS.get());
 
-                    output.accept(OPItems.CLOUD_BOOTS.get());
+                    output.accept(OPItems.MOON_SHOES.get());
 
                     output.accept(OPItems.EMERALD_SWORD.get());
                     output.accept(OPItems.EMERALD_SHOVEL.get());
@@ -92,8 +92,8 @@ public class OPCreativeTab {
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.TESLA_BOW);
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.BLASTER);
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.VILE_BOULDER);
+                    OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.WOODEN_ARMOR);
                     OPEnchantments.addAllEnchantsToCreativeTab(output, EnchantmentCategory.CROSSBOW);
-                    OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.GOLD_ARMOR);
 
                     output.accept(OPBrewingRecipes.registerPotion(OPPotions.GLOOM_TOXIN_POTION.get()));
                     output.accept(OPBrewingRecipes.registerPotion(OPPotions.LONG_GLOOM_TOXIN_POTION.get()));

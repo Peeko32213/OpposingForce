@@ -27,7 +27,7 @@ public class OPModelLayers {
     public static final ModelLayerLocation VOLT_CHARGED = register("volt", "charged_volt");
     public static final ModelLayerLocation WHIZZ = main("whizz");
 
-    public static final ModelLayerLocation CLOUD_BOOTS = main("cloud_boots");
+    public static final ModelLayerLocation MOON_SHOES = main("moon_shoes");
     public static final ModelLayerLocation DEEPWOVEN_ARMOR = main("deepwoven_armor");
     public static final ModelLayerLocation EMERALD_ARMOR = main("emerald_armor");
     public static final ModelLayerLocation STONE_ARMOR = main("stone_armor");

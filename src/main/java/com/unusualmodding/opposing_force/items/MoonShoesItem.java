@@ -19,14 +19,13 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.common.ForgeMod;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class CloudBootsItem extends ArmorItem {
+public class MoonShoesItem extends ArmorItem {
 
-    public CloudBootsItem(ArmorMaterial armorMaterial, Properties properties) {
+    public MoonShoesItem(ArmorMaterial armorMaterial, Properties properties) {
         super(armorMaterial, Type.BOOTS, properties);
     }
 
@@ -35,10 +34,8 @@ public class CloudBootsItem extends ArmorItem {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.putAll(super.getAttributeModifiers(slot, stack));
         UUID uuid = ArmorItem.ARMOR_MODIFIER_UUID_PER_TYPE.get(this.type);
-        builder.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(uuid, "Movement speed", 0.2F, AttributeModifier.Operation.MULTIPLY_BASE));
-        builder.put(OPAttributes.AIR_SPEED.get(), new AttributeModifier(uuid, "Air speed", 0.4F, AttributeModifier.Operation.MULTIPLY_BASE));
-        builder.put(OPAttributes.JUMP_POWER.get(), new AttributeModifier(uuid, "Jump power", 5.0F, AttributeModifier.Operation.ADDITION));
-        builder.put(ForgeMod.STEP_HEIGHT_ADDITION.get(), new AttributeModifier(uuid, "Step height", 1.0F, AttributeModifier.Operation.ADDITION));
+        builder.put(OPAttributes.AIR_SPEED.get(), new AttributeModifier(uuid, "Air speed", 0.25F, AttributeModifier.Operation.MULTIPLY_BASE));
+        builder.put(OPAttributes.JUMP_POWER.get(), new AttributeModifier(uuid, "Jump power", 3.0F, AttributeModifier.Operation.ADDITION));
         return slot == this.getEquipmentSlot() ? builder.build() : super.getAttributeModifiers(slot, stack);
     }
 
@@ -49,10 +46,8 @@ public class CloudBootsItem extends ArmorItem {
 
     @Override
     public void onArmorTick(ItemStack stack, Level level, Player player) {
-        if ((player.fallDistance > 0.0F || player.isSprinting()) && !player.onClimbable()) {
-            for (int i = 0; i < 3; i++) {
-                player.level().addParticle(ParticleTypes.CLOUD, player.position().x, player.position().y + (player.onGround() ? 0.15D : 0), player.position().z, (level.getRandom().nextFloat() - 0.5F) / 3.0F, 0.06D, (level.getRandom().nextFloat() - 0.5F) / 3.0F);
-            }
+        if (!player.onGround() && !player.onClimbable() && !player.isInWaterOrBubble()) {
+            player.level().addParticle(ParticleTypes.CLOUD, player.position().x, player.position().y, player.position().z, (level.getRandom().nextFloat() - 0.5F) / 3.0F, 0.0D, (level.getRandom().nextFloat() - 0.5F) / 3.0F);
         }
         player.resetFallDistance();
     }
@@ -66,7 +61,7 @@ public class CloudBootsItem extends ArmorItem {
     @Nullable
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-        return OpposingForce.MOD_ID + ":textures/models/armor/cloud_boots_layer_1.png";
+        return OpposingForce.MOD_ID + ":textures/models/armor/moon_shoes_layer_1.png";
     }
 
 //    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> component, TooltipFlag flag) {

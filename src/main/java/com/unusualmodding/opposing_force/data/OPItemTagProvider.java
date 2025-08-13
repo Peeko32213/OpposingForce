@@ -2,15 +2,14 @@ package com.unusualmodding.opposing_force.data;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.registry.OPBlocks;
+import com.unusualmodding.opposing_force.registry.tags.ForgeItemTags;
 import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -30,6 +29,21 @@ public class OPItemTagProvider extends ItemTagsProvider {
         this.tag(OPItemTags.BLASTER_AMMO).add(
                 Items.REDSTONE
         );
+
+        this.tag(ForgeItemTags.BERRIES).add(
+                Items.SWEET_BERRIES,
+                Items.GLOW_BERRIES
+        );
+
+        this.tag(ForgeItemTags.FRUITS).add(Items.APPLE, Items.MELON, Items.CHORUS_FRUIT).addTag(ForgeItemTags.BERRIES);
+
+        this.tag(ForgeItemTags.VEGETABLES).add(
+                Items.CARROT,
+                Items.POTATO,
+                Items.BEETROOT
+        );
+
+        this.tag(OPItemTags.VEGAN_FOOD).addTag(ForgeItemTags.FRUITS).addTag(ForgeItemTags.VEGETABLES);
 
         this.tag(ItemTags.FREEZE_IMMUNE_WEARABLES).add(
                 DEEPWOVEN_HAT.get(),
@@ -55,7 +69,7 @@ public class OPItemTagProvider extends ItemTagsProvider {
                 STONE_CHESTPLATE.get(),
                 STONE_LEGGINGS.get(),
                 STONE_BOOTS.get(),
-                CLOUD_BOOTS.get()
+                MOON_SHOES.get()
         );
 
         this.tag(Tags.Items.ARMORS_HELMETS).add(
@@ -76,7 +90,7 @@ public class OPItemTagProvider extends ItemTagsProvider {
                 WOODEN_BOOTS.get(),
                 EMERALD_BOOTS.get(),
                 STONE_BOOTS.get(),
-                CLOUD_BOOTS.get()
+                MOON_SHOES.get()
         );
 
         this.tag(Tags.Items.STRING).add(DEEP_SILK.get());

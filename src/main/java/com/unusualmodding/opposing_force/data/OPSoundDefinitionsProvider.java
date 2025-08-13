@@ -51,7 +51,7 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound("item/armor/equip_diamond6").pitch(0.9F)
         );
 
-        this.sound(OPSoundEvents.ARMOR_EQUIP_COUD_BOOTS,
+        this.sound(OPSoundEvents.ARMOR_EQUIP_MOON_SHOES,
                 sound("item/armor/equip_leather1").pitch(0.88F),
                 sound("item/armor/equip_leather2").pitch(0.88F),
                 sound("item/armor/equip_leather3").pitch(0.88F),

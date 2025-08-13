@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.events;
 
 import com.unusualmodding.opposing_force.OpposingForce;
+import com.unusualmodding.opposing_force.registry.OPEnchantments;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPTrades.*;
 import net.minecraft.world.damagesource.DamageSource;
@@ -64,27 +65,25 @@ public class ServerEvents {
     public static void onLivingUpdate(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
         Level level = entity.getCommandSenderWorld();
-        if (entity instanceof Player player) {
-            if (!player.isCreative()) {
-                for (EquipmentSlot slot : EquipmentSlot.values()) {
-                    ItemStack stack = entity.getItemBySlot(slot);
-                    if (stack.is(OPItems.WOODEN_MASK.get()) || stack.is(OPItems.WOODEN_CHESTPLATE.get()) || stack.is(OPItems.WOODEN_COVER.get()) || stack.is(OPItems.WOODEN_BOOTS.get())) {
-                        if (!stack.isEmpty() && stack.isDamaged() && level.getGameTime() % 400 == 0 && level.getBrightness(LightLayer.SKY, entity.blockPosition()) > 12 && level.isDay()) {
-                            stack.setDamageValue(stack.getDamageValue() - 1);
-                        }
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            ItemStack stack = entity.getItemBySlot(slot);
+            if (stack.is(OPItems.WOODEN_MASK.get()) || stack.is(OPItems.WOODEN_CHESTPLATE.get()) || stack.is(OPItems.WOODEN_COVER.get()) || stack.is(OPItems.WOODEN_BOOTS.get())) {
+                if (stack.getEnchantmentLevel(OPEnchantments.PHOTOSYNTHESIS.get()) > 0) {
+                    if (!stack.isEmpty() && level.getGameTime() % 600 == 0 && level.getBrightness(LightLayer.SKY, entity.blockPosition()) >= 14 && level.isDay()) {
+                        entity.heal(1);
                     }
                 }
             }
         }
     }
 
-//    @SubscribeEvent
-//    private static void stopFarmlandTrample(BlockEvent.FarmlandTrampleEvent event) {
-//        Entity entity = event.getEntity();
-//        if (entity instanceof LivingEntity livingEntity) {
-//            if (livingEntity.getItemBySlot(EquipmentSlot.FEET).is(OPItems.WOODEN_BOOTS.get())) {
-//                event.setCanceled(true);
-//            }
-//        }
-//    }
+    @SubscribeEvent
+    public static void stopFarmlandTrample(BlockEvent.FarmlandTrampleEvent event) {
+        Entity entity = event.getEntity();
+        if (entity instanceof LivingEntity livingEntity) {
+            if (livingEntity.getItemBySlot(EquipmentSlot.FEET).is(OPItems.WOODEN_BOOTS.get())) {
+                event.setCanceled(true);
+            }
+        }
+    }
 }

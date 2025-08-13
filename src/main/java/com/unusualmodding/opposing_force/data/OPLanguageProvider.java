@@ -61,7 +61,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.sound(OPSoundEvents.ARMOR_EQUIP_WOODEN, "Wooden armor knocks");
         this.sound(OPSoundEvents.ARMOR_EQUIP_STONE, "Stone armor clanks");
         this.sound(OPSoundEvents.ARMOR_EQUIP_EMERALD, "Emerald armor clanks");
-        this.sound(OPSoundEvents.ARMOR_EQUIP_COUD_BOOTS, "Cloud boots flutter");
+        this.sound(OPSoundEvents.ARMOR_EQUIP_MOON_SHOES, "Moon shoes flutter");
 
         this.sound(OPSoundEvents.DICER_DEATH, "Dicer dies");
         this.sound(OPSoundEvents.DICER_HURT, "Dicer hurts");
@@ -160,6 +160,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.addEnchantmentWithDesc(OPEnchantments.PLAGUE.get(), "Increases the level of slug infestation inflicted");
         this.addEnchantmentWithDesc(OPEnchantments.RAPID_FIRE.get(), "Increases the fire rate of the blaster at the cost of damage per shot");
         this.addEnchantmentWithDesc(OPEnchantments.SPLITTING.get(), "Fired laser bolts split into multiple laser bolts on hit");
+        this.addEnchantmentWithDesc(OPEnchantments.PHOTOSYNTHESIS.get(), "Heals the user over time while exposed to sunlight");
 
         this.addEffect(OPEffects.ELECTRIFIED, "Electrified");
         this.addEffect(OPEffects.GLOOM_TOXIN, "Gloom Toxin");
@@ -210,6 +211,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.add("attribute.name.opposing_force.fortune", "Fortune");
         this.add("attribute.name.opposing_force.looting", "Looting");
         this.add("attribute.name.opposing_force.villager_reputation", "Villager Reputation");
+        this.add("attribute.name.opposing_force.vegan_nourishment", "Vegan Nourishment");
 
         add("item.opposing_force.cloud_boots.desc", "+Light as a Feather");
     }
