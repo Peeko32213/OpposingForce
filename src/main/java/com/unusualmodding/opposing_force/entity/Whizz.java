@@ -105,15 +105,15 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
 
     protected void registerGoals() {
         this.friendsGoal = new WhizzWakeUpFriendsGoal(this);
+        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new WhizzChargeAttackGoal(this));
-        this.goalSelector.addGoal(2, new WhizzWanderGoal(this));
-        this.goalSelector.addGoal(3, new WhizzSwarmGoal(this));
-        this.goalSelector.addGoal(4, this.friendsGoal);
-        this.goalSelector.addGoal(5, new FloatGoal(this));
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true, false));
-        this.targetSelector.addGoal(3, new WhizzOwnerHurtByTargetGoal(this));
-        this.targetSelector.addGoal(4, new WhizzOwnerHurtTargetGoal(this));
+        this.goalSelector.addGoal(3, this.friendsGoal);
+        this.goalSelector.addGoal(4, new WhizzWanderGoal(this));
+        this.goalSelector.addGoal(5, new WhizzSwarmGoal(this));
+        this.targetSelector.addGoal(0, new HurtByTargetGoal(this).setAlertOthers());
+        this.targetSelector.addGoal(1, new WhizzOwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(2, new WhizzOwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, false));
     }
 
     @Override

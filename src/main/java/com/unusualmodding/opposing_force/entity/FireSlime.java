@@ -68,14 +68,14 @@ public class FireSlime extends Monster {
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FireSlimeFloatGoal(this));
-        this.goalSelector.addGoal(2, new FireSlimeAttackGoal(this));
-        this.goalSelector.addGoal(3, new FireSlimeRandomDirectionGoal(this));
-        this.goalSelector.addGoal(4, new FireSlimeKeepOnJumpingGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.goalSelector.addGoal(0, new FireSlimeFloatGoal(this));
+        this.goalSelector.addGoal(1, new FireSlimeAttackGoal(this));
+        this.goalSelector.addGoal(2, new FireSlimeRandomDirectionGoal(this));
+        this.goalSelector.addGoal(3, new FireSlimeKeepOnJumpingGoal(this));
+        this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new FireSlimeCopyTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (entity) -> Math.abs(entity.getY() - this.getY()) <= (double) 4.0F));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
-        this.targetSelector.addGoal(4, new FireSlimeCopyTargetGoal(this));
     }
 
     protected void dealDamage() {

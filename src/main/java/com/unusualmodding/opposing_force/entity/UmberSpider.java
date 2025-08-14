@@ -69,7 +69,7 @@ public class UmberSpider extends Spider implements IAnimatedAttacker {
         this.goalSelector.addGoal(5, new UmberSpiderRandomStrollGoal(this));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 16.0F));
         this.goalSelector.addGoal(7, new UmberSpiderRandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 

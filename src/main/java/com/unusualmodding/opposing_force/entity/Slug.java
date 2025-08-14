@@ -81,11 +81,11 @@ public class Slug extends Monster implements OwnableEntity {
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, LivingEntity.class, 6.0F));
-        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, true, this::isInfestationSlug));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new SlugOwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(2, new SlugOwnerHurtByTargetGoal(this));
-        this.targetSelector.addGoal(3, new SlugOwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, false, false, this::hasInfestation));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, false, false, this::hasInfestation));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, this::isInfestationSlug));
     }
 
     @Override

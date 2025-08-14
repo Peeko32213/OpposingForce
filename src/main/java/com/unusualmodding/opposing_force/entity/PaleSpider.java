@@ -62,13 +62,13 @@ public class PaleSpider extends Spider {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new PaleSpiderAttackGoal(this));
-        this.goalSelector.addGoal(2, new LeapAtTargetGoal(this, 0.4F));
+        this.goalSelector.addGoal(1, new LeapAtTargetGoal(this, 0.4F));
+        this.goalSelector.addGoal(2, new PaleSpiderAttackGoal(this));
         this.goalSelector.addGoal(3, new PaleSpiderRandomStrollGoal(this));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, LivingEntity.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new PaleSpiderNearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new PaleSpiderNearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
     private void switchNavigator(boolean onGround) {
