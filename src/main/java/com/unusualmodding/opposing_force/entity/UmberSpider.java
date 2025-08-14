@@ -44,7 +44,6 @@ public class UmberSpider extends Spider implements IAnimatedAttacker {
 
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(UmberSpider.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(UmberSpider.class, EntityDataSerializers.BOOLEAN);
-    public static final EntityDataAccessor<Integer> LEAP_COOLDOWN = SynchedEntityData.defineId(UmberSpider.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> LIGHT_THRESHOLD = SynchedEntityData.defineId(UmberSpider.class, EntityDataSerializers.INT);
 
     private int fleeLightFor = 0;
@@ -52,8 +51,8 @@ public class UmberSpider extends Spider implements IAnimatedAttacker {
 
     public final AnimationState idleAnimationState = new AnimationState();
 
-    public UmberSpider(EntityType<? extends Spider> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public UmberSpider(EntityType<? extends Spider> entityType, Level level) {
+        super(entityType, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -63,12 +62,13 @@ public class UmberSpider extends Spider implements IAnimatedAttacker {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new UmberSpiderRandomStrollGoal(this));
-        this.goalSelector.addGoal(3, new UmberSpiderAttackGoal(this));
-        this.goalSelector.addGoal(4, new UmberSpiderPanicGoal(this));
-        this.goalSelector.addGoal(5, new UmberSpiderFearLightGoal(this));
-        this.goalSelector.addGoal(6, new UmberSpiderRandomLookAroundGoal(this));
+        this.goalSelector.addGoal(1, new UmberSpiderFearLightGoal(this));
+        this.goalSelector.addGoal(2, new UmberSpiderPanicGoal(this));
+        this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4F));
+        this.goalSelector.addGoal(4, new UmberSpiderAttackGoal(this));
+        this.goalSelector.addGoal(5, new UmberSpiderRandomStrollGoal(this));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 16.0F));
+        this.goalSelector.addGoal(7, new UmberSpiderRandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
@@ -96,11 +96,6 @@ public class UmberSpider extends Spider implements IAnimatedAttacker {
     @Override
     protected void playStepSound(@NotNull BlockPos p_28301_, @NotNull BlockState p_28302_) {
         this.playSound(SoundEvents.SPIDER_STEP, 0.1F, 0.8F);
-    }
-
-    @Override
-    public double getPassengersRidingOffset() {
-        return this.getBbHeight() * 0.5F;
     }
 
     @Override
@@ -133,7 +128,6 @@ public class UmberSpider extends Spider implements IAnimatedAttacker {
         super.defineSynchedData();
         this.entityData.define(ATTACK_STATE, 0);
         this.entityData.define(ATTACKING, false);
-        this.entityData.define(LEAP_COOLDOWN, 3 + random.nextInt(8 * 2));
         this.entityData.define(LIGHT_THRESHOLD, 7);
     }
 
@@ -142,7 +136,6 @@ public class UmberSpider extends Spider implements IAnimatedAttacker {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putInt("AttackState", this.getAttackState());
         compoundTag.putBoolean("Attacking", this.isAttacking());
-        compoundTag.putInt("LeapCooldown", this.getLeapCooldown());
         compoundTag.putInt("LightThreshold", this.getLightThreshold());
     }
 
@@ -151,7 +144,6 @@ public class UmberSpider extends Spider implements IAnimatedAttacker {
         super.readAdditionalSaveData(compoundTag);
         this.setAttackState(compoundTag.getInt("AttackState"));
         this.setAttacking(compoundTag.getBoolean("Attacking"));
-        this.setLeapCooldown(compoundTag.getInt("LeapCooldown"));
         this.setLightThreshold(compoundTag.getInt("LightThreshold"));
     }
 
@@ -173,18 +165,6 @@ public class UmberSpider extends Spider implements IAnimatedAttacker {
         this.entityData.set(ATTACKING, attacking);
     }
 
-    public int getLeapCooldown() {
-        return this.entityData.get(LEAP_COOLDOWN);
-    }
-
-    public void setLeapCooldown(int cooldown) {
-        this.entityData.set(LEAP_COOLDOWN, cooldown);
-    }
-
-    public void leapCooldown() {
-        this.entityData.set(LEAP_COOLDOWN, 3 + random.nextInt(8 * 2));
-    }
-
     public int getLightThreshold() {
         return this.entityData.get(LIGHT_THRESHOLD);
     }
@@ -199,14 +179,6 @@ public class UmberSpider extends Spider implements IAnimatedAttacker {
 
         if (this.level().isClientSide()) {
             this.setupAnimationStates();
-        }
-
-        if (!this.level().isClientSide) {
-            this.setClimbing(this.horizontalCollision);
-        }
-
-        if (this.getLeapCooldown() > 0) {
-            this.setLeapCooldown(this.getLeapCooldown() - 1);
         }
     }
 
@@ -331,9 +303,6 @@ public class UmberSpider extends Spider implements IAnimatedAttacker {
             if (distance <= 4.1D) {
                 this.umberSpider.setAttackState(1);
             }
-            else if (distance >= 11 && distance <= 24 && this.umberSpider.onGround() && this.umberSpider.getLeapCooldown() <= 0) {
-                this.leap();
-            }
         }
 
         protected void tickAttack() {
@@ -349,19 +318,6 @@ public class UmberSpider extends Spider implements IAnimatedAttacker {
                 this.attackTime = 0;
                 this.umberSpider.setAttackState(0);
             }
-        }
-
-        public void leap() {
-            LivingEntity target = this.umberSpider.getTarget();
-            Vec3 vec3 = this.umberSpider.getDeltaMovement();
-            Vec3 leapVec = new Vec3(Objects.requireNonNull(target).getX() - this.umberSpider.getX(), 0.0F, target.getZ() - this.umberSpider.getZ());
-            if (leapVec.lengthSqr() > 1.0E-7) {
-                leapVec = leapVec.normalize().scale(0.4).add(vec3.scale(0.2));
-                this.umberSpider.lookAt(Objects.requireNonNull(target), 30F, 30F);
-                this.umberSpider.getLookControl().setLookAt(target, 30F, 30F);
-            }
-            this.umberSpider.setDeltaMovement(leapVec.x, 0.4D, leapVec.z);
-            this.umberSpider.leapCooldown();
         }
     }
 
