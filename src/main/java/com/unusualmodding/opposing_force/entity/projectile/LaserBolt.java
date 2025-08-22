@@ -21,7 +21,7 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
     private static final EntityDataAccessor<Boolean> DISRUPTOR = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> RAPID_FIRE = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
 
-    RandomSource rand = level.getRandom();
+    protected RandomSource rand = level.getRandom();
 
     public LaserBolt(EntityType<? extends AbstractFrictionlessProjectile> entityType, Level level) {
         super(entityType, level);

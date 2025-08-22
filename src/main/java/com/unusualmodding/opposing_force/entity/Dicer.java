@@ -269,7 +269,7 @@ public class Dicer extends Monster implements IAnimatedAttacker {
         }
 
         public boolean requiresUpdateEveryTick() {
-            return this.dicer.getAttackState() > 0;
+            return true;
         }
 
         protected void tickSliceAttack() {
