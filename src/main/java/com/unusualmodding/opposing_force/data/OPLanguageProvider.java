@@ -212,8 +212,6 @@ public class OPLanguageProvider extends LanguageProvider {
         this.add("attribute.name.opposing_force.looting", "Looting");
         this.add("attribute.name.opposing_force.villager_reputation", "Villager Reputation");
         this.add("attribute.name.opposing_force.vegan_nourishment", "Vegan Nourishment");
-
-        add("item.opposing_force.cloud_boots.desc", "+Light as a Feather");
     }
 
     @Override

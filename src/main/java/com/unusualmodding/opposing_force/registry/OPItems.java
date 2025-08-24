@@ -75,7 +75,7 @@ public class OPItems {
     public static final RegistryObject<Item> STONE_LEGGINGS = registerItem("stone_leggings", ()-> new StoneArmorItem(OPArmorMaterials.STONE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
     public static final RegistryObject<Item> STONE_BOOTS = registerItem("stone_boots", ()-> new StoneArmorItem(OPArmorMaterials.STONE, ArmorItem.Type.BOOTS, new Item.Properties()));
 
-    public static final RegistryObject<Item> MOON_SHOES = registerItem("moon_shoes", ()-> new MoonShoesItem(OPArmorMaterials.MOON_SHOES, new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> MOON_SHOES = registerItem("moon_shoes", ()-> new MoonShoesItem(OPArmorMaterials.MOON_SHOES, new Item.Properties().rarity(Rarity.UNCOMMON)));
 
     private static <I extends Item> RegistryObject<I> registerItem(String name, Supplier<? extends I> supplier) {
         RegistryObject<I> item = ITEMS.register(name, supplier);

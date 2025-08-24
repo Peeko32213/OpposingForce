@@ -9,14 +9,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
@@ -40,13 +36,8 @@ public class MoonShoesItem extends ArmorItem {
     }
 
     @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return enchantment == Enchantments.BINDING_CURSE || enchantment == Enchantments.VANISHING_CURSE || enchantment.category == EnchantmentCategory.BREAKABLE;
-    }
-
-    @Override
     public void onArmorTick(ItemStack stack, Level level, Player player) {
-        if (!player.onGround() && !player.onClimbable() && !player.isInWaterOrBubble()) {
+        if (!player.onGround() && !player.onClimbable() && !player.isInWaterOrBubble() && player.fallDistance > 0.1D) {
             player.level().addParticle(ParticleTypes.CLOUD, player.position().x, player.position().y, player.position().z, (level.getRandom().nextFloat() - 0.5F) / 3.0F, 0.0D, (level.getRandom().nextFloat() - 0.5F) / 3.0F);
         }
         player.resetFallDistance();
@@ -63,12 +54,4 @@ public class MoonShoesItem extends ArmorItem {
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
         return OpposingForce.MOD_ID + ":textures/models/armor/moon_shoes_layer_1.png";
     }
-
-//    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> component, TooltipFlag flag) {
-//        component.add(this.getDisplayName().withStyle(ChatFormatting.BLUE));
-//    }
-//
-//    public MutableComponent getDisplayName() {
-//        return Component.translatable(this.getDescriptionId() + ".desc");
-//    }
 }
