@@ -32,7 +32,7 @@ public class OPAdvancementProvider implements AdvancementGenerator {
     public void generate(Provider provider, Consumer<Advancement> consumer, ExistingFileHelper helper) {
 
         Advancement root = Advancement.Builder.advancement()
-                .display(OPBlocks.CAP_OF_EYE.get(),
+                .display(Items.STONE_SWORD,
                         Component.translatable("advancement.opposing_force.root"),
                         Component.translatable("advancement.opposing_force.root.desc"),
                         new ResourceLocation("textures/block/gray_wool.png"),

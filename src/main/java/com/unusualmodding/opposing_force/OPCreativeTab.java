@@ -69,20 +69,6 @@ public class OPCreativeTab {
                     output.accept(OPItems.DEEP_SILK.get());
                     output.accept(OPItems.UMBER_FANG.get());
 
-                    // Mushrooms
-                    output.accept(OPBlocks.CAP_OF_EYE.get());
-                    output.accept(OPBlocks.CAVE_PATTY.get());
-                    output.accept(OPBlocks.CHICKEN_OF_THE_CAVES.get());
-                    output.accept(OPBlocks.COPPER_ENOKI.get());
-                    output.accept(OPBlocks.CREAM_CAP.get());
-                    output.accept(OPBlocks.POWDER_GNOME.get());
-                    output.accept(OPBlocks.PURPLE_KNOB.get());
-                    output.accept(OPBlocks.RAINCAP.get());
-                    output.accept(OPBlocks.SLIPPERY_TOP.get());
-//                    output.accept(OPBlocks.COPPER_ENOKI_BLOCK.get());
-//                    output.accept(OPBlocks.CREAM_CAP_BLOCK.get());
-//                    output.accept(OPBlocks.SLIPPERY_TOP_BLOCK.get());
-
                     output.accept(OPBlocks.INFESTED_AMETHYST_BLOCK.get());
 
                     output.accept(OPItems.DICER_HEAD.get());

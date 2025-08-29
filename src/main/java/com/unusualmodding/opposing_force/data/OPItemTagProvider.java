@@ -96,17 +96,5 @@ public class OPItemTagProvider extends ItemTagsProvider {
         this.tag(Tags.Items.STRING).add(DEEP_SILK.get());
 
         this.tag(Tags.Items.EGGS).add(SLUG_EGGS.get());
-
-        this.tag(Tags.Items.MUSHROOMS).add(
-                OPBlocks.CAP_OF_EYE.get().asItem(),
-                OPBlocks.CAVE_PATTY.get().asItem(),
-                OPBlocks.CHICKEN_OF_THE_CAVES.get().asItem(),
-                OPBlocks.COPPER_ENOKI.get().asItem(),
-                OPBlocks.CREAM_CAP.get().asItem(),
-                OPBlocks.POWDER_GNOME.get().asItem(),
-                OPBlocks.PURPLE_KNOB.get().asItem(),
-                OPBlocks.RAINCAP.get().asItem(),
-                OPBlocks.SLIPPERY_TOP.get().asItem()
-        );
     }
 }

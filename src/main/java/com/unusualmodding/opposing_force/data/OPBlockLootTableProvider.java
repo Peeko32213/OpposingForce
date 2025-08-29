@@ -42,27 +42,6 @@ public class OPBlockLootTableProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         dropSelf(OPBlocks.TREMBLER_SHELL.get());
-
-        dropSelf(OPBlocks.CAVE_PATTY.get());
-        dropSelf(OPBlocks.CREAM_CAP.get());
-        dropSelf(OPBlocks.CHICKEN_OF_THE_CAVES.get());
-        dropSelf(OPBlocks.COPPER_ENOKI.get());
-        dropSelf(OPBlocks.RAINCAP.get());
-        dropSelf(OPBlocks.POWDER_GNOME.get());
-        dropSelf(OPBlocks.CAP_OF_EYE.get());
-        dropSelf(OPBlocks.PURPLE_KNOB.get());
-        dropSelf(OPBlocks.SLIPPERY_TOP.get());
-
-        createPotFlowerItemTable(OPBlocks.POTTED_CAVE_PATTY.get(), OPBlocks.CAVE_PATTY.get());
-        createPotFlowerItemTable(OPBlocks.POTTED_CREAM_CAP.get(), OPBlocks.CREAM_CAP.get());
-        createPotFlowerItemTable(OPBlocks.POTTED_CHICKEN_OF_THE_CAVES.get(), OPBlocks.CHICKEN_OF_THE_CAVES.get());
-        createPotFlowerItemTable(OPBlocks.POTTED_COPPER_ENOKI.get(), OPBlocks.COPPER_ENOKI.get());
-        createPotFlowerItemTable(OPBlocks.POTTED_RAINCAP.get(), OPBlocks.RAINCAP.get());
-        createPotFlowerItemTable(OPBlocks.POTTED_POWDER_GNOME.get(), OPBlocks.POWDER_GNOME.get());
-        createPotFlowerItemTable(OPBlocks.POTTED_CAP_OF_EYE.get(), OPBlocks.CAP_OF_EYE.get());
-        createPotFlowerItemTable(OPBlocks.POTTED_PURPLE_KNOB.get(), OPBlocks.PURPLE_KNOB.get());
-        createPotFlowerItemTable(OPBlocks.POTTED_SLIPPERY_TOP.get(), OPBlocks.SLIPPERY_TOP.get());
-
     }
     protected void createPotFlowerItemTable(Block flowerpotBlock, ItemLike pItem) {
         add(flowerpotBlock ,LootTable.lootTable()

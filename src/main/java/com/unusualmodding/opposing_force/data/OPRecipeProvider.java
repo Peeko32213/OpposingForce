@@ -27,8 +27,6 @@ public class OPRecipeProvider extends RecipeProvider implements IConditionBuilde
 
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
-        ShapelessRecipeBuilder.shapeless(MISC, Items.GUNPOWDER).requires(OPBlocks.POWDER_GNOME.get()).unlockedBy("has_powder_gnome", has(OPBlocks.POWDER_GNOME.get())).save(consumer);
-
         ShapedRecipeBuilder.shaped(COMBAT, TESLA_BOW.get()).define('#', Tags.Items.INGOTS_GOLD).define('X', DEEP_SILK.get()).define('Y', Tags.Items.RODS_WOODEN).define('Z', Blocks.TRIPWIRE_HOOK).define('A', ELECTRIC_CHARGE.get()).pattern("#A#").pattern("XZX").pattern(" Y ").unlockedBy("has_electric_charge", has(ELECTRIC_CHARGE.get())).save(consumer);
         ShapedRecipeBuilder.shaped(COMBAT, TOMAHAWK.get(), 4).define('#', Tags.Items.INGOTS_IRON).define('X', Tags.Items.NUGGETS_IRON).define('Y', Tags.Items.RODS_WOODEN).pattern("##").pattern("XY").unlockedBy("has_iron_ingot", has(Tags.Items.INGOTS_IRON)).save(consumer);
 

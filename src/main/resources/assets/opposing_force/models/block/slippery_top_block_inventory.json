@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "opposing_force:block/slippery_top_block"
-  }
-}

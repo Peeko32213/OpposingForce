@@ -48,7 +48,6 @@ public class MoonShoesItem extends ArmorItem {
         consumer.accept((IClientItemExtensions) OpposingForce.PROXY.getArmorRenderProperties());
     }
 
-
     @Nullable
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {

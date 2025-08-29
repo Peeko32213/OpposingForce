@@ -19,16 +19,6 @@ public class OPBlockstateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        this.pottedPlant(CAVE_PATTY, POTTED_CAVE_PATTY);
-        this.pottedPlant(COPPER_ENOKI, POTTED_COPPER_ENOKI);
-        this.pottedPlant(RAINCAP, POTTED_RAINCAP);
-        this.pottedPlant(CREAM_CAP, POTTED_CREAM_CAP);
-        this.pottedPlant(CHICKEN_OF_THE_CAVES, POTTED_CHICKEN_OF_THE_CAVES);
-        this.pottedPlant(POWDER_GNOME, POTTED_POWDER_GNOME);
-
-        this.pottedPlant(CAP_OF_EYE, POTTED_CAP_OF_EYE);
-        this.pottedPlant(PURPLE_KNOB, POTTED_PURPLE_KNOB);
-        this.pottedPlant(SLIPPERY_TOP, POTTED_SLIPPERY_TOP);
     }
 
     // item

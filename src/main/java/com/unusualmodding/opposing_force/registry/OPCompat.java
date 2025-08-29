@@ -18,7 +18,7 @@ public class OPCompat {
 
     public static void registerCompat() {
         registerDispenserBehaviors();
-        registerCompostables();
+//        registerCompostables();
         registerFlammables();
     }
 
@@ -52,18 +52,6 @@ public class OPCompat {
     }
 
     public static void registerCompostables() {
-        registerCompostable(OPBlocks.CAVE_PATTY.get(), 0.65F);
-        registerCompostable(OPBlocks.COPPER_ENOKI.get(), 0.65F);
-        registerCompostable(OPBlocks.RAINCAP.get(), 0.65F);
-        registerCompostable(OPBlocks.CREAM_CAP.get(), 0.65F);
-        registerCompostable(OPBlocks.CHICKEN_OF_THE_CAVES.get(), 0.65F);
-        registerCompostable(OPBlocks.POWDER_GNOME.get(), 0.65F);
-        registerCompostable(OPBlocks.CAP_OF_EYE.get(), 0.65F);
-        registerCompostable(OPBlocks.PURPLE_KNOB.get(), 0.65F);
-        registerCompostable(OPBlocks.SLIPPERY_TOP.get(), 0.65F);
-        registerCompostable(OPBlocks.COPPER_ENOKI_BLOCK.get(), 0.85F);
-        registerCompostable(OPBlocks.CREAM_CAP_BLOCK.get(), 0.85F);
-        registerCompostable(OPBlocks.SLIPPERY_TOP_BLOCK.get(), 0.85F);
     }
 
     public static void registerFlammables() {
