@@ -24,34 +24,34 @@ public class OPItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
 
-        item(DEEP_SILK);
-        item(ELECTRIC_CHARGE);
-        item(SLUG_EGGS);
-        item(CAPTURED_WHIZZ);
-        item(DEEPWOVEN_HAT);
-        item(DEEPWOVEN_TUNIC);
-        item(DEEPWOVEN_PANTS);
-        item(DEEPWOVEN_BOOTS);
-        item(UMBER_FANG);
+        this.item(DEEP_SILK);
+        this.item(ELECTRIC_CHARGE);
+        this.item(SLUG_EGGS);
+        this.item(CAPTURED_WHIZZ);
+        this.item(DEEPWOVEN_HAT);
+        this.item(DEEPWOVEN_TUNIC);
+        this.item(DEEPWOVEN_PANTS);
+        this.item(DEEPWOVEN_BOOTS);
+        this.item(UMBER_FANG);
 
-        handheldItem(EMERALD_SWORD);
-        handheldItem(EMERALD_PICKAXE);
-        handheldItem(EMERALD_AXE);
-        handheldItem(EMERALD_SHOVEL);
-        handheldItem(EMERALD_HOE);
+        this.handheldItem(EMERALD_SWORD);
+        this.handheldItem(EMERALD_PICKAXE);
+        this.handheldItem(EMERALD_AXE);
+        this.handheldItem(EMERALD_SHOVEL);
+        this.handheldItem(EMERALD_HOE);
 
 //        item(WOODEN_MASK);
 //        item(WOODEN_CHESTPLATE);
 //        item(WOODEN_COVER);
 //        item(WOODEN_BOOTS);
-        item(EMERALD_MASK);
-        item(EMERALD_CHESTPLATE);
-        item(EMERALD_LEGGINGS);
-        item(EMERALD_BOOTS);
-//        item(STONE_HELMET);
-//        item(STONE_CHESTPLATE);
-//        item(STONE_LEGGINGS);
-//        item(STONE_BOOTS);
+        this.item(EMERALD_MASK);
+        this.item(EMERALD_CHESTPLATE);
+        this.item(EMERALD_LEGGINGS);
+        this.item(EMERALD_BOOTS);
+        this.item(STONE_HELMET);
+        this.item(STONE_CHESTPLATE);
+        this.item(STONE_LEGGINGS);
+        this.item(STONE_BOOTS);
 
         // spawn eggs
         for (Item item : BuiltInRegistries.ITEM) {

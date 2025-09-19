@@ -1,6 +1,6 @@
 package com.unusualmodding.opposing_force.data;
 
-import com.unusualmodding.opposing_force.OPCreativeTab;
+import com.unusualmodding.opposing_force.OpposingForceTab;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.sounds.SoundEvent;
@@ -27,7 +27,7 @@ public class OPLanguageProvider extends LanguageProvider {
     @Override
     protected void addTranslations(){
 
-        this.addTabName(OPCreativeTab.TAB.get(), "Opposing Force");
+        this.addTabName(OpposingForceTab.TAB.get(), "Opposing Force");
 
         // blocks
         OPBlocks.AUTO_TRANSLATE.forEach(this::forBlocks);

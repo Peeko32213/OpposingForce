@@ -1,12 +1,10 @@
 package com.unusualmodding.opposing_force.data;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.registry.OPBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
@@ -16,8 +14,7 @@ import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import java.util.function.Consumer;
 
 import static com.unusualmodding.opposing_force.registry.OPItems.*;
-import static net.minecraft.data.recipes.RecipeCategory.COMBAT;
-import static net.minecraft.data.recipes.RecipeCategory.MISC;
+import static net.minecraft.data.recipes.RecipeCategory.*;
 
 public class OPRecipeProvider extends RecipeProvider implements IConditionBuilder {
 

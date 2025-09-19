@@ -7,7 +7,6 @@ import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -35,7 +34,7 @@ public class OpposingForce {
 
         OPBlocks.BLOCKS.register(modEventBus);
         OPItems.ITEMS.register(modEventBus);
-        OPCreativeTab.CREATIVE_TABS.register(modEventBus);
+        OpposingForceTab.CREATIVE_TABS.register(modEventBus);
         OPEffects.MOB_EFFECTS.register(modEventBus);
         OPEntities.ENTITY_TYPES.register(modEventBus);
         OPSoundEvents.SOUND_EVENTS.register(modEventBus);

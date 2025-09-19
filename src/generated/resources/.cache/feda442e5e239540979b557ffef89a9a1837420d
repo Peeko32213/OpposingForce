@@ -1,4 +1,4 @@
-// 1.20.1	2025-08-10T22:28:18.2642538	Item Models: opposing_force
+// 1.20.1	2025-09-18T21:45:50.5943048	Item Models: opposing_force
 0242899276479e640e0948ff9d1431d301c73e3a assets/opposing_force/models/item/captured_whizz.json
 99bee2bc20935c1aecb77ae575b7005d27ce12b6 assets/opposing_force/models/item/deepwoven_boots.json
 e54baee97cf734ca4015adce401a3abbf106e572 assets/opposing_force/models/item/deepwoven_hat.json
@@ -23,6 +23,10 @@ d068d5426a62a9461307fa55f67d866bd23768e6 assets/opposing_force/models/item/emera
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/ramble_spawn_egg.json
 deec1139d8d36146c792e92079fb5535113b1445 assets/opposing_force/models/item/slug_eggs.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/slug_spawn_egg.json
+e488e2aaec4bd14e84ea61d2940fc2fd3c636e98 assets/opposing_force/models/item/stone_boots.json
+201c869113dd15f90044d502881795bc976d674b assets/opposing_force/models/item/stone_chestplate.json
+f520914c9a04160cc6a93346e2fcff583038293e assets/opposing_force/models/item/stone_helmet.json
+61d7276bab171f7df329b9765a68af8adfe95615 assets/opposing_force/models/item/stone_leggings.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/terror_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/trembler_spawn_egg.json
 7cc18f3a72e3c25eaa7a34deafa686dadc0f497a assets/opposing_force/models/item/umber_fang.json

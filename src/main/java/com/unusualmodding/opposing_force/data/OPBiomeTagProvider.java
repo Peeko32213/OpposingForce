@@ -39,8 +39,7 @@ public class OPBiomeTagProvider extends BiomeTagsProvider {
         this.tag(OPBiomeTags.WITHOUT_DEFAULT_MONSTER_SPAWNS).add(Biomes.MUSHROOM_FIELDS, Biomes.DEEP_DARK);
         TagAppender<Biome> withMonsterSpawns = this.tag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
         MultiNoiseBiomeSourceParameterList.Preset.OVERWORLD.usedBiomes().forEach((biome) -> {
-            if (biome != Biomes.MUSHROOM_FIELDS && biome != Biomes.DEEP_DARK)
-                withMonsterSpawns.add(biome);
+            if (biome != Biomes.MUSHROOM_FIELDS && biome != Biomes.DEEP_DARK) withMonsterSpawns.add(biome);
         });
     }
 }
