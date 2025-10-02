@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.registry.OPCriterion;
 import com.unusualmodding.opposing_force.registry.OPEffects;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -86,6 +88,11 @@ public class Slug extends Monster implements OwnableEntity {
         this.targetSelector.addGoal(2, new SlugOwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, false, false, this::hasInfestation));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, this::isInfestationSlug));
+    }
+
+    @Override
+    protected @NotNull PathNavigation createNavigation(Level level) {
+        return new SmoothGroundPathNavigation(this, level);
     }
 
     @Override

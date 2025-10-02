@@ -36,6 +36,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.forEntity(OPEntities.DICER);
         this.forEntity(OPEntities.EMERALDFISH);
         this.forEntity(OPEntities.FIRE_SLIME);
+        this.forEntity(OPEntities.FIRE_SLUG);
         this.forEntity(OPEntities.FROWZY);
         this.forEntity(OPEntities.GUZZLER);
         this.forEntity(OPEntities.PALE_SPIDER);

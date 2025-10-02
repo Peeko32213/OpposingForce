@@ -42,6 +42,14 @@ public class OPEntities {
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "fire_slime").toString())
     );
 
+    public static final RegistryObject<EntityType<FireSlug>> FIRE_SLUG = ENTITY_TYPES.register(
+            "fire_slug", () ->
+            EntityType.Builder.of(FireSlug::new, MobCategory.MONSTER)
+                    .sized(1.0F, 0.9F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "fire_slug").toString())
+    );
+
     public static final RegistryObject<EntityType<Frowzy>> FROWZY = ENTITY_TYPES.register(
             "frowzy", () ->
             EntityType.Builder.of(Frowzy::new, MobCategory.MONSTER)

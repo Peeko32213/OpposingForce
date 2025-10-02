@@ -15,6 +15,7 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.common.ForgeMod;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -30,8 +31,8 @@ public class MoonShoesItem extends ArmorItem {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.putAll(super.getAttributeModifiers(slot, stack));
         UUID uuid = ArmorItem.ARMOR_MODIFIER_UUID_PER_TYPE.get(this.type);
-        builder.put(OPAttributes.AIR_SPEED.get(), new AttributeModifier(uuid, "Air speed", 0.25F, AttributeModifier.Operation.MULTIPLY_BASE));
-        builder.put(OPAttributes.JUMP_POWER.get(), new AttributeModifier(uuid, "Jump power", 3.0F, AttributeModifier.Operation.ADDITION));
+        builder.put(OPAttributes.AIR_SPEED.get(), new AttributeModifier(uuid, "Air speed", 0.15F, AttributeModifier.Operation.MULTIPLY_BASE));
+        builder.put(ForgeMod.ENTITY_GRAVITY.get(), new AttributeModifier(uuid, "Gravity", -0.6F, AttributeModifier.Operation.MULTIPLY_TOTAL));
         return slot == this.getEquipmentSlot() ? builder.build() : super.getAttributeModifiers(slot, stack);
     }
 

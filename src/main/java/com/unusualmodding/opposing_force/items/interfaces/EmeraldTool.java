@@ -8,10 +8,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import java.util.UUID;
 
 public interface EmeraldTool {
+
     default ImmutableMultimap.Builder<Attribute, AttributeModifier> createExtraAttributes() {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = new ImmutableMultimap.Builder<>();
         builder.put(OPAttributes.EXPERIENCE_GAIN.get(), new AttributeModifier(UUID.fromString("1e0f1128-0ee5-4b45-a1c4-12b4da5b1144"), "Increased experience gain", 0.5F, AttributeModifier.Operation.MULTIPLY_BASE));
-        builder.put(OPAttributes.FORTUNE.get(), new AttributeModifier(UUID.fromString("dd172da5-d5c3-4d6e-856a-c638f4bd1fe5"), "Increased fortune", 1F, AttributeModifier.Operation.ADDITION));
         return builder;
     }
 }

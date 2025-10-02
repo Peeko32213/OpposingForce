@@ -5,7 +5,6 @@ import com.google.common.collect.Multimap;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.armor.base.OPArmorModel;
 import com.unusualmodding.opposing_force.events.ClientEvents;
-import com.unusualmodding.opposing_force.registry.OPAttributes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.util.Mth;
@@ -21,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.common.ForgeMod;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -37,10 +37,8 @@ public class StoneArmorItem extends ArmorItem {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.putAll(super.getAttributeModifiers(slot, stack));
         UUID uuid = ArmorItem.ARMOR_MODIFIER_UUID_PER_TYPE.get(this.type);
-        builder.put(OPAttributes.BULK.get(), new AttributeModifier(uuid, "Bulk", 0.1F, AttributeModifier.Operation.MULTIPLY_BASE));
+        builder.put(ForgeMod.ENTITY_GRAVITY.get(), new AttributeModifier(uuid, "Gravity", 0.05F, AttributeModifier.Operation.MULTIPLY_TOTAL));
         builder.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(uuid, "Movement Speed", -0.1F, AttributeModifier.Operation.MULTIPLY_BASE));
-        builder.put(OPAttributes.AIR_SPEED.get(), new AttributeModifier(uuid, "Air speed", -0.15F, AttributeModifier.Operation.MULTIPLY_BASE));
-        builder.put(OPAttributes.JUMP_POWER.get(), new AttributeModifier(uuid, "Jump Power", -0.02F, AttributeModifier.Operation.ADDITION));
         return slot == this.getEquipmentSlot() ? builder.build() : super.getAttributeModifiers(slot, stack);
     }
 

@@ -12,8 +12,7 @@
     "EntityMixin",
     "FoodDataMixin",
     "MobMixin",
-    "PlayerMixin",
-    "VillagerMixin"
+    "PlayerMixin"
   ],
   "client": [
     "client.ClientPacketListenerMixin",

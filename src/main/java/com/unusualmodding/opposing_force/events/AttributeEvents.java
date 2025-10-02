@@ -67,20 +67,6 @@ public class AttributeEvents {
                 event.setAmount(event.getAmount() - event.getAmount() * electricResistance);
             }
         }
-        if (source.is(OPDamageTypeTags.BULK_RESISTS)) {
-            float bulk = 0.0F;
-            for (EquipmentSlot slot : EquipmentSlot.values()) {
-                ItemStack stack = target.getItemBySlot(slot);
-                Collection<AttributeModifier> modifiers = stack.getAttributeModifiers(slot).get(OPAttributes.BULK.get());
-                if (!modifiers.isEmpty()) {
-                    bulk += (float) modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum();
-                }
-            }
-
-            if (bulk > 0.0F) {
-                event.setAmount(event.getAmount() - (event.getAmount() * bulk));
-            }
-        }
     }
 
     @SubscribeEvent
