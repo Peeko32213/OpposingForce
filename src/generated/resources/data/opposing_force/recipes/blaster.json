@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "tag": "forge:gems/amethyst"
+    },
+    "D": {
+      "item": "opposing_force:dicer_lens"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "RDA",
+    "I  "
+  ],
+  "result": {
+    "item": "opposing_force:blaster"
+  },
+  "show_notification": true
+}

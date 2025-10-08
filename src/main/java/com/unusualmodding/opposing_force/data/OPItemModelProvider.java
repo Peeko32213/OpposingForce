@@ -33,6 +33,7 @@ public class OPItemModelProvider extends ItemModelProvider {
         this.item(DEEPWOVEN_PANTS);
         this.item(DEEPWOVEN_BOOTS);
         this.item(UMBER_FANG);
+        this.item(DICER_LENS);
 
         this.handheldItem(EMERALD_SWORD);
         this.handheldItem(EMERALD_PICKAXE);

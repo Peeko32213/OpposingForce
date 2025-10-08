@@ -21,13 +21,13 @@ public abstract class FoodDataMixin {
 
     @Inject(method = "eat(Lnet/minecraft/world/item/Item;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;)V", cancellable = true, remap = false, at = @At(value = "HEAD"))
     public void eatVegetables(Item item, ItemStack stack, LivingEntity entity, CallbackInfo ci) {
-        if (entity != null && stack.is(OPItemTags.VEGAN_FOOD)) {
+        if (entity != null && stack.is(OPItemTags.RAW_VEGETABLES)) {
             int extraSaturation = WoodenArmorItem.getExtraSaturationFromArmor(entity);
             if (extraSaturation != 0) {
                 ci.cancel();
                 if (item.isEdible()) {
                     FoodProperties properties = stack.getFoodProperties(entity);
-                    this.eat(properties.getNutrition() + extraSaturation, properties.getSaturationModifier() + (extraSaturation * 0.125F));
+                    this.eat(properties.getNutrition() + extraSaturation, properties.getSaturationModifier() + (extraSaturation * 0.05F));
                 }
             }
         }

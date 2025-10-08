@@ -86,6 +86,7 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${project.minecraft}-forge:${project.jei}")
 
     runtimeOnly fg.deobf("curse.maven:cyanide-541676:5778405")
+    runtimeOnly fg.deobf("curse.maven:appleskin-248787:4770828")
 
     annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 }

@@ -68,6 +68,7 @@ public class OpposingForceTab {
                     output.accept(OPBlocks.TREMBLER_SHELL.get());
                     output.accept(OPItems.DEEP_SILK.get());
                     output.accept(OPItems.UMBER_FANG.get());
+                    output.accept(OPItems.DICER_LENS.get());
 
                     output.accept(OPBlocks.INFESTED_AMETHYST_BLOCK.get());
 

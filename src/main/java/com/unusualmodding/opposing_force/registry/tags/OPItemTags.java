@@ -10,7 +10,7 @@ public class OPItemTags {
 
     public static final TagKey<Item> BLASTER_AMMO = registerItemTag("blaster_ammo");
 
-    public static final TagKey<Item> VEGAN_FOOD = registerItemTag("vegan_food");
+    public static final TagKey<Item> RAW_VEGETABLES = registerItemTag("raw_vegetables");
 
     private static TagKey<Item> registerItemTag(String name) {
         return TagKey.create(Registries.ITEM, new ResourceLocation(OpposingForce.MOD_ID, name));

@@ -1,4 +1,5 @@
-// 1.20.1	2025-08-28T21:42:51.2551047	Recipes
+// 1.20.1	2025-10-07T11:05:42.3016023	Recipes
+b74121d99f25babce19f5d2e76ecd98a5315dbd5 data/opposing_force/advancements/recipes/combat/blaster.json
 f4d72e7bb9e4998015ad3802e665a5c1b9cf53c8 data/opposing_force/advancements/recipes/combat/deepwoven_boots.json
 2e8aa7c2ba02850e9ab0d31a6e6eda81a697907a data/opposing_force/advancements/recipes/combat/deepwoven_hat.json
 c099258b3a9b912736417cf6fa15f268bec0d488 data/opposing_force/advancements/recipes/combat/deepwoven_pants.json
@@ -13,6 +14,7 @@ cf0f0810388793938e6b56f37ffd5474af18db8a data/opposing_force/advancements/recipe
 56956c5ae0027cadac98aa9b232b22e04835fb7f data/opposing_force/advancements/recipes/combat/wooden_chestplate.json
 21a1a73eae104b9db8f4f0aa2ff7d8c15816972f data/opposing_force/advancements/recipes/combat/wooden_cover.json
 88719ba23bf3480381ec306681afda6c0025a94b data/opposing_force/advancements/recipes/combat/wooden_mask.json
+491a1cb57be71bc2fba4175ad0459ec6834d1770 data/opposing_force/recipes/blaster.json
 32d57d58b24afc7d02f9442d75aa45293ce9a034 data/opposing_force/recipes/deepwoven_boots.json
 1a9af85ecfcfb63fe5b5c6c0d7c879548cc9e797 data/opposing_force/recipes/deepwoven_hat.json
 c588c906731b996c907cec77ee45bcb8de4c4ff0 data/opposing_force/recipes/deepwoven_pants.json
