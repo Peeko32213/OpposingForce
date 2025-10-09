@@ -6,8 +6,10 @@ import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNa
 import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
+import com.unusualmodding.opposing_force.utils.OPMath;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -207,8 +209,11 @@ public class Guzzler extends Monster implements IAnimatedAttacker {
     }
 
     private void stompEffect() {
+        Vec3 groundedVec = OPMath.getGroundBelowPosition(level(), new Vec3(this.getRandomX(1.5), this.getY() + 0.25F, this.getRandomZ(1.5)));
+        BlockPos ground = BlockPos.containing(groundedVec.subtract(0, 0.5F, 0));
+        BlockState state = this.level().getBlockState(ground);
         for (int i = 0; i <= (this.getRandom().nextInt(50) + 80); i++) {
-            this.level().addParticle(ParticleTypes.CLOUD, true, this.getRandomX(1.5), this.getY() + 0.25F, this.getRandomZ(1.5), 0.0D, 0.0D, 0.0D);
+            this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), true, this.getRandomX(1.5), this.getY() + 0.25F, this.getRandomZ(1.5), 0.0D, 0.0D, 0.0D);
         }
     }
 
