@@ -15,16 +15,16 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GuzzlerGlowLayer<T extends Guzzler, M extends GuzzlerModel<T>> extends RenderLayer<T, M> {
+public class GuzzlerGlowLayer extends RenderLayer<Guzzler, GuzzlerModel> {
 
     private static final RenderType GLOW_TEXTURE = RenderType.entityTranslucentEmissive(new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/guzzler/guzzler_glow.png"));
 
-    public GuzzlerGlowLayer(RenderLayerParent<T, M> parentModel) {
+    public GuzzlerGlowLayer(RenderLayerParent<Guzzler, GuzzlerModel> parentModel) {
         super(parentModel);
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int i, T entity, float f, float g, float h, float j, float k, float l) {
+    public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int i, Guzzler entity, float f, float g, float h, float j, float k, float l) {
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(GLOW_TEXTURE);
         this.getParentModel().renderToBuffer(poseStack, vertexConsumer, 0xF00000, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
     }

@@ -5,6 +5,6 @@
     "type": "opposing_force:ramble",
     "maxCount": 1,
     "minCount": 1,
-    "weight": 15
+    "weight": 20
   }
 }

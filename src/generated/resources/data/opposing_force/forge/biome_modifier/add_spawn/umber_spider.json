@@ -5,6 +5,6 @@
     "type": "opposing_force:umber_spider",
     "maxCount": 4,
     "minCount": 4,
-    "weight": 60
+    "weight": 80
   }
 }

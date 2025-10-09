@@ -14,13 +14,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(Dist.CLIENT)
-public class GuzzlerRenderer extends MobRenderer<Guzzler, GuzzlerModel<Guzzler>> {
+public class GuzzlerRenderer extends MobRenderer<Guzzler, GuzzlerModel> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/guzzler/guzzler.png");
 
     public GuzzlerRenderer(EntityRendererProvider.Context context) {
-        super(context, new GuzzlerModel<>(context.bakeLayer(OPModelLayers.GUZZLER)), 1.1F);
-        this.addLayer(new GuzzlerGlowLayer<>(this));
+        super(context, new GuzzlerModel(context.bakeLayer(OPModelLayers.GUZZLER)), 1.1F);
+        this.addLayer(new GuzzlerGlowLayer(this));
     }
 
     @Override

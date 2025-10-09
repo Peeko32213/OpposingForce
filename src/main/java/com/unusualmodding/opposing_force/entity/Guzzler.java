@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.google.common.collect.Sets;
+import com.unusualmodding.opposing_force.entity.ai.goal.GuzzlerAttackGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.registry.OPEntities;
@@ -34,12 +35,10 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.EnumSet;
 import java.util.Set;
 
 public class Guzzler extends Monster implements IAnimatedAttacker {
@@ -49,6 +48,7 @@ public class Guzzler extends Monster implements IAnimatedAttacker {
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState spewAnimationState = new AnimationState();
+    public final AnimationState stompAnimationState = new AnimationState();
 
     public Guzzler(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -93,7 +93,7 @@ public class Guzzler extends Monster implements IAnimatedAttacker {
     @Override
     public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
 
-        Vec3[] avector3d = new Vec3[] {
+        Vec3[] avector3d = new Vec3[]{
                 getCollisionHorizontalEscapeVector(this.getBbWidth(), livingEntity.getBbWidth(), livingEntity.getYRot()),
                 getCollisionHorizontalEscapeVector(this.getBbWidth(), livingEntity.getBbWidth(), livingEntity.getYRot() - 22.5F),
                 getCollisionHorizontalEscapeVector(this.getBbWidth(), livingEntity.getBbWidth(), livingEntity.getYRot() + 22.5F),
@@ -147,7 +147,8 @@ public class Guzzler extends Monster implements IAnimatedAttacker {
 
     private void setupAnimationStates() {
         this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
-        this.spewAnimationState.animateWhen(this.isAlive() && this.getAttackState() == 1, this.tickCount);
+        this.spewAnimationState.animateWhen(this.getAttackState() == 1, this.tickCount);
+        this.stompAnimationState.animateWhen(this.getAttackState() == 2, this.tickCount);
     }
 
     protected void defineSynchedData() {
@@ -205,10 +206,19 @@ public class Guzzler extends Monster implements IAnimatedAttacker {
         this.level().addParticle(ParticleTypes.FLAME, this.getX() + (double) x, this.getEyeY() - (double) y, this.getZ() + (double) z, 0.0D, 0.0D, 0.0D);
     }
 
+    private void stompEffect() {
+        for (int i = 0; i <= (this.getRandom().nextInt(50) + 80); i++) {
+            this.level().addParticle(ParticleTypes.CLOUD, true, this.getRandomX(1.5), this.getY() + 0.25F, this.getRandomZ(1.5), 0.0D, 0.0D, 0.0D);
+        }
+    }
+
     @Override
     public void handleEntityEvent(byte id) {
         if (id == 39) {
             this.guzzleEffect();
+        }
+        if (id == 40) {
+            this.stompEffect();
         }
         super.handleEntityEvent(id);
     }
@@ -258,184 +268,6 @@ public class Guzzler extends Monster implements IAnimatedAttacker {
             } else {
                 int lightTest = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
                 return lightTest <= dimension.monsterSpawnLightTest().sample(random);
-            }
-        }
-    }
-
-    private class GuzzlerAttackGoal extends Goal {
-
-        private final Guzzler guzzler;
-        private final double speed;
-        private final float maxAttackDistance;
-        private int seeTime;
-        private boolean strafingClockwise;
-        private boolean strafingBackwards;
-        private int strafingTime = -1;
-        private int attackTime = 0;
-
-        public GuzzlerAttackGoal(Guzzler guzzler, double speed, float maxAttackDistanceIn) {
-            this.guzzler = guzzler;
-            this.speed = speed;
-            this.maxAttackDistance = maxAttackDistanceIn * maxAttackDistanceIn;
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-        }
-
-        public boolean canUse() {
-            return this.guzzler.getTarget() != null && this.isShooting();
-        }
-
-        protected boolean isShooting() {
-            return this.guzzler.shouldSpew();
-        }
-
-        public boolean canContinueToUse() {
-            return (this.canUse() || !this.guzzler.getNavigation().isDone()) && this.isShooting();
-        }
-
-        public void start() {
-            super.start();
-            this.guzzler.setAggressive(true);
-            this.guzzler.setAttackState(0);
-            this.attackTime = 0;
-        }
-
-        public void stop() {
-            super.stop();
-            this.guzzler.setAggressive(false);
-            this.guzzler.setAttackState(0);
-            this.seeTime = 0;
-        }
-
-        public void tick() {
-            LivingEntity target = this.guzzler.getTarget();
-            if (target != null) {
-                double distance = this.guzzler.distanceToSqr(target.getX(), target.getY(), target.getZ());
-
-                boolean flag = this.guzzler.hasLineOfSight(target);
-                boolean flag1 = this.seeTime > 0;
-
-                if (flag != flag1) {
-                    this.seeTime = 0;
-                }
-
-                if (flag) {
-                    ++this.seeTime;
-                } else {
-                    --this.seeTime;
-                }
-
-                if (!(distance > (double) this.maxAttackDistance) && this.seeTime >= 20) {
-                    this.guzzler.getNavigation().stop();
-                    ++this.strafingTime;
-                } else {
-                    this.guzzler.getNavigation().moveTo(target, this.speed);
-                    this.strafingTime = -1;
-                }
-
-                if (this.strafingTime >= 20) {
-                    if ((double) this.guzzler.getRandom().nextFloat() < 0.3D) {
-                        this.strafingClockwise = !this.strafingClockwise;
-                    }
-                    if ((double) this.guzzler.getRandom().nextFloat() < 0.3D) {
-                        this.strafingBackwards = !this.strafingBackwards;
-                    }
-                    this.strafingTime = 0;
-                }
-
-                if (this.strafingTime > -1) {
-                    if (distance > (double) (this.maxAttackDistance * 0.75F)) {
-                        this.strafingBackwards = false;
-                    } else if (distance < (double) (this.maxAttackDistance * 0.25F)) {
-                        this.strafingBackwards = true;
-                    }
-
-                    if (this.guzzler.getAttackState() != 2) {
-                        this.guzzler.getMoveControl().strafe(this.strafingBackwards ? -0.5F : 0.5F, this.strafingClockwise ? 0.5F : -0.5F);
-                    }
-                    this.guzzler.lookAt(target, 30.0F, 30.0F);
-                } else {
-                    this.guzzler.getLookControl().setLookAt(target, 30.0F, 30.0F);
-                }
-
-                if (this.guzzler.getAttackState() == 1) {
-                    tickSpitAttack();
-                } else if (this.guzzler.getAttackState() == 2) {
-                    tickStompAttack();
-                } else {
-                    if (distance > 8.5F) {
-                        if (this.guzzler.getSpewCooldown() <= 0) {
-                            this.guzzler.setAttackState(1);
-                        }
-                    } else {
-                        this.guzzler.setAttackState(2);
-                    }
-                }
-            }
-        }
-
-        public boolean requiresUpdateEveryTick() {
-            return true;
-        }
-
-        protected void tickSpitAttack() {
-            this.attackTime++;
-
-            if (this.attackTime == 7) {
-                FireSlime slime = OPEntities.FIRE_SLIME.get().create(level());
-                slime.setParentId(this.guzzler.getUUID());
-                slime.setPos(this.guzzler.getX(), this.guzzler.getEyeY(), this.guzzler.getZ());
-                final double d0 = this.guzzler.getTarget().getEyeY() - (double) 1.1F;
-                final double d1 = this.guzzler.getTarget().getX() - this.guzzler.getX();
-                final double d2 = d0 - slime.getY();
-                final double d3 = this.guzzler.getTarget().getZ() - this.guzzler.getZ();
-                final float f3 = Mth.sqrt((float) (d1 * d1 + d2 * d2 + d3 * d3)) * 0.23F;
-                this.guzzler.gameEvent(GameEvent.PROJECTILE_SHOOT);
-                this.guzzler.playSound(OPSoundEvents.GUZZLER_SPEW.get(), 2.0F, 1.0F / (this.guzzler.getRandom().nextFloat() * 0.4F + 0.8F));
-                slime.shoot(d1, d2 + (double) f3, d3, 1.3F, 0.0F);
-                slime.setYRot(this.guzzler.getYRot() % 360.0F);
-                slime.setXRot(Mth.clamp(this.guzzler.getYRot(), -90.0F, 90.0F) % 360.0F);
-                if (!this.guzzler.level().isClientSide) {
-                    this.guzzler.level().addFreshEntity(slime);
-                }
-            }
-
-            if (this.attackTime > 3 && this.attackTime < 9) {
-                this.guzzler.level().broadcastEntityEvent(this.guzzler, (byte) 39);
-            }
-
-            if (attackTime > 15) {
-                this.attackTime = 0;
-                this.guzzler.spewCooldown();
-                this.guzzler.setAttackState(0);
-            }
-        }
-
-        protected void tickStompAttack() {
-            this.attackTime++;
-            this.guzzler.getNavigation().stop();
-            this.guzzler.setDeltaMovement(0.0F, this.guzzler.getDeltaMovement().y, 0.0F);
-
-            if (this.attackTime == 7) {
-                for (LivingEntity entity : this.guzzler.level().getEntitiesOfClass(LivingEntity.class, this.guzzler.getBoundingBox().inflate(6.0D))) {
-
-                    boolean reachable = entity.getY() > this.guzzler.getY() && entity.distanceTo(this.guzzler) > 6;
-                    boolean self = entity instanceof Guzzler || entity instanceof FireSlime;
-
-                    if (self || reachable) continue;
-
-                    Vec3 vec3 = this.guzzler.position().add(0.0, 1.6F, 0.0);
-                    Vec3 vec32 = entity.getEyePosition().subtract(vec3);
-                    Vec3 vec33 = vec32.normalize();
-                    this.guzzler.doHurtTarget(entity);
-                    double knockbackResistanceY = 0.35 * (1.0 - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
-                    double knockbackResistance = 2 * (1.0 - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
-                    entity.push(vec33.x() * knockbackResistance, vec33.y() * knockbackResistanceY, vec33.z() * knockbackResistance);
-                }
-            }
-
-            if (this.attackTime > 7) {
-                this.attackTime = 0;
-                this.guzzler.setAttackState(0);
             }
         }
     }
