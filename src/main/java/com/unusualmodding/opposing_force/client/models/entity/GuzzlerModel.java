@@ -82,7 +82,7 @@ public class GuzzlerModel extends HierarchicalModel<Guzzler> {
 	@Override
 	public void setupAnim(Guzzler entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		this.animateWalk(GuzzlerAnimations.WALK, limbSwing, limbSwingAmount, 5, 8);
+		this.animateWalk(GuzzlerAnimations.WALK, limbSwing, limbSwingAmount, 2, 4);
 		this.animate(entity.idleAnimationState, GuzzlerAnimations.IDLE, ageInTicks);
 		this.animate(entity.spewAnimationState, GuzzlerAnimations.SPIT, ageInTicks);
 		this.animate(entity.stompAnimationState, GuzzlerAnimations.STOMP, ageInTicks);
@@ -90,9 +90,10 @@ public class GuzzlerModel extends HierarchicalModel<Guzzler> {
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
+	@Override
 	public ModelPart root() {
 		return this.root;
 	}

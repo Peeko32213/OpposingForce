@@ -11,7 +11,7 @@ import java.util.EnumSet;
 
 public class AttackGoal extends Goal {
 
-    protected int attackTime = 0;
+    protected int timer = 0;
     protected final Monster monster;
 
     public AttackGoal(Monster monster) {
@@ -22,7 +22,7 @@ public class AttackGoal extends Goal {
     @Override
     public void start() {
         this.monster.setAggressive(true);
-        this.attackTime = 0;
+        this.timer = 0;
         if (this.monster instanceof IAnimatedAttacker animatedAttacker) {
             animatedAttacker.setAttackState(0);
         }

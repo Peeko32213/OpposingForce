@@ -76,11 +76,11 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound(OpposingForce.modPrefix("entity/dicer/attack2"))
         );
         this.sound(OPSoundEvents.DICER_LASER,
-                sound(OpposingForce.modPrefix("entity/dicer/laser1")).pitch(1.15F).volume(0.8F)
+                sound(OpposingForce.modPrefix("entity/dicer/laser1")).attenuationDistance(20)
         );
 
         this.sound(OPSoundEvents.ELECTRIC_CHARGE,
-                sound(OpposingForce.modPrefix("entity/electric_charge/loop1"))
+                sound(OpposingForce.modPrefix("entity/electric_charge/loop1")).attenuationDistance(20)
         );
         this.sound(OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE,
                 sound(OpposingForce.modPrefix("entity/electric_charge/dissipate1"))

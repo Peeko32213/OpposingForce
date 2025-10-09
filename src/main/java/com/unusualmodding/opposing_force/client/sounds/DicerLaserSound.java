@@ -1,21 +1,20 @@
 package com.unusualmodding.opposing_force.client.sounds;
 
-import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
+import com.unusualmodding.opposing_force.entity.projectile.DicerLaser;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ElectricChargeSound extends AbstractTickableSoundInstance {
+public class DicerLaserSound extends AbstractTickableSoundInstance {
 
-    protected final ElectricCharge entity;
+    protected final DicerLaser entity;
 
-    public ElectricChargeSound(ElectricCharge entity) {
-        super(OPSoundEvents.ELECTRIC_CHARGE.get(), SoundSource.NEUTRAL, SoundInstance.createUnseededRandom());
+    public DicerLaserSound(DicerLaser entity) {
+        super(OPSoundEvents.DICER_LASER.get(), SoundSource.NEUTRAL, SoundInstance.createUnseededRandom());
         this.entity = entity;
         this.x = (float) entity.getX();
         this.y = (float) entity.getY();
@@ -34,23 +33,8 @@ public class ElectricChargeSound extends AbstractTickableSoundInstance {
         this.x = (float) this.entity.getX();
         this.y = (float) this.entity.getY();
         this.z = (float) this.entity.getZ();
-        float horizontalDistance = (float) this.entity.getDeltaMovement().horizontalDistance();
-        this.pitch = Mth.lerp(Mth.clamp(horizontalDistance, this.getMinPitch(), this.getMaxPitch()), this.getMinPitch(), this.getMaxPitch());
+        this.pitch = 1.0F;
         this.volume = 2.0F;
-    }
-
-    private float getMinPitch() {
-        if (this.entity.getChargeScale() >= 2.0F) {
-            return 0.85F;
-        }
-        else return 1.0f;
-    }
-
-    private float getMaxPitch() {
-        if (this.entity.getChargeScale() >= 2.0F) {
-            return 1.0F;
-        }
-        else return 1.2F;
     }
 
     @Override
@@ -60,10 +44,10 @@ public class ElectricChargeSound extends AbstractTickableSoundInstance {
 
     @Override
     public boolean canPlaySound() {
-        return !this.entity.isSilent();
+        return !this.entity.isSilent() && this.entity.isAlive();
     }
 
-    public boolean isSameEntity(ElectricCharge entity) {
+    public boolean isSameEntity(DicerLaser entity) {
         return this.entity.isAlive() && this.entity.getId() == entity.getId();
     }
 }

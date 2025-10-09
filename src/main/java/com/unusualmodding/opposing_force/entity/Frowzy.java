@@ -2,7 +2,6 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.entity.ai.goal.AttackGoal;
 import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
-import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -38,7 +37,6 @@ import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -470,21 +468,21 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
         }
 
         protected void tickAttack() {
-            attackTime++;
+            timer++;
             LivingEntity target = this.frowzy.getTarget();
 
-            if (attackTime == 1) {
+            if (timer == 1) {
                 this.frowzy.playSound(OPSoundEvents.FROWZY_ATTACK.get(), 1.0F, this.frowzy.getVoicePitch());
             }
 
-            if (attackTime == 5) {
+            if (timer == 5) {
                 if (this.frowzy.distanceTo(Objects.requireNonNull(target)) < getAttackReachSqr(target)) {
                     this.frowzy.doHurtTarget(target);
                     this.frowzy.swing(InteractionHand.MAIN_HAND);
                 }
             }
-            if (attackTime >= 20) {
-                attackTime = 0;
+            if (timer >= 20) {
+                timer = 0;
                 this.frowzy.setAttackState(0);
             }
         }

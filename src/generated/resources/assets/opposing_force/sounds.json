@@ -182,16 +182,18 @@
   "dicer_laser": {
     "sounds": [
       {
-        "name": "opposing_force:entity/dicer/laser1",
-        "pitch": 1.15,
-        "volume": 0.8
+        "attenuation_distance": 20,
+        "name": "opposing_force:entity/dicer/laser1"
       }
     ],
     "subtitle": "subtitles.opposing_force.dicer_laser"
   },
   "electric_charge": {
     "sounds": [
-      "opposing_force:entity/electric_charge/loop1"
+      {
+        "attenuation_distance": 20,
+        "name": "opposing_force:entity/electric_charge/loop1"
+      }
     ],
     "subtitle": "subtitles.opposing_force.electric_charge"
   },

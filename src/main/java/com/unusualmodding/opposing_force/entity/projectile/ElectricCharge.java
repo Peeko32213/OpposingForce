@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity.projectile;
 
+import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.entity.Volt;
 import com.unusualmodding.opposing_force.utils.CreeperExtension;
 import com.unusualmodding.opposing_force.network.ElectricChargeSyncS2CPacket;
@@ -34,7 +35,7 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
     private static final EntityDataAccessor<Boolean> QUASAR = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> STATIC_ATTRACTION = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.BOOLEAN);
 
-    RandomSource rand = level.getRandom();
+    private final RandomSource randomSource = level.getRandom();
     private int bounces = 0;
 
     public ElectricCharge(EntityType<? extends AbstractFrictionlessProjectile> entityType, Level level) {
@@ -64,6 +65,7 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
     public float getChargeScale() {
         return this.entityData.get(CHARGE_SCALE);
     }
+
     public void setChargeScale(float scale) {
         this.entityData.set(CHARGE_SCALE, scale);
     }
@@ -71,6 +73,7 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
     public int getMaxBounces() {
         return this.entityData.get(MAX_BOUNCES);
     }
+
     public void setMaxBounces(int bounces) {
         this.entityData.set(MAX_BOUNCES, bounces);
     }
@@ -78,6 +81,7 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
     public boolean isBouncy() {
         return this.entityData.get(BOUNCY);
     }
+
     public void setBouncy(boolean bounce) {
         this.entityData.set(BOUNCY, bounce);
     }
@@ -85,6 +89,7 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
     public boolean isQuasar() {
         return this.entityData.get(QUASAR);
     }
+
     public void setQuasar(boolean quasar) {
         this.entityData.set(QUASAR, quasar);
     }
@@ -92,6 +97,7 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
     public boolean isStaticAttraction() {
         return this.entityData.get(STATIC_ATTRACTION);
     }
+
     public void setStaticAttraction(boolean staticAttraction) {
         this.entityData.set(STATIC_ATTRACTION, staticAttraction);
     }
@@ -101,7 +107,11 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
         super.tick();
         Vec3 pos = this.position();
 
-        this.spawnElectricParticles(this, 1 + rand.nextInt(3), 0, 12);
+        if (level().isClientSide && isAlive()) {
+            OpposingForce.PROXY.playWorldSound(this, (byte) 1);
+        }
+
+        this.spawnElectricParticles(this, 1 + randomSource.nextInt(3), 0, 12);
         if (this.isQuasar()) {
             this.hurtEntitiesAround(pos, (this.getChargeScale()) + 1.2F, 3);
         } else {
@@ -109,9 +119,9 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
         }
 
         if (this.level().getBlockState(this.blockPosition().below(0)).is(Blocks.WATER)) {
-            this.spawnElectricParticles(this, 7 + rand.nextInt(5), 0, 16);
+            this.spawnElectricParticles(this, 7 + randomSource.nextInt(5), 0, 16);
             if (!this.level().isClientSide) {
-                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 2.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 2.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
                 if (this.isQuasar()) {
                     this.hurtEntitiesAround(pos, this.getChargeScale() + 5.2F, 6);
                 } else {
@@ -122,9 +132,9 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
         }
 
         if (tickCount > (this.isQuasar() ? 50 : 200) || this.getBlockY() > this.level().getMaxBuildHeight() + 30) {
-            this.spawnElectricParticles(this, 4 + rand.nextInt(3), 0, 12);
+            this.spawnElectricParticles(this, 4 + randomSource.nextInt(3), 0, 12);
             if (!this.level().isClientSide) {
-                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 2.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 2.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
                 this.discard();
             }
         }
@@ -192,7 +202,7 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
                             .pos(x, y, z)
                             .range(lightningLength)
                             .size(size)
-                            .color(0.3F + (rand.nextFloat() / 8), 0.8F + (rand.nextFloat() / 8), 0.5F + (rand.nextFloat() / 8), 1F)
+                            .color(0.3F + (randomSource.nextFloat() / 8), 0.8F + (randomSource.nextFloat() / 8), 0.5F + (randomSource.nextFloat() / 8), 1F)
                             .build();
                     OPNetwork.sendToClients(packet);
                 } else if (this.isQuasar()) {
@@ -200,7 +210,7 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
                             .pos(x, y, z)
                             .range(lightningLength)
                             .size(size)
-                            .color(0.1F + rand.nextFloat(), 0.1F + rand.nextFloat(), 0.1F + rand.nextFloat(), 1F)
+                            .color(0.1F + randomSource.nextFloat(), 0.1F + randomSource.nextFloat(), 0.1F + randomSource.nextFloat(), 1F)
                             .build();
                     OPNetwork.sendToClients(packet);
                 } else {
@@ -208,7 +218,7 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
                             .pos(x, y, z)
                             .range(lightningLength)
                             .size(size)
-                            .color(0.3F + (rand.nextFloat() / 8), 0.5F + (rand.nextFloat() / 8), 0.8F + (rand.nextFloat() / 8), 1F)
+                            .color(0.3F + (randomSource.nextFloat() / 8), 0.5F + (randomSource.nextFloat() / 8), 0.8F + (randomSource.nextFloat() / 8), 1F)
                             .build();
                     OPNetwork.sendToClients(packet);
                 }
@@ -225,9 +235,9 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
             if (this.hasLineOfSight(living) && !living.is(this) && !living.isAlliedTo(this) && living.getType() != this.getType() && living.distanceToSqr(center.x, center.y, center.z) <= radius * radius) {
                 if (!living.is(shooter)) {
                     if (living.hurt(damageSource, damageAmount)) {
-                        this.spawnElectricParticles(this, 4 + rand.nextInt(3), 0, 12);
+                        this.spawnElectricParticles(this, 4 + randomSource.nextInt(3), 0, 12);
                         living.addEffect(new MobEffectInstance(OPEffects.ELECTRIFIED.get(), 200), shooter);
-                        this.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 1.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+                        this.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
                         flag = true;
                     }
                 }
@@ -245,9 +255,9 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
         Entity entity = result.getEntity();
 
         if (!this.level().isClientSide) {
-            this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+            this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
             if (!this.isBouncy() && !this.isQuasar()) {
-                this.spawnElectricParticles(this, 4 + rand.nextInt(3), 0, 12);
+                this.spawnElectricParticles(this, 4 + randomSource.nextInt(3), 0, 12);
                 this.discard();
             }
             if (entity instanceof Creeper creeper) {
@@ -269,8 +279,8 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
                 Vec3 newVel = new Vec3(velocity.toVector3f().reflect(surfaceNormal));
                 bounce(newVel);
             } else {
-                this.level().playSound(null, pos.getX(), pos.getY(), pos.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 2.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
-                this.spawnElectricParticles(this, 1 + rand.nextInt(3), 0.3F, 12);
+                this.level().playSound(null, pos.getX(), pos.getY(), pos.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 2.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
+                this.spawnElectricParticles(this, 1 + randomSource.nextInt(3), 0.3F, 12);
                 this.discard();
             }
         }
@@ -285,11 +295,11 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
         if (!level().isClientSide) {
             this.hasImpulse = true;
             if (bounces >= 0) {
-                this.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 1.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+                this.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
             }
             if (bounces > getMaxBounces()) {
-                this.playSound(OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), 2.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
-                this.spawnElectricParticles(this, 1 + rand.nextInt(3), 0.3F, 12);
+                this.playSound(OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), 2.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
+                this.spawnElectricParticles(this, 1 + randomSource.nextInt(3), 0.3F, 12);
                 this.discard();
             }
         }

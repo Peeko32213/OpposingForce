@@ -6,12 +6,12 @@ import com.unusualmodding.opposing_force.entity.Guzzler;
 import com.unusualmodding.opposing_force.events.ScreenShakeEvent;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 
@@ -37,12 +37,16 @@ public class GuzzlerAttackGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return this.guzzler.getTarget() != null && this.guzzler.shouldSpew();
+        return this.guzzler.getTarget() != null && this.guzzler.getTarget().isAlive() && !this.guzzler.isVehicle() && this.guzzler.shouldSpew();
     }
 
     @Override
     public boolean canContinueToUse() {
-        return (this.canUse() || !this.guzzler.getNavigation().isDone()) && this.guzzler.shouldSpew();
+        LivingEntity target = this.guzzler.getTarget();
+        if (target == null) return false;
+        else if (!target.isAlive()) return false;
+        else if (!this.guzzler.isWithinRestriction(target.blockPosition())) return false;
+        else return !(target instanceof Player) || !target.isSpectator() && !((Player) target).isCreative() || !this.guzzler.getNavigation().isDone();
     }
 
     @Override
@@ -55,10 +59,11 @@ public class GuzzlerAttackGoal extends Goal {
 
     @Override
     public void stop() {
-        super.stop();
-        this.guzzler.setAggressive(false);
+        LivingEntity target = this.guzzler.getTarget();
+        if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) this.guzzler.setTarget(null);
         this.guzzler.setAttackState(0);
-        this.seeTime = 0;
+        this.guzzler.setAggressive(false);
+        this.guzzler.getNavigation().stop();
     }
 
     public void tick() {
@@ -119,7 +124,7 @@ public class GuzzlerAttackGoal extends Goal {
             } else {
                 if (this.guzzler.getSpewCooldown() <= 0) {
                     this.guzzler.setAttackState(1);
-                } else if (distance < 14) {
+                } else if (distance < getAttackReachSqr(target)) {
                     this.guzzler.setAttackState(2);
                 }
             }
@@ -166,10 +171,8 @@ public class GuzzlerAttackGoal extends Goal {
 
         if (this.attackTime == 57) {
             for (LivingEntity entity : this.guzzler.level().getEntitiesOfClass(LivingEntity.class, this.guzzler.getBoundingBox().inflate(4.0D))) {
-
                 boolean reachable = entity.getY() > this.guzzler.getY() && entity.distanceTo(this.guzzler) > 4;
                 boolean self = entity instanceof Guzzler || entity instanceof FireSlime;
-
                 if (self || reachable) {
                     continue;
                 }
@@ -177,11 +180,11 @@ public class GuzzlerAttackGoal extends Goal {
                 Vec3 vec32 = entity.getEyePosition().subtract(vec3);
                 Vec3 vec33 = vec32.normalize();
                 this.guzzler.doHurtTarget(entity);
-                double knockbackResistanceY = 0.35 * (1.0 - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
-                double knockbackResistance = 2 * (1.0 - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
+                double knockbackResistanceY = 0.25 * (1.0 - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
+                double knockbackResistance = 1.5 * (1.0 - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
                 entity.push(vec33.x() * knockbackResistance, vec33.y() * knockbackResistanceY, vec33.z() * knockbackResistance);
             }
-            OpposingForce.PROXY.screenShake(new ScreenShakeEvent(this.guzzler.position(), 20, 2.0F, 25, false));
+            OpposingForce.PROXY.screenShake(new ScreenShakeEvent(this.guzzler.position(), 20, 2.0F, 16, false));
             this.guzzler.level().broadcastEntityEvent(this.guzzler, (byte) 40);
         }
 
@@ -194,5 +197,9 @@ public class GuzzlerAttackGoal extends Goal {
     @Override
     public boolean requiresUpdateEveryTick() {
         return true;
+    }
+
+    protected double getAttackReachSqr(LivingEntity target) {
+        return this.guzzler.getBbWidth() * 2.0F * this.guzzler.getBbWidth() * 2.0F + target.getBbWidth();
     }
 }

@@ -61,7 +61,7 @@ public class OPEntities {
     public static final RegistryObject<EntityType<Guzzler>> GUZZLER = ENTITY_TYPES.register(
             "guzzler", () ->
             EntityType.Builder.of(Guzzler::new, MobCategory.MONSTER)
-                    .sized(2.5F, 2.75F)
+                    .sized(2.0F, 2.6F)
                     .clientTrackingRange(10)
                     .fireImmune()
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "guzzler").toString())

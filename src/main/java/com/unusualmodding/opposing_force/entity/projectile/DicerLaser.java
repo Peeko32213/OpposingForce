@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity.projectile;
 
+import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.utils.ControlledAnimation;
 import com.unusualmodding.opposing_force.entity.Dicer;
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
@@ -110,13 +111,18 @@ public class DicerLaser extends Entity {
             appear.decreaseTimer();
         }
 
-        if (caster != null && !caster.isAlive()) discard() ;
+        if (caster != null && !caster.isAlive()) {
+            discard();
+        }
 
         if (tickCount > 20) {
             this.calculateEndPos();
             List<LivingEntity> entities = raytraceEntities(level(), new Vec3(getX(), getY(), getZ()), new Vec3(endPosX, endPosY, endPosZ), false, true, true).entities;
             if (blockSide != null) {
                 spawnExplosionParticles(12);
+            }
+            if (level().isClientSide && isAlive()) {
+                OpposingForce.PROXY.playWorldSound(this, (byte) 0);
             }
             if (!level().isClientSide) {
                 for (LivingEntity target : entities) {
@@ -234,7 +240,7 @@ public class DicerLaser extends Entity {
             if (entity == caster) {
                 continue;
             }
-            float pad = entity.getPickRadius() + 0.1f;
+            float pad = entity.getPickRadius() + 0.1F;
             AABB aabb = entity.getBoundingBox().inflate(pad, pad, pad);
             Optional<Vec3> hit = aabb.clip(from, to);
             if (aabb.contains(from)) {
@@ -266,11 +272,11 @@ public class DicerLaser extends Entity {
     }
 
     private void updateWithDicer() {
-        this.setYaw((float) ((caster.yHeadRot + 90) * Math.PI / 180.0d));
-        this.setPitch((float) (-caster.getXRot() * Math.PI / 180.0d));
+        this.setYaw((float) ((caster.yHeadRot + 90) * Math.PI / 180.0D));
+        this.setPitch((float) (-caster.getXRot() * Math.PI / 180.0D));
         Vec3 vecOffset1 = new Vec3(0, 0.05, 0.15).yRot((float) Math.toRadians(-caster.getYRot()));
         Vec3 vecOffset2 = new Vec3(0.15, 0, 0).yRot(-getYaw()).xRot(getPitch());
-        this.setPos(caster.getX() + vecOffset1.x() + vecOffset2.x(), caster.getY() + 1.8f + vecOffset1.y() + vecOffset2.y(), caster.getZ() + vecOffset1.z() + vecOffset2.z());
+        this.setPos(caster.getX() + vecOffset1.x() + vecOffset2.x(), caster.getY() + 1.8F + vecOffset1.y() + vecOffset2.y(), caster.getZ() + vecOffset1.z() + vecOffset2.z());
     }
 
     @Override

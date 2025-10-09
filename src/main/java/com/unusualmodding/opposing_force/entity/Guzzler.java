@@ -153,6 +153,13 @@ public class Guzzler extends Monster implements IAnimatedAttacker {
         this.stompAnimationState.animateWhen(this.getAttackState() == 2, this.tickCount);
     }
 
+    @Override
+    public void calculateEntityAnimation(boolean flying) {
+        float f1 = (float) Mth.length(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * 10.0F, 1.0F);
+        this.walkAnimation.update(f2, 0.4F);
+    }
+
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ATTACK_STATE, 0);
