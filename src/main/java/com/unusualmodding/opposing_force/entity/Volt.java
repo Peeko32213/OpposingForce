@@ -4,7 +4,6 @@ import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
-import com.unusualmodding.opposing_force.registry.tags.OPDamageTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -253,7 +252,7 @@ public class Volt extends Monster implements IAnimatedAttacker, PowerableMob {
     private static class VoltAttackGoal extends Goal {
 
         protected final Volt volt;
-        private int attackTime = 0;
+        private int timer = 0;
 
         public VoltAttackGoal(Volt mob) {
             this.volt = mob;
@@ -267,7 +266,7 @@ public class Volt extends Monster implements IAnimatedAttacker, PowerableMob {
         public void start() {
             this.volt.setAggressive(true);
             this.volt.setAttackState(0);
-            this.attackTime = 0;
+            this.timer = 0;
         }
 
         public void stop() {
@@ -307,11 +306,11 @@ public class Volt extends Monster implements IAnimatedAttacker, PowerableMob {
         }
 
         protected void tickShootAttack() {
-            this.attackTime++;
+            this.timer++;
             LivingEntity target = this.volt.getTarget();
             this.volt.getNavigation().stop();
 
-            if (this.attackTime == 8) {
+            if (this.timer == 8) {
                 ElectricCharge projectile = new ElectricCharge(this.volt, this.volt.level(), this.volt.position().x(), this.volt.getEyePosition().y(), this.volt.position().z());
                 double tx = target.getX() - this.volt.getX();
                 double ty = target.getY() + target.getEyeHeight() - 1.1D - projectile.getY();
@@ -324,14 +323,14 @@ public class Volt extends Monster implements IAnimatedAttacker, PowerableMob {
                 }
                 this.volt.level().addFreshEntity(projectile);
             }
-            if (this.attackTime >= 20) {
-                this.attackTime = 0;
+            if (this.timer >= 20) {
+                this.timer = 0;
                 this.volt.setAttackState(0);
             }
         }
 
         public void tickLeap() {
-            this.attackTime++;
+            this.timer++;
             LivingEntity target = this.volt.getTarget();
             this.volt.getNavigation().stop();
             float targetAngle = -1;
@@ -343,8 +342,8 @@ public class Volt extends Monster implements IAnimatedAttacker, PowerableMob {
                 this.volt.setDeltaMovement(m.x, 0.7, m.z);
             }
             if (target != null) this.volt.getLookControl().setLookAt(target, 30, 30);
-            if (this.attackTime >= 3) {
-                this.attackTime = 0;
+            if (this.timer >= 3) {
+                this.timer = 0;
                 this.volt.setAttackState(0);
                 this.volt.leapCooldown();
             }
