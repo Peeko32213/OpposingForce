@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.entity.projectile;
 
 import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -13,15 +14,15 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
-import net.minecraftforge.network.PlayMessages;
 
 public class LaserBolt extends AbstractFrictionlessProjectile {
 
     private static final EntityDataAccessor<Integer> DISRUPTOR_LEVEL = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DISRUPTOR = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> RAPID_FIRE = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> FREEZING = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
 
-    protected RandomSource rand = level.getRandom();
+    protected RandomSource randomSource = level.getRandom();
 
     public LaserBolt(EntityType<? extends AbstractFrictionlessProjectile> entityType, Level level) {
         super(entityType, level);
@@ -34,14 +35,7 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
         this.reapplyPosition();
     }
 
-    public LaserBolt(Level level, double x, double y, double z, Vec3 movement) {
-        super(OPEntities.LASER_BOLT.get(), x, y, z, movement, level);
-    }
-
-    public LaserBolt(PlayMessages.SpawnEntity spawnEntity, Level pLevel) {
-        this(OPEntities.LASER_BOLT.get(), pLevel);
-    }
-
+    @Override
     public void recreateFromPacket(ClientboundAddEntityPacket packet) {
         super.recreateFromPacket(packet);
         this.xRotO = this.getXRot();
@@ -53,6 +47,7 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
         super.defineSynchedData();
         this.getEntityData().define(DISRUPTOR, false);
         this.getEntityData().define(RAPID_FIRE, false);
+        this.getEntityData().define(FREEZING, false);
         this.getEntityData().define(DISRUPTOR_LEVEL, 0);
     }
 
@@ -80,13 +75,26 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
         this.entityData.set(RAPID_FIRE, rapidFire);
     }
 
+    public boolean isFreezing() {
+        return this.entityData.get(FREEZING);
+    }
+
+    public void setFreezing(boolean freezing) {
+        this.entityData.set(FREEZING, freezing);
+    }
+
     @Override
     public void tick() {
         super.tick();
+        if (this.isFreezing()) {
+            this.level().addParticle(ParticleTypes.SNOWFLAKE, this.getX(), this.getY(), this.getZ(), 0.0, 0.1, 0.0);
+        } else {
+            this.level().addParticle(OPParticles.LASER_BOLT_DUST.get(), this.getX(), this.getY(), this.getZ(), 0.0, 0.0, 0.0);
+        }
         if (tickCount > 160 || this.getBlockY() > this.level().getMaxBuildHeight() + 30) {
             if (!this.level().isClientSide) {
                 this.level().broadcastEntityEvent(this, (byte) 3);
-                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
                 this.discard();
             }
         }
@@ -100,7 +108,7 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
         float damage;
 
         if (!this.level().isClientSide) {
-            this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+            this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
             this.level().broadcastEntityEvent(this, (byte) 3);
             if (this.isRapidFire()) {
                 damage = 3.0F;
@@ -123,6 +131,9 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
                     laserBolt.setDeltaMovement(vec31);
                     laserBolt.setOwner(this.getOwner());
                     laserBolt.setDisruptor(false);
+                    if (this.isFreezing()) {
+                        laserBolt.setFreezing(true);
+                    }
 
                     float yRot = (float) (Mth.atan2(vec31.z, vec31.x) * (180F / Math.PI)) + 90F;
                     float xRot = (float) -(Mth.atan2(vec31.y, Math.sqrt(vec31.x * vec31.x + vec31.z * vec31.z)) * (180F / Math.PI));
@@ -132,6 +143,9 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
                     level().addFreshEntity(laserBolt);
                 }
                 level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.BLASTER_SHOOT.get(), SoundSource.PLAYERS, 1.0F, (level.getRandom().nextFloat() * 0.5F + 0.8F));
+            }
+            if (this.isFreezing()) {
+                entity.setTicksFrozen(Math.min(entity.getTicksRequiredToFreeze() * 4, entity.getTicksFrozen() + 120));
             }
             this.discard();
         }
@@ -144,7 +158,7 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
 
         if (!this.level().isClientSide) {
             this.level().broadcastEntityEvent(this, (byte) 3);
-            this.level().playSound(null, pos.getX(), pos.getY(), pos.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+            this.level().playSound(null, pos.getX(), pos.getY(), pos.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
             this.discard();
         }
     }
@@ -157,8 +171,12 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
     @Override
     public void handleEntityEvent(byte id) {
         if (id == 3) {
-            for (int i = 0; i < 9; ++i) {
-                this.level().addParticle(OPParticles.LASER_BOLT_DUST.get(), this.getX(), this.getY(), this.getZ(), 0.0, 0.0, 0.0);
+            for (int i = 0; i < 8; i++) {
+                if (this.isFreezing()) {
+                    this.level().addParticle(ParticleTypes.SNOWFLAKE, this.getX(), this.getY(), this.getZ(), this.getDeltaMovement().scale(0.05D).x, 0.3, this.getDeltaMovement().scale(0.05D).z);
+                } else {
+                    this.level().addParticle(OPParticles.LASER_BOLT_DUST.get(), this.getX(), this.getY(), this.getZ(), this.getDeltaMovement().scale(0.05D).x, 0.3, this.getDeltaMovement().scale(0.05D).z);
+                }
             }
         }
     }

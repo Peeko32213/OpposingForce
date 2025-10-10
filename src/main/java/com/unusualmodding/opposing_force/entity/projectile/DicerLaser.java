@@ -6,7 +6,6 @@ import com.unusualmodding.opposing_force.entity.Dicer;
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import com.unusualmodding.opposing_force.registry.OPParticles;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -281,6 +280,7 @@ public class DicerLaser extends Entity {
 
     @Override
     public void remove(RemovalReason reason) {
+        OpposingForce.PROXY.clearSoundCacheFor(this);
         super.remove(reason);
     }
 

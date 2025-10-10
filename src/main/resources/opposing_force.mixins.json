@@ -15,7 +15,6 @@
     "PlayerMixin"
   ],
   "client": [
-    "client.ClientPacketListenerMixin",
     "client.CustomHeadLayerMixin",
     "client.GuiMixin",
     "client.HumanoidArmorLayerMixin",

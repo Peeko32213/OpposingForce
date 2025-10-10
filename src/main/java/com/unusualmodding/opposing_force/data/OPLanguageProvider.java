@@ -36,7 +36,6 @@ public class OPLanguageProvider extends LanguageProvider {
         this.forEntity(OPEntities.DICER);
         this.forEntity(OPEntities.EMERALDFISH);
         this.forEntity(OPEntities.FIRE_SLIME);
-        this.forEntity(OPEntities.FIRE_SLUG);
         this.forEntity(OPEntities.FROWZY);
         this.forEntity(OPEntities.GUZZLER);
         this.forEntity(OPEntities.PALE_SPIDER);
@@ -158,9 +157,15 @@ public class OPLanguageProvider extends LanguageProvider {
         this.addEnchantmentWithDesc(OPEnchantments.KICKBACK.get(), "Launches the user backwards after firing");
         this.addEnchantmentWithDesc(OPEnchantments.QUASAR.get(), "The fired electric charge changes color rapidly and pulls mobs towards it");
         this.addEnchantmentWithDesc(OPEnchantments.STATIC_ATTRACTION.get(), "The fired electric charge seeks out nearby entities");
+        this.addEnchantmentWithDesc(OPEnchantments.BATTERY.get(), "Tesla bow has a chance to not consume electric charges");
+
         this.addEnchantmentWithDesc(OPEnchantments.PLAGUE.get(), "Increases the level of slug infestation inflicted");
+
         this.addEnchantmentWithDesc(OPEnchantments.RAPID_FIRE.get(), "Increases the fire rate of the blaster at the cost of damage per shot");
-        this.addEnchantmentWithDesc(OPEnchantments.SPLITTING.get(), "Fired laser bolts split into multiple laser bolts on hit");
+        this.addEnchantmentWithDesc(OPEnchantments.SPLITTING.get(), "Laser bolts split into multiple laser bolts on hit");
+        this.addEnchantmentWithDesc(OPEnchantments.FREEZE_RAY.get(), "Laser bolts inflict freezing on hit");
+        this.addEnchantmentWithDesc(OPEnchantments.POWER_SUPPLY.get(), "Blaster has a chance to not consume redstone dust");
+
         this.addEnchantmentWithDesc(OPEnchantments.PHOTOSYNTHESIS.get(), "Heals the user over time while exposed to sunlight");
 
         this.addEffect(OPEffects.ELECTRIFIED, "Electrified");

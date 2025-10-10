@@ -31,8 +31,9 @@ public class MoonShoesItem extends ArmorItem {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.putAll(super.getAttributeModifiers(slot, stack));
         UUID uuid = ArmorItem.ARMOR_MODIFIER_UUID_PER_TYPE.get(this.type);
+        builder.put(OPAttributes.JUMP_POWER.get(), new AttributeModifier(uuid, "Jump power", 1.0F, AttributeModifier.Operation.ADDITION));
         builder.put(OPAttributes.AIR_SPEED.get(), new AttributeModifier(uuid, "Air speed", 0.15F, AttributeModifier.Operation.MULTIPLY_BASE));
-        builder.put(ForgeMod.ENTITY_GRAVITY.get(), new AttributeModifier(uuid, "Gravity", -0.6F, AttributeModifier.Operation.MULTIPLY_TOTAL));
+        builder.put(ForgeMod.ENTITY_GRAVITY.get(), new AttributeModifier(uuid, "Gravity", -0.5F, AttributeModifier.Operation.MULTIPLY_TOTAL));
         return slot == this.getEquipmentSlot() ? builder.build() : super.getAttributeModifiers(slot, stack);
     }
 

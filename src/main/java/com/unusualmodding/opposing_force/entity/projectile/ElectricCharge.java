@@ -185,6 +185,12 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
         }
     }
 
+    @Override
+    public void remove(Entity.RemovalReason reason) {
+        OpposingForce.PROXY.clearSoundCacheFor(this);
+        super.remove(reason);
+    }
+
     public void spawnElectricParticles(ElectricCharge charge, int range, float yHeight, float particleMax) {
         Vec3 movement = charge.getDeltaMovement();
 

@@ -22,7 +22,7 @@ public class WhizzFlightSound extends AbstractTickableSoundInstance {
         this.z = (float) entity.getZ();
         this.looping = true;
         this.delay = 0;
-        this.volume = 0.0f;
+        this.volume = 0.0F;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class WhizzFlightSound extends AbstractTickableSoundInstance {
         float horizontalDistance = (float) this.entity.getDeltaMovement().horizontalDistance();
         if (horizontalDistance >= 0.01F) {
             this.pitch = Mth.lerp(Mth.clamp(horizontalDistance, 1.1F, 1.3F), 1.1F, 1.3F);
-            this.volume = Mth.lerp(Mth.clamp(horizontalDistance, 0.0F, 0.3F), 0.2F, 0.3F);
+            this.volume = Mth.lerp(Mth.clamp(horizontalDistance, 0.0F, 0.6F), 0.3F, 0.6F);
         } else {
             this.pitch = 0.0F;
             this.volume = 0.0F;
@@ -52,5 +52,9 @@ public class WhizzFlightSound extends AbstractTickableSoundInstance {
     @Override
     public boolean canPlaySound() {
         return !this.entity.isSilent();
+    }
+
+    public boolean isSameEntity(Whizz entity) {
+        return this.entity.isAlive() && this.entity.getId() == entity.getId();
     }
 }

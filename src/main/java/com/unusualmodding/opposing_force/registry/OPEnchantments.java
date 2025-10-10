@@ -26,6 +26,7 @@ public class OPEnchantments {
     public static final EnchantmentCategory BLASTER = EnchantmentCategory.create("blaster", (item -> item == OPItems.BLASTER.get()));
     public static final EnchantmentCategory WOODEN_ARMOR = EnchantmentCategory.create("wooden_armor", (item -> item instanceof WoodenArmorItem));
 
+    public static final RegistryObject<Enchantment> BATTERY = ENCHANTMENTS.register("battery", () -> new OPEnchantment("battery", Enchantment.Rarity.UNCOMMON, TESLA_BOW, 3, 15, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> CAPACITANCE = ENCHANTMENTS.register("capacitance", () -> new OPEnchantment("capacitance", Enchantment.Rarity.RARE, TESLA_BOW, 3, 20, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> QUASAR = ENCHANTMENTS.register("quasar", () -> new TrueTreasureEnchantment("quasar", Enchantment.Rarity.VERY_RARE, TESLA_BOW, 1, 30, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> REBOUND = ENCHANTMENTS.register("rebound", () -> new OPEnchantment("rebound", Enchantment.Rarity.UNCOMMON, TESLA_BOW, 4, 15, EquipmentSlot.MAINHAND));
@@ -33,8 +34,10 @@ public class OPEnchantments {
 
     public static final RegistryObject<Enchantment> PLAGUE = ENCHANTMENTS.register("plague", () -> new OPEnchantment("plague", Enchantment.Rarity.RARE, VILE_BOULDER, 2, 20, EquipmentSlot.MAINHAND));
 
-    public static final RegistryObject<Enchantment> SPLITTING = ENCHANTMENTS.register("splitting", () -> new OPEnchantment("splitting", Enchantment.Rarity.RARE, BLASTER, 5, 20, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> FREEZE_RAY = ENCHANTMENTS.register("freeze_ray", () -> new OPEnchantment("freeze_ray", Enchantment.Rarity.VERY_RARE, BLASTER, 1, 25, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> POWER_SUPPLY = ENCHANTMENTS.register("power_supply", () -> new OPEnchantment("power_supply", Enchantment.Rarity.UNCOMMON, BLASTER, 3, 15, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> RAPID_FIRE = ENCHANTMENTS.register("rapid_fire", () -> new OPEnchantment("rapid_fire", Enchantment.Rarity.RARE, BLASTER, 3, 20, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> SPLITTING = ENCHANTMENTS.register("splitting", () -> new OPEnchantment("splitting", Enchantment.Rarity.RARE, BLASTER, 5, 15, EquipmentSlot.MAINHAND));
 
     public static final RegistryObject<Enchantment> PHOTOSYNTHESIS = ENCHANTMENTS.register("photosynthesis", () -> new TrueTreasureEnchantment("photosynthesis", Enchantment.Rarity.RARE, WOODEN_ARMOR, 1, 20, ARMOR_SLOTS));
 

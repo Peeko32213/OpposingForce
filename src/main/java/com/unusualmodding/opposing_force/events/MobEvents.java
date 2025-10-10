@@ -17,7 +17,6 @@ public class MobEvents {
     @SubscribeEvent
     public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
         event.register(DICER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Dicer::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
-        event.register(FIRE_SLUG.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FireSlug::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(FROWZY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Frowzy::canSpawn, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(GUZZLER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Guzzler::canSpawn, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(PALE_SPIDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PaleSpider::canSpawn, SpawnPlacementRegisterEvent.Operation.OR);
@@ -34,7 +33,6 @@ public class MobEvents {
         event.put(DICER.get(), Dicer.createAttributes().build());
         event.put(EMERALDFISH.get(), Emeraldfish.createAttributes().build());
         event.put(FIRE_SLIME.get(), FireSlime.createAttributes().build());
-        event.put(FIRE_SLUG.get(), FireSlug.createAttributes().build());
         event.put(FROWZY.get(), Frowzy.createAttributes().build());
         event.put(GUZZLER.get(), Guzzler.createAttributes().build());
         event.put(HAUNTED_TOOL.get(), HauntedTool.createAttributes().build());

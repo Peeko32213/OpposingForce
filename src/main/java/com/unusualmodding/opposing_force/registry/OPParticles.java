@@ -14,5 +14,6 @@ public class OPParticles {
 
     public static final RegistryObject<ElectricChargeParticleType> ELECTRIC_CHARGE = PARTICLE_TYPES.register("electric_charge", () -> new ElectricChargeParticleType(false));
     public static final RegistryObject<SimpleParticleType> LASER_BOLT_DUST = PARTICLE_TYPES.register("laser_bolt_dust", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> ICE_LASER_BOLT_DUST = PARTICLE_TYPES.register("ice_laser_bolt_dust", () -> new SimpleParticleType(false));
 
 }

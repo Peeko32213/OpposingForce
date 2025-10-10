@@ -773,6 +773,7 @@
   "whizz_fly": {
     "sounds": [
       {
+        "attenuation_distance": 6,
         "name": "opposing_force:entity/whizz/loop1",
         "pitch": 0.9
       }

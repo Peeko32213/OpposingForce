@@ -31,6 +31,7 @@ public final class ClientEvents {
     public static void registerParticleTypes(RegisterParticleProvidersEvent event){
         event.registerSpecial(OPParticles.ELECTRIC_CHARGE.get(), new ElectricChargeParticle.Factory());
         event.registerSpriteSet(OPParticles.LASER_BOLT_DUST.get(), LaserBoltDustParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.ICE_LASER_BOLT_DUST.get(), LaserBoltDustParticle.IceFactory::new);
     }
 
     @SubscribeEvent
@@ -41,7 +42,6 @@ public final class ClientEvents {
         event.registerEntityRenderer(OPEntities.LASER_BOLT.get(), LaserBoltRenderer::new);
         event.registerEntityRenderer(OPEntities.EMERALDFISH.get(), EmeraldfishRenderer::new);
         event.registerEntityRenderer(OPEntities.FIRE_SLIME.get(), FireSlimeRenderer::new);
-        event.registerEntityRenderer(OPEntities.FIRE_SLUG.get(), FireSlugRenderer::new);
         event.registerEntityRenderer(OPEntities.FROWZY.get(), FrowzyRenderer::new);
         event.registerEntityRenderer(OPEntities.GUZZLER.get(), GuzzlerRenderer::new);
         event.registerEntityRenderer(OPEntities.HAUNTED_TOOL.get(), HauntedToolRenderer::new);
@@ -63,7 +63,6 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.DICER_HEAD, DicerHeadModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.EMERALDFISH, EmeraldfishModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.FIRE_SLIME, FireSlimeModel::createBodyLayer);
-        event.registerLayerDefinition(OPModelLayers.FIRE_SLUG, SlugModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.FROWZY, FrowzyModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.FROWZY_HEAD, FrowzyHeadModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.GUZZLER, GuzzlerModel::createBodyLayer);

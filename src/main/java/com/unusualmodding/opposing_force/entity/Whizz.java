@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.mojang.datafixers.DataFixUtils;
+import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.blocks.InfestedAmethyst;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
@@ -39,7 +40,6 @@ import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -77,8 +77,8 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
     public final AnimationState flyAnimationState = new AnimationState();
 
     @Override
-    protected @NotNull PathNavigation createNavigation(Level pLevel) {
-        FlyingPathNavigation navigation = new FlyingPathNavigation(this, pLevel) {
+    protected @NotNull PathNavigation createNavigation(Level level) {
+        FlyingPathNavigation navigation = new FlyingPathNavigation(this, level) {
             public boolean isStableDestination(BlockPos pos) {
                 return !level().getBlockState(pos.below(2)).isAir();
             }
@@ -130,8 +130,11 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
     public void tick() {
         super.tick();
 
-        if (this.level().isClientSide()) {
+        if (this.level().isClientSide) {
             this.setupAnimationStates();
+            if (this.isAlive()) {
+                OpposingForce.PROXY.playWorldSound(this, (byte) 2);
+            }
         }
 
         if (this.getChargeCooldown() > 0) {
@@ -151,6 +154,12 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
     }
 
     @Override
+    public void remove(Entity.RemovalReason reason) {
+        OpposingForce.PROXY.clearSoundCacheFor(this);
+        super.remove(reason);
+    }
+
+    @Override
     public boolean doHurtTarget(Entity entity) {
         if (super.doHurtTarget(entity)) {
             this.playSound(OPSoundEvents.WHIZZ_ATTACK.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
@@ -161,14 +170,14 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
     }
 
     @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
-        if (this.isInvulnerableTo(pSource)) {
+    public boolean hurt(DamageSource source, float pAmount) {
+        if (this.isInvulnerableTo(source)) {
             return false;
         } else {
-            if ((pSource.getEntity() != null || pSource.is(DamageTypeTags.ALWAYS_TRIGGERS_SILVERFISH)) && this.friendsGoal != null) {
+            if ((source.getEntity() != null || source.is(DamageTypeTags.ALWAYS_TRIGGERS_SILVERFISH)) && this.friendsGoal != null) {
                 this.friendsGoal.notifyHurt();
             }
-            return super.hurt(pSource, pAmount);
+            return super.hurt(source, pAmount);
         }
     }
 

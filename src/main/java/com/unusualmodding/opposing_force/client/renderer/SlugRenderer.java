@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 @OnlyIn(Dist.CLIENT)
 public class SlugRenderer extends MobRenderer<Slug, SlugModel<Slug>> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/slug/slug.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/slug.png");
 
     public SlugRenderer(EntityRendererProvider.Context context) {
         super(context, new SlugModel<>(context.bakeLayer(OPModelLayers.SLUG)), 0.5F);

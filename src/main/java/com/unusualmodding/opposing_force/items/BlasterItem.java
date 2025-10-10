@@ -35,7 +35,7 @@ public class BlasterItem extends Item {
         if (player.isCreative()) {
             return ItemStack.EMPTY;
         }
-        for (int i = 0; i < player.getInventory().getContainerSize(); ++i) {
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             ItemStack itemstack = player.getInventory().getItem(i);
             if (AMMO.test(itemstack)) {
                 return itemstack;
@@ -66,7 +66,7 @@ public class BlasterItem extends Item {
         Vec3 barrelPos = getBarrelVec(player, hand == InteractionHand.MAIN_HAND, new Vec3(0.55F, -0.45F, 1.15F));
         Vec3 correction = getBarrelVec(player, hand == InteractionHand.MAIN_HAND, new Vec3(-0.035F, 0, 0)).subtract(player.position().add(0, player.getEyeHeight(), 0));
         Vec3 lookVec = player.getLookAngle();
-        Vec3 motion = lookVec.add(correction).normalize().scale(2).scale(1.5F);
+        Vec3 motion = lookVec.add(correction).normalize().scale(1.5F).scale(1.5F);
 
         laserBolt.setPos(barrelPos.x, barrelPos.y, barrelPos.z);
         laserBolt.setDeltaMovement(motion);
@@ -80,14 +80,28 @@ public class BlasterItem extends Item {
         if (itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) > 0) {
             laserBolt.setRapidFire(true);
         }
+        if (itemStack.getEnchantmentLevel(OPEnchantments.FREEZE_RAY.get()) > 0) {
+            laserBolt.setFreezing(true);
+        }
         level.addFreshEntity(laserBolt);
 
         level.playSound(null, player.getX(), player.getY(), player.getZ(), OPSoundEvents.BLASTER_SHOOT.get(), SoundSource.PLAYERS, 1.0F, (level.getRandom().nextFloat() * 0.5F + (itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) > 0 ? 1F : 0.8F)));
 
         if (!player.isCreative()) {
-            ammoStack.shrink(1);
             itemStack.hurtAndBreak(1, player, (player1) -> player1.broadcastBreakEvent(hand));
-            if (ammoStack.isEmpty()) player.getInventory().removeItem(ammoStack);
+            if (itemStack.getEnchantmentLevel(OPEnchantments.POWER_SUPPLY.get()) > 0) {
+                if (level.getRandom().nextInt(itemStack.getEnchantmentLevel(OPEnchantments.POWER_SUPPLY.get())) == 0) {
+                    ammoStack.shrink(1);
+                    if (ammoStack.isEmpty()) {
+                        player.getInventory().removeItem(ammoStack);
+                    }
+                }
+            } else {
+                ammoStack.shrink(1);
+                if (ammoStack.isEmpty()) {
+                    player.getInventory().removeItem(ammoStack);
+                }
+            }
         }
 
         player.awardStat(Stats.ITEM_USED.get(this));
@@ -141,7 +155,6 @@ public class BlasterItem extends Item {
         float pitch = (float) ((player.getXRot()) / -180 * Math.PI);
         int flip = mainHand == (player.getMainArm() == HumanoidArm.RIGHT) ? -1 : 1;
         Vec3 barrelPosNoTransform = new Vec3(flip * rightHandForward.x, rightHandForward.y, rightHandForward.z);
-        Vec3 barrelPos = start.add(barrelPosNoTransform.xRot(pitch).yRot(yaw));
-        return barrelPos;
+        return start.add(barrelPosNoTransform.xRot(pitch).yRot(yaw));
     }
 }

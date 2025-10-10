@@ -312,7 +312,7 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound("block/amethyst/step12").pitch(1.3F)
         );
         this.sound(OPSoundEvents.WHIZZ_FLY,
-                sound(OpposingForce.modPrefix("entity/whizz/loop1")).pitch(0.9F)
+                sound(OpposingForce.modPrefix("entity/whizz/loop1")).pitch(0.9F).attenuationDistance(6)
         );
         this.sound(OPSoundEvents.WHIZZ_ATTACK,
                 sound("block/amethyst/resonate1").pitch(1.2F),

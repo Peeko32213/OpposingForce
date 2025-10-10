@@ -1,7 +1,8 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.unusualmodding.opposing_force.entity.ai.goal.VoltShootGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.VoltLeapGoal;
 import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
-import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -12,7 +13,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -29,22 +29,19 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.EnumSet;
 
 public class Volt extends Monster implements IAnimatedAttacker, PowerableMob {
 
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Volt.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> LEAP_COOLDOWN = SynchedEntityData.defineId(Volt.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> CHARGED = SynchedEntityData.defineId(Volt.class, EntityDataSerializers.BOOLEAN);
 
     public float targetSquish;
     public float squish;
     public float oSquish;
     private boolean wasOnGround;
+    public int leapCooldown = 20 * 2 + this.getRandom().nextInt(10 * 2);
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState shootAnimationState = new AnimationState();
@@ -60,7 +57,8 @@ public class Volt extends Monster implements IAnimatedAttacker, PowerableMob {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new VoltAttackGoal(this));
+        this.goalSelector.addGoal(1, new VoltLeapGoal(this));
+        this.goalSelector.addGoal(2, new VoltShootGoal(this));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -72,7 +70,6 @@ public class Volt extends Monster implements IAnimatedAttacker, PowerableMob {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ATTACK_STATE, 0);
-        this.entityData.define(LEAP_COOLDOWN, 4 + random.nextInt(16 * 2));
         this.entityData.define(CHARGED, false);
     }
 
@@ -80,7 +77,6 @@ public class Volt extends Monster implements IAnimatedAttacker, PowerableMob {
     public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putInt("AttackState", this.getAttackState());
-        compoundTag.putInt("LeapCooldown", this.getLeapCooldown());
         if (this.entityData.get(CHARGED)) {
             compoundTag.putBoolean("Charged", true);
         }
@@ -90,7 +86,6 @@ public class Volt extends Monster implements IAnimatedAttacker, PowerableMob {
     public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         this.setAttackState(compoundTag.getInt("AttackState"));
-        this.setLeapCooldown(compoundTag.getInt("LeapCooldown"));
         this.entityData.set(CHARGED, compoundTag.getBoolean("Charged"));
     }
 
@@ -102,18 +97,6 @@ public class Volt extends Monster implements IAnimatedAttacker, PowerableMob {
     @Override
     public void setAttackState(int attack) {
         this.entityData.set(ATTACK_STATE, attack);
-    }
-
-    public int getLeapCooldown() {
-        return this.entityData.get(LEAP_COOLDOWN);
-    }
-
-    public void setLeapCooldown(int cooldown) {
-        this.entityData.set(LEAP_COOLDOWN, cooldown);
-    }
-
-    public void leapCooldown() {
-        this.entityData.set(LEAP_COOLDOWN, 4 + random.nextInt(16 * 2));
     }
 
     @Override
@@ -144,8 +127,8 @@ public class Volt extends Monster implements IAnimatedAttacker, PowerableMob {
 
     @Override
     public void tick() {
-        if (this.getLeapCooldown() > 0) {
-            this.setLeapCooldown(this.getLeapCooldown() - 1);
+        if (this.leapCooldown > 0) {
+            this.leapCooldown--;
         }
 
         if (this.level().isClientSide()) {
@@ -244,108 +227,6 @@ public class Volt extends Monster implements IAnimatedAttacker, PowerableMob {
             } else {
                 int lightTest = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
                 return lightTest <= dimension.monsterSpawnLightTest().sample(random);
-            }
-        }
-    }
-
-    // goals
-    private static class VoltAttackGoal extends Goal {
-
-        protected final Volt volt;
-        private int timer = 0;
-
-        public VoltAttackGoal(Volt mob) {
-            this.volt = mob;
-            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
-        }
-
-        public boolean canUse() {
-            return this.volt.getTarget() != null && this.volt.getTarget().isAlive();
-        }
-
-        public void start() {
-            this.volt.setAggressive(true);
-            this.volt.setAttackState(0);
-            this.timer = 0;
-        }
-
-        public void stop() {
-            this.volt.setAggressive(false);
-            this.volt.setAttackState(0);
-        }
-
-        public void tick() {
-            LivingEntity target = this.volt.getTarget();
-            if (target != null) {
-
-                this.volt.lookAt(this.volt.getTarget(), 30F, 30F);
-                this.volt.getLookControl().setLookAt(this.volt.getTarget(), 30F, 30F);
-
-                int attackState = this.volt.getAttackState();
-                double distance = this.volt.distanceToSqr(target.getX(), target.getY(), target.getZ());
-                boolean random = this.volt.getRandom().nextBoolean();
-
-                switch (attackState) {
-                    case 1 -> tickShootAttack();
-                    case 2 -> tickLeap();
-                    default -> {
-                        this.checkForAttack(distance);
-                        this.volt.getMoveControl().strafe(random ? 0.3F : -0.3F, random ? 0.3F : -0.3F);
-                    }
-                }
-            }
-        }
-
-        protected void checkForAttack(double distance) {
-            if (this.volt.onGround() || this.volt.isInWaterOrBubble()) {
-                this.volt.setAttackState(1);
-            }
-            if (this.volt.getLeapCooldown() <= 0 && distance <= 30) {
-                this.volt.setAttackState(2);
-            }
-        }
-
-        protected void tickShootAttack() {
-            this.timer++;
-            LivingEntity target = this.volt.getTarget();
-            this.volt.getNavigation().stop();
-
-            if (this.timer == 8) {
-                ElectricCharge projectile = new ElectricCharge(this.volt, this.volt.level(), this.volt.position().x(), this.volt.getEyePosition().y(), this.volt.position().z());
-                double tx = target.getX() - this.volt.getX();
-                double ty = target.getY() + target.getEyeHeight() - 1.1D - projectile.getY();
-                double tz = target.getZ() - this.volt.getZ();
-                float heightOffset = Mth.sqrt((float) (tx * tx + tz * tz)) * 0.01F;
-                projectile.shoot(tx, ty + heightOffset, tz, 0.6F, 1.0F);
-                this.volt.playSound(OPSoundEvents.VOLT_SHOOT.get(), 2.0F, 1.0F / (this.volt.getRandom().nextFloat() * 0.4F + 0.8F));
-                if (this.volt.isPowered()) {
-                    projectile.setChargeScale(2.5F);
-                }
-                this.volt.level().addFreshEntity(projectile);
-            }
-            if (this.timer >= 20) {
-                this.timer = 0;
-                this.volt.setAttackState(0);
-            }
-        }
-
-        public void tickLeap() {
-            this.timer++;
-            LivingEntity target = this.volt.getTarget();
-            this.volt.getNavigation().stop();
-            float targetAngle = -1;
-            float leapYaw = (float) Math.toRadians(targetAngle + 90 + this.volt.getRandom().nextFloat() * 150 - 75);
-            if (this.volt.onGround()) {
-                float speed = 1.25F;
-                this.volt.playSound(OPSoundEvents.VOLT_SQUISH.get(), 0.2F, 1.0F);
-                Vec3 m = this.volt.getDeltaMovement().add(speed * Math.cos(leapYaw), 0, speed * Math.sin(leapYaw));
-                this.volt.setDeltaMovement(m.x, 0.7, m.z);
-            }
-            if (target != null) this.volt.getLookControl().setLookAt(target, 30, 30);
-            if (this.timer >= 3) {
-                this.timer = 0;
-                this.volt.setAttackState(0);
-                this.volt.leapCooldown();
             }
         }
     }

@@ -28,19 +28,16 @@ import java.util.function.Predicate;
 
 public class TeslaBowItem extends CrossbowItem implements Vanishable {
 
-    private boolean startSoundPlayed = false;
-    private boolean midLoadSoundPlayed = false;
-
-    protected static final Predicate<ItemStack> ELECTRIC_BALL = (itemstack) -> itemstack.getItem() instanceof ElectricChargeItem;
+    protected static final Predicate<ItemStack> ELECTRIC_CHARGE = (itemstack) -> itemstack.getItem() instanceof ElectricChargeItem;
 
     @Override
     public Predicate<ItemStack> getSupportedHeldProjectiles() {
-        return ELECTRIC_BALL;
+        return ELECTRIC_CHARGE;
     }
 
     @Override
     public Predicate<ItemStack> getAllSupportedProjectiles() {
-        return ELECTRIC_BALL;
+        return ELECTRIC_CHARGE;
     }
 
     @Override
@@ -69,8 +66,6 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
         }
         else if (!pPlayer.getProjectile(itemstack).isEmpty()) {
             if (!isCharged(itemstack)) {
-                this.startSoundPlayed = false;
-                this.midLoadSoundPlayed = false;
                 pPlayer.startUsingItem(pHand);
             }
             return InteractionResultHolder.consume(itemstack);
@@ -97,16 +92,14 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
         boolean flag = shooter instanceof Player && ((Player)shooter).getAbilities().instabuild;
         ItemStack itemstack = shooter.getProjectile(crossbow);
         ItemStack itemstack1 = itemstack.copy();
-        for(int k = 0; k < j; ++k) {
+        for (int k = 0; k < j; ++k) {
             if (k > 0) {
                 itemstack = itemstack1.copy();
             }
-
             if (itemstack.isEmpty() && flag) {
                 itemstack = new ItemStack(OPItems.ELECTRIC_CHARGE.get(), 1);
                 itemstack1 = itemstack.copy();
             }
-
             if (!loadProjectile(shooter, crossbow, itemstack, k > 0, flag)) {
                 return false;
             }

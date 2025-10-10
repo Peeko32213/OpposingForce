@@ -15,13 +15,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Quaternionf;
 
 @OnlyIn(Dist.CLIENT)
 public class LaserBoltRenderer extends EntityRenderer<LaserBolt> {
 
-    private static final ResourceLocation OUTER_TEXTURES = new ResourceLocation(OpposingForce.MOD_ID,"textures/entity/projectiles/laser_bolt_outer.png");
-    private static final ResourceLocation INNER_TEXTURES = new ResourceLocation(OpposingForce.MOD_ID,"textures/entity/projectiles/laser_bolt_inner.png");
+    private static final ResourceLocation OUTER_RED = new ResourceLocation(OpposingForce.MOD_ID,"textures/entity/projectiles/laser_bolt_outer_red.png");
+    private static final ResourceLocation INNER_RED = new ResourceLocation(OpposingForce.MOD_ID,"textures/entity/projectiles/laser_bolt_inner_red.png");
+    private static final ResourceLocation OUTER_ICE = new ResourceLocation(OpposingForce.MOD_ID,"textures/entity/projectiles/laser_bolt_outer_ice.png");
+    private static final ResourceLocation INNER_ICE = new ResourceLocation(OpposingForce.MOD_ID,"textures/entity/projectiles/laser_bolt_inner_ice.png");
 
     private final LaserBoltModel model;
 
@@ -39,8 +40,8 @@ public class LaserBoltRenderer extends EntityRenderer<LaserBolt> {
         float f1 = Mth.lerp(partialTicks, laserBolt.xRotO, laserBolt.getXRot());
         this.model.setupRotation(f, f1);
         this.model.renderToBuffer(poseStack, VertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-        VertexConsumer VertexConsumer2 = buffer.getBuffer(OPRenderTypes.glowingEyes(OUTER_TEXTURES));
-        this.model.renderToBuffer(poseStack, VertexConsumer2, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 0.4F);
+        VertexConsumer VertexConsumer2 = buffer.getBuffer(OPRenderTypes.glowingEyes(getOuterTextureLocation(laserBolt)));
+        this.model.renderToBuffer(poseStack, VertexConsumer2, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 0.5F);
         poseStack.popPose();
         super.render(laserBolt, entityYaw, partialTicks, poseStack, buffer, packedLight);
     }
@@ -52,6 +53,16 @@ public class LaserBoltRenderer extends EntityRenderer<LaserBolt> {
 
     @Override
     public ResourceLocation getTextureLocation(LaserBolt entity) {
-        return INNER_TEXTURES;
+        if (entity.isFreezing()) {
+            return INNER_ICE;
+        }
+        return INNER_RED;
+    }
+
+    public ResourceLocation getOuterTextureLocation(LaserBolt entity) {
+        if (entity.isFreezing()) {
+            return OUTER_ICE;
+        }
+        return OUTER_RED;
     }
 }

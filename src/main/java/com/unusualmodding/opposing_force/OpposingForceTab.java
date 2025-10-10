@@ -18,7 +18,7 @@ public class OpposingForceTab {
             .icon(() -> new ItemStack(OPItems.CAPTURED_WHIZZ.get()))
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .displayItems((enabledFeatures, output) -> {
-                for(RegistryObject<Item> item : OPItems.ITEMS.getEntries()){
+                for (RegistryObject<Item> item : OPItems.ITEMS.getEntries()){
 
                     // Spawn eggs
                     OPItems.ITEMS.getEntries().forEach(spawnEgg -> {
