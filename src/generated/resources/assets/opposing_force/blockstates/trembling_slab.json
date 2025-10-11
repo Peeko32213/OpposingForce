@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "opposing_force:block/trembling_slab"
+    },
+    "type=double": {
+      "model": "opposing_force:block/trembling_block"
+    },
+    "type=top": {
+      "model": "opposing_force:block/trembling_slab_top"
+    }
+  }
+}

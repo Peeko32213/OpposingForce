@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "E": {
+      "item": "opposing_force:slug_eggs"
+    },
+    "S": {
+      "item": "minecraft:cobblestone"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "SES",
+    "SSS"
+  ],
+  "result": {
+    "count": 8,
+    "item": "opposing_force:vile_cobblestone"
+  },
+  "show_notification": true
+}

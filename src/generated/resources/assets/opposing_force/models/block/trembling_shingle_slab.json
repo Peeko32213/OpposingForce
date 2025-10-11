@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "opposing_force:block/trembling_shingles",
+    "side": "opposing_force:block/trembling_shingles",
+    "top": "opposing_force:block/trembling_shingles"
+  }
+}

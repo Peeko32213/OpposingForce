@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "opposing_force:block/trembling_shingle_slab"
+    },
+    "type=double": {
+      "model": "opposing_force:block/trembling_shingles"
+    },
+    "type=top": {
+      "model": "opposing_force:block/trembling_shingle_slab_top"
+    }
+  }
+}

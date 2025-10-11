@@ -11,6 +11,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
+import org.jetbrains.annotations.NotNull;
 
 public class TomahawkItem extends SwordItem {
 
@@ -30,8 +33,13 @@ public class TomahawkItem extends SwordItem {
         }
         player.awardStat(Stats.ITEM_USED.get(this));
         if (!player.getAbilities().instabuild) {
-            itemstack.hurtAndBreak(2, player, (player1) -> player1.broadcastBreakEvent(hand));
+            itemstack.hurtAndBreak(3, player, (player1) -> player1.broadcastBreakEvent(hand));
         }
         return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
+    }
+
+    @Override
+    public boolean canPerformAction(@NotNull ItemStack stack, @NotNull ToolAction toolAction) {
+        return toolAction != ToolActions.SWORD_SWEEP && super.canPerformAction(stack, toolAction);
     }
 }

@@ -33,6 +33,7 @@ public class OPSoundEvents {
     public static final RegistryObject<SoundEvent> GUZZLER_DEATH = registerSoundEvent("guzzler_death");
     public static final RegistryObject<SoundEvent> GUZZLER_IDLE = registerSoundEvent("guzzler_idle");
     public static final RegistryObject<SoundEvent> GUZZLER_SPEW = registerSoundEvent("guzzler_spew");
+    public static final RegistryObject<SoundEvent> GUZZLER_SLAM = registerSoundEvent("guzzler_slam");
 
     public static final RegistryObject<SoundEvent> FIRE_SLIME_HURT = registerSoundEvent("fire_slime_hurt");
     public static final RegistryObject<SoundEvent> FIRE_SLIME_DEATH = registerSoundEvent("fire_slime_death");

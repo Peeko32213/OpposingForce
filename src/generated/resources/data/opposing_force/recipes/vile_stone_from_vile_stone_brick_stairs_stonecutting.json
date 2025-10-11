@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "opposing_force:vile_stone"
+  },
+  "result": "opposing_force:vile_stone_brick_stairs"
+}

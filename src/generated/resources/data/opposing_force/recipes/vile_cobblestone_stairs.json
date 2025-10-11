@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "V": {
+      "item": "opposing_force:vile_cobblestone"
+    }
+  },
+  "pattern": [
+    "V  ",
+    "VV ",
+    "VVV"
+  ],
+  "result": {
+    "count": 4,
+    "item": "opposing_force:vile_cobblestone_stairs"
+  },
+  "show_notification": true
+}

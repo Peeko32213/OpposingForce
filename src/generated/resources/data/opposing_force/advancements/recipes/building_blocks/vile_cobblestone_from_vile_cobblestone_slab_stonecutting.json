@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "opposing_force:vile_cobblestone_from_vile_cobblestone_slab_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_vile_cobblestone": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "opposing_force:vile_cobblestone"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_vile_cobblestone",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "opposing_force:vile_cobblestone_from_vile_cobblestone_slab_stonecutting"
+    ]
+  },
+  "sends_telemetry_event": false
+}

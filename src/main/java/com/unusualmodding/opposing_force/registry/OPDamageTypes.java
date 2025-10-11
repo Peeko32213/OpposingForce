@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.entity.projectile.UmberKnife;
+import com.unusualmodding.opposing_force.entity.projectile.UmberDagger;
 import com.unusualmodding.opposing_force.entity.projectile.DicerLaser;
 import com.unusualmodding.opposing_force.entity.projectile.Tomahawk;
 import net.minecraft.core.registries.Registries;
@@ -42,7 +42,7 @@ public class OPDamageTypes {
         return level.damageSources().source(TOMAHAWK, tomahawk, indirectEntity);
     }
 
-    public static DamageSource umberKnife(Level level, UmberKnife umberKnife, @Nullable Entity indirectEntity) {
+    public static DamageSource umberKnife(Level level, UmberDagger umberKnife, @Nullable Entity indirectEntity) {
         return level.damageSources().source(UMBER_KNIFE, umberKnife, indirectEntity);
     }
 

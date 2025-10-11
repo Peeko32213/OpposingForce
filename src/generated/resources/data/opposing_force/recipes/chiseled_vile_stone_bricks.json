@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "V": {
+      "item": "opposing_force:vile_stone_brick_slab"
+    }
+  },
+  "pattern": [
+    "V",
+    "V"
+  ],
+  "result": {
+    "count": 2,
+    "item": "opposing_force:chiseled_vile_stone_bricks"
+  },
+  "show_notification": true
+}

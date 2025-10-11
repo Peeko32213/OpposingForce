@@ -1,2 +1,8 @@
-// 1.20.1	2025-08-28T21:42:51.2536898	Tags for minecraft:block mod id opposing_force
-b0fff070f2029ee59d7d3557d4db31a76a144e12 data/minecraft/tags/blocks/mineable/pickaxe.json
+// 1.20.1	2025-10-10T22:21:52.252728	Tags for minecraft:block mod id opposing_force
+e32c3f435e44d7b513266dc0ab1a546a5dfc51bc data/minecraft/tags/blocks/fall_damage_resetting.json
+f7a57bac8228b13be13828c8c07c39ff58b033eb data/minecraft/tags/blocks/mineable/hoe.json
+31eaa21d5658417479c75751de91a005db550ea6 data/minecraft/tags/blocks/mineable/pickaxe.json
+9c74ef022b1bd041b6993fe4cfeafa89e0e084ef data/minecraft/tags/blocks/slabs.json
+558324bf1f209caee5c796bc05f394f6b262b835 data/minecraft/tags/blocks/stairs.json
+e32c3f435e44d7b513266dc0ab1a546a5dfc51bc data/minecraft/tags/blocks/sword_efficient.json
+9759e74e057c233f5b134886230ec7d16884b392 data/minecraft/tags/blocks/walls.json

@@ -343,14 +343,14 @@
   },
   "guzzler_death": {
     "sounds": [
-      "opposing_force:entity/guzzler/death1"
+      "opposing_force:entity/guzzler/death_0"
     ],
     "subtitle": "subtitles.opposing_force.guzzler_death"
   },
   "guzzler_hurt": {
     "sounds": [
       {
-        "name": "opposing_force:entity/guzzler/hurt1",
+        "name": "opposing_force:entity/guzzler/hurt_0",
         "volume": 0.75
       }
     ],
@@ -358,13 +358,23 @@
   },
   "guzzler_idle": {
     "sounds": [
-      "opposing_force:entity/guzzler/idle1"
+      "opposing_force:entity/guzzler/idle_0"
     ],
     "subtitle": "subtitles.opposing_force.guzzler_idle"
   },
+  "guzzler_slam": {
+    "sounds": [
+      {
+        "attenuation_distance": 20,
+        "name": "opposing_force:entity/guzzler/slam_0",
+        "volume": 2.0
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.guzzler_slam"
+  },
   "guzzler_spew": {
     "sounds": [
-      "opposing_force:entity/guzzler/spew1"
+      "opposing_force:entity/guzzler/spew_0"
     ],
     "subtitle": "subtitles.opposing_force.guzzler_spew"
   },

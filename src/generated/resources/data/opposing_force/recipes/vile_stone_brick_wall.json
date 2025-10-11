@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "V": {
+      "item": "opposing_force:vile_stone_bricks"
+    }
+  },
+  "pattern": [
+    "VVV",
+    "VVV"
+  ],
+  "result": {
+    "count": 6,
+    "item": "opposing_force:vile_stone_brick_wall"
+  },
+  "show_notification": true
+}

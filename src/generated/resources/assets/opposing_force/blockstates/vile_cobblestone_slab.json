@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "opposing_force:block/vile_cobblestone_slab"
+    },
+    "type=double": {
+      "model": "opposing_force:block/vile_cobblestone"
+    },
+    "type=top": {
+      "model": "opposing_force:block/vile_cobblestone_slab_top"
+    }
+  }
+}

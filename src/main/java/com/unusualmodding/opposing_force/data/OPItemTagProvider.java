@@ -6,6 +6,7 @@ import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -24,6 +25,12 @@ public class OPItemTagProvider extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
+
+        this.tag(OPItemTags.KNIVES).add(
+                UMBER_DAGGER.get()
+        ).addOptionalTag(new ResourceLocation("farmersdelight", "tools/knives"));
+
+        this.tag(OPItemTags.PIE_CUTTERS).addTag(OPItemTags.KNIVES).addTag(ItemTags.SWORDS);
 
         this.tag(OPItemTags.BLASTER_AMMO).add(
                 Items.REDSTONE

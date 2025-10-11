@@ -3,8 +3,8 @@
   "biomes": "#opposing_force:has_monster/volt",
   "spawners": {
     "type": "opposing_force:volt",
-    "maxCount": 4,
-    "minCount": 4,
+    "maxCount": 2,
+    "minCount": 2,
     "weight": 10
   }
 }

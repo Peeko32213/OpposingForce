@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "T": {
+      "item": "opposing_force:trembling_block"
+    }
+  },
+  "pattern": [
+    "TT",
+    "TT"
+  ],
+  "result": {
+    "count": 4,
+    "item": "opposing_force:trembling_shingles"
+  },
+  "show_notification": true
+}

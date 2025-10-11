@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "opposing_force:umber_dagger"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_umber_fang": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "opposing_force:umber_fang"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_umber_fang",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "opposing_force:umber_dagger"
+    ]
+  },
+  "sends_telemetry_event": false
+}

@@ -50,7 +50,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.forEntity(OPEntities.ELECTRIC_CHARGE);
         this.forEntity(OPEntities.SLUG_EGGS);
         this.forEntity(OPEntities.TOMAHAWK);
-        this.forEntity(OPEntities.UMBER_KNIFE);
+        this.forEntity(OPEntities.UMBER_DAGGER);
 
         this.potion(OPPotions.GLOOM_TOXIN_POTION, "Gloom Toxin", "gloom_toxin");
         this.potion(OPPotions.LONG_GLOOM_TOXIN_POTION, "Gloom Toxin", "long_gloom_toxin");
@@ -92,6 +92,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.sound(OPSoundEvents.GUZZLER_DEATH, "Guzzler dies");
         this.sound(OPSoundEvents.GUZZLER_IDLE, "Guzzler groans");
         this.sound(OPSoundEvents.GUZZLER_SPEW, "Guzzler spews");
+        this.sound(OPSoundEvents.GUZZLER_SLAM, "Guzzler slams");
 
         this.sound(OPSoundEvents.PALE_SPIDER_DEATH, "Pale Spider dies");
         this.sound(OPSoundEvents.PALE_SPIDER_HURT, "Pale Spider hurts");

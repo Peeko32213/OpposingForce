@@ -22,7 +22,57 @@ public class OPBlockTagProvider extends BlockTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
-                TREMBLER_SHELL.get()
+                TREMBLER_SHELL.get(),
+                TREMBLING_SHINGLES.get(),
+                TREMBLING_SHINGLE_STAIRS.get(),
+                TREMBLING_SHINGLE_SLAB.get(),
+                TREMBLING_BLOCK.get(),
+                TREMBLING_SLAB.get(),
+                CHISELED_TREMBLING_BLOCK.get(),
+                VILE_STONE.get(),
+                VILE_STONE_STAIRS.get(),
+                VILE_STONE_SLAB.get(),
+                VILE_COBBLESTONE.get(),
+                VILE_COBBLESTONE_STAIRS.get(),
+                VILE_COBBLESTONE_SLAB.get(),
+                VILE_COBBLESTONE_WALL.get(),
+                VILE_STONE_BRICKS.get(),
+                VILE_STONE_BRICK_STAIRS.get(),
+                VILE_STONE_BRICK_SLAB.get(),
+                VILE_STONE_BRICK_WALL.get(),
+                CHISELED_VILE_STONE_BRICKS.get()
+        );
+
+        this.tag(BlockTags.SWORD_EFFICIENT).add(
+                DEEP_WEB.get()
+        );
+
+        this.tag(BlockTags.MINEABLE_WITH_HOE).add(
+                DEEP_SILK_BLOCK.get()
+        );
+
+        this.tag(BlockTags.FALL_DAMAGE_RESETTING).add(
+                DEEP_WEB.get()
+        );
+
+        this.tag(BlockTags.STAIRS).add(
+                TREMBLING_SHINGLE_STAIRS.get(),
+                VILE_STONE_STAIRS.get(),
+                VILE_COBBLESTONE_STAIRS.get(),
+                VILE_STONE_BRICK_STAIRS.get()
+        );
+
+        this.tag(BlockTags.SLABS).add(
+                TREMBLING_SHINGLE_SLAB.get(),
+                TREMBLING_SLAB.get(),
+                VILE_STONE_SLAB.get(),
+                VILE_COBBLESTONE_SLAB.get(),
+                VILE_STONE_BRICK_SLAB.get()
+        );
+
+        this.tag(BlockTags.WALLS).add(
+                VILE_COBBLESTONE_WALL.get(),
+                VILE_STONE_BRICK_WALL.get()
         );
     }
 }

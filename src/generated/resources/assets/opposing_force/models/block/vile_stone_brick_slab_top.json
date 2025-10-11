@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "opposing_force:block/vile_stone_bricks",
+    "side": "opposing_force:block/vile_stone_bricks",
+    "top": "opposing_force:block/vile_stone_bricks"
+  }
+}

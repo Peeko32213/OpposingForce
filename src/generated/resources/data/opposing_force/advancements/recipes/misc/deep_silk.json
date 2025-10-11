@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_deep_silk": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "opposing_force:deep_silk"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "opposing_force:deep_silk"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_deep_silk",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "opposing_force:deep_silk"
+    ]
+  },
+  "sends_telemetry_event": false
+}

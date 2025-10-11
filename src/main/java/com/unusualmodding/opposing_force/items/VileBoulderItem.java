@@ -15,6 +15,7 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 
 public class VileBoulderItem extends SwordItem {
+
     public VileBoulderItem(Tier tier, int attackModifier, float attackSpeedModifier, Properties properties) {
         super(tier, attackModifier, attackSpeedModifier, properties);
     }
@@ -25,7 +26,7 @@ public class VileBoulderItem extends SwordItem {
 
         if (result) {
             if (target.getRandom().nextBoolean() && !target.hasEffect(OPEffects.SLUG_INFESTATION.get()) && !(target instanceof Slug)) {
-                target.addEffect(new MobEffectInstance(OPEffects.SLUG_INFESTATION.get(), 300, stack.getEnchantmentLevel(OPEnchantments.PLAGUE.get()), false, true));
+                target.addEffect(new MobEffectInstance(OPEffects.SLUG_INFESTATION.get(), 400, stack.getEnchantmentLevel(OPEnchantments.PLAGUE.get()), false, true));
                 target.playSound(OPSoundEvents.SLUG_ATTACK.get(), 1.5F, 1);
 
                 for (int i = 0; i < 16; i++) {

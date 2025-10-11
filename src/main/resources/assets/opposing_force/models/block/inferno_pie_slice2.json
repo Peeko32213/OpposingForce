@@ -1,0 +1,22 @@
+{
+	"texture_size": [64, 64],
+	"textures": {
+		"particle": "opposing_force:block/inferno_pie_particle",
+		"pie": "opposing_force:block/inferno_pie_slice2"
+	},
+	"elements": [
+		{
+			"from": [1, 0, 8],
+			"to": [15, 5, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [13, 0, 13]},
+			"faces": {
+				"north": {"uv": [1.75, 1.75, 5.25, 3], "texture": "#pie"},
+				"east": {"uv": [0, 1.75, 1.75, 3], "texture": "#pie"},
+				"south": {"uv": [7, 1.75, 10.5, 3], "texture": "#pie"},
+				"west": {"uv": [5.25, 1.75, 7, 3], "texture": "#pie"},
+				"up": {"uv": [5.25, 1.75, 1.75, 0], "texture": "#pie"},
+				"down": {"uv": [8.75, 0, 5.25, 1.75], "texture": "#pie"}
+			}
+		}
+	]
+}

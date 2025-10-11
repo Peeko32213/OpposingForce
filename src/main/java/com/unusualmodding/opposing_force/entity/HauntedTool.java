@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.google.common.collect.Multimap;
-import com.unusualmodding.opposing_force.blocks.InfestedAmethyst;
+import com.unusualmodding.opposing_force.blocks.InfestedAmethystBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -183,7 +183,7 @@ public class HauntedTool extends Monster {
                     this.selectedDirection = Direction.getRandom(randomsource);
                     BlockPos blockpos = BlockPos.containing(this.tool.getX(), this.tool.getY() + (double) 0.5F, this.tool.getZ()).relative(this.selectedDirection);
                     BlockState blockstate = this.tool.level().getBlockState(blockpos);
-                    if (InfestedAmethyst.isCompatibleHostBlock(blockstate)) {
+                    if (InfestedAmethystBlock.isCompatibleHostBlock(blockstate)) {
                         this.doMerge = true;
                         return true;
                     }
@@ -207,8 +207,8 @@ public class HauntedTool extends Monster {
                 LevelAccessor levelaccessor = this.tool.level();
                 BlockPos blockpos = BlockPos.containing(this.tool.getX(), this.tool.getY() + (double) 0.5F, this.tool.getZ()).relative(this.selectedDirection);
                 BlockState blockstate = levelaccessor.getBlockState(blockpos);
-                if (InfestedAmethyst.isCompatibleHostBlock(blockstate)) {
-                    levelaccessor.setBlock(blockpos, InfestedAmethyst.infestedStateByHost(blockstate), 3);
+                if (InfestedAmethystBlock.isCompatibleHostBlock(blockstate)) {
+                    levelaccessor.setBlock(blockpos, InfestedAmethystBlock.infestedStateByHost(blockstate), 3);
                     this.tool.spawnAnim();
                     this.tool.discard();
                 }

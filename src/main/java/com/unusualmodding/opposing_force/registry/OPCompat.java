@@ -1,6 +1,6 @@
 package com.unusualmodding.opposing_force.registry;
 
-import com.unusualmodding.opposing_force.entity.projectile.UmberKnife;
+import com.unusualmodding.opposing_force.entity.projectile.UmberDagger;
 import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
 import com.unusualmodding.opposing_force.entity.projectile.SlugEggs;
 import com.unusualmodding.opposing_force.entity.projectile.Tomahawk;
@@ -45,10 +45,10 @@ public class OPCompat {
             }
         });
 
-        DispenserBlock.registerBehavior(OPItems.UMBER_KNIFE.get(), new AbstractProjectileDispenseBehavior() {
+        DispenserBlock.registerBehavior(OPItems.UMBER_DAGGER.get(), new AbstractProjectileDispenseBehavior() {
             @Override
             protected Projectile getProjectile(Level level, Position pos, ItemStack itemStack) {
-                UmberKnife entity = new UmberKnife(level, pos.x(), pos.y(), pos.z());
+                UmberDagger entity = new UmberDagger(level, pos.x(), pos.y(), pos.z());
                 entity.pickup = AbstractArrow.Pickup.ALLOWED;
                 return entity;
             }

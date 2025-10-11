@@ -120,7 +120,7 @@ public class GuzzlerAttackGoal extends Goal {
             if (this.guzzler.getAttackState() == 1) {
                 tickSpitAttack();
             } else if (this.guzzler.getAttackState() == 2) {
-                tickStompAttack();
+                tickSlamAttack();
             } else {
                 if (this.guzzler.getSpewCooldown() <= 0) {
                     this.guzzler.setAttackState(1);
@@ -164,14 +164,14 @@ public class GuzzlerAttackGoal extends Goal {
         }
     }
 
-    protected void tickStompAttack() {
+    protected void tickSlamAttack() {
         this.attackTime++;
         this.guzzler.getNavigation().stop();
         this.guzzler.setDeltaMovement(0.0F, this.guzzler.getDeltaMovement().y, 0.0F);
 
-        if (this.attackTime == 57) {
-            for (LivingEntity entity : this.guzzler.level().getEntitiesOfClass(LivingEntity.class, this.guzzler.getBoundingBox().inflate(4.0D))) {
-                boolean reachable = entity.getY() > this.guzzler.getY() && entity.distanceTo(this.guzzler) > 4;
+        if (this.attackTime == 31) {
+            for (LivingEntity entity : this.guzzler.level().getEntitiesOfClass(LivingEntity.class, this.guzzler.getBoundingBox().inflate(3.5D))) {
+                boolean reachable = entity.getY() > this.guzzler.getY() && entity.distanceTo(this.guzzler) > 3.5;
                 boolean self = entity instanceof Guzzler || entity instanceof FireSlime;
                 if (self || reachable) {
                     continue;
@@ -181,14 +181,15 @@ public class GuzzlerAttackGoal extends Goal {
                 Vec3 vec33 = vec32.normalize();
                 this.guzzler.doHurtTarget(entity);
                 double knockbackResistanceY = 0.25 * (1.0 - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
-                double knockbackResistance = 1.5 * (1.0 - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
+                double knockbackResistance = 2.0 * (1.0 - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
                 entity.push(vec33.x() * knockbackResistance, vec33.y() * knockbackResistanceY, vec33.z() * knockbackResistance);
             }
-            OpposingForce.PROXY.screenShake(new ScreenShakeEvent(this.guzzler.position(), 20, 2.0F, 16, false));
+            this.guzzler.playSound(OPSoundEvents.GUZZLER_SLAM.get(), 2.0F, 1.0F / (this.guzzler.getRandom().nextFloat() * 0.4F + 0.8F));
+            OpposingForce.PROXY.screenShake(new ScreenShakeEvent(this.guzzler.position(), 20, 3.0F, 16, false));
             this.guzzler.level().broadcastEntityEvent(this.guzzler, (byte) 40);
         }
 
-        if (this.attackTime > 90) {
+        if (this.attackTime > 60) {
             this.attackTime = 0;
             this.guzzler.setAttackState(0);
         }

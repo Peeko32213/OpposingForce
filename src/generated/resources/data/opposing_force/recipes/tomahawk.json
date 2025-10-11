@@ -2,22 +2,18 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
+    "I": {
       "tag": "forge:ingots/iron"
     },
-    "X": {
-      "tag": "forge:nuggets/iron"
-    },
-    "Y": {
+    "W": {
       "tag": "forge:rods/wooden"
     }
   },
   "pattern": [
-    "##",
-    "XY"
+    "II",
+    "IW"
   ],
   "result": {
-    "count": 4,
     "item": "opposing_force:tomahawk"
   },
   "show_notification": true

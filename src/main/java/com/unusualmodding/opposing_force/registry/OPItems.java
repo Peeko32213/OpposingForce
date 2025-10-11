@@ -46,7 +46,7 @@ public class OPItems {
     public static final RegistryObject<Item> DICER_LENS = registerItem("dicer_lens", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> GUZZLER_SCALES = registerItem("guzzler_scales", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> FIRE_GEL = registerItem("fire_gel", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> UMBER_KNIFE = registerItem("umber_knife", () -> new UmberKnifeItem(OPItemTiers.UMBER, 1, -2, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> UMBER_DAGGER = registerItem("umber_dagger", () -> new UmberDaggerItem(OPItemTiers.UMBER, 1, -2, new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> DEEPWOVEN_HAT = registerItem("deepwoven_hat", ()-> new DeepwovenArmorItem(OPArmorMaterials.DEEPWOVEN, ArmorItem.Type.HELMET, new Item.Properties()));
     public static final RegistryObject<Item> DEEPWOVEN_TUNIC = registerItem("deepwoven_tunic", ()-> new DeepwovenArmorItem(OPArmorMaterials.DEEPWOVEN, ArmorItem.Type.CHESTPLATE, new Item.Properties()));

@@ -1,0 +1,9 @@
+{
+  "values": [
+    "opposing_force:umber_dagger",
+    {
+      "id": "#farmersdelight:tools/knives",
+      "required": false
+    }
+  ]
+}

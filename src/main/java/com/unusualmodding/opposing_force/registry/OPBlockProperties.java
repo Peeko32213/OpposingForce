@@ -11,13 +11,14 @@ import net.minecraft.world.level.material.PushReaction;
 
 public class OPBlockProperties {
 
-    public static BlockBehaviour.Properties mushroom(MapColor color) {
-        return BlockBehaviour.Properties.of().mapColor(color).replaceable().noCollission().instabreak().sound(SoundType.GRASS).lightLevel((state) -> 1).hasPostProcess(OPBlockProperties::always).ignitedByLava().offsetType(BlockBehaviour.OffsetType.XZ).pushReaction(PushReaction.DESTROY);
-    }
+    public static final BlockBehaviour.Properties TREMBLING_BLOCK = BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_GREEN).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.DRIPSTONE_BLOCK).requiresCorrectToolForDrops().strength(2.0F, 3.0F);
+    public static final BlockBehaviour.Properties DEEP_WEB = BlockBehaviour.Properties.of().mapColor(MapColor.WOOL).forceSolidOn().noCollission().requiresCorrectToolForDrops().strength(4.0F).pushReaction(PushReaction.DESTROY);
+    public static final BlockBehaviour.Properties DEEP_SILK_BLOCK = BlockBehaviour.Properties.of().mapColor(MapColor.WOOL).forceSolidOn().noCollission().requiresCorrectToolForDrops().strength(1.0F).pushReaction(PushReaction.DESTROY).sound(SoundType.WOOL);
 
-    public static BlockBehaviour.Properties hugeMushroomBlock(MapColor color) {
-        return BlockBehaviour.Properties.of().mapColor(color).instrument(NoteBlockInstrument.BASS).strength(0.2F).sound(SoundType.WOOD).ignitedByLava();
-    }
+    public static final BlockBehaviour.Properties VILE_STONE = BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_LIGHT_GREEN).instrument(NoteBlockInstrument.DIDGERIDOO).sound(SoundType.SLIME_BLOCK).requiresCorrectToolForDrops().strength(3.0F, 1.0F);
+    public static final BlockBehaviour.Properties VILE_COBBLESTONE = BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_LIGHT_GREEN).instrument(NoteBlockInstrument.DIDGERIDOO).sound(SoundType.SLIME_BLOCK).requiresCorrectToolForDrops().strength(3.0F, 1.5F);
+
+    public static final BlockBehaviour.Properties INFERNO_PIE = BlockBehaviour.Properties.of().forceSolidOn().strength(0.5F).sound(SoundType.WOOL).pushReaction(PushReaction.DESTROY);
 
     private static boolean always(BlockState state, BlockGetter blockGetter, BlockPos blockPos) {
         return true;

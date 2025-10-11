@@ -4,7 +4,9 @@ import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.renderer.items.OPArmorRenderProperties;
 import com.unusualmodding.opposing_force.client.sounds.DicerLaserSound;
 import com.unusualmodding.opposing_force.client.sounds.ElectricChargeSound;
+import com.unusualmodding.opposing_force.client.sounds.FrowzyPantingSound;
 import com.unusualmodding.opposing_force.client.sounds.WhizzFlightSound;
+import com.unusualmodding.opposing_force.entity.Frowzy;
 import com.unusualmodding.opposing_force.entity.Whizz;
 import com.unusualmodding.opposing_force.entity.projectile.DicerLaser;
 import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
@@ -88,6 +90,21 @@ public class ClientProxy extends CommonProxy {
                         ENTITY_SOUND_INSTANCE_MAP.put(entity.getId(), sound);
                     } else {
                         sound = (WhizzFlightSound) oldSound;
+                    }
+                    if (!isSoundPlaying(sound) && sound.canPlaySound()) {
+                        Minecraft.getInstance().getSoundManager().queueTickingSound(sound);
+                    }
+                }
+                break;
+            case 3:
+                if (soundEmitter instanceof Frowzy entity) {
+                    FrowzyPantingSound sound;
+                    AbstractTickableSoundInstance oldSound = ENTITY_SOUND_INSTANCE_MAP.get(entity.getId());
+                    if (oldSound == null || !(oldSound instanceof FrowzyPantingSound sound1 && sound1.isSameEntity(entity))) {
+                        sound = new FrowzyPantingSound(entity);
+                        ENTITY_SOUND_INSTANCE_MAP.put(entity.getId(), sound);
+                    } else {
+                        sound = (FrowzyPantingSound) oldSound;
                     }
                     if (!isSoundPlaying(sound) && sound.canPlaySound()) {
                         Minecraft.getInstance().getSoundManager().queueTickingSound(sound);

@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.entity.ai.goal.AttackGoal;
 import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.registry.OPItems;
@@ -67,8 +68,6 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
     private static final Predicate<Difficulty> DOOR_BREAKING_PREDICATE = (difficulty) -> difficulty == Difficulty.HARD;
     private final BreakDoorGoal breakDoorGoal = new BreakDoorGoal(this, DOOR_BREAKING_PREDICATE);
     private boolean canBreakDoors;
-
-    private int runTimer = 0;
 
     public Frowzy(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -185,19 +184,19 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
         }
 
         if (this.isAggressive() && this.isAlive()) {
-            this.runTimer++;
-            if (this.runTimer == 1) {
-                playSound(OPSoundEvents.FROWZY_RUN.get(), 1.0F, this.getVoicePitch());
-            }
-            if (this.runTimer > 320) {
-                this.runTimer = 0;
-            }
+            OpposingForce.PROXY.playWorldSound(this, (byte) 3);
         }
     }
 
     private void setupAnimationStates() {
         this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
         this.attackAnimationState.animateWhen(this.isAlive() && this.getAttackState() == 1, this.tickCount);
+    }
+
+    @Override
+    public void remove(Entity.RemovalReason reason) {
+        OpposingForce.PROXY.clearSoundCacheFor(this);
+        super.remove(reason);
     }
 
     protected boolean isSunSensitive() {

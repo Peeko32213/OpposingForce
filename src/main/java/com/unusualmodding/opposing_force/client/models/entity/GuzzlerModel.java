@@ -85,7 +85,7 @@ public class GuzzlerModel extends HierarchicalModel<Guzzler> {
 		this.animateWalk(GuzzlerAnimations.WALK, limbSwing, limbSwingAmount, 2, 4);
 		this.animate(entity.idleAnimationState, GuzzlerAnimations.IDLE, ageInTicks);
 		this.animate(entity.spewAnimationState, GuzzlerAnimations.SPIT, ageInTicks);
-		this.animate(entity.stompAnimationState, GuzzlerAnimations.STOMP, ageInTicks);
+		this.animate(entity.stompAnimationState, GuzzlerAnimations.FAT_SLAM, ageInTicks);
 	}
 
 	@Override

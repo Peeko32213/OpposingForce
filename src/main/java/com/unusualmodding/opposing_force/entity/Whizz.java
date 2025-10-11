@@ -2,7 +2,7 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.mojang.datafixers.DataFixUtils;
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.blocks.InfestedAmethyst;
+import com.unusualmodding.opposing_force.blocks.InfestedAmethystBlock;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -526,7 +526,7 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
                     this.selectedDirection = Direction.getRandom(randomsource);
                     BlockPos blockpos = BlockPos.containing(this.whizz.getX(), this.whizz.getY() + (double) 0.5F, this.whizz.getZ()).relative(this.selectedDirection);
                     BlockState blockstate = this.whizz.level().getBlockState(blockpos);
-                    if (InfestedAmethyst.isCompatibleHostBlock(blockstate)) {
+                    if (InfestedAmethystBlock.isCompatibleHostBlock(blockstate)) {
                         this.doMerge = true;
                         return true;
                     }
@@ -550,8 +550,8 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
                 LevelAccessor levelaccessor = this.whizz.level();
                 BlockPos blockpos = BlockPos.containing(this.whizz.getX(), this.whizz.getY() + (double) 0.5F, this.whizz.getZ()).relative(this.selectedDirection);
                 BlockState blockstate = levelaccessor.getBlockState(blockpos);
-                if (InfestedAmethyst.isCompatibleHostBlock(blockstate)) {
-                    levelaccessor.setBlock(blockpos, InfestedAmethyst.infestedStateByHost(blockstate), 3);
+                if (InfestedAmethystBlock.isCompatibleHostBlock(blockstate)) {
+                    levelaccessor.setBlock(blockpos, InfestedAmethystBlock.infestedStateByHost(blockstate), 3);
                     this.whizz.spawnAnim();
                     this.whizz.discard();
                 }
@@ -766,11 +766,11 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
                             BlockPos blockpos1 = blockpos.offset(j, i, k);
                             BlockState blockstate = level.getBlockState(blockpos1);
                             Block block = blockstate.getBlock();
-                            if (block instanceof InfestedAmethyst) {
+                            if (block instanceof InfestedAmethystBlock) {
                                 if (ForgeEventFactory.getMobGriefingEvent(level, this.whizz)) {
                                     level.destroyBlock(blockpos1, true, this.whizz);
                                 } else {
-                                    level.setBlock(blockpos1, ((InfestedAmethyst) block).hostStateByInfested(level.getBlockState(blockpos1)), 3);
+                                    level.setBlock(blockpos1, ((InfestedAmethystBlock) block).hostStateByInfested(level.getBlockState(blockpos1)), 3);
                                 }
                                 if (randomsource.nextBoolean()) {
                                     return;

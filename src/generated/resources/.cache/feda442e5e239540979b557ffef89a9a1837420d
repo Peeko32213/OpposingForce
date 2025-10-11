@@ -1,4 +1,4 @@
-// 1.20.1	2025-10-10T17:45:39.1883495	Item Models: opposing_force
+// 1.20.1	2025-10-10T20:53:08.6200307	Item Models: opposing_force
 0242899276479e640e0948ff9d1431d301c73e3a assets/opposing_force/models/item/captured_whizz.json
 99bee2bc20935c1aecb77ae575b7005d27ce12b6 assets/opposing_force/models/item/deepwoven_boots.json
 e54baee97cf734ca4015adce401a3abbf106e572 assets/opposing_force/models/item/deepwoven_hat.json
@@ -32,8 +32,8 @@ f520914c9a04160cc6a93346e2fcff583038293e assets/opposing_force/models/item/stone
 61d7276bab171f7df329b9765a68af8adfe95615 assets/opposing_force/models/item/stone_leggings.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/terror_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/trembler_spawn_egg.json
+9627ce30b8de446af03519521c81f0c153e5a570 assets/opposing_force/models/item/umber_dagger.json
 7cc18f3a72e3c25eaa7a34deafa686dadc0f497a assets/opposing_force/models/item/umber_fang.json
-883e4d07668391d1de9ad08210e0dbb2f5889e8d assets/opposing_force/models/item/umber_knife.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/umber_spider_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/volt_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/whizz_spawn_egg.json

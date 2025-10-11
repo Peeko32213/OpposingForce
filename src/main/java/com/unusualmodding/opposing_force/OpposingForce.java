@@ -87,7 +87,7 @@ public class OpposingForce {
 
         boolean client = data.includeClient();
 
-        generator.addProvider(client, new OPBlockstateProvider(data));
+        generator.addProvider(client, new OPBlockstateProvider(output, helper));
         generator.addProvider(client, new OPItemModelProvider(data));
         generator.addProvider(client, new OPSoundDefinitionsProvider(output, helper));
         generator.addProvider(client, new OPLanguageProvider(data));

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 2,
+  "ingredient": {
+    "item": "opposing_force:vile_cobblestone"
+  },
+  "result": "opposing_force:vile_cobblestone_slab"
+}

@@ -27,18 +27,7 @@ public class OpposingForceTab {
                         }
                     });
 
-                    // Weapons
                     output.accept(OPItems.TOMAHAWK.get());
-                    output.accept(OPItems.TESLA_CANNON.get());
-                    output.accept(OPItems.BLASTER.get());
-                    output.accept(OPItems.VILE_BOULDER.get());
-                    output.accept(OPItems.UMBER_KNIFE.get());
-
-                    // Armors
-                    output.accept(OPItems.DEEPWOVEN_HAT.get());
-                    output.accept(OPItems.DEEPWOVEN_TUNIC.get());
-                    output.accept(OPItems.DEEPWOVEN_PANTS.get());
-                    output.accept(OPItems.DEEPWOVEN_BOOTS.get());
 
                     output.accept(OPItems.WOODEN_MASK.get());
                     output.accept(OPItems.WOODEN_CHESTPLATE.get());
@@ -62,16 +51,45 @@ public class OpposingForceTab {
                     output.accept(OPItems.EMERALD_LEGGINGS.get());
                     output.accept(OPItems.EMERALD_BOOTS.get());
 
-                    // Items
                     output.accept(OPItems.SLUG_EGGS.get());
+                    output.accept(OPBlocks.VILE_STONE.get());
+                    output.accept(OPBlocks.VILE_STONE_STAIRS.get());
+                    output.accept(OPBlocks.VILE_STONE_SLAB.get());
+                    output.accept(OPBlocks.VILE_STONE_BRICKS.get());
+                    output.accept(OPBlocks.VILE_STONE_BRICK_STAIRS.get());
+                    output.accept(OPBlocks.VILE_STONE_BRICK_SLAB.get());
+                    output.accept(OPBlocks.VILE_STONE_BRICK_WALL.get());
+                    output.accept(OPBlocks.CHISELED_VILE_STONE_BRICKS.get());
+                    output.accept(OPBlocks.VILE_COBBLESTONE.get());
+                    output.accept(OPBlocks.VILE_COBBLESTONE_STAIRS.get());
+                    output.accept(OPBlocks.VILE_COBBLESTONE_SLAB.get());
+                    output.accept(OPBlocks.VILE_COBBLESTONE_WALL.get());
+
+                    output.accept(OPItems.VILE_BOULDER.get());
                     output.accept(OPItems.ELECTRIC_CHARGE.get());
+                    output.accept(OPItems.TESLA_CANNON.get());
                     output.accept(OPItems.CAPTURED_WHIZZ.get());
                     output.accept(OPBlocks.TREMBLER_SHELL.get());
+                    output.accept(OPBlocks.TREMBLING_BLOCK.get());
+                    output.accept(OPBlocks.TREMBLING_SLAB.get());
+                    output.accept(OPBlocks.CHISELED_TREMBLING_BLOCK.get());
+                    output.accept(OPBlocks.TREMBLING_SHINGLES.get());
+                    output.accept(OPBlocks.TREMBLING_SHINGLE_STAIRS.get());
+                    output.accept(OPBlocks.TREMBLING_SHINGLE_SLAB.get());
                     output.accept(OPItems.DEEP_SILK.get());
+                    output.accept(OPBlocks.DEEP_SILK_BLOCK.get());
+                    output.accept(OPBlocks.DEEP_WEB.get());
+                    output.accept(OPItems.DEEPWOVEN_HAT.get());
+                    output.accept(OPItems.DEEPWOVEN_TUNIC.get());
+                    output.accept(OPItems.DEEPWOVEN_PANTS.get());
+                    output.accept(OPItems.DEEPWOVEN_BOOTS.get());
                     output.accept(OPItems.UMBER_FANG.get());
+                    output.accept(OPItems.UMBER_DAGGER.get());
                     output.accept(OPItems.DICER_LENS.get());
+                    output.accept(OPItems.BLASTER.get());
                     output.accept(OPItems.GUZZLER_SCALES.get());
                     output.accept(OPItems.FIRE_GEL.get());
+                    output.accept(OPBlocks.INFERNO_PIE.get());
 
                     output.accept(OPBlocks.INFESTED_AMETHYST_BLOCK.get());
 

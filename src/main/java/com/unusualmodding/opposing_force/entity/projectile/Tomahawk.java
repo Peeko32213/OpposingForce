@@ -38,11 +38,6 @@ public class Tomahawk extends AbstractArrow implements ItemSupplier {
     }
 
     @Override
-    protected void doPostHurtEffects(LivingEntity living) {
-        super.doPostHurtEffects(living);
-    }
-
-    @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity target = result.getEntity();
         Entity shooter = this.getOwner();
@@ -111,7 +106,7 @@ public class Tomahawk extends AbstractArrow implements ItemSupplier {
 
     @Override
     public double getBaseDamage() {
-        return 5.0D;
+        return 4.0D;
     }
 
     @Override

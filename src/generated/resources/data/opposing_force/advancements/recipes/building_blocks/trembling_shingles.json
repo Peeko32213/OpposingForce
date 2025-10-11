@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "opposing_force:trembling_shingles"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_trembler_shell": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "opposing_force:trembler_shell"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_trembler_shell",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "opposing_force:trembling_shingles"
+    ]
+  },
+  "sends_telemetry_event": false
+}
