@@ -26,7 +26,7 @@ import org.joml.Vector3f;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class TeslaBowItem extends CrossbowItem implements Vanishable {
+public class TeslaCannonItem extends CrossbowItem implements Vanishable {
 
     protected static final Predicate<ItemStack> ELECTRIC_CHARGE = (itemstack) -> itemstack.getItem() instanceof ElectricChargeItem;
 
@@ -50,7 +50,7 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
         return enchantment.category.canEnchant(stack.getItem()) && enchantment != Enchantments.BINDING_CURSE && enchantment != Enchantments.PIERCING;
     }
 
-    public TeslaBowItem(Properties properties) {
+    public TeslaCannonItem(Properties properties) {
         super(properties);
     }
 
@@ -213,6 +213,7 @@ public class TeslaBowItem extends CrossbowItem implements Vanishable {
 
         ElectricChargeItem arrowitem = (ElectricChargeItem)(pAmmoStack.getItem() instanceof ElectricChargeItem ? pAmmoStack.getItem() : OPItems.ELECTRIC_CHARGE);
         ElectricCharge electricCharge = arrowitem.shootCharge(pLevel, pLivingEntity);
+        electricCharge.setChargeScale(2.0F);
         electricCharge.setSoundEvent(SoundEvents.CROSSBOW_HIT);
 
         if (bigCharge) {

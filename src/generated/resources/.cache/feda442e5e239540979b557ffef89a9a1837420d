@@ -1,4 +1,4 @@
-// 1.20.1	2025-10-10T13:32:38.7981841	Item Models: opposing_force
+// 1.20.1	2025-10-10T17:45:39.1883495	Item Models: opposing_force
 0242899276479e640e0948ff9d1431d301c73e3a assets/opposing_force/models/item/captured_whizz.json
 99bee2bc20935c1aecb77ae575b7005d27ce12b6 assets/opposing_force/models/item/deepwoven_boots.json
 e54baee97cf734ca4015adce401a3abbf106e572 assets/opposing_force/models/item/deepwoven_hat.json
@@ -17,8 +17,10 @@ ec4064c9c54ef7a9ef40e7ce800a485b1b56c460 assets/opposing_force/models/item/emera
 4d39eac7c83f8a0259ec6012b726d5053d668cb5 assets/opposing_force/models/item/emerald_pickaxe.json
 c828d395bd4d83506659a153bae1a1b153e3df7c assets/opposing_force/models/item/emerald_shovel.json
 d068d5426a62a9461307fa55f67d866bd23768e6 assets/opposing_force/models/item/emerald_sword.json
+a0ac3bf657030a45aebab3ad3144e7afd5770940 assets/opposing_force/models/item/fire_gel.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/fire_slime_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/frowzy_spawn_egg.json
+0d932648ec0a23973bae46bb674ba4c12e417aa6 assets/opposing_force/models/item/guzzler_scales.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/guzzler_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/pale_spider_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/ramble_spawn_egg.json
@@ -31,6 +33,7 @@ f520914c9a04160cc6a93346e2fcff583038293e assets/opposing_force/models/item/stone
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/terror_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/trembler_spawn_egg.json
 7cc18f3a72e3c25eaa7a34deafa686dadc0f497a assets/opposing_force/models/item/umber_fang.json
+883e4d07668391d1de9ad08210e0dbb2f5889e8d assets/opposing_force/models/item/umber_knife.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/umber_spider_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/volt_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/whizz_spawn_egg.json

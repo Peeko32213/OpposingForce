@@ -29,9 +29,10 @@ public class OpposingForceTab {
 
                     // Weapons
                     output.accept(OPItems.TOMAHAWK.get());
-                    output.accept(OPItems.TESLA_BOW.get());
+                    output.accept(OPItems.TESLA_CANNON.get());
                     output.accept(OPItems.BLASTER.get());
                     output.accept(OPItems.VILE_BOULDER.get());
+                    output.accept(OPItems.UMBER_KNIFE.get());
 
                     // Armors
                     output.accept(OPItems.DEEPWOVEN_HAT.get());
@@ -69,6 +70,8 @@ public class OpposingForceTab {
                     output.accept(OPItems.DEEP_SILK.get());
                     output.accept(OPItems.UMBER_FANG.get());
                     output.accept(OPItems.DICER_LENS.get());
+                    output.accept(OPItems.GUZZLER_SCALES.get());
+                    output.accept(OPItems.FIRE_GEL.get());
 
                     output.accept(OPBlocks.INFESTED_AMETHYST_BLOCK.get());
 

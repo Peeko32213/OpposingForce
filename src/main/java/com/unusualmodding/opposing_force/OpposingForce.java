@@ -44,6 +44,7 @@ public class OpposingForce {
         OPAttributes.ATTRIBUTES.register(modEventBus);
         OPLootModifiers.LOOT_MODIFIERS.register(modEventBus);
         OPBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
+        OPEntityDataSerializers.ENTITY_DATA_SERIALIZERS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
     }

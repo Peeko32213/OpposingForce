@@ -154,12 +154,12 @@ public class OPEntities {
 
     public static final RegistryObject<EntityType<LaserBolt>> LASER_BOLT = ENTITY_TYPES.register(
             "laser_bolt", () ->
-                    EntityType.Builder.<LaserBolt>of(LaserBolt::new, MobCategory.MISC)
-                            .sized(0.4f, 0.4f)
-                            .clientTrackingRange(4)
-                            .setShouldReceiveVelocityUpdates(true)
-                            .fireImmune()
-                            .build(new ResourceLocation(OpposingForce.MOD_ID, "laser_bolt").toString())
+            EntityType.Builder.<LaserBolt>of(LaserBolt::new, MobCategory.MISC)
+                    .sized(0.4f, 0.4f)
+                    .clientTrackingRange(4)
+                    .setShouldReceiveVelocityUpdates(true)
+                    .fireImmune()
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "laser_bolt").toString())
     );
 
     public static final RegistryObject<EntityType<SlugEggs>> SLUG_EGGS = ENTITY_TYPES.register(

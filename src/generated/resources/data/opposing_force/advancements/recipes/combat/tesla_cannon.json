@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "opposing_force:tesla_bow"
+        "recipe": "opposing_force:tesla_cannon"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "opposing_force:tesla_bow"
+      "opposing_force:tesla_cannon"
     ]
   },
   "sends_telemetry_event": false

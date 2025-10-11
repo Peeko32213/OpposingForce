@@ -1,7 +1,6 @@
 package com.unusualmodding.opposing_force.data;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.registry.OPItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -27,7 +26,7 @@ public class OPRecipeProvider extends RecipeProvider implements IConditionBuilde
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(COMBAT, BLASTER.get()).define('I', Tags.Items.INGOTS_IRON).define('R', Tags.Items.DUSTS_REDSTONE).define('D', DICER_LENS.get()).define('A', Tags.Items.GEMS_AMETHYST).pattern("RDA").pattern("I  ").unlockedBy("has_dicer_lens", has(DICER_LENS.get())).save(consumer);
 
-        ShapedRecipeBuilder.shaped(COMBAT, TESLA_BOW.get()).define('#', Tags.Items.INGOTS_GOLD).define('X', DEEP_SILK.get()).define('Y', Tags.Items.RODS_WOODEN).define('Z', Blocks.TRIPWIRE_HOOK).define('A', ELECTRIC_CHARGE.get()).pattern("#A#").pattern("XZX").pattern(" Y ").unlockedBy("has_electric_charge", has(ELECTRIC_CHARGE.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, TESLA_CANNON.get()).define('#', Tags.Items.INGOTS_GOLD).define('X', DEEP_SILK.get()).define('Y', Tags.Items.RODS_WOODEN).define('Z', Blocks.TRIPWIRE_HOOK).define('A', ELECTRIC_CHARGE.get()).pattern("#A#").pattern("XZX").pattern(" Y ").unlockedBy("has_electric_charge", has(ELECTRIC_CHARGE.get())).save(consumer);
         ShapedRecipeBuilder.shaped(COMBAT, TOMAHAWK.get(), 4).define('#', Tags.Items.INGOTS_IRON).define('X', Tags.Items.NUGGETS_IRON).define('Y', Tags.Items.RODS_WOODEN).pattern("##").pattern("XY").unlockedBy("has_iron_ingot", has(Tags.Items.INGOTS_IRON)).save(consumer);
 
         ShapedRecipeBuilder.shaped(COMBAT, DEEPWOVEN_HAT.get()).define('#', DEEP_SILK.get()).pattern("###").pattern("# #").unlockedBy("has_deep_silk", has(DEEP_SILK.get())).save(consumer);

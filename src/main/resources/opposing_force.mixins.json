@@ -18,7 +18,8 @@
     "client.CustomHeadLayerMixin",
     "client.GuiMixin",
     "client.HumanoidArmorLayerMixin",
-    "client.HumanoidModelMixin"
+    "client.HumanoidModelMixin",
+    "client.ItemInHandRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

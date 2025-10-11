@@ -1,4 +1,4 @@
-// 1.20.1	2025-10-07T11:05:42.3016023	Recipes
+// 1.20.1	2025-10-10T17:15:03.4291723	Recipes
 b74121d99f25babce19f5d2e76ecd98a5315dbd5 data/opposing_force/advancements/recipes/combat/blaster.json
 f4d72e7bb9e4998015ad3802e665a5c1b9cf53c8 data/opposing_force/advancements/recipes/combat/deepwoven_boots.json
 2e8aa7c2ba02850e9ab0d31a6e6eda81a697907a data/opposing_force/advancements/recipes/combat/deepwoven_hat.json
@@ -8,7 +8,7 @@ a2e5be8aa43d803a9a1b52bd0f5706b16d8463ee data/opposing_force/advancements/recipe
 8033562b7c277f414b75b13a9fea5e342c5b7106 data/opposing_force/advancements/recipes/combat/stone_chestplate.json
 eb7b0fdc0bab97db359b9c1b418b874a1f00cce0 data/opposing_force/advancements/recipes/combat/stone_helmet.json
 80e5b0787c13b4d075232bbbf01b81831925b30e data/opposing_force/advancements/recipes/combat/stone_leggings.json
-cf0f0810388793938e6b56f37ffd5474af18db8a data/opposing_force/advancements/recipes/combat/tesla_bow.json
+43641a9ce7457bd8c7f398ea18bd4ea47dc0b257 data/opposing_force/advancements/recipes/combat/tesla_cannon.json
 5b8ec5743f8163a8d69108a72bea8eabf0abe238 data/opposing_force/advancements/recipes/combat/tomahawk.json
 73d879685bbffcb75d20b88ace8c3c34164c9218 data/opposing_force/advancements/recipes/combat/wooden_boots.json
 56956c5ae0027cadac98aa9b232b22e04835fb7f data/opposing_force/advancements/recipes/combat/wooden_chestplate.json
@@ -23,7 +23,7 @@ aa8d5725442bc9ea492526a897d7fe64583c1daa data/opposing_force/recipes/deepwoven_t
 067f2677f3d5243acbbb3e7c7924685959af5dae data/opposing_force/recipes/stone_chestplate.json
 33808b9290a55144d15cbc78673f891972581923 data/opposing_force/recipes/stone_helmet.json
 c4676facd5d41e416ced9c75808123396ad4af92 data/opposing_force/recipes/stone_leggings.json
-f467097357309993ffc04a28eafc10c215b9f614 data/opposing_force/recipes/tesla_bow.json
+99010bdc67b31cc2b7e8d9ad8586f8b4c1d1a1ca data/opposing_force/recipes/tesla_cannon.json
 f8b0dfb6a7131bb4b0243c25d211d27363ab736b data/opposing_force/recipes/tomahawk.json
 92d29cb3ba9697b669995e70ee98aa53ed89a4bc data/opposing_force/recipes/wooden_boots.json
 26b2da64674ffd95d3415728093355770e4ce386 data/opposing_force/recipes/wooden_chestplate.json

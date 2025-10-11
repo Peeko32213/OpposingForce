@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractFrictionlessProjectile extends AbstractHurtingProjectile implements ItemSupplier {
 
-    public double accelerationPower = 0.1;
+    public double accelerationPower;
 
     protected AbstractFrictionlessProjectile(EntityType<? extends AbstractHurtingProjectile> entityType, Level level) {
         super(entityType, level);
