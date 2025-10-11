@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
+import com.unusualmodding.opposing_force.entity.projectile.UmberKnife;
 import com.unusualmodding.opposing_force.entity.projectile.DicerLaser;
 import com.unusualmodding.opposing_force.entity.projectile.Tomahawk;
 import net.minecraft.core.registries.Registries;
@@ -21,6 +22,7 @@ public class OPDamageTypes {
     public static final ResourceKey<DamageType> LASER_BOLT = register("laser_bolt");
     public static final ResourceKey<DamageType> TOMAHAWK = register("tomahawk");
     public static final ResourceKey<DamageType> STONE_FALL = register("stone_fall");
+    public static final ResourceKey<DamageType> UMBER_KNIFE = register("umber_knife");
 
     public static void bootstrap(BootstapContext<DamageType> context) {
         context.register(ELECTRIFIED, new DamageType(OpposingForce.MOD_ID + ".electrified", 0.0F));
@@ -29,6 +31,7 @@ public class OPDamageTypes {
         context.register(TOMAHAWK, new DamageType(OpposingForce.MOD_ID + ".tomahawk", 0.1F));
         context.register(STONE_FALL, new DamageType(OpposingForce.MOD_ID + ".stone_fall", 0.0F));
         context.register(LASER_BOLT, new DamageType(OpposingForce.MOD_ID + ".laser_bolt", 0.1F));
+        context.register(UMBER_KNIFE, new DamageType(OpposingForce.MOD_ID + ".umber_knife", 0.1F));
     }
 
     public static DamageSource laser(Level level, DicerLaser laser, @Nullable Entity indirectEntity) {
@@ -37,6 +40,10 @@ public class OPDamageTypes {
 
     public static DamageSource tomahawk(Level level, Tomahawk tomahawk, @Nullable Entity indirectEntity) {
         return level.damageSources().source(TOMAHAWK, tomahawk, indirectEntity);
+    }
+
+    public static DamageSource umberKnife(Level level, UmberKnife umberKnife, @Nullable Entity indirectEntity) {
+        return level.damageSources().source(UMBER_KNIFE, umberKnife, indirectEntity);
     }
 
     public static DamageSource stone_fall(Level level, Entity causingEntity, @Nullable Entity directEntity) {

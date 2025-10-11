@@ -177,4 +177,12 @@ public class OPEntities {
                     .clientTrackingRange(4)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "tomahawk").toString())
     );
+
+    public static final RegistryObject<EntityType<UmberKnife>> UMBER_KNIFE = ENTITY_TYPES.register(
+            "umber_knife", () ->
+            EntityType.Builder.<UmberKnife>of(UmberKnife::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .clientTrackingRange(4)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "umber_knife").toString())
+    );
 }

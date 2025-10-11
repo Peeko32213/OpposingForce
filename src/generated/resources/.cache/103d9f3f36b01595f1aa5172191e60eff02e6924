@@ -1,10 +1,11 @@
-// 1.20.1	2025-10-08T22:54:29.8663198	Registries
+// 1.20.1	2025-10-10T19:14:38.2418168	Registries
 8871d493161af813420d4804e7cb09d21dc44df1 data/opposing_force/damage_type/electrified.json
 2aaf2641dbb20483c2095fac9f165637dae0a736 data/opposing_force/damage_type/gloom_toxin.json
 4d3a88d949ab10dcd54727bd8ed26e701b96712a data/opposing_force/damage_type/laser.json
 ae3a2b22bd320252f6e284c256f086e45b85ee33 data/opposing_force/damage_type/laser_bolt.json
 f68004b40b6abca4858a6507af903a6b12c0143f data/opposing_force/damage_type/stone_fall.json
 af1babf1bca9fd2a3be8024bdc899667e1c5612e data/opposing_force/damage_type/tomahawk.json
+7c5f1ad586ab17543022b3ffc4bbfc13f8e012ae data/opposing_force/damage_type/umber_knife.json
 89614c410e4432e5b220845a4860bf952777da06 data/opposing_force/forge/biome_modifier/add_spawn/dicer.json
 3a811c99cae9885f6a9580f5c90dffe7b4bd116f data/opposing_force/forge/biome_modifier/add_spawn/frowzy.json
 c11a1d825b328541c9d17ff95b0ecd3e0f6ed0e7 data/opposing_force/forge/biome_modifier/add_spawn/guzzler.json

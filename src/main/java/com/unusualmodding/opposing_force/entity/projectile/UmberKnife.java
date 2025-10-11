@@ -23,18 +23,18 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.network.NetworkHooks;
 
-public class Tomahawk extends AbstractArrow implements ItemSupplier {
+public class UmberKnife extends AbstractArrow implements ItemSupplier {
 
-    public Tomahawk(EntityType<? extends Tomahawk> type, Level level) {
+    public UmberKnife(EntityType<? extends UmberKnife> type, Level level) {
         super(type, level);
     }
 
-    public Tomahawk(Level level, LivingEntity shooter) {
-        super(OPEntities.TOMAHAWK.get(), shooter, level);
+    public UmberKnife(Level level, LivingEntity shooter) {
+        super(OPEntities.UMBER_KNIFE.get(), shooter, level);
     }
 
-    public Tomahawk(Level pLevel, double pX, double pY, double pZ) {
-        super(OPEntities.TOMAHAWK.get(), pX, pY, pZ, pLevel);
+    public UmberKnife(Level pLevel, double pX, double pY, double pZ) {
+        super(OPEntities.UMBER_KNIFE.get(), pX, pY, pZ, pLevel);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class Tomahawk extends AbstractArrow implements ItemSupplier {
         float motion = (float) this.getDeltaMovement().length();
         int damage = Mth.ceil(Mth.clamp((double) motion * 0.75F * this.getBaseDamage(), 0.0D, 2.147483647E9D));
 
-        DamageSource damagesource = OPDamageTypes.tomahawk(this.level(), this, shooter);
+        DamageSource damagesource = OPDamageTypes.umberKnife(this.level(), this, shooter);
         if (shooter instanceof LivingEntity living) {
             living.setLastHurtMob(target);
         }
@@ -101,7 +101,7 @@ public class Tomahawk extends AbstractArrow implements ItemSupplier {
     }
 
     public ItemStack getItem() {
-        return new ItemStack(OPItems.TOMAHAWK.get());
+        return new ItemStack(OPItems.UMBER_KNIFE.get());
     }
 
     @Override
@@ -111,7 +111,7 @@ public class Tomahawk extends AbstractArrow implements ItemSupplier {
 
     @Override
     public double getBaseDamage() {
-        return 5.0D;
+        return 4.0D;
     }
 
     @Override

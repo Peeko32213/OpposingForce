@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.registry;
 
+import com.unusualmodding.opposing_force.entity.projectile.UmberKnife;
 import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
 import com.unusualmodding.opposing_force.entity.projectile.SlugEggs;
 import com.unusualmodding.opposing_force.entity.projectile.Tomahawk;
@@ -18,8 +19,6 @@ public class OPCompat {
 
     public static void registerCompat() {
         registerDispenserBehaviors();
-//        registerCompostables();
-        registerFlammables();
     }
 
     public static void registerDispenserBehaviors() {
@@ -41,6 +40,15 @@ public class OPCompat {
             @Override
             protected Projectile getProjectile(Level level, Position pos, ItemStack itemStack) {
                 Tomahawk entity = new Tomahawk(level, pos.x(), pos.y(), pos.z());
+                entity.pickup = AbstractArrow.Pickup.ALLOWED;
+                return entity;
+            }
+        });
+
+        DispenserBlock.registerBehavior(OPItems.UMBER_KNIFE.get(), new AbstractProjectileDispenseBehavior() {
+            @Override
+            protected Projectile getProjectile(Level level, Position pos, ItemStack itemStack) {
+                UmberKnife entity = new UmberKnife(level, pos.x(), pos.y(), pos.z());
                 entity.pickup = AbstractArrow.Pickup.ALLOWED;
                 return entity;
             }

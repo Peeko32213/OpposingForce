@@ -23,7 +23,7 @@ public class OPDamageTypeTagProvider extends TagsProvider<DamageType> {
 
     protected void addTags(Provider provider) {
         this.tag(DamageTypeTags.BYPASSES_ARMOR).add(ELECTRIFIED, GLOOM_TOXIN);
-        this.tag(DamageTypeTags.IS_PROJECTILE).add(TOMAHAWK).add(LASER).add(LASER_BOLT);
+        this.tag(DamageTypeTags.IS_PROJECTILE).add(TOMAHAWK).add(UMBER_KNIFE).add(LASER).add(LASER_BOLT);
         this.tag(DamageTypeTags.NO_IMPACT).add(LASER);
         this.tag(DamageTypeTags.IS_FALL).add(STONE_FALL);
         this.tag(DamageTypeTags.WITCH_RESISTANT_TO).add(GLOOM_TOXIN);
