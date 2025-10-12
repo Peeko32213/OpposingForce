@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.blocks;
 
 import com.mojang.datafixers.util.Pair;
-import com.unusualmodding.opposing_force.OpposingForce;
+import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,7 +13,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -33,8 +32,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.event.ForgeEventFactory;
 
-import java.util.function.Supplier;
-
 @SuppressWarnings("deprecation")
 public class InfernoPieBlock extends Block {
 
@@ -43,16 +40,13 @@ public class InfernoPieBlock extends Block {
 
 	protected static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 5.0D, 15.0D);
 
-	public final Supplier<Item> pieSlice;
-
-	public InfernoPieBlock(Properties properties, Supplier<Item> pieSlice) {
+	public InfernoPieBlock(Properties properties) {
 		super(properties);
-		this.pieSlice = pieSlice;
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(BITES, 0));
 	}
 
 	public ItemStack getPieSliceItem() {
-		return new ItemStack(this.pieSlice.get());
+		return new ItemStack(OPItems.INFERNO_PIE_SLICE.get());
 	}
 
 	public int getMaxBites() {

@@ -19,11 +19,6 @@ public class DicerAttackGoal extends AttackGoal {
     }
 
     @Override
-    public boolean canUse() {
-        return this.dicer.getTarget() != null && this.dicer.getTarget().isAlive();
-    }
-
-    @Override
     public void start() {
         super.start();
         this.dicer.setRunning(true);
@@ -33,7 +28,9 @@ public class DicerAttackGoal extends AttackGoal {
     public void stop() {
         super.stop();
         this.dicer.setRunning(false);
-        this.laser.discard();
+        if (this.laser != null) {
+            this.laser.discard();
+        }
     }
 
     @Override
@@ -47,16 +44,24 @@ public class DicerAttackGoal extends AttackGoal {
                 this.dicer.lookAt(target, 30F, 30F);
                 this.dicer.getLookControl().setLookAt(target, 30F, 30F);
             } else if (attackState == 2) {
+                tickCrossSliceAttack();
+                this.dicer.lookAt(target, 30F, 30F);
+                this.dicer.getLookControl().setLookAt(target, 30F, 30F);
+            } else if (attackState == 3) {
                 tickLaserAttack();
-                this.dicer.getLookControl().setLookAt(target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(), 1.5F, 80);
+                this.dicer.getLookControl().setLookAt(target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(), 2.0F, 80);
             } else {
                 this.dicer.getNavigation().moveTo(target, 2.0D);
                 this.dicer.lookAt(target, 30F, 30F);
                 this.dicer.getLookControl().setLookAt(target, 30F, 30F);
                 if (this.dicer.getLaserCooldown() == 0 && distance > getAttackReachSqr(target) && distance < 100) {
-                    this.dicer.setAttackState(2);
+                    this.dicer.setAttackState(3);
                 } else if (distance < getAttackReachSqr(target)) {
-                    this.dicer.setAttackState(1);
+                    if (this.dicer.getRandom().nextBoolean()) {
+                        this.dicer.setAttackState(2);
+                    } else {
+                        this.dicer.setAttackState(1);
+                    }
                 }
             }
         }
@@ -76,6 +81,25 @@ public class DicerAttackGoal extends AttackGoal {
             }
         }
         if (this.timer >= 21) {
+            this.timer = 0;
+            this.dicer.setAttackState(0);
+        }
+    }
+
+    protected void tickCrossSliceAttack() {
+        this.timer++;
+        this.dicer.getNavigation().stop();
+        LivingEntity target = this.dicer.getTarget();
+        if (this.timer == 21) {
+            this.dicer.addDeltaMovement(this.dicer.getLookAngle().scale(2.0D).multiply(0.5D, 0, 0.5D));
+        }
+        if (this.timer == 26) {
+            if (this.dicer.distanceTo(Objects.requireNonNull(target)) < this.getAttackReachSqr(target)) {
+                this.dicer.doHurtTarget(target);
+                this.dicer.swing(InteractionHand.MAIN_HAND);
+            }
+        }
+        if (this.timer >= 43) {
             this.timer = 0;
             this.dicer.setAttackState(0);
         }

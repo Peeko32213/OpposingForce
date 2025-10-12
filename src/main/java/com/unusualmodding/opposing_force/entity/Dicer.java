@@ -43,16 +43,16 @@ public class Dicer extends Monster implements IAnimatedAttacker {
     public Vec3[] headPos;
 
     public final AnimationState idleAnimationState = new AnimationState();
-    public final AnimationState sliceAnimationState = new AnimationState();
+    public final AnimationState slice1AnimationState = new AnimationState();
+    public final AnimationState slice2AnimationState = new AnimationState();
+    public final AnimationState crossSliceAnimationState = new AnimationState();
     public final AnimationState laserAnimationState = new AnimationState();
 
     public Dicer(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
         this.xpReward = 10;
         if (level.isClientSide) {
-            this.headPos = new Vec3[] {
-                    new Vec3(0, 0, 0)
-            };
+            this.headPos = new Vec3[] {new Vec3(0, 0, 0)};
         }
     }
 
@@ -101,8 +101,8 @@ public class Dicer extends Monster implements IAnimatedAttacker {
     private void setupAnimationStates() {
         int attackState = this.getAttackState();
         this.idleAnimationState.animateWhen(this.getDeltaMovement().horizontalDistanceSqr() <= 1.0E-6, this.tickCount);
-        this.sliceAnimationState.animateWhen(attackState == 1, this.tickCount);
-        this.laserAnimationState.animateWhen(attackState == 2, this.tickCount);
+        this.crossSliceAnimationState.animateWhen(attackState == 2, this.tickCount);
+        this.laserAnimationState.animateWhen(attackState == 3, this.tickCount);
         if (attackState > 0) {
             this.idleAnimationState.stop();
         }
@@ -116,6 +116,25 @@ public class Dicer extends Monster implements IAnimatedAttacker {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> entityDataAccessor) {
+        if (ATTACK_STATE.equals(entityDataAccessor)) {
+            if (this.getAttackState() == 1) {
+                if (this.getRandom().nextBoolean()) {
+                    this.slice2AnimationState.start(this.tickCount);
+                } else {
+                    this.slice1AnimationState.start(this.tickCount);
+                }
+            } else if (this.getAttackState() == 0) {
+                this.slice1AnimationState.stop();
+                this.slice2AnimationState.stop();
+                this.crossSliceAnimationState.stop();
+                this.laserAnimationState.stop();
+            }
+        }
+        super.onSyncedDataUpdated(entityDataAccessor);
     }
 
     @Override

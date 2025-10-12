@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "tag": "forge:eggs"
+    },
+    "F": {
+      "item": "opposing_force:fire_gel"
+    },
+    "G": {
+      "item": "opposing_force:guzzler_scales"
+    },
+    "S": {
+      "item": "minecraft:sugar"
+    }
+  },
+  "pattern": [
+    "FFF",
+    "SES",
+    "GGG"
+  ],
+  "result": {
+    "item": "opposing_force:inferno_pie"
+  },
+  "show_notification": true
+}

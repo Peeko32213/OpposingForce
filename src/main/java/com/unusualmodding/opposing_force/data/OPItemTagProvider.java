@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.data;
 
 import com.unusualmodding.opposing_force.OpposingForce;
+import com.unusualmodding.opposing_force.registry.OPBlocks;
 import com.unusualmodding.opposing_force.registry.tags.ForgeItemTags;
 import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
 import net.minecraft.core.HolderLookup;
@@ -29,6 +30,8 @@ public class OPItemTagProvider extends ItemTagsProvider {
         this.tag(OPItemTags.KNIVES).add(
                 UMBER_DAGGER.get()
         ).addOptionalTag(new ResourceLocation("farmersdelight", "tools/knives"));
+
+        this.tag(OPItemTags.PIE_CRUST).addOptional(new ResourceLocation("farmersdelight", "pie_crust"));
 
         this.tag(OPItemTags.PIE_CUTTERS).addTag(OPItemTags.KNIVES).addTag(ItemTags.SWORDS);
 
@@ -101,6 +104,6 @@ public class OPItemTagProvider extends ItemTagsProvider {
 
         this.tag(Tags.Items.STRING).add(DEEP_SILK.get());
 
-        this.tag(Tags.Items.EGGS).add(SLUG_EGGS.get());
+        this.tag(Tags.Items.EGGS).add(OPBlocks.SLUG_EGGS.get().asItem());
     }
 }

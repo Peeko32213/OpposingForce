@@ -51,7 +51,7 @@ public class OpposingForceTab {
                     output.accept(OPItems.EMERALD_LEGGINGS.get());
                     output.accept(OPItems.EMERALD_BOOTS.get());
 
-                    output.accept(OPItems.SLUG_EGGS.get());
+                    output.accept(OPBlocks.SLUG_EGGS.get());
                     output.accept(OPBlocks.VILE_STONE.get());
                     output.accept(OPBlocks.VILE_STONE_STAIRS.get());
                     output.accept(OPBlocks.VILE_STONE_SLAB.get());
@@ -71,8 +71,6 @@ public class OpposingForceTab {
                     output.accept(OPItems.CAPTURED_WHIZZ.get());
                     output.accept(OPBlocks.TREMBLER_SHELL.get());
                     output.accept(OPBlocks.TREMBLING_BLOCK.get());
-                    output.accept(OPBlocks.TREMBLING_SLAB.get());
-                    output.accept(OPBlocks.CHISELED_TREMBLING_BLOCK.get());
                     output.accept(OPBlocks.TREMBLING_SHINGLES.get());
                     output.accept(OPBlocks.TREMBLING_SHINGLE_STAIRS.get());
                     output.accept(OPBlocks.TREMBLING_SHINGLE_SLAB.get());
@@ -90,6 +88,7 @@ public class OpposingForceTab {
                     output.accept(OPItems.GUZZLER_SCALES.get());
                     output.accept(OPItems.FIRE_GEL.get());
                     output.accept(OPBlocks.INFERNO_PIE.get());
+                    output.accept(OPItems.INFERNO_PIE_SLICE.get());
 
                     output.accept(OPBlocks.INFESTED_AMETHYST_BLOCK.get());
 

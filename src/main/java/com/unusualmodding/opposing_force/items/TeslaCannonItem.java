@@ -57,7 +57,7 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return enchantment.category.canEnchant(stack.getItem()) && enchantment != Enchantments.BINDING_CURSE && enchantment != Enchantments.PIERCING;
+        return (enchantment.category.canEnchant(stack.getItem()) || enchantment == Enchantments.QUICK_CHARGE || enchantment == Enchantments.MULTISHOT) && enchantment != Enchantments.BINDING_CURSE && enchantment != Enchantments.PIERCING;
     }
 
     public TeslaCannonItem(Properties properties) {
@@ -100,7 +100,7 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
             int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.QUICK_CHARGE, stack);
             SoundEvent soundevent = this.getStartSound(i);
             SoundEvent soundevent1 = i == 0 ? SoundEvents.CROSSBOW_LOADING_MIDDLE : null;
-            float f = (float) (stack.getUseDuration() - tickCount) / (float)getChargeDuration(stack);
+            float f = (float) (stack.getUseDuration() - tickCount) / (float) getChargeDuration(stack);
             if (f < 0.2F) {
                 this.startSoundPlayed = false;
                 this.midLoadSoundPlayed = false;
@@ -116,11 +116,11 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
         }
     }
 
-    protected boolean tryLoadProjectiles(LivingEntity shooter, ItemStack crossbow) {
-        int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MULTISHOT, crossbow);
+    protected boolean tryLoadProjectiles(LivingEntity shooter, ItemStack stack) {
+        int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MULTISHOT, stack);
         int j = i == 0 ? 1 : 3;
         boolean flag = shooter instanceof Player && ((Player)shooter).getAbilities().instabuild;
-        ItemStack itemstack = shooter.getProjectile(crossbow);
+        ItemStack itemstack = shooter.getProjectile(stack);
         ItemStack itemstack1 = itemstack.copy();
         for (int k = 0; k < j; ++k) {
             if (k > 0) {
@@ -130,7 +130,7 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
                 itemstack = new ItemStack(OPItems.ELECTRIC_CHARGE.get(), 1);
                 itemstack1 = itemstack.copy();
             }
-            if (!loadProjectile(shooter, crossbow, itemstack, k > 0, flag)) {
+            if (!loadProjectile(shooter, stack, itemstack, k > 0, flag)) {
                 return false;
             }
         }
@@ -163,8 +163,8 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
         return 22.5F;
     }
 
-    private void shootCharge(Level world, LivingEntity shooter, InteractionHand handUsed, ItemStack crossbow, float divergence) {
-        List<ItemStack> list = CrossbowItem.getChargedProjectiles(crossbow);
+    private void shootCharge(Level world, LivingEntity shooter, InteractionHand handUsed, ItemStack stack, float divergence) {
+        List<ItemStack> list = getChargedProjectiles(stack);
         final int msLevel = (list.size() - 1) / 2;
 
         if (list.isEmpty()) {
@@ -173,7 +173,7 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
 
         if (!world.isClientSide()) {
             if (msLevel <= 0) {
-                shootElectricity(world, shooter, handUsed, crossbow, list.get(0), 1.0F, divergence, 0.0F);
+                shootElectricity(world, shooter, handUsed, stack, list.get(0), 1.0F, divergence, 0.0F);
             } else {
                 float[] afloat = getShotPitches(shooter.getRandom());
 
@@ -183,13 +183,13 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
                 for (int i = 0; i < list.size(); ++i) {
                     ItemStack itemstack = list.get(i);
                     if (!itemstack.isEmpty()) {
-                        shootElectricity(world, shooter, handUsed, crossbow, itemstack, afloat[i], divergence, currentAngle);
+                        shootElectricity(world, shooter, handUsed, stack, itemstack, afloat[i], divergence, currentAngle);
                     }
                     currentAngle += anglePerIteration;
                 }
             }
         }
-        CrossbowItem.onCrossbowShot(world, shooter, crossbow);
+        onTeslaCannonShot(world, shooter, stack);
     }
 
     private void shootElectricity(Level level, LivingEntity shooter, InteractionHand handUsed, ItemStack cannon, ItemStack projectileStack, float shootSoundPitch, float divergence, float simulated) {
@@ -199,32 +199,32 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
         ElectricCharge projectileentity = getCharge(level, shooter, projectileStack, cannon, false);
         ElectricCharge bigProjectileentity = getCharge(level, shooter, projectileStack, cannon, true);
 
-        boolean largeBall = cannon.getEnchantmentLevel(OPEnchantments.CAPACITANCE.get()) > 0;
-        boolean rainbow = cannon.getEnchantmentLevel(OPEnchantments.QUASAR.get()) > 0;
-        boolean seeking = cannon.getEnchantmentLevel(OPEnchantments.STATIC_ATTRACTION.get()) > 0;
+        boolean capacitance = cannon.getEnchantmentLevel(OPEnchantments.CAPACITANCE.get()) > 0;
+        boolean quasar = cannon.getEnchantmentLevel(OPEnchantments.QUASAR.get()) > 0;
+        boolean attraction = cannon.getEnchantmentLevel(OPEnchantments.STATIC_ATTRACTION.get()) > 0;
 
         Vec3 vec31 = shooter.getUpVector(1.0F);
         Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(simulated * ((float) Math.PI / 180F), vec31.x, vec31.y, vec31.z);
         Vec3 vec3 = shooter.getViewVector(1.0F);
         Vector3f vector3f = vec3.toVector3f().rotate(quaternionf);
 
-        if (largeBall) {
-            bigProjectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.6F, divergence);
+        if (capacitance) {
+            bigProjectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.4F, divergence);
             cannon.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
             shooter.level().addFreshEntity(bigProjectileentity);
             level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 0.6F * (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
-        } else if (rainbow) {
-            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.5F, divergence);
+        } else if (quasar) {
+            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.55F, divergence);
             cannon.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
             shooter.level().addFreshEntity(projectileentity);
             level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 0.8F * (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
-        } else if (seeking) {
+        } else if (attraction) {
             projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.7F, divergence);
             cannon.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
             shooter.level().addFreshEntity(projectileentity);
             level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 0.9F * (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
         } else {
-            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 1.2F, divergence);
+            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 1.1F, divergence);
             cannon.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
             shooter.level().addFreshEntity(projectileentity);
             level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
@@ -232,23 +232,23 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
         onCannonShot(level, shooter, cannon);
     }
 
-    public static ElectricCharge getCharge(Level pLevel, LivingEntity pLivingEntity, ItemStack pAmmoStack, ItemStack crossbow, boolean bigCharge) {
+    public static ElectricCharge getCharge(Level pLevel, LivingEntity pLivingEntity, ItemStack pAmmoStack, ItemStack stack, boolean bigCharge) {
 
-        boolean bouncy = crossbow.getEnchantmentLevel(OPEnchantments.REBOUND.get()) > 0;
-        boolean rainbow = crossbow.getEnchantmentLevel(OPEnchantments.QUASAR.get()) > 0;
-        boolean seeking = crossbow.getEnchantmentLevel(OPEnchantments.STATIC_ATTRACTION.get()) > 0;
+        boolean bouncy = stack.getEnchantmentLevel(OPEnchantments.REBOUND.get()) > 0;
+        boolean rainbow = stack.getEnchantmentLevel(OPEnchantments.QUASAR.get()) > 0;
+        boolean seeking = stack.getEnchantmentLevel(OPEnchantments.STATIC_ATTRACTION.get()) > 0;
 
-        int bounces = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.REBOUND.get(), crossbow);
+        int bounces = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.REBOUND.get(), stack);
 
-        int chargeSize = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.CAPACITANCE.get(), crossbow);
+        int chargeSize = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.CAPACITANCE.get(), stack);
 
         ElectricChargeItem arrowitem = (ElectricChargeItem)(pAmmoStack.getItem() instanceof ElectricChargeItem ? pAmmoStack.getItem() : OPItems.ELECTRIC_CHARGE);
         ElectricCharge electricCharge = arrowitem.shootCharge(pLevel, pLivingEntity);
-        electricCharge.setChargeScale(2.0F);
+        electricCharge.setChargeScale(1.5F);
         electricCharge.setSoundEvent(SoundEvents.CROSSBOW_HIT);
 
         if (bigCharge) {
-            electricCharge.setChargeScale(electricCharge.getChargeScale() + ((float) chargeSize - 0.5F));
+            electricCharge.setChargeScale(electricCharge.getChargeScale() + ((float) chargeSize / 2));
         }
 
         if (bouncy) {
@@ -357,7 +357,7 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
 
     public static int getChargeDuration(ItemStack stack) {
         int i = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.QUICK_CHARGE, stack);
-        return i == 0 ? 80 : 80 - 5 * i;
+        return i == 0 ? 50 : 50 - 5 * i;
     }
 
     public static float getPowerForTime(int time, ItemStack stack) {
@@ -385,5 +385,15 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
     @Override
     public int getDefaultProjectileRange() {
         return 8;
+    }
+
+    public static void onTeslaCannonShot(Level level, LivingEntity entity, ItemStack stack) {
+        if (entity instanceof ServerPlayer serverplayer) {
+            if (!level.isClientSide) {
+                CriteriaTriggers.SHOT_CROSSBOW.trigger(serverplayer, stack);
+            }
+            serverplayer.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+        }
+        clearChargedProjectiles(stack);
     }
 }

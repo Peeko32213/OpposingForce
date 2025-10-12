@@ -115,7 +115,7 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
         if (this.isQuasar()) {
             this.hurtEntitiesAround(pos, (this.getChargeScale()) + 1.2F, 3);
         } else {
-            this.hurtEntitiesAround(pos, (this.getChargeScale()) + 1.2F, (this.getChargeScale() * 2) + 2);
+            this.hurtEntitiesAround(pos, (this.getChargeScale()) + 1.2F, this.getChargeScale() + 2);
         }
 
         if (this.level().getBlockState(this.blockPosition().below(0)).is(Blocks.WATER)) {
@@ -262,10 +262,6 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
 
         if (!this.level().isClientSide) {
             this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
-            if (!this.isBouncy() && !this.isQuasar()) {
-                this.spawnElectricParticles(this, 4 + randomSource.nextInt(3), 0, 12);
-                this.discard();
-            }
             if (entity instanceof Creeper creeper) {
                 ((CreeperExtension) creeper).opposingForce$setCharged(true);
             }

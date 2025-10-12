@@ -61,12 +61,15 @@ public class BlasterItem extends Item {
         Vec3 vec3 = vector3d.normalize();
         float yRot = (float) (Mth.atan2(vec3.z, vec3.x) * (180F / Math.PI)) + 90F;
         float xRot = (float) -(Mth.atan2(vec3.y, Math.sqrt(vec3.x * vec3.x + vec3.z * vec3.z)) * (180F / Math.PI));
+        double xOffset = level.getRandom().nextGaussian() * 0.03D;
+        double yOffset = level.getRandom().nextGaussian() * 0.03D;
+        double zOffset = level.getRandom().nextGaussian() * 0.03D;
 
         LaserBolt laserBolt = new LaserBolt(player, level, player.position().x(), player.getEyePosition().y(), player.position().z());
         Vec3 barrelPos = getBarrelVec(player, hand == InteractionHand.MAIN_HAND, new Vec3(0.55F, -0.45F, 1.15F));
         Vec3 correction = getBarrelVec(player, hand == InteractionHand.MAIN_HAND, new Vec3(-0.035F, 0, 0)).subtract(player.position().add(0, player.getEyeHeight(), 0));
-        Vec3 lookVec = player.getLookAngle();
-        Vec3 motion = lookVec.add(correction).normalize().scale(1.5F).scale(1.5F);
+        Vec3 lookVec = player.getLookAngle().add(xOffset, yOffset, zOffset).normalize();
+        Vec3 motion = lookVec.add(correction).normalize().scale(2.0F);
 
         laserBolt.setPos(barrelPos.x, barrelPos.y, barrelPos.z);
         laserBolt.setDeltaMovement(motion);

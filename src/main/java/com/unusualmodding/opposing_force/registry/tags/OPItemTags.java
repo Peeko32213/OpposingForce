@@ -12,6 +12,7 @@ public class OPItemTags {
     public static final TagKey<Item> RAW_VEGETABLES = registerItemTag("raw_vegetables");
     public static final TagKey<Item> PIE_CUTTERS = registerItemTag("pie_cutters");
     public static final TagKey<Item> KNIVES = registerItemTag("knives");
+    public static final TagKey<Item> PIE_CRUST = registerItemTag("pie_crust");
 
     private static TagKey<Item> registerItemTag(String name) {
         return TagKey.create(Registries.ITEM, new ResourceLocation(OpposingForce.MOD_ID, name));

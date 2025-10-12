@@ -47,10 +47,10 @@ public class OPEnchantments {
         if (enchantment1 == KICKBACK.get() && (enchantment2 == Enchantments.QUICK_CHARGE)) {
             return false;
         }
-        if (enchantment1 == CAPACITANCE.get() && enchantment2 == Enchantments.MULTISHOT) {
+        if (enchantment1 == CAPACITANCE.get() && (enchantment2 == Enchantments.MULTISHOT || enchantment2 == Enchantments.QUICK_CHARGE)) {
             return false;
         }
-        if (enchantment1 == QUASAR.get() && (enchantment2 == Enchantments.MULTISHOT || enchantment2 == CAPACITANCE.get() || enchantment2 == Enchantments.QUICK_CHARGE || enchantment2 == REBOUND.get())) {
+        if (enchantment1 == QUASAR.get() && (enchantment2 == Enchantments.MULTISHOT || enchantment2 == CAPACITANCE.get() || enchantment2 == REBOUND.get())) {
             return false;
         }
         if (enchantment1 == STATIC_ATTRACTION.get() && (enchantment2 == CAPACITANCE.get() || enchantment2 == QUASAR.get())) {

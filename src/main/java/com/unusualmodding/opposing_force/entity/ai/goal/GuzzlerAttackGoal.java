@@ -37,7 +37,7 @@ public class GuzzlerAttackGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return this.guzzler.getTarget() != null && this.guzzler.getTarget().isAlive() && !this.guzzler.isVehicle() && this.guzzler.shouldSpew();
+        return this.guzzler.getTarget() != null && this.guzzler.getTarget().isAlive() && !this.guzzler.isVehicle();
     }
 
     @Override

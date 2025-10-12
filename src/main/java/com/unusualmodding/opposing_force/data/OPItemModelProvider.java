@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.data;
 
 import com.unusualmodding.opposing_force.OpposingForce;
+import com.unusualmodding.opposing_force.registry.OPBlocks;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -26,7 +27,6 @@ public class OPItemModelProvider extends ItemModelProvider {
 
         this.item(DEEP_SILK);
         this.item(ELECTRIC_CHARGE);
-        this.item(SLUG_EGGS);
         this.item(CAPTURED_WHIZZ);
         this.item(DEEPWOVEN_HAT);
         this.item(DEEPWOVEN_TUNIC);
@@ -36,6 +36,7 @@ public class OPItemModelProvider extends ItemModelProvider {
         this.item(DICER_LENS);
         this.item(GUZZLER_SCALES);
         this.item(FIRE_GEL);
+        this.item(INFERNO_PIE_SLICE);
 
         this.handheldItem(EMERALD_SWORD);
         this.handheldItem(EMERALD_PICKAXE);

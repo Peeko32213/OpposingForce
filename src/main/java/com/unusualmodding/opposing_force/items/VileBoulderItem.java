@@ -1,11 +1,8 @@
 package com.unusualmodding.opposing_force.items;
 
 import com.unusualmodding.opposing_force.entity.Slug;
-import com.unusualmodding.opposing_force.registry.OPEffects;
-import com.unusualmodding.opposing_force.registry.OPEnchantments;
-import com.unusualmodding.opposing_force.registry.OPItems;
-import com.unusualmodding.opposing_force.registry.OPSoundEvents;
-import net.minecraft.core.particles.ItemParticleOption;
+import com.unusualmodding.opposing_force.registry.*;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -30,7 +27,7 @@ public class VileBoulderItem extends SwordItem {
                 target.playSound(OPSoundEvents.SLUG_ATTACK.get(), 1.5F, 1);
 
                 for (int i = 0; i < 16; i++) {
-                    ((ServerLevel) target.level()).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, OPItems.SLUG_EGGS.get().getDefaultInstance()), target.getX(), target.getY() + target.getBbHeight() * 0.5F, target.getZ(), 1, target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5, 0);
+                    ((ServerLevel) target.level()).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, OPBlocks.SLUG_EGGS.get().defaultBlockState()), target.getX(), target.getY() + target.getBbHeight() * 0.5F, target.getZ(), 1, target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5, 0);
                 }
             }
         }

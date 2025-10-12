@@ -14,22 +14,22 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(Dist.CLIENT)
-public class DicerRenderer extends MobRenderer<Dicer, DicerModel<Dicer>> {
+public class DicerRenderer extends MobRenderer<Dicer, DicerModel> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/dicer/dicer.png");
+    private static final ResourceLocation DICER = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/dicer/dicer.png");
 
     public DicerRenderer(EntityRendererProvider.Context context) {
-        super(context, new DicerModel<>(context.bakeLayer(OPModelLayers.DICER)), 0.5F);
-        this.addLayer(new DicerVisorLayer<>(this));
+        super(context, new DicerModel(context.bakeLayer(OPModelLayers.DICER)), 0.5F);
+        this.addLayer(new DicerVisorLayer(this));
     }
 
     @Override
     public ResourceLocation getTextureLocation(Dicer entity) {
-        return TEXTURE;
+        return DICER;
     }
 
     @Override
     protected @Nullable RenderType getRenderType(Dicer entity, boolean bodyVisible, boolean translucent, boolean glowing) {
-        return RenderType.entityCutoutNoCull(TEXTURE);
+        return RenderType.entityCutoutNoCull(DICER);
     }
 }

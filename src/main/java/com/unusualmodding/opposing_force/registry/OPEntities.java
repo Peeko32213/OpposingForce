@@ -28,7 +28,7 @@ public class OPEntities {
     public static final RegistryObject<EntityType<Emeraldfish>> EMERALDFISH = ENTITY_TYPES.register(
             "emeraldfish", () ->
             EntityType.Builder.of(Emeraldfish::new, MobCategory.MONSTER)
-                    .sized(1.0F, 1.0F)
+                    .sized(0.98F, 0.98F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "emeraldfish").toString())
     );
@@ -53,7 +53,7 @@ public class OPEntities {
     public static final RegistryObject<EntityType<Guzzler>> GUZZLER = ENTITY_TYPES.register(
             "guzzler", () ->
             EntityType.Builder.of(Guzzler::new, MobCategory.MONSTER)
-                    .sized(2.0F, 2.6F)
+                    .sized(1.98F, 2.5F)
                     .clientTrackingRange(10)
                     .fireImmune()
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "guzzler").toString())
@@ -72,7 +72,7 @@ public class OPEntities {
     public static final RegistryObject<EntityType<PaleSpider>> PALE_SPIDER = ENTITY_TYPES.register(
             "pale_spider", () ->
             EntityType.Builder.of(PaleSpider::new, MobCategory.MONSTER)
-                    .sized(1.0F, 0.5F)
+                    .sized(0.98F, 0.5F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "pale_spider").toString())
     );
@@ -88,7 +88,7 @@ public class OPEntities {
     public static final RegistryObject<EntityType<Slug>> SLUG = ENTITY_TYPES.register(
             "slug", () ->
             EntityType.Builder.of(Slug::new, MobCategory.MONSTER)
-                    .sized(1.0F, 0.9F)
+                    .sized(0.98F, 0.9F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "slug").toString())
     );
@@ -104,7 +104,7 @@ public class OPEntities {
     public static final RegistryObject<EntityType<Trembler>> TREMBLER = ENTITY_TYPES.register(
             "trembler", () ->
             EntityType.Builder.of(Trembler::new, MobCategory.MONSTER)
-                    .sized(0.9F, 1.0F)
+                    .sized(0.9F, 0.98F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "trembler").toString())
     );
@@ -136,7 +136,7 @@ public class OPEntities {
     public static final RegistryObject<EntityType<DicerLaser>> DICER_LASER = ENTITY_TYPES.register(
             "dicer_laser", () ->
             EntityType.Builder.<DicerLaser>of(DicerLaser::new, MobCategory.MISC)
-                    .sized(0.1f, 0.1f)
+                    .sized(0.1F, 0.1F)
                     .setUpdateInterval(1)
                     .fireImmune()
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "dicer_laser").toString())
@@ -145,7 +145,7 @@ public class OPEntities {
     public static final RegistryObject<EntityType<ElectricCharge>> ELECTRIC_CHARGE = ENTITY_TYPES.register(
             "electric_charge", () ->
             EntityType.Builder.<ElectricCharge>of(ElectricCharge::new, MobCategory.MISC)
-                    .sized(0.1f, 0.1f)
+                    .sized(0.1F, 0.1F)
                     .clientTrackingRange(4)
                     .setShouldReceiveVelocityUpdates(true)
                     .fireImmune()
@@ -155,19 +155,11 @@ public class OPEntities {
     public static final RegistryObject<EntityType<LaserBolt>> LASER_BOLT = ENTITY_TYPES.register(
             "laser_bolt", () ->
             EntityType.Builder.<LaserBolt>of(LaserBolt::new, MobCategory.MISC)
-                    .sized(0.4f, 0.4f)
+                    .sized(0.4F, 0.4F)
                     .clientTrackingRange(4)
                     .setShouldReceiveVelocityUpdates(true)
                     .fireImmune()
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "laser_bolt").toString())
-    );
-
-    public static final RegistryObject<EntityType<SlugEggs>> SLUG_EGGS = ENTITY_TYPES.register(
-            "slug_eggs", () ->
-            EntityType.Builder.<SlugEggs>of(SlugEggs::new, MobCategory.MISC)
-                    .sized(0.25f, 0.25f)
-                    .clientTrackingRange(4)
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "slug_eggs").toString())
     );
 
     public static final RegistryObject<EntityType<Tomahawk>> TOMAHAWK = ENTITY_TYPES.register(

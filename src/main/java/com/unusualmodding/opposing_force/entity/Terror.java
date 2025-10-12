@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.unusualmodding.opposing_force.entity.ai.goal.TerrorAttackGoal;
 import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -11,7 +12,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -34,9 +34,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.EnumSet;
-import java.util.Objects;
-
 public class Terror extends Monster implements IAnimatedAttacker {
 
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Terror.class, EntityDataSerializers.INT);
@@ -56,7 +53,7 @@ public class Terror extends Monster implements IAnimatedAttacker {
     public Terror(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.moveControl = new SmoothSwimmingMoveControl(this, 128, 10, 0.02F, 0.1F, true);
+        this.moveControl = new SmoothSwimmingMoveControl(this, 128, 10, 0.02F, 0.1F, false);
         this.lookControl = new SmoothSwimmingLookControl(this, 10);
     }
 
@@ -71,7 +68,7 @@ public class Terror extends Monster implements IAnimatedAttacker {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new TryFindWaterGoal(this));
         this.goalSelector.addGoal(1, new TerrorAttackGoal(this));
-        this.goalSelector.addGoal(3, new RandomSwimmingGoal(this, 1.0F, 1));
+        this.goalSelector.addGoal(3, new RandomSwimmingGoal(this, 1.0F, 20));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
@@ -84,9 +81,6 @@ public class Terror extends Monster implements IAnimatedAttacker {
             this.moveRelative(this.getSpeed(), pTravelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
-            if (this.getTarget() == null) {
-                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
-            }
         } else {
             super.travel(pTravelVector);
         }
@@ -217,105 +211,8 @@ public class Terror extends Monster implements IAnimatedAttacker {
         return pos.getY() <= -16 && level.getRawBrightness(pos, 0) == 0 && level.getRandom().nextFloat() <= 0.2F && level.getBlockState(pos).is(Blocks.WATER);
     }
 
+    @Override
     public boolean checkSpawnObstruction(LevelReader level) {
         return level.isUnobstructed(this);
-    }
-
-    // goals
-    private static class TerrorAttackGoal extends Goal {
-
-        private int attackTime = 0;
-        protected final Terror terror;
-
-        public TerrorAttackGoal(Terror terror) {
-            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
-            this.terror = terror;
-        }
-
-        public boolean canUse() {
-            return this.terror.getTarget() != null && this.terror.getTarget().isAlive();
-        }
-
-        public boolean canContinueToUse() {
-            LivingEntity target = this.terror.getTarget();
-            if (target == null) {
-                return false;
-            } else if (!target.isAlive()) {
-                return false;
-            } else if (!this.terror.isWithinRestriction(target.blockPosition())) {
-                return false;
-            } else {
-                return !(target instanceof Player) || !target.isSpectator() && !((Player) target).isCreative() || !this.terror.getNavigation().isDone();
-            }
-        }
-
-        public void start() {
-            this.terror.setAggressive(true);
-            this.terror.setAttackState(0);
-            this.attackTime = 0;
-        }
-
-        public void stop() {
-            LivingEntity target = this.terror.getTarget();
-            if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
-                this.terror.setTarget(null);
-            }
-            this.terror.setAggressive(false);
-            this.terror.getNavigation().stop();
-            this.terror.setAttackState(0);
-        }
-
-        public void tick() {
-            LivingEntity target = this.terror.getTarget();
-            if (target != null) {
-                double distance = this.terror.distanceToSqr(target.getX(), target.getY(), target.getZ());
-                int attackState = this.terror.getAttackState();
-                this.terror.lookAt(this.terror.getTarget(), 30F, 30F);
-                this.terror.getLookControl().setLookAt(this.terror.getTarget(), 30F, 30F);
-
-                if (attackState == 1) {
-                    tickAttack();
-                } else {
-                    this.terror.getNavigation().moveTo(target, 1.0D);
-
-                    if (distance <= 20) {
-                        this.terror.setAttackState(1);
-                    }
-                }
-            }
-        }
-
-        public boolean requiresUpdateEveryTick() {
-            return true;
-        }
-
-        protected void tickAttack() {
-            attackTime++;
-            LivingEntity target = this.terror.getTarget();
-            this.terror.getNavigation().stop();
-
-            if (this.attackTime == 4) {
-                if (!this.terror.isInWater()) {
-                    this.terror.addDeltaMovement(this.terror.getLookAngle().scale(2.0D).multiply(0.2D, 0.3D, 0.2D));
-                } else {
-                    this.terror.addDeltaMovement(this.terror.getLookAngle().scale(2.0D).multiply(0.3D, 0.4D, 0.3D));
-                }
-            }
-
-            if (attackTime == 8) {
-                if (this.terror.distanceTo(Objects.requireNonNull(target)) < getAttackReachSqr(target)) {
-                    this.terror.doHurtTarget(target);
-                    this.terror.swing(InteractionHand.MAIN_HAND);
-                }
-            }
-            if (attackTime >= 28) {
-                attackTime = 0;
-                this.terror.setAttackState(0);
-            }
-        }
-
-        protected double getAttackReachSqr(LivingEntity target) {
-            return this.terror.getBbWidth() * 0.8F * this.terror.getBbWidth() * 0.8F + target.getBbWidth();
-        }
     }
 }

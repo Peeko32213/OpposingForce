@@ -1,9 +1,6 @@
 package com.unusualmodding.opposing_force.registry;
 
-import com.unusualmodding.opposing_force.entity.projectile.UmberDagger;
-import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
-import com.unusualmodding.opposing_force.entity.projectile.SlugEggs;
-import com.unusualmodding.opposing_force.entity.projectile.Tomahawk;
+import com.unusualmodding.opposing_force.entity.projectile.*;
 import com.unusualmodding.opposing_force.items.MobHeadItem;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
@@ -27,12 +24,6 @@ public class OPCompat {
             protected Projectile getProjectile(Level level, Position pos, ItemStack itemStack) {
                 ElectricCharge entity = new ElectricCharge(level, pos.x(), pos.y(), pos.z(), Vec3.ZERO);
                 return entity;
-            }
-        });
-
-        DispenserBlock.registerBehavior(OPItems.SLUG_EGGS.get(), new AbstractProjectileDispenseBehavior() {
-            protected Projectile getProjectile(Level level, Position pos, ItemStack itemStack) {
-                return new SlugEggs(level, pos.x(), pos.y(), pos.z());
             }
         });
 

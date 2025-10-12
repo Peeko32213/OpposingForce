@@ -38,8 +38,6 @@ public class OPBlockstateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         this.cubeAllBlock(TREMBLING_BLOCK);
-        this.slab(TREMBLING_SLAB, this.blockTexture(TREMBLING_BLOCK.get()));
-        this.cubeAllBlock(CHISELED_TREMBLING_BLOCK);
         this.cubeAllBlock(TREMBLING_SHINGLES);
         this.stairs(TREMBLING_SHINGLE_STAIRS, this.blockTexture(TREMBLING_SHINGLES.get()));
         this.slab(TREMBLING_SHINGLE_SLAB, this.blockTexture(TREMBLING_SHINGLES.get()));

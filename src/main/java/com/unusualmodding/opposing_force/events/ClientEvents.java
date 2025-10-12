@@ -48,7 +48,6 @@ public final class ClientEvents {
         event.registerEntityRenderer(OPEntities.PALE_SPIDER.get(), PaleSpiderRenderer::new);
         event.registerEntityRenderer(OPEntities.RAMBLE.get(), RambleRenderer::new);
         event.registerEntityRenderer(OPEntities.SLUG.get(), SlugRenderer::new);
-        event.registerEntityRenderer(OPEntities.SLUG_EGGS.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(OPEntities.TERROR.get(), TerrorRenderer::new);
         event.registerEntityRenderer(OPEntities.TOMAHAWK.get(), TomahawkRenderer::new);
         event.registerEntityRenderer(OPEntities.TREMBLER.get(), TremblerRenderer::new);

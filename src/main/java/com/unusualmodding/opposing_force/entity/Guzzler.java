@@ -4,7 +4,6 @@ import com.google.common.collect.Sets;
 import com.unusualmodding.opposing_force.entity.ai.goal.GuzzlerAttackGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
-import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.utils.OPMath;
 import net.minecraft.core.BlockPos;
@@ -135,6 +134,12 @@ public class Guzzler extends Monster implements IAnimatedAttacker {
         return new Vec3(this.getX(), this.getBoundingBox().maxY, this.getZ());
     }
 
+    @Override
+    public int getMaxSpawnClusterSize() {
+        return 1;
+    }
+
+    @Override
     public void tick() {
         super.tick();
 
@@ -160,6 +165,7 @@ public class Guzzler extends Monster implements IAnimatedAttacker {
         this.walkAnimation.update(f2, 0.4F);
     }
 
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ATTACK_STATE, 0);
@@ -190,10 +196,6 @@ public class Guzzler extends Monster implements IAnimatedAttacker {
 
     public void spewCooldown() {
         this.entityData.set(SPEW_COOLDOWN, 28);
-    }
-
-    public boolean shouldSpew() {
-        return true;
     }
 
     @Override

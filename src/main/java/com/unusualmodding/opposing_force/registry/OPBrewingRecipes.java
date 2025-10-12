@@ -17,7 +17,7 @@ public class OPBrewingRecipes {
         BrewingRecipeRegistry.addRecipe(new OPBrewingRecipe(Ingredient.of(registerPotion(OPPotions.GLOOM_TOXIN_POTION)), Ingredient.of(Items.REDSTONE), registerPotion(OPPotions.LONG_GLOOM_TOXIN_POTION)));
         BrewingRecipeRegistry.addRecipe(new OPBrewingRecipe(Ingredient.of(registerPotion(OPPotions.GLOOM_TOXIN_POTION)), Ingredient.of(Items.GLOWSTONE_DUST), registerPotion(OPPotions.STRONG_GLOOM_TOXIN_POTION)));
 
-        BrewingRecipeRegistry.addRecipe(new OPBrewingRecipe(Ingredient.of(registerPotion(Potions.AWKWARD)), Ingredient.of(OPItems.SLUG_EGGS.get()), registerPotion(OPPotions.SLUG_INFESTATION_POTION)));
+        BrewingRecipeRegistry.addRecipe(new OPBrewingRecipe(Ingredient.of(registerPotion(Potions.AWKWARD)), Ingredient.of(OPBlocks.SLUG_EGGS.get()), registerPotion(OPPotions.SLUG_INFESTATION_POTION)));
     }
 
     public static ItemStack registerPotion(RegistryObject<Potion> potion) {

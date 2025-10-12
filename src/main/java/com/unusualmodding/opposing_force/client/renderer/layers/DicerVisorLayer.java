@@ -15,17 +15,17 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class DicerVisorLayer<T extends Dicer, M extends DicerModel<T>> extends RenderLayer<T, M> {
+public class DicerVisorLayer extends RenderLayer<Dicer, DicerModel> {
 
-    private static final RenderType GLOW_TEXTURE = RenderType.entityTranslucentEmissive(new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/dicer/dicer_visor.png"));
+    private static final RenderType VISOR = RenderType.entityTranslucentEmissive(new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/dicer/dicer_visor.png"));
 
-    public DicerVisorLayer(RenderLayerParent<T, M> parentModel) {
+    public DicerVisorLayer(RenderLayerParent<Dicer, DicerModel> parentModel) {
         super(parentModel);
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int i, T entity, float f, float g, float h, float j, float k, float l) {
-        VertexConsumer vertexConsumer = multiBufferSource.getBuffer(GLOW_TEXTURE);
+    public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int i, Dicer entity, float f, float g, float h, float j, float k, float l) {
+        VertexConsumer vertexConsumer = multiBufferSource.getBuffer(VISOR);
         this.getParentModel().renderToBuffer(poseStack, vertexConsumer, 0xF00000, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
     }
 }

@@ -1,34 +1,34 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_the_recipe": {
-      "conditions": {
-        "recipe": "opposing_force:trembling_slab"
-      },
-      "trigger": "minecraft:recipe_unlocked"
-    },
-    "has_trembler_shell": {
+    "has_fire_gel": {
       "conditions": {
         "items": [
           {
             "items": [
-              "opposing_force:trembler_shell"
+              "opposing_force:fire_gel"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "opposing_force:inferno_pie"
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_trembler_shell",
+      "has_fire_gel",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "opposing_force:trembling_slab"
+      "opposing_force:inferno_pie"
     ]
   },
   "sends_telemetry_event": false

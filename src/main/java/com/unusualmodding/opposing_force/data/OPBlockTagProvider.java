@@ -27,8 +27,6 @@ public class OPBlockTagProvider extends BlockTagsProvider {
                 TREMBLING_SHINGLE_STAIRS.get(),
                 TREMBLING_SHINGLE_SLAB.get(),
                 TREMBLING_BLOCK.get(),
-                TREMBLING_SLAB.get(),
-                CHISELED_TREMBLING_BLOCK.get(),
                 VILE_STONE.get(),
                 VILE_STONE_STAIRS.get(),
                 VILE_STONE_SLAB.get(),
@@ -64,7 +62,6 @@ public class OPBlockTagProvider extends BlockTagsProvider {
 
         this.tag(BlockTags.SLABS).add(
                 TREMBLING_SHINGLE_SLAB.get(),
-                TREMBLING_SLAB.get(),
                 VILE_STONE_SLAB.get(),
                 VILE_COBBLESTONE_SLAB.get(),
                 VILE_STONE_BRICK_SLAB.get()

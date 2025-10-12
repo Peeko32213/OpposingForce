@@ -30,9 +30,7 @@ public class OPBlocks {
     public static final RegistryObject<Block> TREMBLING_SHINGLES = registerBlock("trembling_shingles", () -> new Block(OPBlockProperties.TREMBLING_BLOCK));
     public static final RegistryObject<Block> TREMBLING_SHINGLE_STAIRS = registerBlock("trembling_shingle_stairs", () -> new StairBlock(() -> TREMBLING_SHINGLES.get().defaultBlockState(), BlockBehaviour.Properties.copy(TREMBLING_SHINGLES.get())));
     public static final RegistryObject<Block> TREMBLING_SHINGLE_SLAB = registerBlock("trembling_shingle_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(TREMBLING_SHINGLES.get())));
-    public static final RegistryObject<Block> CHISELED_TREMBLING_BLOCK = registerBlock("chiseled_trembling_block", () -> new Block(OPBlockProperties.TREMBLING_BLOCK));
     public static final RegistryObject<Block> TREMBLING_BLOCK = registerBlock("trembling_block", () -> new Block(OPBlockProperties.TREMBLING_BLOCK));
-    public static final RegistryObject<Block> TREMBLING_SLAB = registerBlock("trembling_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(TREMBLING_BLOCK.get())));
 
     public static final RegistryObject<Block> DEEP_WEB = registerBlock("deep_web", () -> new DeepWebBlock(OPBlockProperties.DEEP_WEB));
     public static final RegistryObject<Block> DEEP_SILK_BLOCK = registerBlock("deep_silk_block", () -> new Block(OPBlockProperties.DEEP_SILK_BLOCK));
@@ -45,6 +43,8 @@ public class OPBlocks {
 
     public static final RegistryObject<Block> RAMBLE_SKULL = registerBlockWithoutItemNoLang("ramble_skull", () -> new MobHeadBlock(MobHeadBlock.Types.RAMBLE, BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CUSTOM_HEAD).strength(1.0F).pushReaction(PushReaction.DESTROY)));
     public static final RegistryObject<Block> RAMBLE_WALL_SKULL = registerBlockWithoutItemNoLang("ramble_wall_skull", () -> new WallMobHeadBlock(MobHeadBlock.Types.RAMBLE, BlockBehaviour.Properties.of().dropsLike(RAMBLE_SKULL.get()).strength(1.0F).pushReaction(PushReaction.DESTROY)));
+
+    public static final RegistryObject<Block> SLUG_EGGS = registerBlock("slug_eggs", () -> new SlugEggBlock(OPBlockProperties.SLUG_EGGS));
 
     public static final RegistryObject<Block> VILE_STONE = registerBlock("vile_stone", () -> new Block(OPBlockProperties.VILE_STONE));
     public static final RegistryObject<Block> VILE_STONE_STAIRS = registerBlock("vile_stone_stairs", () -> new StairBlock(() -> VILE_STONE.get().defaultBlockState(), BlockBehaviour.Properties.copy(VILE_STONE.get())));
@@ -61,7 +61,8 @@ public class OPBlocks {
     public static final RegistryObject<Block> VILE_STONE_BRICK_WALL = registerBlock("vile_stone_brick_wall", () -> new WallBlock(BlockBehaviour.Properties.copy(VILE_STONE_BRICKS.get())));
     public static final RegistryObject<Block> CHISELED_VILE_STONE_BRICKS = registerBlock("chiseled_vile_stone_bricks", () -> new Block(OPBlockProperties.VILE_STONE));
 
-    public static final RegistryObject<Block> INFERNO_PIE = registerBlock("inferno_pie", () -> new InfernoPieBlock(OPBlockProperties.INFERNO_PIE, () -> Items.CARROT));
+    public static final RegistryObject<Block> INFERNO_PIE = registerBlock("inferno_pie", () -> new InfernoPieBlock(OPBlockProperties.INFERNO_PIE));
+
 
     private static <B extends Block> RegistryObject<B> registerBlock(String name, Supplier<? extends B> supplier) {
         RegistryObject<B> block = BLOCKS.register(name, supplier);

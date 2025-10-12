@@ -32,8 +32,6 @@ public class OPBlockLootTableProvider extends BlockLootSubProvider {
         this.dropSelf(TREMBLING_SHINGLE_STAIRS.get());
         this.add(TREMBLING_SHINGLE_SLAB.get(), this::createSlabItemTable);
         this.dropSelf(TREMBLING_BLOCK.get());
-        this.add(TREMBLING_SLAB.get(), this::createSlabItemTable);
-        this.dropSelf(CHISELED_TREMBLING_BLOCK.get());
         this.dropSelf(DEEP_SILK_BLOCK.get());
         createSilkTouchOrShearsDispatchTable(DEEP_WEB.get(), this.applyExplosionCondition(DEEP_WEB.get(), LootItem.lootTableItem(OPItems.DEEP_SILK.get())));
         this.dropSelf(VILE_STONE.get());

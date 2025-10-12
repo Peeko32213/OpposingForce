@@ -33,6 +33,8 @@ public class OPLanguageProvider extends LanguageProvider {
         OPBlocks.AUTO_TRANSLATE.forEach(this::forBlocks);
         OPItems.AUTO_TRANSLATE.forEach(this::forItems);
 
+        this.addItem(OPItems.INFERNO_PIE_SLICE, "Slice of Inferno Pie");
+
         this.forEntity(OPEntities.DICER);
         this.forEntity(OPEntities.EMERALDFISH);
         this.forEntity(OPEntities.FIRE_SLIME);
@@ -48,7 +50,6 @@ public class OPLanguageProvider extends LanguageProvider {
         this.forEntity(OPEntities.WHIZZ);
 
         this.forEntity(OPEntities.ELECTRIC_CHARGE);
-        this.forEntity(OPEntities.SLUG_EGGS);
         this.forEntity(OPEntities.TOMAHAWK);
         this.forEntity(OPEntities.UMBER_DAGGER);
 
@@ -187,7 +188,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.addAdvancementDesc("ignite_fire_slime", "Reignite a Fire Slime with Blaze Powder to prevent it from evaporating");
 
         this.addAdvancement("tame_slug", "Go my Slug");
-        this.addAdvancementDesc("tame_slug", "Use Slug Eggs to spawn a tamed Slug");
+        this.addAdvancementDesc("tame_slug", "Tame a Slug using Slime Balls");
 
         this.addAdvancement("grow_slug", "Rise, my glorious creation");
         this.addAdvancementDesc("grow_slug", "Feed a tamed Slug a Slime Block to increase its size");

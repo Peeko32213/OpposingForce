@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class DicerModel<T extends Dicer> extends HierarchicalModel<T> {
+public class DicerModel extends HierarchicalModel<Dicer> {
 
 	private final ModelPart root;
 	private final ModelPart Body;
@@ -136,7 +136,9 @@ public class DicerModel<T extends Dicer> extends HierarchicalModel<T> {
 		}
 
 		this.animate(entity.idleAnimationState, DicerAnimations.IDLE, ageInTicks);
-		this.animate(entity.sliceAnimationState, DicerAnimations.CLAW, ageInTicks);
+		this.animate(entity.slice1AnimationState, DicerAnimations.CLAW1, ageInTicks);
+		this.animate(entity.slice2AnimationState, DicerAnimations.CLAW2, ageInTicks);
+		this.animate(entity.crossSliceAnimationState, DicerAnimations.CROSS_SLASH, ageInTicks);
 		this.animate(entity.laserAnimationState, DicerAnimations.LASER, ageInTicks);
 
 		this.Head.xRot += headPitch * ((float) Math.PI / 180) - (headPitch * ((float) Math.PI / 180)) / 2;

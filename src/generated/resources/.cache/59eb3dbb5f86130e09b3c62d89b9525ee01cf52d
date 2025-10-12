@@ -1,12 +1,10 @@
-// 1.20.1	2025-10-10T22:02:36.8879148	Loot Tables
-2128bd5cb05e96d25cd16f76effa8fa76504a59f data/opposing_force/loot_tables/blocks/chiseled_trembling_block.json
+// 1.20.1	2025-10-11T17:46:11.263422	Loot Tables
 d2958188eb9643e832f6a72254ba0e708ff6fb95 data/opposing_force/loot_tables/blocks/deep_silk_block.json
 db0f19672d9e54c25c4d43ae8e1a2684049fbc29 data/opposing_force/loot_tables/blocks/trembler_shell.json
 0cfc035b67f071ea79f83c48dc82aa81400e8ccb data/opposing_force/loot_tables/blocks/trembling_block.json
 0dd442bdcc0207e882ea673a008e587a146f405d data/opposing_force/loot_tables/blocks/trembling_shingles.json
 a6a9013682ff8da62155dc7fa2ff911d57c39c10 data/opposing_force/loot_tables/blocks/trembling_shingle_slab.json
 c94a5fbca54ef7ad5f4198689d0af98a0975e410 data/opposing_force/loot_tables/blocks/trembling_shingle_stairs.json
-1d47a69633c8806e0f4b33aaff6cdd4fdb8b927e data/opposing_force/loot_tables/blocks/trembling_slab.json
 b049f5378cdf60e2cf4f93d8b522a8084bca4cf9 data/opposing_force/loot_tables/blocks/vile_cobblestone.json
 ab681ab769c17df1fd17ec16c9d53029dd2eba06 data/opposing_force/loot_tables/blocks/vile_cobblestone_slab.json
 6a20f5e075ca873738ba5eababe8513d33230d38 data/opposing_force/loot_tables/blocks/vile_cobblestone_stairs.json
