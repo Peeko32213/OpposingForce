@@ -33,7 +33,7 @@ public class FrowzyItemInHandLayer extends RenderLayer<Frowzy, FrowzyModel> {
         }
         poseStack.pushPose();
         translateToHand(poseStack, left);
-        poseStack.translate(0.1F, 0.5F, 0.125F);
+        poseStack.translate(0.1D, 0.5D, 0.125D);
 
         poseStack.mulPose(Axis.XP.rotationDegrees(-90F));
 //        poseStack.mulPose(Axis.YP.rotationDegrees(110F));
