@@ -33,11 +33,10 @@ public class FrowzyItemInHandLayer extends RenderLayer<Frowzy, FrowzyModel> {
         }
         poseStack.pushPose();
         translateToHand(poseStack, left);
-        poseStack.translate(0F, 1.5F, -0.125F);
+        poseStack.translate(0.1F, 0.5F, 0.125F);
 
-        poseStack.mulPose(Axis.XP.rotationDegrees(-110F));
-        poseStack.mulPose(Axis.YP.rotationDegrees(180F));
-        poseStack.scale(0.8F, 0.8F, 0.8F);
+        poseStack.mulPose(Axis.XP.rotationDegrees(-90F));
+//        poseStack.mulPose(Axis.YP.rotationDegrees(110F));
         ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
         renderer.renderItem(frowzy, itemstack, left ? ItemDisplayContext.THIRD_PERSON_LEFT_HAND : ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, false, poseStack, bufferSource, packedLight);
         poseStack.popPose();

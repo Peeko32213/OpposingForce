@@ -1,15 +1,18 @@
 modLoader = "javafml"
 loaderVersion = "[32,)"
+issueTrackerURL = "https://github.com/Peeko32213/OpposingForce/issues"
 license = "MIT"
 
 [[mods]]
     modId = "opposing_force"
     version = "${file.jarVersion}"
     logoFile = "opposing_force.png"
+    itemIcon = "opposing_force:umber_dagger"
+    configBackground = "opposing_force:textures/block/vile_stone_bricks.png"
     authors = "Unusual Modding"
     displayName = "Opposing Force"
     description = '''
-    Adds a ton of new enemies to fight!
+    Expands the enemy variety of the game!
     '''
 
 [[dependencies.opposing_force]]
