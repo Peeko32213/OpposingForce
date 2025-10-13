@@ -33,6 +33,9 @@ public class OPModelLayers {
     public static final ModelLayerLocation STONE_ARMOR = main("stone_armor");
     public static final ModelLayerLocation WOODEN_ARMOR = main("wooden_armor");
 
+    public static final ModelLayerLocation FROWZY_ARMOR_OUTER = main("frowzy_armor_outer");
+    public static final ModelLayerLocation FROWZY_ARMOR_INNER = main("frowzy_armor_inner");
+
     public static final ModelLayerLocation LASER_BOLT = main("laser_bolt");
 
     private static ModelLayerLocation register(String id, String name) {

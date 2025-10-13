@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.FrowzyAnimations;
 import com.unusualmodding.opposing_force.entity.Frowzy;
+import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,7 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class FrowzyModel extends HierarchicalModel<Frowzy> {
+public class FrowzyModel extends HierarchicalModel<Frowzy> implements ArmedModel {
 
 	public final ModelPart root;
 	public final ModelPart Body;
@@ -87,11 +88,11 @@ public class FrowzyModel extends HierarchicalModel<Frowzy> {
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int j, float f, float g, float h, float k) {
 		if (this.young) {
-			float babyScale = 0.6f;
-			float bodyYOffset = 16.0f;
+			float babyScale = 0.5F;
+			float bodyYOffset = 24.0F;
 			poseStack.pushPose();
 			poseStack.scale(babyScale, babyScale, babyScale);
-			poseStack.translate(0.0f, bodyYOffset / 16.0f, 0.0f);
+			poseStack.translate(0.0F, bodyYOffset / 16.0F, 0.0F);
 			this.root().render(poseStack, vertexConsumer, i, j, f, g, h, k);
 			poseStack.popPose();
 		} else {
@@ -99,15 +100,20 @@ public class FrowzyModel extends HierarchicalModel<Frowzy> {
 		}
 	}
 
+    @Override
 	public ModelPart root() {
 		return this.root;
 	}
 
-	public void translateToHand(HumanoidArm humanoidArm, PoseStack poseStack) {
-		this.getArm(humanoidArm).translateAndRotate(poseStack);
-	}
-
-	protected ModelPart getArm(HumanoidArm humanoidArm) {
-		return humanoidArm == HumanoidArm.LEFT ? this.Arm1 : this.Arm2;
-	}
+    @Override
+    public void translateToHand(HumanoidArm arm, PoseStack poseStack) {
+        root.translateAndRotate(poseStack);
+        Body.translateAndRotate(poseStack);
+        if (arm == HumanoidArm.RIGHT) {
+            Arm2.translateAndRotate(poseStack);
+        } else {
+            Arm1.translateAndRotate(poseStack);
+        }
+        poseStack.translate(0.0F, 0.3F, 0.025F);
+    }
 }
