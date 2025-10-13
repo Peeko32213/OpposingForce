@@ -66,10 +66,10 @@ public class SlugEggBlock extends Block {
     }
 
     @Override
-    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState blockState, boolean b) {
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState blockState, boolean flag) {
         level.levelEvent(3009, pos, 0);
         level.gameEvent(GameEvent.BLOCK_PLACE, pos, GameEvent.Context.of(state));
-        level.scheduleTick(pos, this, 300 + level.random.nextInt(300));
+        level.scheduleTick(pos, this, 1200 + level.random.nextInt(300));
     }
 
     @Override

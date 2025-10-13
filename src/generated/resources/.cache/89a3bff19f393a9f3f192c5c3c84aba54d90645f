@@ -1,7 +1,6 @@
-// 1.20.1	2025-10-10T19:14:38.2408176	Tags for minecraft:damage_type mod id opposing_force
+// 1.20.1	2025-10-12T16:25:24.0091238	Tags for minecraft:damage_type mod id opposing_force
 a12e9c427181715c0d514dc8cf00ebbb5d6f34ea data/minecraft/tags/damage_type/bypasses_armor.json
-14bda70ad4878b0180a019b5247e55d87500f0ee data/minecraft/tags/damage_type/is_fall.json
-7c622f1d7d554d9e716eb78922347f2cec2530b8 data/minecraft/tags/damage_type/is_projectile.json
+3c7821672c0507350a1f65a95417d0b50c4eff9d data/minecraft/tags/damage_type/is_projectile.json
 625a646ec1724280bf93f44556ff88c80f393de8 data/minecraft/tags/damage_type/no_impact.json
 3d0af116eca4d5cf33b52d8373616d2d3db82de8 data/minecraft/tags/damage_type/witch_resistant_to.json
 8ffcbfaa191cfb70fb0eadb0f10416824dc45721 data/opposing_force/tags/damage_type/damages_rolling_trembler.json

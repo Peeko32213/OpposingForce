@@ -44,7 +44,7 @@ public class FrowzyPantingSound extends AbstractTickableSoundInstance {
 
     @Override
     public boolean canPlaySound() {
-        return !this.entity.isSilent() && this.entity.isAlive();
+        return !this.entity.isSilent() && this.entity.isAlive() && this.entity.isAggressive();
     }
 
     public boolean isSameEntity(Frowzy entity) {

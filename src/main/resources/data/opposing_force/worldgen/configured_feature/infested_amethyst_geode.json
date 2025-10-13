@@ -19,15 +19,15 @@
         "type": "minecraft:weighted_state_provider",
         "entries": [
           {
-            "weight": 2,
+            "weight": 98,
             "data": {
-              "Name": "minecraft:amethyst_block"
+              "Name": "opposing_force:infested_amethyst_block"
             }
           },
           {
-            "weight": 3,
+            "weight": 2,
             "data": {
-              "Name": "opposing_force:infested_amethyst_block"
+              "Name": "minecraft:amethyst_block"
             }
           }
         ]

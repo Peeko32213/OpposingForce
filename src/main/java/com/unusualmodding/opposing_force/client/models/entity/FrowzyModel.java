@@ -14,15 +14,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class FrowzyModel<T extends Frowzy> extends HierarchicalModel<T> {
+public class FrowzyModel extends HierarchicalModel<Frowzy> {
 
-	private final ModelPart root;
-	private final ModelPart Body;
-	private final ModelPart Head;
-	private final ModelPart Arm1;
-	private final ModelPart Arm2;
-	private final ModelPart Leg1;
-	private final ModelPart Leg2;
+	public final ModelPart root;
+	public final ModelPart Body;
+	public final ModelPart Head;
+	public final ModelPart Arm1;
+	public final ModelPart Arm2;
+	public final ModelPart Leg1;
+	public final ModelPart Leg2;
 
 	public FrowzyModel(ModelPart root) {
 		this.root = root.getChild("root");

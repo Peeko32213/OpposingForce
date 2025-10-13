@@ -51,7 +51,10 @@ public class Volt extends Monster implements IAnimatedAttacker, PowerableMob {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 16.0D).add(Attributes.MOVEMENT_SPEED, 0.11F).add(Attributes.FOLLOW_RANGE, 32.0D);
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 16.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.15F)
+                .add(Attributes.FOLLOW_RANGE, 32.0D);
     }
 
     @Override
@@ -117,8 +120,8 @@ public class Volt extends Monster implements IAnimatedAttacker, PowerableMob {
         if (this.isInvulnerableTo(damageSource)) {
             return false;
         } else {
-            if (damageSource.is(OPDamageTypes.ELECTRIFIED)) {
-                this.heal(4.0F);
+            if (damageSource.is(OPDamageTypes.ELECTRIC) || damageSource.is(OPDamageTypes.ELECTRIFIED)) {
+                this.heal(2.0F);
                 return false;
             }
             return super.hurt(damageSource, amount);

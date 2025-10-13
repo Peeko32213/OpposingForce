@@ -18,36 +18,32 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class VoltGlowLayer<T extends Volt, M extends VoltModel<T>> extends RenderLayer<T, M> {
+public class VoltGlowLayer extends RenderLayer<Volt, VoltModel> {
 
     private final ResourceLocation texture;
-    private final AlphaFunction<T> alphaFunction;
-    private final DrawSelector<T, M> drawSelector;
+    private final AlphaFunction<Volt> alphaFunction;
+    private final DrawSelector<Volt, VoltModel> drawSelector;
 
-    public VoltGlowLayer(RenderLayerParent<T, M> parent, ResourceLocation resourceLocation, AlphaFunction<T> alpha, DrawSelector<T, M> drawSelector) {
+    public VoltGlowLayer(RenderLayerParent<Volt, VoltModel> parent, ResourceLocation resourceLocation, AlphaFunction<Volt> alpha, DrawSelector<Volt, VoltModel> drawSelector) {
         super(parent);
         this.texture = resourceLocation;
         this.alphaFunction = alpha;
         this.drawSelector = drawSelector;
     }
 
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int p_234904_, T entity, float p_234906_, float p_234907_, float p_234908_, float p_234909_, float p_234910_, float p_234911_) {
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int i, Volt entity, float v, float v1, float v2, float v3, float v4, float v5) {
         if (!entity.isInvisible()) {
             this.onlyDrawSelectedParts();
             VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityTranslucentEmissive(this.texture));
-            this.getParentModel().renderToBuffer(poseStack, vertexconsumer, p_234904_, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, this.alphaFunction.apply(entity, p_234908_, p_234909_));
+            this.getParentModel().renderToBuffer(poseStack, vertexconsumer, i, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, this.alphaFunction.apply(entity, v2, v3));
             this.resetDrawForAllParts();
         }
     }
 
     private void onlyDrawSelectedParts() {
         List<ModelPart> list = this.drawSelector.getPartsToDraw(this.getParentModel());
-        this.getParentModel().root().getAllParts().forEach((modelPart) -> {
-            modelPart.skipDraw = true;
-        });
-        list.forEach((modelPart) -> {
-            modelPart.skipDraw = false;
-        });
+        this.getParentModel().root().getAllParts().forEach((modelPart) -> modelPart.skipDraw = true);
+        list.forEach((modelPart) -> modelPart.skipDraw = false);
     }
 
     private void resetDrawForAllParts() {

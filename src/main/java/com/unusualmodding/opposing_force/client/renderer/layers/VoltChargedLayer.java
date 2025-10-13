@@ -13,25 +13,28 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class VoltChargedLayer extends EnergySwirlLayer<Volt, VoltModel<Volt>> {
+public class VoltChargedLayer extends EnergySwirlLayer<Volt, VoltModel> {
 
     private static final ResourceLocation CHARGED_TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/volt/charged.png");
 
-    private final VoltModel<Volt> model;
+    private final VoltModel model;
 
-    public VoltChargedLayer(RenderLayerParent<Volt, VoltModel<Volt>> parentModel, EntityModelSet modelSet) {
+    public VoltChargedLayer(RenderLayerParent<Volt, VoltModel> parentModel, EntityModelSet modelSet) {
         super(parentModel);
-        this.model = new VoltModel<>(modelSet.bakeLayer(OPModelLayers.VOLT_CHARGED));
+        this.model = new VoltModel(modelSet.bakeLayer(OPModelLayers.VOLT_CHARGED));
     }
 
+    @Override
     protected float xOffset(float offset) {
         return offset * 0.01F;
     }
 
+    @Override
     protected ResourceLocation getTextureLocation() {
         return CHARGED_TEXTURE;
     }
 
+    @Override
     protected EntityModel<Volt> model() {
         return this.model;
     }

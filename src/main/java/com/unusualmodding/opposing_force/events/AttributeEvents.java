@@ -53,7 +53,7 @@ public class AttributeEvents {
         LivingEntity target = event.getEntity();
         DamageSource source = event.getSource();
 
-        if (source.is(OPDamageTypes.ELECTRIFIED)) {
+        if (source.is(OPDamageTypes.ELECTRIFIED) || source.is(OPDamageTypes.ELECTRIC)) {
             float electricResistance = 0.0F;
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 ItemStack stack = target.getItemBySlot(slot);

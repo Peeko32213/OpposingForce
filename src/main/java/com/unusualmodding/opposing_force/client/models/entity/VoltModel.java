@@ -16,7 +16,7 @@ import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class VoltModel<T extends Volt> extends HierarchicalModel<T> {
+public class VoltModel extends HierarchicalModel<Volt> {
 
 	private final ModelPart root;
 	private final ModelPart Body;
@@ -105,14 +105,14 @@ public class VoltModel<T extends Volt> extends HierarchicalModel<T> {
 	@Override
 	public void setupAnim(Volt entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		this.animateWalk(VoltAnimations.SLIDE, limbSwing, limbSwingAmount, 4, 12);
+		this.animateWalk(VoltAnimations.SLIDE, limbSwing, limbSwingAmount, 4, 8);
 		this.animate(entity.idleAnimationState, VoltAnimations.IDLE, ageInTicks, 1);
 		this.animate(entity.shootAnimationState, VoltAnimations.SHOOT, ageInTicks, 1);
 	}
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	@Override

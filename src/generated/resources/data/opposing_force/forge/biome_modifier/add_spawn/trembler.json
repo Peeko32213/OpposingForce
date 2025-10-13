@@ -5,6 +5,6 @@
     "type": "opposing_force:trembler",
     "maxCount": 1,
     "minCount": 1,
-    "weight": 30
+    "weight": 25
   }
 }

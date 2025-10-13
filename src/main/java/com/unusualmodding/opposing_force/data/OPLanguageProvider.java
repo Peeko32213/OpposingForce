@@ -3,19 +3,28 @@ package com.unusualmodding.opposing_force.data;
 import com.unusualmodding.opposing_force.OpposingForceTab;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.registry.*;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.text.WordUtils;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.util.Objects;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class OPLanguageProvider extends LanguageProvider {
@@ -196,31 +205,26 @@ public class OPLanguageProvider extends LanguageProvider {
         this.addAdvancement("capture_whizz", "With the Whizz? No way!");
         this.addAdvancementDesc("capture_whizz", "Use a Silk Touch pickaxe to capture a Whizz");
 
+        this.translateAttribute(OPAttributes.STEALTH);
+        this.translateAttribute(OPAttributes.ELECTRIC_RESISTANCE);
+        this.translateAttribute(OPAttributes.JUMP_POWER);
+        this.translateAttribute(OPAttributes.AIR_SPEED);
+        this.translateAttribute(OPAttributes.FORTUNE);
+        this.translateAttribute(OPAttributes.LOOTING);
+        this.translateAttribute(OPAttributes.EXPERIENCE_GAIN);
+
         // jeed compat
         this.add("effect.opposing_force.electrified.description", "Inflicts lethal damage over time while in water or rain; higher levels do more damage per second.");
         this.add("effect.opposing_force.gloom_toxin.description", "Inflicts lethal damage over time while in light levels of 7 or less; higher levels do more damage per second.");
         this.add("effect.opposing_force.slug_infestation.description", "Decreases walking speed and gives the entity a 25% chance to spawn between 1 and 2 slugs when hurt; higher levels increase the amount of slugs spawned.");
 
-        this.add("death.attack.opposing_force.electrified", "%1$s met a shocking end");
-        this.add("death.attack.opposing_force.electrified.player", "%1$s was zapped by %2$s");
-        this.add("death.attack.opposing_force.gloom_toxin", "%1$s was consumed by darkness");
-        this.add("death.attack.opposing_force.gloom_toxin.player", "%1$s didn't reach the light");
-        this.add("death.attack.opposing_force.laser", "%1$s was vaporized by %2$s");
-        this.add("death.attack.opposing_force.tomahawk", "%1$s was domed by %2$s");
-        this.add("death.attack.opposing_force.tomahawk.item", "%1$s was domed by %2$s using %3$s");
-        this.add("death.attack.opposing_force.laser_bolt", "%1$s was blasted by %2$s");
-        this.add("death.attack.opposing_force.laser_bolt.item", "%1$s was blasted by %2$s using %3$s");
-
-        this.add("attribute.name.opposing_force.stealth", "Stealth");
-        this.add("attribute.name.opposing_force.electric_resistance", "Electricity Resistance");
-        this.add("attribute.name.opposing_force.bulk", "Bulk");
-        this.add("attribute.name.opposing_force.jump_power", "Jump Power");
-        this.add("attribute.name.opposing_force.air_speed", "Air Speed");
-        this.add("attribute.name.opposing_force.experience_gain", "Experience Gain");
-        this.add("attribute.name.opposing_force.fortune", "Fortune");
-        this.add("attribute.name.opposing_force.looting", "Looting");
-        this.add("attribute.name.opposing_force.villager_reputation", "Villager Reputation");
-        this.add("attribute.name.opposing_force.vegan_nourishment", "Vegan Nourishment");
+        this.translateDamageType(OPDamageTypes.ELECTRIFIED, player -> player + " succumbed to electric shocks", (player, entity) -> player + " was electrified by " + entity);
+        this.translateDamageType(OPDamageTypes.ELECTRIC, player -> player + " met a shocking end", (player, entity) -> player + " was zapped by " + entity);
+        this.translateDamageType(OPDamageTypes.GLOOM_TOXIN, player -> player + " was consumed by darkness", (player, entity) -> player + " didn't reach the light");
+        this.translateDamageType(OPDamageTypes.LASER, player -> player + " was vaporized", (player, entity) -> player + " was vaporized by" + entity);
+        this.translateDamageType(OPDamageTypes.TOMAHAWK, player -> player + " was domed", (player, entity) -> player + " was domed by" + entity);
+        this.translateDamageType(OPDamageTypes.UMBER_DAGGER, player -> player + " was stabbed", (player, entity) -> player + " was stabbed by" + entity);
+        this.translateDamageType(OPDamageTypes.LASER_BOLT, player -> player + " was blasted", (player, entity) -> player + " was blasted by" + entity);
     }
 
     @Override
@@ -238,10 +242,6 @@ public class OPLanguageProvider extends LanguageProvider {
 
     private void forEntity(Supplier<? extends EntityType<?>> entity) {
         addEntityType(entity, OPTextUtils.createTranslation(Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(entity.get())).getPath()));
-    }
-
-    public void addBETranslatable(String beName,String name){
-        add(OpposingForce.MOD_ID + ".blockentity." + beName, name);
     }
 
     public void sound(Supplier<? extends SoundEvent> key, String subtitle){
@@ -269,6 +269,16 @@ public class OPLanguageProvider extends LanguageProvider {
         add("item.minecraft.tipped_arrow.effect." + regName, "Arrow of " + name);
     }
 
+    private void translateAttribute(RegistryObject<? extends Attribute> attribute) {
+        this.add(attribute.get().getDescriptionId(), toUpper(ForgeRegistries.ATTRIBUTES, attribute));
+    }
+
+    private void translateDamageType(ResourceKey<DamageType> source, Function<String, String> death, BiFunction<String, String, String> killed) {
+        String msgId = source.location().getPath();
+        this.add("death.attack." + msgId, death.apply("%1$s"));
+        this.add("death.attack." + msgId + ".player", killed.apply("%1$s", "%2$s"));
+    }
+
     public void addTabName(CreativeModeTab key, String name){
         add(key.getDisplayName().getString(), name);
     }
@@ -279,5 +289,17 @@ public class OPLanguageProvider extends LanguageProvider {
 
     public void addAdvancementDesc(String key, String name) {
         this.add("advancement." + OpposingForce.MOD_ID + "." + key + ".desc", name);
+    }
+
+    private void addDescription(RegistryObject<? extends ItemLike> item, String desc) {
+        this.add(item.get().asItem().getDescriptionId() + ".desc", desc);
+    }
+
+    private static <T> String toUpper(IForgeRegistry<T> registry, RegistryObject<? extends T> object) {
+        return toUpper(registry.getKey(object.get()).getPath());
+    }
+
+    private static String toUpper(String string) {
+        return StringUtils.capitaliseAllWords(string.replace('_', ' '));
     }
 }

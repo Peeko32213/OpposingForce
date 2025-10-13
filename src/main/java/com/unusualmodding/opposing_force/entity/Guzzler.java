@@ -44,7 +44,6 @@ import java.util.Set;
 
 public class Guzzler extends Monster implements IAnimatedAttacker {
 
-    private static final EntityDataAccessor<Integer> SPEW_COOLDOWN = SynchedEntityData.defineId(Guzzler.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Guzzler.class, EntityDataSerializers.INT);
 
     public final AnimationState idleAnimationState = new AnimationState();
@@ -68,7 +67,7 @@ public class Guzzler extends Monster implements IAnimatedAttacker {
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new GuzzlerAttackGoal(this, 0.5F, 22));
+        this.goalSelector.addGoal(1, new GuzzlerAttackGoal(this, 22));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
@@ -143,10 +142,6 @@ public class Guzzler extends Monster implements IAnimatedAttacker {
     public void tick() {
         super.tick();
 
-        if (this.getSpewCooldown() > 0) {
-            this.setSpewCooldown(this.getSpewCooldown() - 1);
-        }
-
         if (this.level().isClientSide()) {
             this.setupAnimationStates();
         }
@@ -169,33 +164,18 @@ public class Guzzler extends Monster implements IAnimatedAttacker {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ATTACK_STATE, 0);
-        this.entityData.define(SPEW_COOLDOWN, 18 + random.nextInt(6 * 5));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putInt("AttackState", this.getAttackState());
-        compoundTag.putInt("SpewCooldown", this.getSpewCooldown());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         this.setAttackState(compoundTag.getInt("AttackState"));
-        this.setSpewCooldown(compoundTag.getInt("SpewCooldown"));
-    }
-
-    public int getSpewCooldown() {
-        return this.entityData.get(SPEW_COOLDOWN);
-    }
-
-    public void setSpewCooldown(int cooldown) {
-        this.entityData.set(SPEW_COOLDOWN, cooldown);
-    }
-
-    public void spewCooldown() {
-        this.entityData.set(SPEW_COOLDOWN, 28);
     }
 
     @Override

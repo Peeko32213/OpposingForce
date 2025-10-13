@@ -33,17 +33,16 @@ public class OPBiomeModifiers {
 
     public static void bootstrap(BootstapContext<BiomeModifier> context) {
         addSpawn(context, "dicer", OPBiomeTags.HAS_DICER, new MobSpawnSettings.SpawnerData(OPEntities.DICER.get(), 5, 1, 1));
-        addSpawn(context, "frowzy", OPBiomeTags.HAS_FROWZY, new MobSpawnSettings.SpawnerData(OPEntities.FROWZY.get(), 60, 4, 4));
-        addSpawn(context, "guzzler", OPBiomeTags.HAS_GUZZLER, new MobSpawnSettings.SpawnerData(OPEntities.GUZZLER.get(), 25, 1, 1));
-        addSpawn(context, "pale_spider", OPBiomeTags.HAS_PALE_SPIDER, new MobSpawnSettings.SpawnerData(OPEntities.PALE_SPIDER.get(), 80, 4, 4));
-        addSpawn(context, "ramble", OPBiomeTags.HAS_RAMBLE, new MobSpawnSettings.SpawnerData(OPEntities.RAMBLE.get(), 25, 1, 1));
+        addSpawn(context, "frowzy", OPBiomeTags.HAS_FROWZY, new MobSpawnSettings.SpawnerData(OPEntities.FROWZY.get(), 50, 4, 4));
+        addSpawn(context, "guzzler", OPBiomeTags.HAS_GUZZLER, new MobSpawnSettings.SpawnerData(OPEntities.GUZZLER.get(), 15, 1, 1));
+        addSpawn(context, "pale_spider", OPBiomeTags.HAS_PALE_SPIDER, new MobSpawnSettings.SpawnerData(OPEntities.PALE_SPIDER.get(), 60, 4, 4));
+        addSpawn(context, "ramble", OPBiomeTags.HAS_RAMBLE, new MobSpawnSettings.SpawnerData(OPEntities.RAMBLE.get(), 20, 1, 1));
         addSpawn(context, "slug", OPBiomeTags.HAS_SLUG, new MobSpawnSettings.SpawnerData(OPEntities.SLUG.get(), 50, 2, 2));
         addSpawn(context, "terror", OPBiomeTags.HAS_TERROR, new MobSpawnSettings.SpawnerData(OPEntities.TERROR.get(), 20, 1, 1));
-        addSpawn(context, "trembler", OPBiomeTags.HAS_TREMBLER, new MobSpawnSettings.SpawnerData(OPEntities.TREMBLER.get(), 30, 1, 1));
-        addSpawn(context, "umber_spider", OPBiomeTags.HAS_UMBER_SPIDER, new MobSpawnSettings.SpawnerData(OPEntities.UMBER_SPIDER.get(), 100, 4, 4));
+        addSpawn(context, "trembler", OPBiomeTags.HAS_TREMBLER, new MobSpawnSettings.SpawnerData(OPEntities.TREMBLER.get(), 25, 1, 1));
+        addSpawn(context, "umber_spider", OPBiomeTags.HAS_UMBER_SPIDER, new MobSpawnSettings.SpawnerData(OPEntities.UMBER_SPIDER.get(), 80, 4, 4));
         addSpawn(context, "volt", OPBiomeTags.HAS_VOLT, new MobSpawnSettings.SpawnerData(OPEntities.VOLT.get(), 10, 2, 2));
-
-        removeFeature(context, "amethyst_geode", BiomeTags.IS_OVERWORLD, LOCAL_MODIFICATIONS, CavePlacements.AMETHYST_GEODE);
+        removeFeature(context, "amethyst_geode.json", BiomeTags.IS_OVERWORLD, LOCAL_MODIFICATIONS, CavePlacements.AMETHYST_GEODE);
     }
 
     private static void addSpawn(BootstapContext<BiomeModifier> context, String name, TagKey<Biome> biomes, MobSpawnSettings.SpawnerData... spawns) {

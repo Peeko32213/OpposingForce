@@ -13,7 +13,7 @@ public enum OPItemTiers implements Tier {
 
     VILE(0, 196, 3.0F, 0.0F, 8, () -> Ingredient.of(OPBlocks.SLUG_EGGS.get())),
     EMERALD(3, 1561, 8.0F, 3.0F, 14, () -> Ingredient.of(Tags.Items.GEMS_EMERALD)),
-    UMBER(2, 196, 6.0F, 2.0F, 10, () -> Ingredient.of(OPItems.UMBER_FANG.get()));;
+    UMBER(2, 196, 6.0F, 1.0F, 10, () -> Ingredient.of(OPItems.UMBER_FANG.get()));;
 
     private final int level;
     private final int durability;

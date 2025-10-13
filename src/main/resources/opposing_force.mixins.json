@@ -7,7 +7,6 @@
   "mixins": [
     "ApplyBonusCountMixin",
     "CreeperMixin",
-    "CrossbowItemMixin",
     "EnchantmentHelperMixin",
     "EntityMixin",
     "FoodDataMixin",
@@ -19,7 +18,7 @@
     "client.GuiMixin",
     "client.HumanoidArmorLayerMixin",
     "client.HumanoidModelMixin",
-    "client.ItemInHandRendererMixin"
+    "client.ItemInHandRendererMixin",
   ],
   "injectors": {
     "defaultRequire": 1

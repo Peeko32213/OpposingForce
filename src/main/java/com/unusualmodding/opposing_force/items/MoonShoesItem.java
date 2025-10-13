@@ -14,6 +14,8 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
 
@@ -45,6 +47,7 @@ public class MoonShoesItem extends ArmorItem {
         player.resetFallDistance();
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void initializeClient(java.util.function.Consumer<IClientItemExtensions> consumer) {
         consumer.accept((IClientItemExtensions) OpposingForce.PROXY.getArmorRenderProperties());

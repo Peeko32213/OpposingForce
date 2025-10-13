@@ -15,7 +15,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 
-public class LaserBolt extends AbstractFrictionlessProjectile {
+public class LaserBolt extends FrictionlessProjectile {
 
     private static final EntityDataAccessor<Integer> DISRUPTOR_LEVEL = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DISRUPTOR = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
@@ -24,7 +24,7 @@ public class LaserBolt extends AbstractFrictionlessProjectile {
 
     protected RandomSource randomSource = level.getRandom();
 
-    public LaserBolt(EntityType<? extends AbstractFrictionlessProjectile> entityType, Level level) {
+    public LaserBolt(EntityType<? extends FrictionlessProjectile> entityType, Level level) {
         super(entityType, level);
     }
 

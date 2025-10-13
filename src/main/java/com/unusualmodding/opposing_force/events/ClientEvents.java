@@ -9,7 +9,6 @@ import com.unusualmodding.opposing_force.client.renderer.*;
 import com.unusualmodding.opposing_force.client.renderer.blocks.*;
 import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -79,10 +78,6 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.LASER_BOLT, LaserBoltModel::createProjectileLayer);
     }
 
-    public static DeepwovenArmorModel DEEPWOVEN_ARMOR;
-    public static EmeraldArmorModel EMERALD_ARMOR;
-    public static StoneArmorModel STONE_ARMOR;
-    public static WoodenArmorModel WOODEN_ARMOR;
 
     @SubscribeEvent
     public static void registerArmorLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
@@ -91,14 +86,6 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.WOODEN_ARMOR, WoodenArmorModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.EMERALD_ARMOR, EmeraldArmorModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.STONE_ARMOR, StoneArmorModel::createArmorLayer);
-    }
-
-    @SubscribeEvent
-    public static void registerArmorLayers(EntityRenderersEvent.AddLayers event) {
-        DEEPWOVEN_ARMOR = new DeepwovenArmorModel(event.getEntityModels().bakeLayer(OPModelLayers.DEEPWOVEN_ARMOR));
-        EMERALD_ARMOR = new EmeraldArmorModel(event.getEntityModels().bakeLayer(OPModelLayers.EMERALD_ARMOR));
-        STONE_ARMOR = new StoneArmorModel(event.getEntityModels().bakeLayer(OPModelLayers.STONE_ARMOR));
-        WOODEN_ARMOR = new WoodenArmorModel(event.getEntityModels().bakeLayer(OPModelLayers.WOODEN_ARMOR));
     }
 
     @SubscribeEvent

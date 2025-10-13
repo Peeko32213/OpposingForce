@@ -1,7 +1,6 @@
 package com.unusualmodding.opposing_force.items;
 
 import com.google.common.collect.Lists;
-import com.unusualmodding.opposing_force.enchantments.OPEnchantmentLogic;
 import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
 import com.unusualmodding.opposing_force.registry.OPEnchantments;
 import com.unusualmodding.opposing_force.registry.OPItems;
@@ -67,10 +66,16 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
+        int kickback = EnchantmentHelper.getTagEnchantmentLevel(OPEnchantments.KICKBACK.get(), itemstack);
         if (isCharged(itemstack)) {
             shootCharge(level, player, hand, itemstack, 1.0F);
             setCharged(itemstack, false);
-            OPEnchantmentLogic.kickbackLogic(player, itemstack);
+            Vec3 lookVec = player.getLookAngle().multiply(-1,-1,-1);
+            if (kickback > 0) {
+                player.setDeltaMovement(new Vec3(0.5 + (kickback * 0.5), player.getDeltaMovement().y + (kickback * 0.25), 0.5 + (kickback * 0.5)).multiply(lookVec));
+            } else {
+                player.setDeltaMovement(new Vec3(0.5, player.getDeltaMovement().y + 0.25, 0.5).multiply(lookVec));
+            }
             return InteractionResultHolder.consume(itemstack);
         } else if (!player.getProjectile(itemstack).isEmpty()) {
             if (!isCharged(itemstack)) {
@@ -196,8 +201,7 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
 
         RandomSource random = shooter.level.getRandom();
 
-        ElectricCharge projectileentity = getCharge(level, shooter, projectileStack, cannon, false);
-        ElectricCharge bigProjectileentity = getCharge(level, shooter, projectileStack, cannon, true);
+        ElectricCharge electricCharge = getCharge(level, shooter, projectileStack, cannon);
 
         boolean capacitance = cannon.getEnchantmentLevel(OPEnchantments.CAPACITANCE.get()) > 0;
         boolean quasar = cannon.getEnchantmentLevel(OPEnchantments.QUASAR.get()) > 0;
@@ -209,59 +213,59 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
         Vector3f vector3f = vec3.toVector3f().rotate(quaternionf);
 
         if (capacitance) {
-            bigProjectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.4F, divergence);
+            electricCharge.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.5F, divergence);
             cannon.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
-            shooter.level().addFreshEntity(bigProjectileentity);
+            shooter.level().addFreshEntity(electricCharge);
             level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 0.6F * (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
         } else if (quasar) {
-            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.55F, divergence);
+            electricCharge.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.6F, divergence);
             cannon.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
-            shooter.level().addFreshEntity(projectileentity);
+            shooter.level().addFreshEntity(electricCharge);
             level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 0.8F * (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
         } else if (attraction) {
-            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.7F, divergence);
+            electricCharge.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 0.7F, divergence);
             cannon.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
-            shooter.level().addFreshEntity(projectileentity);
+            shooter.level().addFreshEntity(electricCharge);
             level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 0.9F * (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
         } else {
-            projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 1.1F, divergence);
+            electricCharge.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 1.0F, divergence);
             cannon.hurtAndBreak(1, shooter, (shooterTmp) -> shooterTmp.broadcastBreakEvent(handUsed));
-            shooter.level().addFreshEntity(projectileentity);
+            shooter.level().addFreshEntity(electricCharge);
             level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
         }
         onCannonShot(level, shooter, cannon);
     }
 
-    public static ElectricCharge getCharge(Level pLevel, LivingEntity pLivingEntity, ItemStack pAmmoStack, ItemStack stack, boolean bigCharge) {
+    public static ElectricCharge getCharge(Level level, LivingEntity entity, ItemStack ammo, ItemStack stack) {
 
-        boolean bouncy = stack.getEnchantmentLevel(OPEnchantments.REBOUND.get()) > 0;
-        boolean rainbow = stack.getEnchantmentLevel(OPEnchantments.QUASAR.get()) > 0;
-        boolean seeking = stack.getEnchantmentLevel(OPEnchantments.STATIC_ATTRACTION.get()) > 0;
+        boolean rebound = stack.getEnchantmentLevel(OPEnchantments.REBOUND.get()) > 0;
+        boolean quasar = stack.getEnchantmentLevel(OPEnchantments.QUASAR.get()) > 0;
+        boolean attraction = stack.getEnchantmentLevel(OPEnchantments.STATIC_ATTRACTION.get()) > 0;
 
         int bounces = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.REBOUND.get(), stack);
+        int capacitance = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.CAPACITANCE.get(), stack);
 
-        int chargeSize = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.CAPACITANCE.get(), stack);
+        ElectricChargeItem chargeItem = (ElectricChargeItem)(ammo.getItem() instanceof ElectricChargeItem ? ammo.getItem() : OPItems.ELECTRIC_CHARGE);
+        ElectricCharge electricCharge = chargeItem.shootCharge(level, entity);
+        electricCharge.setChargeDamage(4.0F);
 
-        ElectricChargeItem arrowitem = (ElectricChargeItem)(pAmmoStack.getItem() instanceof ElectricChargeItem ? pAmmoStack.getItem() : OPItems.ELECTRIC_CHARGE);
-        ElectricCharge electricCharge = arrowitem.shootCharge(pLevel, pLivingEntity);
-        electricCharge.setChargeScale(1.5F);
-        electricCharge.setSoundEvent(SoundEvents.CROSSBOW_HIT);
-
-        if (bigCharge) {
-            electricCharge.setChargeScale(electricCharge.getChargeScale() + ((float) chargeSize / 2));
+        if (capacitance > 0) {
+            electricCharge.setChargeScale(electricCharge.getChargeScale() + ((float) capacitance));
+            electricCharge.setChargeDamage(4.0F + capacitance);
         }
 
-        if (bouncy) {
+        if (rebound) {
             electricCharge.setMaxBounces(1 + bounces);
             electricCharge.setBouncy(true);
         }
 
-        if (rainbow) {
+        if (quasar) {
             electricCharge.setChargeScale(electricCharge.getChargeScale() + 2.0F);
             electricCharge.setQuasar(true);
+            electricCharge.setChargeDamage(3.0F);
         }
 
-        if (seeking) {
+        if (attraction) {
             electricCharge.setChargeScale(electricCharge.getChargeScale());
             electricCharge.setStaticAttraction(true);
         }
@@ -297,11 +301,9 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
         CompoundTag compoundtag = stack.getTag();
         if (compoundtag != null && compoundtag.contains("ChargedProjectiles", 9)) {
             ListTag listtag = compoundtag.getList("ChargedProjectiles", 10);
-            if (listtag != null) {
-                for (int i = 0; i < listtag.size(); ++i) {
-                    CompoundTag compoundtag1 = listtag.getCompound(i);
-                    list.add(ItemStack.of(compoundtag1));
-                }
+            for (int i = 0; i < listtag.size(); ++i) {
+                CompoundTag compoundtag1 = listtag.getCompound(i);
+                list.add(ItemStack.of(compoundtag1));
             }
         }
         return list;
@@ -338,7 +340,7 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
 
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.CROSSBOW;
+        return UseAnim.NONE;
     }
 
     private SoundEvent getStartSound(int sound) {

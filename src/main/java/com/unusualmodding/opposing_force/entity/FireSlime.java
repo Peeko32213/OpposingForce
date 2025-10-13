@@ -267,8 +267,8 @@ public class FireSlime extends Monster {
         return null;
     }
 
-    public void shoot(double x, double y, double z, float scale, float speed) {
-        Vec3 vec3 = (new Vec3(x, y, z)).normalize().add(this.random.nextGaussian() * 0.008D * (double) speed, this.random.nextGaussian() * 0.008D * (double) speed, this.random.nextGaussian() * 0.008D * (double) speed).scale(scale);
+    public void shoot(double x, double y, double z, float scale) {
+        Vec3 vec3 = (new Vec3(x, y, z)).normalize().add(this.random.nextGaussian() * 0.008D, this.random.nextGaussian() * 0.008D, this.random.nextGaussian() * 0.008D).scale(scale);
         this.setDeltaMovement(vec3);
         float horizontalDistanceSqr = (float) vec3.horizontalDistanceSqr();
         this.setYRot( (float) (Mth.atan2(vec3.x, vec3.z) * 55D));

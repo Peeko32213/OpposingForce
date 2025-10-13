@@ -17,17 +17,18 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(Dist.CLIENT)
-public class VoltRenderer extends MobRenderer<Volt, VoltModel<Volt>> {
+public class VoltRenderer extends MobRenderer<Volt, VoltModel> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID,"textures/entity/volt/volt.png");
     private static final ResourceLocation PULSATING_GLOW_TEXTURE = new ResourceLocation(OpposingForce.MOD_ID,"textures/entity/volt/volt_glow.png");
 
     public VoltRenderer(EntityRendererProvider.Context context) {
-        super(context, new VoltModel<>(context.bakeLayer(OPModelLayers.VOLT)), 0.5F);
-        this.addLayer(new VoltGlowLayer<>(this, PULSATING_GLOW_TEXTURE, (entity, p_234802_, p_234803_) -> Math.max(0.2F, Mth.cos(p_234803_ * 0.025F + (float) Math.PI * 0.85F)), VoltModel::getPulsatingLayerModelParts));
+        super(context, new VoltModel(context.bakeLayer(OPModelLayers.VOLT)), 0.5F);
+        this.addLayer(new VoltGlowLayer(this, PULSATING_GLOW_TEXTURE, (entity, v, v1) -> Math.max(0.8F, Mth.cos(v1 * 0.025F + (float) Math.PI)), VoltModel::getPulsatingLayerModelParts));
         this.addLayer(new VoltChargedLayer(this, context.getModelSet()));
     }
 
+    @Override
     protected void scale(Volt entity, PoseStack poseStack, float partialTicks) {
         poseStack.scale(0.999F, 0.999F, 0.999F);
         poseStack.translate(0.0F, 0.05F, 0.0F);

@@ -21,16 +21,16 @@ public class OPEnchantments {
     public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, OpposingForce.MOD_ID);
     private static final EquipmentSlot[] ARMOR_SLOTS = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
 
-    public static final EnchantmentCategory TESLA_BOW = EnchantmentCategory.create("tesla_bow", (item -> item == OPItems.TESLA_CANNON.get()));
+    public static final EnchantmentCategory TESLA_CANNON = EnchantmentCategory.create("tesla_cannon", (item -> item == OPItems.TESLA_CANNON.get()));
     public static final EnchantmentCategory VILE_BOULDER = EnchantmentCategory.create("vile_boulder", (item -> item == OPItems.VILE_BOULDER.get()));
     public static final EnchantmentCategory BLASTER = EnchantmentCategory.create("blaster", (item -> item == OPItems.BLASTER.get()));
     public static final EnchantmentCategory WOODEN_ARMOR = EnchantmentCategory.create("wooden_armor", (item -> item instanceof WoodenArmorItem));
 
-    public static final RegistryObject<Enchantment> BATTERY = ENCHANTMENTS.register("battery", () -> new OPEnchantment("battery", Enchantment.Rarity.UNCOMMON, TESLA_BOW, 3, 15, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> CAPACITANCE = ENCHANTMENTS.register("capacitance", () -> new OPEnchantment("capacitance", Enchantment.Rarity.RARE, TESLA_BOW, 3, 20, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> QUASAR = ENCHANTMENTS.register("quasar", () -> new TrueTreasureEnchantment("quasar", Enchantment.Rarity.VERY_RARE, TESLA_BOW, 1, 30, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> REBOUND = ENCHANTMENTS.register("rebound", () -> new OPEnchantment("rebound", Enchantment.Rarity.UNCOMMON, TESLA_BOW, 4, 15, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> STATIC_ATTRACTION = ENCHANTMENTS.register("static_attraction", () -> new TreasureEnchantment("static_attraction", Enchantment.Rarity.VERY_RARE, TESLA_BOW, 1, 25, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> BATTERY = ENCHANTMENTS.register("battery", () -> new OPEnchantment("battery", Enchantment.Rarity.UNCOMMON, TESLA_CANNON, 3, 15, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> CAPACITANCE = ENCHANTMENTS.register("capacitance", () -> new OPEnchantment("capacitance", Enchantment.Rarity.RARE, TESLA_CANNON, 3, 20, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> QUASAR = ENCHANTMENTS.register("quasar", () -> new TrueTreasureEnchantment("quasar", Enchantment.Rarity.VERY_RARE, TESLA_CANNON, 1, 30, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> REBOUND = ENCHANTMENTS.register("rebound", () -> new OPEnchantment("rebound", Enchantment.Rarity.UNCOMMON, TESLA_CANNON, 4, 15, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> STATIC_ATTRACTION = ENCHANTMENTS.register("static_attraction", () -> new TreasureEnchantment("static_attraction", Enchantment.Rarity.VERY_RARE, TESLA_CANNON, 1, 25, EquipmentSlot.MAINHAND));
 
     public static final RegistryObject<Enchantment> PLAGUE = ENCHANTMENTS.register("plague", () -> new OPEnchantment("plague", Enchantment.Rarity.RARE, VILE_BOULDER, 2, 20, EquipmentSlot.MAINHAND));
 
@@ -41,7 +41,7 @@ public class OPEnchantments {
 
     public static final RegistryObject<Enchantment> PHOTOSYNTHESIS = ENCHANTMENTS.register("photosynthesis", () -> new TrueTreasureEnchantment("photosynthesis", Enchantment.Rarity.RARE, WOODEN_ARMOR, 1, 20, ARMOR_SLOTS));
 
-    public static final RegistryObject<Enchantment> KICKBACK = ENCHANTMENTS.register("kickback", () -> new OPEnchantment("kickback", Enchantment.Rarity.RARE, EnchantmentCategory.CROSSBOW, 4, 20, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> KICKBACK = ENCHANTMENTS.register("kickback", () -> new OPEnchantment("kickback", Enchantment.Rarity.RARE, TESLA_CANNON, 4, 20, EquipmentSlot.MAINHAND));
 
     public static boolean areCompatible(OPEnchantment enchantment1, Enchantment enchantment2) {
         if (enchantment1 == KICKBACK.get() && (enchantment2 == Enchantments.QUICK_CHARGE)) {

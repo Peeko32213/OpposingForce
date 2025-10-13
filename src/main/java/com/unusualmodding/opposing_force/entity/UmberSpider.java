@@ -128,7 +128,7 @@ public class UmberSpider extends Spider implements IAnimatedAttacker {
         super.defineSynchedData();
         this.entityData.define(ATTACK_STATE, 0);
         this.entityData.define(ATTACKING, false);
-        this.entityData.define(LIGHT_THRESHOLD, 7);
+        this.entityData.define(LIGHT_THRESHOLD, 10);
     }
 
     @Override

@@ -37,7 +37,7 @@ public class OPItems {
 
     public static final RegistryObject<Item> DEEP_SILK = registerItem("deep_silk", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> ELECTRIC_CHARGE = registerItem("electric_charge", () -> new ElectricChargeItem(OPEntities.ELECTRIC_CHARGE, (new Item.Properties())));
-    public static final RegistryObject<Item> TOMAHAWK =  registerItem("tomahawk", () -> new TomahawkItem(Tiers.IRON, 2, -2.4F, new Item.Properties().stacksTo(1).durability(196)));
+    public static final RegistryObject<Item> TOMAHAWK =  registerItem("tomahawk", () -> new TomahawkItem(Tiers.IRON, 1, -2.4F, new Item.Properties().stacksTo(1).durability(196)));
     public static final RegistryObject<Item> TESLA_CANNON = registerItem("tesla_cannon", () -> new TeslaCannonItem(new Item.Properties().stacksTo(1).durability(465)));
     public static final RegistryObject<Item> VILE_BOULDER = registerItem("vile_boulder", () -> new VileBoulderItem(OPItemTiers.VILE,  7, -3.2F, new Item.Properties()));
     public static final RegistryObject<Item> CAPTURED_WHIZZ = registerItem("captured_whizz", () -> new MobItem(OPEntities.WHIZZ::get, SoundEvents.AMETHYST_BLOCK_RESONATE, new Item.Properties().stacksTo(1)));

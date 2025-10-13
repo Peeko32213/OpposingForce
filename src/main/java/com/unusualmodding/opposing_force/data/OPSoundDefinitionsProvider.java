@@ -143,19 +143,19 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
         );
 
         this.sound(OPSoundEvents.GUZZLER_HURT,
-                sound(OpposingForce.modPrefix("entity/guzzler/hurt_0")).volume(0.75F)
+                sound(OpposingForce.modPrefix("entity/guzzler/hurt1")).volume(0.75F)
         );
         this.sound(OPSoundEvents.GUZZLER_DEATH,
-                sound(OpposingForce.modPrefix("entity/guzzler/death_0"))
+                sound(OpposingForce.modPrefix("entity/guzzler/death1"))
         );
         this.sound(OPSoundEvents.GUZZLER_IDLE,
-                sound(OpposingForce.modPrefix("entity/guzzler/idle_0"))
+                sound(OpposingForce.modPrefix("entity/guzzler/idle1"))
         );
         this.sound(OPSoundEvents.GUZZLER_SPEW,
-                sound(OpposingForce.modPrefix("entity/guzzler/spew_0"))
+                sound(OpposingForce.modPrefix("entity/guzzler/spew1"))
         );
         this.sound(OPSoundEvents.GUZZLER_SLAM,
-                sound(OpposingForce.modPrefix("entity/guzzler/slam_0")).attenuationDistance(20).volume(2.0F)
+                sound(OpposingForce.modPrefix("entity/guzzler/slam1")).attenuationDistance(20).volume(2.0F)
         );
 
         this.sound(OPSoundEvents.PALE_SPIDER_HURT,

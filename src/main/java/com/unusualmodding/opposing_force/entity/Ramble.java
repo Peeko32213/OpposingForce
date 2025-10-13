@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.unusualmodding.opposing_force.entity.ai.goal.RambleAttackGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPItems;
@@ -36,8 +37,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.EnumSet;
-import java.util.Objects;
 
 public class Ramble extends Monster {
 
@@ -47,10 +46,9 @@ public class Ramble extends Monster {
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState flailAnimationState = new AnimationState();
     public final AnimationState cooldownAnimationState = new AnimationState();
-    private int idleAnimationTimeout = 0;
 
-    public Ramble(EntityType<? extends Monster> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public Ramble(EntityType<? extends Monster> entityType, Level level) {
+        super(entityType, level);
         this.xpReward = 15;
     }
 
@@ -58,7 +56,7 @@ public class Ramble extends Monster {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 50.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.13F)
-                .add(Attributes.ATTACK_DAMAGE, 7.0D)
+                .add(Attributes.ATTACK_DAMAGE, 5.0D)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.2D)
                 .add(Attributes.KNOCKBACK_RESISTANCE,1.0D);
     }
@@ -136,7 +134,7 @@ public class Ramble extends Monster {
     }
 
     public void flailCooldown() {
-        this.entityData.set(FLAIL_COOLDOWN, 120);
+        this.entityData.set(FLAIL_COOLDOWN, 160);
     }
 
     @Override
@@ -153,14 +151,9 @@ public class Ramble extends Monster {
     }
 
     private void setupAnimationStates() {
-        if (this.idleAnimationTimeout == 0) {
-            this.idleAnimationTimeout = 80;
-            this.idleAnimationState.start(this.tickCount);
-        } else {
-            --this.idleAnimationTimeout;
-        }
-        this.cooldownAnimationState.animateWhen(this.isAlive() && !this.isFlailing() && this.getFlailCooldown() > 0, this.tickCount);
-        this.flailAnimationState.animateWhen(this.isAlive() && this.isFlailing(), this.tickCount);
+        this.idleAnimationState.animateWhen(!this.isFlailing(), this.tickCount);
+        this.cooldownAnimationState.animateWhen(!this.isFlailing() && this.getFlailCooldown() > 0, this.tickCount);
+        this.flailAnimationState.animateWhen(this.isFlailing(), this.tickCount);
     }
 
     public boolean hurtEntitiesAround(Vec3 center, float radius, boolean disablesShields) {
@@ -277,72 +270,6 @@ public class Ramble extends Monster {
         Entity entity = this.getControlledVehicle();
         if (entity instanceof PathfinderMob pathfindermob) {
             this.yBodyRot = pathfindermob.yBodyRot;
-        }
-    }
-
-    // Goals
-    private static class RambleAttackGoal extends Goal {
-
-        private final Ramble ramble;
-        private int attackTime = 0;
-
-        public RambleAttackGoal(Ramble ramble) {
-            this.ramble = ramble;
-            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
-        }
-
-        public boolean canUse() {
-            return !this.ramble.isVehicle() && this.ramble.getTarget() != null && this.ramble.getTarget().isAlive();
-        }
-
-        public void start() {
-            this.ramble.setFlailing(false);
-            this.attackTime = 0;
-        }
-
-        public void stop() {
-            this.ramble.setFlailing(false);
-        }
-
-        public void tick() {
-            LivingEntity target = this.ramble.getTarget();
-            if (target != null) {
-                this.ramble.lookAt(Objects.requireNonNull(target), 30F, 30F);
-                this.ramble.getLookControl().setLookAt(target, 30F, 30F);
-
-                double distance = this.ramble.distanceToSqr(target.getX(), target.getY(), target.getZ());
-
-                if (this.ramble.isFlailing()) {
-                    tickFlailAttack();
-                    this.ramble.getNavigation().moveTo(target, 2.1D);
-                } else {
-                    if (this.ramble.getFlailCooldown() <= 0) {
-                        this.ramble.getNavigation().moveTo(target, 1.7D);
-                        if (distance <= 22) {
-                            this.ramble.setFlailing(true);
-                        }
-                    } else {
-                        this.ramble.getNavigation().stop();
-                    }
-                }
-            }
-        }
-
-        protected void tickFlailAttack () {
-            this.attackTime++;
-            Vec3 pos = this.ramble.position();
-
-            if (this.attackTime >= 3) {
-                this.ramble.hurtEntitiesAround(pos, 2.9F, true);
-                if ((this.ramble.tickCount / 2) % 2 == 0) {
-                    this.ramble.playSound(OPSoundEvents.RAMBLE_ATTACK.get(), 1.0F, 1.0F / (this.ramble.getRandom().nextFloat() * 0.4F + 0.8F));
-                }
-            }
-            if (this.attackTime >= 60) {
-                this.attackTime = 0;
-                this.ramble.flailCooldown();
-                this.ramble.setFlailing(false);
-            }
         }
     }
 }

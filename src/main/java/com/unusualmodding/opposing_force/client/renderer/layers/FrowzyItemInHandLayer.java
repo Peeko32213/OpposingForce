@@ -2,6 +2,8 @@ package com.unusualmodding.opposing_force.client.renderer.layers;
 
 import com.unusualmodding.opposing_force.client.models.entity.FrowzyModel;
 import com.unusualmodding.opposing_force.entity.Frowzy;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -10,48 +12,45 @@ import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 @OnlyIn(Dist.CLIENT)
-public class FrowzyItemInHandLayer<T extends Frowzy, M extends FrowzyModel<T>> extends RenderLayer<T, M> {
+public class FrowzyItemInHandLayer extends RenderLayer<Frowzy, FrowzyModel> {
 
-    private final ItemInHandRenderer itemInHandRenderer;
-
-    public FrowzyItemInHandLayer(RenderLayerParent<T, M> parent, ItemInHandRenderer itemRenderer) {
+    public FrowzyItemInHandLayer(RenderLayerParent<Frowzy, FrowzyModel> parent) {
         super(parent);
-        this.itemInHandRenderer = itemRenderer;
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, Frowzy frowzy, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        boolean flag = frowzy.getMainArm() == HumanoidArm.RIGHT;
-        ItemStack itemstack = flag ? frowzy.getOffhandItem() : frowzy.getMainHandItem();
-        ItemStack itemstack1 = flag ? frowzy.getMainHandItem() : frowzy.getOffhandItem();
-        if (!itemstack.isEmpty() || !itemstack1.isEmpty()) {
-            poseStack.pushPose();
-            if (this.getParentModel().young) {
-                poseStack.translate(0.0D, 0.75D, 0.0D);
-                poseStack.scale(0.5F, 0.5F, 0.5F);
-            }
-
-            this.renderArmWithItem(frowzy, itemstack1, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, HumanoidArm.RIGHT, poseStack, buffer, packedLight);
-            this.renderArmWithItem(frowzy, itemstack, ItemDisplayContext.THIRD_PERSON_LEFT_HAND, HumanoidArm.LEFT, poseStack, buffer, packedLight);
-            poseStack.popPose();
+    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Frowzy frowzy, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        ItemStack itemstack = frowzy.getItemBySlot(EquipmentSlot.MAINHAND);
+        poseStack.pushPose();
+        boolean left = frowzy.isLeftHanded();
+        if (frowzy.isBaby()) {
+            poseStack.scale(0.5F, 0.5F, 0.5F);
+            poseStack.translate(0.0D, 1.5D, 0D);
         }
+        poseStack.pushPose();
+        translateToHand(poseStack, left);
+        poseStack.translate(0F, 1.5F, -0.125F);
+
+        poseStack.mulPose(Axis.XP.rotationDegrees(-110F));
+        poseStack.mulPose(Axis.YP.rotationDegrees(180F));
+        poseStack.scale(0.8F, 0.8F, 0.8F);
+        ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
+        renderer.renderItem(frowzy, itemstack, left ? ItemDisplayContext.THIRD_PERSON_LEFT_HAND : ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, false, poseStack, bufferSource, packedLight);
+        poseStack.popPose();
+        poseStack.popPose();
     }
 
-    protected void renderArmWithItem(Frowzy frowzy, ItemStack stack, ItemDisplayContext transformType, HumanoidArm arm, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
-        if (!stack.isEmpty()) {
-            poseStack.pushPose();
-            this.getParentModel().translateToHand(arm, poseStack);
-            poseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
-            poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
-            boolean flag = arm == HumanoidArm.LEFT;
-            poseStack.translate(((flag ? -0.1F : 0.1F) / 16.0F), 0.05F, -1);
-            this.itemInHandRenderer.renderItem(frowzy, stack, transformType, flag, poseStack, buffer, packedLight);
-            poseStack.popPose();
+    protected void translateToHand(PoseStack matrixStack, boolean left) {
+        this.getParentModel().root.translateAndRotate(matrixStack);
+        this.getParentModel().Body.translateAndRotate(matrixStack);
+        if (left) {
+            this.getParentModel().Arm1.translateAndRotate(matrixStack);
+        } else {
+            this.getParentModel().Arm2.translateAndRotate(matrixStack);
         }
     }
 }

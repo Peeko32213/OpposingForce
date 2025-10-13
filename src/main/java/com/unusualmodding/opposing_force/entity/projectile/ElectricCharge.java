@@ -7,10 +7,10 @@ import com.unusualmodding.opposing_force.network.ElectricChargeSyncS2CPacket;
 import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -26,7 +26,7 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class ElectricCharge extends AbstractFrictionlessProjectile {
+public class ElectricCharge extends FrictionlessProjectile {
 
     private static final EntityDataAccessor<Float> CHARGE_SCALE = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> MAX_BOUNCES = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.INT);
@@ -34,11 +34,12 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
     private static final EntityDataAccessor<Boolean> BOUNCY = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> QUASAR = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> STATIC_ATTRACTION = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.FLOAT);
 
     private final RandomSource randomSource = level.getRandom();
     private int bounces = 0;
 
-    public ElectricCharge(EntityType<? extends AbstractFrictionlessProjectile> entityType, Level level) {
+    public ElectricCharge(EntityType<? extends FrictionlessProjectile> entityType, Level level) {
         super(entityType, level);
     }
 
@@ -57,9 +58,40 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
         this.getEntityData().define(BOUNCY, false);
         this.getEntityData().define(QUASAR, false);
         this.getEntityData().define(STATIC_ATTRACTION, false);
-        this.getEntityData().define(CHARGE_SCALE, 1F);
+        this.getEntityData().define(CHARGE_SCALE, 1.0F);
         this.getEntityData().define(MAX_BOUNCES, 0);
         this.getEntityData().define(TARGET, -1);
+        this.getEntityData().define(DAMAGE, 3.0F);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        compoundTag.putFloat("Damage", this.getChargeDamage());
+        compoundTag.putFloat("ChargeScale", this.getChargeScale());
+        compoundTag.putInt("MaxBounces", this.getMaxBounces());
+        compoundTag.putBoolean("Bouncy", this.isBouncy());
+        compoundTag.putBoolean("Quasar", this.isQuasar());
+        compoundTag.putBoolean("StaticAttraction", this.isStaticAttraction());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        this.setChargeDamage(compoundTag.getFloat("Damage"));
+        this.setChargeScale(compoundTag.getFloat("ChargeScale"));
+        this.setMaxBounces(compoundTag.getInt("MaxBounces"));
+        this.setBouncy(compoundTag.getBoolean("Bouncy"));
+        this.setQuasar(compoundTag.getBoolean("Quasar"));
+        this.setStaticAttraction(compoundTag.getBoolean("StaticAttraction"));
+    }
+
+    public float getChargeDamage() {
+        return this.entityData.get(DAMAGE);
+    }
+
+    public void setChargeDamage(float damage) {
+        this.entityData.set(DAMAGE, damage);
     }
 
     public float getChargeScale() {
@@ -112,21 +144,13 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
         }
 
         this.spawnElectricParticles(this, 1 + randomSource.nextInt(3), 0, 12);
-        if (this.isQuasar()) {
-            this.hurtEntitiesAround(pos, (this.getChargeScale()) + 1.2F, 3);
-        } else {
-            this.hurtEntitiesAround(pos, (this.getChargeScale()) + 1.2F, this.getChargeScale() + 2);
-        }
+        this.hurtEntitiesAround(pos, (this.getChargeScale()) + 1.25F, this.getChargeDamage());
 
         if (this.level().getBlockState(this.blockPosition().below(0)).is(Blocks.WATER)) {
             this.spawnElectricParticles(this, 7 + randomSource.nextInt(5), 0, 16);
             if (!this.level().isClientSide) {
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 2.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
-                if (this.isQuasar()) {
-                    this.hurtEntitiesAround(pos, this.getChargeScale() + 5.2F, 6);
-                } else {
-                    this.hurtEntitiesAround(pos, this.getChargeScale() + 5.2F, (this.getChargeScale() * 4) + 2);
-                }
+                this.hurtEntitiesAround(pos, this.getChargeScale() + 4.0F, this.getChargeDamage() * 1.25F);
                 this.discard();
             }
         }
@@ -237,7 +261,7 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
         Entity shooter = this.getOwner();
         boolean flag = false;
         for (LivingEntity living : level().getEntitiesOfClass(LivingEntity.class, aabb, EntitySelector.NO_CREATIVE_OR_SPECTATOR)) {
-            DamageSource damageSource = this.damageSources().source(OPDamageTypes.ELECTRIFIED);
+            DamageSource damageSource = this.damageSources().source(OPDamageTypes.ELECTRIC);
             if (this.hasLineOfSight(living) && !living.is(this) && !living.isAlliedTo(this) && living.getType() != this.getType() && living.distanceToSqr(center.x, center.y, center.z) <= radius * radius) {
                 if (!living.is(shooter)) {
                     if (living.hurt(damageSource, damageAmount)) {
@@ -386,9 +410,6 @@ public class ElectricCharge extends AbstractFrictionlessProjectile {
 
     private void setTarget(@Nullable Entity entity) {
         this.getEntityData().set(TARGET, entity == null ? -1 : entity.getId());
-    }
-
-    public void setSoundEvent(SoundEvent soundEvent) {
     }
 
     @Override

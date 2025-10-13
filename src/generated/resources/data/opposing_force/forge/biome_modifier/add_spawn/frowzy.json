@@ -5,6 +5,6 @@
     "type": "opposing_force:frowzy",
     "maxCount": 4,
     "minCount": 4,
-    "weight": 60
+    "weight": 50
   }
 }

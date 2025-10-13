@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.entity.ai.goal.AttackGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.*;
 import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
@@ -12,11 +12,9 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -39,17 +37,14 @@ import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfig;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Predicate;
 
@@ -57,7 +52,6 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
 
     private static final EntityDataAccessor<Boolean> IS_BABY = SynchedEntityData.defineId(Frowzy.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Frowzy.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> JUMP_COOLDOWN = SynchedEntityData.defineId(Frowzy.class, EntityDataSerializers.INT);
 
     private static final UUID BABY_SPEED_MODIFIER_UUID = UUID.fromString("B9766B59-9566-4402-BC1F-2EE2A276D836");
     private static final AttributeModifier BABY_SPEED_MODIFIER = new AttributeModifier(BABY_SPEED_MODIFIER_UUID, "Baby speed boost", 0.5D, AttributeModifier.Operation.MULTIPLY_BASE);
@@ -68,6 +62,8 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
     private static final Predicate<Difficulty> DOOR_BREAKING_PREDICATE = (difficulty) -> difficulty == Difficulty.HARD;
     private final BreakDoorGoal breakDoorGoal = new BreakDoorGoal(this, DOOR_BREAKING_PREDICATE);
     private boolean canBreakDoors;
+
+    public int jumpCooldown = 100 + this.random.nextInt(2 * 40);
 
     public Frowzy(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -81,19 +77,20 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 16.0D)
-                .add(Attributes.FOLLOW_RANGE, 32.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.28F)
+                .add(Attributes.FOLLOW_RANGE, 16.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.3F)
                 .add(Attributes.ATTACK_DAMAGE, 2.0D);
     }
 
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new FrowzyAttackGoal(this));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new MoveThroughVillageGoal(this, 1.0D, true, 4, this::canBreakDoors));
-        this.goalSelector.addGoal(4, new FrowzyAttackTurtleEggGoal(this, 1.0D, 3));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(1, new FrowzyLeapGoal(this));
+        this.goalSelector.addGoal(2, new FrowzyAttackGoal(this));
+        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(4, new MoveThroughVillageGoal(this, 1.0D, true, 4, this::canBreakDoors));
+        this.goalSelector.addGoal(5, new FrowzyAttackTurtleEggGoal(this, 1.0D, 3));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this).setAlertOthers(Frowzy.class));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
@@ -175,22 +172,19 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
     public void tick() {
         super.tick();
 
-        if (this.getJumpCooldown() > 0) {
-            this.setJumpCooldown(this.getJumpCooldown() - 1);
-        }
+        if (this.jumpCooldown > 0) jumpCooldown--;
 
-        if (this.level().isClientSide()) {
+        if (this.level().isClientSide) {
             this.setupAnimationStates();
-        }
-
-        if (this.isAggressive() && this.isAlive()) {
-            OpposingForce.PROXY.playWorldSound(this, (byte) 3);
+            if (this.isAggressive() && this.isAlive()) {
+                OpposingForce.PROXY.playWorldSound(this, (byte) 3);
+            }
         }
     }
 
     private void setupAnimationStates() {
         this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
-        this.attackAnimationState.animateWhen(this.isAlive() && this.getAttackState() == 1, this.tickCount);
+        this.attackAnimationState.animateWhen(this.getAttackState() == 1, this.tickCount);
     }
 
     @Override
@@ -220,7 +214,6 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
         super.defineSynchedData();
         this.entityData.define(IS_BABY, false);
         this.entityData.define(ATTACK_STATE, 0);
-        this.entityData.define(JUMP_COOLDOWN, 80 + random.nextInt(80));
     }
 
     @Override
@@ -229,7 +222,6 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
         compoundTag.putBoolean("IsBaby", this.isBaby());
         compoundTag.putBoolean("CanBreakDoors", this.canBreakDoors());
         compoundTag.putInt("AttackState", this.getAttackState());
-        compoundTag.putInt("JumpCooldown", this.getJumpCooldown());
     }
 
     @Override
@@ -238,19 +230,6 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
         this.setBaby(compoundTag.getBoolean("IsBaby"));
         this.setCanBreakDoors(compoundTag.getBoolean("CanBreakDoors"));
         this.setAttackState(compoundTag.getInt("AttackState"));
-        this.setJumpCooldown(compoundTag.getInt("JumpCooldown"));
-    }
-
-    public int getJumpCooldown() {
-        return this.entityData.get(JUMP_COOLDOWN);
-    }
-
-    public void setJumpCooldown(int cooldown) {
-        this.entityData.set(JUMP_COOLDOWN, cooldown);
-    }
-
-    public void jumpCooldown() {
-        this.entityData.set(JUMP_COOLDOWN, 80 + random.nextInt(80));
     }
 
     @Override
@@ -427,93 +406,5 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
     }
 
     // goals
-    private static class FrowzyAttackGoal extends AttackGoal {
 
-        protected final Frowzy frowzy;
-
-        public FrowzyAttackGoal(Frowzy frowzy) {
-            super(frowzy);
-            this.frowzy = frowzy;
-        }
-
-        @Override
-        public void tick() {
-            LivingEntity target = this.frowzy.getTarget();
-            if (target != null) {
-                this.frowzy.getLookControl().setLookAt(target.getX(), target.getEyeY(), target.getZ());
-
-                double distance = this.frowzy.distanceToSqr(target.getX(), target.getY(), target.getZ());
-                int attackState = this.frowzy.getAttackState();
-
-                this.frowzy.getNavigation().moveTo(target, 1.2D);
-
-                if (attackState == 1) {
-                    tickAttack();
-                } else {
-                    checkForCloseRangeAttack(distance);
-                }
-            }
-        }
-
-        protected void checkForCloseRangeAttack (double distance) {
-            if (this.frowzy.isBaby() && distance <= 1.25D) {
-                this.frowzy.setAttackState(1);
-            } else if (distance <= 2) {
-                this.frowzy.setAttackState(1);
-            }
-            else if (distance >= 5 && distance <= 12 && this.frowzy.onGround() && this.frowzy.getJumpCooldown() <= 0) {
-                this.jump();
-            }
-        }
-
-        protected void tickAttack() {
-            timer++;
-            LivingEntity target = this.frowzy.getTarget();
-
-            if (timer == 1) {
-                this.frowzy.playSound(OPSoundEvents.FROWZY_ATTACK.get(), 1.0F, this.frowzy.getVoicePitch());
-            }
-
-            if (timer == 5) {
-                if (this.frowzy.distanceTo(Objects.requireNonNull(target)) < getAttackReachSqr(target)) {
-                    this.frowzy.doHurtTarget(target);
-                    this.frowzy.swing(InteractionHand.MAIN_HAND);
-                }
-            }
-            if (timer >= 20) {
-                timer = 0;
-                this.frowzy.setAttackState(0);
-            }
-        }
-
-        public void jump() {
-            this.frowzy.getNavigation().stop();
-            Vec3 vec3 = this.frowzy.getDeltaMovement();
-            Vec3 leapVec = new Vec3(Objects.requireNonNull(this.frowzy.getTarget()).getX() - this.frowzy.getX(), 0.0F, this.frowzy.getTarget().getZ() - this.frowzy.getZ());
-            if (leapVec.lengthSqr() > 1.0E-7) {
-                leapVec = leapVec.normalize().scale(1).add(vec3.scale(0.5));
-            }
-            this.frowzy.setDeltaMovement(leapVec.x, 0.57D, leapVec.z);
-            this.frowzy.jumpCooldown();
-        }
-    }
-
-    private class FrowzyAttackTurtleEggGoal extends RemoveBlockGoal {
-
-        FrowzyAttackTurtleEggGoal(PathfinderMob frowzy, double speed, int chance) {
-            super(Blocks.TURTLE_EGG, frowzy, speed, chance);
-        }
-
-        public void playDestroyProgressSound(LevelAccessor level, BlockPos blockPos) {
-            level.playSound(null, blockPos, SoundEvents.ZOMBIE_DESTROY_EGG, SoundSource.HOSTILE, 0.5F, 0.9F + Frowzy.this.random.nextFloat() * 0.2F);
-        }
-
-        public void playBreakSound(Level level, BlockPos blockPos) {
-            level.playSound(null, blockPos, SoundEvents.TURTLE_EGG_BREAK, SoundSource.BLOCKS, 0.7F, 0.9F + level.random.nextFloat() * 0.2F);
-        }
-
-        public double acceptedDistance() {
-            return 1.14D;
-        }
-    }
 }

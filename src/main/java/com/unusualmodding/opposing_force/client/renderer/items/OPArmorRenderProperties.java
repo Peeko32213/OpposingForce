@@ -27,10 +27,10 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
 
     public static void initializeModels() {
         init = true;
-//        DEEPWOVEN_MODEL = new DeepwovenArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.DEEPWOVEN_ARMOR));
-//        WOODEN_MODEL = new WoodenArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.WOODEN_ARMOR));
-//        EMERALD_MODEL = new EmeraldArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.EMERALD_ARMOR));
-//        STONE_MODEL = new StoneArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.STONE_ARMOR));
+        DEEPWOVEN_MODEL = new DeepwovenArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.DEEPWOVEN_ARMOR));
+        WOODEN_MODEL = new WoodenArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.WOODEN_ARMOR));
+        EMERALD_MODEL = new EmeraldArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.EMERALD_ARMOR));
+        STONE_MODEL = new StoneArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.STONE_ARMOR));
         MOON_SHOES_MODEL = new MoonShoesModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.MOON_SHOES));
     }
 
@@ -41,22 +41,20 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
             initializeModels();
         }
 
-//        OPArmorModel model = ClientEvents.STONE_ARMOR;
-
         final var item = itemStack.getItem();
 
-//        if (item instanceof DeepwovenArmorItem) {
-//            return DEEPWOVEN_MODEL;
-//        }
-//        if (item instanceof WoodenArmorItem) {
-//            return WOODEN_MODEL;
-//        }
-//        if (item instanceof EmeraldArmorItem) {
-//            return EMERALD_MODEL;
-//        }
-//        if (item instanceof StoneArmorItem) {
-//            return STONE_MODEL;
-//        }
+        if (item instanceof DeepwovenArmorItem) {
+            return DEEPWOVEN_MODEL;
+        }
+        if (item instanceof WoodenArmorItem) {
+            return WOODEN_MODEL;
+        }
+        if (item instanceof EmeraldArmorItem) {
+            return EMERALD_MODEL;
+        }
+        if (item instanceof StoneArmorItem) {
+            return STONE_MODEL;
+        }
         if (item instanceof MoonShoesItem) {
             return entity == null ? MOON_SHOES_MODEL : MOON_SHOES_MODEL.withAnimations(entity);
         }
