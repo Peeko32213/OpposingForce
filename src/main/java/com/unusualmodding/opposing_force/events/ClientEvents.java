@@ -8,9 +8,7 @@ import com.unusualmodding.opposing_force.client.particles.*;
 import com.unusualmodding.opposing_force.client.renderer.*;
 import com.unusualmodding.opposing_force.client.renderer.blocks.*;
 import com.unusualmodding.opposing_force.registry.*;
-import net.minecraft.client.model.HumanoidArmorModel;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -46,7 +44,7 @@ public final class ClientEvents {
         event.registerEntityRenderer(OPEntities.FROWZY.get(), FrowzyRenderer::new);
         event.registerEntityRenderer(OPEntities.GUZZLER.get(), GuzzlerRenderer::new);
         event.registerEntityRenderer(OPEntities.HAUNTED_TOOL.get(), HauntedToolRenderer::new);
-        event.registerEntityRenderer(OPEntities.PALE_SPIDER.get(), PaleSpiderRenderer::new);
+        event.registerEntityRenderer(OPEntities.HANGING_SPIDER.get(), HangingSpiderRenderer::new);
         event.registerEntityRenderer(OPEntities.RAMBLE.get(), RambleRenderer::new);
         event.registerEntityRenderer(OPEntities.SLUG.get(), SlugRenderer::new);
         event.registerEntityRenderer(OPEntities.TERROR.get(), TerrorRenderer::new);
@@ -67,7 +65,7 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.FROWZY, FrowzyModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.FROWZY_HEAD, FrowzyHeadModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.GUZZLER, GuzzlerModel::createBodyLayer);
-        event.registerLayerDefinition(OPModelLayers.PALE_SPIDER, PaleSpiderModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.HANGING_SPIDER, HangingSpiderModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.RAMBLE, RambleModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.RAMBLE_SKULL, RambleSkullModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.SLUG, SlugModel::createBodyLayer);

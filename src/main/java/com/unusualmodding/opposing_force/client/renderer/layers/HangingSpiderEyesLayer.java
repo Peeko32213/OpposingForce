@@ -1,8 +1,8 @@
 package com.unusualmodding.opposing_force.client.renderer.layers;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.client.models.entity.PaleSpiderModel;
-import com.unusualmodding.opposing_force.entity.PaleSpider;
+import com.unusualmodding.opposing_force.client.models.entity.HangingSpiderModel;
+import com.unusualmodding.opposing_force.entity.HangingSpider;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.EyesLayer;
@@ -11,15 +11,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class PaleSpiderEyesLayer<T extends PaleSpider, M extends PaleSpiderModel<T>> extends EyesLayer<T, M> {
+public class HangingSpiderEyesLayer extends EyesLayer<HangingSpider, HangingSpiderModel> {
 
-    private static final RenderType SPIDER_EYES = RenderType.eyes(new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/pale_spider/pale_spider_eyes.png"));
+    private static final RenderType EYES = RenderType.eyes(new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/hanging_spider/hanging_spider_eyes.png"));
 
-    public PaleSpiderEyesLayer(RenderLayerParent<T, M> parentModel) {
+    public HangingSpiderEyesLayer(RenderLayerParent<HangingSpider, HangingSpiderModel> parentModel) {
         super(parentModel);
     }
 
     public RenderType renderType() {
-        return SPIDER_EYES;
+        return EYES;
     }
 }

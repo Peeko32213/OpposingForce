@@ -8,7 +8,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class PaleSpiderAnimations {
+public class HangingSpiderAnimations {
 
 	public static final AnimationDefinition SCURRY = AnimationDefinition.Builder.withLength(2.0F).looping()
 		.addAnimation("Body", new AnimationChannel(AnimationChannel.Targets.ROTATION, 

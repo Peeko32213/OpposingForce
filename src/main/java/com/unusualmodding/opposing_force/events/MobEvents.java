@@ -19,7 +19,7 @@ public class MobEvents {
         event.register(DICER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Dicer::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(FROWZY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Frowzy::canSpawn, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(GUZZLER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Guzzler::canSpawn, SpawnPlacementRegisterEvent.Operation.OR);
-        event.register(PALE_SPIDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PaleSpider::canSpawn, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(HANGING_SPIDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, HangingSpider::canSpawn, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(RAMBLE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Ramble::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(SLUG.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Slug::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(TERROR.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Terror::canSpawn, SpawnPlacementRegisterEvent.Operation.OR);
@@ -36,7 +36,7 @@ public class MobEvents {
         event.put(FROWZY.get(), Frowzy.createAttributes().build());
         event.put(GUZZLER.get(), Guzzler.createAttributes().build());
         event.put(HAUNTED_TOOL.get(), HauntedTool.createAttributes().build());
-        event.put(PALE_SPIDER.get(), PaleSpider.createAttributes().build());
+        event.put(HANGING_SPIDER.get(), HangingSpider.createAttributes().build());
         event.put(RAMBLE.get(), Ramble.createAttributes().build());
         event.put(SLUG.get(), Slug.createAttributes().build());
         event.put(TERROR.get(), Terror.createAttributes().build());

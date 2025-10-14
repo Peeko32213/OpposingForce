@@ -2,9 +2,8 @@ package com.unusualmodding.opposing_force.client.models.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.unusualmodding.opposing_force.client.animations.PaleSpiderAnimations;
-import com.unusualmodding.opposing_force.client.animations.UmberSpiderAnimations;
-import com.unusualmodding.opposing_force.entity.PaleSpider;
+import com.unusualmodding.opposing_force.client.animations.HangingSpiderAnimations;
+import com.unusualmodding.opposing_force.entity.HangingSpider;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class PaleSpiderModel<T extends PaleSpider> extends HierarchicalModel<T> {
+public class HangingSpiderModel extends HierarchicalModel<HangingSpider> {
 
 	private final ModelPart root;
 	private final ModelPart Body;
@@ -42,7 +41,7 @@ public class PaleSpiderModel<T extends PaleSpider> extends HierarchicalModel<T> 
 	private final ModelPart LegReal8;
 	private final ModelPart Leg8;
 
-	public PaleSpiderModel(ModelPart root) {
+	public HangingSpiderModel(ModelPart root) {
 		this.root = root.getChild("root");
 		this.Body = this.root.getChild("Body");
 		this.Thorax = this.Body.getChild("Thorax");
@@ -102,10 +101,10 @@ public class PaleSpiderModel<T extends PaleSpider> extends HierarchicalModel<T> 
 	}
 
 	@Override
-	public void setupAnim(PaleSpider entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(HangingSpider entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		this.animateWalk(PaleSpiderAnimations.SCURRY, limbSwing, limbSwingAmount, 2, 4);
-		this.animate(entity.idleAnimationState, PaleSpiderAnimations.IDLE, ageInTicks, 1);
+		this.animateWalk(HangingSpiderAnimations.SCURRY, limbSwing, limbSwingAmount, 2, 4);
+		this.animate(entity.idleAnimationState, HangingSpiderAnimations.IDLE, ageInTicks, 1);
 
 		this.Head.xRot += headPitch * ((float) Math.PI / 180) - (headPitch * ((float) Math.PI / 180)) / 2;
 		this.Head.yRot += netHeadYaw * ((float) Math.PI / 180) - (netHeadYaw * ((float) Math.PI / 180)) / 2;

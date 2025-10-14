@@ -16,7 +16,7 @@ public class OPModelLayers {
     public static final ModelLayerLocation FROWZY = main("frowzy");
     public static final ModelLayerLocation FROWZY_HEAD = main("frowzy_head");
     public static final ModelLayerLocation GUZZLER = main("guzzler");
-    public static final ModelLayerLocation PALE_SPIDER = main("pale_spider");
+    public static final ModelLayerLocation HANGING_SPIDER = main("hanging_spider");
     public static final ModelLayerLocation RAMBLE = main("ramble");
     public static final ModelLayerLocation RAMBLE_SKULL = main("ramble_skull");
     public static final ModelLayerLocation SLUG = main("slug");

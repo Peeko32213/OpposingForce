@@ -15,7 +15,6 @@ public class UmberSpiderAttackGoal extends AttackGoal {
     public UmberSpiderAttackGoal(UmberSpider mob) {
         super(mob);
         this.umberSpider = mob;
-        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     @Override

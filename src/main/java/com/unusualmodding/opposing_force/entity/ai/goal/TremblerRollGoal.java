@@ -75,6 +75,7 @@ public class TremblerRollGoal extends AttackGoal {
                 if (this.timer > 53 || this.trembler.horizontalCollision) {
                     this.trembler.setSprinting(false);
                     this.trembler.getNavigation().stop();
+                    this.rollDirection = Vec3.ZERO;
                 }
 
                 if (this.timer > 69 || this.trembler.horizontalCollision) {

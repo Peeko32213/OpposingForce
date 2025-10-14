@@ -69,12 +69,12 @@ public class OPEntities {
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "haunted_tool").toString())
     );
 
-    public static final RegistryObject<EntityType<PaleSpider>> PALE_SPIDER = ENTITY_TYPES.register(
-            "pale_spider", () ->
-            EntityType.Builder.of(PaleSpider::new, MobCategory.MONSTER)
+    public static final RegistryObject<EntityType<HangingSpider>> HANGING_SPIDER = ENTITY_TYPES.register(
+            "hanging_spider", () ->
+            EntityType.Builder.of(HangingSpider::new, MobCategory.MONSTER)
                     .sized(0.98F, 0.5F)
                     .clientTrackingRange(10)
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "pale_spider").toString())
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "hanging_spider").toString())
     );
 
     public static final RegistryObject<EntityType<Ramble>> RAMBLE = ENTITY_TYPES.register(
