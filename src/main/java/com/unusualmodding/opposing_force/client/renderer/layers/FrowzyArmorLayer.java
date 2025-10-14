@@ -80,13 +80,6 @@ public class FrowzyArmorLayer extends RenderLayer<Frowzy, FrowzyModel> {
                 final boolean notAVanillaModel = bipedModel != defaultBipedModel;
                 this.setModelSlotVisible(bipedModel, EquipmentSlot.HEAD);
                 translateToHead(poseStack);
-                if (frowzy.isBaby()) {
-                    poseStack.translate(0.05F, -0.025F, 0.05F);
-                    poseStack.scale(0.7F, 0.7F, 0.7F);
-                } else {
-                    poseStack.translate(0.0F, -0.025F, 0.025F);
-                    poseStack.scale(1.0F, 1.0F, 1.0F);
-                }
                 final boolean enchanted = helmet.hasFoil();
                 if (armoritem instanceof DyeableLeatherItem) {
                     final int i = ((DyeableLeatherItem) armoritem).getColor(helmet);
@@ -137,46 +130,52 @@ public class FrowzyArmorLayer extends RenderLayer<Frowzy, FrowzyModel> {
         poseStack.popPose();
     }
 
-    private void translateToChest(PoseStack matrixStackIn) {
-        this.renderer.getModel().root.translateAndRotate(matrixStackIn);
-        this.renderer.getModel().Body.translateAndRotate(matrixStackIn);
+    private void translateToChest(PoseStack poseStack) {
+        this.renderer.getModel().root.translateAndRotate(poseStack);
+        this.renderer.getModel().Body.translateAndRotate(poseStack);
     }
 
-    private void translateToHead(PoseStack matrixStackIn) {
-        translateToChest(matrixStackIn);
-        this.renderer.getModel().Head.translateAndRotate(matrixStackIn);
+    private void translateToHead(PoseStack poseStack) {
+        this.renderer.getModel().root.translateAndRotate(poseStack);
+        this.renderer.getModel().Body.translateAndRotate(poseStack);
+        this.renderer.getModel().Head.translateAndRotate(poseStack);
+        poseStack.translate(0.0F, -0.025F, 0.025F);
+        if (this.renderer.getModel().young) {
+            poseStack.scale(0.75F, 0.75F, 0.75F);
+            poseStack.translate(0.05F, 0.0F, 0.0F);
+        }
     }
 
-    private void renderChestplate(Frowzy entity, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, boolean glint, HumanoidModel humanoidModel, float red, float green, float blue, ResourceLocation armorResource, boolean notAVanillaModel) {
-        VertexConsumer ivertexbuilder = ItemRenderer.getFoilBuffer(bufferSource, RenderType.entityCutoutNoCull(armorResource), false, glint);
-        renderer.getModel().copyPropertiesTo(humanoidModel);
-        humanoidModel.rightArm.x = renderer.getModel().Arm2.x;
-        humanoidModel.rightArm.y = renderer.getModel().Arm2.y;
-        humanoidModel.rightArm.z = renderer.getModel().Arm2.z;
-        humanoidModel.rightArm.xRot = renderer.getModel().Arm2.xRot;
-        humanoidModel.rightArm.yRot = renderer.getModel().Arm2.yRot;
-        humanoidModel.rightArm.zRot = renderer.getModel().Arm2.zRot;
-        humanoidModel.leftArm.x = renderer.getModel().Arm1.x;
-        humanoidModel.leftArm.y = renderer.getModel().Arm1.y;
-        humanoidModel.leftArm.z = renderer.getModel().Arm1.z;
-        humanoidModel.leftArm.xRot = renderer.getModel().Arm1.xRot;
-        humanoidModel.leftArm.yRot = renderer.getModel().Arm1.yRot;
-        humanoidModel.leftArm.zRot = renderer.getModel().Arm1.zRot;
-        humanoidModel.leftArm.y = renderer.getModel().Arm1.y + 7;
-        humanoidModel.rightArm.y = renderer.getModel().Arm2.y + 7;
-        humanoidModel.leftArm.z = renderer.getModel().Arm1.z - 1;
-        humanoidModel.rightArm.z = renderer.getModel().Arm2.z - 1;
-        humanoidModel.leftArm.x = renderer.getModel().Arm1.z + 6;
-        humanoidModel.rightArm.x = renderer.getModel().Arm2.z - 6;
-        humanoidModel.body.visible = false;
-        humanoidModel.renderToBuffer(poseStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
-        humanoidModel.body.visible = true;
-        humanoidModel.rightArm.visible = false;
-        humanoidModel.leftArm.visible = false;
-        humanoidModel.renderToBuffer(poseStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
-        humanoidModel.rightArm.visible = true;
-        humanoidModel.leftArm.visible = true;
-    }
+//    private void renderChestplate(Frowzy entity, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, boolean glint, HumanoidModel humanoidModel, float red, float green, float blue, ResourceLocation armorResource, boolean notAVanillaModel) {
+//        VertexConsumer ivertexbuilder = ItemRenderer.getFoilBuffer(bufferSource, RenderType.entityCutoutNoCull(armorResource), false, glint);
+//        renderer.getModel().copyPropertiesTo(humanoidModel);
+//        humanoidModel.rightArm.x = renderer.getModel().Arm2.x;
+//        humanoidModel.rightArm.y = renderer.getModel().Arm2.y;
+//        humanoidModel.rightArm.z = renderer.getModel().Arm2.z;
+//        humanoidModel.rightArm.xRot = renderer.getModel().Arm2.xRot;
+//        humanoidModel.rightArm.yRot = renderer.getModel().Arm2.yRot;
+//        humanoidModel.rightArm.zRot = renderer.getModel().Arm2.zRot;
+//        humanoidModel.leftArm.x = renderer.getModel().Arm1.x;
+//        humanoidModel.leftArm.y = renderer.getModel().Arm1.y;
+//        humanoidModel.leftArm.z = renderer.getModel().Arm1.z;
+//        humanoidModel.leftArm.xRot = renderer.getModel().Arm1.xRot;
+//        humanoidModel.leftArm.yRot = renderer.getModel().Arm1.yRot;
+//        humanoidModel.leftArm.zRot = renderer.getModel().Arm1.zRot;
+//        humanoidModel.leftArm.y = renderer.getModel().Arm1.y + 7;
+//        humanoidModel.rightArm.y = renderer.getModel().Arm2.y + 7;
+//        humanoidModel.leftArm.z = renderer.getModel().Arm1.z - 1;
+//        humanoidModel.rightArm.z = renderer.getModel().Arm2.z - 1;
+//        humanoidModel.leftArm.x = renderer.getModel().Arm1.z + 6;
+//        humanoidModel.rightArm.x = renderer.getModel().Arm2.z - 6;
+//        humanoidModel.body.visible = false;
+//        humanoidModel.renderToBuffer(poseStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+//        humanoidModel.body.visible = true;
+//        humanoidModel.rightArm.visible = false;
+//        humanoidModel.leftArm.visible = false;
+//        humanoidModel.renderToBuffer(poseStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+//        humanoidModel.rightArm.visible = true;
+//        humanoidModel.leftArm.visible = true;
+//    }
 
     private void renderHelmet(Frowzy entity, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, boolean glint, HumanoidModel humanoidModel, float red, float green, float blue, ResourceLocation armorResource, boolean notAVanillaModel) {
         VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferSource, RenderType.entityCutoutNoCull(armorResource), false, glint);
