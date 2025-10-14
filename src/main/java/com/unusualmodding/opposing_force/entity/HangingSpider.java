@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
-import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
+import com.unusualmodding.opposing_force.entity.ai.navigation.*;
 import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -24,14 +24,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -77,7 +75,7 @@ public class HangingSpider extends Spider implements IAnimatedAttacker {
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, LivingEntity.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new PaleSpiderNearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(1, new HangingSpiderNearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
     private void switchNavigator(boolean onGround) {
@@ -86,8 +84,8 @@ public class HangingSpider extends Spider implements IAnimatedAttacker {
             this.navigation = new SmoothGroundPathNavigation(this, level());
             this.isUpsideDownNavigator = false;
         } else {
-            this.moveControl = new PaleSpiderMoveControl(this);
-            this.navigation = new PaleSpiderPathNavigation(this, level());
+            this.moveControl = new HangingSpiderMoveControl(this);
+            this.navigation = new HangingSpiderPathNavigation(this, level());
             this.isUpsideDownNavigator = true;
         }
     }
@@ -158,7 +156,7 @@ public class HangingSpider extends Spider implements IAnimatedAttacker {
 
     private void updateWeb() {
         if (webTarget != null) {
-            Vector3f target = new Vector3f(webTarget.x - (float)this.getX(), webTarget.y - (float)this.getY(), webTarget.z - (float)this.getZ());
+            Vector3f target = new Vector3f(webTarget.x - (float) this.getX(), webTarget.y - (float) this.getY(), webTarget.z - (float) this.getZ());
             float lerp = Mth.clamp(this.getCurrentWebPos().distance(target) * 0.3F, 0.05F, 1.0F);
             this.setCurrentWebPos(new Vector3f(Mth.lerp(lerp, this.getCurrentWebPos().x, target.x), Mth.lerp(lerp, this.getCurrentWebPos().y, target.y), Mth.lerp(lerp, this.getCurrentWebPos().z, target.z)));
         } else {
@@ -393,82 +391,6 @@ public class HangingSpider extends Spider implements IAnimatedAttacker {
                 int lightTest = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
                 return lightTest <= dimension.monsterSpawnLightTest().sample(random);
             }
-        }
-    }
-
-    // goals
-    private static class PaleSpiderNearestAttackableTargetGoal<T extends LivingEntity> extends NearestAttackableTargetGoal<T> {
-
-        public PaleSpiderNearestAttackableTargetGoal(HangingSpider paleSpider, Class mob, boolean canSee) {
-            super(paleSpider, mob, canSee);
-        }
-
-        @Override
-        protected AABB getTargetSearchArea(double targetDistance) {
-            AABB bb = this.mob.getBoundingBox().inflate(targetDistance, targetDistance, targetDistance);
-            return new AABB(bb.minX, 0, bb.minZ, bb.maxX, 256, bb.maxZ);
-        }
-    }
-
-    private static class PaleSpiderMoveControl extends MoveControl {
-
-        private final HangingSpider spider;
-
-        public PaleSpiderMoveControl(HangingSpider spider) {
-            super(spider);
-            this.spider = spider;
-        }
-
-        @Override
-        public void tick() {
-            if (this.operation == MoveControl.Operation.MOVE_TO) {
-                Vec3 vector3d = new Vec3(this.wantedX - this.spider.getX(), this.wantedY - this.spider.getY(), this.wantedZ - this.spider.getZ());
-                double length = vector3d.length();
-                if (length < this.spider.getBoundingBox().getSize()) {
-                    this.operation = MoveControl.Operation.WAIT;
-                    this.spider.setDeltaMovement(this.spider.getDeltaMovement().scale(0.5D));
-                } else {
-                    this.spider.setDeltaMovement(this.spider.getDeltaMovement().add(vector3d.scale(this.speedModifier * 1.0D * 0.05D / length)));
-                    if (this.spider.getTarget() == null) {
-                        Vec3 vector3d1 = this.spider.getDeltaMovement();
-                        this.spider.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
-                    } else {
-                        double d2 = this.spider.getTarget().getX() - this.spider.getX();
-                        double d1 = this.spider.getTarget().getZ() - this.spider.getZ();
-                        this.spider.setYRot(-((float) Mth.atan2(d2, d1)) * Mth.RAD_TO_DEG);
-                    }
-                    this.spider.yBodyRot = this.spider.getYRot();
-                }
-            } else if (this.operation == Operation.STRAFE) {
-                this.operation = Operation.WAIT;
-            }
-        }
-    }
-
-    private static class PaleSpiderPathNavigation extends SmoothGroundPathNavigation {
-
-        private final HangingSpider spider;
-
-        public PaleSpiderPathNavigation(HangingSpider spider, Level world) {
-            super(spider, world);
-            this.spider = spider;
-        }
-
-        @Override
-        public void tick() {
-            this.tick++;
-        }
-
-        @Override
-        public boolean moveTo(double x, double y, double z, double speed) {
-            this.spider.getMoveControl().setWantedPosition(x, y, z, speed);
-            return true;
-        }
-
-        @Override
-        public boolean moveTo(Entity entity, double speed) {
-            this.spider.getMoveControl().setWantedPosition(entity.getX(), entity.getY(), entity.getZ(), speed);
-            return true;
         }
     }
 }
