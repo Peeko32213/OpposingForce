@@ -50,13 +50,16 @@ public class PaleSpider extends Spider {
 
     public final AnimationState idleAnimationState = new AnimationState();
 
-    public PaleSpider(EntityType<? extends Spider> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public PaleSpider(EntityType<? extends Spider> entityType, Level level) {
+        super(entityType, level);
         switchNavigator(true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 12.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_DAMAGE, 3.0D);
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 12.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.3F)
+                .add(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
     @Override

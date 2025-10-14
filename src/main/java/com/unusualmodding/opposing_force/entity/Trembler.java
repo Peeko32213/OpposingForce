@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.unusualmodding.opposing_force.entity.ai.goal.TremblerRollGoal;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.registry.tags.OPDamageTypeTags;
 import net.minecraft.core.BlockPos;
@@ -12,7 +13,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -31,14 +31,11 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.EnumSet;
-import java.util.Objects;
 
 public class Trembler extends Monster {
 
@@ -50,10 +47,8 @@ public class Trembler extends Monster {
     public final AnimationState rollAnimationState = new AnimationState();
     public final AnimationState stunnedAnimationState = new AnimationState();
 
-    private int idleAnimationTimeout = 0;
-
-    public Trembler(EntityType<? extends Monster> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public Trembler(EntityType<? extends Monster> entityType, Level level) {
+        super(entityType, level);
         this.moveControl = new TremblerMoveControl();
         this.lookControl = new TremblerLookControl(this);
         this.xpReward = 10;
@@ -66,17 +61,17 @@ public class Trembler extends Monster {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 12.0D)
+                .add(Attributes.MAX_HEALTH, 16.0D)
                 .add(Attributes.ARMOR, 20.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.13F)
-                .add(Attributes.ATTACK_DAMAGE, 6.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.15F)
+                .add(Attributes.ATTACK_DAMAGE, 5.0D)
                 .add(Attributes.ATTACK_KNOCKBACK, 1.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new TremblerRollAttackGoal(this));
+        this.goalSelector.addGoal(1, new TremblerRollGoal(this));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -87,7 +82,7 @@ public class Trembler extends Monster {
     @Override
     public float maxUpStep() {
         if (this.isRolling()) {
-            return 1.0F;
+            return 1.1F;
         }
         return 0.6F;
     }
@@ -100,25 +95,23 @@ public class Trembler extends Monster {
             this.setupAnimationStates();
         }
 
-        if (this.getRollCooldown() > 0) {
-            this.setRollCooldown(this.getRollCooldown() - 1);
+        if (this.getStunnedTicks() <= 0) {
+            if (this.getRollCooldown() > 0) {
+                this.setRollCooldown(this.getRollCooldown() - 1);
+            }
         }
 
         if (this.getStunnedTicks() > 0) {
+            this.setSprinting(false);
             this.setStunnedTicks(this.getStunnedTicks() - 1);
             this.level().broadcastEntityEvent(this, (byte) 39);
         }
     }
 
     private void setupAnimationStates() {
-        if (this.idleAnimationTimeout == 0) {
-            this.idleAnimationTimeout = 144;
-            this.idleAnimationState.start(this.tickCount);
-        } else {
-            --this.idleAnimationTimeout;
-        }
-        this.rollAnimationState.animateWhen(this.isRolling() && this.isAlive(), this.tickCount);
-        this.stunnedAnimationState.animateWhen(this.getStunnedTicks() > 0 && this.isAlive(), this.tickCount);
+        this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
+        this.rollAnimationState.animateWhen(this.isRolling(), this.tickCount);
+        this.stunnedAnimationState.animateWhen(this.getStunnedTicks() > 0, this.tickCount);
     }
 
     private void stunEffect() {
@@ -154,7 +147,7 @@ public class Trembler extends Monster {
         super.handleEntityEvent(id);
     }
 
-    private boolean isWithinYRange(LivingEntity target) {
+    public boolean isWithinYRange(LivingEntity target) {
         if (target == null) {
             return false;
         }
@@ -183,7 +176,7 @@ public class Trembler extends Monster {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ROLLING, false);
-        this.entityData.define(ROLL_COOLDOWN, 40);
+        this.entityData.define(ROLL_COOLDOWN, 60);
         this.entityData.define(STUNNED_TICKS, 0);
     }
 
@@ -220,7 +213,7 @@ public class Trembler extends Monster {
     }
 
     public void rollCooldown() {
-        this.entityData.set(ROLL_COOLDOWN, 40);
+        this.entityData.set(ROLL_COOLDOWN, 60);
     }
 
     public int getStunnedTicks() {
@@ -232,7 +225,7 @@ public class Trembler extends Monster {
     }
 
     public void stunnedTicks() {
-        this.entityData.set(STUNNED_TICKS, 36 + random.nextInt(4));
+        this.entityData.set(STUNNED_TICKS, 54);
     }
 
     @Override
@@ -290,99 +283,6 @@ public class Trembler extends Monster {
             } else {
                 int lightTest = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
                 return lightTest <= dimension.monsterSpawnLightTest().sample(random);
-            }
-        }
-    }
-
-    private static class TremblerRollAttackGoal extends Goal {
-
-        protected final Trembler trembler;
-        private int attackTime = 0;
-        private Vec3 rollMotion = new Vec3(0,0,0);
-
-        public TremblerRollAttackGoal(Trembler trembler) {
-            this.trembler = trembler;
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-        }
-
-        public boolean canUse() {
-            return !this.trembler.isVehicle() && this.trembler.getTarget() != null && this.trembler.getTarget().isAlive() && this.trembler.getStunnedTicks() <= 0;
-        }
-
-        public void start() {
-            this.trembler.setRolling(false);
-            this.trembler.setSprinting(false);
-            this.attackTime = 0;
-        }
-
-        public void stop() {
-            this.trembler.setRolling(false);
-            this.trembler.setSprinting(false);
-        }
-
-        public boolean requiresUpdateEveryTick() {
-            return this.trembler.isRolling();
-        }
-
-        public void tick() {
-            LivingEntity target = this.trembler.getTarget();
-            if (target != null) {
-                double distance = this.trembler.distanceToSqr(target.getX(), target.getY(), target.getZ());
-
-                if (this.trembler.isRolling()) {
-                    tickRollAttack();
-                } else {
-                    if (distance <= 60 && this.trembler.getRollCooldown() <= 0 && this.trembler.isWithinYRange(target) && this.trembler.onGround()) {
-                        this.trembler.setRolling(true);
-                    }
-                    else {
-                        if (distance < 16) {
-                            this.trembler.getNavigation().moveTo(target, 1.0D);
-                        } else {
-                            this.trembler.getNavigation().moveTo(target, 1.4D);
-                        }
-                        this.trembler.lookAt(Objects.requireNonNull(target), 30F, 30F);
-                        this.trembler.getLookControl().setLookAt(target, 30F, 30F);
-                    }
-                }
-            }
-        }
-
-        protected void tickRollAttack() {
-            this.attackTime++;
-            this.trembler.getNavigation().stop();
-            LivingEntity target = this.trembler.getTarget();
-            DamageSource damageSource = this.trembler.damageSources().mobAttack(this.trembler);
-
-            if (this.attackTime == 12) {
-                Vec3 targetPos = target.position();
-                double x = -(this.trembler.position().x - targetPos.x);
-                double z = -(this.trembler.position().z - targetPos.z);
-                this.rollMotion = new Vec3(x, this.trembler.getDeltaMovement().y, z).normalize();
-                this.trembler.lookAt(Objects.requireNonNull(target), 360F, 30F);
-                this.trembler.getLookControl().setLookAt(target, 30F, 30F);
-                this.trembler.setSprinting(true);
-            }
-
-            if (this.attackTime > 12 && this.attackTime < 48 + this.trembler.getRandom().nextInt(4)) {
-                this.trembler.setDeltaMovement(this.rollMotion.x * 0.56, this.trembler.getDeltaMovement().y, this.rollMotion.z * 0.56);
-                if (this.trembler.distanceTo(Objects.requireNonNull(target)) < 1.1F) {
-                    this.trembler.doHurtTarget(target);
-                    this.trembler.swing(InteractionHand.MAIN_HAND);
-                    if (target.isDamageSourceBlocked(damageSource) && target instanceof Player player){
-                        player.disableShield(true);
-                    }
-                }
-            }
-
-            if (attackTime > 53 || this.trembler.horizontalCollision) {
-                this.trembler.setSprinting(false);
-            }
-
-            if (this.attackTime >= 69 || this.trembler.horizontalCollision) {
-                this.attackTime = 0;
-                this.trembler.setRolling(false);
-                this.trembler.rollCooldown();
             }
         }
     }

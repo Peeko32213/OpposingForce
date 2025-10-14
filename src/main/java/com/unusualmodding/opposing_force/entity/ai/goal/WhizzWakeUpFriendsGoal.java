@@ -49,7 +49,7 @@ public class WhizzWakeUpFriendsGoal extends Goal {
                             } else {
                                 level.setBlock(blockpos1, ((InfestedAmethystBlock) block).hostStateByInfested(level.getBlockState(blockpos1)), 3);
                             }
-                            if (random.nextBoolean()) {
+                            if (random.nextFloat() < 0.25F) {
                                 return;
                             }
                         }

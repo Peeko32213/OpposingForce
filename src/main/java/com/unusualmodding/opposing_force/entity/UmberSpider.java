@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.unusualmodding.opposing_force.entity.ai.goal.*;
 import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.registry.OPEffects;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
@@ -12,7 +13,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -22,7 +22,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
@@ -37,17 +36,14 @@ import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.Event;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.EnumSet;
-import java.util.Objects;
-
 public class UmberSpider extends Spider implements IAnimatedAttacker {
 
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(UmberSpider.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(UmberSpider.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Integer> LIGHT_THRESHOLD = SynchedEntityData.defineId(UmberSpider.class, EntityDataSerializers.INT);
 
-    private int fleeLightFor = 0;
-    private Vec3 fleeFromPosition;
+    public int fleeLightFor = 0;
+    public Vec3 fleeFromPosition;
 
     public final AnimationState idleAnimationState = new AnimationState();
 
@@ -63,9 +59,8 @@ public class UmberSpider extends Spider implements IAnimatedAttacker {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new UmberSpiderFearLightGoal(this));
-        this.goalSelector.addGoal(2, new UmberSpiderPanicGoal(this));
-        this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4F));
-        this.goalSelector.addGoal(4, new UmberSpiderAttackGoal(this));
+        this.goalSelector.addGoal(2, new UmberSpiderLeapAtTargetGoal(this));
+        this.goalSelector.addGoal(3, new UmberSpiderAttackGoal(this));
         this.goalSelector.addGoal(5, new UmberSpiderRandomStrollGoal(this));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 16.0F));
         this.goalSelector.addGoal(7, new UmberSpiderRandomLookAroundGoal(this));
@@ -245,190 +240,6 @@ public class UmberSpider extends Spider implements IAnimatedAttacker {
                 int lightTest = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
                 return lightTest <= dimension.monsterSpawnLightTest().sample(random);
             }
-        }
-    }
-
-    // goals
-    static class UmberSpiderAttackGoal extends Goal {
-
-        private final UmberSpider umberSpider;
-        private int attackTime = 0;
-
-        public UmberSpiderAttackGoal(UmberSpider mob) {
-            this.umberSpider = mob;
-            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
-        }
-
-        public boolean canUse() {
-            return !this.umberSpider.isVehicle() && this.umberSpider.getTarget() != null && this.umberSpider.getTarget().isAlive() && this.umberSpider.fleeLightFor <= 0 && this.umberSpider.getTarget().level().getBrightness(LightLayer.BLOCK, this.umberSpider.getTarget().blockPosition()) <= this.umberSpider.getLightThreshold() && !this.umberSpider.isOnFire();
-        }
-
-        public void start() {
-            this.umberSpider.setAttackState(0);
-            this.attackTime = 0;
-        }
-
-        public void stop() {
-            this.umberSpider.setAttacking(false);
-            this.umberSpider.setAttackState(0);
-        }
-
-        public void tick() {
-            LivingEntity target = this.umberSpider.getTarget();
-            if (target != null) {
-                this.umberSpider.setAttacking(true);
-
-                this.umberSpider.lookAt(Objects.requireNonNull(target), 30F, 30F);
-                this.umberSpider.getLookControl().setLookAt(target, 30F, 30F);
-
-                double distance = this.umberSpider.distanceToSqr(target.getX(), target.getY(), target.getZ());
-                int attackState = this.umberSpider.getAttackState();
-
-                this.umberSpider.getNavigation().moveTo(target, 1.2F);
-
-                if (attackState == 1) {
-                    tickAttack();
-                } else {
-                    this.checkForCloseRangeAttack(distance);
-                }
-            }
-        }
-
-        @Override
-        public boolean requiresUpdateEveryTick() {
-            return true;
-        }
-
-        protected void checkForCloseRangeAttack (double distance){
-            if (distance <= 4.1D) {
-                this.umberSpider.setAttackState(1);
-            }
-        }
-
-        protected void tickAttack() {
-            this.attackTime++;
-
-            if (this.attackTime == 4) {
-                if (this.umberSpider.distanceTo(Objects.requireNonNull(this.umberSpider.getTarget())) < 2.2f) {
-                    this.umberSpider.doHurtTarget(this.umberSpider.getTarget());
-                    this.umberSpider.swing(InteractionHand.MAIN_HAND);
-                }
-            }
-            if (this.attackTime >= 20) {
-                this.attackTime = 0;
-                this.umberSpider.setAttackState(0);
-            }
-        }
-    }
-
-    static class UmberSpiderFearLightGoal extends Goal {
-
-        protected final UmberSpider umberSpider;
-
-        public UmberSpiderFearLightGoal(UmberSpider mob) {
-            this.umberSpider = mob;
-            this.setFlags(EnumSet.of(Flag.MOVE));
-        }
-
-        public boolean canUse() {
-            return !this.umberSpider.isVehicle() && (this.umberSpider.level().getBrightness(LightLayer.BLOCK, this.umberSpider.blockPosition()) > this.umberSpider.getLightThreshold() || this.umberSpider.isOnFire()) && this.umberSpider.fleeFromPosition != null;
-        }
-
-        public void stop() {
-            this.umberSpider.fleeFromPosition = null;
-            this.umberSpider.fleeLightFor = 50;
-        }
-
-        public void tick() {
-            this.umberSpider.fleeLightFor = 50;
-            this.umberSpider.setAttacking(false);
-
-            if (this.umberSpider.getNavigation().isDone()) {
-                Vec3 vec3 = LandRandomPos.getPosAway(this.umberSpider, 16, 8, this.umberSpider.fleeFromPosition);
-                if (vec3 != null) {
-                    this.umberSpider.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 1.5F);
-                }
-            }
-        }
-    }
-
-    static class UmberSpiderPanicGoal extends Goal {
-
-        protected final UmberSpider umberSpider;
-
-        protected double posX;
-        protected double posY;
-        protected double posZ;
-
-        public UmberSpiderPanicGoal(UmberSpider mob) {
-            this.umberSpider = mob;
-            this.setFlags(EnumSet.of(Flag.MOVE));
-        }
-
-        public boolean canUse() {
-            if (!this.shouldPanic()) {
-                return false;
-            } else {
-                return this.findRandomPosition();
-            }
-        }
-
-        protected boolean shouldPanic() {
-            return !this.umberSpider.isVehicle() && this.umberSpider.getLastHurtByMob() != null && this.umberSpider.fleeLightFor <= 0 && !this.umberSpider.isAttacking() && !this.umberSpider.isOnFire();
-        }
-
-        protected boolean findRandomPosition() {
-            Vec3 vec3 = LandRandomPos.getPos(this.umberSpider, 8, 8);
-            if (vec3 == null) {
-                return false;
-            } else {
-                this.posX = vec3.x;
-                this.posY = vec3.y;
-                this.posZ = vec3.z;
-                return true;
-            }
-        }
-
-        public void start() {
-            this.umberSpider.getNavigation().moveTo(this.posX, this.posY, this.posZ, 1.5F);
-            this.umberSpider.setAttacking(false);
-        }
-
-        public void stop() {
-            this.umberSpider.setAttacking(false);
-        }
-
-        public boolean canContinueToUse() {
-            return !this.umberSpider.getNavigation().isDone();
-        }
-    }
-
-    static class UmberSpiderRandomLookAroundGoal extends RandomLookAroundGoal {
-
-        protected final UmberSpider umberSpider;
-
-        public UmberSpiderRandomLookAroundGoal(UmberSpider mob) {
-            super(mob);
-            this.umberSpider = mob;
-            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
-        }
-
-        public boolean canUse() {
-            return !this.umberSpider.isVehicle() && this.umberSpider.level().getBrightness(LightLayer.BLOCK, this.umberSpider.blockPosition()) <= this.umberSpider.getLightThreshold() && super.canUse();
-        }
-    }
-
-    static class UmberSpiderRandomStrollGoal extends WaterAvoidingRandomStrollGoal {
-
-        protected final UmberSpider umberSpider;
-
-        public UmberSpiderRandomStrollGoal(UmberSpider mob) {
-            super(mob, 1.0D, 0.001F);
-            this.umberSpider = mob;
-        }
-
-        public boolean canUse() {
-            return !this.umberSpider.isVehicle() && this.umberSpider.level().getBrightness(LightLayer.BLOCK, this.umberSpider.blockPosition()) <= this.umberSpider.getLightThreshold() && super.canUse();
         }
     }
 }
