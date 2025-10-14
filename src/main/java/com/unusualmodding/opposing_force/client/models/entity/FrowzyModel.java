@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.FrowzyAnimations;
 import com.unusualmodding.opposing_force.entity.Frowzy;
 import net.minecraft.client.model.ArmedModel;
+import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -15,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class FrowzyModel extends HierarchicalModel<Frowzy> implements ArmedModel {
+public class FrowzyModel extends HierarchicalModel<Frowzy> implements ArmedModel, HeadedModel {
 
 	public final ModelPart root;
 	public final ModelPart Body;
@@ -107,13 +108,18 @@ public class FrowzyModel extends HierarchicalModel<Frowzy> implements ArmedModel
 
     @Override
     public void translateToHand(HumanoidArm arm, PoseStack poseStack) {
-        root.translateAndRotate(poseStack);
-        Body.translateAndRotate(poseStack);
+        this.root.translateAndRotate(poseStack);
+        this.Body.translateAndRotate(poseStack);
         if (arm == HumanoidArm.RIGHT) {
-            Arm2.translateAndRotate(poseStack);
+            this.Arm2.translateAndRotate(poseStack);
         } else {
-            Arm1.translateAndRotate(poseStack);
+            this.Arm1.translateAndRotate(poseStack);
         }
         poseStack.translate(0.0F, 0.3F, 0.025F);
+    }
+
+    @Override
+    public ModelPart getHead() {
+        return this.Head;
     }
 }

@@ -3,7 +3,6 @@ package com.unusualmodding.opposing_force.client.renderer.layers;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import com.unusualmodding.opposing_force.client.models.entity.FrowzyModel;
 import com.unusualmodding.opposing_force.client.renderer.FrowzyRenderer;
 import com.unusualmodding.opposing_force.entity.Frowzy;
@@ -11,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -20,28 +18,35 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.ForgeHooksClient;
 import org.joml.Quaternionf;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
+@OnlyIn(Dist.CLIENT)
 public class FrowzyArmorLayer extends RenderLayer<Frowzy, FrowzyModel> {
 
     private static final Map<String, ResourceLocation> ARMOR_TEXTURE_RES_MAP = Maps.newHashMap();
-    private final HumanoidModel defaultBipedModel;
+    private final HumanoidModel<?> defaultBipedModel;
     private final FrowzyRenderer renderer;
 
     public FrowzyArmorLayer(FrowzyRenderer render, EntityRendererProvider.Context context) {
         super(render);
-        defaultBipedModel = new HumanoidModel(context.bakeLayer(ModelLayers.ARMOR_STAND_OUTER_ARMOR));
+        defaultBipedModel = new HumanoidModel<>(context.bakeLayer(ModelLayers.ARMOR_STAND_OUTER_ARMOR));
         this.renderer = render;
     }
 
-    public static ResourceLocation getArmorResource(net.minecraft.world.entity.Entity entity, ItemStack stack, EquipmentSlot slot, @javax.annotation.Nullable String type) {
+    public static ResourceLocation getArmorResource(Entity entity, ItemStack stack, EquipmentSlot slot, @Nullable String type) {
         ArmorItem item = (ArmorItem) stack.getItem();
         String texture = item.getMaterial().getName();
         String domain = "minecraft";
@@ -52,7 +57,7 @@ public class FrowzyArmorLayer extends RenderLayer<Frowzy, FrowzyModel> {
         }
         String s1 = String.format("%s:textures/models/armor/%s_layer_%d%s.png", domain, texture, (1), type == null ? "" : String.format("_%s", type));
 
-        s1 = net.minecraftforge.client.ForgeHooksClient.getArmorTexture(entity, stack, s1, slot, type);
+        s1 = ForgeHooksClient.getArmorTexture(entity, stack, s1, slot, type);
         ResourceLocation resourcelocation = ARMOR_TEXTURE_RES_MAP.get(s1);
 
         if (resourcelocation == null) {
@@ -63,83 +68,73 @@ public class FrowzyArmorLayer extends RenderLayer<Frowzy, FrowzyModel> {
         return resourcelocation;
     }
 
-    public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, Frowzy roo, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        matrixStackIn.pushPose();
-        if(!roo.isBaby()) {
-            {
-                matrixStackIn.pushPose();
-                ItemStack itemstack = roo.getItemBySlot(EquipmentSlot.HEAD);
-                if (itemstack.getItem() instanceof ArmorItem) {
-                    ArmorItem armoritem = (ArmorItem) itemstack.getItem();
-                    if (itemstack.canEquip(EquipmentSlot.HEAD, roo)) {
-                        HumanoidModel a = defaultBipedModel;
-                        a = getArmorModelHook(roo, itemstack, EquipmentSlot.HEAD, a);
-                        final boolean notAVanillaModel = a != defaultBipedModel;
-                        this.setModelSlotVisible(a, EquipmentSlot.HEAD);
-                        translateToHead(matrixStackIn);
-                        matrixStackIn.translate(0, 0.015F, -0.05F);
-                        matrixStackIn.scale(0.7F, 0.7F, 0.7F);
-                        final boolean flag1 = itemstack.hasFoil();
-                        int clampedLight = packedLightIn;
-                        if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) { // Allow this for anything, not only cloth
-                            final int i = ((net.minecraft.world.item.DyeableLeatherItem) armoritem).getColor(itemstack);
-                            final float f = (float) (i >> 16 & 255) / 255.0F;
-                            final float f1 = (float) (i >> 8 & 255) / 255.0F;
-                            final float f2 = (float) (i & 255) / 255.0F;
-                            renderHelmet(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2, getArmorResource(roo, itemstack, EquipmentSlot.HEAD, null), notAVanillaModel);
-                            renderHelmet(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(roo, itemstack, EquipmentSlot.HEAD, "overlay"), notAVanillaModel);
-                        } else {
-                            renderHelmet(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(roo, itemstack, EquipmentSlot.HEAD, null), notAVanillaModel);
-                        }
-                    }
-                }else{
-                    translateToHead(matrixStackIn);
-                    matrixStackIn.translate(0, -0.2, -0.1F);
-                    matrixStackIn.mulPose((new Quaternionf()).rotateX(Mth.PI));
-                    matrixStackIn.mulPose((new Quaternionf()).rotateY(Mth.PI));
-                    matrixStackIn.scale(1.0F, 1.0F, 1.0F);
-                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, roo.level(), 0);
+    @Override
+    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLightIn, Frowzy frowzy, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        poseStack.pushPose();
+        poseStack.pushPose();
+        ItemStack helmet = frowzy.getItemBySlot(EquipmentSlot.HEAD);
+        if (helmet.getItem() instanceof ArmorItem armoritem) {
+            if (helmet.canEquip(EquipmentSlot.HEAD, frowzy)) {
+                HumanoidModel<?> bipedModel = defaultBipedModel;
+                bipedModel = getArmorModelHook(frowzy, helmet, EquipmentSlot.HEAD, bipedModel);
+                final boolean notAVanillaModel = bipedModel != defaultBipedModel;
+                this.setModelSlotVisible(bipedModel, EquipmentSlot.HEAD);
+                translateToHead(poseStack);
+                if (frowzy.isBaby()) {
+                    poseStack.translate(0.05F, -0.025F, 0.05F);
+                    poseStack.scale(0.7F, 0.7F, 0.7F);
+                } else {
+                    poseStack.translate(0.0F, -0.025F, 0.025F);
+                    poseStack.scale(1.0F, 1.0F, 1.0F);
                 }
-                matrixStackIn.popPose();
-            }
-            {
-                matrixStackIn.pushPose();
-                ItemStack itemstack = roo.getItemBySlot(EquipmentSlot.CHEST);
-                if (itemstack.getItem() instanceof ArmorItem) {
-                    ArmorItem armoritem = (ArmorItem) itemstack.getItem();
-                    if (armoritem.getEquipmentSlot() == EquipmentSlot.CHEST) {
-                        HumanoidModel a = defaultBipedModel;
-                        a = getArmorModelHook(roo, itemstack, EquipmentSlot.CHEST, a);
-                        boolean notAVanillaModel = a != defaultBipedModel;
-                        this.setModelSlotVisible(a, EquipmentSlot.CHEST);
-                        translateToChest(matrixStackIn);
-                        matrixStackIn.translate(0, 0.25F, 0F);
-                        matrixStackIn.scale(1F, 1F, 1F);
-                        boolean flag1 = itemstack.hasFoil();
-                        int clampedLight = packedLightIn;
-                        if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) { // Allow this for anything, not only cloth
-                            int i = ((net.minecraft.world.item.DyeableLeatherItem) armoritem).getColor(itemstack);
-                            float f = (float) (i >> 16 & 255) / 255.0F;
-                            float f1 = (float) (i >> 8 & 255) / 255.0F;
-                            float f2 = (float) (i & 255) / 255.0F;
-                            renderChestplate(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2, getArmorResource(roo, itemstack, EquipmentSlot.CHEST, null), notAVanillaModel);
-                            renderChestplate(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(roo, itemstack, EquipmentSlot.CHEST, "overlay"), notAVanillaModel);
-                        } else {
-                            renderChestplate(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(roo, itemstack, EquipmentSlot.CHEST, null), notAVanillaModel);
-                        }
-
-                    }
+                final boolean enchanted = helmet.hasFoil();
+                if (armoritem instanceof DyeableLeatherItem) {
+                    final int i = ((DyeableLeatherItem) armoritem).getColor(helmet);
+                    final float f = (float) (i >> 16 & 255) / 255.0F;
+                    final float f1 = (float) (i >> 8 & 255) / 255.0F;
+                    final float f2 = (float) (i & 255) / 255.0F;
+                    renderHelmet(frowzy, poseStack, bufferSource, packedLightIn, enchanted, bipedModel, f, f1, f2, getArmorResource(frowzy, helmet, EquipmentSlot.HEAD, null), notAVanillaModel);
+                    renderHelmet(frowzy, poseStack, bufferSource, packedLightIn, enchanted, bipedModel, 1.0F, 1.0F, 1.0F, getArmorResource(frowzy, helmet, EquipmentSlot.HEAD, "overlay"), notAVanillaModel);
+                } else {
+                    renderHelmet(frowzy, poseStack, bufferSource, packedLightIn, enchanted, bipedModel, 1.0F, 1.0F, 1.0F, getArmorResource(frowzy, helmet, EquipmentSlot.HEAD, null), notAVanillaModel);
                 }
-                matrixStackIn.popPose();
             }
+        } else {
+            translateToHead(poseStack);
+            poseStack.translate(0, -0.2, -0.1F);
+            poseStack.mulPose((new Quaternionf()).rotateX(Mth.PI));
+            poseStack.mulPose((new Quaternionf()).rotateY(Mth.PI));
+            poseStack.scale(1.0F, 1.0F, 1.0F);
+            Minecraft.getInstance().getItemRenderer().renderStatic(helmet, ItemDisplayContext.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, frowzy.level(), 0);
         }
-        matrixStackIn.popPose();
-
-    }
-
-    private void translateToHead(PoseStack matrixStackIn) {
-        translateToChest(matrixStackIn);
-        this.renderer.getModel().Head.translateAndRotate(matrixStackIn);
+//        poseStack.popPose();
+//        poseStack.pushPose();
+//        ItemStack chestplate = frowzy.getItemBySlot(EquipmentSlot.CHEST);
+//        if (chestplate.getItem() instanceof ArmorItem armoritem) {
+//            if (armoritem.getEquipmentSlot() == EquipmentSlot.CHEST) {
+//                HumanoidModel<?> bipedModel = defaultBipedModel;
+//                bipedModel = getArmorModelHook(frowzy, chestplate, EquipmentSlot.CHEST, bipedModel);
+//                boolean notAVanillaModel = bipedModel != defaultBipedModel;
+//                this.setModelSlotVisible(bipedModel, EquipmentSlot.CHEST);
+//                translateToChest(poseStack);
+//                poseStack.translate(0.0F, -0.4F, 0.025F);
+//                poseStack.scale(1.0F, 1.0F, 1.0F);
+//                boolean flag1 = chestplate.hasFoil();
+//                if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) {
+//                    int i = ((net.minecraft.world.item.DyeableLeatherItem) armoritem).getColor(chestplate);
+//                    float f = (float) (i >> 16 & 255) / 255.0F;
+//                    float f1 = (float) (i >> 8 & 255) / 255.0F;
+//                    float f2 = (float) (i & 255) / 255.0F;
+//                    renderChestplate(frowzy, poseStack, bufferSource, packedLightIn, flag1, bipedModel, f, f1, f2, getArmorResource(frowzy, chestplate, EquipmentSlot.CHEST, null), notAVanillaModel);
+//                    renderChestplate(frowzy, poseStack, bufferSource, packedLightIn, flag1, bipedModel, 1.0F, 1.0F, 1.0F, getArmorResource(frowzy, chestplate, EquipmentSlot.CHEST, "overlay"), notAVanillaModel);
+//                } else {
+//                    renderChestplate(frowzy, poseStack, bufferSource, packedLightIn, flag1, bipedModel, 1.0F, 1.0F, 1.0F, getArmorResource(frowzy, chestplate, EquipmentSlot.CHEST, null), notAVanillaModel);
+//                }
+//
+//            }
+//        }
+        poseStack.popPose();
+        poseStack.popPose();
     }
 
     private void translateToChest(PoseStack matrixStackIn) {
@@ -147,99 +142,90 @@ public class FrowzyArmorLayer extends RenderLayer<Frowzy, FrowzyModel> {
         this.renderer.getModel().Body.translateAndRotate(matrixStackIn);
     }
 
-
-    private void renderChestplate(Frowzy entity, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, boolean glintIn, HumanoidModel modelIn, float red, float green, float blue, ResourceLocation armorResource, boolean notAVanillaModel) {
-        VertexConsumer ivertexbuilder = ItemRenderer.getFoilBuffer(bufferIn, RenderType.entityCutoutNoCull(armorResource), false, glintIn);
-        renderer.getModel().copyPropertiesTo(modelIn);
-//        float sitProgress = entity.prevSitProgress + (entity.sitProgress - entity.prevSitProgress) * Minecraft.getInstance().getFrameTime();
-//        modelIn.body.xRot = 90 * 0.017453292F;
-//        modelIn.body.yRot = 0;
-//        modelIn.body.zRot = 0;
-//        modelIn.body.x = 0;
-//        modelIn.body.y = 0.25F;
-//        modelIn.body.z = -7.6F;
-//        modelIn.rightArm.x = renderer.getModel().arm_right.rotationPointX;
-//        modelIn.rightArm.y = renderer.getModel().arm_right.rotationPointY;
-//        modelIn.rightArm.z = renderer.getModel().arm_right.rotationPointZ;
-//        modelIn.rightArm.xRot = renderer.getModel().arm_right.rotateAngleX;
-//        modelIn.rightArm.yRot = renderer.getModel().arm_right.rotateAngleY;
-//        modelIn.rightArm.zRot = renderer.getModel().arm_right.rotateAngleZ;
-//        modelIn.leftArm.x = renderer.getModel().arm_left.rotationPointX;
-//        modelIn.leftArm.y = renderer.getModel().arm_left.rotationPointY;
-//        modelIn.leftArm.z = renderer.getModel().arm_left.rotationPointZ;
-//        modelIn.leftArm.xRot = renderer.getModel().arm_left.rotateAngleX;
-//        modelIn.leftArm.yRot = renderer.getModel().arm_left.rotateAngleY;
-//        modelIn.leftArm.zRot = renderer.getModel().arm_left.rotateAngleZ;
-//        modelIn.leftArm.y = renderer.getModel().arm_left.rotationPointY - 4 + (sitProgress * 0.25F);
-//        modelIn.rightArm.y = renderer.getModel().arm_right.rotationPointY - 4 + (sitProgress * 0.25F);
-//        modelIn.leftArm.z = renderer.getModel().arm_left.rotationPointZ - 0.5F;
-//        modelIn.rightArm.z = renderer.getModel().arm_right.rotationPointZ - 0.5F;
-        modelIn.body.visible = false;
-        modelIn.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
-        modelIn.body.visible = true;
-        modelIn.rightArm.visible = false;
-        modelIn.leftArm.visible = false;
-        matrixStackIn.pushPose();
-        matrixStackIn.scale(1.1F, 1.65F, 1.1F);
-        modelIn.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
-        matrixStackIn.popPose();
-        modelIn.rightArm.visible = true;
-        modelIn.leftArm.visible = true;
-
+    private void translateToHead(PoseStack matrixStackIn) {
+        translateToChest(matrixStackIn);
+        this.renderer.getModel().Head.translateAndRotate(matrixStackIn);
     }
 
-    private void renderHelmet(Frowzy entity, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, boolean glintIn, HumanoidModel modelIn, float red, float green, float blue, ResourceLocation armorResource, boolean notAVanillaModel) {
-        VertexConsumer ivertexbuilder = ItemRenderer.getFoilBuffer(bufferIn, RenderType.entityCutoutNoCull(armorResource), false, glintIn);
-        renderer.getModel().copyPropertiesTo(modelIn);
-        modelIn.head.xRot = 0F;
-        modelIn.head.yRot = 0F;
-        modelIn.head.zRot = 0F;
-        modelIn.hat.xRot = 0F;
-        modelIn.hat.yRot = 0F;
-        modelIn.hat.zRot = 0F;
-        modelIn.head.x = 0F;
-        modelIn.head.y = 0F;
-        modelIn.head.z = 0F;
-        modelIn.hat.x = 0F;
-        modelIn.hat.y = 0F;
-        modelIn.hat.z = 0F;
-        modelIn.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
-
+    private void renderChestplate(Frowzy entity, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, boolean glint, HumanoidModel humanoidModel, float red, float green, float blue, ResourceLocation armorResource, boolean notAVanillaModel) {
+        VertexConsumer ivertexbuilder = ItemRenderer.getFoilBuffer(bufferSource, RenderType.entityCutoutNoCull(armorResource), false, glint);
+        renderer.getModel().copyPropertiesTo(humanoidModel);
+        humanoidModel.rightArm.x = renderer.getModel().Arm2.x;
+        humanoidModel.rightArm.y = renderer.getModel().Arm2.y;
+        humanoidModel.rightArm.z = renderer.getModel().Arm2.z;
+        humanoidModel.rightArm.xRot = renderer.getModel().Arm2.xRot;
+        humanoidModel.rightArm.yRot = renderer.getModel().Arm2.yRot;
+        humanoidModel.rightArm.zRot = renderer.getModel().Arm2.zRot;
+        humanoidModel.leftArm.x = renderer.getModel().Arm1.x;
+        humanoidModel.leftArm.y = renderer.getModel().Arm1.y;
+        humanoidModel.leftArm.z = renderer.getModel().Arm1.z;
+        humanoidModel.leftArm.xRot = renderer.getModel().Arm1.xRot;
+        humanoidModel.leftArm.yRot = renderer.getModel().Arm1.yRot;
+        humanoidModel.leftArm.zRot = renderer.getModel().Arm1.zRot;
+        humanoidModel.leftArm.y = renderer.getModel().Arm1.y + 7;
+        humanoidModel.rightArm.y = renderer.getModel().Arm2.y + 7;
+        humanoidModel.leftArm.z = renderer.getModel().Arm1.z - 1;
+        humanoidModel.rightArm.z = renderer.getModel().Arm2.z - 1;
+        humanoidModel.leftArm.x = renderer.getModel().Arm1.z + 6;
+        humanoidModel.rightArm.x = renderer.getModel().Arm2.z - 6;
+        humanoidModel.body.visible = false;
+        humanoidModel.renderToBuffer(poseStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+        humanoidModel.body.visible = true;
+        humanoidModel.rightArm.visible = false;
+        humanoidModel.leftArm.visible = false;
+        humanoidModel.renderToBuffer(poseStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+        humanoidModel.rightArm.visible = true;
+        humanoidModel.leftArm.visible = true;
     }
 
+    private void renderHelmet(Frowzy entity, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, boolean glint, HumanoidModel humanoidModel, float red, float green, float blue, ResourceLocation armorResource, boolean notAVanillaModel) {
+        VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferSource, RenderType.entityCutoutNoCull(armorResource), false, glint);
+        renderer.getModel().copyPropertiesTo(humanoidModel);
+        humanoidModel.head.xRot = 0F;
+        humanoidModel.head.yRot = 0F;
+        humanoidModel.head.zRot = 0F;
+        humanoidModel.hat.xRot = 0F;
+        humanoidModel.hat.yRot = 0F;
+        humanoidModel.hat.zRot = 0F;
+        humanoidModel.head.x = 0F;
+        humanoidModel.head.y = 0F;
+        humanoidModel.head.z = 0F;
+        humanoidModel.hat.x = 0F;
+        humanoidModel.hat.y = 0F;
+        humanoidModel.hat.z = 0F;
+        humanoidModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+    }
 
-    protected void setModelSlotVisible(HumanoidModel p_188359_1_, EquipmentSlot slotIn) {
-        this.setModelVisible(p_188359_1_);
-        switch (slotIn) {
+    protected void setModelSlotVisible(HumanoidModel<?> model, EquipmentSlot slot) {
+        this.setModelVisible(model);
+        switch (slot) {
             case HEAD -> {
-                p_188359_1_.head.visible = true;
-                p_188359_1_.hat.visible = true;
+                model.head.visible = true;
+                model.hat.visible = true;
             }
             case CHEST -> {
-                p_188359_1_.body.visible = true;
-                p_188359_1_.rightArm.visible = true;
-                p_188359_1_.leftArm.visible = true;
+                model.body.visible = true;
+                model.rightArm.visible = true;
+                model.leftArm.visible = true;
             }
             case LEGS -> {
-                p_188359_1_.body.visible = true;
-                p_188359_1_.rightLeg.visible = true;
-                p_188359_1_.leftLeg.visible = true;
+                model.body.visible = true;
+                model.rightLeg.visible = true;
+                model.leftLeg.visible = true;
             }
             case FEET -> {
-                p_188359_1_.rightLeg.visible = true;
-                p_188359_1_.leftLeg.visible = true;
+                model.rightLeg.visible = true;
+                model.leftLeg.visible = true;
             }
         }
     }
 
-    protected void setModelVisible(HumanoidModel model) {
+    protected void setModelVisible(HumanoidModel<?> model) {
         model.setAllVisible(false);
-
     }
 
-
-    protected HumanoidModel<?> getArmorModelHook(LivingEntity entity, ItemStack itemStack, EquipmentSlot slot, HumanoidModel model) {
-         Model basicModel = net.minecraftforge.client.ForgeHooksClient.getArmorModel(entity, itemStack, slot, model);
+    protected HumanoidModel<?> getArmorModelHook(LivingEntity entity, ItemStack itemStack, EquipmentSlot slot, HumanoidModel<?> model) {
+         Model basicModel = ForgeHooksClient.getArmorModel(entity, itemStack, slot, model);
          return basicModel instanceof HumanoidModel ? (HumanoidModel<?>) basicModel : model;
     }
 }
