@@ -2,7 +2,7 @@ package com.unusualmodding.opposing_force.client.renderer;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.FrowzyModel;
-import com.unusualmodding.opposing_force.client.renderer.layers.FrowzyArmorLayer;
+import com.unusualmodding.opposing_force.client.renderer.layers.FrowzyHelmetLayer;
 import com.unusualmodding.opposing_force.entity.Frowzy;
 import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.renderer.RenderType;
@@ -22,7 +22,7 @@ public class FrowzyRenderer extends MobRenderer<Frowzy, FrowzyModel> {
     public FrowzyRenderer(EntityRendererProvider.Context context) {
         super(context, new FrowzyModel(context.bakeLayer(OPModelLayers.FROWZY)), 0.4F);
         this.addLayer(new ItemInHandLayer<>(this, context.getItemInHandRenderer()));
-        this.addLayer(new FrowzyArmorLayer(this, context));
+        this.addLayer(new FrowzyHelmetLayer(this, context));
     }
 
     @Override

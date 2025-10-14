@@ -52,10 +52,10 @@ public abstract class MobMixin extends LivingEntity {
 
     @Unique
     private Item opposingForce$replaceIronWithStone(ItemStack stack) {
-        if (stack.is(Items.IRON_HELMET)) return OPItems.STONE_HELMET.get();
-        if (stack.is(Items.IRON_CHESTPLATE)) return OPItems.STONE_CHESTPLATE.get();
-        if (stack.is(Items.IRON_LEGGINGS)) return OPItems.STONE_LEGGINGS.get();
-        if (stack.is(Items.IRON_BOOTS)) return OPItems.STONE_BOOTS.get();
+        if (stack.is(Items.LEATHER_HELMET)) return OPItems.STONE_HELMET.get();
+        if (stack.is(Items.LEATHER_CHESTPLATE)) return OPItems.STONE_CHESTPLATE.get();
+        if (stack.is(Items.LEATHER_LEGGINGS)) return OPItems.STONE_LEGGINGS.get();
+        if (stack.is(Items.LEATHER_BOOTS)) return OPItems.STONE_BOOTS.get();
         return null;
     }
 

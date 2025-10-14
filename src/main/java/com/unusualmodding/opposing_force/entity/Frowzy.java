@@ -35,8 +35,11 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -44,6 +47,8 @@ import net.minecraftforge.common.ForgeConfig;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
@@ -371,6 +376,7 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
 
         groupData = super.finalizeSpawn(level, difficulty, spawnType, groupData, compoundTag);
         float f = difficulty.getSpecialMultiplier();
+        this.setCanPickUpLoot(randomsource.nextFloat() < 0.55F * f);
 
         if (groupData == null) {
             groupData = new FrowzyGroupData(getSpawnAsBabyOdds(randomsource), true);
@@ -401,10 +407,44 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
             }
             this.setCanBreakDoors(this.supportsBreakDoorGoal() && randomsource.nextFloat() < f * 0.1F);
         }
+
+        if (this.getItemBySlot(EquipmentSlot.HEAD).isEmpty()) {
+            LocalDate localdate = LocalDate.now();
+            if (localdate.get(ChronoField.MONTH_OF_YEAR) == 10 && localdate.get(ChronoField.DAY_OF_MONTH) == 31 && randomsource.nextFloat() < 0.25F) {
+                this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(randomsource.nextFloat() < 0.1F ? Blocks.JACK_O_LANTERN : Blocks.CARVED_PUMPKIN));
+                this.armorDropChances[EquipmentSlot.HEAD.getIndex()] = 0.0F;
+            }
+        }
+
+        if (randomsource.nextFloat() < 0.15F * difficulty.getSpecialMultiplier()) {
+            int i = randomsource.nextInt(2);
+            float f1 = this.level().getDifficulty() == Difficulty.HARD ? 0.1F : 0.25F;
+            if (randomsource.nextFloat() < 0.095F) {
+                i++;
+            }
+            if (randomsource.nextFloat() < 0.095F) {
+                i++;
+            }
+            if (randomsource.nextFloat() < 0.095F) {
+                i++;
+            }
+            if (this.getItemBySlot(EquipmentSlot.HEAD).isEmpty()) {
+                Item item = getEquipmentForSlot(EquipmentSlot.HEAD, i);
+                if (item != null && randomsource.nextFloat() < f1) {
+                    this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(item));
+                }
+            }
+        }
+        this.populateDefaultEquipmentEnchantments(randomsource, difficulty);
+        if (randomsource.nextFloat() < (this.level().getDifficulty() == Difficulty.HARD ? 0.05F : 0.01F)) {
+            int i1 = randomsource.nextInt(3);
+            if (i1 == 0) {
+                this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
+            } else {
+                this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SHOVEL));
+            }
+        }
         this.handleAttributes(f);
         return groupData;
     }
-
-    // goals
-
 }

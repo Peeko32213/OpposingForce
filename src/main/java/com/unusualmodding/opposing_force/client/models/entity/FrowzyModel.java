@@ -115,7 +115,14 @@ public class FrowzyModel extends HierarchicalModel<Frowzy> implements ArmedModel
         } else {
             this.Arm1.translateAndRotate(poseStack);
         }
-        poseStack.translate(0.0F, 0.3F, 0.025F);
+        poseStack.translate(0.0F, 0.25F, 0.025F);
+    }
+
+    public void translateToHead(PoseStack poseStack) {
+        this.root.translateAndRotate(poseStack);
+        this.Body.translateAndRotate(poseStack);
+        this.Head.translateAndRotate(poseStack);
+        poseStack.translate(0.0F, -0.025F, 0.025F);
     }
 
     @Override
