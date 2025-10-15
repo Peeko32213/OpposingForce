@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
@@ -27,9 +28,11 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -50,6 +53,8 @@ public class HangingSpider extends Spider implements IAnimatedAttacker {
 
     private boolean isUpsideDownNavigator;
     protected Vector3f webTarget;
+    private int upwardsFallingTicks = 0;
+    private BlockPos targetCeilingPos = null;
 
     public final AnimationState idleAnimationState = new AnimationState();
 
@@ -62,20 +67,20 @@ public class HangingSpider extends Spider implements IAnimatedAttacker {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 14.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.3F)
-                .add(Attributes.ATTACK_DAMAGE, 3.0D);
+                .add(Attributes.ATTACK_DAMAGE, 3.0D)
+                .add(Attributes.FOLLOW_RANGE, 32.0D);
     }
 
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new HangingSpiderSpinWebUpGoal(this));
-        this.goalSelector.addGoal(1, new HangingSpiderSpinWebDownGoal(this));
         this.goalSelector.addGoal(2, new HangingSpiderAttackGoal(this));
         this.goalSelector.addGoal(3, new HangingSpiderRandomStrollGoal(this));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, LivingEntity.class, 8.0F));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, LivingEntity.class, 12.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new HangingSpiderNearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(1, new HangingSpiderNearestAttackableTargetGoal<>(this, Player.class));
     }
 
     private void switchNavigator(boolean onGround) {
@@ -96,12 +101,29 @@ public class HangingSpider extends Spider implements IAnimatedAttacker {
     }
 
     @Override
+    public boolean hurt(DamageSource source, float amount) {
+        this.setUpsideDown(false);
+        this.setGoingUp(false);
+        this.setGoingDown(false);
+        this.getAttribute(ForgeMod.ENTITY_GRAVITY.get()).setBaseValue(0.08D);
+        return super.hurt(source, amount);
+    }
+
+    @Override
     protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
     }
 
     @Override
     protected float getStandingEyeHeight(Pose pose, EntityDimensions entityDimensions) {
         return entityDimensions.height * 0.65F;
+    }
+
+    @Override
+    public void travel(Vec3 vec3) {
+        if (this.isUpsideDown() && !this.hurtMarked) {
+            this.setDeltaMovement(this.getDeltaMovement().multiply(0,1,0));
+        }
+        super.travel(vec3);
     }
 
     @Override
@@ -126,24 +148,83 @@ public class HangingSpider extends Spider implements IAnimatedAttacker {
 
         if (!this.level().isClientSide) {
             this.setUpsideDown(verticalCollision && getDeltaMovement().y >= 0);
-
-            if (this.isUpsideDown()) {
-                this.setDeltaMovement(this.getDeltaMovement().multiply(0.7F, 1.0F, 0.7F));
-                this.getAttribute(ForgeMod.ENTITY_GRAVITY.get()).setBaseValue(-0.08D);
-            } else if ((!this.isUpsideDown() && !this.isGoingUp() && !this.isGoingDown() && this.getAttribute(ForgeMod.ENTITY_GRAVITY.get()).getValue() < 0) || this.onGround()) {
+            if (!this.isUpsideDown() && !this.isGoingUp() && this.getAttribute(ForgeMod.ENTITY_GRAVITY.get()).getValue() < 0) {
                 this.getAttribute(ForgeMod.ENTITY_GRAVITY.get()).setBaseValue(0.08D);
             }
+//            BlockPos abovePos = this.getPositionAbove();
+//            BlockState aboveState = level().getBlockState(abovePos);
+//            BlockState belowState = level().getBlockState(this.getBlockPosBelowThatAffectsMyMovement());
+//            BlockPos worldHeight = level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, this.blockPosition());
+//            boolean validAboveState = aboveState.isFaceSturdy(level(), abovePos, Direction.DOWN);
+//            boolean validBelowState = belowState.isFaceSturdy(level(), this.getBlockPosBelowThatAffectsMyMovement(), Direction.UP);
+//            LivingEntity target = this.getTarget();
+//
+//            if (this.isGoingUp() && this.getY() > worldHeight.getY()) {
+//                this.setGoingUp(false);
+//            }
+//            if (this.onGround() && (target == null || !target.isAlive()) && random.nextInt(40) == 0 && this.onGround() && !this.isUpsideDown() && this.getY() + 2 < worldHeight.getY() || this.isGoingUp() && !this.hasControllingPassenger()) {
+//                this.setDeltaMovement(this.getDeltaMovement().add(0, 0.1F, 0));
+//                this.setGoingUp(true);
+//            }
+//            if (this.isUpsideDown()) {
+//                this.setGoingUp(false);
+//                this.setGoingDown(false);
+//                this.deactivateWeb();
+//                this.setNoGravity(!this.onGround());
+//                this.setDeltaMovement(this.getDeltaMovement().multiply(0.91F, 1F, 0.91F));
+//                if (!this.verticalCollision) {
+//                    if (this.onGround() || validBelowState || upwardsFallingTicks > 5) {
+//                        this.setUpsideDown(false);
+//                        upwardsFallingTicks = 0;
+//                    } else {
+//                        if (!validAboveState) {
+//                            upwardsFallingTicks++;
+//                        }
+//                        this.setDeltaMovement(this.getDeltaMovement().add(0, 0.2F, 0));
+//                    }
+//                } else {
+//                    upwardsFallingTicks = 0;
+//                }
+//                if (this.horizontalCollision) {
+//                    upwardsFallingTicks = 0;
+//                    this.setDeltaMovement(this.getDeltaMovement().add(0, -0.3F, 0));
+//                }
+//                if (this.isInWall() && this.level().isEmptyBlock(this.getBlockPosBelowThatAffectsMyMovement())) {
+//                    this.setPos(this.getX(), this.getY() - 1, this.getZ());
+//                }
+//            } else {
+//                this.setNoGravity(false);
+//                if (validAboveState) {
+//                    this.setUpsideDown(true);
+//                }
+//            }
 
-            if (this.isUpsideDown()) {
-                if (!this.isUpsideDownNavigator) {
-                    this.switchNavigator(false);
-                }
-            } else {
-                if (this.isUpsideDownNavigator) {
-                    this.switchNavigator(true);
-                }
-            }
+//            if (target != null && this.isUpsideDown()) {
+//                double d0 = this.getX() - target.getX();
+//                double d2 = this.getZ() - target.getZ();
+//                double xzDistSqr = d0 * d0 + d2 * d2;
+//                if (xzDistSqr < 2.5F) {
+//                    this.setGoingDown(true);
+//                    this.setUpsideDown(false);
+//                }
+//            }
+
+//            if (this.isUpsideDown()) {
+//                if (!this.isUpsideDownNavigator) {
+//                    switchNavigator(false);
+//                }
+//            } else {
+//                if (this.isUpsideDownNavigator) {
+//                    switchNavigator(true);
+//                }
+//            }
         }
+
+//        this.spinWeb();
+
+//        if (this.isGoingDown()) {
+//            this.setDeltaMovement(this.getDeltaMovement().multiply(1.0, 0.7, 1.0));
+//        }
 
         if (this.level().isClientSide()) {
             this.setupAnimationStates();
@@ -152,6 +233,32 @@ public class HangingSpider extends Spider implements IAnimatedAttacker {
 
     private void setupAnimationStates() {
         this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
+    }
+
+    private void spinWeb() {
+        Vec3 mobCenter = this.position();
+        BlockHitResult hitCeiling = this.raycastFloorOrCeiling(mobCenter, false);
+        if (hitCeiling.getType() != HitResult.Type.BLOCK) {
+            hitCeiling = this.searchForNearbyBlock(mobCenter, 15, false);
+        }
+        if (hitCeiling.getType() == HitResult.Type.BLOCK) {
+            targetCeilingPos = BlockPos.containing(hitCeiling.getLocation());
+        }
+        if (this.isGoingDown() || this.isGoingUp()) {
+            if (targetCeilingPos != null) {
+                double distanceSq = this.distanceToSqr(Vec3.atCenterOf(targetCeilingPos).with(Direction.Axis.Y, this.position().y));
+                if (distanceSq < 2.0) {
+                    this.activateWeb(Vec3.atBottomCenterOf(targetCeilingPos.above()).toVector3f());
+                }
+            }
+        }
+//        if (!this.isGoingDown() || !this.isGoingUp()) {
+//            this.deactivateWeb();
+//        }
+    }
+
+    protected BlockPos getPositionAbove() {
+        return new BlockPos((int) this.position().x, (int) (this.getBoundingBox().maxY + 0.5000001D), (int) this.position().z);
     }
 
     private void updateWeb() {

@@ -80,9 +80,9 @@ public class HangingSpiderSpinWebUpGoal extends Goal {
 
         if (hangingSpider.isGoingUp()) {
             if (hangingSpider.tickCount % 15 == 0) {
-                hangingSpider.playSound(SoundEvents.SPIDER_STEP, 1,1);
+                hangingSpider.playSound(SoundEvents.SPIDER_STEP, 0.1F,1);
             }
-            hangingSpider.getAttribute(ForgeMod.ENTITY_GRAVITY.get()).setBaseValue(-0.04D);
+            hangingSpider.getAttribute(ForgeMod.ENTITY_GRAVITY.get()).setBaseValue(-0.01D);
             if (hangingSpider.getY() > hangingSpider.getTargetPos().y) {
                 hangingSpider.getAttribute(ForgeMod.ENTITY_GRAVITY.get()).setBaseValue(0.08D);
                 stop();

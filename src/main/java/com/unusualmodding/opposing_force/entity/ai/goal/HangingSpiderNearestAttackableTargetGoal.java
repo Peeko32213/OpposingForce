@@ -7,13 +7,21 @@ import net.minecraft.world.phys.AABB;
 
 public class HangingSpiderNearestAttackableTargetGoal<T extends LivingEntity> extends NearestAttackableTargetGoal<T> {
 
-    public HangingSpiderNearestAttackableTargetGoal(HangingSpider spider, Class mob, boolean canSee) {
-        super(spider, mob, canSee);
+    private final HangingSpider hangingSpider;
+
+    public HangingSpiderNearestAttackableTargetGoal(HangingSpider hangingSpider, Class<T> target) {
+        super(hangingSpider, target, 10, true, true, null);
+        this.hangingSpider = hangingSpider;
     }
 
     @Override
-    protected AABB getTargetSearchArea(double targetDistance) {
-        AABB bb = this.mob.getBoundingBox().inflate(targetDistance, targetDistance, targetDistance);
-        return new AABB(bb.minX, 0, bb.minZ, bb.maxX, 256, bb.maxZ);
+    protected AABB getTargetSearchArea(double distance) {
+        if (hangingSpider.isUpsideDown()) {
+            AABB aabb = this.hangingSpider.getBoundingBox();
+            double newDistance = 2.0F;
+            return new AABB(aabb.minX - newDistance, hangingSpider.level().getMinBuildHeight() - 5, aabb.minZ - newDistance, aabb.maxX + newDistance, aabb.maxY + 1, aabb.maxZ + newDistance);
+        } else {
+            return this.hangingSpider.getBoundingBox().inflate(20, 20, 20);
+        }
     }
 }

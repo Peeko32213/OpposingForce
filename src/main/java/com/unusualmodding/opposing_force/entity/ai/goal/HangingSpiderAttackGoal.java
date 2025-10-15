@@ -1,10 +1,9 @@
 package com.unusualmodding.opposing_force.entity.ai.goal;
 
 import com.unusualmodding.opposing_force.entity.HangingSpider;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
-
-import java.util.Objects;
 
 public class HangingSpiderAttackGoal extends AttackGoal {
 
@@ -16,43 +15,33 @@ public class HangingSpiderAttackGoal extends AttackGoal {
     }
 
     @Override
-    public boolean canUse() {
-        return super.canUse() && !this.hangingSpider.isGoingUp() && !this.hangingSpider.isGoingDown();
-    }
-
-    @Override
-    public boolean canContinueToUse() {
-        return super.canContinueToUse() && !this.hangingSpider.isGoingUp() && !this.hangingSpider.isGoingDown();
-    }
-
-    @Override
     public void tick() {
         LivingEntity target = this.hangingSpider.getTarget();
+        if (this.timer > 0) {
+            this.timer--;
+        }
         if (target != null) {
-            this.hangingSpider.lookAt(Objects.requireNonNull(target), 30F, 30F);
-            this.hangingSpider.getLookControl().setLookAt(target, 30F, 30F);
-
-            double distance = this.hangingSpider.distanceToSqr(target.getX(), target.getY(), target.getZ());
-            int attackState = this.hangingSpider.getAttackState();
-
-            this.hangingSpider.getNavigation().moveTo(target, 1.2F);
-
-            if (attackState == 1) {
-                this.timer++;
-                if (this.timer == 4) {
-                    if (this.hangingSpider.distanceTo(target) < this.getAttackReachSqr(target)) {
-                        this.hangingSpider.doHurtTarget(target);
-                        this.hangingSpider.swing(InteractionHand.MAIN_HAND);
-                    }
-                }
-                if (this.timer >= 20) {
-                    this.timer = 0;
-                    this.hangingSpider.setAttackState(0);
+            double distance = this.hangingSpider.distanceTo(target);
+            if (this.hangingSpider.isUpsideDown()) {
+                double d0 = this.hangingSpider.getX() - target.getX();
+                double d2 = this.hangingSpider.getZ() - target.getZ();
+                double xzDistSqr = d0 * d0 + d2 * d2;
+//                BlockPos ceilingPos = new BlockPos((int) target.getX(), (int) (this.hangingSpider.getY() - 3 - hangingSpider.getRandom().nextInt(3)), (int) target.getZ());
+//                BlockPos lowestPos = HangingSpider.getLowestPos(hangingSpider.level(), ceilingPos);
+//                this.hangingSpider.getMoveControl().setWantedPosition(lowestPos.getX() + 0.5F, ceilingPos.getY(), lowestPos.getZ() + 0.5F, 1.1D);
+                if (xzDistSqr < 2.5F) {
+                    this.hangingSpider.setUpsideDown(false);
+//                    this.hangingSpider.setGoingDown(true);
                 }
             } else {
-                if (distance <= this.getAttackReachSqr(target)) {
-                    this.hangingSpider.setAttackState(1);
+                if (this.hangingSpider.onGround()) {
+                    this.hangingSpider.getNavigation().moveTo(target, 1.2D);
                 }
+            }
+            if (distance < 1.6D && this.timer == 0) {
+                this.hangingSpider.doHurtTarget(target);
+                this.hangingSpider.swing(InteractionHand.MAIN_HAND);
+                this.timer = 20;
             }
         }
     }
