@@ -6,7 +6,6 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
-import java.util.Objects;
 
 public class FrowzyLeapGoal extends Goal {
 
@@ -26,11 +25,11 @@ public class FrowzyLeapGoal extends Goal {
             if (distance > getAttackReachSqr(target) && this.frowzy.jumpCooldown <= 0) {
                 this.frowzy.getNavigation().stop();
                 Vec3 vec3 = this.frowzy.getDeltaMovement();
-                Vec3 leapVec = new Vec3(Objects.requireNonNull(this.frowzy.getTarget()).getX() - this.frowzy.getX(), 0.0F, this.frowzy.getTarget().getZ() - this.frowzy.getZ());
+                Vec3 leapVec = new Vec3(target.getX() - this.frowzy.getX(), 0.0F, target.getZ() - this.frowzy.getZ());
                 if (leapVec.lengthSqr() > 1.0E-7) {
                     leapVec = leapVec.normalize().scale(1).add(vec3.scale(0.75));
                 }
-                this.frowzy.setDeltaMovement(leapVec.x, 0.6D, leapVec.z);
+                this.frowzy.setDeltaMovement(leapVec.x, 0.4D, leapVec.z);
             }
         }
     }

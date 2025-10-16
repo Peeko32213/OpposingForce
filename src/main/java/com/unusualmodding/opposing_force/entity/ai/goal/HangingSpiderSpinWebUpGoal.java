@@ -16,8 +16,6 @@ public class HangingSpiderSpinWebUpGoal extends Goal {
 
     private final HangingSpider hangingSpider;
     private BlockPos targetCeilingPos = null;
-    private boolean navigatingToCeiling = false;
-    private int stuckTicks;
 
     public HangingSpiderSpinWebUpGoal(HangingSpider hangingSpider) {
         this.hangingSpider = hangingSpider;
@@ -26,7 +24,7 @@ public class HangingSpiderSpinWebUpGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return !hangingSpider.isUpsideDown() && !hangingSpider.isGoingDown() && !hangingSpider.isWebOut() && hangingSpider.getNavigation().isDone() && hangingSpider.getGoingUpCooldown() <= 0;
+        return !hangingSpider.isAggressive() && !hangingSpider.isUpsideDown() && !hangingSpider.isGoingDown() && !hangingSpider.isWebOut() && hangingSpider.getNavigation().isDone() && hangingSpider.getGoingUpCooldown() <= 0;
     }
 
     @Override
@@ -40,47 +38,27 @@ public class HangingSpiderSpinWebUpGoal extends Goal {
 
         if (hit.getType() == HitResult.Type.BLOCK) {
             targetCeilingPos = BlockPos.containing(hit.getLocation());
-            navigatingToCeiling = true;
-
-            BlockPos.MutableBlockPos walkTarget = targetCeilingPos.mutable();
-            while (walkTarget.getY() > hangingSpider.level().getMinBuildHeight() && hangingSpider.level().getBlockState(walkTarget.below()).isAir()) {
-                walkTarget.move(Direction.DOWN);
-            }
-
-            hangingSpider.getNavigation().moveTo(walkTarget.getX() + 0.5, walkTarget.getY() + 1, walkTarget.getZ() + 0.5, 1.0);
         } else {
-            Vec3 randomPos = mobCenter.add(hangingSpider.getRandom().nextGaussian() * 5, 0, hangingSpider.getRandom().nextGaussian() * 5);
-            hangingSpider.getNavigation().moveTo(randomPos.x, randomPos.y, randomPos.z, 1.0);
-            navigatingToCeiling = false;
+            hangingSpider.setGoingUp(false);
+            hangingSpider.setGoingUpCooldown(hangingSpider.getRandom().nextInt(20 * 10) + (20 * 10));
+            hangingSpider.deactivateWeb();
+            stop();
         }
     }
 
     @Override
     public void tick() {
-        if (navigatingToCeiling && hangingSpider.getDeltaMovement().horizontalDistanceSqr() < 0.1) stuckTicks++;
-        if (stuckTicks > 100) hangingSpider.getNavigation().recomputePath();
-
-        if (navigatingToCeiling && targetCeilingPos != null) {
-
-            BlockPos.MutableBlockPos walkTarget = targetCeilingPos.mutable();
-            while (walkTarget.getY() > hangingSpider.level().getMinBuildHeight() && hangingSpider.level().getBlockState(walkTarget.below()).isAir()) {
-                walkTarget.move(Direction.DOWN);
-            }
-
-            hangingSpider.getNavigation().moveTo(walkTarget.getX() + 0.5, walkTarget.getY() + 1, walkTarget.getZ() + 0.5, 1.0);
-
+        if (targetCeilingPos != null) {
             double distanceSq = hangingSpider.distanceToSqr(Vec3.atCenterOf(targetCeilingPos).with(Direction.Axis.Y, hangingSpider.position().y));
             if (distanceSq < 2.0 && hangingSpider.getNavigation().isDone()) {
                 hangingSpider.setGoingUp(true);
-                hangingSpider.playSound(SoundEvents.SPIDER_AMBIENT);
                 hangingSpider.activateWeb(Vec3.atBottomCenterOf(targetCeilingPos.above()).toVector3f());
-                navigatingToCeiling = false;
             }
         }
 
         if (hangingSpider.isGoingUp()) {
             if (hangingSpider.tickCount % 15 == 0) {
-                hangingSpider.playSound(SoundEvents.SPIDER_STEP, 0.1F,1);
+                hangingSpider.playSound(SoundEvents.SPIDER_STEP, 0.05F,1);
             }
             hangingSpider.getAttribute(ForgeMod.ENTITY_GRAVITY.get()).setBaseValue(-0.01D);
             if (hangingSpider.getY() > hangingSpider.getTargetPos().y) {
@@ -93,18 +71,17 @@ public class HangingSpiderSpinWebUpGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return (navigatingToCeiling || hangingSpider.isGoingUp()) && !hangingSpider.isUpsideDown() && !hangingSpider.isGoingDown();
+        return hangingSpider.isGoingUp() && !hangingSpider.isUpsideDown() && !hangingSpider.isGoingDown();
     }
 
     @Override
     public void stop() {
         if (hangingSpider.isGoingUp()) {
             hangingSpider.setGoingUp(false);
-            hangingSpider.setGoingDownCooldown(300);
+            hangingSpider.setGoingUpCooldown(hangingSpider.getRandom().nextInt(20 * 10) + (20 * 10));
             hangingSpider.deactivateWeb();
             hangingSpider.playSound(SoundEvents.SPIDER_HURT);
         }
-        navigatingToCeiling = false;
         targetCeilingPos = null;
     }
 }

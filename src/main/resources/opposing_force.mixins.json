@@ -11,14 +11,15 @@
     "EntityMixin",
     "FoodDataMixin",
     "MobMixin",
-    "PlayerMixin"
+    "PlayerMixin",
+    "PoseMixin"
   ],
   "client": [
     "client.CustomHeadLayerMixin",
     "client.GuiMixin",
     "client.HumanoidArmorLayerMixin",
     "client.HumanoidModelMixin",
-    "client.ItemInHandRendererMixin",
+    "client.ItemInHandRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

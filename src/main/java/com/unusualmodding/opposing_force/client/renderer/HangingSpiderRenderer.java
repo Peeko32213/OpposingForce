@@ -28,7 +28,7 @@ public class HangingSpiderRenderer extends MobRenderer<HangingSpider, HangingSpi
 
     public HangingSpiderRenderer(EntityRendererProvider.Context context) {
         super(context, new HangingSpiderModel(context.bakeLayer(OPModelLayers.HANGING_SPIDER)), 0.5F);
-        this.addLayer(new HangingSpiderEyesLayer(this));
+//        this.addLayer(new HangingSpiderEyesLayer(this));
     }
 
     @Override
@@ -42,13 +42,13 @@ public class HangingSpiderRenderer extends MobRenderer<HangingSpider, HangingSpi
     }
 
     @Override
-    protected void setupRotations(HangingSpider entity, PoseStack matrixStack, float f, float g, float h) {
-        super.setupRotations(entity, matrixStack, f, g, h);
-        matrixStack.scale(0.75F, 0.75F, 0.75F);
+    protected void setupRotations(HangingSpider entity, PoseStack poseStack, float f, float g, float h) {
+        super.setupRotations(entity, poseStack, f, g, h);
+        poseStack.scale(0.75F, 0.75F, 0.75F);
 
         if (entity.isUpsideDown() && !entity.onGround()) {
-            matrixStack.translate(0.0, 0.6, 0);
-            matrixStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+            poseStack.translate(0.0, 0.6, 0);
+            poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
         }
     }
 
@@ -81,7 +81,7 @@ public class HangingSpiderRenderer extends MobRenderer<HangingSpider, HangingSpi
     private void drawWebQuad(PoseStack poseStack, VertexConsumer builder, Vec3 base, Vec3 tip, Vec3 side, float vMax, int packedLight, float baseOpacity, float tipOpacity) {
         PoseStack.Pose poseLast = poseStack.last();
 
-        builder.vertex(poseLast.pose(), (float)(base.x + side.x), (float)(base.y + side.y), (float)(base.z + side.z))
+        builder.vertex(poseLast.pose(), (float) (base.x + side.x), (float) (base.y + side.y), (float) (base.z + side.z))
                 .color(1F, 1F, 1F, baseOpacity)
                 .uv(0F, 0F)
                 .overlayCoords(OverlayTexture.NO_OVERLAY)
@@ -89,7 +89,7 @@ public class HangingSpiderRenderer extends MobRenderer<HangingSpider, HangingSpi
                 .normal(poseLast.normal(), 0, 1, 0)
                 .endVertex();
 
-        builder.vertex(poseLast.pose(), (float)(base.x - side.x), (float)(base.y - side.y), (float)(base.z - side.z))
+        builder.vertex(poseLast.pose(), (float) (base.x - side.x), (float) (base.y - side.y), (float) (base.z - side.z))
                 .color(1F, 1F, 1F, baseOpacity)
                 .uv(1F, 0F)
                 .overlayCoords(OverlayTexture.NO_OVERLAY)
@@ -97,7 +97,7 @@ public class HangingSpiderRenderer extends MobRenderer<HangingSpider, HangingSpi
                 .normal(poseLast.normal(), 0, 1, 0)
                 .endVertex();
 
-        builder.vertex(poseLast.pose(), (float)(tip.x - side.x), (float)(tip.y - side.y), (float)(tip.z - side.z))
+        builder.vertex(poseLast.pose(), (float) (tip.x - side.x), (float) (tip.y - side.y), (float) (tip.z - side.z))
                 .color(1F, 1F, 1F, tipOpacity)
                 .uv(1F, vMax)
                 .overlayCoords(OverlayTexture.NO_OVERLAY)
@@ -105,7 +105,7 @@ public class HangingSpiderRenderer extends MobRenderer<HangingSpider, HangingSpi
                 .normal(poseLast.normal(), 0, 1, 0)
                 .endVertex();
 
-        builder.vertex(poseLast.pose(), (float)(tip.x + side.x), (float)(tip.y + side.y), (float)(tip.z + side.z))
+        builder.vertex(poseLast.pose(), (float) (tip.x + side.x), (float) (tip.y + side.y), (float) (tip.z + side.z))
                 .color(1F, 1F, 1F, tipOpacity)
                 .uv(0F, vMax)
                 .overlayCoords(OverlayTexture.NO_OVERLAY)

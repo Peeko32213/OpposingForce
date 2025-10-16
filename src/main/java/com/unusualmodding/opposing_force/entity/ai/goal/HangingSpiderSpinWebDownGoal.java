@@ -16,8 +16,6 @@ public class HangingSpiderSpinWebDownGoal extends Goal {
 
     private final HangingSpider hangingSpider;
     private BlockPos targetFloorPos = null;
-    private boolean navigatingToFloor = false;
-    private int stuckTicks;
 
     public HangingSpiderSpinWebDownGoal(HangingSpider hangingSpider) {
         this.hangingSpider = hangingSpider;
@@ -26,62 +24,44 @@ public class HangingSpiderSpinWebDownGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return this.hangingSpider.isAggressive() && this.hangingSpider.getTarget() != null && this.hangingSpider.getTarget().isAlive() && !hangingSpider.onGround() && !hangingSpider.isWebOut() && hangingSpider.getNavigation().isDone() && !hangingSpider.isGoingUp() && hangingSpider.getGoingDownCooldown() <= 0;
+        return hangingSpider.isUpsideDown() && !hangingSpider.isGoingUp() && !hangingSpider.isWebOut() && hangingSpider.getNavigation().isDone() && hangingSpider.getGoingDownCooldown() <= 0;
     }
 
     @Override
     public void start() {
         Vec3 mobCenter = hangingSpider.position();
-        BlockHitResult result = hangingSpider.raycastFloorOrCeiling(mobCenter, true);
-        if (result.getType() != HitResult.Type.BLOCK) {
-            result = hangingSpider.searchForNearbyBlock(mobCenter, 15, true);
+        BlockHitResult hit = hangingSpider.raycastFloorOrCeiling(mobCenter, true);
+        hangingSpider.setUpsideDown(false);
+
+        if (hit.getType() != HitResult.Type.BLOCK) {
+            hit = hangingSpider.searchForNearbyBlock(mobCenter, 15, true);
         }
 
-        if (result.getType() == HitResult.Type.BLOCK) {
-            targetFloorPos = BlockPos.containing(result.getLocation());
-            navigatingToFloor = true;
-
-            BlockPos.MutableBlockPos walkTarget = targetFloorPos.mutable();
-            while (walkTarget.getY() > hangingSpider.level().getMinBuildHeight() && hangingSpider.level().getBlockState(walkTarget.below()).isAir()) {
-                walkTarget.move(Direction.DOWN);
-            }
-
-            hangingSpider.getNavigation().moveTo(walkTarget.getX() + 0.5, walkTarget.getY(), walkTarget.getZ() + 0.5, 1.0);
+        if (hit.getType() == HitResult.Type.BLOCK) {
+            targetFloorPos = BlockPos.containing(hit.getLocation());
         } else {
-            Vec3 randomPos = mobCenter.add(hangingSpider.getRandom().nextGaussian() * 5, 0, hangingSpider.getRandom().nextGaussian() * 5);
-            hangingSpider.getNavigation().moveTo(randomPos.x, randomPos.y, randomPos.z, 1.0);
-            navigatingToFloor = false;
+            hangingSpider.setGoingDown(false);
+            hangingSpider.setGoingDownCooldown(hangingSpider.getRandom().nextInt(90 * 50) + (40 * 20));
+            hangingSpider.deactivateWeb();
+            stop();
         }
     }
 
     @Override
     public void tick() {
-        if (navigatingToFloor && hangingSpider.getDeltaMovement().horizontalDistanceSqr() < 0.1) stuckTicks++;
-        if (stuckTicks > 100) hangingSpider.getNavigation().recomputePath();
-
-        if (navigatingToFloor && targetFloorPos != null) {
-
-            BlockPos.MutableBlockPos walkTarget = targetFloorPos.mutable();
-            while (walkTarget.getY() > hangingSpider.level().getMinBuildHeight() && hangingSpider.level().getBlockState(walkTarget.below()).isAir()) {
-                walkTarget.move(Direction.DOWN);
-            }
-
-            hangingSpider.getNavigation().moveTo(walkTarget.getX() + 0.5, walkTarget.getY() + 1, walkTarget.getZ() + 0.5, 1.0);
-
+        if (targetFloorPos != null) {
             double distanceSq = hangingSpider.distanceToSqr(Vec3.atCenterOf(targetFloorPos).with(Direction.Axis.Y, hangingSpider.position().y));
             if (distanceSq < 2.0 && hangingSpider.getNavigation().isDone()) {
                 hangingSpider.setGoingDown(true);
-                hangingSpider.playSound(SoundEvents.SPIDER_AMBIENT);
                 hangingSpider.activateWeb(Vec3.atBottomCenterOf(targetFloorPos.above()).toVector3f());
-                navigatingToFloor = false;
             }
         }
 
         if (hangingSpider.isGoingDown()) {
-            if (hangingSpider.tickCount % 15 == 0) {
-                hangingSpider.playSound(SoundEvents.SPIDER_STEP, 1,1);
+            if (hangingSpider.tickCount % 30 == 0) {
+                hangingSpider.playSound(SoundEvents.SPIDER_STEP, 0.05F,1);
             }
-            hangingSpider.getAttribute(ForgeMod.ENTITY_GRAVITY.get()).setBaseValue(0.04D);
+            hangingSpider.getAttribute(ForgeMod.ENTITY_GRAVITY.get()).setBaseValue(0.005D);
             if (hangingSpider.getY() > hangingSpider.getTargetPos().y) {
                 hangingSpider.getAttribute(ForgeMod.ENTITY_GRAVITY.get()).setBaseValue(0.08D);
                 stop();
@@ -89,20 +69,20 @@ public class HangingSpiderSpinWebDownGoal extends Goal {
         }
     }
 
+
     @Override
     public boolean canContinueToUse() {
-        return (navigatingToFloor || hangingSpider.isGoingDown()) && !hangingSpider.onGround() && !hangingSpider.isGoingUp();
+        return hangingSpider.isGoingDown() && !hangingSpider.isUpsideDown() && !hangingSpider.isGoingUp() && !hangingSpider.onGround() && !hangingSpider.isInWaterOrBubble();
     }
 
     @Override
     public void stop() {
         if (hangingSpider.isGoingDown()) {
             hangingSpider.setGoingDown(false);
-            hangingSpider.setGoingUpCooldown(300);
+            hangingSpider.setGoingDownCooldown(hangingSpider.getRandom().nextInt(90 * 50) + (40 * 20));
             hangingSpider.deactivateWeb();
             hangingSpider.playSound(SoundEvents.SPIDER_HURT);
         }
-        navigatingToFloor = false;
         targetFloorPos = null;
     }
 }
