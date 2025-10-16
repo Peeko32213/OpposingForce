@@ -106,7 +106,7 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
     }
 
     protected void handleAttributes(float chance) {
-        this.getAttribute(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier("Random frowzy spawn bonus", this.random.nextDouble() * (double) 0.01F, AttributeModifier.Operation.ADDITION));
+        this.getAttribute(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier("Random frowzy spawn bonus", this.random.nextDouble() * (double) 0.02F, AttributeModifier.Operation.ADDITION));
         double random = this.random.nextDouble() * 1.5D * (double) chance;
         if (random > 1.0D) {
             this.getAttribute(Attributes.FOLLOW_RANGE).addPermanentModifier(new AttributeModifier("Random frowzy spawn bonus", random, AttributeModifier.Operation.MULTIPLY_TOTAL));
