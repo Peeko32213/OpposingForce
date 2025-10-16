@@ -33,7 +33,7 @@ public class FrowzyPantingSound extends AbstractTickableSoundInstance {
         this.x = (float) this.entity.getX();
         this.y = (float) this.entity.getY();
         this.z = (float) this.entity.getZ();
-        this.pitch = 1.0F;
+        this.pitch = this.entity.getVoicePitch();
         this.volume = 1.0F;
     }
 

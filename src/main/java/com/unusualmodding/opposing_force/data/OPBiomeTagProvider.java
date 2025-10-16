@@ -25,7 +25,7 @@ public class OPBiomeTagProvider extends BiomeTagsProvider {
         this.tag(OPBiomeTags.HAS_DICER).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
         this.tag(OPBiomeTags.HAS_FROWZY).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
         this.tag(OPBiomeTags.HAS_GUZZLER).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
-        this.tag(OPBiomeTags.HAS_PALE_SPIDER).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
+        this.tag(OPBiomeTags.HAS_HANGING_SPIDER).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
         this.tag(OPBiomeTags.HAS_RAMBLE).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
         this.tag(OPBiomeTags.HAS_SLUG).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
         this.tag(OPBiomeTags.HAS_TERROR).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);

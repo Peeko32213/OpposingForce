@@ -1,7 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
-import com.unusualmodding.opposing_force.entity.ai.navigation.*;
 import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -15,13 +14,18 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
@@ -33,6 +37,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import org.joml.Vector3f;
+
+import javax.annotation.Nullable;
 
 public class HangingSpider extends Spider implements IAnimatedAttacker {
 
@@ -61,8 +67,7 @@ public class HangingSpider extends Spider implements IAnimatedAttacker {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 14.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.3F)
-                .add(Attributes.ATTACK_DAMAGE, 3.0D)
-                .add(Attributes.FOLLOW_RANGE, 48.0D);
+                .add(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
     @Override
@@ -75,8 +80,20 @@ public class HangingSpider extends Spider implements IAnimatedAttacker {
         this.goalSelector.addGoal(1, new HangingSpiderSpinWebDownGoal(this));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, LivingEntity.class, 12.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(7, new HangingSpiderCeilingTargetGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new HangingSpiderNearestAttackableTargetGoal<>(this, Player.class));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true) {
+            @Override
+            public boolean canUse() {
+                return !(HangingSpider.this.isGoingDown() || HangingSpider.this.isGoingUp() || HangingSpider.this.isUpsideDown()) && super.canUse();
+            }
+        });
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, IronGolem.class, true) {
+            @Override
+            public boolean canUse() {
+                return !(HangingSpider.this.isGoingDown() || HangingSpider.this.isGoingUp() || HangingSpider.this.isUpsideDown()) && super.canUse();
+            }
+        });
     }
 
     @Override
@@ -145,6 +162,13 @@ public class HangingSpider extends Spider implements IAnimatedAttacker {
             }
         }
 
+        if (this.onGround()) {
+            this.deactivateWeb();
+            this.setUpsideDown(false);
+            this.setGoingUp(false);
+            this.setGoingDown(false);
+        }
+
 
         if (this.level().isClientSide()) {
             this.setupAnimationStates();
@@ -205,7 +229,7 @@ public class HangingSpider extends Spider implements IAnimatedAttacker {
         this.entityData.define(IS_WEB_OUT, false);
         this.entityData.define(GOING_UP, false);
         this.entityData.define(GOING_DOWN, false);
-        this.entityData.define(GOING_UP_COOLDOWN, 40);
+        this.entityData.define(GOING_UP_COOLDOWN, this.getRandom().nextInt(20 * 10) + (20 * 10));
         this.entityData.define(GOING_DOWN_COOLDOWN, this.getRandom().nextInt(90 * 50) + (40 * 20));
     }
 
@@ -366,6 +390,35 @@ public class HangingSpider extends Spider implements IAnimatedAttacker {
     @Override
     protected void playStepSound(BlockPos blockPos, BlockState blockState) {
         this.playSound(SoundEvents.SPIDER_STEP, 0.15F, 1.2F);
+    }
+
+    @Override
+    public int getAmbientSoundInterval() {
+        return (this.isUpsideDown() || this.isGoingUp() || this.isGoingDown()) ? 400 : 80;
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
+        spawnGroupData = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData, compoundTag);
+        RandomSource random = level.getRandom();
+
+        if (spawnGroupData == null) {
+            spawnGroupData = new Spider.SpiderEffectsGroupData();
+            if (level.getDifficulty() == Difficulty.HARD && random.nextFloat() < 0.1F * difficulty.getSpecialMultiplier()) {
+                ((Spider.SpiderEffectsGroupData)spawnGroupData).setRandomEffect(random);
+            }
+        }
+
+        if (spawnGroupData instanceof Spider.SpiderEffectsGroupData spider$spidereffectsgroupdata) {
+            MobEffect mobeffect = spider$spidereffectsgroupdata.effect;
+            if (mobeffect != null) {
+                this.addEffect(new MobEffectInstance(mobeffect, -1));
+            }
+        }
+
+        this.setGoingUpCooldown(40);
+        return spawnGroupData;
     }
 
     @SuppressWarnings("unused")

@@ -11,7 +11,7 @@ public class OPBiomeTags {
     public static final TagKey<Biome> HAS_DICER = modBiomeTag("has_monster/dicer");
     public static final TagKey<Biome> HAS_FROWZY = modBiomeTag("has_monster/frowzy");
     public static final TagKey<Biome> HAS_GUZZLER = modBiomeTag("has_monster/guzzler");
-    public static final TagKey<Biome> HAS_PALE_SPIDER = modBiomeTag("has_monster/pale_spider");
+    public static final TagKey<Biome> HAS_HANGING_SPIDER = modBiomeTag("has_monster/hanging_spider");
     public static final TagKey<Biome> HAS_RAMBLE = modBiomeTag("has_monster/ramble");
     public static final TagKey<Biome> HAS_SLUG = modBiomeTag("has_monster/slug");
     public static final TagKey<Biome> HAS_TERROR = modBiomeTag("has_monster/terror");

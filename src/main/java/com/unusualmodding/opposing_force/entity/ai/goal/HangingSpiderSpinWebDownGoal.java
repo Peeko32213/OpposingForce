@@ -79,6 +79,7 @@ public class HangingSpiderSpinWebDownGoal extends Goal {
     public void stop() {
         if (hangingSpider.isGoingDown()) {
             hangingSpider.setGoingDown(false);
+            hangingSpider.setGoingUpCooldown(hangingSpider.getRandom().nextInt(20 * 10) + (20 * 10));
             hangingSpider.setGoingDownCooldown(hangingSpider.getRandom().nextInt(90 * 50) + (40 * 20));
             hangingSpider.deactivateWeb();
             hangingSpider.playSound(SoundEvents.SPIDER_HURT);

@@ -1,6 +1,6 @@
 {
   "type": "forge:add_spawns",
-  "biomes": "#opposing_force:has_monster/pale_spider",
+  "biomes": "#opposing_force:has_monster/hanging_spider",
   "spawners": {
     "type": "opposing_force:hanging_spider",
     "maxCount": 4,

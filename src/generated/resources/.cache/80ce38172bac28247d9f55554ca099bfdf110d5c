@@ -1,11 +1,11 @@
-// 1.20.1	2025-07-07T13:05:12.9424003	Tags for minecraft:worldgen/biome mod id opposing_force
+// 1.20.1	2025-10-15T20:33:07.5568853	Tags for minecraft:worldgen/biome mod id opposing_force
 c51679c52f4830fdfbffad5f7ab8bfe6121eec2a data/forge/tags/worldgen/biome/without_default_monster_spawns.json
 57b9bc73504d77a105ed8da0e7b56fcdf9c2c74c data/forge/tags/worldgen/biome/with_default_monster_spawns.json
 5f176659fa27569cc678ddae4a306c2055a89a16 data/opposing_force/tags/worldgen/biome/has_feature/cream_cap.json
 a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/dicer.json
 a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/frowzy.json
 a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/guzzler.json
-a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/pale_spider.json
+a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/hanging_spider.json
 a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/ramble.json
 a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/slug.json
 a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/terror.json
