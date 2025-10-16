@@ -2,7 +2,7 @@
   "type": "forge:add_spawns",
   "biomes": "#opposing_force:has_monster/ramble",
   "spawners": {
-    "type": "opposing_force:ramble",
+    "type": "opposing_force:rambler",
     "maxCount": 1,
     "minCount": 1,
     "weight": 20

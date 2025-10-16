@@ -36,7 +36,7 @@ public class OPBiomeModifiers {
         addSpawn(context, "frowzy", OPBiomeTags.HAS_FROWZY, new MobSpawnSettings.SpawnerData(OPEntities.FROWZY.get(), 50, 4, 4));
         addSpawn(context, "guzzler", OPBiomeTags.HAS_GUZZLER, new MobSpawnSettings.SpawnerData(OPEntities.GUZZLER.get(), 15, 1, 1));
         addSpawn(context, "hanging_spider", OPBiomeTags.HAS_HANGING_SPIDER, new MobSpawnSettings.SpawnerData(OPEntities.HANGING_SPIDER.get(), 60, 4, 4));
-        addSpawn(context, "ramble", OPBiomeTags.HAS_RAMBLE, new MobSpawnSettings.SpawnerData(OPEntities.RAMBLE.get(), 20, 1, 1));
+        addSpawn(context, "ramble", OPBiomeTags.HAS_RAMBLE, new MobSpawnSettings.SpawnerData(OPEntities.RAMBLER.get(), 20, 1, 1));
         addSpawn(context, "slug", OPBiomeTags.HAS_SLUG, new MobSpawnSettings.SpawnerData(OPEntities.SLUG.get(), 50, 2, 2));
         addSpawn(context, "terror", OPBiomeTags.HAS_TERROR, new MobSpawnSettings.SpawnerData(OPEntities.TERROR.get(), 20, 1, 1));
         addSpawn(context, "trembler", OPBiomeTags.HAS_TREMBLER, new MobSpawnSettings.SpawnerData(OPEntities.TREMBLER.get(), 25, 1, 1));

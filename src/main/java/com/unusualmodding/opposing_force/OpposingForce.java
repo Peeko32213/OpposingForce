@@ -12,7 +12,9 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -28,9 +30,14 @@ public class OpposingForce {
 
     public OpposingForce() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        ModLoadingContext context = ModLoadingContext.get();
+
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
         modEventBus.addListener(this::dataSetup);
+
+        context.registerConfig(ModConfig.Type.COMMON, OpposingForceConfig.COMMON_CONFIG);
+//        context.registerConfig(ModConfig.Type.CLIENT, OpposingForceConfig.CLIENT_CONFIG);
 
         OPBlocks.BLOCKS.register(modEventBus);
         OPItems.ITEMS.register(modEventBus);

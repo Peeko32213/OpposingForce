@@ -77,12 +77,12 @@ public class OPEntities {
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "hanging_spider").toString())
     );
 
-    public static final RegistryObject<EntityType<Ramble>> RAMBLE = ENTITY_TYPES.register(
-            "ramble", () ->
-            EntityType.Builder.of(Ramble::new, MobCategory.MONSTER)
+    public static final RegistryObject<EntityType<Rambler>> RAMBLER = ENTITY_TYPES.register(
+            "rambler", () ->
+            EntityType.Builder.of(Rambler::new, MobCategory.MONSTER)
                     .sized(1.35F, 1.98F)
                     .clientTrackingRange(10)
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "ramble").toString())
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "rambler").toString())
     );
 
     public static final RegistryObject<EntityType<Slug>> SLUG = ENTITY_TYPES.register(

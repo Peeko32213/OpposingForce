@@ -45,7 +45,7 @@ public final class ClientEvents {
         event.registerEntityRenderer(OPEntities.GUZZLER.get(), GuzzlerRenderer::new);
         event.registerEntityRenderer(OPEntities.HAUNTED_TOOL.get(), HauntedToolRenderer::new);
         event.registerEntityRenderer(OPEntities.HANGING_SPIDER.get(), HangingSpiderRenderer::new);
-        event.registerEntityRenderer(OPEntities.RAMBLE.get(), RambleRenderer::new);
+        event.registerEntityRenderer(OPEntities.RAMBLER.get(), RamblerRenderer::new);
         event.registerEntityRenderer(OPEntities.SLUG.get(), SlugRenderer::new);
         event.registerEntityRenderer(OPEntities.TERROR.get(), TerrorRenderer::new);
         event.registerEntityRenderer(OPEntities.TOMAHAWK.get(), TomahawkRenderer::new);
@@ -66,8 +66,8 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.FROWZY_HEAD, FrowzyHeadModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.GUZZLER, GuzzlerModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.HANGING_SPIDER, HangingSpiderModel::createBodyLayer);
-        event.registerLayerDefinition(OPModelLayers.RAMBLE, RambleModel::createBodyLayer);
-        event.registerLayerDefinition(OPModelLayers.RAMBLE_SKULL, RambleSkullModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.RAMBLER, RamblerModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.RAMBLER_SKULL, RambleSkullModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.SLUG, SlugModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.TERROR, TerrorModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.TREMBLER, TremblerModel::createBodyLayer);

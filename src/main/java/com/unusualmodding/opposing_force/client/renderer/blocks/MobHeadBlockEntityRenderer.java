@@ -43,7 +43,7 @@ public class MobHeadBlockEntityRenderer implements BlockEntityRenderer<MobHeadBl
         ImmutableMap.Builder<MobHeadBlock.Type, MobHeadModelBase> builder = ImmutableMap.builder();
         builder.put(MobHeadBlock.Types.DICER, new DicerHeadModel(root.bakeLayer(OPModelLayers.DICER_HEAD)));
         builder.put(MobHeadBlock.Types.FROWZY, new FrowzyHeadModel(root.bakeLayer(OPModelLayers.FROWZY_HEAD)));
-        builder.put(MobHeadBlock.Types.RAMBLE, new RambleSkullModel(root.bakeLayer(OPModelLayers.RAMBLE_SKULL)));
+        builder.put(MobHeadBlock.Types.RAMBLE, new RambleSkullModel(root.bakeLayer(OPModelLayers.RAMBLER_SKULL)));
         return builder.build();
     }
 

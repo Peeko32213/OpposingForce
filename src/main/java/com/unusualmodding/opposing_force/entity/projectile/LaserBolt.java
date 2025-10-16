@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.entity.projectile;
 import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -21,6 +22,7 @@ public class LaserBolt extends FrictionlessProjectile {
     private static final EntityDataAccessor<Boolean> DISRUPTOR = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> RAPID_FIRE = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FREEZING = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.FLOAT);
 
     protected RandomSource randomSource = level.getRandom();
 
@@ -45,10 +47,31 @@ public class LaserBolt extends FrictionlessProjectile {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
+        this.getEntityData().define(DAMAGE, 5.0F);
         this.getEntityData().define(DISRUPTOR, false);
+        this.getEntityData().define(DISRUPTOR_LEVEL, 0);
         this.getEntityData().define(RAPID_FIRE, false);
         this.getEntityData().define(FREEZING, false);
-        this.getEntityData().define(DISRUPTOR_LEVEL, 0);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        compoundTag.putFloat("Damage", this.getLaserDamage());
+        compoundTag.putBoolean("IsDisruptor", this.isDisruptor());
+        compoundTag.putInt("DisruptorLevel", this.getDisruptorLevel());
+        compoundTag.putBoolean("IsRapidFire", this.isRapidFire());
+        compoundTag.putBoolean("IsFreezing", this.isFreezing());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        this.setLaserDamage(compoundTag.getFloat("Damage"));
+        this.setDisruptor(compoundTag.getBoolean("IsDisruptor"));
+        this.setDisruptorLevel(compoundTag.getInt("DisruptorLevel"));
+        this.setRapidFire(compoundTag.getBoolean("IsRapidFire"));
+        this.setFreezing(compoundTag.getBoolean("IsFreezing"));
     }
 
     public boolean isDisruptor() {
@@ -83,6 +106,14 @@ public class LaserBolt extends FrictionlessProjectile {
         this.entityData.set(FREEZING, freezing);
     }
 
+    public float getLaserDamage() {
+        return this.entityData.get(DAMAGE);
+    }
+
+    public void setLaserDamage(float damage) {
+        this.entityData.set(DAMAGE, damage);
+    }
+
     @Override
     public void tick() {
         super.tick();
@@ -105,18 +136,15 @@ public class LaserBolt extends FrictionlessProjectile {
         super.onHitEntity(entityHitResult);
         Entity entity = entityHitResult.getEntity();
         DamageSource damageSource = this.damageSources().source(OPDamageTypes.LASER_BOLT);
-        float damage;
 
         if (!this.level().isClientSide) {
             this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
             this.level().broadcastEntityEvent(this, (byte) 3);
             if (this.isRapidFire()) {
-                damage = 3.0F;
-                entity.hurt(damageSource, damage);
+                entity.hurt(damageSource, this.getLaserDamage());
                 entity.invulnerableTime -= 5;
             } else {
-                damage = 5.0F;
-                entity.hurt(damageSource, damage);
+                entity.hurt(damageSource, this.getLaserDamage());
             }
             if (this.isDisruptor()) {
                 for (int i = 0; i < 2 + this.getDisruptorLevel(); i++) {

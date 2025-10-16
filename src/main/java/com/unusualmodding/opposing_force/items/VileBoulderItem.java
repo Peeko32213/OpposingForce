@@ -22,7 +22,7 @@ public class VileBoulderItem extends SwordItem {
         boolean result = super.hurtEnemy(stack, target, attacker);
 
         if (result) {
-            if (target.getRandom().nextBoolean() && !target.hasEffect(OPEffects.SLUG_INFESTATION.get()) && !(target instanceof Slug)) {
+            if (!target.hasEffect(OPEffects.SLUG_INFESTATION.get()) && !(target instanceof Slug)) {
                 target.addEffect(new MobEffectInstance(OPEffects.SLUG_INFESTATION.get(), 400, stack.getEnchantmentLevel(OPEnchantments.PLAGUE.get()), false, true));
                 target.playSound(OPSoundEvents.SLUG_ATTACK.get(), 1.5F, 1);
 

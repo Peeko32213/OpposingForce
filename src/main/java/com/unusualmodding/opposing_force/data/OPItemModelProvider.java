@@ -1,7 +1,6 @@
 package com.unusualmodding.opposing_force.data;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.registry.OPBlocks;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -24,6 +23,8 @@ public class OPItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+
+        this.item(OPPOSING_FORCE);
 
         this.item(DEEP_SILK);
         this.item(ELECTRIC_CHARGE);

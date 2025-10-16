@@ -3,7 +3,7 @@ package com.unusualmodding.opposing_force.client.models.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.RambleAnimations;
-import com.unusualmodding.opposing_force.entity.Ramble;
+import com.unusualmodding.opposing_force.entity.Rambler;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class RambleModel<T extends Ramble> extends HierarchicalModel<T> {
+public class RamblerModel extends HierarchicalModel<Rambler> {
 
 	private final ModelPart root;
 	private final ModelPart Body;
@@ -42,7 +42,7 @@ public class RambleModel<T extends Ramble> extends HierarchicalModel<T> {
 	private final ModelPart Leg4;
 	private final ModelPart Fingers4;
 
-	public RambleModel(ModelPart root) {
+	public RamblerModel(ModelPart root) {
 		this.root = root.getChild("root");
 		this.Body = this.root.getChild("Body");
 		this.FrontArm1 = this.Body.getChild("FrontArm1");
@@ -108,7 +108,7 @@ public class RambleModel<T extends Ramble> extends HierarchicalModel<T> {
 	}
 
 	@Override
-	public void setupAnim(Ramble entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Rambler entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 
 		this.animateWalk(RambleAnimations.LEGS_OVERLAY, limbSwing, limbSwingAmount, 4, 8);
@@ -125,9 +125,10 @@ public class RambleModel<T extends Ramble> extends HierarchicalModel<T> {
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
+    @Override
 	public ModelPart root() {
 		return this.root;
 	}

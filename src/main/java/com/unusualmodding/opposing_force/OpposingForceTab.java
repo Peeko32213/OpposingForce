@@ -15,7 +15,7 @@ public class OpposingForceTab {
 
     public static final RegistryObject<CreativeModeTab> TAB = CREATIVE_TABS.register(OpposingForce.MOD_ID, () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup." + OpposingForce.MOD_ID))
-            .icon(() -> new ItemStack(OPItems.CAPTURED_WHIZZ.get()))
+            .icon(() -> new ItemStack(OPItems.OPPOSING_FORCE.get()))
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .displayItems((enabledFeatures, output) -> {
                 for (RegistryObject<Item> item : OPItems.ITEMS.getEntries()){

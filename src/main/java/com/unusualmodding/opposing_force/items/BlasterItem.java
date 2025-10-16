@@ -26,6 +26,8 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Predicate;
 
+import static com.unusualmodding.opposing_force.OpposingForceConfig.*;
+
 public class BlasterItem extends Item implements Vanishable {
 
     public static final Predicate<ItemStack> AMMO = (stack) -> stack.is(OPItemTags.BLASTER_AMMO);
@@ -41,7 +43,7 @@ public class BlasterItem extends Item implements Vanishable {
 
     @Override
     public int getEnchantmentValue() {
-        return 1;
+        return 8;
     }
 
     public ItemStack getAmmo(Player player) {
@@ -89,11 +91,13 @@ public class BlasterItem extends Item implements Vanishable {
         laserBolt.setYRot(yRot);
         laserBolt.setXRot(xRot);
         laserBolt.setOwner(player);
+        laserBolt.setLaserDamage(BLASTER_BOLT_DAMAGE.get().floatValue());
         if (itemStack.getEnchantmentLevel(OPEnchantments.SPLITTING.get()) > 0) {
             laserBolt.setDisruptor(true);
             laserBolt.setDisruptorLevel(itemStack.getEnchantmentLevel(OPEnchantments.SPLITTING.get()));
         }
         if (itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) > 0) {
+            laserBolt.setLaserDamage(RAPID_FIRE_DAMAGE.get().floatValue());
             laserBolt.setRapidFire(true);
         }
         if (itemStack.getEnchantmentLevel(OPEnchantments.FREEZE_RAY.get()) > 0) {
@@ -122,7 +126,7 @@ public class BlasterItem extends Item implements Vanishable {
 
         player.awardStat(Stats.ITEM_USED.get(this));
 
-        applyCooldown(player, itemStack, hand, stack -> stack.getItem() instanceof BlasterItem, 15 - (itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) * 3));
+        applyCooldown(player, itemStack, hand, stack -> stack.getItem() instanceof BlasterItem, (int) (BLASTER_COOLDOWN.get() - (itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) * RAPID_FIRE_COOLDOWN_MULTIPLIER.get().floatValue())));
         return InteractionResultHolder.success(itemStack);
     }
 

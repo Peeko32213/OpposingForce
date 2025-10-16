@@ -33,6 +33,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static com.unusualmodding.opposing_force.OpposingForceConfig.*;
+
 public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable {
 
     protected static final Predicate<ItemStack> ELECTRIC_CHARGE = (itemstack) -> itemstack.getItem() instanceof ElectricChargeItem;
@@ -245,24 +247,24 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
         int bounces = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.REBOUND.get(), stack);
         int capacitance = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.CAPACITANCE.get(), stack);
 
-        ElectricChargeItem chargeItem = (ElectricChargeItem)(ammo.getItem() instanceof ElectricChargeItem ? ammo.getItem() : OPItems.ELECTRIC_CHARGE);
+        ElectricChargeItem chargeItem = (ElectricChargeItem) (ammo.getItem() instanceof ElectricChargeItem ? ammo.getItem() : OPItems.ELECTRIC_CHARGE);
         ElectricCharge electricCharge = chargeItem.shootCharge(level, entity);
-        electricCharge.setChargeDamage(4.0F);
+        electricCharge.setChargeDamage(TESLA_CANNON_CHARGE_DAMAGE.get().floatValue());
+        electricCharge.setChargeScale(TESLA_CANNON_CHARGE_SCALE.get().floatValue());
 
         if (capacitance > 0) {
-            electricCharge.setChargeScale(electricCharge.getChargeScale() + ((float) capacitance));
-            electricCharge.setChargeDamage(4.0F + capacitance);
+            electricCharge.setChargeScale(electricCharge.getChargeScale() + ((float) capacitance * CAPACITANCE_SCALE_MULTIPLIER.get().floatValue()));
+            electricCharge.setChargeDamage(electricCharge.getChargeDamage() + (capacitance * CAPACITANCE_DAMAGE_MULTIPLIER.get().floatValue()));
         }
 
         if (rebound) {
-            electricCharge.setMaxBounces(1 + bounces);
+            electricCharge.setMaxBounces((int) (1 + bounces * REBOUND_BOUNCE_MULTIPLIER.get().floatValue()));
             electricCharge.setBouncy(true);
         }
 
         if (quasar) {
-            electricCharge.setChargeScale(electricCharge.getChargeScale() + 2.0F);
+            electricCharge.setChargeScale(electricCharge.getChargeScale() + QUASAR_SCALE_ADDITION.get().floatValue());
             electricCharge.setQuasar(true);
-            electricCharge.setChargeDamage(3.0F);
         }
 
         if (attraction) {

@@ -1,15 +1,15 @@
 package com.unusualmodding.opposing_force.entity.ai.goal;
 
-import com.unusualmodding.opposing_force.entity.Ramble;
+import com.unusualmodding.opposing_force.entity.Rambler;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 public class RambleAttackGoal extends AttackGoal {
 
-    private final Ramble ramble;
+    private final Rambler ramble;
 
-    public RambleAttackGoal(Ramble ramble) {
+    public RambleAttackGoal(Rambler ramble) {
         super(ramble);
         this.ramble = ramble;
     }

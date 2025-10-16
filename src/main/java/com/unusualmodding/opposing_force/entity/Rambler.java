@@ -38,16 +38,16 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class Ramble extends Monster {
+public class Rambler extends Monster {
 
-    private static final EntityDataAccessor<Boolean> FLAILING = SynchedEntityData.defineId(Ramble.class, EntityDataSerializers.BOOLEAN);
-    public static final EntityDataAccessor<Integer> FLAIL_COOLDOWN = SynchedEntityData.defineId(Ramble.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> FLAILING = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Integer> FLAIL_COOLDOWN = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState flailAnimationState = new AnimationState();
     public final AnimationState cooldownAnimationState = new AnimationState();
 
-    public Ramble(EntityType<? extends Monster> entityType, Level level) {
+    public Rambler(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
         this.xpReward = 15;
     }
@@ -241,7 +241,7 @@ public class Ramble extends Monster {
         RandomSource randomsource = pLevel.getRandom();
 
         if (randomsource.nextInt(100) == 0) {
-            Ramble ramble = OPEntities.RAMBLE.get().create(this.level());
+            Rambler ramble = OPEntities.RAMBLER.get().create(this.level());
             if (ramble != null) {
                 ramble.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
                 ramble.finalizeSpawn(pLevel, pDifficulty, pReason, null, null);
