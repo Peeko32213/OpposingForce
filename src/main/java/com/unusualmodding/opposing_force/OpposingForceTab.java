@@ -99,7 +99,6 @@ public class OpposingForceTab {
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.TESLA_CANNON);
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.BLASTER);
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.VILE_BOULDER);
-                    OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.WOODEN_ARMOR);
                     OPEnchantments.addAllEnchantsToCreativeTab(output, EnchantmentCategory.CROSSBOW);
 
                     output.accept(OPBrewingRecipes.registerPotion(OPPotions.GLOOM_TOXIN_POTION.get()));

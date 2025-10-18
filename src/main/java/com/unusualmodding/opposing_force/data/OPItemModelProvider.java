@@ -45,12 +45,14 @@ public class OPItemModelProvider extends ItemModelProvider {
         this.handheldItem(EMERALD_SHOVEL);
         this.handheldItem(EMERALD_HOE);
 
+        this.handheldItem(MOON_SHOES);
+
         this.handheldItem(UMBER_DAGGER);
 
-//        item(WOODEN_MASK);
-//        item(WOODEN_CHESTPLATE);
-//        item(WOODEN_COVER);
-//        item(WOODEN_BOOTS);
+        this.item(WOODEN_MASK);
+        this.item(WOODEN_CHESTPLATE);
+        this.item(WOODEN_COVER);
+        this.item(WOODEN_BOOTS);
         this.item(EMERALD_MASK);
         this.item(EMERALD_CHESTPLATE);
         this.item(EMERALD_LEGGINGS);

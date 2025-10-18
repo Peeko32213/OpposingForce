@@ -1,0 +1,18 @@
+{
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "opposing_force:moon_shoes",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 16
+        }
+      ]
+    }
+  ]
+}

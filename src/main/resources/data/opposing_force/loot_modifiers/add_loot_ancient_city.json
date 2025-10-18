@@ -1,0 +1,10 @@
+{
+  "type": "opposing_force:add_loot_table",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/ancient_city"
+    }
+  ],
+  "lootTable": "opposing_force:chests/opposing_force_ancient_city"
+}

@@ -2,6 +2,7 @@
   "replace": false,
   "entries": [
     "opposing_force:add_loot_abandoned_mineshaft",
-    "opposing_force:add_loot_simple_dungeon"
+    "opposing_force:add_loot_simple_dungeon",
+    "opposing_force:add_loot_ancient_city"
   ]
 }

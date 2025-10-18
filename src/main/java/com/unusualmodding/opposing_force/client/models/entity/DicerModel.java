@@ -150,6 +150,7 @@ public class DicerModel extends HierarchicalModel<Dicer> {
 		this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
+    @Override
 	public ModelPart root() {
 		return this.root;
 	}

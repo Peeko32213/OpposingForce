@@ -18,72 +18,64 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @SuppressWarnings("FieldCanBeLocal, unused")
 public class FrowzyModel extends HierarchicalModel<Frowzy> implements ArmedModel, HeadedModel {
 
-	public final ModelPart root;
-	public final ModelPart Body;
-	public final ModelPart Head;
-	public final ModelPart Arm1;
-	public final ModelPart Arm2;
-	public final ModelPart Leg1;
-	public final ModelPart Leg2;
+    private final ModelPart root;
+    private final ModelPart upper_body;
+    private final ModelPart head;
+    private final ModelPart left_arm;
+    private final ModelPart right_arm;
+    private final ModelPart left_leg;
+    private final ModelPart right_leg;
 
-	public FrowzyModel(ModelPart root) {
-		this.root = root.getChild("root");
-		this.Body = this.root.getChild("Body");
-		this.Head = this.Body.getChild("Head");
-		this.Arm1 = this.Body.getChild("Arm1");
-		this.Arm2 = this.Body.getChild("Arm2");
-		this.Leg1 = this.root.getChild("Leg1");
-		this.Leg2 = this.root.getChild("Leg2");
-	}
+    public FrowzyModel(ModelPart root) {
+        this.root = root.getChild("root");
+        this.upper_body = this.root.getChild("upper_body");
+        this.head = this.upper_body.getChild("head");
+        this.left_arm = this.upper_body.getChild("left_arm");
+        this.right_arm = this.upper_body.getChild("right_arm");
+        this.left_leg = this.root.getChild("left_leg");
+        this.right_leg = this.root.getChild("right_leg");
+    }
 
-	public static LayerDefinition createBodyLayer() {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 2.0F, 1.0F));
+        PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		PartDefinition Body = root.addOrReplaceChild("Body", CubeListBuilder.create()
-				.texOffs(0, 16).addBox(-4.0F, -6.0F, -1.0F, 8.0F, 6.0F, 3.0F, new CubeDeformation(0.0F))
-				.texOffs(1, 39).addBox(-3.5F, -5.3F, -1.0F, 7.0F, 6.0F, 3.0F, new CubeDeformation(0.8F)), PartPose.offset(0.0F, 7.0F, -0.5F));
+        PartDefinition upper_body = root.addOrReplaceChild("upper_body", CubeListBuilder.create().texOffs(0, 29).addBox(-3.0F, -7.0F, -1.5F, 6.0F, 5.0F, 3.0F, new CubeDeformation(0.25F))
+                .texOffs(32, 0).addBox(-3.0F, -7.0F, -1.0F, 6.0F, 7.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -17.0F, 0.0F));
 
-		PartDefinition Head = Body.addOrReplaceChild("Head", CubeListBuilder.create()
-				.texOffs(0, 0).addBox(-4.0F, -8.0F, -3.5F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
-				.texOffs(2, 49).addBox(-3.0F, -6.5F, -3.0F, 6.0F, 6.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -6.0F, 0.0F));
+        PartDefinition head = upper_body.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
+                .texOffs(2, 19).addBox(-3.5F, -5.5F, -3.75F, 7.0F, 5.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -7.0F, 0.0F));
 
-		PartDefinition Arm1 = Body.addOrReplaceChild("Arm1", CubeListBuilder.create()
-				.texOffs(30, 16).addBox(0.0F, 0.0F, -1.5F, 3.0F, 3.0F, 3.0F, new CubeDeformation(0.0F))
-				.texOffs(22, 16).addBox(0.025F, 1.0F, -1.0F, 2.0F, 14.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(4.0F, -6.0F, 0.5F));
+        PartDefinition left_arm = upper_body.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(34, 15).addBox(0.0F, -1.0F, -1.0F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.2F))
+                .texOffs(18, 29).addBox(0.0F, -1.0F, -1.0F, 2.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(3.0F, -6.0F, 0.0F));
 
-		PartDefinition Arm2 = Body.addOrReplaceChild("Arm2", CubeListBuilder.create()
-				.texOffs(22, 16).mirror().addBox(-2.05F, 1.0F, -1.0F, 2.0F, 14.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false)
-				.texOffs(30, 16).mirror().addBox(-3.0F, 0.0F, -1.5F, 3.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(-4.0F, -6.0F, 0.5F));
+        PartDefinition right_arm = upper_body.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(34, 15).mirror().addBox(-2.0F, -1.0F, -1.0F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.2F)).mirror(false)
+                .texOffs(18, 29).mirror().addBox(-2.0F, -1.0F, -1.0F, 2.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(-3.0F, -6.0F, 0.0F));
 
-		PartDefinition Leg1 = root.addOrReplaceChild("Leg1", CubeListBuilder.create()
-				.texOffs(8, 31).addBox(-2.0F, 0.0F, -1.5F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F))
-				.texOffs(21, 35).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 15.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(2.0F, 7.0F, 0.0F));
+        PartDefinition left_leg = root.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(32, 9).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 4.0F, 2.0F, new CubeDeformation(0.2F))
+                .texOffs(26, 16).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 17.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(2.0F, -17.0F, 0.0F));
 
-		PartDefinition Leg2 = root.addOrReplaceChild("Leg2", CubeListBuilder.create()
-				.texOffs(21, 35).mirror().addBox(-1.0F, 0.0F, -1.0F, 2.0F, 15.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false)
-				.texOffs(8, 25).mirror().addBox(-2.0F, 0.0F, -1.5F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(-2.0F, 7.0F, 0.0F));
+        PartDefinition right_leg = root.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(32, 9).mirror().addBox(-1.0F, 0.0F, -1.0F, 2.0F, 4.0F, 2.0F, new CubeDeformation(0.2F)).mirror(false)
+                .texOffs(26, 16).mirror().addBox(-1.0F, 0.0F, -1.0F, 2.0F, 17.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(-2.0F, -17.0F, 0.0F));
 
-		return LayerDefinition.create(meshdefinition, 64, 64);
-	}
+        return LayerDefinition.create(meshdefinition, 64, 64);
+    }
 
 	@Override
 	public void setupAnim(Frowzy entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		this.animateWalk(FrowzyAnimations.WADDLE, limbSwing, limbSwingAmount, 1, 2);
+		this.animateWalk(FrowzyAnimations.WALK, limbSwing, limbSwingAmount, 1, 2);
 		this.animate(entity.idleAnimationState, FrowzyAnimations.IDLE, ageInTicks);
-		this.animate(entity.attackAnimationState, FrowzyAnimations.CRASH_OUT, ageInTicks);
-
-		this.applyStatic(FrowzyAnimations.ARMS_OVERLAY);
+		this.animate(entity.attackAnimationState, FrowzyAnimations.ATTACK, ageInTicks);
 
 		if (this.young) {
 			this.applyStatic(FrowzyAnimations.BABY_TRANSFORM);
 		}
 
-		this.Head.xRot += headPitch * ((float) Math.PI / 180) - (headPitch * ((float) Math.PI / 180)) / 2;
-		this.Head.yRot += netHeadYaw * ((float) Math.PI / 180) - (netHeadYaw * ((float) Math.PI / 180)) / 2;
+		this.head.xRot += headPitch * ((float) Math.PI / 180) - (headPitch * ((float) Math.PI / 180)) / 2;
+		this.head.yRot += netHeadYaw * ((float) Math.PI / 180) - (netHeadYaw * ((float) Math.PI / 180)) / 2;
 	}
 
 	@Override
@@ -109,24 +101,24 @@ public class FrowzyModel extends HierarchicalModel<Frowzy> implements ArmedModel
     @Override
     public void translateToHand(HumanoidArm arm, PoseStack poseStack) {
         this.root.translateAndRotate(poseStack);
-        this.Body.translateAndRotate(poseStack);
+        this.upper_body.translateAndRotate(poseStack);
         if (arm == HumanoidArm.RIGHT) {
-            this.Arm2.translateAndRotate(poseStack);
+            this.right_arm.translateAndRotate(poseStack);
         } else {
-            this.Arm1.translateAndRotate(poseStack);
+            this.left_arm.translateAndRotate(poseStack);
         }
         poseStack.translate(0.0F, 0.25F, 0.025F);
     }
 
     public void translateToHead(PoseStack poseStack) {
         this.root.translateAndRotate(poseStack);
-        this.Body.translateAndRotate(poseStack);
-        this.Head.translateAndRotate(poseStack);
+        this.upper_body.translateAndRotate(poseStack);
+        this.head.translateAndRotate(poseStack);
         poseStack.translate(0.0F, -0.025F, 0.025F);
     }
 
     @Override
     public ModelPart getHead() {
-        return this.Head;
+        return this.head;
     }
 }

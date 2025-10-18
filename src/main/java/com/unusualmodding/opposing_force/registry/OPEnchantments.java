@@ -2,7 +2,6 @@ package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.enchantments.*;
-import com.unusualmodding.opposing_force.items.WoodenArmorItem;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.EnchantedBookItem;
@@ -24,7 +23,6 @@ public class OPEnchantments {
     public static final EnchantmentCategory TESLA_CANNON = EnchantmentCategory.create("tesla_cannon", (item -> item == OPItems.TESLA_CANNON.get()));
     public static final EnchantmentCategory VILE_BOULDER = EnchantmentCategory.create("vile_boulder", (item -> item == OPItems.VILE_BOULDER.get()));
     public static final EnchantmentCategory BLASTER = EnchantmentCategory.create("blaster", (item -> item == OPItems.BLASTER.get()));
-    public static final EnchantmentCategory WOODEN_ARMOR = EnchantmentCategory.create("wooden_armor", (item -> item instanceof WoodenArmorItem));
 
     public static final RegistryObject<Enchantment> BATTERY = ENCHANTMENTS.register("battery", () -> new OPEnchantment("battery", Enchantment.Rarity.UNCOMMON, TESLA_CANNON, 3, 15, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> CAPACITANCE = ENCHANTMENTS.register("capacitance", () -> new OPEnchantment("capacitance", Enchantment.Rarity.RARE, TESLA_CANNON, 3, 20, EquipmentSlot.MAINHAND));
@@ -38,8 +36,6 @@ public class OPEnchantments {
     public static final RegistryObject<Enchantment> POWER_SUPPLY = ENCHANTMENTS.register("power_supply", () -> new OPEnchantment("power_supply", Enchantment.Rarity.UNCOMMON, BLASTER, 3, 15, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> RAPID_FIRE = ENCHANTMENTS.register("rapid_fire", () -> new OPEnchantment("rapid_fire", Enchantment.Rarity.RARE, BLASTER, 3, 20, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> SPLITTING = ENCHANTMENTS.register("splitting", () -> new OPEnchantment("splitting", Enchantment.Rarity.RARE, BLASTER, 5, 15, EquipmentSlot.MAINHAND));
-
-    public static final RegistryObject<Enchantment> PHOTOSYNTHESIS = ENCHANTMENTS.register("photosynthesis", () -> new TrueTreasureEnchantment("photosynthesis", Enchantment.Rarity.RARE, WOODEN_ARMOR, 1, 20, ARMOR_SLOTS));
 
     public static final RegistryObject<Enchantment> KICKBACK = ENCHANTMENTS.register("kickback", () -> new OPEnchantment("kickback", Enchantment.Rarity.RARE, TESLA_CANNON, 4, 20, EquipmentSlot.MAINHAND));
 

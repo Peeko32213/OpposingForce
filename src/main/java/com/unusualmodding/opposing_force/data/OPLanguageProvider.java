@@ -178,8 +178,6 @@ public class OPLanguageProvider extends LanguageProvider {
         this.addEnchantmentWithDesc(OPEnchantments.FREEZE_RAY.get(), "Laser bolts inflict freezing on hit");
         this.addEnchantmentWithDesc(OPEnchantments.POWER_SUPPLY.get(), "Blaster has a chance to not consume redstone dust");
 
-        this.addEnchantmentWithDesc(OPEnchantments.PHOTOSYNTHESIS.get(), "Heals the user over time while exposed to sunlight");
-
         this.addEffect(OPEffects.ELECTRIFIED, "Electrified");
         this.addEffect(OPEffects.GLOOM_TOXIN, "Gloom Toxin");
         this.addEffect(OPEffects.SLUG_INFESTATION, "Slug Infestation");
