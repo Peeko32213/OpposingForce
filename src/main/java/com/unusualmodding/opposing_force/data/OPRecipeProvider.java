@@ -54,6 +54,8 @@ public class OPRecipeProvider extends RecipeProvider {
         ShapedRecipeBuilder.shaped(COMBAT, STONE_LEGGINGS.get()).define('#', ItemTags.STONE_TOOL_MATERIALS).pattern("###").pattern("# #").pattern("# #").unlockedBy("has_cobbled_stone", has(ItemTags.STONE_TOOL_MATERIALS)).save(consumer);
         ShapedRecipeBuilder.shaped(COMBAT, STONE_BOOTS.get()).define('#', ItemTags.STONE_TOOL_MATERIALS).pattern("# #").pattern("# #").unlockedBy("has_cobbled_stone", has(ItemTags.STONE_TOOL_MATERIALS)).save(consumer);
 
+        ShapedRecipeBuilder.shaped(FOOD, Items.ENCHANTED_GOLDEN_APPLE).define('G', Tags.Items.STORAGE_BLOCKS_GOLD).define('A', Items.APPLE).pattern("GGG").pattern("GAG").pattern("GGG").unlockedBy("has_gold", has(Tags.Items.INGOTS_GOLD)).save(consumer);
+
         ShapedRecipeBuilder.shaped(FOOD, OPBlocks.INFERNO_PIE.get()).define('G', GUZZLER_SCALES.get()).define('F', FIRE_GEL.get()).define('S', Items.SUGAR).define('E', Tags.Items.EGGS).pattern("FFF").pattern("SES").pattern("GGG").unlockedBy("has_fire_gel", has(FIRE_GEL.get())).save(consumer);
         ShapedRecipeBuilder.shaped(FOOD, OPBlocks.INFERNO_PIE.get()).define('I', INFERNO_PIE_SLICE.get()).pattern("II").pattern("II").unlockedBy("has_fire_gel", has(FIRE_GEL.get())).save(consumer, getSaveLocation("inferno_pie_from_slices"));
 

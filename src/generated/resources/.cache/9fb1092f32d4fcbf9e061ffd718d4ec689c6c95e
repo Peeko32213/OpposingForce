@@ -1,4 +1,6 @@
-// 1.20.1	2025-10-11T19:13:14.8149616	Recipes
+// 1.20.1	2025-10-18T11:01:56.1045962	Recipes
+19b9af45401a2eea7cbaccf470cc125ee7fee81b data/minecraft/advancements/recipes/food/enchanted_golden_apple.json
+4e6fce234df08980a5f8e058b9497c4d9d72a986 data/minecraft/recipes/enchanted_golden_apple.json
 139da0a86e8b183e3a1799119694c7bc0b55d53e data/opposing_force/advancements/recipes/building_blocks/chiseled_vile_stone_bricks.json
 e6d0f000ced60d1757e3eeea1336ed06ae1de311 data/opposing_force/advancements/recipes/building_blocks/deep_silk_block.json
 8b3713442bbb0cf5ba3006783c278500d0adbe31 data/opposing_force/advancements/recipes/building_blocks/trembling_block.json
