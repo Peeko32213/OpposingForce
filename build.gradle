@@ -87,13 +87,24 @@ dependencies {
 
     runtimeOnly fg.deobf("curse.maven:cyanide-541676:5778405")
     runtimeOnly fg.deobf("curse.maven:appleskin-248787:4770828")
+//    runtimeOnly fg.deobf("maven.modrinth:species:KwPDNMjG")
 
     annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 }
 
 repositories {
-    maven { url "https://www.cursemaven.com" }
-    maven { url "https://modmaven.k-4u.nl" }
+    maven {
+        name = "Curseforge"
+        url = "https://www.cursemaven.com"
+    }
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+    }
+    maven {
+        name = "JEI"
+        url = "https://modmaven.k-4u.nl"
+    }
 }
 
 jar {

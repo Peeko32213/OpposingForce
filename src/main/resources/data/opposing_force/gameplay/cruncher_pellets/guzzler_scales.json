@@ -1,0 +1,9 @@
+{
+  "type": "opposing_force:guzzler",
+  "item": {
+    "id": "opposing_force:guzzler_scales",
+    "Count": 1
+  },
+  "minTries": 4,
+  "maxTries": 8
+}

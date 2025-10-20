@@ -43,7 +43,7 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
     @Shadow @Final private float scaleX;
     @Shadow @Final private float scaleY;
     @Shadow @Final private float scaleZ;
-    @Unique private Map<MobHeadBlock.Type, MobHeadModelBase> headModelBaseMap;
+    @Unique private Map<MobHeadBlock.Type, MobHeadModelBase> opposingForce$headModelBaseMap;
 
     public CustomHeadLayerMixin(RenderLayerParent<T, M> renderLayerParent) {
         super(renderLayerParent);
@@ -51,7 +51,7 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
 
     @Inject(at = @At("TAIL"), method = "<init>(Lnet/minecraft/client/renderer/entity/RenderLayerParent;Lnet/minecraft/client/model/geom/EntityModelSet;FFFLnet/minecraft/client/renderer/ItemInHandRenderer;)V")
     private void opposingForce$renderHeads(RenderLayerParent parent, EntityModelSet modelSet, float p_234824_, float p_234825_, float p_234826_, ItemInHandRenderer handRenderer, CallbackInfo ci) {
-        this.headModelBaseMap = MobHeadBlockEntityRenderer.createMobHeadRenderers(modelSet);
+        this.opposingForce$headModelBaseMap = MobHeadBlockEntityRenderer.createMobHeadRenderers(modelSet);
     }
 
     @Inject(at = @At("HEAD"), method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V", cancellable = true)
@@ -80,7 +80,7 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
                 poseStack.translate(-0.5D, 0.0D, -0.5D);
 
                 MobHeadBlock.Type type = block instanceof MobHeadBlock ? ((MobHeadBlock) block).getType() : ((WallMobHeadBlock) block).getType();
-                MobHeadModelBase skullmodelbase = this.headModelBaseMap.get(type);
+                MobHeadModelBase skullmodelbase = this.opposingForce$headModelBaseMap.get(type);
                 RenderType rendertype = MobHeadBlockEntityRenderer.getRenderType(type);
                 Entity entity = t.getVehicle();
 

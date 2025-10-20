@@ -1,0 +1,9 @@
+{
+  "type": "opposing_force:dicer",
+  "item": {
+    "id": "opposing_force:dicer_head",
+    "Count": 1
+  },
+  "minTries": 2,
+  "maxTries": 4
+}

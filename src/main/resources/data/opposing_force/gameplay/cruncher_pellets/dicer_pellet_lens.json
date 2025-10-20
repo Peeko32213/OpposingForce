@@ -1,0 +1,9 @@
+{
+  "type": "opposing_force:dicer",
+  "item": {
+    "id": "opposing_force:dicer_lens",
+    "Count": 1
+  },
+  "minTries": 4,
+  "maxTries": 8
+}
