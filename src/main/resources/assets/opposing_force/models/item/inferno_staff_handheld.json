@@ -1,0 +1,6 @@
+{
+  "parent": "opposing_force:item/handheld_large",
+  "textures": {
+    "layer0": "opposing_force:item/inferno_staff_huge"
+  }
+}

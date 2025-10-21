@@ -144,7 +144,7 @@ public class ElectricCharge extends FrictionlessProjectile {
         }
 
         this.spawnElectricParticles(this, 1 + randomSource.nextInt(3), 0, 12);
-        this.hurtEntitiesAround(pos, (this.getChargeScale()) + 1.25F, this.getChargeDamage());
+        this.hurtEntitiesAround(pos, (this.getChargeScale()) + 1.5F, this.getChargeDamage());
 
         if (this.level().getBlockState(this.blockPosition().below(0)).is(Blocks.WATER)) {
             this.spawnElectricParticles(this, 7 + randomSource.nextInt(5), 0, 16);

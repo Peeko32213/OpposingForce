@@ -1,0 +1,6 @@
+{
+  "parent": "opposing_force:item/handheld_giant",
+  "textures": {
+    "layer0": "opposing_force:item/dormant_blade_of_the_mountain_huge"
+  }
+}

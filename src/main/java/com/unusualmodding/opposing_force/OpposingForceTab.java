@@ -27,30 +27,6 @@ public class OpposingForceTab {
                         }
                     });
 
-                    output.accept(OPItems.TOMAHAWK.get());
-
-                    output.accept(OPItems.WOODEN_MASK.get());
-                    output.accept(OPItems.WOODEN_CHESTPLATE.get());
-                    output.accept(OPItems.WOODEN_COVER.get());
-                    output.accept(OPItems.WOODEN_BOOTS.get());
-
-                    output.accept(OPItems.STONE_HELMET.get());
-                    output.accept(OPItems.STONE_CHESTPLATE.get());
-                    output.accept(OPItems.STONE_LEGGINGS.get());
-                    output.accept(OPItems.STONE_BOOTS.get());
-
-                    output.accept(OPItems.MOON_SHOES.get());
-
-                    output.accept(OPItems.EMERALD_SWORD.get());
-                    output.accept(OPItems.EMERALD_SHOVEL.get());
-                    output.accept(OPItems.EMERALD_PICKAXE.get());
-                    output.accept(OPItems.EMERALD_AXE.get());
-                    output.accept(OPItems.EMERALD_HOE.get());
-                    output.accept(OPItems.EMERALD_MASK.get());
-                    output.accept(OPItems.EMERALD_CHESTPLATE.get());
-                    output.accept(OPItems.EMERALD_LEGGINGS.get());
-                    output.accept(OPItems.EMERALD_BOOTS.get());
-
                     output.accept(OPBlocks.SLUG_EGGS.get());
                     output.accept(OPBlocks.VILE_STONE.get());
                     output.accept(OPBlocks.VILE_STONE_STAIRS.get());
@@ -66,8 +42,10 @@ public class OpposingForceTab {
                     output.accept(OPBlocks.VILE_COBBLESTONE_WALL.get());
 
                     output.accept(OPItems.VILE_BOULDER.get());
+                    output.accept(OPItems.VILE_STAFF.get());
                     output.accept(OPItems.ELECTRIC_CHARGE.get());
                     output.accept(OPItems.TESLA_CANNON.get());
+                    output.accept(OPItems.TESLA_SABER.get());
                     output.accept(OPItems.CAPTURED_WHIZZ.get());
                     output.accept(OPBlocks.TREMBLER_SHELL.get());
                     output.accept(OPBlocks.TREMBLING_BLOCK.get());
@@ -89,6 +67,28 @@ public class OpposingForceTab {
                     output.accept(OPItems.FIRE_GEL.get());
                     output.accept(OPBlocks.INFERNO_PIE.get());
                     output.accept(OPItems.INFERNO_PIE_SLICE.get());
+                    output.accept(OPItems.INFERNO_STAFF.get());
+
+                    output.accept(OPItems.WOODEN_MASK.get());
+                    output.accept(OPItems.WOODEN_CHESTPLATE.get());
+                    output.accept(OPItems.WOODEN_COVER.get());
+                    output.accept(OPItems.WOODEN_BOOTS.get());
+                    output.accept(OPItems.STONE_HELMET.get());
+                    output.accept(OPItems.STONE_CHESTPLATE.get());
+                    output.accept(OPItems.STONE_LEGGINGS.get());
+                    output.accept(OPItems.STONE_BOOTS.get());
+                    output.accept(OPItems.EMERALD_SWORD.get());
+                    output.accept(OPItems.EMERALD_SHOVEL.get());
+                    output.accept(OPItems.EMERALD_PICKAXE.get());
+                    output.accept(OPItems.EMERALD_AXE.get());
+                    output.accept(OPItems.EMERALD_HOE.get());
+                    output.accept(OPItems.EMERALD_MASK.get());
+                    output.accept(OPItems.EMERALD_CHESTPLATE.get());
+                    output.accept(OPItems.EMERALD_LEGGINGS.get());
+                    output.accept(OPItems.EMERALD_BOOTS.get());
+                    output.accept(OPItems.MOON_SHOES.get());
+                    output.accept(OPItems.TOMAHAWK.get());
+                    output.accept(OPItems.BLADE_OF_THE_MOUNTAIN.get());
 
                     output.accept(OPBlocks.INFESTED_AMETHYST_BLOCK.get());
 

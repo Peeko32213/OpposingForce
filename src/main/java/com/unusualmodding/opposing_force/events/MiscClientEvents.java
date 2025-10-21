@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.events;
 
 import com.unusualmodding.opposing_force.items.BlasterItem;
 import com.unusualmodding.opposing_force.items.TeslaCannonItem;
+import com.unusualmodding.opposing_force.registry.OPItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -94,6 +95,32 @@ public class MiscClientEvents {
                 event.getModel().leftArm.xRot = -1.5F + event.getModel().head.xRot;
                 event.setResult(Event.Result.ALLOW);
             }
+        }
+
+        if (player.getItemInHand(InteractionHand.MAIN_HAND).is(OPItems.BLADE_OF_THE_MOUNTAIN.get())) {
+//            event.getModel().rightArm.xRot = -0.8727F + (Mth.cos(f * 0.6662F) * 2.0F * g * 0.5F / 15);
+//            event.getModel().rightArm.yRot = -0.5672F;
+//            event.getModel().rightArm.zRot = 0.0F;
+//            event.getModel().leftArm.xRot = -1.0472F + (Mth.cos(f * 0.6662F) * 2.0F * g * 0.5F / 15);
+//            event.getModel().leftArm.yRot = 0.829F;
+//            event.getModel().leftArm.zRot = -0.0436F;
+//            if (event.getModel().attackTime > 0) {
+//                float gx = 1.0F - event.getModel().attackTime;
+//                float hx = Mth.sin(gx * 3.1415927F);
+//                float kx = event.getModel().head.xRot;
+//                if (kx < 0) {
+//                    kx = 0.25F;
+//                }
+//                float ix = Mth.sin(event.getModel().attackTime * 3.1415927F) * -((kx) - 0.7F) * 0.75F * 0.6F;
+//                event.getModel().rightArm.xRot = (float) ((double) event.getModel().rightArm.xRot - ((double) hx * 1.2D + (double) ix));
+//                event.getModel().leftArm.xRot = (float) ((double) event.getModel().leftArm.xRot - ((double) hx * 1.2D + (double) ix) * 1.2D) * 0.75F;
+//            }
+//
+//            if (player.isBlocking()) {
+//                event.getModel().rightArm.xRot = -1.25F;
+//                event.getModel().leftArm.xRot = -1.17F;
+//                event.getModel().rightArm.zRot = 0.7F;
+//            }
         }
     }
 

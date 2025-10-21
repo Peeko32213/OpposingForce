@@ -1,0 +1,21 @@
+{
+  "parent": "item/handheld",
+  "loader": "forge:separate_transforms",
+  "textures": {
+    "layer0": "opposing_force:item/tesla_saber"
+  },
+  "base": {
+    "parent": "opposing_force:item/tesla_saber_handheld"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "opposing_force:item/tesla_saber_gui"
+    },
+    "fixed": {
+      "parent": "opposing_force:item/tesla_saber_gui"
+    },
+    "ground": {
+      "parent": "opposing_force:item/tesla_saber_gui"
+    }
+  }
+}

@@ -50,6 +50,10 @@ public class OPItems {
     public static final RegistryObject<Item> FIRE_GEL = registerItem("fire_gel", () -> new Item(foodItem(OPFoodValues.FIRE_GEL)));
     public static final RegistryObject<Item> UMBER_DAGGER = registerItem("umber_dagger", () -> new UmberDaggerItem(OPItemTiers.UMBER, 1, -2, new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> INFERNO_PIE_SLICE = registerItemNoLang("inferno_pie_slice", () -> new Item(foodItem(OPFoodValues.INFERNO_PIE)));
+    public static final RegistryObject<Item> BLADE_OF_THE_MOUNTAIN = registerItem("blade_of_the_mountain", () -> new SwordItem(Tiers.DIAMOND, 3, -2.4F, new Item.Properties()));
+    public static final RegistryObject<Item> TESLA_SABER = registerItem("tesla_saber", () -> new SwordItem(Tiers.DIAMOND, 3, -2.4F, new Item.Properties()));
+    public static final RegistryObject<Item> INFERNO_STAFF = registerItem("inferno_staff", () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> VILE_STAFF = registerItem("vile_staff", () -> new Item(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> DEEPWOVEN_HAT = registerItem("deepwoven_hat", ()-> new DeepwovenArmorItem(OPArmorMaterials.DEEPWOVEN, ArmorItem.Type.HELMET, new Item.Properties()));
     public static final RegistryObject<Item> DEEPWOVEN_TUNIC = registerItem("deepwoven_tunic", ()-> new DeepwovenArmorItem(OPArmorMaterials.DEEPWOVEN, ArmorItem.Type.CHESTPLATE, new Item.Properties()));

@@ -1,8 +1,7 @@
 package com.unusualmodding.opposing_force.mixins.client;
 
 import com.unusualmodding.opposing_force.events.PoseHandEvent;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.Model;
+import net.minecraft.client.model.*;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,20 +25,20 @@ public abstract class HumanoidModelMixin extends Model {
     }
 
     @Inject(at = @At("HEAD"), method = "poseRightArm", cancellable = true)
-    private void opposingForce$poseRightArm(LivingEntity entity, CallbackInfo callbackInfo) {
+    private void opposingForce$poseRightArm(LivingEntity entity, CallbackInfo ci) {
         PoseHandEvent event = new PoseHandEvent(entity, (HumanoidModel) ((Model) this), false);
         MinecraftForge.EVENT_BUS.post(event);
         if (event.getResult() == Event.Result.ALLOW) {
-            callbackInfo.cancel();
+            ci.cancel();
         }
     }
 
     @Inject(at = @At("HEAD"), method = "poseLeftArm", cancellable = true)
-    private void opposingForce$poseLeftArm(LivingEntity entity, CallbackInfo callbackInfo) {
+    private void opposingForce$poseLeftArm(LivingEntity entity, CallbackInfo ci) {
         PoseHandEvent event = new PoseHandEvent(entity, (HumanoidModel) ((Model) this), true);
         MinecraftForge.EVENT_BUS.post(event);
         if (event.getResult() == Event.Result.ALLOW) {
-            callbackInfo.cancel();
+            ci.cancel();
         }
     }
 }
