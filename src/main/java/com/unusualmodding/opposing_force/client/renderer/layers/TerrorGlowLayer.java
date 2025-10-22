@@ -15,18 +15,18 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class TerrorGlowLayer<T extends Terror, M extends TerrorModel<T>> extends RenderLayer<T, M> {
+public class TerrorGlowLayer extends RenderLayer<Terror, TerrorModel> {
 
     private static final RenderType GLOW_TEXTURE = RenderType.entityTranslucentEmissive(new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/terror/terror_glow.png"));
 
-    public TerrorGlowLayer(RenderLayerParent<T, M> parentModel) {
+    public TerrorGlowLayer(RenderLayerParent<Terror, TerrorModel> parentModel) {
         super(parentModel);
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int i, T entity, float f, float g, float h, float j, float k, float l) {
+    public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int i, Terror entity, float f, float g, float h, float j, float k, float l) {
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(GLOW_TEXTURE);
-        this.getParentModel().renderToBuffer(poseStack, vertexConsumer, 0xF00000, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.5F);
+        this.getParentModel().renderToBuffer(poseStack, vertexConsumer, 0xF00000, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
     }
 }
 

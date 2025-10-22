@@ -96,7 +96,7 @@ public class OPEntities {
     public static final RegistryObject<EntityType<Terror>> TERROR = ENTITY_TYPES.register(
             "terror", () ->
             EntityType.Builder.of(Terror::new, MobCategory.MONSTER)
-                    .sized(1.5F, 0.9F)
+                    .sized(1.3F, 1.1F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "terror").toString())
     );

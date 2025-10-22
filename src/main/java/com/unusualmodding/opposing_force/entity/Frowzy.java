@@ -188,7 +188,7 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
     }
 
     private void setupAnimationStates() {
-        this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
+        this.idleAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() <= 1.0E-5F, this.tickCount);
         this.attackAnimationState.animateWhen(this.getAttackState() == 1, this.tickCount);
     }
 

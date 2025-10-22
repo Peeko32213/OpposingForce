@@ -14,13 +14,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(Dist.CLIENT)
-public class TerrorRenderer extends MobRenderer<Terror, TerrorModel<Terror>> {
+public class TerrorRenderer extends MobRenderer<Terror, TerrorModel> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/terror/terror.png");
 
     public TerrorRenderer(EntityRendererProvider.Context context) {
-        super(context, new TerrorModel<>(context.bakeLayer(OPModelLayers.TERROR)), 0.5F);
-        this.addLayer(new TerrorGlowLayer<>(this));
+        super(context, new TerrorModel(context.bakeLayer(OPModelLayers.TERROR)), 0.5F);
+        this.addLayer(new TerrorGlowLayer(this));
     }
 
     @Override
