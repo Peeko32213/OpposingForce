@@ -13,6 +13,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -44,8 +45,18 @@ public class Rambler extends Monster {
     public static final EntityDataAccessor<Integer> FLAIL_COOLDOWN = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
 
     public final AnimationState idleAnimationState = new AnimationState();
+    public final AnimationState jab1AnimationState = new AnimationState();
+    public final AnimationState jab2AnimationState = new AnimationState();
+    public final AnimationState jab3AnimationState = new AnimationState();
+    public final AnimationState jab4AnimationState = new AnimationState();
+    public final AnimationState jabRushAnimationState = new AnimationState();
+    public final AnimationState rollStartAnimationState = new AnimationState();
+    public final AnimationState rollAnimationState = new AnimationState();
+    public final AnimationState rollEndAnimationState = new AnimationState();
+    public final AnimationState flailStartAnimationState = new AnimationState();
     public final AnimationState flailAnimationState = new AnimationState();
-    public final AnimationState cooldownAnimationState = new AnimationState();
+    public final AnimationState flailEndAnimationState = new AnimationState();
+    public final AnimationState recoverAnimationState = new AnimationState();
 
     public Rambler(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -54,8 +65,8 @@ public class Rambler extends Monster {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 50.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.13F)
+                .add(Attributes.MAX_HEALTH, 80.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.15F)
                 .add(Attributes.ATTACK_DAMAGE, 5.0D)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.2D)
                 .add(Attributes.KNOCKBACK_RESISTANCE,1.0D);
@@ -151,14 +162,20 @@ public class Rambler extends Monster {
     }
 
     private void setupAnimationStates() {
-        this.idleAnimationState.animateWhen(!this.isFlailing(), this.tickCount);
-        this.cooldownAnimationState.animateWhen(!this.isFlailing() && this.getFlailCooldown() > 0, this.tickCount);
+        this.idleAnimationState.animateWhen(!this.isFlailing() && this.getDeltaMovement().horizontalDistance() <= 1.0E-5F, this.tickCount);
+        this.recoverAnimationState.animateWhen(!this.isFlailing() && this.getFlailCooldown() > 0, this.tickCount);
         this.flailAnimationState.animateWhen(this.isFlailing(), this.tickCount);
     }
 
-    public boolean hurtEntitiesAround(Vec3 center, float radius, boolean disablesShields) {
+    @Override
+    public void calculateEntityAnimation(boolean flying) {
+        float f1 = (float) Mth.length(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * 12.0F, 1.0F);
+        this.walkAnimation.update(f2, 0.4F);
+    }
+
+    public void hurtEntitiesAround(Vec3 center, float radius, boolean disablesShields) {
         AABB aabb = new AABB(center.subtract(radius, radius, radius), center.add(radius, radius, radius));
-        boolean flag = false;
         DamageSource damageSource = this.damageSources().mobAttack(this);
         for (LivingEntity living : level().getEntitiesOfClass(LivingEntity.class, aabb, EntitySelector.NO_CREATIVE_OR_SPECTATOR)) {
             if (!living.is(this) && !living.isAlliedTo(this) && living.getType() != this.getType() && living.distanceToSqr(center.x, center.y, center.z) <= radius * radius && !(living instanceof ArmorStand) && !living.isPassengerOfSameVehicle(this) && this.hasLineOfSight(living)) {
@@ -166,12 +183,10 @@ public class Rambler extends Monster {
                     player.disableShield(true);
                 }
                 if (living.hurt(damageSource, (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue())) {
-                    flag = true;
                     living.knockback((float) this.getAttribute(Attributes.ATTACK_KNOCKBACK).getValue(), center.x - living.getX(), center.z - living.getZ());
                 }
             }
         }
-        return flag;
     }
 
     @Override
