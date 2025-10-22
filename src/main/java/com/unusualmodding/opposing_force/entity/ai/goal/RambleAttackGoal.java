@@ -41,7 +41,7 @@ public class RambleAttackGoal extends AttackGoal {
                 if (this.timer > 3) {
                     this.ramble.hurtEntitiesAround(pos, 2.25F, true);
                     if ((this.ramble.tickCount / 2) % 2 == 0) {
-                        this.ramble.playSound(OPSoundEvents.RAMBLE_ATTACK.get(), 1.0F, 1.0F / (this.ramble.getRandom().nextFloat() * 0.4F + 0.8F));
+                        this.ramble.playSound(OPSoundEvents.RAMBLER_ATTACK.get(), 1.0F, 1.0F / (this.ramble.getRandom().nextFloat() * 0.4F + 0.8F));
                     }
                 }
                 if (this.timer > 200) {

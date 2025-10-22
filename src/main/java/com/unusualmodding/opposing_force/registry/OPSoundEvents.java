@@ -49,14 +49,14 @@ public class OPSoundEvents {
     public static final RegistryObject<SoundEvent> FROWZY_ATTACK = registerSoundEvent("frowzy_attack");
     public static final RegistryObject<SoundEvent> FROWZY_RUN = registerSoundEvent("frowzy_run");
 
-    public static final RegistryObject<SoundEvent> PALE_SPIDER_HURT = registerSoundEvent("pale_spider_hurt");
-    public static final RegistryObject<SoundEvent> PALE_SPIDER_DEATH = registerSoundEvent("pale_spider_death");
-    public static final RegistryObject<SoundEvent> PALE_SPIDER_IDLE = registerSoundEvent("pale_spider_idle");
+    public static final RegistryObject<SoundEvent> HANGING_SPIDER_HURT = registerSoundEvent("hanging_spider_hurt");
+    public static final RegistryObject<SoundEvent> HANGING_SPIDER_DEATH = registerSoundEvent("hanging_spider_death");
+    public static final RegistryObject<SoundEvent> HANGING_SPIDER_IDLE = registerSoundEvent("hanging_spider_idle");
 
-    public static final RegistryObject<SoundEvent> RAMBLE_HURT = registerSoundEvent("ramble_hurt");
-    public static final RegistryObject<SoundEvent> RAMBLE_DEATH = registerSoundEvent("ramble_death");
-    public static final RegistryObject<SoundEvent> RAMBLE_IDLE = registerSoundEvent("ramble_idle");
-    public static final RegistryObject<SoundEvent> RAMBLE_ATTACK = registerSoundEvent("ramble_attack");
+    public static final RegistryObject<SoundEvent> RAMBLER_HURT = registerSoundEvent("rambler_hurt");
+    public static final RegistryObject<SoundEvent> RAMBLER_DEATH = registerSoundEvent("rambler_death");
+    public static final RegistryObject<SoundEvent> RAMBLER_IDLE = registerSoundEvent("rambler_idle");
+    public static final RegistryObject<SoundEvent> RAMBLER_ATTACK = registerSoundEvent("rambler_attack");
 
     public static final RegistryObject<SoundEvent> SLUG_HURT = registerSoundEvent("slug_hurt");
     public static final RegistryObject<SoundEvent> SLUG_DEATH = registerSoundEvent("slug_death");

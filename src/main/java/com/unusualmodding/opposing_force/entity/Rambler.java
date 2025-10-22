@@ -45,6 +45,7 @@ public class Rambler extends Monster {
     public static final EntityDataAccessor<Integer> FLAIL_COOLDOWN = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
 
     public final AnimationState idleAnimationState = new AnimationState();
+    public final AnimationState walkAnimationState = new AnimationState();
     public final AnimationState jab1AnimationState = new AnimationState();
     public final AnimationState jab2AnimationState = new AnimationState();
     public final AnimationState jab3AnimationState = new AnimationState();
@@ -163,6 +164,7 @@ public class Rambler extends Monster {
 
     private void setupAnimationStates() {
         this.idleAnimationState.animateWhen(!this.isFlailing() && this.getDeltaMovement().horizontalDistance() <= 1.0E-5F, this.tickCount);
+        this.walkAnimationState.animateWhen(!this.isFlailing() && this.getDeltaMovement().horizontalDistance() > 1.0E-5F, this.tickCount);
         this.recoverAnimationState.animateWhen(!this.isFlailing() && this.getFlailCooldown() > 0, this.tickCount);
         this.flailAnimationState.animateWhen(this.isFlailing(), this.tickCount);
     }
@@ -231,17 +233,17 @@ public class Rambler extends Monster {
     @Override
     @Nullable
     protected SoundEvent getAmbientSound() {
-        return OPSoundEvents.RAMBLE_IDLE.get();
+        return OPSoundEvents.RAMBLER_IDLE.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return OPSoundEvents.RAMBLE_HURT.get();
+        return OPSoundEvents.RAMBLER_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return OPSoundEvents.RAMBLE_DEATH.get();
+        return OPSoundEvents.RAMBLER_DEATH.get();
     }
 
     @Override

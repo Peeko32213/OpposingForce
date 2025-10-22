@@ -374,17 +374,17 @@ public class HangingSpider extends Spider implements IAnimatedAttacker {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return OPSoundEvents.PALE_SPIDER_IDLE.get();
+        return OPSoundEvents.HANGING_SPIDER_IDLE.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return OPSoundEvents.PALE_SPIDER_HURT.get();
+        return OPSoundEvents.HANGING_SPIDER_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return OPSoundEvents.PALE_SPIDER_DEATH.get();
+        return OPSoundEvents.HANGING_SPIDER_DEATH.get();
     }
 
     @Override

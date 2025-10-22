@@ -158,35 +158,35 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound(OpposingForce.modPrefix("entity/guzzler/slam1")).attenuationDistance(20).volume(2.0F)
         );
 
-        this.sound(OPSoundEvents.PALE_SPIDER_HURT,
+        this.sound(OPSoundEvents.HANGING_SPIDER_HURT,
                 sound("mob/spider/say1").pitch(1.2F),
                 sound("mob/spider/say2").pitch(1.2F),
                 sound("mob/spider/say3").pitch(1.2F),
                 sound("mob/spider/say4").pitch(1.2F)
         );
-        this.sound(OPSoundEvents.PALE_SPIDER_DEATH,
+        this.sound(OPSoundEvents.HANGING_SPIDER_DEATH,
                 sound("mob/spider/death").pitch(1.2F)
         );
-        this.sound(OPSoundEvents.PALE_SPIDER_IDLE,
+        this.sound(OPSoundEvents.HANGING_SPIDER_IDLE,
                 sound("mob/spider/say1").pitch(1.2F),
                 sound("mob/spider/say2").pitch(1.2F),
                 sound("mob/spider/say3").pitch(1.2F),
                 sound("mob/spider/say4").pitch(1.2F)
         );
 
-        this.sound(OPSoundEvents.RAMBLE_HURT,
+        this.sound(OPSoundEvents.RAMBLER_HURT,
                 sound("mob/skeleton/hurt1").pitch(0.7F),
                 sound("mob/skeleton/hurt2").pitch(0.7F),
                 sound("mob/skeleton/hurt3").pitch(0.7F),
                 sound("mob/skeleton/hurt4").pitch(0.7F)
         );
-        this.sound(OPSoundEvents.RAMBLE_DEATH,
+        this.sound(OPSoundEvents.RAMBLER_DEATH,
                 sound(OpposingForce.modPrefix("entity/ramble/death1"))
         );
-        this.sound(OPSoundEvents.RAMBLE_IDLE,
+        this.sound(OPSoundEvents.RAMBLER_IDLE,
                 sound(OpposingForce.modPrefix("entity/ramble/idle1"))
         );
-        this.sound(OPSoundEvents.RAMBLE_ATTACK,
+        this.sound(OPSoundEvents.RAMBLER_ATTACK,
                 sound("mob/skeleton/hurt1").volume(0.8F),
                 sound("mob/skeleton/hurt2").volume(0.8F),
                 sound("mob/skeleton/hurt3").volume(0.8F),

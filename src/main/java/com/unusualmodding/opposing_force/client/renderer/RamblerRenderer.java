@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(Dist.CLIENT)
@@ -24,12 +25,12 @@ public class RamblerRenderer extends MobRenderer<Rambler, RamblerModel> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Rambler entity) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull Rambler entity) {
         return RAMBLER;
     }
 
     @Override
-    protected @Nullable RenderType getRenderType(Rambler entity, boolean bodyVisible, boolean translucent, boolean glowing) {
+    protected @Nullable RenderType getRenderType(@NotNull Rambler entity, boolean bodyVisible, boolean translucent, boolean glowing) {
         return RenderType.entityCutoutNoCull(RAMBLER);
     }
 }

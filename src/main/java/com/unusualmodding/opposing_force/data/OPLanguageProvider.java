@@ -104,14 +104,14 @@ public class OPLanguageProvider extends LanguageProvider {
         this.sound(OPSoundEvents.GUZZLER_SPEW, "Guzzler spews");
         this.sound(OPSoundEvents.GUZZLER_SLAM, "Guzzler slams");
 
-        this.sound(OPSoundEvents.PALE_SPIDER_DEATH, "Pale Spider dies");
-        this.sound(OPSoundEvents.PALE_SPIDER_HURT, "Pale Spider hurts");
-        this.sound(OPSoundEvents.PALE_SPIDER_IDLE, "Pale Spider hisses");
+        this.sound(OPSoundEvents.HANGING_SPIDER_DEATH, "Hanging Spider dies");
+        this.sound(OPSoundEvents.HANGING_SPIDER_HURT, "Hanging Spider hurts");
+        this.sound(OPSoundEvents.HANGING_SPIDER_IDLE, "Hanging Spider hisses");
 
-        this.sound(OPSoundEvents.RAMBLE_HURT, "Ramble hurt");
-        this.sound(OPSoundEvents.RAMBLE_DEATH, "Ramble dies");
-        this.sound(OPSoundEvents.RAMBLE_ATTACK, "Ramble slices");
-        this.sound(OPSoundEvents.RAMBLE_IDLE, "Ramble clatters");
+        this.sound(OPSoundEvents.RAMBLER_HURT, "Rambler hurt");
+        this.sound(OPSoundEvents.RAMBLER_DEATH, "Rambler dies");
+        this.sound(OPSoundEvents.RAMBLER_ATTACK, "Rambler slices");
+        this.sound(OPSoundEvents.RAMBLER_IDLE, "Rambler clatters");
 
         this.sound(OPSoundEvents.SLUG_DEATH, "Slug dies");
         this.sound(OPSoundEvents.SLUG_HURT, "Slug hurts");

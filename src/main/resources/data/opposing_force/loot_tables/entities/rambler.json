@@ -31,5 +31,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "opposing_force:entities/ramble"
+  "random_sequence": "opposing_force:entities/rambler"
 }

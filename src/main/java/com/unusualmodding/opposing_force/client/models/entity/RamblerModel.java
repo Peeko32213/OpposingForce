@@ -9,6 +9,7 @@ import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -132,8 +133,9 @@ public class RamblerModel extends HierarchicalModel<Rambler> {
 	public void setupAnim(Rambler entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 
-        this.animateWalk(RamblerAnimations.WALK, limbSwing, limbSwingAmount, 2, 4);
-		this.animate(entity.idleAnimationState, RamblerIdleAnimations.IDLE, ageInTicks);
+//        this.animateWalk(RamblerAnimations.WALK, limbSwing, limbSwingAmount, 2, 4);
+        this.animate(entity.walkAnimationState, RamblerAnimations.WALK, ageInTicks, 0.75F + (Mth.clamp(limbSwingAmount, 0.25F, 1.0F) * 1.25F));
+        this.animate(entity.idleAnimationState, RamblerIdleAnimations.IDLE, ageInTicks);
 		this.animate(entity.recoverAnimationState, RamblerAnimations.RECOVER, ageInTicks);
 	}
 
