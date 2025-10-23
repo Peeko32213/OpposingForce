@@ -218,12 +218,12 @@ public class Rambler extends Monster implements IAnimatedAttacker {
         if (startFlailingTicks == 0 && this.flailStartAnimationState.isStarted()) this.flailStartAnimationState.stop();
         if (stopFlailingTicks == 0 && this.flailEndAnimationState.isStarted()) this.flailEndAnimationState.stop();
         if (recoveringTicks == 0 && this.recoverAnimationState.isStarted()) this.recoverAnimationState.stop();
-//        if (jabTicks == 0 && (this.jab1AnimationState.isStarted() || this.jab2AnimationState.isStarted() || this.jab3AnimationState.isStarted() || this.jab4AnimationState.isStarted())) {
-//            this.jab1AnimationState.stop();
-//            this.jab2AnimationState.stop();
-//            this.jab3AnimationState.stop();
-//            this.jab4AnimationState.stop();
-//        }
+        if (jabTicks == 0 && (this.jab1AnimationState.isStarted() || this.jab2AnimationState.isStarted() || this.jab3AnimationState.isStarted() || this.jab4AnimationState.isStarted())) {
+            this.jab1AnimationState.stop();
+            this.jab2AnimationState.stop();
+            this.jab3AnimationState.stop();
+            this.jab4AnimationState.stop();
+        }
         this.idleAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() <= 1.0E-5F, this.tickCount);
         this.walkAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() > 1.0E-5F, this.tickCount);
     }

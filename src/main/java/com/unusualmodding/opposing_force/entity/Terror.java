@@ -207,6 +207,9 @@ public class Terror extends Monster implements IAnimatedAttacker {
     }
 
     private void setupAnimationStates() {
+        if (startSawingTicks == 0 && this.startSawingAnimationState.isStarted()) this.startSawingAnimationState.stop();
+        if (growLegsTicks == 0 && this.growLegsAnimationState.isStarted()) this.growLegsAnimationState.stop();
+        if (retractLegsTicks == 0 && this.retractLegsAnimationState.isStarted()) this.retractLegsAnimationState.stop();
         this.idleAnimationState.animateWhen(!this.isInWaterOrBubble() && this.hasLegs() && this.getDeltaMovement().horizontalDistance() <= 1.0E-5F, this.tickCount);
         this.flopAnimationState.animateWhen(!this.isInWaterOrBubble() && !this.hasLegs() && this.getPose() != OPPoses.GROWING_LEGS.get(), this.tickCount);
         this.attackAnimationState.animateWhen(this.getAttackState() == 1, this.tickCount);
