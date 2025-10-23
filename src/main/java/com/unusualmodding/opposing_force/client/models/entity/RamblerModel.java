@@ -138,6 +138,10 @@ public class RamblerModel extends HierarchicalModel<Rambler> {
         this.animate(entity.flailStartAnimationState, RamblerAnimations.FLAIL_START, ageInTicks);
         this.animate(entity.flailAnimationState, RamblerAnimations.FLAIL, ageInTicks);
         this.animate(entity.flailEndAnimationState, RamblerAnimations.FLAIL_END, ageInTicks);
+        this.animate(entity.jab1AnimationState, RamblerAnimations.JAB1, ageInTicks);
+        this.animate(entity.jab2AnimationState, RamblerAnimations.JAB2, ageInTicks);
+        this.animate(entity.jab3AnimationState, RamblerAnimations.JAB3, ageInTicks);
+        this.animate(entity.jab4AnimationState, RamblerAnimations.JAB4, ageInTicks);
     }
 
 	@Override

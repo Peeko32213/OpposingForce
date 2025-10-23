@@ -22,6 +22,16 @@ public class RamblerFlailGoal extends AttackGoal {
     }
 
     @Override
+    public boolean canUse() {
+        return super.canUse() && this.rambler.flailCooldown == 0;
+    }
+
+    @Override
+    public boolean canContinueToUse() {
+        return super.canContinueToUse() && this.rambler.flailCooldown == 0;
+    }
+
+    @Override
     public void start() {
         super.start();
         this.rambler.setFlailing(false);
@@ -47,9 +57,7 @@ public class RamblerFlailGoal extends AttackGoal {
                 this.timer++;
                 this.rambler.getNavigation().moveTo(target, 2.0D);
 
-                if (this.timer == 1) {
-                    this.rambler.setPose(OPPoses.START_FLAILING.get());
-                }
+                if (this.timer == 1) this.rambler.setPose(OPPoses.START_FLAILING.get());
 
                 if (this.timer > 1 && this.timer < 20) {
                     if (this.rambler.tickCount % 8 == 0) {
@@ -64,17 +72,13 @@ public class RamblerFlailGoal extends AttackGoal {
                     }
                 }
 
-                if (this.timer == 200) {
-                    this.rambler.setPose(OPPoses.STOP_FLAILING.get());
-                }
+                if (this.timer == 200) this.rambler.setPose(OPPoses.STOP_FLAILING.get());
 
-                if (this.timer > 200 && this.timer < 280) {
-                    this.rambler.getNavigation().stop();
-                }
+                if (this.timer > 200 && this.timer < 280) this.rambler.getNavigation().stop();
 
                 if (this.timer > 280) {
                     this.timer = 0;
-                    this.rambler.flailCooldown = 100;
+                    this.rambler.flailCooldown = 300 + this.rambler.getRandom().nextInt(300);
                     this.rambler.setFlailing(false);
                 }
             } else {
@@ -98,7 +102,6 @@ public class RamblerFlailGoal extends AttackGoal {
             if (!(entity instanceof Rambler)) {
                 entity.hurt(entity.damageSources().mobAttack(this.rambler), (float) this.rambler.getAttributeValue(Attributes.ATTACK_DAMAGE));
                 entity.knockback((float) rambler.getAttribute(Attributes.ATTACK_KNOCKBACK).getValue(), rambler.position().x - entity.getX(), rambler.position().z - entity.getZ());
-
                 if (entity.isDamageSourceBlocked(rambler.damageSources().mobAttack(rambler)) && entity instanceof Player player) {
                     player.disableShield(true);
                 }

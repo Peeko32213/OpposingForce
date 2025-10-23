@@ -12,7 +12,8 @@ public enum OPPoses {
     START_FLAILING,
     FLAILING,
     STOP_FLAILING,
-    RECOVERING;
+    RECOVERING,
+    JAB;
 
     public Pose get() {
         return Pose.valueOf(this.name());

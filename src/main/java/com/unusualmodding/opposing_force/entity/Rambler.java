@@ -1,7 +1,9 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.entity.ai.goal.RamblerFlailGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.RamblerJabGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
+import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPItems;
@@ -40,13 +42,13 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class Rambler extends Monster {
+public class Rambler extends Monster implements IAnimatedAttacker {
 
     private static final EntityDataAccessor<Boolean> FLAILING = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.BOOLEAN);
-    public static final EntityDataAccessor<Integer> FLAIL_COOLDOWN = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> MIDDLE_SKULL = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> LEFT_SKULL = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> RIGHT_SKULL = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState walkAnimationState = new AnimationState();
@@ -66,7 +68,8 @@ public class Rambler extends Monster {
     private int startFlailingTicks;
     private int stopFlailingTicks;
     private int recoveringTicks;
-    public int flailCooldown;
+    private int jabTicks;
+    public int flailCooldown = 300;
 
     public Rambler(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -85,22 +88,23 @@ public class Rambler extends Monster {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new RamblerFlailGoal(this));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new FleeSunGoal(this, 1.2D));
-        this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Wolf.class, 6.0F, 1.2D, 1.2D));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(2, new RamblerJabGoal(this));
+        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(4, new FleeSunGoal(this, 1.2D));
+        this.goalSelector.addGoal(5, new AvoidEntityGoal<>(this, Wolf.class, 6.0F, 1.2D, 1.2D));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
     @Override
-    protected @NotNull PathNavigation createNavigation(Level level) {
+    protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
         return new SmoothGroundPathNavigation(this, level);
     }
 
     @Override
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.UNDEAD;
     }
 
@@ -120,8 +124,8 @@ public class Rambler extends Monster {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
+        this.entityData.define(ATTACK_STATE, 0);
         this.entityData.define(FLAILING, false);
-        this.entityData.define(FLAIL_COOLDOWN, 0);
         this.entityData.define(MIDDLE_SKULL, 0);
         this.entityData.define(LEFT_SKULL, 0);
         this.entityData.define(RIGHT_SKULL, 0);
@@ -130,8 +134,8 @@ public class Rambler extends Monster {
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
+        compoundTag.putInt("AttackState", this.getAttackState());
         compoundTag.putBoolean("Flailing", this.isFlailing());
-        compoundTag.putInt("FlailCooldown", this.getFlailCooldown());
         compoundTag.putInt("MiddleSkull", this.getMiddleSkull());
         compoundTag.putInt("LeftSkull", this.getLeftSkull());
         compoundTag.putInt("RightSkull", this.getRightSkull());
@@ -140,11 +144,21 @@ public class Rambler extends Monster {
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
+        this.setAttackState(compoundTag.getInt("AttackState"));
         this.setFlailing(compoundTag.getBoolean("Flailing"));
-        this.setFlailCooldown(compoundTag.getInt("FlailCooldown"));
         this.setMiddleSkull(compoundTag.getInt("MiddleSkull"));
         this.setLeftSkull(compoundTag.getInt("LeftSkull"));
         this.setRightSkull(compoundTag.getInt("RightSkull"));
+    }
+
+    @Override
+    public int getAttackState() {
+        return this.entityData.get(ATTACK_STATE);
+    }
+
+    @Override
+    public void setAttackState(int attackState) {
+        this.entityData.set(ATTACK_STATE, attackState);
     }
 
     public boolean isFlailing() {
@@ -153,18 +167,6 @@ public class Rambler extends Monster {
 
     public void setFlailing(boolean flailing) {
         this.entityData.set(FLAILING, flailing);
-    }
-
-    public int getFlailCooldown() {
-        return this.entityData.get(FLAIL_COOLDOWN);
-    }
-
-    public void setFlailCooldown(int cooldown) {
-        this.entityData.set(FLAIL_COOLDOWN, cooldown);
-    }
-
-    public void flailCooldown() {
-        this.entityData.set(FLAIL_COOLDOWN, 160);
     }
 
     public int getMiddleSkull() {
@@ -201,18 +203,27 @@ public class Rambler extends Monster {
             this.setupAnimationStates();
         }
 
+        // animation stuff
         if (startFlailingTicks > 0) this.startFlailingTicks--;
         if (stopFlailingTicks > 0) this.stopFlailingTicks--;
         if (recoveringTicks > 0) this.recoveringTicks--;
+        if (jabTicks > 0) this.jabTicks--;
         if (startFlailingTicks == 0 && this.getPose() == OPPoses.START_FLAILING.get()) this.setPose(OPPoses.FLAILING.get());
         if (stopFlailingTicks == 0 && this.getPose() == OPPoses.STOP_FLAILING.get()) this.setPose(OPPoses.RECOVERING.get());
         if (recoveringTicks == 0 && this.getPose() == OPPoses.RECOVERING.get()) this.setPose(Pose.STANDING);
+        if (jabTicks == 0 && this.getPose() == OPPoses.JAB.get()) this.setPose(Pose.STANDING);
     }
 
     private void setupAnimationStates() {
         if (startFlailingTicks == 0 && this.flailStartAnimationState.isStarted()) this.flailStartAnimationState.stop();
         if (stopFlailingTicks == 0 && this.flailEndAnimationState.isStarted()) this.flailEndAnimationState.stop();
         if (recoveringTicks == 0 && this.recoverAnimationState.isStarted()) this.recoverAnimationState.stop();
+//        if (jabTicks == 0 && (this.jab1AnimationState.isStarted() || this.jab2AnimationState.isStarted() || this.jab3AnimationState.isStarted() || this.jab4AnimationState.isStarted())) {
+//            this.jab1AnimationState.stop();
+//            this.jab2AnimationState.stop();
+//            this.jab3AnimationState.stop();
+//            this.jab4AnimationState.stop();
+//        }
         this.idleAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() <= 1.0E-5F, this.tickCount);
         this.walkAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() > 1.0E-5F, this.tickCount);
     }
@@ -247,11 +258,27 @@ public class Rambler extends Monster {
                 this.flailStartAnimationState.stop();
                 this.recoverAnimationState.start(this.tickCount);
             }
+            else if (this.getPose() == OPPoses.JAB.get()) {
+                this.jabTicks = 10;
+                if (this.getRandom().nextFloat() < 0.25F) {
+                    this.jab1AnimationState.start(this.tickCount);
+                } else if (this.getRandom().nextFloat() < 0.5F) {
+                    this.jab2AnimationState.start(this.tickCount);
+                } else if (this.getRandom().nextFloat() < 0.75F) {
+                    this.jab3AnimationState.start(this.tickCount);
+                } else {
+                    this.jab4AnimationState.start(this.tickCount);
+                }
+            }
             else if (this.getPose() == Pose.STANDING) {
                 this.flailAnimationState.stop();
                 this.flailStartAnimationState.stop();
                 this.flailEndAnimationState.stop();
                 this.recoverAnimationState.stop();
+                this.jab1AnimationState.stop();
+                this.jab2AnimationState.stop();
+                this.jab3AnimationState.stop();
+                this.jab4AnimationState.stop();
             }
         }
         super.onSyncedDataUpdated(entityDataAccessor);
