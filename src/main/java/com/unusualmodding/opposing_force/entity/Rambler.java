@@ -1,7 +1,8 @@
 package com.unusualmodding.opposing_force.entity;
 
-import com.unusualmodding.opposing_force.entity.ai.goal.RambleAttackGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.RamblerFlailGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
+import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
@@ -28,7 +29,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Wolf;
-import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Skeleton;
@@ -36,8 +36,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -65,6 +63,11 @@ public class Rambler extends Monster {
     public final AnimationState flailEndAnimationState = new AnimationState();
     public final AnimationState recoverAnimationState = new AnimationState();
 
+    private int startFlailingTicks;
+    private int stopFlailingTicks;
+    private int recoveringTicks;
+    public int flailCooldown;
+
     public Rambler(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
         this.xpReward = 15;
@@ -81,12 +84,12 @@ public class Rambler extends Monster {
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new RambleAttackGoal(this));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(4, new FleeSunGoal(this, 1.2D));
-        this.goalSelector.addGoal(5, new AvoidEntityGoal<>(this, Wolf.class, 6.0F, 1.2D, 1.2D));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(1, new RamblerFlailGoal(this));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(3, new FleeSunGoal(this, 1.2D));
+        this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Wolf.class, 6.0F, 1.2D, 1.2D));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
@@ -192,20 +195,26 @@ public class Rambler extends Monster {
     public void tick() {
         super.tick();
 
-        if (this.getFlailCooldown() > 0) {
-            this.setFlailCooldown(this.getFlailCooldown() - 1);
-        }
+        if (flailCooldown > 0) this.flailCooldown--;
 
         if (this.level().isClientSide()) {
             this.setupAnimationStates();
         }
+
+        if (startFlailingTicks > 0) this.startFlailingTicks--;
+        if (stopFlailingTicks > 0) this.stopFlailingTicks--;
+        if (recoveringTicks > 0) this.recoveringTicks--;
+        if (startFlailingTicks == 0 && this.getPose() == OPPoses.START_FLAILING.get()) this.setPose(OPPoses.FLAILING.get());
+        if (stopFlailingTicks == 0 && this.getPose() == OPPoses.STOP_FLAILING.get()) this.setPose(OPPoses.RECOVERING.get());
+        if (recoveringTicks == 0 && this.getPose() == OPPoses.RECOVERING.get()) this.setPose(Pose.STANDING);
     }
 
     private void setupAnimationStates() {
-        this.idleAnimationState.animateWhen(!this.isFlailing() && this.getDeltaMovement().horizontalDistance() <= 1.0E-5F, this.tickCount);
+        if (startFlailingTicks == 0 && this.flailStartAnimationState.isStarted()) this.flailStartAnimationState.stop();
+        if (stopFlailingTicks == 0 && this.flailEndAnimationState.isStarted()) this.flailEndAnimationState.stop();
+        if (recoveringTicks == 0 && this.recoverAnimationState.isStarted()) this.recoverAnimationState.stop();
+        this.idleAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() <= 1.0E-5F, this.tickCount);
         this.walkAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() > 1.0E-5F, this.tickCount);
-        this.recoverAnimationState.animateWhen(!this.isFlailing() && this.getFlailCooldown() > 0, this.tickCount);
-        this.flailAnimationState.animateWhen(this.isFlailing(), this.tickCount);
     }
 
     @Override
@@ -215,19 +224,37 @@ public class Rambler extends Monster {
         this.walkAnimation.update(f2, 0.4F);
     }
 
-    public void hurtEntitiesAround(Vec3 center, float radius, boolean disablesShields) {
-        AABB aabb = new AABB(center.subtract(radius, radius, radius), center.add(radius, radius, radius));
-        DamageSource damageSource = this.damageSources().mobAttack(this);
-        for (LivingEntity living : level().getEntitiesOfClass(LivingEntity.class, aabb, EntitySelector.NO_CREATIVE_OR_SPECTATOR)) {
-            if (!living.is(this) && !living.isAlliedTo(this) && living.getType() != this.getType() && living.distanceToSqr(center.x, center.y, center.z) <= radius * radius && !(living instanceof ArmorStand) && !living.isPassengerOfSameVehicle(this) && this.hasLineOfSight(living)) {
-                if (living.isDamageSourceBlocked(damageSource) && disablesShields && living instanceof Player player) {
-                    player.disableShield(true);
-                }
-                if (living.hurt(damageSource, (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue())) {
-                    living.knockback((float) this.getAttribute(Attributes.ATTACK_KNOCKBACK).getValue(), center.x - living.getX(), center.z - living.getZ());
-                }
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> entityDataAccessor) {
+        if (DATA_POSE.equals(entityDataAccessor)) {
+            if (this.getPose() == OPPoses.START_FLAILING.get()) {
+                this.startFlailingTicks = 20;
+                this.flailStartAnimationState.start(this.tickCount);
+            }
+            else if (this.getPose() == OPPoses.FLAILING.get()) {
+                this.flailStartAnimationState.stop();
+                this.flailAnimationState.start(this.tickCount);
+            }
+            else if (this.getPose() == OPPoses.STOP_FLAILING.get()) {
+                this.stopFlailingTicks = 20;
+                this.flailAnimationState.stop();
+                this.flailEndAnimationState.start(this.tickCount);
+            }
+            else if (this.getPose() == OPPoses.RECOVERING.get()) {
+                this.recoveringTicks = 70;
+                this.flailAnimationState.stop();
+                this.flailEndAnimationState.stop();
+                this.flailStartAnimationState.stop();
+                this.recoverAnimationState.start(this.tickCount);
+            }
+            else if (this.getPose() == Pose.STANDING) {
+                this.flailAnimationState.stop();
+                this.flailStartAnimationState.stop();
+                this.flailEndAnimationState.stop();
+                this.recoverAnimationState.stop();
             }
         }
+        super.onSyncedDataUpdated(entityDataAccessor);
     }
 
     @Override

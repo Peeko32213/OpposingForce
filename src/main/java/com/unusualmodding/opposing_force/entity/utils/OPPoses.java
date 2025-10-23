@@ -8,7 +8,11 @@ public enum OPPoses {
     GROWING_LEGS,
     RETRACTING_LEGS,
     START_SAWING,
-    SAWING;
+    SAWING,
+    START_FLAILING,
+    FLAILING,
+    STOP_FLAILING,
+    RECOVERING;
 
     public Pose get() {
         return Pose.valueOf(this.name());
