@@ -13,7 +13,11 @@ public enum OPPoses {
     FLAILING,
     STOP_FLAILING,
     RECOVERING,
-    JAB;
+    JAB,
+    JAB_RUSH,
+    START_ROLLING,
+    ROLLING,
+    STOP_ROLLING;
 
     public Pose get() {
         return Pose.valueOf(this.name());

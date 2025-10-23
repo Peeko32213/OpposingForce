@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.entity.ai.goal.RamblerFlailGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.RamblerJabGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.RamblerRollGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
@@ -45,6 +46,7 @@ import javax.annotation.Nullable;
 public class Rambler extends Monster implements IAnimatedAttacker {
 
     private static final EntityDataAccessor<Boolean> FLAILING = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> ROLLING = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Integer> MIDDLE_SKULL = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> LEFT_SKULL = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> RIGHT_SKULL = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
@@ -69,7 +71,11 @@ public class Rambler extends Monster implements IAnimatedAttacker {
     private int stopFlailingTicks;
     private int recoveringTicks;
     private int jabTicks;
+    private int jabRushTicks;
+    private int startRollingTicks;
+    private int stopRollingTicks;
     public int flailCooldown = 300;
+    public int rollCooldown = 400;
 
     public Rambler(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -81,19 +87,20 @@ public class Rambler extends Monster implements IAnimatedAttacker {
                 .add(Attributes.MAX_HEALTH, 80.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.15F)
                 .add(Attributes.ATTACK_DAMAGE, 5.0D)
-                .add(Attributes.ATTACK_KNOCKBACK, 0.2D)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.3D)
                 .add(Attributes.KNOCKBACK_RESISTANCE,1.0D);
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new RamblerFlailGoal(this));
-        this.goalSelector.addGoal(2, new RamblerJabGoal(this));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(4, new FleeSunGoal(this, 1.2D));
-        this.goalSelector.addGoal(5, new AvoidEntityGoal<>(this, Wolf.class, 6.0F, 1.2D, 1.2D));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(2, new RamblerRollGoal(this));
+        this.goalSelector.addGoal(3, new RamblerJabGoal(this));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new FleeSunGoal(this, 1.2D));
+        this.goalSelector.addGoal(6, new AvoidEntityGoal<>(this, Wolf.class, 6.0F, 1.2D, 1.2D));
+        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
@@ -115,7 +122,7 @@ public class Rambler extends Monster implements IAnimatedAttacker {
 
     @Override
     public float getStepHeight() {
-        if (this.isFlailing()) {
+        if (this.isFlailing() || this.isRolling()) {
             return 1.0F;
         }
         return 0.6F;
@@ -124,8 +131,9 @@ public class Rambler extends Monster implements IAnimatedAttacker {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(ATTACK_STATE, 0);
         this.entityData.define(FLAILING, false);
+        this.entityData.define(ROLLING, false);
+        this.entityData.define(ATTACK_STATE, 0);
         this.entityData.define(MIDDLE_SKULL, 0);
         this.entityData.define(LEFT_SKULL, 0);
         this.entityData.define(RIGHT_SKULL, 0);
@@ -134,8 +142,9 @@ public class Rambler extends Monster implements IAnimatedAttacker {
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        compoundTag.putInt("AttackState", this.getAttackState());
         compoundTag.putBoolean("Flailing", this.isFlailing());
+        compoundTag.putBoolean("Rolling", this.isRolling());
+        compoundTag.putInt("AttackState", this.getAttackState());
         compoundTag.putInt("MiddleSkull", this.getMiddleSkull());
         compoundTag.putInt("LeftSkull", this.getLeftSkull());
         compoundTag.putInt("RightSkull", this.getRightSkull());
@@ -144,8 +153,9 @@ public class Rambler extends Monster implements IAnimatedAttacker {
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        this.setAttackState(compoundTag.getInt("AttackState"));
         this.setFlailing(compoundTag.getBoolean("Flailing"));
+        this.setRolling(compoundTag.getBoolean("Rolling"));
+        this.setAttackState(compoundTag.getInt("AttackState"));
         this.setMiddleSkull(compoundTag.getInt("MiddleSkull"));
         this.setLeftSkull(compoundTag.getInt("LeftSkull"));
         this.setRightSkull(compoundTag.getInt("RightSkull"));
@@ -167,6 +177,14 @@ public class Rambler extends Monster implements IAnimatedAttacker {
 
     public void setFlailing(boolean flailing) {
         this.entityData.set(FLAILING, flailing);
+    }
+
+    public boolean isRolling() {
+        return this.entityData.get(ROLLING);
+    }
+
+    public void setRolling(boolean rolling) {
+        this.entityData.set(ROLLING, rolling);
     }
 
     public int getMiddleSkull() {
@@ -197,7 +215,12 @@ public class Rambler extends Monster implements IAnimatedAttacker {
     public void tick() {
         super.tick();
 
-        if (flailCooldown > 0) this.flailCooldown--;
+        if (!this.isRolling()) {
+            if (flailCooldown > 0) this.flailCooldown--;
+        }
+        if (!this.isFlailing()) {
+            if (rollCooldown > 0) this.rollCooldown--;
+        }
 
         if (this.level().isClientSide()) {
             this.setupAnimationStates();
@@ -208,10 +231,16 @@ public class Rambler extends Monster implements IAnimatedAttacker {
         if (stopFlailingTicks > 0) this.stopFlailingTicks--;
         if (recoveringTicks > 0) this.recoveringTicks--;
         if (jabTicks > 0) this.jabTicks--;
+        if (jabRushTicks > 0) this.jabRushTicks--;
+        if (startRollingTicks > 0) this.startRollingTicks--;
+        if (stopRollingTicks > 0) this.stopRollingTicks--;
         if (startFlailingTicks == 0 && this.getPose() == OPPoses.START_FLAILING.get()) this.setPose(OPPoses.FLAILING.get());
         if (stopFlailingTicks == 0 && this.getPose() == OPPoses.STOP_FLAILING.get()) this.setPose(OPPoses.RECOVERING.get());
         if (recoveringTicks == 0 && this.getPose() == OPPoses.RECOVERING.get()) this.setPose(Pose.STANDING);
         if (jabTicks == 0 && this.getPose() == OPPoses.JAB.get()) this.setPose(Pose.STANDING);
+        if (jabRushTicks == 0 && this.getPose() == OPPoses.JAB_RUSH.get()) this.setPose(Pose.STANDING);
+        if (startRollingTicks == 0 && this.getPose() == OPPoses.START_ROLLING.get()) this.setPose(OPPoses.ROLLING.get());
+        if (stopRollingTicks == 0 && this.getPose() == OPPoses.STOP_ROLLING.get()) this.setPose(Pose.STANDING);
     }
 
     private void setupAnimationStates() {
@@ -224,8 +253,11 @@ public class Rambler extends Monster implements IAnimatedAttacker {
             this.jab3AnimationState.stop();
             this.jab4AnimationState.stop();
         }
-        this.idleAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() <= 1.0E-5F, this.tickCount);
-        this.walkAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() > 1.0E-5F, this.tickCount);
+        if (jabRushTicks == 0 && this.jabRushAnimationState.isStarted()) this.jabRushAnimationState.stop();
+        if (startRollingTicks == 0 && this.rollStartAnimationState.isStarted()) this.rollStartAnimationState.stop();
+        if (stopRollingTicks == 0 && this.rollEndAnimationState.isStarted()) this.rollEndAnimationState.stop();
+        this.idleAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() <= 1.0E-5F && !this.isRolling(), this.tickCount);
+        this.walkAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() > 1.0E-5F && !this.isRolling(), this.tickCount);
     }
 
     @Override
@@ -236,7 +268,7 @@ public class Rambler extends Monster implements IAnimatedAttacker {
     }
 
     @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> entityDataAccessor) {
+    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> entityDataAccessor) {
         if (DATA_POSE.equals(entityDataAccessor)) {
             if (this.getPose() == OPPoses.START_FLAILING.get()) {
                 this.startFlailingTicks = 20;
@@ -270,6 +302,23 @@ public class Rambler extends Monster implements IAnimatedAttacker {
                     this.jab4AnimationState.start(this.tickCount);
                 }
             }
+            else if (this.getPose() == OPPoses.JAB_RUSH.get()) {
+                this.jabRushTicks = 20;
+                this.jabRushAnimationState.start(this.tickCount);
+            }
+            else if (this.getPose() == OPPoses.START_ROLLING.get()) {
+                this.startRollingTicks = 40;
+                this.rollStartAnimationState.start(this.tickCount);
+            }
+            else if (this.getPose() == OPPoses.ROLLING.get()) {
+                this.rollStartAnimationState.stop();
+                this.rollAnimationState.start(this.tickCount);
+            }
+            else if (this.getPose() == OPPoses.STOP_ROLLING.get()) {
+                this.stopRollingTicks = 40;
+                this.rollAnimationState.stop();
+                this.rollEndAnimationState.start(this.tickCount);
+            }
             else if (this.getPose() == Pose.STANDING) {
                 this.flailAnimationState.stop();
                 this.flailStartAnimationState.stop();
@@ -279,6 +328,10 @@ public class Rambler extends Monster implements IAnimatedAttacker {
                 this.jab2AnimationState.stop();
                 this.jab3AnimationState.stop();
                 this.jab4AnimationState.stop();
+                this.jabRushAnimationState.stop();
+                this.rollStartAnimationState.stop();
+                this.rollAnimationState.stop();
+                this.rollEndAnimationState.stop();
             }
         }
         super.onSyncedDataUpdated(entityDataAccessor);
@@ -286,7 +339,7 @@ public class Rambler extends Monster implements IAnimatedAttacker {
 
     @Override
     public boolean hurt(DamageSource source, float f) {
-        if (this.isFlailing() || source.is(DamageTypeTags.IS_PROJECTILE)) {
+        if (this.isFlailing() || this.isRolling() || source.is(DamageTypeTags.IS_PROJECTILE)) {
             f *= 0.5F;
         }
         return super.hurt(source, f);

@@ -2,9 +2,11 @@ package com.unusualmodding.opposing_force.entity.ai.goal;
 
 import com.unusualmodding.opposing_force.entity.Rambler;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 import java.util.Objects;
 
@@ -19,7 +21,12 @@ public class RamblerJabGoal extends AttackGoal {
 
     @Override
     public boolean canUse() {
-        return super.canUse() && this.rambler.flailCooldown > 0;
+        return super.canUse() && this.rambler.flailCooldown > 0 && this.rambler.rollCooldown > 0 && this.rambler.getPose() == Pose.STANDING;
+    }
+
+    @Override
+    public boolean canContinueToUse() {
+        return super.canContinueToUse() && this.rambler.flailCooldown > 0 && this.rambler.rollCooldown > 0;
     }
 
     @Override
@@ -51,7 +58,9 @@ public class RamblerJabGoal extends AttackGoal {
                 }
                 if (this.timer == 7) {
                     if (this.rambler.distanceTo(target) < this.getAttackReachSqr(target)) {
-                        this.rambler.doHurtTarget(target);
+                        target.hurt(this.rambler.damageSources().mobAttack(this.rambler), (float) this.rambler.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5F);
+                        target.knockback(rambler.getAttribute(Attributes.ATTACK_KNOCKBACK).getValue() * 0.5F, Mth.sin(rambler.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(rambler.getYRot() * ((float) Math.PI / 180F)));
+                        this.rambler.setDeltaMovement(this.rambler.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
                         this.rambler.swing(InteractionHand.MAIN_HAND);
                     }
                 }
@@ -59,9 +68,29 @@ public class RamblerJabGoal extends AttackGoal {
                     this.timer = 0;
                     this.rambler.setAttackState(0);
                 }
+            } else if (this.rambler.getAttackState() == 2) {
+                this.timer++;
+                this.rambler.getNavigation().stop();
+                if (this.timer == 1) {
+                    this.rambler.setPose(OPPoses.JAB_RUSH.get());
+                }
+                if (this.timer == 10) {
+                    if (this.rambler.distanceTo(target) < this.getAttackReachSqr(target)) {
+                        this.rambler.doHurtTarget(target);
+                        this.rambler.swing(InteractionHand.MAIN_HAND);
+                    }
+                }
+                if (this.timer == 30) {
+                    this.timer = 0;
+                    this.rambler.setAttackState(0);
+                }
             } else {
                 if (distance <= this.getAttackReachSqr(target) && attackState == 0) {
-                    this.rambler.setAttackState(1);
+                    if (this.rambler.getRandom().nextFloat() < 0.33F) {
+                        this.rambler.setAttackState(2);
+                    } else {
+                        this.rambler.setAttackState(1);
+                    }
                 }
             }
         }

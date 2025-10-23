@@ -2,91 +2,88 @@ package com.unusualmodding.opposing_force.entity.ai.goal;
 
 import com.unusualmodding.opposing_force.entity.Rambler;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
-import com.unusualmodding.opposing_force.registry.OPSoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class RamblerFlailGoal extends AttackGoal {
+public class RamblerRollGoal extends AttackGoal {
 
     private final Rambler rambler;
 
-    public RamblerFlailGoal(Rambler rambler) {
+    public RamblerRollGoal(Rambler rambler) {
         super(rambler);
         this.rambler = rambler;
     }
 
     @Override
     public boolean canUse() {
-        return super.canUse() && this.rambler.flailCooldown == 0 && this.rambler.getPose() == Pose.STANDING;
+        return super.canUse() && this.rambler.rollCooldown == 0 && this.rambler.getPose() == Pose.STANDING;
     }
 
     @Override
     public boolean canContinueToUse() {
-        return super.canContinueToUse() && this.rambler.flailCooldown == 0;
+        return super.canContinueToUse() && this.rambler.rollCooldown == 0;
     }
 
     @Override
     public void start() {
         super.start();
-        this.rambler.setFlailing(false);
+        this.rambler.setRolling(false);
         this.rambler.setPose(Pose.STANDING);
     }
 
     @Override
     public void stop() {
         super.stop();
-        this.rambler.setFlailing(false);
+        this.rambler.setRolling(false);
         this.rambler.setPose(Pose.STANDING);
-        this.rambler.flailCooldown = 300 + this.rambler.getRandom().nextInt(300);
+        this.rambler.rollCooldown = 400 + this.rambler.getRandom().nextInt(400);
     }
 
     @Override
     public void tick() {
         LivingEntity target = this.rambler.getTarget();
         if (target != null) {
-            this.rambler.lookAt(target, 30F, 30F);
-            this.rambler.getLookControl().setLookAt(target, 30F, 30F);
             double distance = this.rambler.distanceToSqr(target.getX(), target.getY(), target.getZ());
 
-            if (this.rambler.isFlailing()) {
+            if (this.rambler.isRolling()) {
                 this.timer++;
-                this.rambler.getNavigation().moveTo(target, 2.0D);
 
-                if (this.timer == 1) this.rambler.setPose(OPPoses.START_FLAILING.get());
+                if (this.timer == 1) this.rambler.setPose(OPPoses.START_ROLLING.get());
 
-                if (this.timer > 1 && this.timer < 20) {
-                    if (this.rambler.tickCount % 8 == 0) {
-                        this.rambler.playSound(OPSoundEvents.RAMBLER_ATTACK.get(), 1.0F, 1.0F / (this.rambler.getRandom().nextFloat() * 0.4F + 0.8F));
-                    }
+                if (this.timer > 20 && this.timer < 200) this.hurtNearbyEntities();
+
+                if (this.timer > 20 && this.timer < 220) {
+                    Vec3 rollDirection = new Vec3(target.getX() - rambler.getX(), target.getY() - rambler.getY(), target.getZ() - rambler.getZ()).normalize();
+                    float YRot = Mth.approachDegrees(rambler.getYRot(), (float) (Mth.atan2(rollDirection.z, rollDirection.x) * (180F / Math.PI)) - 90.0F, 3.5F);
+                    this.rambler.setYRot(YRot);
+                    this.rambler.setYBodyRot(YRot);
+                    this.rambler.setDeltaMovement(-Mth.sin(YRot * ((float) Math.PI / 180F)) * 0.35F, rambler.getDeltaMovement().y, Mth.cos(YRot * ((float) Math.PI / 180F)) * 0.35F);
                 }
 
-                if (this.timer > 20 && this.timer < 120) {
-                    this.hurtNearbyEntities();
-                    if (this.rambler.tickCount % 4 == 0) {
-                        this.rambler.playSound(OPSoundEvents.RAMBLER_ATTACK.get(), 1.0F, 1.0F / (this.rambler.getRandom().nextFloat() * 0.4F + 0.8F));
-                    }
-                }
+                if (this.timer == 200) this.rambler.setPose(OPPoses.STOP_ROLLING.get());
 
-                if (this.timer == 120) this.rambler.setPose(OPPoses.STOP_FLAILING.get());
+                if (this.timer > 200 && this.timer < 240) this.rambler.getNavigation().stop();
 
-                if (this.timer > 120 && this.timer < 215) this.rambler.getNavigation().stop();
-
-                if (this.timer > 215) {
+                if (this.timer > 240) {
                     this.timer = 0;
-                    this.rambler.flailCooldown = 300 + this.rambler.getRandom().nextInt(300);
-                    this.rambler.setFlailing(false);
+                    this.rambler.rollCooldown = 400 + this.rambler.getRandom().nextInt(400);
+                    this.rambler.setRolling(false);
                 }
             } else {
-                if (this.rambler.flailCooldown == 0) {
+                this.rambler.lookAt(target, 30F, 30F);
+                this.rambler.getLookControl().setLookAt(target, 30F, 30F);
+                if (this.rambler.rollCooldown == 0) {
                     this.rambler.getNavigation().moveTo(target, 1.25D);
                     if (distance <= this.getAttackReachSqr(target)) {
-                        this.rambler.setFlailing(true);
+                        this.rambler.setRolling(true);
                     }
                 } else {
                     this.rambler.getNavigation().stop();
@@ -113,6 +110,6 @@ public class RamblerFlailGoal extends AttackGoal {
 
     @Override
     protected double getAttackReachSqr(LivingEntity target) {
-        return this.monster.getBbWidth() * 2.25F * this.monster.getBbWidth() * 2.25F + target.getBbWidth();
+        return this.monster.getBbWidth() * 2.5F * this.monster.getBbWidth() * 2.5F + target.getBbWidth();
     }
 }
