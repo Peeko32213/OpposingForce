@@ -23,9 +23,9 @@ public class RamblerModel extends HierarchicalModel<Rambler> {
     private final ModelPart roll_control;
     private final ModelPart body;
     private final ModelPart crown;
-    private final ModelPart middle_skull;
-    private final ModelPart left_skull;
-    private final ModelPart right_skull;
+    public final ModelPart middle_skull;
+    public final ModelPart left_skull;
+    public final ModelPart right_skull;
     private final ModelPart left_front_top_arm;
     private final ModelPart left_front_bottom_arm;
     private final ModelPart left_back_top_arm;
@@ -132,12 +132,11 @@ public class RamblerModel extends HierarchicalModel<Rambler> {
 	@Override
 	public void setupAnim(Rambler entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-
-//        this.animateWalk(RamblerAnimations.WALK, limbSwing, limbSwingAmount, 2, 4);
         this.animate(entity.walkAnimationState, RamblerAnimations.WALK, ageInTicks, 0.75F + (Mth.clamp(limbSwingAmount, 0.25F, 1.0F) * 1.25F));
         this.animate(entity.idleAnimationState, RamblerIdleAnimations.IDLE, ageInTicks);
 		this.animate(entity.recoverAnimationState, RamblerAnimations.RECOVER, ageInTicks);
-	}
+        this.animate(entity.flailAnimationState, RamblerAnimations.FLAIL, ageInTicks);
+    }
 
 	@Override
 	public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {

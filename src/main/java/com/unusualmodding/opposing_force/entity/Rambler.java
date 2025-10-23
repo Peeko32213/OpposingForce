@@ -15,6 +15,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.util.random.Weight;
+import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -43,6 +46,9 @@ public class Rambler extends Monster {
 
     private static final EntityDataAccessor<Boolean> FLAILING = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Integer> FLAIL_COOLDOWN = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> MIDDLE_SKULL = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> LEFT_SKULL = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> RIGHT_SKULL = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState walkAnimationState = new AnimationState();
@@ -113,6 +119,9 @@ public class Rambler extends Monster {
         super.defineSynchedData();
         this.entityData.define(FLAILING, false);
         this.entityData.define(FLAIL_COOLDOWN, 0);
+        this.entityData.define(MIDDLE_SKULL, 0);
+        this.entityData.define(LEFT_SKULL, 0);
+        this.entityData.define(RIGHT_SKULL, 0);
     }
 
     @Override
@@ -120,6 +129,9 @@ public class Rambler extends Monster {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putBoolean("Flailing", this.isFlailing());
         compoundTag.putInt("FlailCooldown", this.getFlailCooldown());
+        compoundTag.putInt("MiddleSkull", this.getMiddleSkull());
+        compoundTag.putInt("LeftSkull", this.getLeftSkull());
+        compoundTag.putInt("RightSkull", this.getRightSkull());
     }
 
     @Override
@@ -127,6 +139,9 @@ public class Rambler extends Monster {
         super.readAdditionalSaveData(compoundTag);
         this.setFlailing(compoundTag.getBoolean("Flailing"));
         this.setFlailCooldown(compoundTag.getInt("FlailCooldown"));
+        this.setMiddleSkull(compoundTag.getInt("MiddleSkull"));
+        this.setLeftSkull(compoundTag.getInt("LeftSkull"));
+        this.setRightSkull(compoundTag.getInt("RightSkull"));
     }
 
     public boolean isFlailing() {
@@ -149,6 +164,30 @@ public class Rambler extends Monster {
         this.entityData.set(FLAIL_COOLDOWN, 160);
     }
 
+    public int getMiddleSkull() {
+        return this.entityData.get(MIDDLE_SKULL);
+    }
+
+    public void setMiddleSkull(int skull) {
+        this.entityData.set(MIDDLE_SKULL, skull);
+    }
+
+    public int getLeftSkull() {
+        return this.entityData.get(LEFT_SKULL);
+    }
+
+    public void setLeftSkull(int skull) {
+        this.entityData.set(LEFT_SKULL, skull);
+    }
+
+    public int getRightSkull() {
+        return this.entityData.get(RIGHT_SKULL);
+    }
+
+    public void setRightSkull(int skull) {
+        this.entityData.set(RIGHT_SKULL, skull);
+    }
+
     @Override
     public void tick() {
         super.tick();
@@ -164,7 +203,7 @@ public class Rambler extends Monster {
 
     private void setupAnimationStates() {
         this.idleAnimationState.animateWhen(!this.isFlailing() && this.getDeltaMovement().horizontalDistance() <= 1.0E-5F, this.tickCount);
-        this.walkAnimationState.animateWhen(!this.isFlailing() && this.getDeltaMovement().horizontalDistance() > 1.0E-5F, this.tickCount);
+        this.walkAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() > 1.0E-5F, this.tickCount);
         this.recoverAnimationState.animateWhen(!this.isFlailing() && this.getFlailCooldown() > 0, this.tickCount);
         this.flailAnimationState.animateWhen(this.isFlailing(), this.tickCount);
     }
@@ -253,27 +292,34 @@ public class Rambler extends Monster {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
-        pSpawnData = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
-        RandomSource randomsource = pLevel.getRandom();
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag compoundTag) {
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
 
-        if (randomsource.nextInt(100) == 0) {
+        RamblerSkulls middle = RamblerSkulls.getRandom(this.getRandom());
+        RamblerSkulls left = RamblerSkulls.getRandom(this.getRandom());
+        RamblerSkulls right = RamblerSkulls.getRandom(this.getRandom());
+
+        this.setMiddleSkull(middle.getSkull());
+        this.setLeftSkull(left.getSkull());
+        this.setRightSkull(right.getSkull());
+
+        RandomSource random = level.getRandom();
+        if (random.nextInt(100) == 0) {
             Rambler ramble = OPEntities.RAMBLER.get().create(this.level());
             if (ramble != null) {
                 ramble.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-                ramble.finalizeSpawn(pLevel, pDifficulty, pReason, null, null);
+                ramble.finalizeSpawn(level, difficulty, spawnType, null, null);
                 ramble.startRiding(this);
             }
-        }
-        else if (randomsource.nextInt(100) == 1) {
+        } else if (random.nextInt(100) == 1) {
             Skeleton skeleton = EntityType.SKELETON.create(this.level());
             if (skeleton != null) {
                 skeleton.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-                skeleton.finalizeSpawn(pLevel, pDifficulty, pReason, null, null);
+                skeleton.finalizeSpawn(level, difficulty, spawnType, null, null);
                 skeleton.startRiding(this);
             }
         }
-        return pSpawnData;
+        return spawnData;
     }
 
     @Override
@@ -287,6 +333,72 @@ public class Rambler extends Monster {
         Entity entity = this.getControlledVehicle();
         if (entity instanceof PathfinderMob pathfindermob) {
             this.yBodyRot = pathfindermob.yBodyRot;
+        }
+    }
+
+    public enum RamblerSkulls implements StringRepresentable, WeightedEntry {
+        SKELETON(0,  "skeleton", 100),
+        ANGRY(1, "angry", 100),
+        CLASSIC(2, "classic", 100),
+        EVIL(3, "evil", 100),
+        GRIN(4, "grin", 10),
+        SMILE(5, "smile", 100),
+        STRANGE(6, "strange", 100),
+        MUSICAL(7, "musical", 1),
+        DWARVEN(8, "dwarven", 1),
+        INDOMITABLE(9, "indomitable", 1),
+        MAGMATIC(10, "magmatic", 1),
+        CRUNDLY(11, "crundly", 1),
+        IMPRISONED(12, "imprisoned", 1),
+        NOSY(13, "nosy", 1),
+        LEERING(14, "leering", 1),
+        VALIANT(15, "valiant", 1);
+
+        private final int skull;
+        private final String name;
+        private final Weight weight;
+
+        RamblerSkulls(int skull, String name, int weight) {
+            this.skull = skull;
+            this.name = name;
+            this.weight = Weight.of(weight);
+        }
+
+        public static RamblerSkulls getVariantId(int skulls) {
+            for (RamblerSkulls skull : values()) {
+                if (skull.skull == skulls) return skull;
+            }
+            return RamblerSkulls.SKELETON;
+        }
+
+        public static RamblerSkulls getRandom(RandomSource random) {
+            int weight = 0;
+            int skull = 0;
+            for (RamblerSkulls skulls : RamblerSkulls.values()) {
+                weight += skulls.getWeight().asInt();
+            }
+            for (RamblerSkulls skulls : RamblerSkulls.values()) {
+                skull += skulls.getWeight().asInt();
+                if (random.nextInt(weight) < skull) {
+                    return skulls;
+                }
+            }
+            return RamblerSkulls.SKELETON;
+        }
+
+        public int getSkull() {
+            return this.skull;
+        }
+
+        @Override
+        @NotNull
+        public String getSerializedName() {
+            return this.name;
+        }
+
+        @Override
+        public @NotNull Weight getWeight() {
+            return this.weight;
         }
     }
 }

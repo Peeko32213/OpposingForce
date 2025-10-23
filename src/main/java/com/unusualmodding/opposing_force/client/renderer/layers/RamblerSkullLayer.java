@@ -4,44 +4,54 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.models.entity.RamblerModel;
 import com.unusualmodding.opposing_force.entity.Rambler;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
-import static com.unusualmodding.opposing_force.OpposingForce.modPrefix;
+import java.util.function.Function;
 
 @OnlyIn(Dist.CLIENT)
 public class RamblerSkullLayer extends RenderLayer<Rambler, RamblerModel> {
 
-    private final RamblerModel model;
+    private final DrawSelector<Rambler, RamblerModel> drawSelector;
+    private final Function<Rambler, ResourceLocation> texture;
 
-    public RamblerSkullLayer(RenderLayerParent<Rambler, RamblerModel> parentModel) {
+    public RamblerSkullLayer(RenderLayerParent<Rambler, RamblerModel> parentModel, DrawSelector<Rambler, RamblerModel> drawSelector, Function<Rambler, ResourceLocation> texture) {
         super(parentModel);
-        this.model = parentModel.getModel();
+        this.drawSelector = drawSelector;
+        this.texture = texture;
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, MultiBufferSource multiBufferSource, int i, @NotNull Rambler rambler, float f, float g, float h, float j, float k, float l) {
+    public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int i, @NotNull Rambler rambler, float f, float g, float h, float j, float k, float l) {
         if (!rambler.isInvisible()) {
-            this.getParentModel().copyPropertiesTo(this.model);
-            this.model.prepareMobModel(rambler, f, g, h);
-            this.model.setupAnim(rambler, f, g, j, k, l);
-            VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entityCutoutNoCull(this.getSkullTextureLocation(rambler)));
-            this.model.renderToBuffer(poseStack, vertexConsumer, i, getOverlayCoords(rambler, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+            this.onlyDrawSelectedPart();
+            VertexConsumer vertexconsumer = bufferSource.getBuffer(RenderType.entityTranslucent(texture.apply(rambler)));
+            this.getParentModel().renderToBuffer(poseStack, vertexconsumer, i, LivingEntityRenderer.getOverlayCoords(rambler, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+            this.resetDrawForAllParts();
         }
     }
 
-    public ResourceLocation getSkullTextureLocation(Rambler rambler) {
-        return modPrefix("textures/entity/rambler/skulls/rambler_skull1.png");
+    private void onlyDrawSelectedPart() {
+        ModelPart modelPart = this.drawSelector.getPartToDraw(this.getParentModel());
+        this.getParentModel().root().getAllParts().forEach((modelPart1) -> modelPart1.skipDraw = true);
+        modelPart.skipDraw = false;
     }
 
-    public static int getOverlayCoords(Rambler rambler, float f) {
-        return OverlayTexture.pack(OverlayTexture.u(f), OverlayTexture.v(rambler.hurtTime > 0 || rambler.deathTime > 0));
+    private void resetDrawForAllParts() {
+        this.getParentModel().root().getAllParts().forEach((modelPart) -> modelPart.skipDraw = false);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public interface DrawSelector<T extends Rambler, M extends EntityModel<T>> {
+        ModelPart getPartToDraw(M model);
     }
 }

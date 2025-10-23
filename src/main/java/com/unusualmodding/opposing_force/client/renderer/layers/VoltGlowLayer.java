@@ -47,9 +47,7 @@ public class VoltGlowLayer extends RenderLayer<Volt, VoltModel> {
     }
 
     private void resetDrawForAllParts() {
-        this.getParentModel().root().getAllParts().forEach((modelPart) -> {
-            modelPart.skipDraw = false;
-        });
+        this.getParentModel().root().getAllParts().forEach((modelPart) -> modelPart.skipDraw = false);
     }
 
     @OnlyIn(Dist.CLIENT)
