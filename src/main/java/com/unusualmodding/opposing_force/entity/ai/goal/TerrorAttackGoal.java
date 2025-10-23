@@ -13,7 +13,8 @@ import java.util.List;
 
 public class TerrorAttackGoal extends AttackGoal {
 
-    protected final Terror terror;
+    private final Terror terror;
+    private int cooldown;
 
     public TerrorAttackGoal(Terror terror) {
         super(terror);
@@ -33,13 +34,17 @@ public class TerrorAttackGoal extends AttackGoal {
     @Override
     public void start() {
         super.start();
+        this.cooldown = 0;
+        this.terror.setSawing(false);
         this.terror.setRunning(false);
         this.terror.setPose(Pose.STANDING);
     }
 
     @Override
     public void stop() {
-        super.start();
+        super.stop();
+        this.cooldown = 0;
+        this.terror.setSawing(false);
         this.terror.setRunning(false);
         this.terror.setPose(Pose.STANDING);
     }
@@ -49,11 +54,10 @@ public class TerrorAttackGoal extends AttackGoal {
         LivingEntity target = this.terror.getTarget();
         if (target != null) {
             double distance = this.terror.distanceToSqr(target.getX(), target.getY(), target.getZ());
-            int attackState = this.terror.getAttackState();
             this.terror.lookAt(this.terror.getTarget(), 30F, 30F);
             this.terror.getLookControl().setLookAt(this.terror.getTarget(), 30F, 30F);
 
-            if (attackState == 1) {
+            if (this.terror.isSawing()) {
                 timer++;
 
                 if (this.timer == 1) {
@@ -64,21 +68,29 @@ public class TerrorAttackGoal extends AttackGoal {
                     this.terror.getNavigation().stop();
                 }
 
-                if (timer > 20) {
-                    this.terror.getNavigation().moveTo(target, 1.4D);
+                if (timer > 20 && timer < 100) {
+                    this.terror.getNavigation().moveTo(target, 1.5D);
                     this.terror.setRunning(true);
                     this.hurtNearbyEntities();
                 }
 
-                if (timer > 200) {
+                if (timer == 100) this.terror.setPose(OPPoses.RECOVERING.get());
+
+                if (timer > 100) {
+                    this.terror.getNavigation().stop();
+                    this.terror.setRunning(false);
+                }
+
+                if (timer > 150) {
                     timer = 0;
-                    this.terror.setAttackState(0);
+                    this.terror.setSawing(false);
+                    this.cooldown = 10 + terror.getRandom().nextInt(10);
                 }
             } else {
-                this.terror.getNavigation().moveTo(target, 1.1D);
-
-                if (distance < 32 && this.terror.getPose() == Pose.STANDING) {
-                    this.terror.setAttackState(1);
+                if (cooldown > 0) this.cooldown--;
+                this.terror.getNavigation().moveTo(target, 1.25D);
+                if (distance < this.getAttackReachSqr(target) && this.terror.getPose() == Pose.STANDING && cooldown == 0) {
+                    this.terror.setSawing(true);
                 }
             }
         }

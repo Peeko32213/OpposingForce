@@ -3,7 +3,6 @@ package com.unusualmodding.opposing_force.entity;
 import com.unusualmodding.opposing_force.entity.ai.goal.TerrorAttackGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.TerrorRandomStrollGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
-import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -40,9 +39,9 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class Terror extends Monster implements IAnimatedAttacker {
+public class Terror extends Monster {
 
-    private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Terror.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> SAWING = SynchedEntityData.defineId(Terror.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> HAS_LEGS = SynchedEntityData.defineId(Terror.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(Terror.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> FLOP_TIME = SynchedEntityData.defineId(Terror.class, EntityDataSerializers.INT);
@@ -51,7 +50,7 @@ public class Terror extends Monster implements IAnimatedAttacker {
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState flopAnimationState = new AnimationState();
-    public final AnimationState attackAnimationState = new AnimationState();
+    public final AnimationState cooldownAnimationState = new AnimationState();
     public final AnimationState swimAnimationState = new AnimationState();
     public final AnimationState growLegsAnimationState = new AnimationState();
     public final AnimationState startSawingAnimationState = new AnimationState();
@@ -62,6 +61,7 @@ public class Terror extends Monster implements IAnimatedAttacker {
     private int growLegsTicks;
     private int retractLegsTicks;
     private int startSawingTicks;
+    private int stopSawingTicks;
 
     @Override
     protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
@@ -203,16 +203,18 @@ public class Terror extends Monster implements IAnimatedAttacker {
         if (this.getFlopTime() > 0 && this.onGround() && !this.isInWater()) this.setFlopTime(this.getFlopTime() - 1);
 
         if (startSawingTicks > 0) startSawingTicks--;
+        if (stopSawingTicks > 0) stopSawingTicks--;
         if (startSawingTicks == 0 && this.getPose() == OPPoses.START_SAWING.get()) this.setPose(OPPoses.SAWING.get());
+        if (stopSawingTicks == 0 && this.getPose() == OPPoses.RECOVERING.get()) this.setPose(Pose.STANDING);
     }
 
     private void setupAnimationStates() {
-        if (startSawingTicks == 0 && this.startSawingAnimationState.isStarted()) this.startSawingAnimationState.stop();
         if (growLegsTicks == 0 && this.growLegsAnimationState.isStarted()) this.growLegsAnimationState.stop();
         if (retractLegsTicks == 0 && this.retractLegsAnimationState.isStarted()) this.retractLegsAnimationState.stop();
+        if (startSawingTicks == 0 && this.startSawingAnimationState.isStarted()) this.startSawingAnimationState.stop();
+        if (stopSawingTicks == 0 && this.cooldownAnimationState.isStarted()) this.cooldownAnimationState.stop();
         this.idleAnimationState.animateWhen(!this.isInWaterOrBubble() && this.hasLegs() && this.getDeltaMovement().horizontalDistance() <= 1.0E-5F, this.tickCount);
         this.flopAnimationState.animateWhen(!this.isInWaterOrBubble() && !this.hasLegs() && this.getPose() != OPPoses.GROWING_LEGS.get(), this.tickCount);
-        this.attackAnimationState.animateWhen(this.getAttackState() == 1, this.tickCount);
         this.swimAnimationState.animateWhen(this.isInWaterOrBubble() && this.getPose() != OPPoses.RETRACTING_LEGS.get(), this.tickCount);
     }
 
@@ -238,12 +240,17 @@ public class Terror extends Monster implements IAnimatedAttacker {
                 this.retractLegsAnimationState.start(this.tickCount);
             }
             else if (this.getPose() == OPPoses.START_SAWING.get()) {
-                this.startSawingAnimationState.start(this.tickCount);
                 this.startSawingTicks = 20;
+                this.startSawingAnimationState.start(this.tickCount);
             }
             else if (this.getPose() == OPPoses.SAWING.get()) {
                 this.startSawingAnimationState.stop();
                 this.sawingAnimationState.start(this.tickCount);
+            }
+            else if (this.getPose() == OPPoses.RECOVERING.get()) {
+                this.sawingAnimationState.stop();
+                this.stopSawingTicks = 50;
+                this.cooldownAnimationState.start(this.tickCount);
             }
             else if (this.getPose() == Pose.STANDING) {
                 this.growLegsAnimationState.stop();
@@ -277,7 +284,7 @@ public class Terror extends Monster implements IAnimatedAttacker {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(ATTACK_STATE, 0);
+        this.entityData.define(SAWING, false);
         this.entityData.define(HAS_LEGS, false);
         this.entityData.define(RUNNING, false);
         this.entityData.define(FLOP_TIME, 20 + this.getRandom().nextInt(2 * 10));
@@ -286,7 +293,7 @@ public class Terror extends Monster implements IAnimatedAttacker {
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        compoundTag.putInt("AttackState", this.getAttackState());
+        compoundTag.putBoolean("Sawing", this.isSawing());
         compoundTag.putBoolean("HasLegs", this.hasLegs());
         compoundTag.putInt("FlopTime", this.getFlopTime());
     }
@@ -294,19 +301,17 @@ public class Terror extends Monster implements IAnimatedAttacker {
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        this.setAttackState(compoundTag.getInt("AttackState"));
+        this.setSawing(compoundTag.getBoolean("Sawing"));
         this.setHasLegs(compoundTag.getBoolean("HasLegs"));
         this.setFlopTime(compoundTag.getInt("FlopTime"));
     }
 
-    @Override
-    public int getAttackState() {
-        return this.entityData.get(ATTACK_STATE);
+    public boolean isSawing() {
+        return this.entityData.get(SAWING);
     }
 
-    @Override
-    public void setAttackState(int attackState) {
-        this.entityData.set(ATTACK_STATE, attackState);
+    public void setSawing(boolean sawing) {
+        this.entityData.set(SAWING, sawing);
     }
 
     public boolean hasLegs() {
