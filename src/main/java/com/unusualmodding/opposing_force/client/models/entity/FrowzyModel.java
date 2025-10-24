@@ -68,7 +68,8 @@ public class FrowzyModel extends HierarchicalModel<Frowzy> implements ArmedModel
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.animateWalk(FrowzyAnimations.WALK, limbSwing, limbSwingAmount, 1, 2);
 		this.animate(entity.idleAnimationState, FrowzyAnimations.IDLE, ageInTicks);
-		this.animate(entity.attackAnimationState, FrowzyAnimations.ATTACK, ageInTicks);
+		this.animate(entity.attack1AnimationState, FrowzyAnimations.ATTACK_IDLE, ageInTicks);
+        this.animate(entity.attack2AnimationState, FrowzyAnimations.ATTACK_WALK, ageInTicks);
 
 		if (this.young) {
 			this.applyStatic(FrowzyAnimations.BABY_TRANSFORM);

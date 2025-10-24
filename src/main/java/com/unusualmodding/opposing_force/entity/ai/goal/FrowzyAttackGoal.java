@@ -1,9 +1,11 @@
 package com.unusualmodding.opposing_force.entity.ai.goal;
 
 import com.unusualmodding.opposing_force.entity.Frowzy;
+import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
 
 import java.util.Objects;
 
@@ -17,6 +19,18 @@ public class FrowzyAttackGoal extends AttackGoal {
     }
 
     @Override
+    public void start() {
+        super.start();
+        this.frowzy.setPose(Pose.STANDING);
+    }
+
+    @Override
+    public void stop() {
+        super.stop();
+        this.frowzy.setPose(Pose.STANDING);
+    }
+
+    @Override
     public void tick() {
         LivingEntity target = this.frowzy.getTarget();
         if (target != null) {
@@ -27,16 +41,16 @@ public class FrowzyAttackGoal extends AttackGoal {
 
             if (attackState == 1) {
                 timer++;
-                if (timer == 1) {
-                    this.frowzy.playSound(OPSoundEvents.FROWZY_ATTACK.get(), 1.0F, this.frowzy.getVoicePitch());
-                }
-                if (timer == 5) {
+                if (timer == 1) this.frowzy.setPose(OPPoses.ATTACKING.get());
+                if (timer == 8) this.frowzy.playSound(OPSoundEvents.FROWZY_ATTACK.get(), 1.0F, this.frowzy.getVoicePitch());
+
+                if (timer == 10) {
                     if (this.frowzy.distanceTo(Objects.requireNonNull(target)) < getAttackReachSqr(target)) {
                         this.frowzy.doHurtTarget(target);
                         this.frowzy.swing(InteractionHand.MAIN_HAND);
                     }
                 }
-                if (timer >= 20) {
+                if (timer > 20) {
                     timer = 0;
                     this.frowzy.setAttackState(0);
                 }

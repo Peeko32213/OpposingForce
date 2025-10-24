@@ -53,9 +53,7 @@ public class RamblerJabGoal extends AttackGoal {
 
             if (this.rambler.getAttackState() == 1) {
                 this.timer++;
-                if (this.timer == 1) {
-                    this.rambler.setPose(OPPoses.JAB.get());
-                }
+                if (this.timer == 1) this.rambler.setPose(OPPoses.JAB.get());
                 if (this.timer == 7) {
                     if (this.rambler.distanceTo(target) < this.getAttackReachSqr(target)) {
                         target.hurt(this.rambler.damageSources().mobAttack(this.rambler), (float) this.rambler.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5F);

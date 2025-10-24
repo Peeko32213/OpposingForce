@@ -52,7 +52,7 @@ public class HangingSpider extends Spider implements IAnimatedAttacker {
     public static final EntityDataAccessor<Integer> GOING_UP_COOLDOWN = SynchedEntityData.defineId(HangingSpider.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> GOING_DOWN_COOLDOWN = SynchedEntityData.defineId(HangingSpider.class, EntityDataSerializers.INT);
 
-    protected Vector3f webTarget;
+    private Vector3f webTarget;
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState goingUpAnimationState = new AnimationState();

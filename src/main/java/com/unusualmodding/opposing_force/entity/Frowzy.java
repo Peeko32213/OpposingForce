@@ -4,6 +4,7 @@ import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
 import com.unusualmodding.opposing_force.entity.utils.IAnimatedAttacker;
+import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -63,13 +64,16 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
     private static final AttributeModifier BABY_SPEED_MODIFIER = new AttributeModifier(BABY_SPEED_MODIFIER_UUID, "Baby speed boost", 0.5D, AttributeModifier.Operation.MULTIPLY_BASE);
 
     public final AnimationState idleAnimationState = new AnimationState();
-    public final AnimationState attackAnimationState = new AnimationState();
+    public final AnimationState attack1AnimationState = new AnimationState();
+    public final AnimationState attack2AnimationState = new AnimationState();
 
     private static final Predicate<Difficulty> DOOR_BREAKING_PREDICATE = (difficulty) -> difficulty == Difficulty.HARD;
     private final BreakDoorGoal breakDoorGoal = new BreakDoorGoal(this, DOOR_BREAKING_PREDICATE);
     private boolean canBreakDoors;
 
-    public int jumpCooldown = 100 + this.random.nextInt(2 * 40);
+    public int jumpCooldown = 100 + this.random.nextInt(50);
+
+    private int attackTicks;
 
     public Frowzy(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -107,7 +111,7 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
     }
 
     protected void handleAttributes(float chance) {
-        this.getAttribute(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier("Random frowzy spawn bonus", this.random.nextDouble() * (double) 0.02F, AttributeModifier.Operation.ADDITION));
+        this.getAttribute(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier("Random frowzy spawn bonus", this.random.nextDouble() * (double) 0.05F, AttributeModifier.Operation.ADDITION));
         double random = this.random.nextDouble() * 1.5D * (double) chance;
         if (random > 1.0D) {
             this.getAttribute(Attributes.FOLLOW_RANGE).addPermanentModifier(new AttributeModifier("Random frowzy spawn bonus", random, AttributeModifier.Operation.MULTIPLY_TOTAL));
@@ -124,7 +128,7 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
     }
 
     @Override
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.UNDEAD;
     }
 
@@ -186,11 +190,39 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
                 OpposingForce.PROXY.playWorldSound(this, (byte) 3);
             }
         }
+
+        if (this.attackTicks > 0) attackTicks--;
+        if (attackTicks == 0 && this.getPose() == OPPoses.ATTACKING.get()) this.setPose(Pose.STANDING);
     }
 
     private void setupAnimationStates() {
+        if (attackTicks == 0 && (this.attack1AnimationState.isStarted() || this.attack2AnimationState.isStarted())) {
+            this.attack1AnimationState.stop();
+            this.attack2AnimationState.stop();
+        }
         this.idleAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() <= 1.0E-5F, this.tickCount);
-        this.attackAnimationState.animateWhen(this.getAttackState() == 1, this.tickCount);
+    }
+
+    @Override
+    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> entityDataAccessor) {
+        if (IS_BABY.equals(entityDataAccessor)) {
+            this.refreshDimensions();
+        }
+        if (DATA_POSE.equals(entityDataAccessor)) {
+            if (this.getPose() == OPPoses.ATTACKING.get()) {
+                this.attackTicks = 20;
+                if (this.getDeltaMovement().horizontalDistance() <= 1.0E-5F) {
+                    this.attack1AnimationState.start(this.tickCount);
+                } else {
+                    this.attack2AnimationState.start(this.tickCount);
+                }
+            }
+            else if (this.getPose() == Pose.STANDING) {
+                this.attack1AnimationState.stop();
+                this.attack2AnimationState.stop();
+            }
+        }
+        super.onSyncedDataUpdated(entityDataAccessor);
     }
 
     @Override
@@ -253,14 +285,6 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
                 attributeinstance.addTransientModifier(BABY_SPEED_MODIFIER);
             }
         }
-    }
-
-    @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> entityDataAccessor) {
-        if (IS_BABY.equals(entityDataAccessor)) {
-            this.refreshDimensions();
-        }
-        super.onSyncedDataUpdated(entityDataAccessor);
     }
 
     public static boolean getSpawnAsBabyOdds(RandomSource randomSource) {

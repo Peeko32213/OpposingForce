@@ -17,7 +17,8 @@ public enum OPPoses {
     JAB_RUSH,
     START_ROLLING,
     ROLLING,
-    STOP_ROLLING;
+    STOP_ROLLING,
+    ATTACKING;
 
     public Pose get() {
         return Pose.valueOf(this.name());
