@@ -20,7 +20,7 @@ public class OPEntities {
     public static final RegistryObject<EntityType<Dicer>> DICER = ENTITY_TYPES.register(
             "dicer", () ->
             EntityType.Builder.of(Dicer::new, MobCategory.MONSTER)
-                    .sized(0.7F, 2.25F)
+                    .sized(0.7F, 2.8F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "dicer").toString())
     );

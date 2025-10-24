@@ -69,6 +69,7 @@ public class Whizz extends Monster implements OwnableEntity {
 
     public Whizz(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.xpReward = 5;
         this.moveControl = new FlyingMoveControl(this, 20, true);
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);

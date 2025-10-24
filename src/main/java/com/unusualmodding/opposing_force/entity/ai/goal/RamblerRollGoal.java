@@ -16,6 +16,7 @@ import java.util.List;
 public class RamblerRollGoal extends AttackGoal {
 
     private final Rambler rambler;
+    private int collisionTicks;
 
     public RamblerRollGoal(Rambler rambler) {
         super(rambler);
@@ -35,6 +36,7 @@ public class RamblerRollGoal extends AttackGoal {
     @Override
     public void start() {
         super.start();
+        this.collisionTicks = 0;
         this.rambler.setRolling(false);
         this.rambler.setPose(Pose.STANDING);
     }
@@ -42,6 +44,7 @@ public class RamblerRollGoal extends AttackGoal {
     @Override
     public void stop() {
         super.stop();
+        this.collisionTicks = 0;
         this.rambler.setRolling(false);
         this.rambler.setPose(Pose.STANDING);
         this.rambler.rollCooldown = 400 + this.rambler.getRandom().nextInt(400);
@@ -55,6 +58,9 @@ public class RamblerRollGoal extends AttackGoal {
 
             if (this.rambler.isRolling()) {
                 this.timer++;
+                if (rambler.horizontalCollision) {
+                    this.collisionTicks++;
+                }
 
                 if (this.timer == 1) this.rambler.setPose(OPPoses.START_ROLLING.get());
 
@@ -77,6 +83,14 @@ public class RamblerRollGoal extends AttackGoal {
                     this.rambler.rollCooldown = 400 + this.rambler.getRandom().nextInt(400);
                     this.rambler.setRolling(false);
                 }
+
+                if (this.collisionTicks > 40) {
+                    this.rambler.setRolling(false);
+                    this.rambler.setPose(OPPoses.STOP_ROLLING.get());
+                    this.rambler.rollCooldown = 400 + this.rambler.getRandom().nextInt(400);
+                    this.timer = 0;
+                }
+
             } else {
                 this.rambler.lookAt(target, 30F, 30F);
                 this.rambler.getLookControl().setLookAt(target, 30F, 30F);

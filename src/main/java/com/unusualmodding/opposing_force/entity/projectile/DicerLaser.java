@@ -21,6 +21,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,7 @@ public class DicerLaser extends Entity {
     }
 
     @Override
-    public PushReaction getPistonPushReaction() {
+    public @NotNull PushReaction getPistonPushReaction() {
         return PushReaction.IGNORE;
     }
 
@@ -118,7 +119,7 @@ public class DicerLaser extends Entity {
             this.calculateEndPos();
             List<LivingEntity> entities = raytraceEntities(level(), new Vec3(getX(), getY(), getZ()), new Vec3(endPosX, endPosY, endPosZ), false, true, true).entities;
             if (blockSide != null) {
-                spawnExplosionParticles(12);
+                spawnLaserParticles(12);
             }
             if (level().isClientSide && isAlive()) {
                 OpposingForce.PROXY.playWorldSound(this, (byte) 0);
@@ -138,7 +139,7 @@ public class DicerLaser extends Entity {
         }
     }
 
-    private void spawnExplosionParticles(int amount) {
+    private void spawnLaserParticles(int amount) {
         for (int i = 0; i < amount; i++) {
             final float velocity = 0.1F;
             float yaw = (float) (random.nextFloat() * 2 * Math.PI);
@@ -279,7 +280,7 @@ public class DicerLaser extends Entity {
     }
 
     @Override
-    public void remove(RemovalReason reason) {
+    public void remove(@NotNull RemovalReason reason) {
         OpposingForce.PROXY.clearSoundCacheFor(this);
         super.remove(reason);
     }

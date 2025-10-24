@@ -28,8 +28,8 @@ public class MoonShoesParticle extends TextureSheetParticle {
       this.gCol = f1;
       this.bCol = f1;
       this.quadSize *= 1.875F;
-      int i = (int)(8.0D / (Math.random() * 0.8D + 0.3D));
-      this.lifetime = (int) Math.max((float)i * 2.5F, 1.0F);
+      int i = (int) (8.0D / (Math.random() * 0.8D + 0.3D));
+      this.lifetime = (int) Math.max((float) i * 2.5F, 1.0F);
       this.hasPhysics = false;
       this.setSpriteFromAge(sprites);
    }
