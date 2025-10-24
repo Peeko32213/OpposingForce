@@ -8,8 +8,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
-import java.util.Objects;
-
 public class RamblerJabGoal extends AttackGoal {
 
     private final Rambler rambler;
@@ -48,7 +46,7 @@ public class RamblerJabGoal extends AttackGoal {
             int attackState = this.rambler.getAttackState();
             double distance = this.rambler.distanceToSqr(target.getX(), target.getY(), target.getZ());
             this.rambler.getNavigation().moveTo(target, 1.25D);
-            this.rambler.lookAt(Objects.requireNonNull(target), 30F, 30F);
+            this.rambler.lookAt(target, 30F, 30F);
             this.rambler.getLookControl().setLookAt(target, 30F, 30F);
 
             if (this.rambler.getAttackState() == 1) {

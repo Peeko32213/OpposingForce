@@ -119,7 +119,7 @@ public class DicerLaser extends Entity {
             this.calculateEndPos();
             List<LivingEntity> entities = raytraceEntities(level(), new Vec3(getX(), getY(), getZ()), new Vec3(endPosX, endPosY, endPosZ), false, true, true).entities;
             if (blockSide != null) {
-                spawnLaserParticles(12);
+                this.spawnLaserParticles();
             }
             if (level().isClientSide && isAlive()) {
                 OpposingForce.PROXY.playWorldSound(this, (byte) 0);
@@ -139,11 +139,11 @@ public class DicerLaser extends Entity {
         }
     }
 
-    private void spawnLaserParticles(int amount) {
-        for (int i = 0; i < amount; i++) {
-            final float velocity = 0.1F;
+    private void spawnLaserParticles() {
+        for (int i = 0; i < 6; i++) {
+            final float velocity = 0.25F;
             float yaw = (float) (random.nextFloat() * 2 * Math.PI);
-            float motionY = random.nextFloat() * 0.08F;
+            float motionY = random.nextFloat() * 0.15F;
             float motionX = velocity * Mth.cos(yaw);
             float motionZ = velocity * Mth.sin(yaw);
             level().addParticle(OPParticles.LASER_BOLT_DUST.get(), collidePosX, collidePosY + 0.1, collidePosZ, motionX, motionY, motionZ);
@@ -201,10 +201,10 @@ public class DicerLaser extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag compoundTag) {}
+    protected void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {}
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag compoundTag) {}
+    protected void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {}
 
     private void calculateEndPos() {
         double radius = 24;
@@ -253,17 +253,7 @@ public class DicerLaser extends Entity {
     }
 
     @Override
-    public void push(Entity entityIn) {
-    }
-
-    @Override
-    public boolean isPickable() {
-        return false;
-    }
-
-    @Override
-    public boolean isPushable() {
-        return false;
+    public void push(@NotNull Entity entity) {
     }
 
     @Override
@@ -274,9 +264,8 @@ public class DicerLaser extends Entity {
     private void updateWithDicer() {
         this.setYaw((float) ((caster.yHeadRot + 90) * Math.PI / 180.0D));
         this.setPitch((float) (-caster.getXRot() * Math.PI / 180.0D));
-        Vec3 vecOffset1 = new Vec3(0, 0.05, 0.15).yRot((float) Math.toRadians(-caster.getYRot()));
-        Vec3 vecOffset2 = new Vec3(0.15, 0, 0).yRot(-getYaw()).xRot(getPitch());
-        this.setPos(caster.getX() + vecOffset1.x() + vecOffset2.x(), caster.getY() + 1.8F + vecOffset1.y() + vecOffset2.y(), caster.getZ() + vecOffset1.z() + vecOffset2.z());
+        Vec3 vecOffset = caster.getLookAngle().normalize().scale(0.75);
+        this.setPos(caster.getX() + vecOffset.x(), caster.getY() + 2.45F + vecOffset.y(), caster.getZ() + vecOffset.z());
     }
 
     @Override

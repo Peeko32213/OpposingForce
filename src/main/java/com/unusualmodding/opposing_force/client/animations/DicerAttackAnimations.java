@@ -1793,7 +1793,7 @@ public class DicerAttackAnimations {
             ))
             .build();
 
-    public static final AnimationDefinition TAIL_WHIP = AnimationDefinition.Builder.withLength(1.0F)
+    public static final AnimationDefinition TAIL_SPIN = AnimationDefinition.Builder.withLength(1.0F)
             .addAnimation("left_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(-30.0F, 0.0F, 2.5F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(0.0625F, KeyframeAnimations.degreeVec(5.0F, 0.0F, 2.5F), AnimationChannel.Interpolations.CATMULLROM),

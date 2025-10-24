@@ -34,7 +34,7 @@ public class DicerLaserSound extends AbstractTickableSoundInstance {
         this.y = (float) this.entity.getY();
         this.z = (float) this.entity.getZ();
         this.pitch = 1.0F;
-        this.volume = 2.0F;
+        this.volume = 4.0F;
     }
 
     @Override

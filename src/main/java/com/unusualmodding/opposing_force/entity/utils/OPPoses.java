@@ -20,7 +20,11 @@ public enum OPPoses {
     STOP_ROLLING,
     ATTACKING,
     OPEN_JAWS,
-    CLOSE_JAWS;
+    CLOSE_JAWS,
+    SLASHING,
+    CROSS_SLASHING,
+    TAIL_SPINNING,
+    LASERING;
 
     public Pose get() {
         return Pose.valueOf(this.name());

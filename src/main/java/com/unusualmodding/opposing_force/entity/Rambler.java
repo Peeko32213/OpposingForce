@@ -92,7 +92,6 @@ public class Rambler extends Monster implements IAnimatedAttacker {
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new RamblerFlailGoal(this));
         this.goalSelector.addGoal(1, new RamblerRollGoal(this));
         this.goalSelector.addGoal(2, new RamblerJabGoal(this));

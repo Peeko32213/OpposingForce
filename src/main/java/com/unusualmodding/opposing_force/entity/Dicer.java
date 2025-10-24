@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.entity;
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.utils.IAnimatedAttacker;
+import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -28,9 +29,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,42 +36,42 @@ public class Dicer extends Monster implements IAnimatedAttacker {
 
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Dicer.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(Dicer.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> LASER_COOLDOWN = SynchedEntityData.defineId(Dicer.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> CROSS_SLASH = SynchedEntityData.defineId(Dicer.class, EntityDataSerializers.BOOLEAN);
-
-    @OnlyIn(Dist.CLIENT)
-    public Vec3[] headPos;
+    private static final EntityDataAccessor<Boolean> LASERING = SynchedEntityData.defineId(Dicer.class, EntityDataSerializers.BOOLEAN);
 
     public final AnimationState idleAnimationState = new AnimationState();
-    public final AnimationState slice1AnimationState = new AnimationState();
-    public final AnimationState slice2AnimationState = new AnimationState();
-    public final AnimationState crossSliceAnimationState = new AnimationState();
+    public final AnimationState slash1AnimationState = new AnimationState();
+    public final AnimationState slash2AnimationState = new AnimationState();
+    public final AnimationState crossSlashAnimationState = new AnimationState();
     public final AnimationState laserAnimationState = new AnimationState();
+    public final AnimationState tailSpinAnimationState = new AnimationState();
+
+    private int slashTicks;
+    private int crossSlashTicks;
+    private int tailSpinTicks;
+    private int laserTicks;
+
+    public int laserCooldown = 300;
 
     public Dicer(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
         this.xpReward = 15;
-        if (level.isClientSide) {
-            this.headPos = new Vec3[] {
-                    new Vec3(0, 0, 0)
-            };
-        }
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-            .add(Attributes.MAX_HEALTH, 32.0D)
+            .add(Attributes.MAX_HEALTH, 36.0D)
             .add(Attributes.MOVEMENT_SPEED, 0.2D)
-            .add(Attributes.ATTACK_DAMAGE, 7.0D)
+            .add(Attributes.ATTACK_DAMAGE, 8.0D)
             .add(Attributes.FOLLOW_RANGE, 24.0D);
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new DicerAttackGoal(this));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(1, new DicerLaserGoal(this));
+        this.goalSelector.addGoal(2, new DicerAttackGoal(this));
+        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
@@ -86,8 +84,8 @@ public class Dicer extends Monster implements IAnimatedAttacker {
 
     @Override
     public float getStepHeight() {
-        if (this.isCrossSlashing()) {
-            return 1.25F;
+        if (this.getAttackState() == 2) {
+            return 1.0F;
         }
         return 0.6F;
     }
@@ -101,21 +99,33 @@ public class Dicer extends Monster implements IAnimatedAttacker {
     public void tick() {
         super.tick();
 
-        if (this.getLaserCooldown() > 0) {
-            this.setLaserCooldown(this.getLaserCooldown() - 1);
-        }
+        if (laserCooldown > 0) laserCooldown--;
 
-        if (this.level().isClientSide()) {
+        if (slashTicks > 0) slashTicks--;
+        if (crossSlashTicks > 0) crossSlashTicks--;
+        if (tailSpinTicks > 0) tailSpinTicks--;
+        if (laserTicks > 0) laserTicks--;
+
+        if (slashTicks == 0 && this.getPose() == OPPoses.SLASHING.get()) this.setPose(Pose.STANDING);
+        if (crossSlashTicks == 0 && this.getPose() == OPPoses.CROSS_SLASHING.get()) this.setPose(Pose.STANDING);
+        if (tailSpinTicks == 0 && this.getPose() == OPPoses.TAIL_SPINNING.get()) this.setPose(Pose.STANDING);
+        if (laserTicks == 0 && this.getPose() == OPPoses.LASERING.get()) this.setPose(Pose.STANDING);
+
+        if (this.level().isClientSide) {
             this.setupAnimationStates();
         }
     }
 
     private void setupAnimationStates() {
-        int attackState = this.getAttackState();
+        if (slashTicks == 0 && (this.slash1AnimationState.isStarted() || this.slash2AnimationState.isStarted())) {
+            this.slash1AnimationState.stop();
+            this.slash2AnimationState.stop();
+        }
+        if (crossSlashTicks == 0 && this.crossSlashAnimationState.isStarted()) this.crossSlashAnimationState.stop();
+        if (tailSpinTicks == 0 && this.tailSpinAnimationState.isStarted()) this.tailSpinAnimationState.stop();
+        if (laserTicks == 0 && this.laserAnimationState.isStarted()) this.laserAnimationState.stop();
         this.idleAnimationState.animateWhen(this.getDeltaMovement().horizontalDistanceSqr() <= 1.0E-6, this.tickCount);
-        this.crossSliceAnimationState.animateWhen(this.isCrossSlashing(), this.tickCount);
-        this.laserAnimationState.animateWhen(attackState == 3, this.tickCount);
-        if (attackState > 0 || this.isCrossSlashing()) {
+        if (this.getPose() != Pose.STANDING) {
             this.idleAnimationState.stop();
         }
     }
@@ -128,7 +138,7 @@ public class Dicer extends Monster implements IAnimatedAttacker {
     }
 
     @Override
-    public boolean doHurtTarget(Entity entity) {
+    public boolean doHurtTarget(@NotNull Entity entity) {
         if (super.doHurtTarget(entity)) {
             this.playSound(OPSoundEvents.DICER_ATTACK.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
             return true;
@@ -138,18 +148,32 @@ public class Dicer extends Monster implements IAnimatedAttacker {
     }
 
     @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> entityDataAccessor) {
-        if (ATTACK_STATE.equals(entityDataAccessor)) {
-            if (this.getAttackState() == 1) {
+    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> entityDataAccessor) {
+        if (DATA_POSE.equals(entityDataAccessor)) {
+            if (this.getPose() == OPPoses.SLASHING.get()) {
+                this.slashTicks = 20;
                 if (this.getRandom().nextBoolean()) {
-                    this.slice2AnimationState.start(this.tickCount);
+                    this.slash2AnimationState.start(this.tickCount);
                 } else {
-                    this.slice1AnimationState.start(this.tickCount);
+                    this.slash1AnimationState.start(this.tickCount);
                 }
-            } else if (this.getAttackState() == 0) {
-                this.slice1AnimationState.stop();
-                this.slice2AnimationState.stop();
-                this.crossSliceAnimationState.stop();
+            }
+            else if (this.getPose() == OPPoses.CROSS_SLASHING.get()) {
+                this.crossSlashTicks = 50;
+                this.crossSlashAnimationState.start(this.tickCount);
+            }
+            else if (this.getPose() == OPPoses.TAIL_SPINNING.get()) {
+                this.tailSpinTicks = 20;
+                this.tailSpinAnimationState.start(this.tickCount);
+            }
+            else if (this.getPose() == OPPoses.LASERING.get()) {
+                this.laserTicks = 100;
+                this.laserAnimationState.start(this.tickCount);
+            }
+            else if (this.getPose() == Pose.STANDING) {
+                this.slash1AnimationState.stop();
+                this.slash2AnimationState.stop();
+                this.crossSlashAnimationState.stop();
                 this.laserAnimationState.stop();
             }
         }
@@ -161,26 +185,23 @@ public class Dicer extends Monster implements IAnimatedAttacker {
         super.defineSynchedData();
         this.entityData.define(ATTACK_STATE, 0);
         this.entityData.define(RUNNING, false);
-        this.entityData.define(LASER_COOLDOWN, 120);
-        this.entityData.define(CROSS_SLASH, false);
+        this.entityData.define(LASERING, false);
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compoundTag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putInt("AttackState", this.getAttackState());
         compoundTag.putBoolean("Running", this.isRunning());
-        compoundTag.putInt("LaserCooldown", this.getLaserCooldown());
-        compoundTag.putBoolean("CrossSlashing", this.isCrossSlashing());
+        compoundTag.putBoolean("Lasering", this.isLasering());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compoundTag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         this.setAttackState(compoundTag.getInt("AttackState"));
         this.setRunning(compoundTag.getBoolean("Running"));
-        this.setLaserCooldown(compoundTag.getInt("LaserCooldown"));
-        this.setCrossSlashing(compoundTag.getBoolean("CrossSlashing"));
+        this.setLasering(compoundTag.getBoolean("Lasering"));
     }
 
     public boolean isRunning() {
@@ -189,18 +210,6 @@ public class Dicer extends Monster implements IAnimatedAttacker {
 
     public void setRunning(boolean running) {
         this.entityData.set(RUNNING, running);
-    }
-
-    public int getLaserCooldown() {
-        return this.entityData.get(LASER_COOLDOWN);
-    }
-
-    public void setLaserCooldown(int cooldown) {
-        this.entityData.set(LASER_COOLDOWN, cooldown);
-    }
-
-    public void laserCooldown() {
-        this.entityData.set(LASER_COOLDOWN, 120);
     }
 
     @Override
@@ -213,14 +222,13 @@ public class Dicer extends Monster implements IAnimatedAttacker {
         this.entityData.set(ATTACK_STATE, state);
     }
 
-    public boolean isCrossSlashing() {
-        return this.entityData.get(CROSS_SLASH);
+    public boolean isLasering() {
+        return this.entityData.get(LASERING);
     }
 
-    public void setCrossSlashing(boolean slashing) {
-        this.entityData.set(CROSS_SLASH, slashing);
+    public void setLasering(boolean lasering) {
+        this.entityData.set(LASERING, lasering);
     }
-
 
     @Override
     @Nullable

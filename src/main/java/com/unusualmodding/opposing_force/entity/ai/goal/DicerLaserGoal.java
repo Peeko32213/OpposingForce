@@ -2,11 +2,10 @@ package com.unusualmodding.opposing_force.entity.ai.goal;
 
 import com.unusualmodding.opposing_force.entity.Dicer;
 import com.unusualmodding.opposing_force.entity.projectile.DicerLaser;
+import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPEntities;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
-
-import java.util.Objects;
+import net.minecraft.world.entity.Pose;
 
 public class DicerLaserGoal extends AttackGoal {
 
@@ -19,13 +18,28 @@ public class DicerLaserGoal extends AttackGoal {
     }
 
     @Override
+    public boolean canUse() {
+        return super.canUse() && this.dicer.laserCooldown == 0 && this.dicer.getPose() == Pose.STANDING;
+    }
+
+    @Override
+    public boolean canContinueToUse() {
+        return super.canContinueToUse() && this.dicer.laserCooldown == 0;
+    }
+
+    @Override
     public void start() {
         super.start();
+        this.dicer.setLasering(false);
+        this.dicer.setPose(Pose.STANDING);
     }
 
     @Override
     public void stop() {
         super.stop();
+        this.dicer.setLasering(false);
+        this.dicer.setPose(Pose.STANDING);
+        this.dicer.laserCooldown = 300 + this.dicer.getRandom().nextInt(300);
         if (this.laser != null) {
             this.laser.discard();
         }
@@ -36,32 +50,35 @@ public class DicerLaserGoal extends AttackGoal {
         LivingEntity target = this.dicer.getTarget();
         if (target != null) {
             double distance = this.dicer.distanceToSqr(target.getX(), target.getY(), target.getZ());
-            int attackState = this.dicer.getAttackState();
-            if (attackState == 3) {
+            if (this.dicer.isLasering()) {
                 this.timer++;
                 this.dicer.getNavigation().stop();
-                this.dicer.getLookControl().setLookAt(target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(), 2.0F, 80);
+                this.dicer.getLookControl().setLookAt(target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(), 1.5F, 90.0F);
+                this.dicer.setYRot(this.dicer.yHeadRot);
+                this.dicer.setYBodyRot(this.dicer.yHeadRot);
+                this.dicer.yRotO = this.dicer.getYRot();
+                this.dicer.yBodyRotO = this.dicer.getYRot();
+
                 if (this.timer == 1) {
-                    this.laser = new DicerLaser(OPEntities.DICER_LASER.get(), this.dicer.level(), this.dicer, this.dicer.getX() + 0.8F * Math.sin(-this.dicer.getYRot() * Math.PI / 180), this.dicer.getY() + 1.4F, this.dicer.getZ() + 0.8F * Math.cos(-this.dicer.getYRot() * Math.PI / 180), (float) ((this.dicer.yHeadRot + 90) * Math.PI / 180), (float) (-this.dicer.getXRot() * Math.PI / 180), 21, 4);
+                    this.dicer.setPose(OPPoses.LASERING.get());
+                    this.laser = new DicerLaser(OPEntities.DICER_LASER.get(), dicer.level(), dicer, dicer.getX(), dicer.getY() + 2.45F, dicer.getZ(), (float) ((dicer.yHeadRot + 90) * Math.PI / 180), (float) (-dicer.getXRot() * Math.PI / 180), 89, 4);
                     this.dicer.level().addFreshEntity(laser);
                 }
-                if (this.timer > 50) {
+
+
+                if (this.timer == 90) {
+                    this.laser.discard();
+                }
+                if (this.timer > 100) {
                     this.timer = 0;
                     this.dicer.setAttackState(0);
-                    this.dicer.laserCooldown();
+                    this.dicer.laserCooldown = 300 + this.dicer.getRandom().nextInt(300);
                 }
             } else {
-                this.dicer.getNavigation().moveTo(target, 2.0D);
                 this.dicer.lookAt(target, 30F, 30F);
                 this.dicer.getLookControl().setLookAt(target, 30F, 30F);
-                if (this.dicer.getLaserCooldown() == 0 && distance > getAttackReachSqr(target) && distance < 100) {
-                    this.dicer.setAttackState(3);
-                } else if (distance < getAttackReachSqr(target)) {
-                    if (this.dicer.getRandom().nextBoolean()) {
-                        this.dicer.setAttackState(2);
-                    } else {
-                        this.dicer.setAttackState(1);
-                    }
+                if (distance < 512) {
+                    this.dicer.setLasering(true);
                 }
             }
         }

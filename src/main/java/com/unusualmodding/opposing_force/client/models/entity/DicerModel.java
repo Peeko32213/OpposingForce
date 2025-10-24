@@ -137,7 +137,7 @@ public class DicerModel extends HierarchicalModel<Dicer> {
 	public void setupAnim(Dicer entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 
-		if (entity.getAttackState() == 0 && !entity.isCrossSlashing()) {
+		if (entity.getAttackState() == 0) {
 			if (entity.isRunning()) {
 				this.animateWalk(DicerAnimations.RUN, limbSwing, limbSwingAmount, 1, 1);
 			}
@@ -145,13 +145,14 @@ public class DicerModel extends HierarchicalModel<Dicer> {
 		}
 
 		this.animate(entity.idleAnimationState, DicerAnimations.IDLE, ageInTicks);
-		this.animate(entity.slice1AnimationState, DicerAttackAnimations.SLASH1, ageInTicks);
-		this.animate(entity.slice2AnimationState, DicerAttackAnimations.SLASH2, ageInTicks);
-		this.animate(entity.crossSliceAnimationState, DicerAttackAnimations.CROSS_SLASH, ageInTicks);
-		this.animate(entity.laserAnimationState, DicerAttackAnimations.LASER, ageInTicks);
+		this.animate(entity.slash1AnimationState, DicerAttackAnimations.SLASH1, ageInTicks);
+		this.animate(entity.slash2AnimationState, DicerAttackAnimations.SLASH2, ageInTicks);
+		this.animate(entity.crossSlashAnimationState, DicerAttackAnimations.CROSS_SLASH, ageInTicks);
+        this.animate(entity.tailSpinAnimationState, DicerAttackAnimations.TAIL_SPIN, ageInTicks);
+        this.animate(entity.laserAnimationState, DicerAttackAnimations.LASER, ageInTicks);
 
-		this.head.xRot += headPitch * ((float) Math.PI / 180) - (headPitch * ((float) Math.PI / 180)) / 2;
-		this.head.yRot += netHeadYaw * ((float) Math.PI / 180) - (netHeadYaw * ((float) Math.PI / 180)) / 2;
+        this.head.xRot += headPitch * ((float) Math.PI / 180) - (headPitch * ((float) Math.PI / 180)) / 2;
+        this.head.yRot += netHeadYaw * ((float) Math.PI / 180) - (netHeadYaw * ((float) Math.PI / 180)) / 2;
 	}
 
 	@Override
