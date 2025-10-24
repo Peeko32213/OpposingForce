@@ -62,7 +62,7 @@ public class RamblerRollGoal extends AttackGoal {
 
                 if (this.timer > 20 && this.timer < 220) {
                     Vec3 rollDirection = new Vec3(target.getX() - rambler.getX(), target.getY() - rambler.getY(), target.getZ() - rambler.getZ()).normalize();
-                    float YRot = Mth.approachDegrees(rambler.getYRot(), (float) (Mth.atan2(rollDirection.z, rollDirection.x) * (180F / Math.PI)) - 90.0F, 3.5F);
+                    float YRot = Mth.approachDegrees(rambler.getYRot(), (float) (Mth.atan2(rollDirection.z, rollDirection.x) * (180F / Math.PI)) - 90.0F, 4.0F);
                     this.rambler.setYRot(YRot);
                     this.rambler.setYBodyRot(YRot);
                     this.rambler.setDeltaMovement(-Mth.sin(YRot * ((float) Math.PI / 180F)) * 0.35F, rambler.getDeltaMovement().y, Mth.cos(YRot * ((float) Math.PI / 180F)) * 0.35F);

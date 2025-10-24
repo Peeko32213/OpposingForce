@@ -67,6 +67,7 @@ public class ForgeEvents {
                     Frowzy frowzy = OPEntities.FROWZY.get().create((Level) level);
                     if (frowzy != null) {
                         frowzy.copyPosition(zombie);
+                        if (zombie.isBaby()) frowzy.setBaby(true);
                         level.addFreshEntity(frowzy);
                     }
                     event.setSpawnCancelled(true);

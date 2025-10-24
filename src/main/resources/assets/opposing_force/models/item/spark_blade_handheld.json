@@ -28,6 +28,6 @@
     }
   },
   "textures": {
-    "layer0": "opposing_force:item/tesla_saber_huge"
+    "layer0": "opposing_force:item/spark_blade_huge"
   }
 }

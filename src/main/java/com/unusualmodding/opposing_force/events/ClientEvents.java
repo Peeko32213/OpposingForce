@@ -31,6 +31,7 @@ public final class ClientEvents {
         event.registerSpecial(OPParticles.ELECTRIC_CHARGE.get(), new ElectricChargeParticle.Factory());
         event.registerSpriteSet(OPParticles.LASER_BOLT_DUST.get(), LaserBoltDustParticle.Factory::new);
         event.registerSpriteSet(OPParticles.ICE_LASER_BOLT_DUST.get(), LaserBoltDustParticle.IceFactory::new);
+        event.registerSpriteSet(OPParticles.MOON_SHOES.get(), MoonShoesParticle.Factory::new);
     }
 
     @SubscribeEvent

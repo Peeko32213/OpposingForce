@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
+import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -22,18 +23,18 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -42,16 +43,17 @@ import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
-public class Whizz extends Monster implements OwnableEntity, Bucketable {
+public class Whizz extends Monster implements OwnableEntity {
 
-    private static final EntityDataAccessor<Boolean> CHARGING = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.BOOLEAN);
-    public static final EntityDataAccessor<Integer> CHARGE_COOLDOWN = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.BYTE);
-    private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> CAPTURED = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.BOOLEAN);
 
     @Nullable
     private WhizzWakeUpFriendsGoal friendsGoal;
@@ -60,20 +62,10 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
     private Whizz leader;
     protected int swarmSize = 1;
 
-    public final AnimationState flyAnimationState = new AnimationState();
+    public final AnimationState flyingAnimationState = new AnimationState();
+    public final AnimationState attackAnimationState = new AnimationState();
 
-    @Override
-    protected @NotNull PathNavigation createNavigation(Level level) {
-        FlyingPathNavigation navigation = new FlyingPathNavigation(this, level) {
-            public boolean isStableDestination(BlockPos pos) {
-                return !level().getBlockState(pos.below(5)).isAir();
-            }
-        };
-        navigation.setCanOpenDoors(false);
-        navigation.setCanFloat(false);
-        navigation.setCanPassDoors(true);
-        return navigation;
-    }
+    private int attackTicks;
 
     public Whizz(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -86,13 +78,17 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 6.0D).add(Attributes.FLYING_SPEED, 0.9F).add(Attributes.MOVEMENT_SPEED, 0.45F).add(Attributes.ATTACK_DAMAGE, 3.0D);
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 10.0D)
+                .add(Attributes.FLYING_SPEED, 0.7F)
+                .add(Attributes.MOVEMENT_SPEED, 0.3F)
+                .add(Attributes.ATTACK_DAMAGE, 4.0D);
     }
 
     protected void registerGoals() {
         this.friendsGoal = new WhizzWakeUpFriendsGoal(this);
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new WhizzChargeAttackGoal(this));
+        this.goalSelector.addGoal(1, new WhizzAttackGoal(this));
         this.goalSelector.addGoal(2, this.friendsGoal);
         this.goalSelector.addGoal(4, new WhizzWanderGoal(this));
         this.goalSelector.addGoal(5, new WhizzSwarmGoal(this));
@@ -103,18 +99,41 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+    protected float getStandingEyeHeight(@NotNull Pose pose, EntityDimensions dimensions) {
         return dimensions.height * 0.6F;
     }
 
     @Override
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.ARTHROPOD;
+    }
+
+    @Override
+    protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
+        FlyingPathNavigation navigation = new FlyingPathNavigation(this, level) {
+            @Override
+            public boolean isStableDestination(BlockPos pos) {
+                return !level().getBlockState(pos.below()).isAir();
+            }
+        };
+        navigation.setCanOpenDoors(false);
+        navigation.setCanFloat(false);
+        navigation.setCanPassDoors(true);
+        return navigation;
+    }
+
+    @Override
+    public float getWalkTargetValue(@NotNull BlockPos blockPos, LevelReader level) {
+        return level.getBlockState(blockPos).isAir() ? 10.0F : 0.0F;
     }
 
     @Override
     public void tick() {
         super.tick();
+
+        if (!this.onGround() && this.getDeltaMovement().y < 0.0 && this.getTarget() == null) {
+            this.setDeltaMovement(this.getDeltaMovement().multiply(1.0, 0.6, 1.0));
+        }
 
         if (this.level().isClientSide) {
             this.setupAnimationStates();
@@ -123,30 +142,44 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
             }
         }
 
-        if (this.getChargeCooldown() > 0) {
-            this.setChargeCooldown(this.getChargeCooldown() - 1);
-        }
-
         if (this.hasFollowers() && this.level().random.nextInt(200) == 1) {
             List<? extends Whizz> list = this.level().getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D));
             if (list.size() <= 1) {
                 this.swarmSize = 1;
             }
         }
+
+        if (attackTicks > 0) attackTicks--;
+        if (attackTicks == 0 && this.getPose() == OPPoses.ATTACKING.get()) this.setPose(Pose.STANDING);
     }
 
     private void setupAnimationStates() {
-        this.flyAnimationState.animateWhen(this.isAlive(), this.tickCount);
+        if (attackTicks == 0 && this.attackAnimationState.isStarted()) this.attackAnimationState.stop();
+        this.flyingAnimationState.animateWhen(this.isAlive(), this.tickCount);
     }
 
     @Override
-    public void remove(Entity.RemovalReason reason) {
+    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> entityDataAccessor) {
+        if (DATA_POSE.equals(entityDataAccessor)) {
+            if (this.getPose() == OPPoses.ATTACKING.get()) {
+                this.attackTicks = 20;
+                this.attackAnimationState.start(this.tickCount);
+            }
+            else if (this.getPose() == Pose.STANDING) {
+                this.attackAnimationState.stop();
+            }
+        }
+        super.onSyncedDataUpdated(entityDataAccessor);
+    }
+
+    @Override
+    public void remove(@NotNull RemovalReason reason) {
         OpposingForce.PROXY.clearSoundCacheFor(this);
         super.remove(reason);
     }
 
     @Override
-    public boolean doHurtTarget(Entity entity) {
+    public boolean doHurtTarget(@NotNull Entity entity) {
         if (super.doHurtTarget(entity)) {
             this.playSound(OPSoundEvents.WHIZZ_ATTACK.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
             return true;
@@ -168,11 +201,12 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
     }
 
     @Override
-    public boolean skipAttackInteraction(Entity entity) {
+    public boolean skipAttackInteraction(@NotNull Entity entity) {
         if (entity instanceof Player player) {
-            if ((player.getMainHandItem().isCorrectToolForDrops(Blocks.AMETHYST_BLOCK.defaultBlockState()) && EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SILK_TOUCH, player.getMainHandItem()) > 0) || (this.isTame() && this.getOwner() == player)) {
+            if (((player.getMainHandItem().isCorrectToolForDrops(Blocks.AMETHYST_BLOCK.defaultBlockState()) && EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SILK_TOUCH, player.getMainHandItem()) > 0) || (this.isTame() && this.getOwner() == player)) && !player.isCrouching()) {
                 if (!level().isClientSide && isAlive()) {
                     ItemStack itemStack = OPItems.CAPTURED_WHIZZ.get().getDefaultInstance();
+                    this.setCaptured(true);
                     if (!this.isTame()) {
                         this.tame(player);
                     }
@@ -182,7 +216,7 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
                         ((ServerLevel) level()).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.AMETHYST_CLUSTER.defaultBlockState()), getX(), getY() + getBbHeight() / 2.0D, getZ(), 16, getBbWidth() / 4.0F, getBbHeight() / 4.0F, getBbWidth() / 4.0F, 0.05D);
                     }
 
-                    this.saveToBucketTag(itemStack);
+                    this.saveData(itemStack);
                     spawnAtLocation(itemStack);
                     discard();
                 }
@@ -195,28 +229,27 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(CHARGING, false);
-        this.entityData.define(CHARGE_COOLDOWN, 8 + random.nextInt(8 * 4));
+        this.entityData.define(ATTACKING, false);
         this.entityData.define(OWNER_UUID, Optional.empty());
         this.entityData.define(DATA_FLAGS_ID, (byte) 0);
-        this.entityData.define(FROM_BUCKET, false);
+        this.entityData.define(CAPTURED, false);
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compoundTag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        compoundTag.putBoolean("Charging", this.isCharging());
-        compoundTag.putInt("ChargeCooldown", this.getChargeCooldown());
+        compoundTag.putBoolean("Attacking", this.isAttacking());
+        compoundTag.putBoolean("Captured", this.isCaptured());
         if (this.getOwnerUUID() != null) {
             compoundTag.putUUID("Owner", this.getOwnerUUID());
         }
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compoundTag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        this.setCharging(compoundTag.getBoolean("Charging"));
-        this.setChargeCooldown(compoundTag.getInt("ChargeCooldown"));
+        this.setAttacking(compoundTag.getBoolean("Attacking"));
+        this.setCaptured(compoundTag.getBoolean("Captured"));
 
         UUID uuid;
         if (compoundTag.hasUUID("Owner")) {
@@ -236,24 +269,29 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
         }
     }
 
-    @Override
-    public void saveToBucketTag(ItemStack itemStack) {
+    public void saveData(ItemStack itemStack) {
         CompoundTag compoundTag = itemStack.getOrCreateTag();
-        Bucketable.saveDefaultDataToBucketTag(this, itemStack);
+        if (this.isCaptured()) compoundTag.putBoolean("Captured", this.isCaptured());
+        if (this.isNoAi()) compoundTag.putBoolean("NoAI", this.isNoAi());
+        if (this.isSilent()) compoundTag.putBoolean("Silent", this.isSilent());
+        if (this.isNoGravity()) compoundTag.putBoolean("NoGravity", this.isNoGravity());
+        if (this.hasGlowingTag()) compoundTag.putBoolean("Glowing", this.hasGlowingTag());
+        if (this.isInvulnerable()) compoundTag.putBoolean("Invulnerable", this.isInvulnerable());
 
         compoundTag.putFloat("Health", this.getHealth());
-        if (this.getOwnerUUID() != null) {
-            compoundTag.putUUID("Owner", this.getOwnerUUID());
-        }
-
-        if (this.hasCustomName()) {
-            itemStack.setHoverName(this.getCustomName());
-        }
+        if (this.getOwnerUUID() != null) compoundTag.putUUID("Owner", this.getOwnerUUID());
+        if (this.hasCustomName()) itemStack.setHoverName(this.getCustomName());
     }
 
-    @Override
-    public void loadFromBucketTag(CompoundTag compoundTag) {
-        Bucketable.loadDefaultDataFromBucketTag(this, compoundTag);
+    public void loadData(CompoundTag compoundTag) {
+        if (compoundTag.contains("Captured")) this.setCaptured(compoundTag.getBoolean("Captured"));
+        if (compoundTag.contains("NoAI")) this.setNoAi(compoundTag.getBoolean("NoAI"));
+        if (compoundTag.contains("Silent")) this.setSilent(compoundTag.getBoolean("Silent"));
+        if (compoundTag.contains("NoGravity")) this.setNoGravity(compoundTag.getBoolean("NoGravity"));
+        if (compoundTag.contains("Glowing")) this.setGlowingTag(compoundTag.getBoolean("Glowing"));
+        if (compoundTag.contains("Invulnerable")) this.setInvulnerable(compoundTag.getBoolean("Invulnerable"));
+        if (compoundTag.contains("Health", 99)) this.setHealth(compoundTag.getFloat("Health"));
+
         UUID uuid;
         if (compoundTag.hasUUID("Owner")) {
             uuid = compoundTag.getUUID("Owner");
@@ -272,44 +310,20 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
         }
     }
 
-    @Override
-    public ItemStack getBucketItemStack() {
-        return new ItemStack(OPItems.CAPTURED_WHIZZ.get());
+    public boolean isAttacking() {
+        return this.entityData.get(ATTACKING);
     }
 
-    @Override
-    public SoundEvent getPickupSound() {
-        return SoundEvents.AMETHYST_BLOCK_RESONATE;
+    public void setAttacking(boolean attacking) {
+        this.entityData.set(ATTACKING, attacking);
     }
 
-    public boolean isCharging() {
-        return this.entityData.get(CHARGING);
+    public boolean isCaptured() {
+        return this.entityData.get(CAPTURED);
     }
 
-    public void setCharging(boolean charging) {
-        this.entityData.set(CHARGING, charging);
-    }
-
-    public int getChargeCooldown() {
-        return this.entityData.get(CHARGE_COOLDOWN);
-    }
-
-    public void setChargeCooldown(int cooldown) {
-        this.entityData.set(CHARGE_COOLDOWN, cooldown);
-    }
-
-    public void chargeCooldown() {
-        this.entityData.set(CHARGE_COOLDOWN, 8 + random.nextInt(8 * 4));
-    }
-
-    @Override
-    public boolean fromBucket() {
-        return this.entityData.get(FROM_BUCKET);
-    }
-
-    @Override
-    public void setFromBucket(boolean fromBucket) {
-        this.entityData.set(FROM_BUCKET, fromBucket);
+    public void setCaptured(boolean captured) {
+        this.entityData.set(CAPTURED, captured);
     }
 
     @Nullable
@@ -377,7 +391,8 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
         return super.getTeam();
     }
 
-    public boolean isAlliedTo(Entity entity) {
+    @Override
+    public boolean isAlliedTo(@NotNull Entity entity) {
         if (this.isTame()) {
             LivingEntity livingentity = this.getOwner();
             if (entity == livingentity) {
@@ -391,12 +406,12 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
     }
 
     @Override
-    public boolean canBeLeashed(Player player) {
+    public boolean canBeLeashed(@NotNull Player player) {
         return !this.isLeashed() && this.isTame();
     }
 
     public int getMaxSwarmSize() {
-        return 32;
+        return 8;
     }
 
     @Override
@@ -419,11 +434,11 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
     }
 
     private void addFollower() {
-        ++this.swarmSize;
+        this.swarmSize++;
     }
 
     private void removeFollower() {
-        --this.swarmSize;
+        this.swarmSize--;
     }
 
     public boolean canBeFollowed() {
@@ -435,7 +450,10 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
     }
 
     public boolean inRangeOfLeader() {
-        return this.distanceToSqr(this.leader) <= 121.0D;
+        if (this.leader != null) {
+            return this.distanceToSqr(this.leader) <= 121.0D;
+        }
+        return false;
     }
 
     public void pathToLeader() {
@@ -454,7 +472,7 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag tag) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag tag) {
         super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData, tag);
         if (spawnGroupData == null) {
             spawnGroupData = new SwarmSpawnGroupData(this);
@@ -472,25 +490,25 @@ public class Whizz extends Monster implements OwnableEntity, Bucketable {
     }
 
     @Override
-    public boolean causeFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
+    public boolean causeFallDamage(float fallDistance, float multiplier, @NotNull DamageSource damageSource) {
         return false;
     }
 
     @Override
-    protected void checkFallDamage(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
+    protected void checkFallDamage(double pY, boolean onGround, @NotNull BlockState state, @NotNull BlockPos pos) {
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
+    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
         return OPSoundEvents.WHIZZ_HURT.get();
     }
 
     @Override
-    protected SoundEvent getDeathSound() {
+    protected @NotNull SoundEvent getDeathSound() {
         return OPSoundEvents.WHIZZ_DEATH.get();
     }
 
     @Override
-    protected void playStepSound(BlockPos pos, BlockState state) {
+    protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
     }
 }

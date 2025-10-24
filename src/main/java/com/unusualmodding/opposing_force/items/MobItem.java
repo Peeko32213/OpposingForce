@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.items;
 
+import com.unusualmodding.opposing_force.entity.Whizz;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -10,7 +11,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -35,7 +36,7 @@ public class MobItem extends BucketItem {
         this.sound = sound;
     }
 
-    public InteractionResult useOn(UseOnContext context) {
+    public @NotNull InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         Player player = context.getPlayer();
 
@@ -65,15 +66,15 @@ public class MobItem extends BucketItem {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level world, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(@NotNull ItemStack itemStack, @Nullable Level world, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
         super.appendHoverText(itemStack, world, tooltip, flag);
     }
 
     private void spawn(ServerLevel level, ItemStack itemStack, BlockPos blockPos) {
         Entity entity = getEntityType().spawn(level, itemStack, null, blockPos, MobSpawnType.BUCKET, true, false);
-        if (entity instanceof Bucketable bucketable) {
-            bucketable.loadFromBucketTag(itemStack.getOrCreateTag());
-            bucketable.setFromBucket(true);
+        if (entity instanceof Whizz whizz) {
+            whizz.loadData(itemStack.getOrCreateTag());
+            whizz.setCaptured(true);
         }
     }
 

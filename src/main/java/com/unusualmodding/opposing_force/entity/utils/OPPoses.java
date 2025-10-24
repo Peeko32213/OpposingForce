@@ -18,7 +18,9 @@ public enum OPPoses {
     START_ROLLING,
     ROLLING,
     STOP_ROLLING,
-    ATTACKING;
+    ATTACKING,
+    OPEN_JAWS,
+    CLOSE_JAWS;
 
     public Pose get() {
         return Pose.valueOf(this.name());

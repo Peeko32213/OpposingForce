@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.registry.OPAttributes;
-import net.minecraft.core.particles.ParticleTypes;
+import com.unusualmodding.opposing_force.registry.OPParticles;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -41,8 +41,10 @@ public class MoonShoesItem extends ArmorItem {
 
     @Override
     public void onArmorTick(ItemStack stack, Level level, Player player) {
-        if (!player.onGround() && !player.onClimbable() && !player.isInWaterOrBubble() && player.fallDistance > 0.1D) {
-            player.level().addParticle(ParticleTypes.CLOUD, player.position().x, player.position().y, player.position().z, (level.getRandom().nextFloat() - 0.5F) / 3.0F, 0.0D, (level.getRandom().nextFloat() - 0.5F) / 3.0F);
+        if (!player.onGround() && !player.onClimbable() && !player.isInWaterOrBubble()) {
+            if (level.getRandom().nextFloat() < 0.5F) {
+                player.level().addParticle(OPParticles.MOON_SHOES.get(), player.position().x, player.position().y, player.position().z, (level.getRandom().nextFloat() - 0.5F) / 3.0F, 0.0D, (level.getRandom().nextFloat() - 0.5F) / 3.0F);
+            }
         }
         player.resetFallDistance();
     }

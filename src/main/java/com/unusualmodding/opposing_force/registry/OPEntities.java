@@ -128,7 +128,7 @@ public class OPEntities {
     public static final RegistryObject<EntityType<Whizz>> WHIZZ = ENTITY_TYPES.register(
             "whizz", () ->
             EntityType.Builder.of(Whizz::new, MobCategory.MONSTER)
-                    .sized(0.5F, 0.5F)
+                    .sized(0.75F, 0.75F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "whizz").toString())
     );
