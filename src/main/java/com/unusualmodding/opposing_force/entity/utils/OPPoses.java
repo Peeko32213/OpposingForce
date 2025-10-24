@@ -4,11 +4,11 @@ import net.minecraft.world.entity.Pose;
 
 public enum OPPoses {
 
-    SPINNING_WEB,
     GROWING_LEGS,
     RETRACTING_LEGS,
     START_SAWING,
     SAWING,
+    SPIN_SAW,
     START_FLAILING,
     FLAILING,
     STOP_FLAILING,

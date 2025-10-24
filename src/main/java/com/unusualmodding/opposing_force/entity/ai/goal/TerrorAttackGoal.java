@@ -23,12 +23,7 @@ public class TerrorAttackGoal extends AttackGoal {
 
     @Override
     public boolean canUse() {
-        return super.canUse() && (!this.terror.isInWater() ? this.terror.hasLegs() : terror.isInWater());
-    }
-
-    @Override
-    public boolean canContinueToUse() {
-        return super.canContinueToUse() && (!this.terror.isInWater() ? this.terror.hasLegs() : terror.isInWater());
+        return super.canUse() && this.terror.getPose() == Pose.STANDING;
     }
 
     @Override
@@ -77,14 +72,14 @@ public class TerrorAttackGoal extends AttackGoal {
                 if (timer == 100) this.terror.setPose(OPPoses.RECOVERING.get());
 
                 if (timer > 100) {
-                    this.terror.getNavigation().stop();
+                    this.terror.getNavigation().moveTo(target, 0.75D);
                     this.terror.setRunning(false);
                 }
 
                 if (timer > 150) {
                     timer = 0;
                     this.terror.setSawing(false);
-                    this.cooldown = 10 + terror.getRandom().nextInt(10);
+                    this.cooldown = 5 + terror.getRandom().nextInt(10);
                 }
             } else {
                 if (cooldown > 0) this.cooldown--;
@@ -108,5 +103,10 @@ public class TerrorAttackGoal extends AttackGoal {
                 this.terror.swing(InteractionHand.MAIN_HAND);
             }
         }
+    }
+
+    @Override
+    protected double getAttackReachSqr(LivingEntity target) {
+        return this.monster.getBbWidth() * 3.0F * this.monster.getBbWidth() * 3.0F + target.getBbWidth();
     }
 }

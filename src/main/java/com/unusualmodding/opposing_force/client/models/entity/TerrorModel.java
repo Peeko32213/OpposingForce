@@ -145,6 +145,7 @@ public class TerrorModel extends HierarchicalModel<Terror> {
         this.animate(entity.sawingAnimationState, TerrorAnimations.SAWING, ageInTicks);
         this.animate(entity.cooldownAnimationState, TerrorAnimations.RECOVER, ageInTicks);
         this.animate(entity.retractLegsAnimationState, TerrorAnimations.RETRACT_LEGS, ageInTicks);
+        this.animate(entity.spinSawAnimationState, TerrorAnimations.SPIN_SAW, ageInTicks);
 
         if (entity.isInWaterOrBubble()) {
             this.swim_control.xRot = headPitch * (Mth.DEG_TO_RAD);

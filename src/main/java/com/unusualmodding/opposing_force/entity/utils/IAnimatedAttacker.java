@@ -1,4 +1,4 @@
-package com.unusualmodding.opposing_force.entity.base;
+package com.unusualmodding.opposing_force.entity.utils;
 
 public interface IAnimatedAttacker {
 

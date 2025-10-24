@@ -1,6 +1,6 @@
 package com.unusualmodding.opposing_force.entity.ai.goal;
 
-import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
+import com.unusualmodding.opposing_force.entity.utils.IAnimatedAttacker;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;

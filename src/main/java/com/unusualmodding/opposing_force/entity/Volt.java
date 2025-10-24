@@ -1,8 +1,9 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.entity.ai.goal.VoltShootGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.VoltLeapGoal;
-import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
+import com.unusualmodding.opposing_force.entity.utils.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -210,13 +211,13 @@ public class Volt extends Monster implements IAnimatedAttacker, PowerableMob {
     }
 
     @SuppressWarnings("unused")
-    public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (level.getLevel().isThundering()) return checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
+    public static boolean canVoltSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (level.getLevel().isThundering() && OpposingForceConfig.VOLT_SPAWNS_DURING_STORM.get()) return checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
         return checkVoltSpawnRules(entityType, level, spawnType, pos, random);
     }
 
     public static boolean checkVoltSpawnRules(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return (pos.getY() <= 16 && (random.nextInt(10) == 0 || pos.getY() <= 0) && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random));
+        return (pos.getY() <= OpposingForceConfig.VOLT_SPAWN_HEIGHT.get() && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random));
     }
 
     public static boolean isDarkEnoughToSpawnNoSkylight(ServerLevelAccessor level, BlockPos pos, RandomSource random) {

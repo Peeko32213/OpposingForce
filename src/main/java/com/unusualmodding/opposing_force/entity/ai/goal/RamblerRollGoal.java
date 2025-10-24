@@ -110,6 +110,6 @@ public class RamblerRollGoal extends AttackGoal {
 
     @Override
     protected double getAttackReachSqr(LivingEntity target) {
-        return this.monster.getBbWidth() * 2.5F * this.monster.getBbWidth() * 2.5F + target.getBbWidth();
+        return this.monster.getBbWidth() * 3.0F * this.monster.getBbWidth() * 3.0F + target.getBbWidth();
     }
 }

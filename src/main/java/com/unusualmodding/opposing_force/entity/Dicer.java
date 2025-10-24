@@ -2,7 +2,7 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
-import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
+import com.unusualmodding.opposing_force.entity.utils.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;

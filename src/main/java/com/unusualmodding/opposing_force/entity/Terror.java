@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.entity.ai.goal.TerrorAttackGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.TerrorRandomStrollGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
@@ -14,6 +15,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -33,7 +35,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -56,12 +57,17 @@ public class Terror extends Monster {
     public final AnimationState startSawingAnimationState = new AnimationState();
     public final AnimationState sawingAnimationState = new AnimationState();
     public final AnimationState retractLegsAnimationState = new AnimationState();
+    public final AnimationState spinSawAnimationState = new AnimationState();
 
     public boolean isLandNavigator;
+
     private int growLegsTicks;
     private int retractLegsTicks;
     private int startSawingTicks;
     private int stopSawingTicks;
+    private int spinSawTicks;
+
+    private int spinSawCooldown = 0;
 
     @Override
     protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
@@ -77,7 +83,7 @@ public class Terror extends Monster {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 32.0D)
+                .add(Attributes.MAX_HEALTH, 36.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.25F)
                 .add(Attributes.ATTACK_DAMAGE, 4.0D);
     }
@@ -101,7 +107,7 @@ public class Terror extends Monster {
             this.lookControl = new LookControl(this);
             this.isLandNavigator = true;
         } else {
-            this.moveControl = new SmoothSwimmingMoveControl(this, 128, 10, 0.2F, 0.1F, false);
+            this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.2F, 0.1F, false);
             this.navigation = new AmphibiousPathNavigation(this, level());
             this.lookControl = new SmoothSwimmingLookControl(this, 10);
             this.isLandNavigator = false;
@@ -109,7 +115,7 @@ public class Terror extends Monster {
     }
 
     @Override
-    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+    public float getWalkTargetValue(@NotNull BlockPos pos, LevelReader level) {
         if (level.getFluidState(pos).is(FluidTags.WATER)) {
             return 10.0F;
         } else {
@@ -120,14 +126,14 @@ public class Terror extends Monster {
     @Override
     public float getStepHeight() {
         if (this.isInWater()) {
-            return 1.0F;
+            return 1.25F;
         }
         return 0.6F;
     }
 
     @Override
-    protected float getStandingEyeHeight(@NotNull Pose pose, EntityDimensions size) {
-        return size.height * 0.7F;
+    protected float getStandingEyeHeight(@NotNull Pose pose, @NotNull EntityDimensions dimensions) {
+        return dimensions.height * 0.85F;
     }
 
     @Override
@@ -147,7 +153,7 @@ public class Terror extends Monster {
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
             if (this.horizontalCollision) {
-                this.setDeltaMovement(this.getDeltaMovement().add(0.0, 0.3 * this.getSpeed(), 0.0));
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0, 0.4 * this.getSpeed(), 0.0));
             }
         } else {
             super.travel(travelVector);
@@ -159,6 +165,10 @@ public class Terror extends Monster {
         super.tick();
         if (this.level().isClientSide) {
             this.setupAnimationStates();
+        } else {
+            if (random.nextInt(600) == 0) {
+                this.spinSaw();
+            }
         }
 
         final boolean canLandNavigate = !this.isInWater() && this.hasLegs();
@@ -181,7 +191,7 @@ public class Terror extends Monster {
             if (this.growLegsTicks == 0 && this.getPose() == OPPoses.GROWING_LEGS.get()) {
                 this.setPose(Pose.STANDING);
                 this.setHasLegs(true);
-                this.setFlopTime(20 + this.getRandom().nextInt(2 * 10));
+                this.setFlopTime(10 + this.getRandom().nextInt(2 * 10));
             }
         }
         // retract legs
@@ -196,7 +206,7 @@ public class Terror extends Monster {
             if (this.retractLegsTicks == 0 && this.getPose() == OPPoses.RETRACTING_LEGS.get()) {
                 this.setPose(Pose.STANDING);
                 this.setHasLegs(false);
-                this.setFlopTime(20 + this.getRandom().nextInt(2 * 10));
+                this.setFlopTime(10 + this.getRandom().nextInt(2 * 10));
             }
         }
 
@@ -204,8 +214,12 @@ public class Terror extends Monster {
 
         if (startSawingTicks > 0) startSawingTicks--;
         if (stopSawingTicks > 0) stopSawingTicks--;
+        if (spinSawTicks > 0) spinSawTicks--;
         if (startSawingTicks == 0 && this.getPose() == OPPoses.START_SAWING.get()) this.setPose(OPPoses.SAWING.get());
         if (stopSawingTicks == 0 && this.getPose() == OPPoses.RECOVERING.get()) this.setPose(Pose.STANDING);
+        if (spinSawTicks == 0 && this.getPose() == OPPoses.SPIN_SAW.get()) this.setPose(Pose.STANDING);
+
+        if (spinSawCooldown > 0) spinSawCooldown--;
     }
 
     private void setupAnimationStates() {
@@ -213,6 +227,7 @@ public class Terror extends Monster {
         if (retractLegsTicks == 0 && this.retractLegsAnimationState.isStarted()) this.retractLegsAnimationState.stop();
         if (startSawingTicks == 0 && this.startSawingAnimationState.isStarted()) this.startSawingAnimationState.stop();
         if (stopSawingTicks == 0 && this.cooldownAnimationState.isStarted()) this.cooldownAnimationState.stop();
+        if (spinSawTicks == 0 && this.spinSawAnimationState.isStarted()) this.spinSawAnimationState.stop();
         this.idleAnimationState.animateWhen(!this.isInWaterOrBubble() && this.hasLegs() && this.getDeltaMovement().horizontalDistance() <= 1.0E-5F, this.tickCount);
         this.flopAnimationState.animateWhen(!this.isInWaterOrBubble() && !this.hasLegs() && this.getPose() != OPPoses.GROWING_LEGS.get(), this.tickCount);
         this.swimAnimationState.animateWhen(this.isInWaterOrBubble() && this.getPose() != OPPoses.RETRACTING_LEGS.get(), this.tickCount);
@@ -225,8 +240,16 @@ public class Terror extends Monster {
         this.walkAnimation.update(f2, 0.4F);
     }
 
+    public void spinSaw() {
+        if (spinSawCooldown == 0 && this.getPose() == Pose.STANDING && this.getTarget() == null && (this.hasLegs() || this.isInWater())) {
+            this.setPose(OPPoses.SPIN_SAW.get());
+            this.spinSawTicks = 40;
+            this.spinSawCooldown = 200 + random.nextInt(200);
+        }
+    }
+
     @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> entityDataAccessor) {
+    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> entityDataAccessor) {
         if (HAS_LEGS.equals(entityDataAccessor)) {
             this.refreshDimensions();
         }
@@ -252,18 +275,24 @@ public class Terror extends Monster {
                 this.stopSawingTicks = 50;
                 this.cooldownAnimationState.start(this.tickCount);
             }
+            else if (this.getPose() == OPPoses.SPIN_SAW.get()) {
+                this.spinSawTicks = 40;
+                this.spinSawAnimationState.start(this.tickCount);
+            }
             else if (this.getPose() == Pose.STANDING) {
                 this.growLegsAnimationState.stop();
                 this.retractLegsAnimationState.stop();
                 this.sawingAnimationState.stop();
                 this.startSawingAnimationState.stop();
+                this.cooldownAnimationState.stop();
+                this.spinSawAnimationState.stop();
             }
         }
         super.onSyncedDataUpdated(entityDataAccessor);
     }
 
     @Override
-    public EntityDimensions getDimensions(Pose pose) {
+    public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
         return this.hasLegs() ? FISH_OUT_OF_WATER_DIMENSIONS.scale(this.getScale()) : super.getDimensions(pose);
     }
 
@@ -291,7 +320,7 @@ public class Terror extends Monster {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compoundTag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putBoolean("Sawing", this.isSawing());
         compoundTag.putBoolean("HasLegs", this.hasLegs());
@@ -299,7 +328,7 @@ public class Terror extends Monster {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compoundTag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         this.setSawing(compoundTag.getBoolean("Sawing"));
         this.setHasLegs(compoundTag.getBoolean("HasLegs"));
@@ -364,8 +393,13 @@ public class Terror extends Monster {
     }
 
     @SuppressWarnings("unused")
-    public static boolean canSpawn(EntityType<? extends Monster> entityType, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return pos.getY() <= -16 && level.getRawBrightness(pos, 0) == 0 && level.getRandom().nextFloat() <= 0.2F && level.getBlockState(pos).is(Blocks.WATER);
+    public static boolean canTerrorSpawn(EntityType<Terror> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (!level.getFluidState(pos.below()).is(FluidTags.WATER)) {
+            return false;
+        } else {
+            boolean canSpawn = level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(level, pos, random) && (spawnType == MobSpawnType.SPAWNER || level.getFluidState(pos).is(FluidTags.WATER));
+            return random.nextInt(15) == 0 && pos.getY() <= OpposingForceConfig.TERROR_SPAWN_HEIGHT.get() && canSpawn;
+        }
     }
 
     @Override

@@ -12,20 +12,20 @@ import net.minecraftforge.fml.common.Mod;
 import static com.unusualmodding.opposing_force.registry.OPEntities.*;
 
 @Mod.EventBusSubscriber(modid = OpposingForce.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class MobEvents {
+public class ModEvents {
 
     @SubscribeEvent
     public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
         event.register(DICER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Dicer::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
-        event.register(FROWZY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Frowzy::canSpawn, SpawnPlacementRegisterEvent.Operation.OR);
-        event.register(GUZZLER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Guzzler::canSpawn, SpawnPlacementRegisterEvent.Operation.OR);
-        event.register(HANGING_SPIDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, HangingSpider::canSpawn, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(FROWZY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Frowzy::canFrowzySpawn, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(GUZZLER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Guzzler::canGuzzlerSpawn, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(HANGING_SPIDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, HangingSpider::canHangingSpiderSpawn, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(RAMBLER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Rambler::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(SLUG.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Slug::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
-        event.register(TERROR.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Terror::canSpawn, SpawnPlacementRegisterEvent.Operation.OR);
-        event.register(TREMBLER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Trembler::canSpawn, SpawnPlacementRegisterEvent.Operation.OR);
-        event.register(UMBER_SPIDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, UmberSpider::canSpawn, SpawnPlacementRegisterEvent.Operation.OR);
-        event.register(VOLT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Volt::canSpawn, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(TERROR.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Terror::canTerrorSpawn, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(TREMBLER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Trembler::canTremblerSpawn, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(UMBER_SPIDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, UmberSpider::canUmberSpiderSpawn, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(VOLT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Volt::canVoltSpawn, SpawnPlacementRegisterEvent.Operation.OR);
     }
 
     @SubscribeEvent

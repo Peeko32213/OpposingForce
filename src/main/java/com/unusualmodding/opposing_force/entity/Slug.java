@@ -95,16 +95,16 @@ public class Slug extends Monster implements OwnableEntity {
     }
 
     @Override
-    protected @NotNull PathNavigation createNavigation(Level level) {
+    protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
         return new SmoothGroundPathNavigation(this, level);
     }
 
     @Override
-    protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+    protected void checkFallDamage(double y, boolean onGroundIn, @NotNull BlockState state, @NotNull BlockPos pos) {
     }
 
     @Override
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.ARTHROPOD;
     }
 
@@ -175,7 +175,7 @@ public class Slug extends Monster implements OwnableEntity {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(SIZE, 0);
+        this.entityData.define(SIZE, 1);
         this.entityData.define(MAX_GROWABLE_SIZE, 0);
         this.entityData.define(OWNER_UUID, Optional.empty());
         this.entityData.define(DATA_FLAGS, (byte) 0);
@@ -184,7 +184,7 @@ public class Slug extends Monster implements OwnableEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compoundTag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putInt("Size", this.getSlugSize() - 1);
         compoundTag.putInt("MaxGrowableSize", this.getMaxGrowableSlugSize());
@@ -285,23 +285,25 @@ public class Slug extends Monster implements OwnableEntity {
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+    protected float getStandingEyeHeight(@NotNull Pose pose, EntityDimensions dimensions) {
         return dimensions.height * 0.44F;
     }
 
     @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
-        if (SIZE.equals(key)) {
+    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> entityDataAccessor) {
+        if (SIZE.equals(entityDataAccessor)) {
             this.refreshDimensions();
+            this.setYRot(this.yHeadRot);
+            this.yBodyRot = this.yHeadRot;
         }
-        super.onSyncedDataUpdated(key);
+        super.onSyncedDataUpdated(entityDataAccessor);
     }
 
     @Override
-    public EntityDimensions getDimensions(Pose pPose) {
+    public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
         int size = this.getSlugSize();
-        EntityDimensions dimensions = super.getDimensions(pPose);
-        float scale = (dimensions.width + 0.1F * (float) size) / dimensions.width;
+        EntityDimensions dimensions = super.getDimensions(pose);
+        float scale = (dimensions.width + 0.08F * (float) size) / dimensions.width;
         return dimensions.scale(scale);
     }
 
@@ -372,7 +374,7 @@ public class Slug extends Monster implements OwnableEntity {
     }
 
     @Override
-    public boolean canAttack(LivingEntity entity) {
+    public boolean canAttack(@NotNull LivingEntity entity) {
         return !this.isOwnedBy(entity) && super.canAttack(entity);
     }
 
@@ -532,12 +534,14 @@ public class Slug extends Monster implements OwnableEntity {
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag compoundTag) {
         RandomSource random = level.getRandom();
 
-        if (random.nextInt(100) == 0) {
+        if (random.nextInt(150) == 0) {
             if (random.nextFloat() < 0.5F * difficulty.getSpecialMultiplier()) {
                 this.setSlugSize(8 + random.nextInt(32));
             }
-        } else {
+        } else if (random.nextInt(10) == 0) {
             this.setSlugSize(random.nextInt(8));
+        } else {
+            this.setSlugSize(random.nextInt(4));
         }
 
         return super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);

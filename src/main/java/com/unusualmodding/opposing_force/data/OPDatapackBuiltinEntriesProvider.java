@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 public class OPDatapackBuiltinEntriesProvider extends DatapackBuiltinEntriesProvider {
 
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
-            .add(ForgeRegistries.Keys.BIOME_MODIFIERS, OPBiomeModifiers::bootstrap)
+            .add(ForgeRegistries.Keys.BIOME_MODIFIERS, OPBiomeModifierProvider::bootstrap)
             .add(Registries.DAMAGE_TYPE, OPDamageTypes::bootstrap);
 
     public OPDatapackBuiltinEntriesProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {

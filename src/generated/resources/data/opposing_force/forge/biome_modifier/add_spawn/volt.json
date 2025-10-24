@@ -5,6 +5,6 @@
     "type": "opposing_force:volt",
     "maxCount": 2,
     "minCount": 2,
-    "weight": 10
+    "weight": 20
   }
 }

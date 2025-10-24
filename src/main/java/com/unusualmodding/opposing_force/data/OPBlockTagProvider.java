@@ -1,11 +1,15 @@
 package com.unusualmodding.opposing_force.data;
 
 import com.unusualmodding.opposing_force.OpposingForce;
+import com.unusualmodding.opposing_force.registry.tags.OPBlockTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -19,7 +23,14 @@ public class OPBlockTagProvider extends BlockTagsProvider {
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider provider) {
+    protected void addTags(HolderLookup.@NotNull Provider provider) {
+
+        this.tag(OPBlockTags.CAVE_MOB_SPAWNABLE_ON).addTag(BlockTags.BASE_STONE_OVERWORLD).addTag(Tags.Blocks.ORES).add(
+                Blocks.GRAVEL
+        );
+
+        this.tag(OPBlockTags.FROWZY_SPAWNABLE_ON).addTag(OPBlockTags.CAVE_MOB_SPAWNABLE_ON);
+        this.tag(OPBlockTags.UMBER_SPIDER_SPAWNABLE_ON).addTag(OPBlockTags.CAVE_MOB_SPAWNABLE_ON);
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
                 TREMBLER_SHELL.get(),

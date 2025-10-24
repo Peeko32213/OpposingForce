@@ -4,7 +4,7 @@ import com.unusualmodding.opposing_force.entity.ai.goal.RamblerFlailGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.RamblerJabGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.RamblerRollGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
-import com.unusualmodding.opposing_force.entity.base.IAnimatedAttacker;
+import com.unusualmodding.opposing_force.entity.utils.IAnimatedAttacker;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPItems;

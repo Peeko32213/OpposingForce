@@ -3,8 +3,8 @@
   "biomes": "#opposing_force:has_monster/terror",
   "spawners": {
     "type": "opposing_force:terror",
-    "maxCount": 1,
-    "minCount": 1,
-    "weight": 20
+    "maxCount": 2,
+    "minCount": 2,
+    "weight": 10
   }
 }
