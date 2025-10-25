@@ -13,12 +13,10 @@ public class OpposingForceTab {
 
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, OpposingForce.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> TAB = CREATIVE_TABS.register(OpposingForce.MOD_ID, () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup." + OpposingForce.MOD_ID))
-            .icon(() -> new ItemStack(OPItems.OPPOSING_FORCE.get()))
-            .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
-            .displayItems((enabledFeatures, output) -> {
-                for (RegistryObject<Item> item : OPItems.ITEMS.getEntries()){
+    public static final RegistryObject<CreativeModeTab> TAB = CREATIVE_TABS.register(OpposingForce.MOD_ID,
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(OPItems.OPPOSING_FORCE.get()))
+                .title(Component.translatable("itemGroup." + OpposingForce.MOD_ID))
+                .displayItems((enabledFeatures, output) -> {
 
                     // Spawn eggs
                     OPItems.ITEMS.getEntries().forEach(spawnEgg -> {
@@ -118,7 +116,6 @@ public class OpposingForceTab {
                     output.accept(OPBrewingRecipes.registerSplashPotion(OPPotions.SLUG_INFESTATION_POTION.get()));
                     output.accept(OPBrewingRecipes.registerLingeringPotion(OPPotions.SLUG_INFESTATION_POTION.get()));
                     output.accept(OPBrewingRecipes.registerTippedArrow(OPPotions.SLUG_INFESTATION_POTION.get()));
-                }
             })
             .build());
 }
