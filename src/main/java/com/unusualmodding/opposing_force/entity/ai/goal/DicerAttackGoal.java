@@ -57,7 +57,6 @@ public class DicerAttackGoal extends AttackGoal {
                 this.timer++;
                 this.dicer.getNavigation().stop();
                 if (this.timer == 1) this.dicer.setPose(OPPoses.SLASHING.get());
-                if (this.timer == 7) this.dicer.addDeltaMovement(this.dicer.getLookAngle().scale(2.0D).multiply(0.15D, 0, 0.15D));
                 if (this.timer == 9) {
                     if (this.dicer.distanceTo(target) < this.getAttackReachSqr(target)) {
                         this.dicer.doHurtTarget(target);
@@ -72,7 +71,7 @@ public class DicerAttackGoal extends AttackGoal {
                 this.timer++;
                 this.dicer.getNavigation().stop();
                 if (this.timer == 1) this.dicer.setPose(OPPoses.CROSS_SLASHING.get());
-                if (this.timer == 28) this.dicer.addDeltaMovement(this.dicer.getLookAngle().scale(3.25D).multiply(1.0D, 0, 1.0D));
+                if (this.timer == 28) this.dicer.addDeltaMovement(this.dicer.getLookAngle().scale(2.75D).multiply(1.0D, 0, 1.0D));
                 if (this.timer > 28 && this.timer < 32) {
                     this.hurtNearbyEntities();
                 }

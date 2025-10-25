@@ -99,7 +99,9 @@ public class Dicer extends Monster implements IAnimatedAttacker {
     public void tick() {
         super.tick();
 
-        if (laserCooldown > 0) laserCooldown--;
+        if (this.getPose() == Pose.STANDING) {
+            if (laserCooldown > 0) laserCooldown--;
+        }
 
         if (slashTicks > 0) slashTicks--;
         if (crossSlashTicks > 0) crossSlashTicks--;
