@@ -40,7 +40,7 @@ public class UmberDaggerItem extends ThrowableWeaponItem {
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (super.hurtEnemy(stack, target, attacker)) {
-            target.addEffect(new MobEffectInstance(OPEffects.GLOOM_TOXIN.get(), 100, 3));
+            target.addEffect(new MobEffectInstance(OPEffects.GLOOM_TOXIN.get(), 100, 0));
             return true;
         }
         return false;
