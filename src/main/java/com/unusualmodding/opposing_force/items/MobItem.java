@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
+@SuppressWarnings("deprecation")
 public class MobItem extends BucketItem {
 
     private final Supplier<? extends EntityType<?>> entityType;

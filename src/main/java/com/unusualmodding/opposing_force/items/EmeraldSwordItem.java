@@ -3,23 +3,25 @@ package com.unusualmodding.opposing_force.items;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.unusualmodding.opposing_force.registry.OPAttributes;
+import com.unusualmodding.opposing_force.registry.enums.OPItemTiers;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tier;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
 public class EmeraldSwordItem extends SwordItem {
+
     private Multimap<Attribute, AttributeModifier> attributes;
 
-    public EmeraldSwordItem(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties) {
-        super(tier, attackDamageModifier, attackSpeedModifier, properties);
+    public EmeraldSwordItem(Properties properties) {
+        super(OPItemTiers.EMERALD, 3, -2.4F, properties);
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
+    public @NotNull Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@NotNull EquipmentSlot equipmentSlot) {
         if (attributes == null) {
             ImmutableMultimap.Builder<Attribute, AttributeModifier> attributeBuilder = new ImmutableMultimap.Builder<>();
             attributeBuilder.putAll(defaultModifiers);

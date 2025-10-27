@@ -30,9 +30,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.event.ForgeEventFactory;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
+@SuppressWarnings("deprecation")
 public class SlugEggBlock extends Block {
 
     public static final IntegerProperty EGGS = IntegerProperty.create("eggs", 1, 3);
@@ -73,13 +75,13 @@ public class SlugEggBlock extends Block {
     }
 
     @Override
-    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
+    public void stepOn(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Entity entity) {
         this.tryTrample(level, pos, entity, 100);
         super.stepOn(level, pos, state, entity);
     }
 
     @Override
-    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
+    public void fallOn(@NotNull Level level, @NotNull BlockState state, @NotNull BlockPos pos, @NotNull Entity entity, float fallDistance) {
         this.tryTrample(level, pos, entity, 3);
         super.fallOn(level, state, pos, entity, fallDistance);
     }
@@ -101,7 +103,7 @@ public class SlugEggBlock extends Block {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+    public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter getter, @NotNull BlockPos pos, @NotNull CollisionContext context) {
         return switch (state.getValue(FACING)) {
             case DOWN -> DOWN_AABB;
             case UP -> UP_AABB;
@@ -164,7 +166,7 @@ public class SlugEggBlock extends Block {
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, BlockGetter blockGetter, BlockPos pos, PathComputationType computationType) {
+    public boolean isPathfindable(@NotNull BlockState state, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos, @NotNull PathComputationType computationType) {
         return false;
     }
 

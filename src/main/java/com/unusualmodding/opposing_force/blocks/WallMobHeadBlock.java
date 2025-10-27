@@ -21,6 +21,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.Map;
 
+@SuppressWarnings("deprecation")
 public class WallMobHeadBlock extends BaseEntityBlock implements Equipable {
 
     private final MobHeadBlock.Type type;

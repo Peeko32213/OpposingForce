@@ -79,7 +79,6 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.LASER_BOLT, LaserBoltModel::createProjectileLayer);
     }
 
-
     @SubscribeEvent
     public static void registerArmorLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(OPModelLayers.MOON_SHOES, MoonShoesModel::createArmorLayer);

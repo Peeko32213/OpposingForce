@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -23,7 +24,7 @@ public class MobHeadBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compoundTag) {
+    protected void saveAdditional(@NotNull CompoundTag compoundTag) {
         super.saveAdditional(compoundTag);
         if (this.noteBlockSound != null) {
             compoundTag.putString("note_block_sound", this.noteBlockSound.toString());
@@ -31,7 +32,7 @@ public class MobHeadBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag compoundTag) {
+    public void load(@NotNull CompoundTag compoundTag) {
         super.load(compoundTag);
         if (compoundTag.contains("note_block_sound", 8)) {
             this.noteBlockSound = ResourceLocation.tryParse(compoundTag.getString("note_block_sound"));
@@ -62,7 +63,7 @@ public class MobHeadBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
+    public @NotNull CompoundTag getUpdateTag() {
         return this.saveWithoutMetadata();
     }
 

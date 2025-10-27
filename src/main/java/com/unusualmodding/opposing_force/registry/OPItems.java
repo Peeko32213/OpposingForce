@@ -89,11 +89,11 @@ public class OPItems {
     public static final RegistryObject<Item> EMERALD_CHESTPLATE = registerItem("emerald_chestplate", ()-> new EmeraldArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> EMERALD_LEGGINGS = registerItem("emerald_leggings", ()-> new EmeraldArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> EMERALD_BOOTS = registerItem("emerald_boots", ()-> new EmeraldArmorItem(ArmorItem.Type.BOOTS, new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> EMERALD_SWORD = registerItem("emerald_sword", ()-> new EmeraldSwordItem(OPItemTiers.EMERALD, 3, -2.4F, new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> EMERALD_PICKAXE = registerItem("emerald_pickaxe", ()-> new EmeraldPickaxeItem(OPItemTiers.EMERALD, 1, -2.8F, new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> EMERALD_AXE = registerItem("emerald_axe", ()-> new EmeraldAxeItem(OPItemTiers.EMERALD, 5, -3F, new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> EMERALD_SHOVEL = registerItem("emerald_shovel", ()-> new EmeraldShovelItem(OPItemTiers.EMERALD, 1.5F, -3F, new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> EMERALD_HOE = registerItem("emerald_hoe", ()-> new EmeraldHoeItem(OPItemTiers.EMERALD, -3, 0F, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERALD_SWORD = registerItem("emerald_sword", ()-> new EmeraldSwordItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERALD_PICKAXE = registerItem("emerald_pickaxe", ()-> new EmeraldPickaxeItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERALD_AXE = registerItem("emerald_axe", ()-> new EmeraldAxeItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERALD_SHOVEL = registerItem("emerald_shovel", ()-> new EmeraldShovelItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERALD_HOE = registerItem("emerald_hoe", ()-> new EmeraldHoeItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
 
     // wooden
     public static final RegistryObject<Item> WOODEN_MASK = registerItem("wooden_mask", ()-> new WoodenArmorItem(ArmorItem.Type.HELMET, new Item.Properties()));

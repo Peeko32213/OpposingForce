@@ -31,6 +31,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.event.ForgeEventFactory;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
 public class InfernoPieBlock extends Block {
@@ -45,16 +46,8 @@ public class InfernoPieBlock extends Block {
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(BITES, 0));
 	}
 
-	public ItemStack getPieSliceItem() {
-		return new ItemStack(OPItems.INFERNO_PIE_SLICE.get());
-	}
-
-	public int getMaxBites() {
-		return 4;
-	}
-
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+	public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
 		return SHAPE;
 	}
 
@@ -64,7 +57,7 @@ public class InfernoPieBlock extends Block {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public @NotNull InteractionResult use(@NotNull BlockState state, Level level, @NotNull BlockPos pos, Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
 		ItemStack heldStack = player.getItemInHand(hand);
 		if (level.isClientSide) {
 			if (heldStack.is(OPItemTags.KNIVES)) {
@@ -90,13 +83,13 @@ public class InfernoPieBlock extends Block {
 		if (!playerIn.canEat(false)) {
 			return InteractionResult.PASS;
 		} else {
-			ItemStack sliceStack = this.getPieSliceItem();
+			ItemStack sliceStack = new ItemStack(OPItems.INFERNO_PIE_SLICE.get());
 			ItemStack sliceCopy = sliceStack.copy();
 			FoodProperties sliceFood = sliceStack.getItem().getFoodProperties();
 
 			playerIn.getFoodData().eat(sliceStack.getItem(), sliceStack);
 			ForgeEventFactory.onItemUseFinish(playerIn, sliceCopy, 0, ItemStack.EMPTY);
-			if (this.getPieSliceItem().getItem().isEdible() && sliceFood != null) {
+			if (sliceStack.getItem().isEdible() && sliceFood != null) {
 				for (Pair<MobEffectInstance, Float> pair : sliceFood.getEffects()) {
 					if (!level.isClientSide && pair.getFirst() != null && level.random.nextFloat() < pair.getSecond()) {
 						playerIn.addEffect(new MobEffectInstance(pair.getFirst()));
@@ -105,7 +98,7 @@ public class InfernoPieBlock extends Block {
 			}
 
 			int bites = state.getValue(BITES);
-			if (bites < getMaxBites() - 1) {
+			if (bites < 4 - 1) {
 				level.setBlock(pos, state.setValue(BITES, bites + 1), 3);
 			} else {
 				level.removeBlock(pos, false);
@@ -117,14 +110,14 @@ public class InfernoPieBlock extends Block {
 
 	protected InteractionResult cutSlice(Level level, BlockPos pos, BlockState state, Player player) {
 		int bites = state.getValue(BITES);
-		if (bites < getMaxBites() - 1) {
+		if (bites < 4 - 1) {
 			level.setBlock(pos, state.setValue(BITES, bites + 1), 3);
 		} else {
 			level.removeBlock(pos, false);
 		}
 
 		Direction direction = player.getDirection().getOpposite();
-		ItemEntity entity = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.3, pos.getZ() + 0.5, this.getPieSliceItem());
+		ItemEntity entity = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.3, pos.getZ() + 0.5, new ItemStack(OPItems.INFERNO_PIE_SLICE.get()));
 		entity.setDeltaMovement(direction.getStepX() * 0.15, 0.05, direction.getStepZ() * 0.15);
 		level.addFreshEntity(entity);
 		level.playSound(null, pos, SoundEvents.WOOL_BREAK, SoundSource.PLAYERS, 0.8F, 0.8F);
@@ -132,12 +125,12 @@ public class InfernoPieBlock extends Block {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-		return facing == Direction.DOWN && !stateIn.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
+	public @NotNull BlockState updateShape(@NotNull BlockState state, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor level, @NotNull BlockPos currentPos, @NotNull BlockPos facingPos) {
+		return facing == Direction.DOWN && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+	public boolean canSurvive(@NotNull BlockState state, LevelReader level, BlockPos pos) {
 		return level.getBlockState(pos.below()).isSolid();
 	}
 
@@ -147,17 +140,17 @@ public class InfernoPieBlock extends Block {
 	}
 
 	@Override
-	public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
-		return getMaxBites() - blockState.getValue(BITES);
+	public int getAnalogOutputSignal(BlockState blockState, @NotNull Level level, @NotNull BlockPos pos) {
+		return 4 - blockState.getValue(BITES);
 	}
 
 	@Override
-	public boolean hasAnalogOutputSignal(BlockState state) {
+	public boolean hasAnalogOutputSignal(@NotNull BlockState state) {
 		return true;
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
+	public boolean isPathfindable(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull PathComputationType computationType) {
 		return false;
 	}
 }

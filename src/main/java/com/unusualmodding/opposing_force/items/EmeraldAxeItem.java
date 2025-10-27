@@ -3,21 +3,23 @@ package com.unusualmodding.opposing_force.items;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.unusualmodding.opposing_force.items.interfaces.EmeraldTool;
+import com.unusualmodding.opposing_force.registry.enums.OPItemTiers;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.Tier;
+import org.jetbrains.annotations.NotNull;
 
 public class EmeraldAxeItem extends AxeItem implements EmeraldTool {
+
     private Multimap<Attribute, AttributeModifier> attributes;
 
-    public EmeraldAxeItem(Tier tier, float attackDamageModifier, float attackSpeedModifier, Properties properties) {
-        super(tier, attackDamageModifier, attackSpeedModifier, properties);
+    public EmeraldAxeItem(Properties properties) {
+        super(OPItemTiers.EMERALD, 5, -3, properties);
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
+    public @NotNull Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@NotNull EquipmentSlot equipmentSlot) {
         if (attributes == null) {
             ImmutableMultimap.Builder<Attribute, AttributeModifier> attributeBuilder = new ImmutableMultimap.Builder<>();
             attributeBuilder.putAll(defaultModifiers);

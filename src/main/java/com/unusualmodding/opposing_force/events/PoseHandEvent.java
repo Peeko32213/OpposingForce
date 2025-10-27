@@ -11,25 +11,25 @@ import net.minecraftforge.eventbus.api.Event;
 @Event.HasResult
 public class PoseHandEvent extends Event {
 
-    private LivingEntity entityIn;
-    private HumanoidModel model;
-    private boolean left;
+    private final LivingEntity entity;
+    private final HumanoidModel<?> model;
+    private final boolean leftHand;
 
-    public PoseHandEvent(LivingEntity entityIn, HumanoidModel model, boolean left) {
-        this.entityIn = entityIn;
+    public PoseHandEvent(LivingEntity entityIn, HumanoidModel<?> model, boolean left) {
+        this.entity = entityIn;
         this.model = model;
-        this.left = left;
+        this.leftHand = left;
     }
 
-    public Entity getEntityIn() {
-        return entityIn;
+    public Entity getEntity() {
+        return entity;
     }
 
-    public HumanoidModel getModel() {
+    public HumanoidModel<?> getModel() {
         return model;
     }
 
     public boolean isLeftHand() {
-        return left;
+        return leftHand;
     }
 }
