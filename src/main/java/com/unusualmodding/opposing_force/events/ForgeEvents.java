@@ -160,7 +160,7 @@ public class ForgeEvents {
         DamageSource damageSource = event.getSource();
 
         for (MobEffectInstance activeEffect : entity.getActiveEffects()) {
-            if (activeEffect.getEffect() == OPEffects.SLUG_INFESTATION.get()) {
+            if (activeEffect.getEffect() == OPMobEffects.SLUG_INFESTATION.get()) {
                 SlugInfestation.onMobHurt(entity, activeEffect.getAmplifier());
             }
         }

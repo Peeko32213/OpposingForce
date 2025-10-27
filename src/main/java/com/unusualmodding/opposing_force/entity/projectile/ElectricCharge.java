@@ -266,7 +266,7 @@ public class ElectricCharge extends FrictionlessProjectile {
                 if (!living.is(shooter)) {
                     if (living.hurt(damageSource, damageAmount)) {
                         this.spawnElectricParticles(this, 4 + randomSource.nextInt(3), 0, 12);
-                        living.addEffect(new MobEffectInstance(OPEffects.ELECTRIFIED.get(), 200), shooter);
+                        living.addEffect(new MobEffectInstance(OPMobEffects.ELECTRIFIED.get(), 200), shooter);
                         this.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
                         flag = true;
                     }

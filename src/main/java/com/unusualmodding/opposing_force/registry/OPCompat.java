@@ -11,6 +11,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public class OPCompat {
 
@@ -21,15 +22,14 @@ public class OPCompat {
     public static void registerDispenserBehaviors() {
         DispenserBlock.registerBehavior(OPItems.ELECTRIC_CHARGE.get(), new AbstractProjectileDispenseBehavior() {
             @Override
-            protected Projectile getProjectile(Level level, Position pos, ItemStack itemStack) {
-                ElectricCharge entity = new ElectricCharge(level, pos.x(), pos.y(), pos.z(), Vec3.ZERO);
-                return entity;
+            protected @NotNull Projectile getProjectile(@NotNull Level level, @NotNull Position pos, @NotNull ItemStack itemStack) {
+                return new ElectricCharge(level, pos.x(), pos.y(), pos.z(), Vec3.ZERO);
             }
         });
 
         DispenserBlock.registerBehavior(OPItems.TOMAHAWK.get(), new AbstractProjectileDispenseBehavior() {
             @Override
-            protected Projectile getProjectile(Level level, Position pos, ItemStack itemStack) {
+            protected @NotNull Projectile getProjectile(@NotNull Level level, @NotNull Position pos, @NotNull ItemStack itemStack) {
                 Tomahawk entity = new Tomahawk(level, pos.x(), pos.y(), pos.z());
                 entity.pickup = AbstractArrow.Pickup.ALLOWED;
                 return entity;
@@ -38,7 +38,7 @@ public class OPCompat {
 
         DispenserBlock.registerBehavior(OPItems.UMBER_DAGGER.get(), new AbstractProjectileDispenseBehavior() {
             @Override
-            protected Projectile getProjectile(Level level, Position pos, ItemStack itemStack) {
+            protected @NotNull Projectile getProjectile(@NotNull Level level, @NotNull Position pos, @NotNull ItemStack itemStack) {
                 UmberDagger entity = new UmberDagger(level, pos.x(), pos.y(), pos.z());
                 entity.pickup = AbstractArrow.Pickup.ALLOWED;
                 return entity;

@@ -39,8 +39,8 @@ public class OPLanguageProvider extends LanguageProvider {
         this.addTabName(OpposingForceTab.TAB.get(), "Opposing Force");
 
         // blocks
-        OPBlocks.AUTO_TRANSLATE.forEach(this::forBlocks);
-        OPItems.AUTO_TRANSLATE.forEach(this::forItems);
+        OPBlocks.BLOCK_TRANSLATIONS.forEach(this::forBlocks);
+        OPItems.ITEM_TRANSLATIONS.forEach(this::forItems);
 
         this.addItem(OPItems.INFERNO_PIE_SLICE, "Slice of Inferno Pie");
 
@@ -178,9 +178,9 @@ public class OPLanguageProvider extends LanguageProvider {
         this.addEnchantmentWithDesc(OPEnchantments.FREEZE_RAY.get(), "Laser bolts inflict freezing on hit");
         this.addEnchantmentWithDesc(OPEnchantments.POWER_SUPPLY.get(), "Blaster has a chance to not consume redstone dust");
 
-        this.addEffect(OPEffects.ELECTRIFIED, "Electrified");
-        this.addEffect(OPEffects.GLOOM_TOXIN, "Gloom Toxin");
-        this.addEffect(OPEffects.SLUG_INFESTATION, "Slug Infestation");
+        this.addEffect(OPMobEffects.ELECTRIFIED, "Electrified");
+        this.addEffect(OPMobEffects.GLOOM_TOXIN, "Gloom Toxin");
+        this.addEffect(OPMobEffects.SLUG_INFESTATION, "Slug Infestation");
 
         this.addAdvancement("root", "Opposing Force");
         this.addAdvancementDesc("root", "Discover unique and challenging mobs throughout the world");

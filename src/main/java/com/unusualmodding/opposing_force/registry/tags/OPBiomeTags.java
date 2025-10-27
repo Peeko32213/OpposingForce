@@ -32,7 +32,7 @@ public class OPBiomeTags {
         return biomeTag("forge", name);
     }
 
-    public static TagKey<Biome> biomeTag(String modid, String name) {
-        return TagKey.create(Registries.BIOME, new ResourceLocation(modid, name));
+    public static TagKey<Biome> biomeTag(String modId, String name) {
+        return TagKey.create(Registries.BIOME, new ResourceLocation(modId, name));
     }
 }

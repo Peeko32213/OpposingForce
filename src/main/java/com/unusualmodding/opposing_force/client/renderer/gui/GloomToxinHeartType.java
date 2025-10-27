@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.client.renderer.gui;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.registry.OPEffects;
+import com.unusualmodding.opposing_force.registry.OPMobEffects;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.apache.commons.lang3.tuple.Pair;
@@ -38,7 +38,7 @@ public enum GloomToxinHeartType {
 
     public static GloomToxinHeartType getType(Player player) {
         GloomToxinHeartType type = null;
-        if (player.hasEffect(OPEffects.GLOOM_TOXIN.get())) {
+        if (player.hasEffect(OPMobEffects.GLOOM_TOXIN.get())) {
             type = GloomToxinHeartType.GLOOM_TOXIN;
         }
         return type;

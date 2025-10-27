@@ -2,7 +2,6 @@ package com.unusualmodding.opposing_force.data;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.registry.OPBlocks;
-import com.unusualmodding.opposing_force.registry.tags.ForgeItemTags;
 import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -39,20 +38,20 @@ public class OPItemTagProvider extends ItemTagsProvider {
                 Items.REDSTONE
         );
 
-        this.tag(ForgeItemTags.BERRIES).add(
+        this.tag(OPItemTags.BERRIES).add(
                 Items.SWEET_BERRIES,
                 Items.GLOW_BERRIES
         );
 
-        this.tag(ForgeItemTags.FRUITS).add(Items.APPLE, Items.MELON, Items.CHORUS_FRUIT).addTag(ForgeItemTags.BERRIES);
+        this.tag(OPItemTags.FRUITS).add(Items.APPLE, Items.MELON, Items.CHORUS_FRUIT).addTag(OPItemTags.BERRIES);
 
-        this.tag(ForgeItemTags.VEGETABLES).add(
+        this.tag(OPItemTags.VEGETABLES).add(
                 Items.CARROT,
                 Items.POTATO,
                 Items.BEETROOT
         );
 
-        this.tag(OPItemTags.RAW_VEGETABLES).addTag(ForgeItemTags.FRUITS).addTag(ForgeItemTags.VEGETABLES);
+        this.tag(OPItemTags.RAW_VEGETABLES).addTag(OPItemTags.FRUITS).addTag(OPItemTags.VEGETABLES);
 
         this.tag(ItemTags.FREEZE_IMMUNE_WEARABLES).add(
                 DEEPWOVEN_HAT.get(),

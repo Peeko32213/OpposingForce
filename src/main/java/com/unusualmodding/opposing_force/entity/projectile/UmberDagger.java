@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.entity.projectile;
 
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
-import com.unusualmodding.opposing_force.registry.OPEffects;
+import com.unusualmodding.opposing_force.registry.OPMobEffects;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import net.minecraft.world.damagesource.DamageSource;
@@ -34,7 +34,7 @@ public class UmberDagger extends ThrowableProjectile {
     @Override
     protected void doPostHurtEffects(LivingEntity living) {
         super.doPostHurtEffects(living);
-        MobEffectInstance effect = new MobEffectInstance(OPEffects.GLOOM_TOXIN.get(), 200, 0);
+        MobEffectInstance effect = new MobEffectInstance(OPMobEffects.GLOOM_TOXIN.get(), 200, 0);
         living.addEffect(effect, this.getEffectSource());
     }
 

@@ -20,7 +20,7 @@ public class OPBlockTags {
         return blockTag("forge", name);
     }
 
-    public static TagKey<Block> blockTag(String modid, String name) {
-        return TagKey.create(Registries.BLOCK, new ResourceLocation(modid, name));
+    public static TagKey<Block> blockTag(String modId, String name) {
+        return TagKey.create(Registries.BLOCK, new ResourceLocation(modId, name));
     }
 }

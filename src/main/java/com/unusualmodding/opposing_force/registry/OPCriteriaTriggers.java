@@ -8,6 +8,7 @@ import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.NotNull;
 
 public class OPCriteriaTriggers extends SimpleCriterionTrigger<OPCriteriaTriggers.TriggerInstance> {
 
@@ -18,7 +19,7 @@ public class OPCriteriaTriggers extends SimpleCriterionTrigger<OPCriteriaTrigger
     }
 
     @Override
-    public ResourceLocation getId() {
+    public @NotNull ResourceLocation getId() {
         return CRITERIA;
     }
 
@@ -27,7 +28,7 @@ public class OPCriteriaTriggers extends SimpleCriterionTrigger<OPCriteriaTrigger
     }
 
     @Override
-    protected TriggerInstance createInstance(JsonObject object, ContextAwarePredicate predicate, DeserializationContext context) {
+    protected @NotNull TriggerInstance createInstance(@NotNull JsonObject object, @NotNull ContextAwarePredicate predicate, @NotNull DeserializationContext context) {
         return new OPCriteriaTriggers.TriggerInstance(CRITERIA, predicate);
     }
 

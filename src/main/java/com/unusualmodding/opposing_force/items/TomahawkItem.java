@@ -8,13 +8,13 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.Level;
 
 public class TomahawkItem extends ThrowableWeaponItem {
 
-    public TomahawkItem(Tier tier, int damage, float attackSpeed, Properties properties) {
-        super(tier, damage, attackSpeed, properties);
+    public TomahawkItem(Properties properties) {
+        super(Tiers.IRON, 1, -2.4F, properties);
     }
 
     @Override

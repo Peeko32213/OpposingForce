@@ -8,9 +8,17 @@ import net.minecraft.world.entity.EntityType;
 
 public class OPEntityTypeTags {
 
-    public static final TagKey<EntityType<?>> HANGING_SPIDER_TARGETS = registerEntityTag("hanging_spider_targets");
+    public static final TagKey<EntityType<?>> HANGING_SPIDER_TARGETS = modEntityTypeTag("hanging_spider_targets");
 
-    private static TagKey<EntityType<?>> registerEntityTag(String name) {
-        return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(OpposingForce.MOD_ID, name));
+    private static TagKey<EntityType<?>> modEntityTypeTag(String name) {
+        return entityTypeTag(OpposingForce.MOD_ID, name);
+    }
+
+    private static TagKey<EntityType<?>> forgeEntityTypeTag(String name) {
+        return entityTypeTag("forge", name);
+    }
+
+    private static TagKey<EntityType<?>> entityTypeTag(String modId, String name) {
+        return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(modId, name));
     }
 }

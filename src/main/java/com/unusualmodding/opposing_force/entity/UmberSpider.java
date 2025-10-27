@@ -3,7 +3,7 @@ package com.unusualmodding.opposing_force.entity;
 import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
 import com.unusualmodding.opposing_force.entity.utils.IAnimatedAttacker;
-import com.unusualmodding.opposing_force.registry.OPEffects;
+import com.unusualmodding.opposing_force.registry.OPMobEffects;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -109,7 +109,7 @@ public class UmberSpider extends Spider implements IAnimatedAttacker {
                     i = 10;
                 }
                 if (i > 0) {
-                    ((LivingEntity) entity).addEffect(new MobEffectInstance(OPEffects.GLOOM_TOXIN.get(), i * 20, 0), this);
+                    ((LivingEntity) entity).addEffect(new MobEffectInstance(OPMobEffects.GLOOM_TOXIN.get(), i * 20, 0), this);
                 }
             }
             return true;
@@ -183,7 +183,7 @@ public class UmberSpider extends Spider implements IAnimatedAttacker {
 
     @Override
     public boolean canBeAffected(MobEffectInstance effect) {
-        if (effect.getEffect() == MobEffects.POISON || effect.getEffect() == OPEffects.GLOOM_TOXIN.get()) {
+        if (effect.getEffect() == MobEffects.POISON || effect.getEffect() == OPMobEffects.GLOOM_TOXIN.get()) {
             MobEffectEvent.Applicable event = new MobEffectEvent.Applicable(this, effect);
             MinecraftForge.EVENT_BUS.post(event);
             return event.getResult() == Event.Result.ALLOW;

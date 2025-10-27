@@ -23,7 +23,7 @@ public final class ClientEvents {
 
     @SubscribeEvent
     public static void onClientSetup(final FMLClientSetupEvent event) {
-        event.enqueueWork(OPItemProperties::addItemProperties);
+        event.enqueueWork(OPItemProperties::registerItemProperties);
     }
 
     @SubscribeEvent

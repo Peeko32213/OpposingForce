@@ -24,20 +24,22 @@ public class OPEnchantments {
     public static final EnchantmentCategory VILE_BOULDER = EnchantmentCategory.create("vile_boulder", (item -> item == OPItems.VILE_BOULDER.get()));
     public static final EnchantmentCategory BLASTER = EnchantmentCategory.create("blaster", (item -> item == OPItems.BLASTER.get()));
 
-    public static final RegistryObject<Enchantment> BATTERY = ENCHANTMENTS.register("battery", () -> new OPEnchantment("battery", Enchantment.Rarity.UNCOMMON, TESLA_CANNON, 3, 15, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> CAPACITANCE = ENCHANTMENTS.register("capacitance", () -> new OPEnchantment("capacitance", Enchantment.Rarity.RARE, TESLA_CANNON, 3, 20, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> QUASAR = ENCHANTMENTS.register("quasar", () -> new TrueTreasureEnchantment("quasar", Enchantment.Rarity.VERY_RARE, TESLA_CANNON, 1, 30, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> REBOUND = ENCHANTMENTS.register("rebound", () -> new OPEnchantment("rebound", Enchantment.Rarity.UNCOMMON, TESLA_CANNON, 4, 15, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> STATIC_ATTRACTION = ENCHANTMENTS.register("static_attraction", () -> new TreasureEnchantment("static_attraction", Enchantment.Rarity.VERY_RARE, TESLA_CANNON, 1, 25, EquipmentSlot.MAINHAND));
-
-    public static final RegistryObject<Enchantment> PLAGUE = ENCHANTMENTS.register("plague", () -> new OPEnchantment("plague", Enchantment.Rarity.RARE, VILE_BOULDER, 2, 20, EquipmentSlot.MAINHAND));
-
+    // blaster
     public static final RegistryObject<Enchantment> FREEZE_RAY = ENCHANTMENTS.register("freeze_ray", () -> new OPEnchantment("freeze_ray", Enchantment.Rarity.VERY_RARE, BLASTER, 1, 25, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> POWER_SUPPLY = ENCHANTMENTS.register("power_supply", () -> new OPEnchantment("power_supply", Enchantment.Rarity.UNCOMMON, BLASTER, 3, 15, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> RAPID_FIRE = ENCHANTMENTS.register("rapid_fire", () -> new OPEnchantment("rapid_fire", Enchantment.Rarity.RARE, BLASTER, 3, 20, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> SPLITTING = ENCHANTMENTS.register("splitting", () -> new OPEnchantment("splitting", Enchantment.Rarity.RARE, BLASTER, 5, 15, EquipmentSlot.MAINHAND));
 
+    // tesla cannon
+    public static final RegistryObject<Enchantment> BATTERY = ENCHANTMENTS.register("battery", () -> new OPEnchantment("battery", Enchantment.Rarity.UNCOMMON, TESLA_CANNON, 3, 15, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> CAPACITANCE = ENCHANTMENTS.register("capacitance", () -> new OPEnchantment("capacitance", Enchantment.Rarity.RARE, TESLA_CANNON, 3, 20, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> QUASAR = ENCHANTMENTS.register("quasar", () -> new OPEnchantment("quasar", Enchantment.Rarity.VERY_RARE, TESLA_CANNON, 1, 30, false, false, true, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> REBOUND = ENCHANTMENTS.register("rebound", () -> new OPEnchantment("rebound", Enchantment.Rarity.UNCOMMON, TESLA_CANNON, 4, 15, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> STATIC_ATTRACTION = ENCHANTMENTS.register("static_attraction", () -> new OPEnchantment("static_attraction", Enchantment.Rarity.VERY_RARE, TESLA_CANNON, 1, 25, true, false, true, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> KICKBACK = ENCHANTMENTS.register("kickback", () -> new OPEnchantment("kickback", Enchantment.Rarity.RARE, TESLA_CANNON, 4, 20, EquipmentSlot.MAINHAND));
+
+    // vile boulder
+    public static final RegistryObject<Enchantment> PLAGUE = ENCHANTMENTS.register("plague", () -> new OPEnchantment("plague", Enchantment.Rarity.RARE, VILE_BOULDER, 2, 20, EquipmentSlot.MAINHAND));
 
     public static boolean areCompatible(OPEnchantment enchantment1, Enchantment enchantment2) {
         if (enchantment1 == KICKBACK.get() && (enchantment2 == Enchantments.QUICK_CHARGE)) {

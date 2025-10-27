@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Mixin(Pose.class)
-public class PoseMixin {
+public abstract class PoseMixin {
 
     @Shadow
     @Mutable

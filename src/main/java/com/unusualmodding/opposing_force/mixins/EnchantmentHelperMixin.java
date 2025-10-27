@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.util.Collection;
 
 @Mixin(EnchantmentHelper.class)
-public class EnchantmentHelperMixin {
+public abstract class EnchantmentHelperMixin {
 
     @ModifyReturnValue(method = "getMobLooting", at = @At("RETURN"))
     private static int increaseLootingLevel(int original, LivingEntity entity) {

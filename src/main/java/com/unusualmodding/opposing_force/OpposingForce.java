@@ -42,7 +42,7 @@ public class OpposingForce {
         OPBlocks.BLOCKS.register(modEventBus);
         OPItems.ITEMS.register(modEventBus);
         OpposingForceTab.CREATIVE_TABS.register(modEventBus);
-        OPEffects.MOB_EFFECTS.register(modEventBus);
+        OPMobEffects.MOB_EFFECTS.register(modEventBus);
         OPEntities.ENTITY_TYPES.register(modEventBus);
         OPSoundEvents.SOUND_EVENTS.register(modEventBus);
         OPParticles.PARTICLE_TYPES.register(modEventBus);
@@ -51,7 +51,6 @@ public class OpposingForce {
         OPAttributes.ATTRIBUTES.register(modEventBus);
         OPLootModifiers.LOOT_MODIFIERS.register(modEventBus);
         OPBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
-        OPEntityDataSerializers.ENTITY_DATA_SERIALIZERS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
     }

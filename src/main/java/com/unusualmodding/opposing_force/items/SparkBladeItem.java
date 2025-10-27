@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.items;
 
 import com.unusualmodding.opposing_force.network.ElectricChargeSyncS2CPacket;
-import com.unusualmodding.opposing_force.registry.OPEffects;
+import com.unusualmodding.opposing_force.registry.OPMobEffects;
 import com.unusualmodding.opposing_force.registry.OPNetwork;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.registry.enums.OPItemTiers;
@@ -56,7 +56,7 @@ public class SparkBladeItem extends SwordItem {
                     OPNetwork.sendToClients(packet);
                 }
             }
-            target.addEffect(new MobEffectInstance(OPEffects.ELECTRIFIED.get(), 60, 0));
+            target.addEffect(new MobEffectInstance(OPMobEffects.ELECTRIFIED.get(), 60, 0));
             target.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 1.0F, 1.0F / (target.level().getRandom().nextFloat() * 0.4F + 0.8F));
             return true;
         }

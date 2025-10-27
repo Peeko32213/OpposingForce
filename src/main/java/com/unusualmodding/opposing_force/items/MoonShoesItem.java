@@ -5,13 +5,13 @@ import com.google.common.collect.Multimap;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.registry.OPAttributes;
 import com.unusualmodding.opposing_force.registry.OPParticles;
+import com.unusualmodding.opposing_force.registry.enums.OPArmorMaterials;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
@@ -24,8 +24,8 @@ import java.util.UUID;
 
 public class MoonShoesItem extends ArmorItem {
 
-    public MoonShoesItem(ArmorMaterial armorMaterial, Properties properties) {
-        super(armorMaterial, Type.BOOTS, properties);
+    public MoonShoesItem(Properties properties) {
+        super(OPArmorMaterials.MOON_SHOES, Type.BOOTS, properties);
     }
 
     @Override

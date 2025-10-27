@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.util.Collection;
 
 @Mixin(ApplyBonusCount.class)
-public class ApplyBonusCountMixin {
+public abstract class ApplyBonusCountMixin {
 
     @ModifyExpressionValue(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getItemEnchantmentLevel(Lnet/minecraft/world/item/enchantment/Enchantment;Lnet/minecraft/world/item/ItemStack;)I"))
     private int increaseFortuneLevel(int i, ItemStack stack, LootContext context) {

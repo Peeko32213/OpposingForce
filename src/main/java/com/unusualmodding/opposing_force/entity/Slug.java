@@ -4,7 +4,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.registry.OPCriterion;
-import com.unusualmodding.opposing_force.registry.OPEffects;
+import com.unusualmodding.opposing_force.registry.OPMobEffects;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -140,7 +140,7 @@ public class Slug extends Monster implements OwnableEntity {
 
     @Override
     public boolean canBeAffected(MobEffectInstance effect) {
-        if (effect.getEffect() == OPEffects.SLUG_INFESTATION.get()) {
+        if (effect.getEffect() == OPMobEffects.SLUG_INFESTATION.get()) {
             MobEffectEvent.Applicable event = new MobEffectEvent.Applicable(this, effect);
             MinecraftForge.EVENT_BUS.post(event);
             return event.getResult() == Event.Result.ALLOW;
@@ -445,7 +445,7 @@ public class Slug extends Monster implements OwnableEntity {
     }
 
     public boolean hasInfestation(LivingEntity entity) {
-        return entity.hasEffect(OPEffects.SLUG_INFESTATION.get());
+        return entity.hasEffect(OPMobEffects.SLUG_INFESTATION.get());
     }
 
     public boolean isInfestationSlug(LivingEntity entity) {

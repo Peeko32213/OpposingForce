@@ -3,7 +3,7 @@ package com.unusualmodding.opposing_force.mixins.client;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unusualmodding.opposing_force.client.renderer.gui.ElectrifiedHeartType;
 import com.unusualmodding.opposing_force.client.renderer.gui.GloomToxinHeartType;
-import com.unusualmodding.opposing_force.registry.OPEffects;
+import com.unusualmodding.opposing_force.registry.OPMobEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Gui.class)
-public class GuiMixin {
+public abstract class GuiMixin {
 
     @Unique
     private static boolean opposingForce$drawForHeartType(Gui.HeartType type) {
@@ -25,10 +25,10 @@ public class GuiMixin {
 
     @Unique
     private static boolean opposingForce$hasAnyCustomHearts(Player player) {
-        if (player.hasEffect(OPEffects.ELECTRIFIED.get())) {
+        if (player.hasEffect(OPMobEffects.ELECTRIFIED.get())) {
             return true;
         }
-        return player.hasEffect(OPEffects.GLOOM_TOXIN.get());
+        return player.hasEffect(OPMobEffects.GLOOM_TOXIN.get());
     }
 
     @Inject(method = "renderHeart", at = @At("HEAD"), cancellable = true)

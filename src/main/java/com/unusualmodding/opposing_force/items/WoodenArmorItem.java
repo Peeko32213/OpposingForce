@@ -2,11 +2,11 @@ package com.unusualmodding.opposing_force.items;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.registry.OPItems;
+import com.unusualmodding.opposing_force.registry.enums.OPArmorMaterials;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -17,8 +17,8 @@ import java.util.function.Consumer;
 
 public class WoodenArmorItem extends ArmorItem {
 
-    public WoodenArmorItem(ArmorMaterial armorMaterial, Type type, Properties properties) {
-        super(armorMaterial, type, properties);
+    public WoodenArmorItem(Type type, Properties properties) {
+        super(OPArmorMaterials.WOODEN, type, properties);
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -8,17 +8,25 @@ import net.minecraft.world.item.Item;
 
 public class OPItemTags {
 
-    public static final TagKey<Item> BLASTER_AMMO = registerItemTag("blaster_ammo");
-    public static final TagKey<Item> RAW_VEGETABLES = registerItemTag("raw_vegetables");
-    public static final TagKey<Item> PIE_CUTTERS = registerItemTag("pie_cutters");
-    public static final TagKey<Item> KNIVES = registerItemTag("knives");
-    public static final TagKey<Item> PIE_CRUST = registerItemTag("pie_crust");
+    public static final TagKey<Item> BLASTER_AMMO = modItemTag("blaster_ammo");
+    public static final TagKey<Item> RAW_VEGETABLES = modItemTag("raw_vegetables");
+    public static final TagKey<Item> PIE_CUTTERS = modItemTag("pie_cutters");
+    public static final TagKey<Item> KNIVES = modItemTag("knives");
+    public static final TagKey<Item> PIE_CRUST = modItemTag("pie_crust");
 
-    private static TagKey<Item> registerItemTag(String name) {
-        return TagKey.create(Registries.ITEM, new ResourceLocation(OpposingForce.MOD_ID, name));
+    public static final TagKey<Item> BERRIES = forgeItemTag("berries");
+    public static final TagKey<Item> FRUITS = forgeItemTag("fruits");
+    public static final TagKey<Item> VEGETABLES = forgeItemTag("vegetables");
+
+    private static TagKey<Item> modItemTag(String name) {
+        return itemTag(OpposingForce.MOD_ID, name);
     }
 
-    private static TagKey<Item> registerExternalItemTag(String modId, String name) {
+    private static TagKey<Item> forgeItemTag(String name) {
+        return itemTag("forge", name);
+    }
+
+    private static TagKey<Item> itemTag(String modId, String name) {
         return TagKey.create(Registries.ITEM, new ResourceLocation(modId, name));
     }
 }

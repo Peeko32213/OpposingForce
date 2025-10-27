@@ -48,6 +48,7 @@ public final class OPTrades {
             this.priceMultiplier = priceMultiplier;
         }
 
+        @Override
         public MerchantOffer getOffer(Entity trader, RandomSource random) {
             return new MerchantOffer(new ItemStack(Items.EMERALD, this.emeraldCount), new ItemStack(this.sellingItem.getItem(), this.sellingItemCount), this.maxUses, this.xpValue, this.priceMultiplier);
         }
@@ -76,6 +77,7 @@ public final class OPTrades {
         }
 
         @Nullable
+        @Override
         public MerchantOffer getOffer(Entity entity, RandomSource source) {
             return new MerchantOffer(new ItemStack(Items.EMERALD, this.emeraldCost), new ItemStack(this.inputItem.getItem(), this.inputCount), new ItemStack(this.ouputItem.getItem(), this.outputCount), this.maxTrades, this.experience, this.priceMultiplier);
         }
@@ -96,6 +98,7 @@ public final class OPTrades {
             this.priceMultiplier = 0.05F;
         }
 
+        @Override
         public MerchantOffer getOffer(Entity entity, RandomSource source) {
             ItemStack stack = new ItemStack(this.tradeItem, 1);
             return new MerchantOffer(stack, new ItemStack(Items.EMERALD, this.count), this.maxUses, this.xpValue, this.priceMultiplier);

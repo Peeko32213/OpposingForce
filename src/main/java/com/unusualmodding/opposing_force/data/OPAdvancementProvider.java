@@ -16,6 +16,7 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
 import net.minecraftforge.common.data.ForgeAdvancementProvider.AdvancementGenerator;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -29,7 +30,7 @@ public class OPAdvancementProvider implements AdvancementGenerator {
 
     @SuppressWarnings("unused")
     @Override
-    public void generate(Provider provider, Consumer<Advancement> consumer, ExistingFileHelper helper) {
+    public void generate(@NotNull Provider provider, @NotNull Consumer<Advancement> consumer, @NotNull ExistingFileHelper helper) {
 
         Advancement root = Advancement.Builder.advancement()
                 .display(Items.STONE_SWORD,
