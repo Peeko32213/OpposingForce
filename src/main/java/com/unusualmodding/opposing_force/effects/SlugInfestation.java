@@ -3,11 +3,13 @@ package com.unusualmodding.opposing_force.effects;
 import com.unusualmodding.opposing_force.entity.Slug;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
@@ -26,9 +28,8 @@ public class SlugInfestation extends MobEffect {
     }
 
     public static void onMobHurt(LivingEntity livingEntity, int amplifier) {
-        if (livingEntity.getRandom().nextFloat() <= 0.3F + ((float) (amplifier + 1) / 10)) {
+        if (livingEntity.getRandom().nextFloat() <= 0.1F + ((float) (amplifier + 1) / 10)) {
             int i = Mth.randomBetweenInclusive(livingEntity.getRandom(), 1, amplifier + 2);
-
             for (int j = 0; j < i; j++) {
                 spawnSlugs(livingEntity.level(), livingEntity, livingEntity.getX(), livingEntity.getY() + (double) livingEntity.getBbHeight() / 2.0, livingEntity.getZ());
             }
@@ -44,6 +45,7 @@ public class SlugInfestation extends MobEffect {
             slug.moveTo(x, y, z, level.getRandom().nextFloat() * 360.0F, 0.0F);
             slug.setDeltaMovement(new Vec3(vector3f));
             slug.setFromInfestation(true);
+            slug.finalizeSpawn((ServerLevel) entity.level(), entity.level().getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.TRIGGERED, null, null);
             level.addFreshEntity(slug);
             slug.playSound(OPSoundEvents.SLUG_ATTACK.get());
         }

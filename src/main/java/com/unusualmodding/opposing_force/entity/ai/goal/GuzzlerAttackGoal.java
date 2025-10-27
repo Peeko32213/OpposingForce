@@ -101,7 +101,7 @@ public class GuzzlerAttackGoal extends AttackGoal {
 
         if (this.timer == 7) {
             FireSlime slime = OPEntities.FIRE_SLIME.get().create(this.guzzler.level());
-            slime.setParentId(this.guzzler.getUUID());
+            slime.setOwnerUUID(this.guzzler.getUUID());
             slime.setPos(this.guzzler.getX(), this.guzzler.getEyeY(), this.guzzler.getZ());
             final double d0 = this.guzzler.getTarget().getEyeY() - (double) 1.1F;
             final double d1 = this.guzzler.getTarget().getX() - this.guzzler.getX();
@@ -111,9 +111,10 @@ public class GuzzlerAttackGoal extends AttackGoal {
             this.guzzler.gameEvent(GameEvent.PROJECTILE_SHOOT);
             this.guzzler.playSound(OPSoundEvents.GUZZLER_SPEW.get(), 2.0F, 1.0F / (this.guzzler.getRandom().nextFloat() * 0.4F + 0.8F));
             float speed = 0.1F + (0.005F * (float) this.guzzler.distanceToSqr(target.getX(), target.getY(), target.getZ()));
-            slime.shoot(d1, d2 + (double) f3, d3, Mth.clamp(speed, 0.1F, 1.25F));
+            slime.shootFromGuzzler(d1, d2 + (double) f3, d3, Mth.clamp(speed, 0.1F, 1.25F));
             slime.setYRot(this.guzzler.getYRot() % 360.0F);
             slime.setXRot(Mth.clamp(this.guzzler.getYRot(), -90.0F, 90.0F) % 360.0F);
+            slime.copyTarget(this.guzzler);
             if (!this.guzzler.level().isClientSide) {
                 this.guzzler.level().addFreshEntity(slime);
             }

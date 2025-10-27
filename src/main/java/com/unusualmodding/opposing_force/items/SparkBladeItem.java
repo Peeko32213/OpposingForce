@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 public class SparkBladeItem extends SwordItem {
 
     public SparkBladeItem(Properties properties) {
-        super(OPItemTiers.ELECTRIC, 3, -2.4F, properties);
+        super(OPItemTiers.ELECTRIC, 3, -2.8F, properties);
     }
 
     @Override
@@ -64,14 +64,14 @@ public class SparkBladeItem extends SwordItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         player.startUsingItem(hand);
         return InteractionResultHolder.consume(itemstack);
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int useTime) {
+    public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity, int useTime) {
         int i = this.getUseDuration(stack) - useTime;
         if (i >= 10) {
             if (entity instanceof Player player) {
@@ -107,7 +107,6 @@ public class SparkBladeItem extends SwordItem {
                 }
             }
         }
-
         super.releaseUsing(stack, level, entity, useTime);
     }
 

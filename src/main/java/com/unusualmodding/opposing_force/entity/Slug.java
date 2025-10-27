@@ -35,6 +35,7 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -42,6 +43,9 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
@@ -61,6 +65,7 @@ public class Slug extends Monster implements OwnableEntity {
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Boolean> FROM_INFESTATION = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> TAME_ATTEMPTS = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> LAUNCHED = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.BOOLEAN);
 
     private int limitedLifeTicks = 0;
 
@@ -153,9 +158,9 @@ public class Slug extends Monster implements OwnableEntity {
     }
 
     @Override
-    protected void dropFromLootTable(DamageSource source, boolean drops) {
+    protected void dropFromLootTable(@NotNull DamageSource source, boolean drops) {
         int extraEggs = this.getSlugSize() / 2;
-        if (this.getSlugSize() > 3) {
+        if (this.getSlugSize() > 3 && !this.isFromInfestation()) {
             for (int i = 0; i < extraEggs; i++) {
                 super.dropFromLootTable(source, drops);
             }
@@ -181,6 +186,7 @@ public class Slug extends Monster implements OwnableEntity {
         this.entityData.define(DATA_FLAGS, (byte) 0);
         this.entityData.define(FROM_INFESTATION, false);
         this.entityData.define(TAME_ATTEMPTS, 0);
+        this.entityData.define(LAUNCHED, false);
     }
 
     @Override
@@ -284,6 +290,14 @@ public class Slug extends Monster implements OwnableEntity {
         this.entityData.set(FROM_INFESTATION, infestation);
     }
 
+    public boolean wasLaunched() {
+        return this.entityData.get(LAUNCHED);
+    }
+
+    public void setLaunched(boolean launched) {
+        this.entityData.set(LAUNCHED, launched);
+    }
+
     @Override
     protected float getStandingEyeHeight(@NotNull Pose pose, EntityDimensions dimensions) {
         return dimensions.height * 0.44F;
@@ -313,9 +327,23 @@ public class Slug extends Monster implements OwnableEntity {
 
         if (this.isFromInfestation()) {
             this.limitedLifeTicks++;
-            if (this.limitedLifeTicks > 600) {
-                this.limitedLifeTicks = 580;
-                this.hurt(this.damageSources().starve(), 1.0F);
+            if (this.limitedLifeTicks > 300) {
+                this.limitedLifeTicks = 280;
+                this.hurt(this.damageSources().starve(), 2.0F);
+            }
+        }
+
+        if (this.wasLaunched()) {
+            this.yBodyRot = this.getYRot();
+            HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+            if (hitResult.getType() != HitResult.Type.MISS) {
+                if (hitResult.getType() == HitResult.Type.ENTITY) {
+                    this.doHurtTarget(((EntityHitResult) hitResult).getEntity());
+                    this.setLaunched(false);
+                }
+            }
+            if (this.tickCount > 200) {
+                this.setLaunched(false);
             }
         }
 
@@ -335,6 +363,10 @@ public class Slug extends Monster implements OwnableEntity {
         this.walkAnimation.update(f2, 0.4F);
     }
 
+    protected boolean canHitEntity(Entity entity) {
+        return !entity.isSpectator() && !(entity instanceof Slug) && entity != this.getOwner();
+    }
+
     @Override
     public boolean requiresCustomPersistence() {
         return super.requiresCustomPersistence() || this.isTame();
@@ -343,6 +375,40 @@ public class Slug extends Monster implements OwnableEntity {
     @Override
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {
         return !this.isTame();
+    }
+
+    public void shoot(double pX, double pY, double pZ, float pVelocity, float pInaccuracy) {
+        Vec3 vec3 = (new Vec3(pX, pY, pZ)).normalize().add(this.random.triangle(0.0D, 0.0172275D * (double)pInaccuracy), this.random.triangle(0.0D, 0.0172275D * (double)pInaccuracy), this.random.triangle(0.0D, 0.0172275D * (double)pInaccuracy)).scale((double)pVelocity);
+        this.setDeltaMovement(vec3);
+        double d0 = vec3.horizontalDistance();
+        this.setYRot((float)(Mth.atan2(vec3.x, vec3.z) * (double)(180F / (float)Math.PI)));
+        this.setXRot((float)(Mth.atan2(vec3.y, d0) * (double)(180F / (float)Math.PI)));
+        this.yRotO = this.getYRot();
+        this.xRotO = this.getXRot();
+    }
+
+    public void shootFromRotation(Entity pShooter, float pX, float pY, float pZ, float pVelocity, float pInaccuracy) {
+        float f = -Mth.sin(pY * ((float)Math.PI / 180F)) * Mth.cos(pX * ((float)Math.PI / 180F));
+        float f1 = -Mth.sin((pX + pZ) * ((float)Math.PI / 180F));
+        float f2 = Mth.cos(pY * ((float)Math.PI / 180F)) * Mth.cos(pX * ((float)Math.PI / 180F));
+        this.shoot(f, f1, f2, pVelocity, pInaccuracy);
+        Vec3 vec3 = pShooter.getDeltaMovement();
+        this.setDeltaMovement(this.getDeltaMovement().add(vec3.x, pShooter.onGround() ? 0.0D : vec3.y, vec3.z));
+    }
+
+    public void copyTarget(LivingEntity entity) {
+        LivingEntity priorTarget = this.getTarget();
+        if (priorTarget == null || !priorTarget.isAlive()) {
+            LivingEntity target = null;
+            if (entity.getLastHurtMob() != null) {
+                target = entity.getLastHurtMob();
+            } else if (entity.getLastHurtByMob() != null) {
+                target = entity.getLastHurtByMob();
+            }
+            if (target != null && target.isAlive() && !target.isAlliedTo(entity) && !target.is(entity) && !target.isAlliedTo(this) && !(target instanceof Slug)) {
+                this.setTarget(target);
+            }
+        }
     }
 
     public boolean isTame() {

@@ -29,7 +29,7 @@ public class TomahawkItem extends ThrowableWeaponItem {
         }
         player.awardStat(Stats.ITEM_USED.get(this));
         if (!player.getAbilities().instabuild) {
-            itemstack.hurtAndBreak(3, player, (player1) -> player1.broadcastBreakEvent(hand));
+            itemstack.hurtAndBreak(2, player, (player1) -> player1.broadcastBreakEvent(hand));
         }
         return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
     }

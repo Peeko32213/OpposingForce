@@ -60,7 +60,7 @@ public class RamblerJabGoal extends AttackGoal {
                         this.rambler.swing(InteractionHand.MAIN_HAND);
                     }
                 }
-                if (this.timer == 40) {
+                if (this.timer == 20) {
                     this.timer = 0;
                     this.rambler.setAttackState(0);
                 }

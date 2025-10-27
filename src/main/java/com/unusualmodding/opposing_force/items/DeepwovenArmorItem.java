@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.registry.OPAttributes;
 import com.unusualmodding.opposing_force.registry.OPItems;
+import com.unusualmodding.opposing_force.registry.enums.OPArmorMaterials;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,8 +28,8 @@ import java.util.function.Consumer;
 
 public class DeepwovenArmorItem extends ArmorItem {
 
-    public DeepwovenArmorItem(ArmorMaterial armorMaterial, Type type, Properties properties) {
-        super(armorMaterial, type, properties);
+    public DeepwovenArmorItem(Type type, Properties properties) {
+        super(OPArmorMaterials.DEEPWOVEN, type, properties);
     }
 
     @Override

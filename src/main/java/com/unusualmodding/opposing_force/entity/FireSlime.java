@@ -1,15 +1,13 @@
 package com.unusualmodding.opposing_force.entity;
 
-import com.google.common.collect.Lists;
-import com.unusualmodding.opposing_force.entity.ai.goal.AttackGoal;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
-import net.minecraft.Util;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -24,32 +22,33 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.TargetGoal;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.scores.Team;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BooleanSupplier;
 
-public class FireSlime extends Monster {
+public class FireSlime extends Monster implements OwnableEntity {
 
     private static final EntityDataAccessor<Boolean> DESPAWN = SynchedEntityData.defineId(FireSlime.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> LAUNCHED = SynchedEntityData.defineId(FireSlime.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Optional<UUID>> PARENT_UUID = SynchedEntityData.defineId(FireSlime.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(FireSlime.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Byte> TAMED = SynchedEntityData.defineId(FireSlime.class, EntityDataSerializers.BYTE);
 
     private int despawnTimer = 0;
 
@@ -73,9 +72,8 @@ public class FireSlime extends Monster {
         this.goalSelector.addGoal(2, new FireSlimeRandomDirectionGoal(this));
         this.goalSelector.addGoal(3, new FireSlimeKeepOnJumpingGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new FireSlimeCopyTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (entity) -> Math.abs(entity.getY() - this.getY()) <= (double) 4.0F));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (entity) -> Math.abs(entity.getY() - this.getY()) <= (double) 4.0F));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
     }
 
     protected void dealDamage() {
@@ -177,6 +175,7 @@ public class FireSlime extends Monster {
                 this.remove(RemovalReason.DISCARDED);
             }
         }
+
         super.tick();
     }
 
@@ -195,7 +194,7 @@ public class FireSlime extends Monster {
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSource) {
+    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
         return OPSoundEvents.FIRE_SLIME_HURT.get();
     }
 
@@ -218,12 +217,12 @@ public class FireSlime extends Monster {
     }
 
     @Nullable
-    public UUID getParentId() {
-        return this.entityData.get(PARENT_UUID).orElse(null);
+    public UUID getOwnerUUID() {
+        return this.entityData.get(OWNER_UUID).orElse(null);
     }
 
-    public void setParentId(@Nullable UUID uniqueId) {
-        this.entityData.set(PARENT_UUID, Optional.ofNullable(uniqueId));
+    public void setOwnerUUID(@Nullable UUID uniqueId) {
+        this.entityData.set(OWNER_UUID, Optional.ofNullable(uniqueId));
     }
 
     public boolean shouldDespawn() {
@@ -237,37 +236,106 @@ public class FireSlime extends Monster {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(PARENT_UUID, Optional.empty());
+        this.entityData.define(OWNER_UUID, Optional.empty());
         this.entityData.define(DESPAWN, false);
-        this.entityData.define(LAUNCHED, false);
+        this.entityData.define(TAMED, (byte) 0);
     }
 
-    public void addAdditionalSaveData(CompoundTag compoundTag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        if (this.getParentId() != null) {
-            compoundTag.putUUID("ParentUUID", this.getParentId());
+        if (this.getOwnerUUID() != null) {
+            compoundTag.putUUID("Owner", this.getOwnerUUID());
         }
         compoundTag.putBoolean("ShouldDespawn", this.shouldDespawn());
-        compoundTag.putBoolean("wasOnGround", this.wasOnGround);
-        compoundTag.putInt("despawnTimer", this.despawnTimer);
+        compoundTag.putBoolean("WasOnGround", this.wasOnGround);
+        compoundTag.putInt("DespawnTimer", this.despawnTimer);
     }
 
-    public void readAdditionalSaveData(CompoundTag compoundTag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         this.setShouldDespawn(compoundTag.getBoolean("ShouldDespawn"));
-        this.wasOnGround = compoundTag.getBoolean("wasOnGround");
-        this.despawnTimer = compoundTag.getInt("despawnTimer");
+        this.wasOnGround = compoundTag.getBoolean("WasOnGround");
+        this.despawnTimer = compoundTag.getInt("DespawnTimer");
+
+        UUID uuid;
+        if (compoundTag.hasUUID("Owner")) {
+            uuid = compoundTag.getUUID("Owner");
+        } else {
+            String s = compoundTag.getString("Owner");
+            uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
+        }
+
+        if (uuid != null) {
+            try {
+                this.setOwnerUUID(uuid);
+                this.setTame(true);
+            } catch (Throwable var4) {
+                this.setTame(false);
+            }
+        }
+    }
+
+    public boolean isTame() {
+        return (this.entityData.get(TAMED) & 4) != 0;
+    }
+
+    public void setTame(boolean tamed) {
+        byte b = this.entityData.get(TAMED);
+        if (tamed) {
+            this.entityData.set(TAMED, (byte) (b | 4));
+        } else {
+            this.entityData.set(TAMED, (byte) (b & -5));
+        }
+    }
+
+    public void tame(Player player) {
+        this.setTame(true);
+        this.setOwnerUUID(player.getUUID());
     }
 
     public Entity getParent() {
-        UUID id = getParentId();
+        UUID id = getOwnerUUID();
         if (id != null && !this.level().isClientSide) {
             return ((ServerLevel) level()).getEntity(id);
         }
         return null;
     }
 
-    public void shoot(double x, double y, double z, float scale) {
+    @Override
+    public boolean canAttack(@NotNull LivingEntity entity) {
+        return !this.isOwnedBy(entity) && super.canAttack(entity);
+    }
+
+    public boolean isOwnedBy(LivingEntity entity) {
+        return entity == this.getOwner();
+    }
+
+    @Override
+    public Team getTeam() {
+        if (this.isTame()) {
+            LivingEntity livingentity = this.getOwner();
+            if (livingentity != null) {
+                return livingentity.getTeam();
+            }
+        }
+        return super.getTeam();
+    }
+
+    @Override
+    public boolean isAlliedTo(@NotNull Entity entity) {
+        if (this.isTame()) {
+            LivingEntity livingentity = this.getOwner();
+            if (entity == livingentity) {
+                return true;
+            }
+            if (livingentity != null) {
+                return livingentity.isAlliedTo(entity);
+            }
+        }
+        return super.isAlliedTo(entity);
+    }
+
+    public void shootFromGuzzler(double x, double y, double z, float scale) {
         Vec3 vec3 = (new Vec3(x, y, z)).normalize().add(this.random.nextGaussian() * 0.008D, this.random.nextGaussian() * 0.008D, this.random.nextGaussian() * 0.008D).scale(scale);
         this.setDeltaMovement(vec3);
         float horizontalDistanceSqr = (float) vec3.horizontalDistanceSqr();
@@ -279,10 +347,44 @@ public class FireSlime extends Monster {
         this.yHeadRotO = getYRot();
         this.yRotO = getYRot();
         this.setShouldDespawn(true);
-        this.entityData.set(LAUNCHED, true);
     }
 
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+    public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
+        Vec3 vec3 = (new Vec3(x, y, z)).normalize().add(this.random.triangle(0.0D, 0.0172275D * (double) inaccuracy), this.random.triangle(0.0D, 0.0172275D * (double) inaccuracy), this.random.triangle(0.0D, 0.0172275D * (double) inaccuracy)).scale((double) velocity);
+        this.setDeltaMovement(vec3);
+        double d0 = vec3.horizontalDistance();
+        this.setYRot((float)(Mth.atan2(vec3.x, vec3.z) * (double) (180F / (float) Math.PI)));
+        this.setXRot((float)(Mth.atan2(vec3.y, d0) * (double) (180F / (float) Math.PI)));
+        this.yRotO = this.getYRot();
+        this.xRotO = this.getXRot();
+    }
+
+    public void shootFromRotation(Entity shooter, float x, float y, float z, float velocity, float inaccuracy) {
+        float f = -Mth.sin(y * ((float) Math.PI / 180F)) * Mth.cos(x * ((float) Math.PI / 180F));
+        float f1 = -Mth.sin((x + z) * ((float)Math.PI / 180F));
+        float f2 = Mth.cos(y * ((float) Math.PI / 180F)) * Mth.cos(x * ((float) Math.PI / 180F));
+        this.shoot(f, f1, f2, velocity, inaccuracy);
+        Vec3 vec3 = shooter.getDeltaMovement();
+        this.setDeltaMovement(this.getDeltaMovement().add(vec3.x, shooter.onGround() ? 0.0D : vec3.y, vec3.z));
+    }
+
+    public void copyTarget(LivingEntity entity) {
+        LivingEntity priorTarget = this.getTarget();
+        if (priorTarget == null || !priorTarget.isAlive()) {
+            LivingEntity target = null;
+            if (entity.getLastHurtMob() != null) {
+                target = entity.getLastHurtMob();
+            } else if (entity.getLastHurtByMob() != null) {
+                target = entity.getLastHurtByMob();
+            }
+            if (target != null && target.isAlive() && !target.isAlliedTo(entity) && !target.is(entity) && !target.isAlliedTo(this) && !(target instanceof FireSlime) && !(target instanceof Guzzler)) {
+                this.setTarget(target);
+            }
+        }
+    }
+
+    @Override
+    public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (itemstack.is(Items.BLAZE_POWDER.asItem()) && this.shouldDespawn()) {
             if (!player.getAbilities().instabuild) {
@@ -491,27 +593,6 @@ public class FireSlime extends Monster {
             if (movecontrol instanceof FireSlimeMoveControl fireSlimeMoveControl) {
                 fireSlimeMoveControl.setDirection(this.slime.getYRot(), this.slime.dealsDamage());
             }
-        }
-    }
-
-    public static class FireSlimeCopyTargetGoal extends TargetGoal {
-
-        private final FireSlime slime;
-
-        public FireSlimeCopyTargetGoal(FireSlime slime) {
-            super(slime, false);
-            this.slime = slime;
-        }
-
-        public boolean canUse() {
-            return this.slime.getParent() instanceof Mob parent && parent.getTarget() != null;
-        }
-
-        public void start() {
-            var target = ((Mob) this.slime.getParent()).getTarget();
-            this.slime.setTarget(target);
-            this.slime.getBrain().setMemoryWithExpiry(MemoryModuleType.ATTACK_TARGET, target, 200L);
-            super.start();
         }
     }
 }
