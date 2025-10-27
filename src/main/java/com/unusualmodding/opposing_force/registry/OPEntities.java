@@ -158,6 +158,7 @@ public class OPEntities {
                     .sized(0.4F, 0.4F)
                     .clientTrackingRange(4)
                     .setShouldReceiveVelocityUpdates(true)
+                    .updateInterval(10)
                     .fireImmune()
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "laser_bolt").toString())
     );
@@ -167,6 +168,7 @@ public class OPEntities {
             EntityType.Builder.<Tomahawk>of(Tomahawk::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F)
                     .clientTrackingRange(4)
+                    .updateInterval(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "tomahawk").toString())
     );
 
@@ -175,6 +177,16 @@ public class OPEntities {
             EntityType.Builder.<UmberDagger>of(UmberDagger::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F)
                     .clientTrackingRange(4)
+                    .updateInterval(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "umber_dagger").toString())
+    );
+
+    public static final RegistryObject<EntityType<LightningBomb>> LIGHTNING_BOMB = ENTITY_TYPES.register(
+        "lightning_bomb", () ->
+            EntityType.Builder.<LightningBomb>of(LightningBomb::new, MobCategory.MISC)
+                    .sized(0.3F, 0.3F)
+                    .clientTrackingRange(6)
+                    .updateInterval(5)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "lightning_bomb").toString())
     );
 }

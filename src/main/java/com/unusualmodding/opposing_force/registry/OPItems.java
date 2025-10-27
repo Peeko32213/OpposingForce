@@ -79,6 +79,7 @@ public class OPItems {
     public static final RegistryObject<Item> ELECTRIC_CHARGE = registerItem("electric_charge", () -> new ElectricChargeItem(OPEntities.ELECTRIC_CHARGE, (new Item.Properties())));
     public static final RegistryObject<Item> TESLA_CANNON = registerItem("tesla_cannon", () -> new TeslaCannonItem(new Item.Properties().stacksTo(1).durability(465)));
     public static final RegistryObject<Item> SPARK_BLADE = registerItem("spark_blade", () -> new SparkBladeItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> LIGHTNING_BOMB = registerItem("lightning_bomb", () -> new LightningBombItem(new Item.Properties().stacksTo(32)));
 
     // Whizz
     public static final RegistryObject<Item> WHIZZ_SPAWN_EGG = registerSpawnEggItem("whizz", OPEntities.WHIZZ, 0x8a6ce0, 0xffe7f8);

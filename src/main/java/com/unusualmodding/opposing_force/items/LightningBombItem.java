@@ -1,0 +1,39 @@
+package com.unusualmodding.opposing_force.items;
+
+import com.unusualmodding.opposing_force.entity.projectile.LightningBomb;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
+
+public class LightningBombItem extends Item {
+
+    public LightningBombItem(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public @NotNull InteractionResultHolder<ItemStack> use(Level world, Player player, @NotNull InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
+        player.getCooldowns().addCooldown(this, 20);
+        if (!world.isClientSide()) {
+            LightningBomb lightningBomb = new LightningBomb(world, player);
+            lightningBomb.setItem(itemstack);
+            lightningBomb.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.0F, 1.0F);
+            world.addFreshEntity(lightningBomb);
+        }
+        player.awardStat(Stats.ITEM_USED.get(this));
+        if (!player.getAbilities().instabuild) {
+            itemstack.shrink(1);
+        }
+
+        return InteractionResultHolder.sidedSuccess(itemstack, world.isClientSide());
+    }
+}

@@ -42,6 +42,7 @@ public class OpposingForceTab {
                     output.accept(OPItems.VILE_BOULDER.get());
                     output.accept(OPItems.VILE_STAFF.get());
                     output.accept(OPItems.ELECTRIC_CHARGE.get());
+                    output.accept(OPItems.LIGHTNING_BOMB.get());
                     output.accept(OPItems.TESLA_CANNON.get());
                     output.accept(OPItems.SPARK_BLADE.get());
                     output.accept(OPItems.CAPTURED_WHIZZ.get());
