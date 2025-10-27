@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.unusualmodding.opposing_force.entity.Slug;
 import com.unusualmodding.opposing_force.registry.OPEntities;
+import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -46,7 +47,7 @@ public class VileStaffItem extends Item implements Vanishable {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SLIME_ATTACK, SoundSource.PLAYERS, 0.5F, 0.9F / (level.random.nextFloat() * 0.4F + 0.8F));
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), OPSoundEvents.SLUG_ATTACK.get(), SoundSource.PLAYERS, 0.5F, 0.9F / (level.random.nextFloat() * 0.4F + 0.8F));
         player.getCooldowns().addCooldown(this, 60);
         if (!level.isClientSide()) {
             summonSlug(player);

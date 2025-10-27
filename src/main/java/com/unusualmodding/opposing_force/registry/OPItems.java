@@ -50,7 +50,7 @@ public class OPItems {
     public static final RegistryObject<Item> FIRE_GEL = registerItem("fire_gel", () -> new Item(foodItem(OPFoodValues.FIRE_GEL)));
     public static final RegistryObject<Item> UMBER_DAGGER = registerItem("umber_dagger", () -> new UmberDaggerItem(OPItemTiers.UMBER, 1, -2, new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> INFERNO_PIE_SLICE = registerItemNoLang("inferno_pie_slice", () -> new Item(foodItem(OPFoodValues.INFERNO_PIE)));
-    public static final RegistryObject<Item> BLADE_OF_THE_MOUNTAIN = registerItem("blade_of_the_mountain", () -> new SwordItem(Tiers.DIAMOND, 3, -2.4F, new Item.Properties()));
+    public static final RegistryObject<Item> BLADE_OF_THE_MOUNTAIN = registerItem("blade_of_the_mountain", () -> new BladeOfTheMountainItem(new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> SPARK_BLADE = registerItem("spark_blade", () -> new SparkBladeItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> INFERNO_STAFF = registerItem("inferno_staff", () -> new InfernoStaffItem(new Item.Properties().stacksTo(1).defaultDurability(236)));
     public static final RegistryObject<Item> VILE_STAFF = registerItem("vile_staff", () -> new VileStaffItem(new Item.Properties().stacksTo(1).defaultDurability(224)));

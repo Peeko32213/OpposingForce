@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.unusualmodding.opposing_force.entity.FireSlime;
 import com.unusualmodding.opposing_force.registry.OPEntities;
+import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -11,6 +12,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -45,10 +47,19 @@ public class InfernoStaffItem extends Item implements Vanishable {
     }
 
     @Override
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (super.hurtEnemy(stack, target, attacker)) {
+            target.setSecondsOnFire(3);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SLIME_ATTACK, SoundSource.PLAYERS, 0.5F, 0.9F / (level.random.nextFloat() * 0.4F + 0.8F));
-        player.getCooldowns().addCooldown(this, 60);
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), OPSoundEvents.FIRE_SLIME_JUMP.get(), SoundSource.PLAYERS, 0.5F, 0.9F / (level.random.nextFloat() * 0.4F + 0.8F));
+        player.getCooldowns().addCooldown(this, 70);
         if (!level.isClientSide()) {
             summonFireSlime(player);
         }
