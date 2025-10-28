@@ -184,9 +184,9 @@ public class OPEntities {
     public static final RegistryObject<EntityType<LightningBomb>> LIGHTNING_BOMB = ENTITY_TYPES.register(
         "lightning_bomb", () ->
             EntityType.Builder.<LightningBomb>of(LightningBomb::new, MobCategory.MISC)
-                    .sized(0.3F, 0.3F)
-                    .clientTrackingRange(6)
-                    .updateInterval(5)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "lightning_bomb").toString())
     );
 }
