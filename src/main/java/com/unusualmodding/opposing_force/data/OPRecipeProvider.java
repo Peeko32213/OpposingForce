@@ -2,8 +2,6 @@ package com.unusualmodding.opposing_force.data;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.registry.OPBlocks;
-import com.unusualmodding.opposing_force.registry.OPItems;
-import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -15,10 +13,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.ICondition;
-import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
-import net.minecraftforge.common.crafting.conditions.NotCondition;
-import net.minecraftforge.common.crafting.conditions.OrCondition;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -32,12 +28,13 @@ public class OPRecipeProvider extends RecipeProvider {
     }
 
     @Override
-    protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+    protected void buildRecipes(@NotNull Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(COMBAT, BLASTER.get()).define('I', Tags.Items.INGOTS_IRON).define('R', Tags.Items.DUSTS_REDSTONE).define('D', DICER_LENS.get()).define('A', Tags.Items.GEMS_AMETHYST).pattern("RDA").pattern("I  ").unlockedBy("has_dicer_lens", has(DICER_LENS.get())).save(consumer);
 
         ShapedRecipeBuilder.shaped(COMBAT, TESLA_CANNON.get()).define('#', Tags.Items.INGOTS_GOLD).define('X', DEEP_SILK.get()).define('Y', Tags.Items.RODS_WOODEN).define('Z', Blocks.TRIPWIRE_HOOK).define('A', ELECTRIC_CHARGE.get()).pattern("#A#").pattern("XZX").pattern(" Y ").unlockedBy("has_electric_charge", has(ELECTRIC_CHARGE.get())).save(consumer);
         ShapedRecipeBuilder.shaped(COMBAT, TOMAHAWK.get()).define('I', Tags.Items.INGOTS_IRON).define('W', Tags.Items.RODS_WOODEN).pattern("II").pattern("IW").unlockedBy("has_iron_ingot", has(Tags.Items.INGOTS_IRON)).save(consumer);
         ShapedRecipeBuilder.shaped(COMBAT, UMBER_DAGGER.get()).define('F', UMBER_FANG.get()).define('W', Tags.Items.RODS_WOODEN).pattern("F").pattern("W").unlockedBy("has_umber_fang", has(UMBER_FANG.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, LIGHTNING_BOMB.get()).define('I', Tags.Items.INGOTS_IRON).define('G', Tags.Items.GUNPOWDER).define('E', ELECTRIC_CHARGE.get()).define('S', Tags.Items.STRING).pattern("  S").pattern("GE ").pattern("EG ").unlockedBy("has_electric_charge", has(ELECTRIC_CHARGE.get())).save(consumer);
 
         ShapedRecipeBuilder.shaped(COMBAT, DEEPWOVEN_HAT.get()).define('#', DEEP_SILK.get()).pattern("###").pattern("# #").unlockedBy("has_deep_silk", has(DEEP_SILK.get())).save(consumer);
         ShapedRecipeBuilder.shaped(COMBAT, DEEPWOVEN_TUNIC.get()).define('#', DEEP_SILK.get()).pattern("# #").pattern("###").pattern("###").unlockedBy("has_deep_silk", has(DEEP_SILK.get())).save(consumer);

@@ -137,7 +137,7 @@ public class OPEntities {
             "dicer_laser", () ->
             EntityType.Builder.<DicerLaser>of(DicerLaser::new, MobCategory.MISC)
                     .sized(0.1F, 0.1F)
-                    .setUpdateInterval(1)
+                    .updateInterval(1)
                     .fireImmune()
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "dicer_laser").toString())
     );
@@ -186,7 +186,7 @@ public class OPEntities {
             EntityType.Builder.<LightningBomb>of(LightningBomb::new, MobCategory.MISC)
                     .sized(0.5F, 0.5F)
                     .clientTrackingRange(4)
-                    .updateInterval(10)
+                    .updateInterval(20)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "lightning_bomb").toString())
     );
 }

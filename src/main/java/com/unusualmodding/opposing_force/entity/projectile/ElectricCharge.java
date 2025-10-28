@@ -256,19 +256,16 @@ public class ElectricCharge extends FrictionlessProjectile {
         }
     }
 
-    public boolean hurtEntitiesAround(Vec3 center, float radius, float damageAmount) {
+    public void hurtEntitiesAround(Vec3 center, float radius, float damageAmount) {
         AABB aabb = new AABB(center.subtract(radius, radius, radius), center.add(radius, radius, radius));
-        Entity shooter = this.getOwner();
-        boolean flag = false;
         for (LivingEntity living : level().getEntitiesOfClass(LivingEntity.class, aabb, EntitySelector.NO_CREATIVE_OR_SPECTATOR)) {
             DamageSource damageSource = this.damageSources().source(OPDamageTypes.ELECTRIC);
             if (this.hasLineOfSight(living) && !living.is(this) && !living.isAlliedTo(this) && living.getType() != this.getType() && living.distanceToSqr(center.x, center.y, center.z) <= radius * radius) {
-                if (!living.is(shooter)) {
+                if (!living.is(this.getOwner())) {
                     if (living.hurt(damageSource, damageAmount)) {
                         this.spawnElectricParticles(this, 4 + randomSource.nextInt(3), 0, 12);
-                        living.addEffect(new MobEffectInstance(OPMobEffects.ELECTRIFIED.get(), 200), shooter);
+                        living.addEffect(new MobEffectInstance(OPMobEffects.ELECTRIFIED.get(), 200), this.getOwner());
                         this.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
-                        flag = true;
                     }
                 }
                 if (living instanceof Creeper creeper) {
@@ -276,7 +273,6 @@ public class ElectricCharge extends FrictionlessProjectile {
                 }
             }
         }
-        return flag;
     }
 
     @Override

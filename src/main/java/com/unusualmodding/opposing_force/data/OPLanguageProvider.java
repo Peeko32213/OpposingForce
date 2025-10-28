@@ -61,6 +61,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.forEntity(OPEntities.ELECTRIC_CHARGE);
         this.forEntity(OPEntities.TOMAHAWK);
         this.forEntity(OPEntities.UMBER_DAGGER);
+        this.forEntity(OPEntities.LIGHTNING_BOMB);
 
         this.potion(OPPotions.GLOOM_TOXIN_POTION, "Gloom Toxin", "gloom_toxin");
         this.potion(OPPotions.LONG_GLOOM_TOXIN_POTION, "Gloom Toxin", "long_gloom_toxin");
