@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.entity;
 import com.google.common.annotations.VisibleForTesting;
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
+import com.unusualmodding.opposing_force.entity.base.TameableMonster;
 import com.unusualmodding.opposing_force.registry.OPCriterion;
 import com.unusualmodding.opposing_force.registry.OPMobEffects;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
@@ -14,7 +15,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -33,7 +33,6 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
@@ -46,7 +45,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.scores.Team;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -54,15 +52,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.Optional;
-import java.util.UUID;
 
-public class Slug extends Monster implements OwnableEntity {
+public class Slug extends TameableMonster {
 
     private static final EntityDataAccessor<Integer> SIZE = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> MAX_GROWABLE_SIZE = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Byte> DATA_FLAGS = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.BYTE);
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Boolean> FROM_INFESTATION = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> TAME_ATTEMPTS = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> LAUNCHED = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.BOOLEAN);
@@ -71,7 +65,7 @@ public class Slug extends Monster implements OwnableEntity {
 
     public final AnimationState idleAnimationState = new AnimationState();
 
-    public Slug(EntityType<? extends Monster> entityType, Level level) {
+    public Slug(EntityType<? extends TameableMonster> entityType, Level level) {
         super(entityType, level);
         this.fixupDimensions();
     }
@@ -182,8 +176,6 @@ public class Slug extends Monster implements OwnableEntity {
         super.defineSynchedData();
         this.entityData.define(SIZE, 1);
         this.entityData.define(MAX_GROWABLE_SIZE, 0);
-        this.entityData.define(OWNER_UUID, Optional.empty());
-        this.entityData.define(DATA_FLAGS, (byte) 0);
         this.entityData.define(FROM_INFESTATION, false);
         this.entityData.define(TAME_ATTEMPTS, 0);
         this.entityData.define(LAUNCHED, false);
@@ -197,10 +189,6 @@ public class Slug extends Monster implements OwnableEntity {
         compoundTag.putBoolean("FromInfestation", this.isFromInfestation());
         compoundTag.putInt("LifeTicks", this.limitedLifeTicks);
         compoundTag.putInt("TameAttempts", this.getTameAttempts());
-
-        if (this.getOwnerUUID() != null) {
-            compoundTag.putUUID("Owner", this.getOwnerUUID());
-        }
     }
 
     @Override
@@ -211,23 +199,6 @@ public class Slug extends Monster implements OwnableEntity {
         this.setFromInfestation(compoundTag.getBoolean("FromInfestation"));
         this.limitedLifeTicks = compoundTag.getInt("LifeTicks");
         this.setTameAttempts(compoundTag.getInt("TameAttempts"));
-
-        UUID uuid;
-        if (compoundTag.hasUUID("Owner")) {
-            uuid = compoundTag.getUUID("Owner");
-        } else {
-            String s = compoundTag.getString("Owner");
-            uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
-        }
-
-        if (uuid != null) {
-            try {
-                this.setOwnerUUID(uuid);
-                this.setTame(true);
-            } catch (Throwable var4) {
-                this.setTame(false);
-            }
-        }
     }
 
     public void setTameAttempts(int i) {
@@ -270,16 +241,6 @@ public class Slug extends Monster implements OwnableEntity {
 
     public int getMaxGrowableSlugSize() {
         return this.entityData.get(MAX_GROWABLE_SIZE);
-    }
-
-    @Override
-    @Nullable
-    public UUID getOwnerUUID() {
-        return this.entityData.get(OWNER_UUID).orElse(null);
-    }
-
-    public void setOwnerUUID(@Nullable UUID pUuid) {
-        this.entityData.set(OWNER_UUID, Optional.ofNullable(pUuid));
     }
 
     public boolean isFromInfestation() {
@@ -411,22 +372,9 @@ public class Slug extends Monster implements OwnableEntity {
         }
     }
 
-    public boolean isTame() {
-        return (this.entityData.get(DATA_FLAGS) & 4) != 0;
-    }
-
-    public void setTame(boolean tamed) {
-        byte b = this.entityData.get(DATA_FLAGS);
-        if (tamed) {
-            this.entityData.set(DATA_FLAGS, (byte) (b | 4));
-        } else {
-            this.entityData.set(DATA_FLAGS, (byte) (b & -5));
-        }
-    }
-
+    @Override
     public void tame(Player player) {
-        this.setTame(true);
-        this.setOwnerUUID(player.getUUID());
+        super.tame(player);
         if (player instanceof ServerPlayer serverPlayer) {
             OPCriterion.TAME_SLUG.trigger(serverPlayer);
         }
@@ -439,21 +387,12 @@ public class Slug extends Monster implements OwnableEntity {
         }
     }
 
-    @Override
-    public boolean canAttack(@NotNull LivingEntity entity) {
-        return !this.isOwnedBy(entity) && super.canAttack(entity);
-    }
-
     public boolean hasInfestation(LivingEntity entity) {
         return entity.hasEffect(OPMobEffects.SLUG_INFESTATION.get());
     }
 
     public boolean isInfestationSlug(LivingEntity entity) {
         return !this.isFromInfestation();
-    }
-
-    public boolean isOwnedBy(LivingEntity entity) {
-        return entity == this.getOwner();
     }
 
     public boolean wantsToAttack(LivingEntity entity, LivingEntity owner) {
@@ -473,41 +412,7 @@ public class Slug extends Monster implements OwnableEntity {
     }
 
     @Override
-    public Team getTeam() {
-        if (this.isTame()) {
-            LivingEntity livingentity = this.getOwner();
-            if (livingentity != null) {
-                return livingentity.getTeam();
-            }
-        }
-        return super.getTeam();
-    }
-
-    @Override
-    public boolean isAlliedTo(Entity entity) {
-        if (this.isTame()) {
-            LivingEntity livingentity = this.getOwner();
-            if (entity == livingentity) {
-                return true;
-            }
-            if (livingentity != null) {
-                return livingentity.isAlliedTo(entity);
-            }
-        }
-        return super.isAlliedTo(entity);
-    }
-
-    @Override
-    public boolean isPreventingPlayerRest(Player player) {
-        return !this.isTame();
-    }
-
-    @Override
-    public boolean canBeLeashed(Player player) {
-        return !this.isLeashed() && this.isTame();
-    }
-
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+    public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         int size = this.getSlugSize();
         int slimeNeeded = (1 + size) * 3;
@@ -569,18 +474,22 @@ public class Slug extends Monster implements OwnableEntity {
         super.handleEntityEvent(id);
     }
 
-    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+    @Override
+    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
         return OPSoundEvents.SLUG_HURT.get();
     }
 
-    protected SoundEvent getDeathSound() {
+    @Override
+    protected @NotNull SoundEvent getDeathSound() {
         return OPSoundEvents.SLUG_DEATH.get();
     }
 
+    @Override
     protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
         this.playSound(OPSoundEvents.SLUG_SLIDE.get(), 0.15F, this.getVoicePitch());
     }
 
+    @Override
     public float getVoicePitch() {
         if (this.getSlugSize() < 3) {
             return 1.3F;

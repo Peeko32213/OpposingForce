@@ -1,28 +1,25 @@
 package com.unusualmodding.opposing_force.entity.projectile;
 
-import com.unusualmodding.opposing_force.network.ElectricChargeSyncS2CPacket;
 import com.unusualmodding.opposing_force.registry.OPEntities;
-import com.unusualmodding.opposing_force.registry.OPMobEffects;
-import com.unusualmodding.opposing_force.registry.OPNetwork;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.*;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
-public class LightningBomb extends AbstractBomb {
+public class KineticBomb extends AbstractBomb {
 
-    public LightningBomb(EntityType<? extends LightningBomb> entity, Level level) {
+    public KineticBomb(EntityType<? extends KineticBomb> entity, Level level) {
         super(entity, level);
     }
 
-    public LightningBomb(Level level, LivingEntity entity) {
-        super(OPEntities.LIGHTNING_BOMB.get(), level, entity);
+    public KineticBomb(Level level, LivingEntity entity) {
+        super(OPEntities.KINETIC_BOMB.get(), level, entity);
     }
 
     @Override
@@ -32,7 +29,7 @@ public class LightningBomb extends AbstractBomb {
 
     @Override
     protected float getMaxFuse() {
-        return 60.0F;
+        return 40.0F;
     }
 
     @Override
@@ -40,33 +37,23 @@ public class LightningBomb extends AbstractBomb {
         Vec3 location = this.position().add(0, this.getBbHeight() * 0.5, 0);
         float radius = this.getExplosionRadius();
         if (!this.level().isClientSide) {
-            for (int i = 0; i < 16; i++) {
-                ElectricChargeSyncS2CPacket packet = ElectricChargeSyncS2CPacket.builder()
-                        .pos(location.x(), location.y(), location.z())
-                        .range(6 + this.random.nextInt(2))
-                        .size(0.08F)
-                        .color(0.3F + (this.random.nextFloat() / 8), 0.5F + (this.random.nextFloat() / 8), 0.8F + (this.random.nextFloat() / 8), 1F)
-                        .build();
-                OPNetwork.sendToClients(packet);
-            }
             this.level().broadcastEntityEvent(this, (byte) 3);
-            this.level().playSound(null, location.x(), location.y(), location.z(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.NEUTRAL, 2.5F, 1.8F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+            this.level().playSound(null, location.x(), location.y(), location.z(), SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.NEUTRAL, 2.5F, 1.25F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         }
-
         for (Entity entity : this.level().getEntities(this, new AABB(location.subtract(radius, radius, radius), location.add(radius, radius, radius)))) {
             if (entity.distanceToSqr(location) > radius * radius) {
                 continue;
             }
             float scaledDistance = (float) (1 - (entity.position().distanceTo(location) / radius));
-            float damage = Mth.lerp(Mth.sqrt(scaledDistance), 8, 16);
-            Vec3 knockback = entity.position().add(0, entity.getBbHeight() * 0.5, 0).subtract(location).normalize().scale(Mth.sqrt(scaledDistance));
+            float damage = 0.00001F;
+            Vec3 knockback = entity.position().add(0, entity.getBbHeight() * 1.25, 0).subtract(location).normalize().scale(Mth.sqrt(scaledDistance));
             entity.hurt(entity.damageSources().explosion(this, this.getOwner()), damage);
             if (entity instanceof LivingEntity livingEntity) {
-                livingEntity.addEffect(new MobEffectInstance(OPMobEffects.ELECTRIFIED.get(), 300), this.getOwner());
                 if (livingEntity.isDamageSourceBlocked(entity.damageSources().explosion(this, this.getOwner()))) {
-                    knockback = knockback.scale(3);
+                    knockback = knockback.scale(4);
                 }
             }
+            knockback = knockback.scale(2);
             entity.setOnGround(false);
             entity.setDeltaMovement(entity.getDeltaMovement().add(knockback));
         }
@@ -76,9 +63,6 @@ public class LightningBomb extends AbstractBomb {
     public void handleEntityEvent(byte id) {
         if (id == 3) {
             Vec3 location = this.position().add(0, this.getBbHeight() * 0.5, 0);
-            for (int i = 0; i < 16; i++) {
-                this.level().addParticle(ParticleTypes.LARGE_SMOKE, location.x(), location.y(), location.z(), 0, 0, 0);
-            }
             this.level().addParticle(ParticleTypes.FLASH, true, location.x(), location.y(), location.z(), 0, 0, 0);
         }
     }

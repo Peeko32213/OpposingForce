@@ -181,12 +181,30 @@ public class OPEntities {
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "umber_dagger").toString())
     );
 
+    public static final RegistryObject<EntityType<KineticBomb>> KINETIC_BOMB = ENTITY_TYPES.register(
+            "kinetic_bomb", () ->
+            EntityType.Builder.<KineticBomb>of(KineticBomb::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "kinetic_bomb").toString())
+    );
+
     public static final RegistryObject<EntityType<LightningBomb>> LIGHTNING_BOMB = ENTITY_TYPES.register(
         "lightning_bomb", () ->
             EntityType.Builder.<LightningBomb>of(LightningBomb::new, MobCategory.MISC)
                     .sized(0.5F, 0.5F)
                     .clientTrackingRange(4)
-                    .updateInterval(20)
+                    .updateInterval(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "lightning_bomb").toString())
+    );
+
+    public static final RegistryObject<EntityType<WhizzBomb>> WHIZZ_BOMB = ENTITY_TYPES.register(
+            "whizz_bomb", () ->
+            EntityType.Builder.<WhizzBomb>of(WhizzBomb::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "whizz_bomb").toString())
     );
 }

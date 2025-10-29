@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
+import com.unusualmodding.opposing_force.entity.base.TameableMonster;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
@@ -28,7 +29,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -39,21 +39,18 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public class Whizz extends Monster implements OwnableEntity {
+public class Whizz extends TameableMonster {
 
     private static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Boolean> CAPTURED = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> FROM_BOMB = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.BOOLEAN);
 
     @Nullable
     private WhizzWakeUpFriendsGoal friendsGoal;
@@ -62,13 +59,15 @@ public class Whizz extends Monster implements OwnableEntity {
     private Whizz leader;
     protected int swarmSize = 1;
 
+    private int limitedLifeTicks = 0;
+
     public final AnimationState flyingAnimationState = new AnimationState();
     public final AnimationState attackAnimationState = new AnimationState();
 
     private int attackTicks;
 
-    public Whizz(EntityType<? extends Monster> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public Whizz(EntityType<? extends TameableMonster> entityType, Level level) {
+        super(entityType, level);
         this.xpReward = 5;
         this.moveControl = new FlyingMoveControl(this, 20, true);
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
@@ -129,6 +128,13 @@ public class Whizz extends Monster implements OwnableEntity {
     }
 
     @Override
+    protected void dropFromLootTable(@NotNull DamageSource source, boolean drops) {
+        if (!this.isFromBomb()) {
+            super.dropFromLootTable(source, drops);
+        }
+    }
+
+    @Override
     public void tick() {
         super.tick();
 
@@ -152,6 +158,14 @@ public class Whizz extends Monster implements OwnableEntity {
 
         if (attackTicks > 0) attackTicks--;
         if (attackTicks == 0 && this.getPose() == OPPoses.ATTACKING.get()) this.setPose(Pose.STANDING);
+
+        if (this.isFromBomb()) {
+            this.limitedLifeTicks++;
+            if (this.limitedLifeTicks > 200) {
+                this.limitedLifeTicks = 180;
+                this.hurt(this.damageSources().starve(), 2.0F);
+            }
+        }
     }
 
     private void setupAnimationStates() {
@@ -231,9 +245,8 @@ public class Whizz extends Monster implements OwnableEntity {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ATTACKING, false);
-        this.entityData.define(OWNER_UUID, Optional.empty());
-        this.entityData.define(DATA_FLAGS_ID, (byte) 0);
         this.entityData.define(CAPTURED, false);
+        this.entityData.define(FROM_BOMB, false);
     }
 
     @Override
@@ -241,9 +254,7 @@ public class Whizz extends Monster implements OwnableEntity {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putBoolean("Attacking", this.isAttacking());
         compoundTag.putBoolean("Captured", this.isCaptured());
-        if (this.getOwnerUUID() != null) {
-            compoundTag.putUUID("Owner", this.getOwnerUUID());
-        }
+        compoundTag.putBoolean("FromBomb", this.isFromBomb());
     }
 
     @Override
@@ -251,23 +262,7 @@ public class Whizz extends Monster implements OwnableEntity {
         super.readAdditionalSaveData(compoundTag);
         this.setAttacking(compoundTag.getBoolean("Attacking"));
         this.setCaptured(compoundTag.getBoolean("Captured"));
-
-        UUID uuid;
-        if (compoundTag.hasUUID("Owner")) {
-            uuid = compoundTag.getUUID("Owner");
-        } else {
-            String owner = compoundTag.getString("Owner");
-            uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), owner);
-        }
-
-        if (uuid != null) {
-            try {
-                this.setOwnerUUID(uuid);
-                this.setTame(true);
-            } catch (Throwable var4) {
-                this.setTame(false);
-            }
-        }
+        this.setFromBomb(compoundTag.getBoolean("FromBomb"));
     }
 
     public void saveData(ItemStack itemStack) {
@@ -278,6 +273,7 @@ public class Whizz extends Monster implements OwnableEntity {
         if (this.isNoGravity()) compoundTag.putBoolean("NoGravity", this.isNoGravity());
         if (this.hasGlowingTag()) compoundTag.putBoolean("Glowing", this.hasGlowingTag());
         if (this.isInvulnerable()) compoundTag.putBoolean("Invulnerable", this.isInvulnerable());
+        if (this.isFromBomb()) compoundTag.putBoolean("FromBomb", this.isFromBomb());
 
         compoundTag.putFloat("Health", this.getHealth());
         if (this.getOwnerUUID() != null) compoundTag.putUUID("Owner", this.getOwnerUUID());
@@ -292,6 +288,7 @@ public class Whizz extends Monster implements OwnableEntity {
         if (compoundTag.contains("Glowing")) this.setGlowingTag(compoundTag.getBoolean("Glowing"));
         if (compoundTag.contains("Invulnerable")) this.setInvulnerable(compoundTag.getBoolean("Invulnerable"));
         if (compoundTag.contains("Health", 99)) this.setHealth(compoundTag.getFloat("Health"));
+        if (compoundTag.contains("FromBomb")) this.setFromBomb(compoundTag.getBoolean("FromBomb"));
 
         UUID uuid;
         if (compoundTag.hasUUID("Owner")) {
@@ -327,88 +324,31 @@ public class Whizz extends Monster implements OwnableEntity {
         this.entityData.set(CAPTURED, captured);
     }
 
-    @Nullable
-    public UUID getOwnerUUID() {
-        return this.entityData.get(OWNER_UUID).orElse(null);
+    public boolean isFromBomb() {
+        return this.entityData.get(FROM_BOMB);
     }
 
-    public void setOwnerUUID(@Nullable UUID pUuid) {
-        this.entityData.set(OWNER_UUID, Optional.ofNullable(pUuid));
-    }
-
-    @Override
-    public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.isTame();
-    }
-
-    @Override
-    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
-        return !this.isTame();
-    }
-
-    public boolean isTame() {
-        return (this.entityData.get(DATA_FLAGS_ID) & 4) != 0;
-    }
-
-    public void setTame(boolean tamed) {
-        byte b = this.entityData.get(DATA_FLAGS_ID);
-        if (tamed) {
-            this.entityData.set(DATA_FLAGS_ID, (byte) (b | 4));
-        } else {
-            this.entityData.set(DATA_FLAGS_ID, (byte) (b & -5));
-        }
-    }
-
-    public void tame(Player player) {
-        this.setTame(true);
-        this.setOwnerUUID(player.getUUID());
-    }
-
-    @Override
-    public boolean isPreventingPlayerRest(Player player) {
-        return !this.isTame();
-    }
-
-    @Override
-    public boolean canAttack(LivingEntity entity) {
-        return !this.isOwnedBy(entity) && super.canAttack(entity);
-    }
-
-    public boolean isOwnedBy(LivingEntity entity) {
-        return entity == this.getOwner();
+    public void setFromBomb(boolean fromBomb) {
+        this.entityData.set(FROM_BOMB, fromBomb);
     }
 
     public boolean wantsToAttack(LivingEntity entity, LivingEntity owner) {
         return true;
     }
 
-    public Team getTeam() {
-        if (this.isTame()) {
-            LivingEntity livingentity = this.getOwner();
-            if (livingentity != null) {
-                return livingentity.getTeam();
+    public void copyTarget(LivingEntity entity) {
+        LivingEntity priorTarget = this.getTarget();
+        if (priorTarget == null || !priorTarget.isAlive()) {
+            LivingEntity target = null;
+            if (entity.getLastHurtMob() != null) {
+                target = entity.getLastHurtMob();
+            } else if (entity.getLastHurtByMob() != null) {
+                target = entity.getLastHurtByMob();
+            }
+            if (target != null && target.isAlive() && !target.isAlliedTo(entity) && !target.is(entity) && !target.isAlliedTo(this) && !(target instanceof FireSlime) && !(target instanceof Guzzler)) {
+                this.setTarget(target);
             }
         }
-        return super.getTeam();
-    }
-
-    @Override
-    public boolean isAlliedTo(@NotNull Entity entity) {
-        if (this.isTame()) {
-            LivingEntity livingentity = this.getOwner();
-            if (entity == livingentity) {
-                return true;
-            }
-            if (livingentity != null) {
-                return livingentity.isAlliedTo(entity);
-            }
-        }
-        return super.isAlliedTo(entity);
-    }
-
-    @Override
-    public boolean canBeLeashed(@NotNull Player player) {
-        return !this.isLeashed() && this.isTame();
     }
 
     public int getMaxSwarmSize() {

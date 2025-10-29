@@ -46,6 +46,7 @@ public final class ClientEvents {
         event.registerEntityRenderer(OPEntities.GUZZLER.get(), GuzzlerRenderer::new);
         event.registerEntityRenderer(OPEntities.HAUNTED_TOOL.get(), HauntedToolRenderer::new);
         event.registerEntityRenderer(OPEntities.HANGING_SPIDER.get(), HangingSpiderRenderer::new);
+        event.registerEntityRenderer(OPEntities.KINETIC_BOMB.get(), KineticBombRenderer::new);
         event.registerEntityRenderer(OPEntities.LIGHTNING_BOMB.get(), LightningBombRenderer::new);
         event.registerEntityRenderer(OPEntities.RAMBLER.get(), RamblerRenderer::new);
         event.registerEntityRenderer(OPEntities.SLUG.get(), SlugRenderer::new);
@@ -56,6 +57,7 @@ public final class ClientEvents {
         event.registerEntityRenderer(OPEntities.UMBER_SPIDER.get(), UmberSpiderRenderer::new);
         event.registerEntityRenderer(OPEntities.VOLT.get(), VoltRenderer::new);
         event.registerEntityRenderer(OPEntities.WHIZZ.get(), WhizzRenderer::new);
+        event.registerEntityRenderer(OPEntities.WHIZZ_BOMB.get(), WhizzBombRenderer::new);
     }
 
     @SubscribeEvent

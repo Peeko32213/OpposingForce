@@ -62,6 +62,8 @@ public class OPItemModelProvider extends ItemModelProvider {
         this.item(STONE_CHESTPLATE);
         this.item(STONE_LEGGINGS);
         this.item(STONE_BOOTS);
+        this.item(KINETIC_BOMB);
+        this.item(WHIZZ_BOMB);
 
         // spawn eggs
         for (Item item : BuiltInRegistries.ITEM) {

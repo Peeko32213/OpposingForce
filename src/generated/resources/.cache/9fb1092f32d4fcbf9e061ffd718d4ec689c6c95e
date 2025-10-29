@@ -1,4 +1,4 @@
-// 1.20.1	2025-10-18T11:01:56.1045962	Recipes
+// 1.20.1	2025-10-28T18:57:05.5840693	Recipes
 19b9af45401a2eea7cbaccf470cc125ee7fee81b data/minecraft/advancements/recipes/food/enchanted_golden_apple.json
 4e6fce234df08980a5f8e058b9497c4d9d72a986 data/minecraft/recipes/enchanted_golden_apple.json
 139da0a86e8b183e3a1799119694c7bc0b55d53e data/opposing_force/advancements/recipes/building_blocks/chiseled_vile_stone_bricks.json
@@ -37,6 +37,7 @@ f4d72e7bb9e4998015ad3802e665a5c1b9cf53c8 data/opposing_force/advancements/recipe
 2e8aa7c2ba02850e9ab0d31a6e6eda81a697907a data/opposing_force/advancements/recipes/combat/deepwoven_hat.json
 c099258b3a9b912736417cf6fa15f268bec0d488 data/opposing_force/advancements/recipes/combat/deepwoven_pants.json
 36d3e9757ca9b10088305843f33efc27985e5c5f data/opposing_force/advancements/recipes/combat/deepwoven_tunic.json
+3d8a68530f302599f48b8022a5971e77dbee5b19 data/opposing_force/advancements/recipes/combat/lightning_bomb.json
 a2e5be8aa43d803a9a1b52bd0f5706b16d8463ee data/opposing_force/advancements/recipes/combat/stone_boots.json
 8033562b7c277f414b75b13a9fea5e342c5b7106 data/opposing_force/advancements/recipes/combat/stone_chestplate.json
 eb7b0fdc0bab97db359b9c1b418b874a1f00cce0 data/opposing_force/advancements/recipes/combat/stone_helmet.json
@@ -61,6 +62,7 @@ aa8d5725442bc9ea492526a897d7fe64583c1daa data/opposing_force/recipes/deepwoven_t
 03d735bfcb8c1c1d40179ffd561d52a9e0d6286f data/opposing_force/recipes/deep_silk_block.json
 43be6b47cc7697ceab1a37a97509c72f1b30e3c5 data/opposing_force/recipes/inferno_pie.json
 5bcc7b50ff5e907a6b7982614bd30e7d3d4c4694 data/opposing_force/recipes/inferno_pie_from_slices.json
+2129dda7e165da02d34a09f74ae860137c4ebf53 data/opposing_force/recipes/lightning_bomb.json
 98f9d8c2041358e8f033c5ee81a4c05571208ca1 data/opposing_force/recipes/stone_boots.json
 067f2677f3d5243acbbb3e7c7924685959af5dae data/opposing_force/recipes/stone_chestplate.json
 33808b9290a55144d15cbc78673f891972581923 data/opposing_force/recipes/stone_helmet.json

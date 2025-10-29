@@ -1,6 +1,6 @@
 package com.unusualmodding.opposing_force.client.renderer;
 
-import com.unusualmodding.opposing_force.entity.projectile.LightningBomb;
+import com.unusualmodding.opposing_force.entity.projectile.WhizzBomb;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -10,16 +10,16 @@ import org.jetbrains.annotations.NotNull;
 import static com.unusualmodding.opposing_force.OpposingForce.modPrefix;
 
 @OnlyIn(Dist.CLIENT)
-public class LightningBombRenderer extends AbstractBombRenderer<LightningBomb> {
+public class WhizzBombRenderer extends AbstractBombRenderer<WhizzBomb> {
 
-    private static final ResourceLocation LIGHTNING_BOMB = modPrefix("textures/item/lightning_bomb.png");
+    private static final ResourceLocation WHIZZ_BOMB = modPrefix("textures/item/whizz_bomb.png");
 
-    public LightningBombRenderer(EntityRendererProvider.Context context) {
+    public WhizzBombRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull LightningBomb bomb) {
-        return LIGHTNING_BOMB;
+    public @NotNull ResourceLocation getTextureLocation(@NotNull WhizzBomb bomb) {
+        return WHIZZ_BOMB;
     }
 }

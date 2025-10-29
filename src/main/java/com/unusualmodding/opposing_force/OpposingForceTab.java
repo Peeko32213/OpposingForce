@@ -41,16 +41,21 @@ public class OpposingForceTab {
 
                     output.accept(OPItems.VILE_BOULDER.get());
                     output.accept(OPItems.VILE_STAFF.get());
+
                     output.accept(OPItems.ELECTRIC_CHARGE.get());
                     output.accept(OPItems.LIGHTNING_BOMB.get());
                     output.accept(OPItems.TESLA_CANNON.get());
                     output.accept(OPItems.SPARK_BLADE.get());
+
                     output.accept(OPItems.CAPTURED_WHIZZ.get());
+                    output.accept(OPItems.WHIZZ_BOMB.get());
+
                     output.accept(OPBlocks.TREMBLER_SHELL.get());
                     output.accept(OPBlocks.TREMBLING_BLOCK.get());
                     output.accept(OPBlocks.TREMBLING_SHINGLES.get());
                     output.accept(OPBlocks.TREMBLING_SHINGLE_STAIRS.get());
                     output.accept(OPBlocks.TREMBLING_SHINGLE_SLAB.get());
+
                     output.accept(OPItems.DEEP_SILK.get());
                     output.accept(OPBlocks.DEEP_SILK_BLOCK.get());
                     output.accept(OPBlocks.DEEP_WEB.get());
@@ -60,8 +65,10 @@ public class OpposingForceTab {
                     output.accept(OPItems.DEEPWOVEN_BOOTS.get());
                     output.accept(OPItems.UMBER_FANG.get());
                     output.accept(OPItems.UMBER_DAGGER.get());
+
                     output.accept(OPItems.DICER_LENS.get());
                     output.accept(OPItems.BLASTER.get());
+
                     output.accept(OPItems.GUZZLER_SCALES.get());
                     output.accept(OPItems.FIRE_GEL.get());
                     output.accept(OPBlocks.INFERNO_PIE.get());
@@ -87,6 +94,7 @@ public class OpposingForceTab {
                     output.accept(OPItems.EMERALD_BOOTS.get());
                     output.accept(OPItems.MOON_SHOES.get());
                     output.accept(OPItems.TOMAHAWK.get());
+                    output.accept(OPItems.KINETIC_BOMB.get());
                     output.accept(OPItems.BLADE_OF_THE_MOUNTAIN.get());
 
                     output.accept(OPBlocks.INFESTED_AMETHYST_BLOCK.get());
