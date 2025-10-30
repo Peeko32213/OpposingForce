@@ -186,7 +186,7 @@ public abstract class AbstractBomb extends ThrowableProjectile {
 
     public void bounceFromDirection(Direction direction) {
         Vec3 deltaMovement = this.getDeltaMovement();
-        float conservedEnergy = 0.5F;
+        float conservedEnergy = 0.4F;
         if (deltaMovement.lengthSqr() < 0.1) {
             this.setDeltaMovement(Vec3.ZERO);
             if (!this.onGround()) {

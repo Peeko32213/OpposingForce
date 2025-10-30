@@ -17,8 +17,8 @@ import static com.unusualmodding.opposing_force.OpposingForce.modPrefix;
 @OnlyIn(Dist.CLIENT)
 public class DicerVisorLayer extends RenderLayer<Dicer, DicerModel> {
 
-    private static final RenderType VISOR = RenderType.entityTranslucentEmissive(modPrefix("textures/entity/dicer/dicer_visor.png"));
-    private static final RenderType VISOR_LASERING = RenderType.entityTranslucentEmissive(modPrefix("textures/entity/dicer/dicer_visor_lasering.png"));
+    private static final RenderType VISOR = RenderType.eyes(modPrefix("textures/entity/dicer/dicer_visor.png"));
+    private static final RenderType VISOR_LASERING = RenderType.eyes(modPrefix("textures/entity/dicer/dicer_visor_lasering.png"));
 
     public DicerVisorLayer(RenderLayerParent<Dicer, DicerModel> parentModel) {
         super(parentModel);

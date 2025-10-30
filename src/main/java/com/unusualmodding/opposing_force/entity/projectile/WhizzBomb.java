@@ -46,11 +46,6 @@ public class WhizzBomb extends AbstractBomb {
     }
 
     @Override
-    protected ParticleOptions getTrailParticle() {
-        return ParticleTypes.END_ROD;
-    }
-
-    @Override
     protected void onHitEntity(@NotNull EntityHitResult result) {
         if (!(result.getEntity() instanceof Whizz)) {
             super.onHitEntity(result);
@@ -91,7 +86,7 @@ public class WhizzBomb extends AbstractBomb {
     public void handleEntityEvent(byte id) {
         if (id == 3) {
             Vec3 location = this.position().add(0, this.getBbHeight() * 0.5, 0);
-            this.spawnParticles(ParticleTypes.END_ROD, 20, 0.4);
+            this.spawnParticles(ParticleTypes.LARGE_SMOKE, 16, 0.3);
             this.level().addParticle(ParticleTypes.FLASH, true, location.x(), location.y(), location.z(), 0, 0, 0);
         }
     }
