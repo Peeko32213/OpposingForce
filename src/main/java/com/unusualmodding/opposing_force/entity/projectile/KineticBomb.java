@@ -34,7 +34,7 @@ public class KineticBomb extends AbstractBomb {
 
     @Override
     protected float getMaxFuse() {
-        return 50.0F;
+        return 20.0F;
     }
 
     @Override

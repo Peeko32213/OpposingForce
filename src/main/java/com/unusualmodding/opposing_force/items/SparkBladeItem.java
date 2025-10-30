@@ -1,9 +1,10 @@
 package com.unusualmodding.opposing_force.items;
 
-import com.unusualmodding.opposing_force.network.ElectricChargeSyncS2CPacket;
+import com.unusualmodding.alkahest.network.LightningSyncPacket;
+import com.unusualmodding.alkahest.registry.AlkahestMobEffects;
+import com.unusualmodding.alkahest.registry.AlkahestNetwork;
+import com.unusualmodding.alkahest.registry.AlkahestSoundEvents;
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
-import com.unusualmodding.opposing_force.registry.OPMobEffects;
-import com.unusualmodding.opposing_force.registry.OPNetwork;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.registry.enums.OPItemTiers;
 import com.unusualmodding.opposing_force.utils.OPMath;
@@ -50,8 +51,8 @@ public class SparkBladeItem extends SwordItem {
             if (!target.level().isClientSide) {
                 this.sendElectricParticles(target, 3);
             }
-            target.addEffect(new MobEffectInstance(OPMobEffects.ELECTRIFIED.get(), 100, 0));
-            target.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 1.0F, 1.0F / (target.level().getRandom().nextFloat() * 0.4F + 0.8F));
+            target.addEffect(new MobEffectInstance(AlkahestMobEffects.ELECTRIFIED.get(), 100, 0));
+            target.playSound(AlkahestSoundEvents.ELECTRIC_ZAP.get(), 1.0F, 1.0F / (target.level().getRandom().nextFloat() * 0.4F + 0.8F));
             return true;
         }
         return false;
@@ -127,7 +128,7 @@ public class SparkBladeItem extends SwordItem {
             }
             entity.push(direction.x * 0.25, 0.25, direction.z * 0.25);
             if (entity instanceof LivingEntity livingEntity) {
-                livingEntity.addEffect(new MobEffectInstance(OPMobEffects.ELECTRIFIED.get(), 100, 0));
+                livingEntity.addEffect(new MobEffectInstance(AlkahestMobEffects.ELECTRIFIED.get(), 100, 0));
             }
             attacker.swing(InteractionHand.MAIN_HAND);
         }
@@ -135,13 +136,13 @@ public class SparkBladeItem extends SwordItem {
 
     public void sendElectricParticles(LivingEntity entity, int lightningLength) {
         for (int i1 = 0; i1 < 12; i1++) {
-            ElectricChargeSyncS2CPacket packet = ElectricChargeSyncS2CPacket.builder()
+            LightningSyncPacket packet = LightningSyncPacket.builder()
                     .pos(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ())
                     .range(2 + entity.getRandom().nextInt(lightningLength))
                     .size(0.08F)
                     .color(0.3F + (entity.getRandom().nextFloat() / 8), 0.5F + (entity.getRandom().nextFloat() / 8), 0.8F + (entity.getRandom().nextFloat() / 8), 1F)
                     .build();
-            OPNetwork.sendToClients(packet);
+            AlkahestNetwork.sendToClients(packet);
         }
     }
 }

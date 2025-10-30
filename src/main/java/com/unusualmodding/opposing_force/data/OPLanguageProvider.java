@@ -182,7 +182,6 @@ public class OPLanguageProvider extends LanguageProvider {
         this.addEnchantmentWithDesc(OPEnchantments.FREEZE_RAY.get(), "Laser bolts inflict freezing on hit");
         this.addEnchantmentWithDesc(OPEnchantments.POWER_SUPPLY.get(), "Blaster has a chance to not consume redstone dust");
 
-        this.addEffect(OPMobEffects.ELECTRIFIED, "Electrified");
         this.addEffect(OPMobEffects.GLOOM_TOXIN, "Gloom Toxin");
         this.addEffect(OPMobEffects.SLUG_INFESTATION, "Slug Infestation");
 
@@ -208,7 +207,6 @@ public class OPLanguageProvider extends LanguageProvider {
         this.addAdvancementDesc("capture_whizz", "Use a Silk Touch pickaxe to capture a Whizz");
 
         this.translateAttribute(OPAttributes.STEALTH);
-        this.translateAttribute(OPAttributes.ELECTRIC_RESISTANCE);
         this.translateAttribute(OPAttributes.JUMP_POWER);
         this.translateAttribute(OPAttributes.AIR_SPEED);
         this.translateAttribute(OPAttributes.FORTUNE);
@@ -220,7 +218,6 @@ public class OPLanguageProvider extends LanguageProvider {
         this.add("effect.opposing_force.gloom_toxin.description", "Inflicts lethal damage over time while in light levels of 7 or less; higher levels do more damage per second.");
         this.add("effect.opposing_force.slug_infestation.description", "Decreases walking speed and gives the entity a 25% chance to spawn between 1 and 2 slugs when hurt; higher levels increase the amount of slugs spawned.");
 
-        this.translateDamageType(OPDamageTypes.ELECTRIFIED, player -> player + " succumbed to electric shocks", (player, entity) -> player + " was electrified by " + entity);
         this.translateDamageType(OPDamageTypes.ELECTRIC, player -> player + " met a shocking end", (player, entity) -> player + " was zapped by " + entity);
         this.translateDamageType(OPDamageTypes.GLOOM_TOXIN, player -> player + " was consumed by darkness", (player, entity) -> player + " didn't reach the light");
         this.translateDamageType(OPDamageTypes.LASER, player -> player + " was vaporized", (player, entity) -> player + " was vaporized by" + entity);

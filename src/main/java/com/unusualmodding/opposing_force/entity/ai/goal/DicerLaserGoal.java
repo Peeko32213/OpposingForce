@@ -39,7 +39,7 @@ public class DicerLaserGoal extends AttackGoal {
         super.stop();
         this.dicer.setLasering(false);
         this.dicer.setPose(Pose.STANDING);
-        this.dicer.laserCooldown = 300 + this.dicer.getRandom().nextInt(300);
+        this.dicer.laserCooldown = 200 + this.dicer.getRandom().nextInt(200);
         if (this.laser != null) {
             this.laser.discard();
         }
@@ -72,7 +72,7 @@ public class DicerLaserGoal extends AttackGoal {
                 if (this.timer > 100) {
                     this.timer = 0;
                     this.dicer.setAttackState(0);
-                    this.dicer.laserCooldown = 300 + this.dicer.getRandom().nextInt(300);
+                    this.dicer.laserCooldown = 200 + this.dicer.getRandom().nextInt(200);
                 }
             } else {
                 this.dicer.lookAt(target, 30F, 30F);

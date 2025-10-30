@@ -69,18 +69,6 @@ public class DicerAttackGoal extends AttackGoal {
                 }
             } else if (attackState == 2) {
                 this.timer++;
-                this.dicer.getNavigation().stop();
-                if (this.timer == 1) this.dicer.setPose(OPPoses.CROSS_SLASHING.get());
-                if (this.timer == 28) this.dicer.addDeltaMovement(this.dicer.getLookAngle().scale(2.75D).multiply(1.0D, 0, 1.0D));
-                if (this.timer > 28 && this.timer < 32) {
-                    this.hurtNearbyEntities();
-                }
-                if (this.timer > 50) {
-                    this.timer = 0;
-                    this.dicer.setAttackState(0);
-                }
-            } else if (attackState == 3) {
-                this.timer++;
                 this.dicer.getNavigation().moveTo(target, 2.0D);
                 if (this.timer == 1) this.dicer.setPose(OPPoses.TAIL_SPINNING.get());
                 if (this.timer == 8) {
@@ -93,13 +81,25 @@ public class DicerAttackGoal extends AttackGoal {
                     this.timer = 0;
                     this.dicer.setAttackState(0);
                 }
+            } else if (attackState == 3) {
+                this.timer++;
+                this.dicer.getNavigation().stop();
+                if (this.timer == 1) this.dicer.setPose(OPPoses.CROSS_SLASHING.get());
+                if (this.timer == 28) this.dicer.addDeltaMovement(this.dicer.getLookAngle().scale(2.75D).multiply(1.0D, 0, 1.0D));
+                if (this.timer > 28 && this.timer < 32) {
+                    this.hurtNearbyEntities();
+                }
+                if (this.timer > 50) {
+                    this.timer = 0;
+                    this.dicer.setAttackState(0);
+                }
             } else {
                 this.dicer.getNavigation().moveTo(target, 2.0D);
                 if (distance < this.monster.getBbWidth() * 3.0F * this.monster.getBbWidth() * 3.0F + target.getBbWidth()) {
-                    if (this.dicer.getRandom().nextFloat() < 0.25F) {
+                    if (this.dicer.getRandom().nextFloat() < 0.15F) {
                         this.dicer.setAttackState(3);
                     }
-                    else if (this.dicer.getRandom().nextFloat() < 0.5F) {
+                    else if (this.dicer.getRandom().nextFloat() < 0.3F) {
                         this.dicer.setAttackState(2);
                     }
                     else {

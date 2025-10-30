@@ -75,7 +75,7 @@ public class OpposingForce {
 
         boolean server = data.includeServer();
 
-        OPDatapackBuiltinEntriesProvider datapackEntries = new OPDatapackBuiltinEntriesProvider(output, provider);
+        OPDatapackProvider datapackEntries = new OPDatapackProvider(output, provider);
         generator.addProvider(server, datapackEntries);
         provider = datapackEntries.getRegistryProvider();
 
@@ -90,6 +90,8 @@ public class OpposingForce {
         generator.addProvider(server, new OPRecipeProvider(output));
 
         generator.addProvider(server, OPAdvancementProvider.register(output, provider, helper));
+
+        generator.addProvider(server, new OPMobTypeProvider(output));
 
         boolean client = data.includeClient();
 

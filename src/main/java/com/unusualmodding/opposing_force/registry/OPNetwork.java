@@ -1,7 +1,6 @@
 package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.network.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -19,26 +18,14 @@ public class OPNetwork {
     }
 
     public static void registerNetwork() {
-        SimpleChannel net = NetworkRegistry.ChannelBuilder
+        SimpleChannel channel = NetworkRegistry.ChannelBuilder
                 .named(new ResourceLocation(OpposingForce.MOD_ID, "messages"))
                 .networkProtocolVersion(() -> "1.0")
                 .clientAcceptedVersions(s -> true)
                 .serverAcceptedVersions(s -> true)
                 .simpleChannel();
 
-        INSTANCE = net;
-
-        net.messageBuilder(ElectricChargeSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(ElectricChargeSyncS2CPacket::new)
-                .encoder(ElectricChargeSyncS2CPacket::toBytes)
-                .consumerMainThread(ElectricChargeSyncS2CPacket::handle)
-                .add();
-
-        net.messageBuilder(ElectricDamageC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(ElectricDamageC2SPacket::new)
-                .encoder(ElectricDamageC2SPacket::toBytes)
-                .consumerMainThread(ElectricDamageC2SPacket::handle)
-                .add();
+        INSTANCE = channel;
     }
 
     public static <MSG> void sendToServer(MSG message) {

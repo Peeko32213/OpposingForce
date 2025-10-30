@@ -1,7 +1,6 @@
 package com.unusualmodding.opposing_force.mixins.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.unusualmodding.opposing_force.client.renderer.gui.ElectrifiedHeartType;
 import com.unusualmodding.opposing_force.client.renderer.gui.GloomToxinHeartType;
 import com.unusualmodding.opposing_force.registry.OPMobEffects;
 import net.minecraft.client.Minecraft;
@@ -25,9 +24,6 @@ public abstract class GuiMixin {
 
     @Unique
     private static boolean opposingForce$hasAnyCustomHearts(Player player) {
-        if (player.hasEffect(OPMobEffects.ELECTRIFIED.get())) {
-            return true;
-        }
         return player.hasEffect(OPMobEffects.GLOOM_TOXIN.get());
     }
 
@@ -36,7 +32,6 @@ public abstract class GuiMixin {
         if (!blinking && opposingForce$drawForHeartType(__) && Minecraft.getInstance().cameraEntity instanceof Player player && opposingForce$hasAnyCustomHearts(player)) {
 
             GloomToxinHeartType gloomToxin = GloomToxinHeartType.getType(player);
-            ElectrifiedHeartType electrified = ElectrifiedHeartType.getType(player);
 
             if (gloomToxin != null) {
                 boolean hardcore = player.level().getLevelData().isHardcore();
@@ -46,18 +41,6 @@ public abstract class GuiMixin {
                 }
                 RenderSystem.setShaderTexture(0, GloomToxinHeartType.ATLAS);
                 stack.blit(GloomToxinHeartType.ATLAS, x, y, pos.getLeft(), pos.getRight(), 9, 9, GloomToxinHeartType.ATLAS_W, GloomToxinHeartType.ATLAS_H);
-                RenderSystem.setShaderTexture(0, Gui.GUI_ICONS_LOCATION);
-                cbi.cancel();
-            }
-
-            if (electrified != null) {
-                boolean hardcore = player.level().getLevelData().isHardcore();
-                Pair<Integer, Integer> pos = electrified.getHeartPos(hardcore);
-                if (halfHeart) {
-                    pos = electrified.getHalfHeartPos(hardcore);
-                }
-                RenderSystem.setShaderTexture(0, ElectrifiedHeartType.ATLAS);
-                stack.blit(ElectrifiedHeartType.ATLAS, x, y, pos.getLeft(), pos.getRight(), 9, 9, ElectrifiedHeartType.ATLAS_W, ElectrifiedHeartType.ATLAS_H);
                 RenderSystem.setShaderTexture(0, Gui.GUI_ICONS_LOCATION);
                 cbi.cancel();
             }

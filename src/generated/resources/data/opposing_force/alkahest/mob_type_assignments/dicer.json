@@ -1,0 +1,10 @@
+{
+  "entity": [
+    "opposing_force:dicer"
+  ],
+  "mob_types": [
+    "alkahest:astral"
+  ],
+  "replace": false,
+  "strategy": "alkahest:first_non_neutral"
+}

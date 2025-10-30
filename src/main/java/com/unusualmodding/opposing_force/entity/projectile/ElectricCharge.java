@@ -1,9 +1,11 @@
 package com.unusualmodding.opposing_force.entity.projectile;
 
+import com.unusualmodding.alkahest.network.LightningSyncPacket;
+import com.unusualmodding.alkahest.registry.AlkahestMobEffects;
+import com.unusualmodding.alkahest.registry.AlkahestNetwork;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.entity.Volt;
 import com.unusualmodding.opposing_force.utils.CreeperExtension;
-import com.unusualmodding.opposing_force.network.ElectricChargeSyncS2CPacket;
 import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,6 +23,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.*;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -210,7 +213,7 @@ public class ElectricCharge extends FrictionlessProjectile {
     }
 
     @Override
-    public void remove(Entity.RemovalReason reason) {
+    public void remove(Entity.@NotNull RemovalReason reason) {
         OpposingForce.PROXY.clearSoundCacheFor(this);
         super.remove(reason);
     }
@@ -228,29 +231,29 @@ public class ElectricCharge extends FrictionlessProjectile {
         for (int i = 0; i < particleMax; i++) {
             if (!this.level().isClientSide) {
                 if (this.isStaticAttraction()) {
-                    ElectricChargeSyncS2CPacket packet = ElectricChargeSyncS2CPacket.builder()
+                    LightningSyncPacket packet = LightningSyncPacket.builder()
                             .pos(x, y, z)
                             .range(lightningLength)
                             .size(size)
                             .color(0.3F + (randomSource.nextFloat() / 8), 0.8F + (randomSource.nextFloat() / 8), 0.5F + (randomSource.nextFloat() / 8), 1F)
                             .build();
-                    OPNetwork.sendToClients(packet);
+                    AlkahestNetwork.sendToClients(packet);
                 } else if (this.isQuasar()) {
-                    ElectricChargeSyncS2CPacket packet = ElectricChargeSyncS2CPacket.builder()
+                    LightningSyncPacket packet = LightningSyncPacket.builder()
                             .pos(x, y, z)
                             .range(lightningLength)
                             .size(size)
                             .color(0.1F + randomSource.nextFloat(), 0.1F + randomSource.nextFloat(), 0.1F + randomSource.nextFloat(), 1F)
                             .build();
-                    OPNetwork.sendToClients(packet);
+                    AlkahestNetwork.sendToClients(packet);
                 } else {
-                    ElectricChargeSyncS2CPacket packet = ElectricChargeSyncS2CPacket.builder()
+                    LightningSyncPacket packet = LightningSyncPacket.builder()
                             .pos(x, y, z)
                             .range(lightningLength)
                             .size(size)
                             .color(0.3F + (randomSource.nextFloat() / 8), 0.5F + (randomSource.nextFloat() / 8), 0.8F + (randomSource.nextFloat() / 8), 1F)
                             .build();
-                    OPNetwork.sendToClients(packet);
+                    AlkahestNetwork.sendToClients(packet);
                 }
             }
         }
@@ -264,7 +267,7 @@ public class ElectricCharge extends FrictionlessProjectile {
                 if (!living.is(this.getOwner())) {
                     if (living.hurt(damageSource, damageAmount)) {
                         this.spawnElectricParticles(this, 4 + randomSource.nextInt(3), 0, 12);
-                        living.addEffect(new MobEffectInstance(OPMobEffects.ELECTRIFIED.get(), 200), this.getOwner());
+                        living.addEffect(new MobEffectInstance(AlkahestMobEffects.ELECTRIFIED.get(), 200), this.getOwner());
                         this.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
                     }
                 }

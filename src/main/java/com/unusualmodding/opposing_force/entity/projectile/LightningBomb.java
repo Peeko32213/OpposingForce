@@ -1,9 +1,9 @@
 package com.unusualmodding.opposing_force.entity.projectile;
 
-import com.unusualmodding.opposing_force.network.ElectricChargeSyncS2CPacket;
+import com.unusualmodding.alkahest.network.LightningSyncPacket;
+import com.unusualmodding.alkahest.registry.AlkahestMobEffects;
+import com.unusualmodding.alkahest.registry.AlkahestNetwork;
 import com.unusualmodding.opposing_force.registry.OPEntities;
-import com.unusualmodding.opposing_force.registry.OPMobEffects;
-import com.unusualmodding.opposing_force.registry.OPNetwork;
 import com.unusualmodding.opposing_force.utils.OPMath;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -47,13 +47,13 @@ public class LightningBomb extends AbstractBomb {
         float radius = this.getExplosionRadius();
         if (!this.level().isClientSide) {
             for (int i = 0; i < 16; i++) {
-                ElectricChargeSyncS2CPacket packet = ElectricChargeSyncS2CPacket.builder()
+                LightningSyncPacket packet = LightningSyncPacket.builder()
                         .pos(location.x(), location.y(), location.z())
                         .range(6 + this.random.nextInt(2))
                         .size(0.08F)
                         .color(0.3F + (this.random.nextFloat() / 8), 0.5F + (this.random.nextFloat() / 8), 0.8F + (this.random.nextFloat() / 8), 1F)
                         .build();
-                OPNetwork.sendToClients(packet);
+                AlkahestNetwork.sendToClients(packet);
             }
             this.level().broadcastEntityEvent(this, (byte) 3);
             this.level().playSound(null, location.x(), location.y(), location.z(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.NEUTRAL, 2.5F, 1.8F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
@@ -68,7 +68,7 @@ public class LightningBomb extends AbstractBomb {
             Vec3 knockback = entity.position().add(0, entity.getBbHeight() * 0.5, 0).subtract(location).normalize().scale(Mth.sqrt(scaledDistance));
             entity.hurt(entity.damageSources().explosion(this, this.getOwner()), damage);
             if (entity instanceof LivingEntity livingEntity) {
-                livingEntity.addEffect(new MobEffectInstance(OPMobEffects.ELECTRIFIED.get(), 300), this.getOwner());
+                livingEntity.addEffect(new MobEffectInstance(AlkahestMobEffects.ELECTRIFIED.get(), 300), this.getOwner());
                 if (livingEntity.isDamageSourceBlocked(entity.damageSources().explosion(this, this.getOwner()))) {
                     knockback = knockback.scale(3);
                 }

@@ -245,7 +245,7 @@ public abstract class AbstractBomb extends ThrowableProjectile {
                     Vec3 vec3 = entity.getLookAngle();
                     this.setDeltaMovement(this.getDeltaMovement().add(vec3.scale(0.5)));
                     this.setOwner(entity);
-                    this.level().playSound(null, this.position().x(), this.position().y(), this.position().z(), SoundEvents.TRIDENT_HIT, SoundSource.BLOCKS, 1.0F, 1.2F);
+                    this.level().playSound(null, this.position().x(), this.position().y(), this.position().z(), SoundEvents.TRIDENT_HIT, SoundSource.BLOCKS, 1.0F, 1.25F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
                 }
                 this.markHurt();
                 this.hitCooldown = 10;

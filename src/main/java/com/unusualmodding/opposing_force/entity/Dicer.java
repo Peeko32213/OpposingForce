@@ -50,7 +50,7 @@ public class Dicer extends Monster implements IAnimatedAttacker {
     private int tailSpinTicks;
     private int laserTicks;
 
-    public int laserCooldown = 300;
+    public int laserCooldown = 200;
 
     public Dicer(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);

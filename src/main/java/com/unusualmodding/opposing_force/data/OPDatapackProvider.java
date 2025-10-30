@@ -12,13 +12,13 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-public class OPDatapackBuiltinEntriesProvider extends DatapackBuiltinEntriesProvider {
+public class OPDatapackProvider extends DatapackBuiltinEntriesProvider {
 
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(ForgeRegistries.Keys.BIOME_MODIFIERS, OPBiomeModifierProvider::bootstrap)
             .add(Registries.DAMAGE_TYPE, OPDamageTypes::bootstrap);
 
-    public OPDatapackBuiltinEntriesProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+    public OPDatapackProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries,BUILDER, Set.of(OpposingForce.MOD_ID));
     }
 }
