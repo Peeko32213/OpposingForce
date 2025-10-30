@@ -1,0 +1,10 @@
+{
+  "entity": [
+    "opposing_force:volt"
+  ],
+  "mob_types": [
+    "alkahest:cryptic"
+  ],
+  "replace": false,
+  "strategy": "alkahest:first_non_neutral"
+}

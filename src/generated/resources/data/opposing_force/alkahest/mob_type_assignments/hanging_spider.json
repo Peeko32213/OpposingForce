@@ -1,0 +1,10 @@
+{
+  "entity": [
+    "opposing_force:hanging_spider"
+  ],
+  "mob_types": [
+    "alkahest:arthropod"
+  ],
+  "replace": false,
+  "strategy": "alkahest:first_non_neutral"
+}

@@ -1,0 +1,11 @@
+{
+  "entity": [
+    "opposing_force:rambler"
+  ],
+  "mob_types": [
+    "alkahest:abomination",
+    "alkahest:undead"
+  ],
+  "replace": false,
+  "strategy": "alkahest:first_non_neutral"
+}

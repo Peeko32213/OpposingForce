@@ -1,0 +1,10 @@
+{
+  "entity": [
+    "opposing_force:slug"
+  ],
+  "mob_types": [
+    "alkahest:filth"
+  ],
+  "replace": false,
+  "strategy": "alkahest:first_non_neutral"
+}

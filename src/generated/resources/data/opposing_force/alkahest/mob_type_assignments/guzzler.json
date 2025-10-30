@@ -1,0 +1,11 @@
+{
+  "entity": [
+    "opposing_force:guzzler"
+  ],
+  "mob_types": [
+    "alkahest:draconic",
+    "alkahest:fiery"
+  ],
+  "replace": false,
+  "strategy": "alkahest:first_non_neutral"
+}

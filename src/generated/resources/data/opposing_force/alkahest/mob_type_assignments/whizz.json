@@ -1,0 +1,10 @@
+{
+  "entity": [
+    "opposing_force:whizz"
+  ],
+  "mob_types": [
+    "alkahest:earthen"
+  ],
+  "replace": false,
+  "strategy": "alkahest:first_non_neutral"
+}

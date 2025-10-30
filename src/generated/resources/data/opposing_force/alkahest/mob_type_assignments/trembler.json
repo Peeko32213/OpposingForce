@@ -1,0 +1,10 @@
+{
+  "entity": [
+    "opposing_force:trembler"
+  ],
+  "mob_types": [
+    "alkahest:draconic"
+  ],
+  "replace": false,
+  "strategy": "alkahest:first_non_neutral"
+}

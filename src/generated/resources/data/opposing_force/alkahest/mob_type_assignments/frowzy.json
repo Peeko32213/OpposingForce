@@ -1,0 +1,10 @@
+{
+  "entity": [
+    "opposing_force:frowzy"
+  ],
+  "mob_types": [
+    "alkahest:undead"
+  ],
+  "replace": false,
+  "strategy": "alkahest:first_non_neutral"
+}
