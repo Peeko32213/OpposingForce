@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.items;
 
 import com.unusualmodding.opposing_force.entity.Slug;
 import com.unusualmodding.opposing_force.registry.*;
+import com.unusualmodding.opposing_force.registry.enums.OPItemTiers;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -9,12 +10,11 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tier;
 
 public class VileBoulderItem extends SwordItem {
 
-    public VileBoulderItem(Tier tier, int attackModifier, float attackSpeedModifier, Properties properties) {
-        super(tier, attackModifier, attackSpeedModifier, properties);
+    public VileBoulderItem(Properties properties) {
+        super(OPItemTiers.VILE, 7, -3.2F, properties);
     }
 
     @Override

@@ -71,6 +71,7 @@ public class OpposingForceTab {
 
                     output.accept(OPItems.GUZZLER_SCALES.get());
                     output.accept(OPItems.FIRE_GEL.get());
+                    output.accept(OPItems.FIRE_BOMB.get());
                     output.accept(OPBlocks.INFERNO_PIE.get());
                     output.accept(OPItems.INFERNO_PIE_SLICE.get());
                     output.accept(OPItems.INFERNO_STAFF.get());

@@ -4,6 +4,7 @@ import com.unusualmodding.opposing_force.network.ElectricChargeSyncS2CPacket;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPMobEffects;
 import com.unusualmodding.opposing_force.registry.OPNetwork;
+import com.unusualmodding.opposing_force.utils.OPMath;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -25,6 +26,10 @@ public class LightningBomb extends AbstractBomb {
         super(OPEntities.LIGHTNING_BOMB.get(), level, entity);
     }
 
+    public LightningBomb(Level level, double x, double y, double z) {
+        super(OPEntities.LIGHTNING_BOMB.get(), level, x, y, z);
+    }
+
     @Override
     protected float getExplosionRadius() {
         return 5.0F;
@@ -37,6 +42,7 @@ public class LightningBomb extends AbstractBomb {
 
     @Override
     protected void createExplosion() {
+        super.createExplosion();
         Vec3 location = this.position().add(0, this.getBbHeight() * 0.5, 0);
         float radius = this.getExplosionRadius();
         if (!this.level().isClientSide) {
@@ -54,7 +60,7 @@ public class LightningBomb extends AbstractBomb {
         }
 
         for (Entity entity : this.level().getEntities(this, new AABB(location.subtract(radius, radius, radius), location.add(radius, radius, radius)))) {
-            if (entity.distanceToSqr(location) > radius * radius) {
+            if (entity.distanceToSqr(location) > radius * radius || !OPMath.hasLineOfSight(this, entity)) {
                 continue;
             }
             float scaledDistance = (float) (1 - (entity.position().distanceTo(location) / radius));
@@ -76,9 +82,7 @@ public class LightningBomb extends AbstractBomb {
     public void handleEntityEvent(byte id) {
         if (id == 3) {
             Vec3 location = this.position().add(0, this.getBbHeight() * 0.5, 0);
-            for (int i = 0; i < 16; i++) {
-                this.level().addParticle(ParticleTypes.LARGE_SMOKE, location.x(), location.y(), location.z(), 0, 0, 0);
-            }
+            this.spawnParticles(ParticleTypes.LARGE_SMOKE, 16, 0.3);
             this.level().addParticle(ParticleTypes.FLASH, true, location.x(), location.y(), location.z(), 0, 0, 0);
         }
     }

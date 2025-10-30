@@ -32,7 +32,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     public void clientInit() {
-        MinecraftForge.EVENT_BUS.register(new MiscClientEvents());
+        MinecraftForge.EVENT_BUS.register(new ClientForgeEvents());
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void screenShake(ScreenShakeEvent event) {
-        MiscClientEvents.SCREEN_SHAKE_EVENTS.add(event);
+        ClientForgeEvents.SCREEN_SHAKE_EVENTS.add(event);
     }
 
     @Override

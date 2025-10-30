@@ -45,6 +45,30 @@ public class OPCompat {
             }
         });
 
+        DispenserBlock.registerBehavior(OPItems.FIRE_BOMB.get(), new AbstractProjectileDispenseBehavior() {
+            protected Projectile getProjectile(Level level, Position position, ItemStack itemStack) {
+                return new FireBomb(level, position.x(), position.y(), position.z());
+            }
+        });
+
+        DispenserBlock.registerBehavior(OPItems.KINETIC_BOMB.get(), new AbstractProjectileDispenseBehavior() {
+            protected Projectile getProjectile(Level level, Position position, ItemStack itemStack) {
+                return new KineticBomb(level, position.x(), position.y(), position.z());
+            }
+        });
+
+        DispenserBlock.registerBehavior(OPItems.LIGHTNING_BOMB.get(), new AbstractProjectileDispenseBehavior() {
+            protected Projectile getProjectile(Level level, Position position, ItemStack itemStack) {
+                return new LightningBomb(level, position.x(), position.y(), position.z());
+            }
+        });
+
+        DispenserBlock.registerBehavior(OPItems.WHIZZ_BOMB.get(), new AbstractProjectileDispenseBehavior() {
+            protected Projectile getProjectile(Level level, Position position, ItemStack itemStack) {
+                return new WhizzBomb(level, position.x(), position.y(), position.z());
+            }
+        });
+
         DispenserBlock.registerBehavior(OPItems.DICER_HEAD.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
         DispenserBlock.registerBehavior(OPItems.FROWZY_HEAD.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
         DispenserBlock.registerBehavior(OPItems.RAMBLE_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);

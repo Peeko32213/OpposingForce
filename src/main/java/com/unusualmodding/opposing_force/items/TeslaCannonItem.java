@@ -249,21 +249,21 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
 
         ElectricChargeItem chargeItem = (ElectricChargeItem) (ammo.getItem() instanceof ElectricChargeItem ? ammo.getItem() : OPItems.ELECTRIC_CHARGE);
         ElectricCharge electricCharge = chargeItem.shootCharge(level, entity);
-        electricCharge.setChargeDamage(TESLA_CANNON_CHARGE_DAMAGE.get().floatValue());
-        electricCharge.setChargeScale(TESLA_CANNON_CHARGE_SCALE.get().floatValue());
+        electricCharge.setChargeDamage(4.0F);
+        electricCharge.setChargeScale(1.0F);
 
         if (capacitance > 0) {
-            electricCharge.setChargeScale(electricCharge.getChargeScale() + ((float) capacitance * CAPACITANCE_SCALE_MULTIPLIER.get().floatValue()));
-            electricCharge.setChargeDamage(electricCharge.getChargeDamage() + (capacitance * CAPACITANCE_DAMAGE_MULTIPLIER.get().floatValue()));
+            electricCharge.setChargeScale(electricCharge.getChargeScale() + ((float) capacitance));
+            electricCharge.setChargeDamage(electricCharge.getChargeDamage() + ((float) capacitance));
         }
 
         if (rebound) {
-            electricCharge.setMaxBounces((int) (1 + bounces * REBOUND_BOUNCE_MULTIPLIER.get().floatValue()));
+            electricCharge.setMaxBounces(1 + bounces);
             electricCharge.setBouncy(true);
         }
 
         if (quasar) {
-            electricCharge.setChargeScale(electricCharge.getChargeScale() + QUASAR_SCALE_ADDITION.get().floatValue());
+            electricCharge.setChargeScale(electricCharge.getChargeScale() + 2.0F);
             electricCharge.setQuasar(true);
         }
 

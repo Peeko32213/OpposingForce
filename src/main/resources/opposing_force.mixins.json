@@ -10,6 +10,7 @@
     "EnchantmentHelperMixin",
     "EntityMixin",
     "FoodDataMixin",
+    "LivingEntityMixin",
     "MobMixin",
     "PlayerMixin",
     "PoseMixin"

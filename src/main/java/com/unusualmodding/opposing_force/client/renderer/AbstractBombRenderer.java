@@ -60,6 +60,6 @@ public abstract class AbstractBombRenderer<T extends AbstractBomb> extends Entit
     }
 
     private static void vertex(VertexConsumer vertexConsumer, Matrix4f matrix4f, Matrix3f matrix3f, int i, float x, int y, int u, int v, int overlay) {
-        vertexConsumer.vertex(matrix4f, x - 0.5F, (float) y - 0.25F, 0.0F).color(1F, 1F, 1F, 1F).uv((float) u, (float) v).overlayCoords(overlay).uv2(i).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
+        vertexConsumer.vertex(matrix4f, x - 0.5F, (float) y - 0.5F, 0.0F).color(1F, 1F, 1F, 1F).uv((float) u, (float) v).overlayCoords(overlay).uv2(i).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
     }
 }

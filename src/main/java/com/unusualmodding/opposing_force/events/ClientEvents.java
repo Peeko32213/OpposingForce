@@ -41,6 +41,7 @@ public final class ClientEvents {
         event.registerEntityRenderer(OPEntities.ELECTRIC_CHARGE.get(), ElectricChargeRenderer::new);
         event.registerEntityRenderer(OPEntities.LASER_BOLT.get(), LaserBoltRenderer::new);
         event.registerEntityRenderer(OPEntities.EMERALDFISH.get(), EmeraldfishRenderer::new);
+        event.registerEntityRenderer(OPEntities.FIRE_BOMB.get(), FireBombRenderer::new);
         event.registerEntityRenderer(OPEntities.FIRE_SLIME.get(), FireSlimeRenderer::new);
         event.registerEntityRenderer(OPEntities.FROWZY.get(), FrowzyRenderer::new);
         event.registerEntityRenderer(OPEntities.GUZZLER.get(), GuzzlerRenderer::new);

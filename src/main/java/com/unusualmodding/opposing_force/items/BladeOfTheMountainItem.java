@@ -6,6 +6,6 @@ import net.minecraft.world.item.SwordItem;
 public class BladeOfTheMountainItem extends SwordItem {
 
     public BladeOfTheMountainItem(Properties properties) {
-        super(OPItemTiers.MOUNTAIN_BLADE, 6, -3.5F, properties);
+        super(OPItemTiers.MOUNTAIN_BLADE, 7, -3.4F, properties);
     }
 }
