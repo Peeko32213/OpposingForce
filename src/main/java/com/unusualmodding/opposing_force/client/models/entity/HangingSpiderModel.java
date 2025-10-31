@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.client.models.entity;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.HangingSpiderAnimations;
@@ -10,6 +11,8 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
@@ -30,6 +33,7 @@ public class HangingSpiderModel extends HierarchicalModel<HangingSpider> {
     private final ModelPart right_leg2;
     private final ModelPart right_leg3;
     private final ModelPart right_leg4;
+    private final List<ModelPart> pulsatingLayerModelParts;
 
 	public HangingSpiderModel(ModelPart root) {
         this.root = root.getChild("root");
@@ -47,7 +51,8 @@ public class HangingSpiderModel extends HierarchicalModel<HangingSpider> {
         this.right_leg2 = this.right_legs.getChild("right_leg2");
         this.right_leg3 = this.right_legs.getChild("right_leg3");
         this.right_leg4 = this.right_legs.getChild("right_leg4");
-	}
+        this.pulsatingLayerModelParts = ImmutableList.of(this.head, this.left_mandible, this.right_mandible);
+    }
 
 	public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
@@ -111,4 +116,8 @@ public class HangingSpiderModel extends HierarchicalModel<HangingSpider> {
 	public ModelPart root() {
 		return this.root;
 	}
+
+    public List<ModelPart> getPulsatingLayerModelParts() {
+        return this.pulsatingLayerModelParts;
+    }
 }

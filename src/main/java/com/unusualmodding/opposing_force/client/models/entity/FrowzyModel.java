@@ -88,7 +88,8 @@ public class FrowzyModel extends HierarchicalModel<Frowzy> implements ArmedModel
 			poseStack.pushPose();
 			poseStack.scale(babyScale, babyScale, babyScale);
 			poseStack.translate(0.0F, bodyYOffset / 16.0F, 0.0F);
-			poseStack.popPose();
+            this.root().render(poseStack, vertexConsumer, i, j, f, g, h, k);
+            poseStack.popPose();
 		} else {
 			this.root().render(poseStack, vertexConsumer, i, j, f, g, h, k);
 		}

@@ -28,6 +28,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ForgeHooksClient;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 
 import javax.annotation.Nullable;
@@ -67,7 +68,7 @@ public class FrowzyHelmetLayer extends RenderLayer<Frowzy, FrowzyModel> {
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLightIn, Frowzy frowzy, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLightIn, @NotNull Frowzy frowzy, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         // todo: fix baby frowzy head pivot
         if (this.getParentModel().young) return;
         poseStack.pushPose();
@@ -75,7 +76,7 @@ public class FrowzyHelmetLayer extends RenderLayer<Frowzy, FrowzyModel> {
         if (helmet.getItem() instanceof ArmorItem armoritem) {
             if (helmet.canEquip(EquipmentSlot.HEAD, frowzy)) {
                 HumanoidModel<?> bipedModel = defaultBipedModel;
-                bipedModel = getArmorModelHook(frowzy, helmet, EquipmentSlot.HEAD, bipedModel);
+                bipedModel = getArmorModelHook(frowzy, helmet, bipedModel);
                 final boolean notAVanillaModel = bipedModel != defaultBipedModel;
                 this.setModelSlotVisible(bipedModel, EquipmentSlot.HEAD);
                 this.getParentModel().translateToHead(poseStack);
@@ -93,6 +94,7 @@ public class FrowzyHelmetLayer extends RenderLayer<Frowzy, FrowzyModel> {
             }
         } else {
             this.getParentModel().translateToHead(poseStack);
+            poseStack.translate(0.0F, -0.25F, 0.0F);
             poseStack.mulPose((new Quaternionf()).rotateX(Mth.PI));
             poseStack.mulPose((new Quaternionf()).rotateY(Mth.PI));
             poseStack.scale(1.15F, 1.15F, 1.15F);
@@ -135,8 +137,8 @@ public class FrowzyHelmetLayer extends RenderLayer<Frowzy, FrowzyModel> {
         model.setAllVisible(false);
     }
 
-    protected HumanoidModel<?> getArmorModelHook(LivingEntity entity, ItemStack itemStack, EquipmentSlot slot, HumanoidModel<?> model) {
-         Model basicModel = ForgeHooksClient.getArmorModel(entity, itemStack, slot, model);
+    protected HumanoidModel<?> getArmorModelHook(LivingEntity entity, ItemStack itemStack, HumanoidModel<?> model) {
+         Model basicModel = ForgeHooksClient.getArmorModel(entity, itemStack, EquipmentSlot.HEAD, model);
          return basicModel instanceof HumanoidModel ? (HumanoidModel<?>) basicModel : model;
     }
 }

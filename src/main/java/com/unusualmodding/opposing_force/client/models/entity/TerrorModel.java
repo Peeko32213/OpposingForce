@@ -73,57 +73,58 @@ public class TerrorModel extends HierarchicalModel<Terror> {
 
         PartDefinition body_main = swim_control.addOrReplaceChild("body_main", CubeListBuilder.create(), PartPose.offset(0.0F, -1.0F, -1.0F));
 
-        PartDefinition body = body_main.addOrReplaceChild("body", CubeListBuilder.create().texOffs(28, 87).addBox(-4.5F, -12.0F, -5.5F, 9.0F, 13.0F, 11.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 6.0F, 0.5F));
+        PartDefinition body = body_main.addOrReplaceChild("body", CubeListBuilder.create().texOffs(100, 91).addBox(-4.5F, -12.0F, -5.5F, 9.0F, 13.0F, 11.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 6.0F, 0.5F));
 
-        PartDefinition head = body.addOrReplaceChild("head", CubeListBuilder.create().texOffs(41, 62).addBox(-5.5F, -4.0F, -13.0F, 11.0F, 6.0F, 17.0F, new CubeDeformation(0.0F))
-                .texOffs(77, 24).addBox(-5.5F, 2.0F, -13.0F, 11.0F, 2.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -10.0F, -5.5F));
+        PartDefinition head = body.addOrReplaceChild("head", CubeListBuilder.create().texOffs(70, 0).addBox(-5.5F, -4.0F, -13.0F, 11.0F, 6.0F, 17.0F, new CubeDeformation(0.0F))
+                .texOffs(112, 23).addBox(-5.5F, 2.0F, -13.0F, 11.0F, 2.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -10.0F, -5.5F));
 
-        PartDefinition jaw = head.addOrReplaceChild("jaw", CubeListBuilder.create().texOffs(35, 21).addBox(4.0F, 0.0F, -4.0F, 2.0F, 12.0F, 8.0F, new CubeDeformation(0.0F))
-                .texOffs(35, 21).mirror().addBox(-6.0F, 0.0F, -4.0F, 2.0F, 12.0F, 8.0F, new CubeDeformation(0.0F)).mirror(false)
-                .texOffs(45, 39).addBox(-6.0F, 12.0F, -14.0F, 12.0F, 3.0F, 18.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 25).mirror().addBox(-6.0F, 10.0F, -14.0F, 3.0F, 2.0F, 7.0F, new CubeDeformation(0.0F)).mirror(false)
-                .texOffs(0, 16).addBox(3.0F, 10.0F, -14.0F, 3.0F, 2.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -1.0F, -4.0F));
+        PartDefinition jaw = head.addOrReplaceChild("jaw", CubeListBuilder.create().texOffs(70, 23).addBox(4.0F, 0.0F, -4.0F, 2.0F, 12.0F, 8.0F, new CubeDeformation(0.0F))
+                .texOffs(70, 23).mirror().addBox(-6.0F, 0.0F, -4.0F, 2.0F, 12.0F, 8.0F, new CubeDeformation(0.0F)).mirror(false)
+                .texOffs(60, 44).addBox(-6.0F, 12.0F, -14.0F, 12.0F, 3.0F, 18.0F, new CubeDeformation(0.0F))
+                .texOffs(40, 85).addBox(-6.0F, 10.0F, -14.0F, 3.0F, 2.0F, 7.0F, new CubeDeformation(0.0F))
+                .texOffs(40, 76).addBox(3.0F, 10.0F, -14.0F, 3.0F, 2.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -1.0F, -4.0F));
 
-        PartDefinition saw = jaw.addOrReplaceChild("saw", CubeListBuilder.create().texOffs(70, 71).addBox(0.0F, -8.0F, -8.0F, 0.0F, 16.0F, 16.0F, new CubeDeformation(0.0025F))
-                .texOffs(0, 72).addBox(-1.0F, -6.0F, -6.0F, 2.0F, 12.0F, 12.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 13.5F, -12.5F));
+        PartDefinition saw = jaw.addOrReplaceChild("saw", CubeListBuilder.create().texOffs(60, 65).addBox(0.0F, -10.0F, -10.0F, 0.0F, 20.0F, 20.0F, new CubeDeformation(0.0025F))
+                .texOffs(150, 91).addBox(0.0F, -8.5F, -7.5F, 0.0F, 17.0F, 15.0F, new CubeDeformation(0.0025F))
+                .texOffs(0, 102).addBox(-1.0F, -6.0F, -6.0F, 2.0F, 12.0F, 12.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 13.5F, -13.0F));
 
-        PartDefinition left_arm = body.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(77, 29).addBox(0.0F, 0.0F, -1.0F, 8.0F, 0.0F, 4.0F, new CubeDeformation(0.0025F)), PartPose.offset(4.5F, -5.0F, -2.5F));
+        PartDefinition left_arm = body.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(90, 40).addBox(0.0F, 0.0F, -1.0F, 8.0F, 0.0F, 4.0F, new CubeDeformation(0.0025F)), PartPose.offset(4.5F, -5.0F, -2.5F));
 
-        PartDefinition right_arm = body.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(77, 29).mirror().addBox(-8.0F, 0.0F, -1.0F, 8.0F, 0.0F, 4.0F, new CubeDeformation(0.0025F)).mirror(false), PartPose.offset(-4.5F, -5.0F, -2.5F));
+        PartDefinition right_arm = body.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(90, 40).mirror().addBox(-8.0F, 0.0F, -1.0F, 8.0F, 0.0F, 4.0F, new CubeDeformation(0.0025F)).mirror(false), PartPose.offset(-4.5F, -5.0F, -2.5F));
 
-        PartDefinition dorsal1 = body.addOrReplaceChild("dorsal1", CubeListBuilder.create().texOffs(55, 21).addBox(0.0F, -6.0F, -1.0F, 0.0F, 6.0F, 11.0F, new CubeDeformation(0.0025F)), PartPose.offset(0.0F, -12.0F, 1.5F));
+        PartDefinition dorsal1 = body.addOrReplaceChild("dorsal1", CubeListBuilder.create().texOffs(90, 23).addBox(0.0F, -6.0F, -1.0F, 0.0F, 6.0F, 11.0F, new CubeDeformation(0.0025F)), PartPose.offset(0.0F, -12.0F, 1.5F));
 
-        PartDefinition tail1 = body.addOrReplaceChild("tail1", CubeListBuilder.create().texOffs(0, 16).addBox(-1.5F, -3.5F, -2.0F, 3.0F, 5.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -6.5F, 5.5F));
+        PartDefinition tail1 = body.addOrReplaceChild("tail1", CubeListBuilder.create().texOffs(0, 44).addBox(-1.5F, -3.5F, -2.0F, 3.0F, 5.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -6.5F, 5.5F));
 
-        PartDefinition dorsal2 = tail1.addOrReplaceChild("dorsal2", CubeListBuilder.create().texOffs(0, -11).addBox(0.0F, -6.0F, -10.0F, 0.0F, 6.0F, 20.0F, new CubeDeformation(0.0025F)), PartPose.offset(0.0F, -3.5F, 11.0F));
+        PartDefinition dorsal2 = tail1.addOrReplaceChild("dorsal2", CubeListBuilder.create().texOffs(0, 76).addBox(0.0F, -6.0F, -10.0F, 0.0F, 6.0F, 20.0F, new CubeDeformation(0.0025F)), PartPose.offset(0.0F, -3.5F, 11.0F));
 
-        PartDefinition anal = tail1.addOrReplaceChild("anal", CubeListBuilder.create().texOffs(0, 41).addBox(0.0F, 0.0F, -10.0F, 0.0F, 6.0F, 20.0F, new CubeDeformation(0.0025F)), PartPose.offset(0.0F, 1.5F, 11.0F));
+        PartDefinition anal = tail1.addOrReplaceChild("anal", CubeListBuilder.create().texOffs(100, 65).addBox(0.0F, 0.0F, -10.0F, 0.0F, 6.0F, 20.0F, new CubeDeformation(0.0025F)), PartPose.offset(0.0F, 1.5F, 11.0F));
 
-        PartDefinition tail2 = tail1.addOrReplaceChild("tail2", CubeListBuilder.create().texOffs(0, -35).addBox(0.0F, -5.5F, -3.0F, 0.0F, 9.0F, 35.0F, new CubeDeformation(0.0025F)), PartPose.offset(0.0F, 0.0F, 22.0F));
+        PartDefinition tail2 = tail1.addOrReplaceChild("tail2", CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, -5.5F, -3.0F, 0.0F, 9.0F, 35.0F, new CubeDeformation(0.0025F)), PartPose.offset(0.0F, 0.0F, 22.0F));
 
         PartDefinition leg_control = body_main.addOrReplaceChild("leg_control", CubeListBuilder.create(), PartPose.offset(0.0F, 6.0F, 0.5F));
 
-        PartDefinition left_leg1 = leg_control.addOrReplaceChild("left_leg1", CubeListBuilder.create().texOffs(75, 1).addBox(-2.0F, -2.0F, -3.5F, 5.0F, 7.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(4.5F, 0.0F, 0.0F));
+        PartDefinition left_leg1 = leg_control.addOrReplaceChild("left_leg1", CubeListBuilder.create().texOffs(28, 102).addBox(-2.0F, -2.0F, -3.5F, 5.0F, 7.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(4.5F, 0.0F, 0.0F));
 
-        PartDefinition left_leg2 = left_leg1.addOrReplaceChild("left_leg2", CubeListBuilder.create().texOffs(26, 70).addBox(-1.5F, -1.0F, -1.0F, 3.0F, 9.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.5F, 4.0F, 3.5F));
+        PartDefinition left_leg2 = left_leg1.addOrReplaceChild("left_leg2", CubeListBuilder.create().texOffs(78, 105).addBox(-1.5F, -1.0F, -1.0F, 3.0F, 9.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.5F, 4.0F, 3.5F));
 
-        PartDefinition left_leg3 = left_leg2.addOrReplaceChild("left_leg3", CubeListBuilder.create().texOffs(75, 15).addBox(-3.0F, 0.0F, -4.5F, 6.0F, 2.0F, 7.0F, new CubeDeformation(0.0F))
-                .texOffs(10, 52).addBox(1.0F, 0.0F, -7.5F, 2.0F, 2.0F, 3.0F, new CubeDeformation(0.0F))
-                .texOffs(20, 52).addBox(1.0F, 0.0F, -9.5F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
-                .texOffs(10, 52).addBox(-3.0F, 0.0F, -7.5F, 2.0F, 2.0F, 3.0F, new CubeDeformation(0.0F))
-                .texOffs(20, 52).addBox(-3.0F, 0.0F, -9.5F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 8.0F, 0.5F));
+        PartDefinition left_leg3 = left_leg2.addOrReplaceChild("left_leg3", CubeListBuilder.create().texOffs(52, 105).addBox(-3.0F, 0.0F, -4.5F, 6.0F, 2.0F, 7.0F, new CubeDeformation(0.0F))
+                .texOffs(40, 94).addBox(1.0F, 0.0F, -7.5F, 2.0F, 2.0F, 3.0F, new CubeDeformation(0.0F))
+                .texOffs(50, 94).addBox(1.0F, 0.0F, -9.5F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
+                .texOffs(40, 94).addBox(-3.0F, 0.0F, -7.5F, 2.0F, 2.0F, 3.0F, new CubeDeformation(0.0F))
+                .texOffs(50, 94).addBox(-3.0F, 0.0F, -9.5F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 8.0F, 0.5F));
 
-        PartDefinition right_leg1 = leg_control.addOrReplaceChild("right_leg1", CubeListBuilder.create().texOffs(75, 1).mirror().addBox(-3.0F, -2.0F, -3.5F, 5.0F, 7.0F, 7.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(-4.5F, 0.0F, 0.0F));
+        PartDefinition right_leg1 = leg_control.addOrReplaceChild("right_leg1", CubeListBuilder.create().texOffs(28, 102).mirror().addBox(-3.0F, -2.0F, -3.5F, 5.0F, 7.0F, 7.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(-4.5F, 0.0F, 0.0F));
 
-        PartDefinition right_leg2 = right_leg1.addOrReplaceChild("right_leg2", CubeListBuilder.create().texOffs(26, 70).mirror().addBox(-1.5F, -1.0F, -1.0F, 3.0F, 9.0F, 3.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(-0.5F, 4.0F, 3.5F));
+        PartDefinition right_leg2 = right_leg1.addOrReplaceChild("right_leg2", CubeListBuilder.create().texOffs(78, 105).mirror().addBox(-1.5F, -1.0F, -1.0F, 3.0F, 9.0F, 3.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(-0.5F, 4.0F, 3.5F));
 
-        PartDefinition right_leg3 = right_leg2.addOrReplaceChild("right_leg3", CubeListBuilder.create().texOffs(75, 15).mirror().addBox(-3.0F, 0.0F, -4.5F, 6.0F, 2.0F, 7.0F, new CubeDeformation(0.0F)).mirror(false)
-                .texOffs(10, 52).mirror().addBox(-3.0F, 0.0F, -7.5F, 2.0F, 2.0F, 3.0F, new CubeDeformation(0.0F)).mirror(false)
-                .texOffs(20, 52).mirror().addBox(-3.0F, 0.0F, -9.5F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false)
-                .texOffs(10, 52).mirror().addBox(1.0F, 0.0F, -7.5F, 2.0F, 2.0F, 3.0F, new CubeDeformation(0.0F)).mirror(false)
-                .texOffs(20, 52).mirror().addBox(1.0F, 0.0F, -9.5F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, 8.0F, 0.5F));
+        PartDefinition right_leg3 = right_leg2.addOrReplaceChild("right_leg3", CubeListBuilder.create().texOffs(52, 105).mirror().addBox(-3.0F, 0.0F, -4.5F, 6.0F, 2.0F, 7.0F, new CubeDeformation(0.0F)).mirror(false)
+                .texOffs(40, 94).mirror().addBox(-3.0F, 0.0F, -7.5F, 2.0F, 2.0F, 3.0F, new CubeDeformation(0.0F)).mirror(false)
+                .texOffs(50, 94).mirror().addBox(-3.0F, 0.0F, -9.5F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false)
+                .texOffs(40, 94).mirror().addBox(1.0F, 0.0F, -7.5F, 2.0F, 2.0F, 3.0F, new CubeDeformation(0.0F)).mirror(false)
+                .texOffs(50, 94).mirror().addBox(1.0F, 0.0F, -9.5F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, 8.0F, 0.5F));
 
-        return LayerDefinition.create(meshdefinition, 128, 128);
+        return LayerDefinition.create(meshdefinition, 256, 256);
 	}
 
 	@Override
@@ -137,14 +138,14 @@ public class TerrorModel extends HierarchicalModel<Terror> {
                 this.animateWalk(TerrorAnimations.WALK, limbSwing, limbSwingAmount, 1, 2);
             }
 		}
-        this.animate(entity.swimAnimationState, TerrorAnimations.SWIM, ageInTicks, 0.75F + (Mth.clamp(limbSwingAmount, 0.25F, 1.0F) * 1.25F));
+        this.animate(entity.swimAnimationState, TerrorAnimations.SWIM, ageInTicks, 0.6F + (Mth.clamp(limbSwingAmount, 0.25F, 1.0F) * 1.3F));
         this.animate(entity.flopAnimationState, TerrorAnimations.FLOP, ageInTicks);
         this.animate(entity.idleAnimationState, TerrorAnimations.IDLE, ageInTicks);
         this.animate(entity.growLegsAnimationState, TerrorAnimations.GROW_LEGS, ageInTicks);
         this.animate(entity.startSawingAnimationState, TerrorAnimations.START_SAWING, ageInTicks);
         this.animate(entity.sawingAnimationState, TerrorAnimations.SAWING, ageInTicks);
         this.animate(entity.cooldownAnimationState, TerrorAnimations.RECOVER, ageInTicks);
-        this.animate(entity.retractLegsAnimationState, TerrorAnimations.RETRACT_LEGS, ageInTicks);
+        this.animate(entity.retractLegsAnimationState, TerrorAnimations.LOSE_LEGS, ageInTicks);
         this.animate(entity.spinSawAnimationState, TerrorAnimations.SPIN_SAW, ageInTicks);
 
         if (entity.isInWaterOrBubble()) {

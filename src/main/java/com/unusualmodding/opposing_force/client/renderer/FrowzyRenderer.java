@@ -32,9 +32,7 @@ public class FrowzyRenderer extends MobRenderer<Frowzy, FrowzyModel> {
     @Override
     protected void scale(Frowzy entity, @NotNull PoseStack poseStack, float partialTicks) {
         if (entity.isBaby()) {
-            float scale = 0.5F;
-            poseStack.scale(scale, scale, scale);
-            this.shadowRadius = 0.4F * scale;
+            this.shadowRadius = 0.2F;
         } else {
             this.shadowRadius = 0.4F;
         }

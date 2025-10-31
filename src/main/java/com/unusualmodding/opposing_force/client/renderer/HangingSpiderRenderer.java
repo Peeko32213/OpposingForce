@@ -15,9 +15,11 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(Dist.CLIENT)
@@ -28,21 +30,21 @@ public class HangingSpiderRenderer extends MobRenderer<HangingSpider, HangingSpi
 
     public HangingSpiderRenderer(EntityRendererProvider.Context context) {
         super(context, new HangingSpiderModel(context.bakeLayer(OPModelLayers.HANGING_SPIDER)), 0.5F);
-//        this.addLayer(new HangingSpiderEyesLayer(this));
+        this.addLayer(new HangingSpiderEyesLayer(this, (entity, v, v1) -> Math.max(0.1F, Mth.cos(v1 * 0.015F + (float) Math.PI)), HangingSpiderModel::getPulsatingLayerModelParts));
     }
 
     @Override
-    public ResourceLocation getTextureLocation(HangingSpider entity) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull HangingSpider entity) {
         return HANGING_SPIDER;
     }
 
     @Override
-    protected @Nullable RenderType getRenderType(HangingSpider entity, boolean bodyVisible, boolean translucent, boolean glowing) {
+    protected @Nullable RenderType getRenderType(@NotNull HangingSpider entity, boolean bodyVisible, boolean translucent, boolean glowing) {
         return RenderType.entityCutoutNoCull(HANGING_SPIDER);
     }
 
     @Override
-    protected void setupRotations(HangingSpider entity, PoseStack poseStack, float f, float g, float h) {
+    protected void setupRotations(@NotNull HangingSpider entity, @NotNull PoseStack poseStack, float f, float g, float h) {
         super.setupRotations(entity, poseStack, f, g, h);
         poseStack.scale(0.75F, 0.75F, 0.75F);
 
@@ -53,7 +55,7 @@ public class HangingSpiderRenderer extends MobRenderer<HangingSpider, HangingSpi
     }
 
     @Override
-    public void render(HangingSpider entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void render(@NotNull HangingSpider entity, float entityYaw, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight) {
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
         VertexConsumer builder = buffer.getBuffer(RenderType.entityCutoutNoCull(WEB));
 
@@ -115,7 +117,7 @@ public class HangingSpiderRenderer extends MobRenderer<HangingSpider, HangingSpi
     }
 
     @Override
-    public boolean shouldRender(HangingSpider hangingSpider, Frustum frustum, double v, double v1, double v2) {
+    public boolean shouldRender(HangingSpider hangingSpider, @NotNull Frustum frustum, double v, double v1, double v2) {
         if (hangingSpider.isWebOut() && !hangingSpider.isUpsideDown()) return true;
         return super.shouldRender(hangingSpider, frustum, v, v1, v2);
     }
