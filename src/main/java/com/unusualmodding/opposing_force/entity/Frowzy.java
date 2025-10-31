@@ -55,13 +55,14 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class Frowzy extends Monster implements IAnimatedAttacker {
+public class Frowzy extends Monster implements IAnimatedAttacker, VariantHolder<Frowzy.FrowzyVariant> {
 
     private static final EntityDataAccessor<Boolean> IS_BABY = SynchedEntityData.defineId(Frowzy.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Frowzy.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(Frowzy.class, EntityDataSerializers.INT);
 
     private static final UUID BABY_SPEED_MODIFIER_UUID = UUID.fromString("B9766B59-9566-4402-BC1F-2EE2A276D836");
-    private static final AttributeModifier BABY_SPEED_MODIFIER = new AttributeModifier(BABY_SPEED_MODIFIER_UUID, "Baby speed boost", 0.5D, AttributeModifier.Operation.MULTIPLY_BASE);
+    private static final AttributeModifier BABY_SPEED_MODIFIER = new AttributeModifier(BABY_SPEED_MODIFIER_UUID, "Baby speed boost", 0.3D, AttributeModifier.Operation.MULTIPLY_BASE);
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState attack1AnimationState = new AnimationState();
@@ -252,6 +253,7 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
         super.defineSynchedData();
         this.entityData.define(IS_BABY, false);
         this.entityData.define(ATTACK_STATE, 0);
+        this.entityData.define(VARIANT, FrowzyVariant.BLUE.getId());
     }
 
     @Override
@@ -260,6 +262,7 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
         compoundTag.putBoolean("IsBaby", this.isBaby());
         compoundTag.putBoolean("CanBreakDoors", this.canBreakDoors());
         compoundTag.putInt("AttackState", this.getAttackState());
+        compoundTag.putInt("Variant", this.getVariant().getId());
     }
 
     @Override
@@ -268,6 +271,17 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
         this.setBaby(compoundTag.getBoolean("IsBaby"));
         this.setCanBreakDoors(compoundTag.getBoolean("CanBreakDoors"));
         this.setAttackState(compoundTag.getInt("AttackState"));
+        this.setVariant(FrowzyVariant.byId(compoundTag.getInt("Variant")));
+    }
+
+    @Override
+    public void setVariant(FrowzyVariant variant) {
+        this.entityData.set(VARIANT, variant.getId());
+    }
+
+    @Override
+    public @NotNull FrowzyVariant getVariant() {
+        return FrowzyVariant.byId(this.entityData.get(VARIANT));
     }
 
     @Override
@@ -295,12 +309,12 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
         return this.canBreakDoors;
     }
 
-    public void setCanBreakDoors(boolean p_34337_) {
+    public void setCanBreakDoors(boolean breakDoor) {
         if (this.supportsBreakDoorGoal() && GoalUtils.hasGroundPathNavigation(this)) {
-            if (this.canBreakDoors != p_34337_) {
-                this.canBreakDoors = p_34337_;
-                ((GroundPathNavigation)this.getNavigation()).setCanOpenDoors(p_34337_);
-                if (p_34337_) {
+            if (this.canBreakDoors != breakDoor) {
+                this.canBreakDoors = breakDoor;
+                ((GroundPathNavigation)this.getNavigation()).setCanOpenDoors(breakDoor);
+                if (breakDoor) {
                     this.goalSelector.addGoal(1, this.breakDoorGoal);
                 } else {
                     this.goalSelector.removeGoal(this.breakDoorGoal);
@@ -380,13 +394,31 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
         }
     }
 
-    public static class FrowzyGroupData implements SpawnGroupData {
-        public final boolean isBaby;
-        public final boolean canSpawnJockey;
+    public enum FrowzyVariant {
+        BLUE(0),
+        CYAN(1),
+        GREEN(2),
+        ORANGE(3),
+        PURPLE(4),
+        RED(5),
+        WHITE(6),
+        YELLOW(7);
 
-        public FrowzyGroupData(boolean isBaby, boolean chickenJockeyyy) {
-            this.isBaby = isBaby;
-            this.canSpawnJockey = chickenJockeyyy;
+        private final int id;
+
+        FrowzyVariant(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return this.id;
+        }
+
+        public static FrowzyVariant byId(int id) {
+            if (id < 0 || id >= FrowzyVariant.values().length) {
+                id = 0;
+            }
+            return FrowzyVariant.values()[id];
         }
     }
 
@@ -398,6 +430,8 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
         groupData = super.finalizeSpawn(level, difficulty, spawnType, groupData, compoundTag);
         float f = difficulty.getSpecialMultiplier();
         this.setCanPickUpLoot(randomsource.nextFloat() < 0.55F * f);
+
+        this.setVariant(FrowzyVariant.byId(random.nextInt(FrowzyVariant.values().length)));
 
         if (groupData == null) {
             groupData = new FrowzyGroupData(getSpawnAsBabyOdds(randomsource), true);
@@ -467,5 +501,15 @@ public class Frowzy extends Monster implements IAnimatedAttacker {
         }
         this.handleAttributes(f);
         return groupData;
+    }
+
+    public static class FrowzyGroupData implements SpawnGroupData {
+        public final boolean isBaby;
+        public final boolean canSpawnJockey;
+
+        public FrowzyGroupData(boolean isBaby, boolean chickenJockeyyy) {
+            this.isBaby = isBaby;
+            this.canSpawnJockey = chickenJockeyyy;
+        }
     }
 }

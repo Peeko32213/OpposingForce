@@ -43,7 +43,7 @@ public class RamblerFlailGoal extends AttackGoal {
         super.stop();
         this.rambler.setFlailing(false);
         this.rambler.setPose(Pose.STANDING);
-        this.rambler.flailCooldown = 300 + this.rambler.getRandom().nextInt(300);
+        this.rambler.flailCooldown = 200 + this.rambler.getRandom().nextInt(200);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class RamblerFlailGoal extends AttackGoal {
 
                 if (this.timer > 215) {
                     this.timer = 0;
-                    this.rambler.flailCooldown = 300 + this.rambler.getRandom().nextInt(300);
+                    this.rambler.flailCooldown = 200 + this.rambler.getRandom().nextInt(200);
                     this.rambler.setFlailing(false);
                 }
             } else {

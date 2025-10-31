@@ -13,14 +13,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ElectricChargeRenderer extends EntityRenderer<ElectricCharge> {
 
-    public ElectricChargeRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext);
+    public ElectricChargeRenderer(EntityRendererProvider.Context context) {
+        super(context);
     }
 
     @Override
-    public void render(ElectricCharge entity, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(ElectricCharge entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         if (entity.tickCount >= 2 || !(this.entityRenderDispatcher.camera.getEntity().distanceToSqr(entity) < 12.25D)) {
-            super.render(entity, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+            super.render(entity, entityYaw, partialTicks, poseStack, bufferSource, packedLight);
         }
     }
 

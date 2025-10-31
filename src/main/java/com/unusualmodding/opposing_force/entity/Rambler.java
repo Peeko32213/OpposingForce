@@ -74,8 +74,8 @@ public class Rambler extends Monster implements IAnimatedAttacker {
     private int jabRushTicks;
     private int startRollingTicks;
     private int stopRollingTicks;
-    public int flailCooldown = 300;
-    public int rollCooldown = 400;
+    public int flailCooldown = 200;
+    public int rollCooldown = 200;
 
     public Rambler(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -214,10 +214,10 @@ public class Rambler extends Monster implements IAnimatedAttacker {
     public void tick() {
         super.tick();
 
-        if (!this.isRolling()) {
+        if (!this.isRolling() && (this.getHealth() < this.getMaxHealth() * 0.5)) {
             if (flailCooldown > 0) this.flailCooldown--;
         }
-        if (!this.isFlailing()) {
+        if (!this.isFlailing() && (this.getHealth() > this.getMaxHealth() * 0.5)) {
             if (rollCooldown > 0) this.rollCooldown--;
         }
 

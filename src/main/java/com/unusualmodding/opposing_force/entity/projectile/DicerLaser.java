@@ -4,6 +4,7 @@ import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.utils.ControlledAnimation;
 import com.unusualmodding.opposing_force.entity.Dicer;
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
+import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPParticles;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -50,13 +51,13 @@ public class DicerLaser extends Entity {
     public float prevYaw;
     public float prevPitch;
 
-    public DicerLaser(EntityType<? extends DicerLaser> type, Level world) {
-        super(type, world);
+    public DicerLaser(EntityType<? extends DicerLaser> type, Level level) {
+        super(type, level);
         this.noCulling = true;
     }
 
-    public DicerLaser(EntityType<? extends DicerLaser> type, Level world, LivingEntity caster, double x, double y, double z, float yaw, float pitch, int duration, int damage) {
-        this(type, world);
+    public DicerLaser(Level level, LivingEntity caster, double x, double y, double z, float yaw, float pitch, int duration, int damage) {
+        this(OPEntities.DICER_LASER.get(), level);
         this.caster = caster;
         this.setYaw(yaw);
         this.setPitch(pitch);
@@ -64,7 +65,7 @@ public class DicerLaser extends Entity {
         this.setDamage(damage);
         this.setPos(x, y, z);
         this.calculateEndPos();
-        if (!world.isClientSide) {
+        if (!level.isClientSide) {
             this.setCasterID(caster.getId());
         }
     }

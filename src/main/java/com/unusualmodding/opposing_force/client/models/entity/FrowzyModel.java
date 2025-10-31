@@ -13,6 +13,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
@@ -79,20 +80,33 @@ public class FrowzyModel extends HierarchicalModel<Frowzy> implements ArmedModel
 		this.head.yRot += netHeadYaw * ((float) Math.PI / 180) - (netHeadYaw * ((float) Math.PI / 180)) / 2;
 	}
 
-	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int j, float f, float g, float h, float k) {
-		if (this.young) {
-			float babyScale = 0.5F;
-			float bodyYOffset = 24.0F;
-			poseStack.pushPose();
-			poseStack.scale(babyScale, babyScale, babyScale);
-			poseStack.translate(0.0F, bodyYOffset / 16.0F, 0.0F);
-			this.root().render(poseStack, vertexConsumer, i, j, f, g, h, k);
-			poseStack.popPose();
-		} else {
-			this.root().render(poseStack, vertexConsumer, i, j, f, g, h, k);
-		}
-	}
+//	@Override
+//	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int j, float f, float g, float h, float k) {
+//		if (this.young) {
+//			float babyScale = 0.5F;
+//			float bodyYOffset = 24.0F;
+//			poseStack.pushPose();
+//			poseStack.scale(babyScale, babyScale, babyScale);
+//			poseStack.translate(0.0F, bodyYOffset / 16.0F, 0.0F);
+//			poseStack.popPose();
+//		} else {
+//			this.root().render(poseStack, vertexConsumer, i, j, f, g, h, k);
+//		}
+//	}
+
+    @Override
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int j, float f, float g, float h, float k) {
+//        if (this.young) {
+//            poseStack.pushPose();
+//            float v = 1.5F;
+//            poseStack.scale(1.0F / v, 1.0F / v, 1.0F / v);
+//            poseStack.translate(0.0F, 1.5F, 0.0F);
+//            this.root().render(poseStack, vertexConsumer, i, j, f, g, h, k);
+//            poseStack.popPose();
+//        } else {
+            this.root().render(poseStack, vertexConsumer, i, j, f, g, h, k);
+//        }
+    }
 
     @Override
 	public ModelPart root() {
@@ -115,11 +129,17 @@ public class FrowzyModel extends HierarchicalModel<Frowzy> implements ArmedModel
         this.root.translateAndRotate(poseStack);
         this.upper_body.translateAndRotate(poseStack);
         this.head.translateAndRotate(poseStack);
-        poseStack.translate(0.0F, -0.025F, 0.025F);
+//        if (this.young) {
+//            float f = 1.5F;
+//            poseStack.scale(1.0F / f, 1.0F / f, 1.0F / f);
+//            poseStack.translate(0.0F, 1.5F, 0.0F);
+//        }
+
+        poseStack.translate(0.0F, -0.025F, 0.0F);
     }
 
     @Override
-    public ModelPart getHead() {
+    public @NotNull ModelPart getHead() {
         return this.head;
     }
 }

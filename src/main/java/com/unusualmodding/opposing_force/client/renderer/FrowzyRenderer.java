@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.client.renderer;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.FrowzyModel;
 import com.unusualmodding.opposing_force.client.renderer.layers.FrowzyHelmetLayer;
@@ -12,12 +13,15 @@ import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Locale;
+
+import static com.unusualmodding.opposing_force.OpposingForce.modPrefix;
 
 @OnlyIn(Dist.CLIENT)
 public class FrowzyRenderer extends MobRenderer<Frowzy, FrowzyModel> {
-
-    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/frowzy.png");
 
     public FrowzyRenderer(EntityRendererProvider.Context context) {
         super(context, new FrowzyModel(context.bakeLayer(OPModelLayers.FROWZY)), 0.4F);
@@ -26,12 +30,25 @@ public class FrowzyRenderer extends MobRenderer<Frowzy, FrowzyModel> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Frowzy entity) {
-        return TEXTURE;
+    protected void scale(Frowzy entity, @NotNull PoseStack poseStack, float partialTicks) {
+        if (entity.isBaby()) {
+            float scale = 0.5F;
+            poseStack.scale(scale, scale, scale);
+            this.shadowRadius = 0.4F * scale;
+        } else {
+            this.shadowRadius = 0.4F;
+        }
+    }
+
+    @Override
+    public @NotNull ResourceLocation getTextureLocation(Frowzy entity) {
+        Frowzy.FrowzyVariant variant = Frowzy.FrowzyVariant.byId(entity.getVariant().getId());
+        return modPrefix("textures/entity/frowzy/" + variant.name().toLowerCase(Locale.ROOT) + ".png");
     }
 
     @Override
     protected @Nullable RenderType getRenderType(Frowzy entity, boolean bodyVisible, boolean translucent, boolean glowing) {
-        return RenderType.entityCutoutNoCull(TEXTURE);
+        return RenderType.entityCutoutNoCull(getTextureLocation(entity));
+
     }
 }

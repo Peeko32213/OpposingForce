@@ -47,7 +47,7 @@ public class RamblerRollGoal extends AttackGoal {
         this.collisionTicks = 0;
         this.rambler.setRolling(false);
         this.rambler.setPose(Pose.STANDING);
-        this.rambler.rollCooldown = 400 + this.rambler.getRandom().nextInt(400);
+        this.rambler.rollCooldown = 200 + this.rambler.getRandom().nextInt(200);
     }
 
     @Override
@@ -60,6 +60,8 @@ public class RamblerRollGoal extends AttackGoal {
                 this.timer++;
                 if (rambler.horizontalCollision) {
                     this.collisionTicks++;
+                } else if (this.collisionTicks > 0) {
+                    this.collisionTicks--;
                 }
 
                 if (this.timer == 1) this.rambler.setPose(OPPoses.START_ROLLING.get());
@@ -80,14 +82,14 @@ public class RamblerRollGoal extends AttackGoal {
 
                 if (this.timer > 240) {
                     this.timer = 0;
-                    this.rambler.rollCooldown = 400 + this.rambler.getRandom().nextInt(400);
+                    this.rambler.rollCooldown = 200 + this.rambler.getRandom().nextInt(200);
                     this.rambler.setRolling(false);
                 }
 
                 if (this.collisionTicks > 40) {
                     this.rambler.setRolling(false);
                     this.rambler.setPose(OPPoses.STOP_ROLLING.get());
-                    this.rambler.rollCooldown = 400 + this.rambler.getRandom().nextInt(400);
+                    this.rambler.rollCooldown = 200 + this.rambler.getRandom().nextInt(200);
                     this.timer = 0;
                 }
 

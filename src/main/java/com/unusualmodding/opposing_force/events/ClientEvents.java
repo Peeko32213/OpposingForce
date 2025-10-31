@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.events;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.armor.*;
 import com.unusualmodding.opposing_force.client.models.entity.*;
+import com.unusualmodding.opposing_force.client.models.item.BlasterModel;
 import com.unusualmodding.opposing_force.client.models.mob_heads.*;
 import com.unusualmodding.opposing_force.client.particles.*;
 import com.unusualmodding.opposing_force.client.renderer.*;
@@ -80,6 +81,7 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.VOLT_CHARGED, () -> VoltModel.createBodyLayer(new CubeDeformation(0.5F)));
         event.registerLayerDefinition(OPModelLayers.WHIZZ, WhizzModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.LASER_BOLT, LaserBoltModel::createProjectileLayer);
+//        event.registerLayerDefinition(OPModelLayers.BLASTER, BlasterModel::createBlaster);
     }
 
     @SubscribeEvent

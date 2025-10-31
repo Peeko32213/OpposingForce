@@ -17,7 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class TerrorGlowLayer extends RenderLayer<Terror, TerrorModel> {
 
-    private static final RenderType GLOW_TEXTURE = RenderType.entityTranslucentEmissive(new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/terror/terror_glow.png"));
+    private static final RenderType GLOW_TEXTURE = RenderType.eyes(new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/terror/terror_glow.png"));
 
     public TerrorGlowLayer(RenderLayerParent<Terror, TerrorModel> parentModel) {
         super(parentModel);

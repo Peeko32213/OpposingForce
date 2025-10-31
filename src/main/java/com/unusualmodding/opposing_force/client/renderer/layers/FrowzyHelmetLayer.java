@@ -69,7 +69,7 @@ public class FrowzyHelmetLayer extends RenderLayer<Frowzy, FrowzyModel> {
     @Override
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLightIn, Frowzy frowzy, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         // todo: fix baby frowzy head pivot
-        if (this.getParentModel().young) return;
+//        if (this.getParentModel().young) return;
         poseStack.pushPose();
         ItemStack helmet = frowzy.getItemBySlot(EquipmentSlot.HEAD);
         if (helmet.getItem() instanceof ArmorItem armoritem) {
@@ -93,10 +93,9 @@ public class FrowzyHelmetLayer extends RenderLayer<Frowzy, FrowzyModel> {
             }
         } else {
             this.getParentModel().translateToHead(poseStack);
-            poseStack.translate(0, -0.25F, 0.0F);
             poseStack.mulPose((new Quaternionf()).rotateX(Mth.PI));
             poseStack.mulPose((new Quaternionf()).rotateY(Mth.PI));
-            poseStack.scale(1.25F, 1.25F, 1.25F);
+            poseStack.scale(1.15F, 1.15F, 1.15F);
             Minecraft.getInstance().getItemRenderer().renderStatic(helmet, ItemDisplayContext.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, frowzy.level(), 0);
         }
         poseStack.popPose();

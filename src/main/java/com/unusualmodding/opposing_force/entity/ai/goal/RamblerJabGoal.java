@@ -45,7 +45,7 @@ public class RamblerJabGoal extends AttackGoal {
         if (target != null) {
             int attackState = this.rambler.getAttackState();
             double distance = this.rambler.distanceToSqr(target.getX(), target.getY(), target.getZ());
-            this.rambler.getNavigation().moveTo(target, 1.25D);
+            this.rambler.getNavigation().moveTo(target, 1.4D);
             this.rambler.lookAt(target, 30F, 30F);
             this.rambler.getLookControl().setLookAt(target, 30F, 30F);
 

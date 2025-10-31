@@ -26,8 +26,6 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Predicate;
 
-import static com.unusualmodding.opposing_force.OpposingForceConfig.*;
-
 public class BlasterItem extends Item implements Vanishable {
 
     public static final Predicate<ItemStack> AMMO = (stack) -> stack.is(OPItemTags.BLASTER_AMMO);
@@ -137,7 +135,7 @@ public class BlasterItem extends Item implements Vanishable {
 
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.NONE;
+        return UseAnim.CUSTOM;
     }
 
     @Override
