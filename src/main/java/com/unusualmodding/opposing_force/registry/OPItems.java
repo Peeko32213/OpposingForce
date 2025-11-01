@@ -47,7 +47,11 @@ public class OPItems {
     public static final RegistryObject<Item> FIRE_BOMB = registerItem("fire_bomb", () -> new FireBombItem(new Item.Properties().stacksTo(16)));
 
     // Hanging Spider
-    public static final RegistryObject<Item> HANGING_SPIDER_SPAWN_EGG = registerSpawnEggItem("hanging_spider", OPEntities.HANGING_SPIDER, 0xcf9729, 0x48221b);
+    public static final RegistryObject<Item> HANGING_SPIDER_SPAWN_EGG = registerSpawnEggItem("hanging_spider", OPEntities.HANGING_SPIDER, 0x2c231e, 0xf5e83b);
+
+    // Nymph
+    public static final RegistryObject<Item> NYMPH_SPAWN_EGG = registerSpawnEggItem("nymph", OPEntities.NYMPH , 0x074230, 0xff0000);
+
 
     // Rambler
     public static final RegistryObject<Item> RAMBLER_SPAWN_EGG = registerSpawnEggItem("rambler", OPEntities.RAMBLER, 0xb0ac8f, 0x998d6d);
@@ -59,7 +63,7 @@ public class OPItems {
     public static final RegistryObject<Item> VILE_STAFF = registerItem("vile_staff", () -> new VileStaffItem(new Item.Properties().stacksTo(1).defaultDurability(224)));
 
     // Terror
-    public static final RegistryObject<Item> TERROR_SPAWN_EGG = registerSpawnEggItem("terror", OPEntities.TERROR , 0x273f33, 0xd80000);
+    public static final RegistryObject<Item> TERROR_SPAWN_EGG = registerSpawnEggItem("terror", OPEntities.TERROR , 0x074230, 0xff0000);
 
     // Trembler
     public static final RegistryObject<Item> TREMBLER_SPAWN_EGG = registerSpawnEggItem("trembler", OPEntities.TREMBLER , 0x273030, 0x6d9288);

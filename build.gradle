@@ -77,7 +77,7 @@ repositories {
     }
     maven {
         name "JEI maven"
-        url = "https://maven.blamejared.com/"
+        url "https://maven.blamejared.com/"
     }
     flatDir {
         dirs 'libs'
@@ -93,7 +93,7 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     implementation fg.deobf("unusualmodding:Alkahest:1.20.1-1.0.0")
-    jarJar(group: 'unusualmodding', name: 'Alkahest', version: '[1.20.1-1.0.0,)')
+//    jarJar(group: 'unusualmodding', name: 'Alkahest', version: '[1.20.1-1.0.0,)')
 
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${project.mixin_extras}"))
     implementation("io.github.llamalad7:mixinextras-forge:${project.mixin_extras}")

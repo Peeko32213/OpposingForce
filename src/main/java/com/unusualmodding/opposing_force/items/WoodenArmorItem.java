@@ -2,7 +2,7 @@ package com.unusualmodding.opposing_force.items;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.registry.OPItems;
-import com.unusualmodding.opposing_force.registry.enums.OPArmorMaterials;
+import com.unusualmodding.opposing_force.registry.enums.OPTiers.OPArmorMaterials;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;

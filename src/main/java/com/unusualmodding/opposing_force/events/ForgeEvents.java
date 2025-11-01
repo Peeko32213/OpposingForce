@@ -9,6 +9,7 @@ import com.unusualmodding.opposing_force.registry.*;
 import com.unusualmodding.opposing_force.registry.OPTrades.*;
 import com.unusualmodding.opposing_force.registry.tags.OPBiomeTags;
 import com.unusualmodding.opposing_force.registry.tags.OPBlockTags;
+import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -23,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
@@ -30,11 +32,13 @@ import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = OpposingForce.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ForgeEvents {
@@ -175,19 +179,17 @@ public class ForgeEvents {
                 }
             }
         }
+    }
 
-        if (damageSource.is(OPDamageTypes.ELECTRIFIED) || damageSource.is(OPDamageTypes.ELECTRIC)) {
-            float electricResistance = 0.0F;
-            for (EquipmentSlot slot : EquipmentSlot.values()) {
-                ItemStack stack = entity.getItemBySlot(slot);
-                Collection<AttributeModifier> modifiers = stack.getAttributeModifiers(slot).get(OPAttributes.ELECTRIC_RESISTANCE.get());
-                if (!modifiers.isEmpty()) {
-                    electricResistance += (float) modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum();
-                }
-            }
+    // Tool attributes
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onItemModify(ItemAttributeModifierEvent event) {
+        ItemStack stack = event.getItemStack();
+        EquipmentSlot slot = event.getSlotType();
 
-            if (electricResistance > 0.0F) {
-                event.setAmount(event.getAmount() - event.getAmount() * electricResistance);
+        if (slot == EquipmentSlot.MAINHAND) {
+            if (stack.is(OPItemTags.EXPERIENCE_GAIN_ITEMS)) {
+                event.addModifier(OPAttributes.EXPERIENCE_GAIN.get(), new AttributeModifier(UUID.fromString("1e0f1128-0ee5-4b45-a1c4-12b4da5b1144"), "Increased experience gain", 0.5D, AttributeModifier.Operation.MULTIPLY_BASE));
             }
         }
     }

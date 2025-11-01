@@ -112,18 +112,4 @@ public abstract class FrictionlessProjectile extends AbstractHurtingProjectile i
         this.setDeltaMovement(movement.normalize().scale(accelerationPower));
         this.hasImpulse = true;
     }
-
-    public boolean hasLineOfSight(Entity entity) {
-        if (entity.level() != this.level()) {
-            return false;
-        } else {
-            Vec3 vec3 = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-            Vec3 vec31 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
-            if (vec31.distanceTo(vec3) > 128.0D) {
-                return false;
-            } else {
-                return this.level().clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
-            }
-        }
-    }
 }

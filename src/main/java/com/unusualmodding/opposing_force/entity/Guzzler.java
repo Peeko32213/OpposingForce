@@ -77,7 +77,7 @@ public class Guzzler extends Monster implements IAnimatedAttacker {
     }
 
     @Override
-    protected @NotNull PathNavigation createNavigation(Level level) {
+    protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
         return new SmoothGroundPathNavigation(this, level);
     }
 
@@ -92,7 +92,7 @@ public class Guzzler extends Monster implements IAnimatedAttacker {
     }
 
     @Override
-    public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
+    public @NotNull Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
 
         Vec3[] avector3d = new Vec3[]{
                 getCollisionHorizontalEscapeVector(this.getBbWidth(), livingEntity.getBbWidth(), livingEntity.getYRot()),

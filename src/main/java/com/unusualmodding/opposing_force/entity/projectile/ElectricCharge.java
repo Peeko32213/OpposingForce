@@ -1,12 +1,12 @@
 package com.unusualmodding.opposing_force.entity.projectile;
 
-import com.unusualmodding.alkahest.network.LightningSyncPacket;
 import com.unusualmodding.alkahest.registry.AlkahestMobEffects;
-import com.unusualmodding.alkahest.registry.AlkahestNetwork;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.entity.Volt;
 import com.unusualmodding.opposing_force.utils.CreeperExtension;
 import com.unusualmodding.opposing_force.registry.*;
+import com.unusualmodding.opposing_force.utils.OPMath;
+import com.unusualmodding.opposing_force.utils.ParticleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -68,7 +68,7 @@ public class ElectricCharge extends FrictionlessProjectile {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compoundTag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putFloat("Damage", this.getChargeDamage());
         compoundTag.putFloat("ChargeScale", this.getChargeScale());
@@ -79,7 +79,7 @@ public class ElectricCharge extends FrictionlessProjectile {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compoundTag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         this.setChargeDamage(compoundTag.getFloat("Damage"));
         this.setChargeScale(compoundTag.getFloat("ChargeScale"));
@@ -226,34 +226,17 @@ public class ElectricCharge extends FrictionlessProjectile {
         double z = charge.getZ() + movement.z;
 
         int lightningLength = (int) (range + charge.getChargeScale() / 1.25F);
-        float size = 0.08F;
 
         for (int i = 0; i < particleMax; i++) {
             if (!this.level().isClientSide) {
                 if (this.isStaticAttraction()) {
-                    LightningSyncPacket packet = LightningSyncPacket.builder()
-                            .pos(x, y, z)
-                            .range(lightningLength)
-                            .size(size)
-                            .color(0.3F + (randomSource.nextFloat() / 8), 0.8F + (randomSource.nextFloat() / 8), 0.5F + (randomSource.nextFloat() / 8), 1F)
-                            .build();
-                    AlkahestNetwork.sendToClients(packet);
-                } else if (this.isQuasar()) {
-                    LightningSyncPacket packet = LightningSyncPacket.builder()
-                            .pos(x, y, z)
-                            .range(lightningLength)
-                            .size(size)
-                            .color(0.1F + randomSource.nextFloat(), 0.1F + randomSource.nextFloat(), 0.1F + randomSource.nextFloat(), 1F)
-                            .build();
-                    AlkahestNetwork.sendToClients(packet);
-                } else {
-                    LightningSyncPacket packet = LightningSyncPacket.builder()
-                            .pos(x, y, z)
-                            .range(lightningLength)
-                            .size(size)
-                            .color(0.3F + (randomSource.nextFloat() / 8), 0.5F + (randomSource.nextFloat() / 8), 0.8F + (randomSource.nextFloat() / 8), 1F)
-                            .build();
-                    AlkahestNetwork.sendToClients(packet);
+                    ParticleUtils.spawnLightningParticles(x, y, z, lightningLength, 0.3F + (randomSource.nextFloat() / 8), 0.8F + (randomSource.nextFloat() / 8), 0.5F + (randomSource.nextFloat() / 8));
+                }
+                else if (this.isQuasar()) {
+                    ParticleUtils.spawnLightningParticles(x, y, z, lightningLength, 0.1F + randomSource.nextFloat(), 0.1F + randomSource.nextFloat(), 0.1F + randomSource.nextFloat());
+                }
+                else {
+                    ParticleUtils.spawnLightningParticles(x, y, z, lightningLength, 0.3F + (randomSource.nextFloat() / 8), 0.5F + (randomSource.nextFloat() / 8), 0.8F + (randomSource.nextFloat() / 8));
                 }
             }
         }
@@ -263,8 +246,8 @@ public class ElectricCharge extends FrictionlessProjectile {
         AABB aabb = new AABB(center.subtract(radius, radius, radius), center.add(radius, radius, radius));
         for (LivingEntity living : level().getEntitiesOfClass(LivingEntity.class, aabb, EntitySelector.NO_CREATIVE_OR_SPECTATOR)) {
             DamageSource damageSource = this.damageSources().source(OPDamageTypes.ELECTRIC);
-            if (this.hasLineOfSight(living) && !living.is(this) && !living.isAlliedTo(this) && living.getType() != this.getType() && living.distanceToSqr(center.x, center.y, center.z) <= radius * radius) {
-                if (!living.is(this.getOwner())) {
+            if (OPMath.hasLineOfSight(this, living) && !living.is(this) && !living.isAlliedTo(this) && living.getType() != this.getType() && living.distanceToSqr(center.x, center.y, center.z) <= radius * radius) {
+                if (this.getOwner() != null && !living.is(this.getOwner())) {
                     if (living.hurt(damageSource, damageAmount)) {
                         this.spawnElectricParticles(this, 4 + randomSource.nextInt(3), 0, 12);
                         living.addEffect(new MobEffectInstance(AlkahestMobEffects.ELECTRIFIED.get(), 200), this.getOwner());
@@ -279,7 +262,7 @@ public class ElectricCharge extends FrictionlessProjectile {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult result) {
+    protected void onHitEntity(@NotNull EntityHitResult result) {
         super.onHitEntity(result);
         Entity entity = result.getEntity();
 
@@ -292,7 +275,7 @@ public class ElectricCharge extends FrictionlessProjectile {
     }
 
     @Override
-    protected void onHitBlock(BlockHitResult result) {
+    protected void onHitBlock(@NotNull BlockHitResult result) {
         super.onHitBlock(result);
         BlockPos pos = result.getBlockPos();
 
@@ -412,7 +395,7 @@ public class ElectricCharge extends FrictionlessProjectile {
     }
 
     @Override
-    protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
+    protected float getEyeHeight(@NotNull Pose pose, @NotNull EntityDimensions dimensions) {
         return 0;
     }
 }

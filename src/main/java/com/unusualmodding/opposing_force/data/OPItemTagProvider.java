@@ -12,6 +12,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -24,13 +25,11 @@ public class OPItemTagProvider extends ItemTagsProvider {
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider provider) {
+    protected void addTags(HolderLookup.@NotNull Provider provider) {
 
         this.tag(OPItemTags.KNIVES).add(
                 UMBER_DAGGER.get()
         ).addOptionalTag(new ResourceLocation("farmersdelight", "tools/knives"));
-
-        this.tag(OPItemTags.PIE_CRUST).addOptional(new ResourceLocation("farmersdelight", "pie_crust"));
 
         this.tag(OPItemTags.PIE_CUTTERS).addTag(OPItemTags.KNIVES).addTag(ItemTags.SWORDS);
 
@@ -52,6 +51,14 @@ public class OPItemTagProvider extends ItemTagsProvider {
         );
 
         this.tag(OPItemTags.RAW_VEGETABLES).addTag(OPItemTags.FRUITS).addTag(OPItemTags.VEGETABLES);
+
+//        this.tag(OPItemTags.EXPERIENCE_GAIN_ITEMS).add(
+//                EMERALD_SWORD.get(),
+//                EMERALD_PICKAXE.get(),
+//                EMERALD_AXE.get(),
+//                EMERALD_SHOVEL.get(),
+//                EMERALD_HOE.get()
+//        );
 
         this.tag(ItemTags.FREEZE_IMMUNE_WEARABLES).add(
                 DEEPWOVEN_HAT.get(),

@@ -4,27 +4,32 @@ issueTrackerURL = "https://github.com/Peeko32213/OpposingForce/issues"
 license = "MIT"
 
 [[mods]]
-    modId = "opposing_force"
-    version = "${file.jarVersion}"
-    logoFile = "opposing_force.png"
-    itemIcon = "opposing_force:umber_dagger"
-    configBackground = "opposing_force:textures/block/vile_stone_bricks.png"
-    authors = "Unusual Modding"
-    displayName = "Opposing Force"
-    description = '''
-    Expands the enemy variety of the game!
-    '''
+modId = "opposing_force"
+version = "${file.jarVersion}"
+logoFile = "opposing_force.png"
+itemIcon = "opposing_force:umber_dagger"
+configBackground = "opposing_force:textures/block/vile_stone_bricks.png"
+authors = "Unusual Modding"
+displayName = "Opposing Force"
+description = '''Expands the enemy variety of the game!'''
 
 [[dependencies.opposing_force]]
-    modId = "minecraft"
-    mandatory = true
-    versionRange = "[1.20.1,1.20.2)"
-    ordering = "AFTER"
-    side = "BOTH"
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,1.20.2)"
+ordering = "AFTER"
+side = "BOTH"
 
 [[dependencies.opposing_force]]
-    modId = "forge"
-    mandatory = true
-    versionRange = "[47.1.3,)"
-    ordering = "AFTER"
-    side = "BOTH"
+modId = "forge"
+mandatory = true
+versionRange = "[47.1.3,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.opposing_force]]
+modId = "alkahest"
+mandatory = true
+versionRange = "[1.0.0,)"
+ordering = "AFTER"
+side = "BOTH"

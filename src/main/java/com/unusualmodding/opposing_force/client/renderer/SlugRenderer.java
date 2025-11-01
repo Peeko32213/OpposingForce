@@ -11,24 +11,25 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(Dist.CLIENT)
-public class SlugRenderer extends MobRenderer<Slug, SlugModel<Slug>> {
+public class SlugRenderer extends MobRenderer<Slug, SlugModel> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/slug.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/slug/slug.png");
 
     public SlugRenderer(EntityRendererProvider.Context context) {
-        super(context, new SlugModel<>(context.bakeLayer(OPModelLayers.SLUG)), 0.5F);
+        super(context, new SlugModel(context.bakeLayer(OPModelLayers.SLUG)), 0.5F);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Slug entity) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull Slug entity) {
         return TEXTURE;
     }
 
     @Override
-    protected @Nullable RenderType getRenderType(Slug entity, boolean bodyVisible, boolean translucent, boolean glowing) {
+    protected @Nullable RenderType getRenderType(@NotNull Slug entity, boolean bodyVisible, boolean translucent, boolean glowing) {
         return RenderType.entityCutoutNoCull(TEXTURE);
     }
 

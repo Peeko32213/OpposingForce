@@ -1,22 +1,14 @@
 package com.unusualmodding.opposing_force.registry.enums;
 
-import com.unusualmodding.opposing_force.registry.OPBlocks;
-import com.unusualmodding.opposing_force.registry.OPItems;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-public enum OPItemTiers implements Tier {
-
-    VILE(0, 224, 3.0F, 0.0F, 8, () -> Ingredient.of(OPBlocks.SLUG_EGGS.get())),
-    EMERALD(3, 1561, 8.0F, 3.0F, 14, () -> Ingredient.of(Tags.Items.GEMS_EMERALD)),
-    UMBER(2, 196, 6.0F, 1.0F, 10, () -> Ingredient.of(OPItems.UMBER_FANG.get())),
-    ELECTRIC(2, 624, 10.0F, 2.0F, 8, () -> Ingredient.of(OPItems.ELECTRIC_CHARGE.get())),
-    MOUNTAIN_BLADE(3, 1024, 8.0F, 4.0F, 5, () -> Ingredient.of(OPItems.ELECTRIC_CHARGE.get()));
+@SuppressWarnings("deprecation")
+public class OPItemTier implements Tier {
 
     private final int level;
     private final int durability;
@@ -25,7 +17,7 @@ public enum OPItemTiers implements Tier {
     private final int enchantmentValue;
     private final LazyLoadedValue<Ingredient> repairIngredient;
 
-    OPItemTiers(int level, int durability, float speed, float damage, int enchantmentValue, Supplier<Ingredient> repairIngredient) {
+    public OPItemTier(int level, int durability, float speed, float damage, int enchantmentValue, Supplier<Ingredient> repairIngredient) {
         this.level = level;
         this.durability = durability;
         this.speed = speed;
@@ -34,26 +26,32 @@ public enum OPItemTiers implements Tier {
         this.repairIngredient = new LazyLoadedValue<>(repairIngredient);
     }
 
+    @Override
     public int getUses() {
         return this.durability;
     }
 
+    @Override
     public float getSpeed() {
         return this.speed;
     }
 
+    @Override
     public float getAttackDamageBonus() {
         return this.damage;
     }
 
+    @Override
     public int getLevel() {
         return this.level;
     }
 
+    @Override
     public int getEnchantmentValue() {
         return this.enchantmentValue;
     }
 
+    @Override
     public @NotNull Ingredient getRepairIngredient() {
         return this.repairIngredient.get();
     }

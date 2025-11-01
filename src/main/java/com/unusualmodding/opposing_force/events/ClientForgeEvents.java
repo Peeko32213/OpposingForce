@@ -28,6 +28,11 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = OpposingForce.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientForgeEvents {
 
+    private static float shakeAmount;
+    private static float prevShakeAmount;
+
+    public static final List<ScreenShakeEvent> SCREEN_SHAKE_EVENTS = new ArrayList<>();
+
     @SubscribeEvent
     public static void renderNameplate(RenderNameTagEvent event) {
         if (event.getEntity() instanceof LivingEntity entity) {
@@ -36,11 +41,6 @@ public class ClientForgeEvents {
             }
         }
     }
-
-    private static float shakeAmount;
-    private static float prevShakeAmount;
-
-    public static final List<ScreenShakeEvent> SCREEN_SHAKE_EVENTS = new ArrayList<>();
 
     @SubscribeEvent
     public void onPoseHand(PoseHandEvent event) {

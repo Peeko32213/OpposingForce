@@ -2,7 +2,7 @@ package com.unusualmodding.opposing_force.items;
 
 import com.unusualmodding.opposing_force.entity.Slug;
 import com.unusualmodding.opposing_force.registry.*;
-import com.unusualmodding.opposing_force.registry.enums.OPItemTiers;
+import com.unusualmodding.opposing_force.registry.enums.OPTiers.OPItemTiers;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;

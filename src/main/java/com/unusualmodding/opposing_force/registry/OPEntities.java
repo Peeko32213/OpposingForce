@@ -59,22 +59,20 @@ public class OPEntities {
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "guzzler").toString())
     );
 
-    public static final RegistryObject<EntityType<HauntedTool>> HAUNTED_TOOL = ENTITY_TYPES.register(
-            "haunted_tool", () ->
-            EntityType.Builder.of(HauntedTool::new, MobCategory.MONSTER)
-                    .sized(0.5F, 0.5F)
-                    .clientTrackingRange(10)
-                    .fireImmune()
-                    .noSummon()
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "haunted_tool").toString())
-    );
-
     public static final RegistryObject<EntityType<HangingSpider>> HANGING_SPIDER = ENTITY_TYPES.register(
             "hanging_spider", () ->
             EntityType.Builder.of(HangingSpider::new, MobCategory.MONSTER)
                     .sized(0.98F, 0.5F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "hanging_spider").toString())
+    );
+
+    public static final RegistryObject<EntityType<Nymph>> NYMPH = ENTITY_TYPES.register(
+            "nymph", () ->
+            EntityType.Builder.of(Nymph::new, MobCategory.MONSTER)
+                    .sized(0.8F, 2.8F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "nymph").toString())
     );
 
     public static final RegistryObject<EntityType<Rambler>> RAMBLER = ENTITY_TYPES.register(

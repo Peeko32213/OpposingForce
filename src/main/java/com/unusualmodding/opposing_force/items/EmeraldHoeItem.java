@@ -3,7 +3,7 @@ package com.unusualmodding.opposing_force.items;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.unusualmodding.opposing_force.items.interfaces.EmeraldTool;
-import com.unusualmodding.opposing_force.registry.enums.OPItemTiers;
+import com.unusualmodding.opposing_force.registry.enums.OPTiers.OPItemTiers;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;

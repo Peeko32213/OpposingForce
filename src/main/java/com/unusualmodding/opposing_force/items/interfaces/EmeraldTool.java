@@ -11,7 +11,7 @@ public interface EmeraldTool {
 
     default ImmutableMultimap.Builder<Attribute, AttributeModifier> createExtraAttributes() {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = new ImmutableMultimap.Builder<>();
-        builder.put(OPAttributes.EXPERIENCE_GAIN.get(), new AttributeModifier(UUID.fromString("1e0f1128-0ee5-4b45-a1c4-12b4da5b1144"), "Increased experience gain", 0.5F, AttributeModifier.Operation.MULTIPLY_BASE));
+        builder.put(OPAttributes.EXPERIENCE_GAIN.get(), new AttributeModifier(UUID.fromString("1e0f1128-0ee5-4b45-a1c4-12b4da5b1144"), "Increased experience gain", 0.5D, AttributeModifier.Operation.MULTIPLY_BASE));
         return builder;
     }
 }

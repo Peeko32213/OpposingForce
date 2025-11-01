@@ -17,6 +17,7 @@ public class OPModelLayers {
     public static final ModelLayerLocation FROWZY_HEAD = main("frowzy_head");
     public static final ModelLayerLocation GUZZLER = main("guzzler");
     public static final ModelLayerLocation HANGING_SPIDER = main("hanging_spider");
+    public static final ModelLayerLocation NYMPH = main("nymph");
     public static final ModelLayerLocation RAMBLER = main("rambler");
     public static final ModelLayerLocation RAMBLER_SKULL = main("rambler_skull");
     public static final ModelLayerLocation SLUG = main("slug");
@@ -34,7 +35,6 @@ public class OPModelLayers {
     public static final ModelLayerLocation WOODEN_ARMOR = main("wooden_armor");
 
     public static final ModelLayerLocation LASER_BOLT = main("laser_bolt");
-    public static final ModelLayerLocation BLASTER = main("blaster");
 
     private static ModelLayerLocation register(String id, String name) {
         return new ModelLayerLocation(new ResourceLocation(OpposingForce.MOD_ID, id), name);

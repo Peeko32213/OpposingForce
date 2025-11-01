@@ -12,7 +12,7 @@ public class OPItemTags {
     public static final TagKey<Item> RAW_VEGETABLES = modItemTag("raw_vegetables");
     public static final TagKey<Item> PIE_CUTTERS = modItemTag("pie_cutters");
     public static final TagKey<Item> KNIVES = modItemTag("knives");
-    public static final TagKey<Item> PIE_CRUST = modItemTag("pie_crust");
+    public static final TagKey<Item> EXPERIENCE_GAIN_ITEMS = modItemTag("experience_gain_items");
 
     public static final TagKey<Item> BERRIES = forgeItemTag("berries");
     public static final TagKey<Item> FRUITS = forgeItemTag("fruits");

@@ -35,8 +35,8 @@ public class ModEvents {
         event.put(FIRE_SLIME.get(), FireSlime.createAttributes().build());
         event.put(FROWZY.get(), Frowzy.createAttributes().build());
         event.put(GUZZLER.get(), Guzzler.createAttributes().build());
-        event.put(HAUNTED_TOOL.get(), HauntedTool.createAttributes().build());
         event.put(HANGING_SPIDER.get(), HangingSpider.createAttributes().build());
+        event.put(NYMPH.get(), Nymph.createAttributes().build());
         event.put(RAMBLER.get(), Rambler.createAttributes().build());
         event.put(SLUG.get(), Slug.createAttributes().build());
         event.put(TERROR.get(), Terror.createAttributes().build());

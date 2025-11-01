@@ -14,17 +14,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(Dist.CLIENT)
 public class VoltRenderer extends MobRenderer<Volt, VoltModel> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID,"textures/entity/volt/volt.png");
-    private static final ResourceLocation PULSATING_GLOW_TEXTURE = new ResourceLocation(OpposingForce.MOD_ID,"textures/entity/volt/volt_glow.png");
+    private static final ResourceLocation VOLT = new ResourceLocation(OpposingForce.MOD_ID,"textures/entity/volt/volt.png");
 
     public VoltRenderer(EntityRendererProvider.Context context) {
         super(context, new VoltModel(context.bakeLayer(OPModelLayers.VOLT)), 0.5F);
-        this.addLayer(new VoltGlowLayer(this, PULSATING_GLOW_TEXTURE, (entity, v, v1) -> Math.max(0.8F, Mth.cos(v1 * 0.025F + (float) Math.PI)), VoltModel::getPulsatingLayerModelParts));
+        this.addLayer(new VoltGlowLayer(this));
         this.addLayer(new VoltChargedLayer(this, context.getModelSet()));
     }
 
@@ -38,12 +38,12 @@ public class VoltRenderer extends MobRenderer<Volt, VoltModel> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Volt entity) {
-        return TEXTURE;
+    public @NotNull ResourceLocation getTextureLocation(@NotNull Volt entity) {
+        return VOLT;
     }
 
     @Override
-    protected @Nullable RenderType getRenderType(Volt entity, boolean bodyVisible, boolean translucent, boolean glowing) {
-        return RenderType.entityCutoutNoCull(TEXTURE);
+    protected @Nullable RenderType getRenderType(@NotNull Volt entity, boolean bodyVisible, boolean translucent, boolean glowing) {
+        return RenderType.entityCutoutNoCull(VOLT);
     }
 }

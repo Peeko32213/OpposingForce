@@ -1,13 +1,12 @@
 package com.unusualmodding.opposing_force.items;
 
-import com.unusualmodding.alkahest.network.LightningSyncPacket;
 import com.unusualmodding.alkahest.registry.AlkahestMobEffects;
-import com.unusualmodding.alkahest.registry.AlkahestNetwork;
 import com.unusualmodding.alkahest.registry.AlkahestSoundEvents;
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
-import com.unusualmodding.opposing_force.registry.enums.OPItemTiers;
+import com.unusualmodding.opposing_force.registry.enums.OPTiers;
 import com.unusualmodding.opposing_force.utils.OPMath;
+import com.unusualmodding.opposing_force.utils.ParticleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.stats.Stats;
@@ -32,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 public class SparkBladeItem extends SwordItem {
 
     public SparkBladeItem(Properties properties) {
-        super(OPItemTiers.ELECTRIC, 3, -2.8F, properties);
+        super(OPTiers.OPItemTiers.ELECTRIC, 3, -2.8F, properties);
     }
 
     @Override
@@ -136,13 +135,7 @@ public class SparkBladeItem extends SwordItem {
 
     public void sendElectricParticles(LivingEntity entity, int lightningLength) {
         for (int i1 = 0; i1 < 12; i1++) {
-            LightningSyncPacket packet = LightningSyncPacket.builder()
-                    .pos(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ())
-                    .range(2 + entity.getRandom().nextInt(lightningLength))
-                    .size(0.08F)
-                    .color(0.3F + (entity.getRandom().nextFloat() / 8), 0.5F + (entity.getRandom().nextFloat() / 8), 0.8F + (entity.getRandom().nextFloat() / 8), 1F)
-                    .build();
-            AlkahestNetwork.sendToClients(packet);
+            ParticleUtils.spawnLightningParticles(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ(), 2 + entity.getRandom().nextInt(lightningLength), 0.3F + (entity.getRandom().nextFloat() / 8), 0.5F + (entity.getRandom().nextFloat() / 8), 0.8F + (entity.getRandom().nextFloat() / 8));
         }
     }
 }

@@ -1,10 +1,9 @@
 package com.unusualmodding.opposing_force.entity.projectile;
 
-import com.unusualmodding.alkahest.network.LightningSyncPacket;
 import com.unusualmodding.alkahest.registry.AlkahestMobEffects;
-import com.unusualmodding.alkahest.registry.AlkahestNetwork;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.utils.OPMath;
+import com.unusualmodding.opposing_force.utils.ParticleUtils;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -47,13 +46,7 @@ public class LightningBomb extends AbstractBomb {
         float radius = this.getExplosionRadius();
         if (!this.level().isClientSide) {
             for (int i = 0; i < 16; i++) {
-                LightningSyncPacket packet = LightningSyncPacket.builder()
-                        .pos(location.x(), location.y(), location.z())
-                        .range(6 + this.random.nextInt(2))
-                        .size(0.08F)
-                        .color(0.3F + (this.random.nextFloat() / 8), 0.5F + (this.random.nextFloat() / 8), 0.8F + (this.random.nextFloat() / 8), 1F)
-                        .build();
-                AlkahestNetwork.sendToClients(packet);
+                ParticleUtils.spawnLightningParticles(location.x(), location.y(), location.z(), 6 + this.random.nextInt(2), 0.3F + (this.random.nextFloat() / 8), 0.5F + (this.random.nextFloat() / 8), 0.8F + (this.random.nextFloat() / 8));
             }
             this.level().broadcastEntityEvent(this, (byte) 3);
             this.level().playSound(null, location.x(), location.y(), location.z(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.NEUTRAL, 2.5F, 1.8F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);

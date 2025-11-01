@@ -3,7 +3,6 @@ package com.unusualmodding.opposing_force.events;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.armor.*;
 import com.unusualmodding.opposing_force.client.models.entity.*;
-import com.unusualmodding.opposing_force.client.models.item.BlasterModel;
 import com.unusualmodding.opposing_force.client.models.mob_heads.*;
 import com.unusualmodding.opposing_force.client.particles.*;
 import com.unusualmodding.opposing_force.client.renderer.*;
@@ -45,8 +44,8 @@ public final class ClientEvents {
         event.registerEntityRenderer(OPEntities.FIRE_SLIME.get(), FireSlimeRenderer::new);
         event.registerEntityRenderer(OPEntities.FROWZY.get(), FrowzyRenderer::new);
         event.registerEntityRenderer(OPEntities.GUZZLER.get(), GuzzlerRenderer::new);
-        event.registerEntityRenderer(OPEntities.HAUNTED_TOOL.get(), HauntedToolRenderer::new);
         event.registerEntityRenderer(OPEntities.HANGING_SPIDER.get(), HangingSpiderRenderer::new);
+        event.registerEntityRenderer(OPEntities.NYMPH.get(), NymphRenderer::new);
         event.registerEntityRenderer(OPEntities.KINETIC_BOMB.get(), KineticBombRenderer::new);
         event.registerEntityRenderer(OPEntities.LIGHTNING_BOMB.get(), LightningBombRenderer::new);
         event.registerEntityRenderer(OPEntities.RAMBLER.get(), RamblerRenderer::new);
@@ -78,10 +77,9 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.TREMBLER, TremblerModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.UMBER_SPIDER, UmberSpiderModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.VOLT, () -> VoltModel.createBodyLayer(new CubeDeformation(0.0F)));
-        event.registerLayerDefinition(OPModelLayers.VOLT_CHARGED, () -> VoltModel.createBodyLayer(new CubeDeformation(0.5F)));
+        event.registerLayerDefinition(OPModelLayers.VOLT_CHARGED, () -> VoltModel.createBodyLayer(new CubeDeformation(0.025F)));
         event.registerLayerDefinition(OPModelLayers.WHIZZ, WhizzModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.LASER_BOLT, LaserBoltModel::createProjectileLayer);
-//        event.registerLayerDefinition(OPModelLayers.BLASTER, BlasterModel::createBlaster);
     }
 
     @SubscribeEvent
