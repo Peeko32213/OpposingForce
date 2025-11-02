@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.events;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.items.BlasterItem;
+import com.unusualmodding.opposing_force.items.LaserBladeItem;
 import com.unusualmodding.opposing_force.items.TeslaCannonItem;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import net.minecraft.client.Minecraft;
@@ -107,6 +108,24 @@ public class ClientForgeEvents {
                 event.getModel().rightArm.xRot = (-(float) Math.PI / 2F) + event.getModel().head.xRot + 0.1F;
                 event.getModel().leftArm.xRot = -1.5F + event.getModel().head.xRot;
                 event.setResult(Event.Result.ALLOW);
+            }
+        }
+        if (player.getUsedItemHand() == InteractionHand.OFF_HAND && player.getItemInHand(InteractionHand.OFF_HAND).getItem() instanceof LaserBladeItem) {
+            if (player.isUsingItem()) {
+                event.getModel().leftArm.xRot = event.getModel().leftArm.xRot * 0.5F - 0.98F;
+                event.getModel().leftArm.yRot = -1 * -0.6F;
+                event.setResult(Event.Result.ALLOW);
+            } else {
+                event.setResult(Event.Result.DEFAULT);
+            }
+        }
+        if (player.getUsedItemHand() == InteractionHand.MAIN_HAND && player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof LaserBladeItem) {
+            if (player.isUsingItem()) {
+                event.getModel().rightArm.xRot = event.getModel().rightArm.xRot * 0.5F - 0.98F;
+                event.getModel().rightArm.yRot = 1 * -0.6F;
+                event.setResult(Event.Result.ALLOW);
+            } else {
+                event.setResult(Event.Result.DEFAULT);
             }
         }
     }

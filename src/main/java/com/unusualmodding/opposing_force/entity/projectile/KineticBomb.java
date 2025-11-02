@@ -53,14 +53,6 @@ public class KineticBomb extends AbstractBomb {
             }
             if (entity instanceof LivingEntity livingEntity) {
                 this.doKnockback(livingEntity, 2.6, 1.8);
-//                float scaledDistance = (float) (1 - (livingEntity.position().distanceTo(location) / radius));
-//                double knockbackResistance = 1.0 - Mth.clamp(livingEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE), 0.0, 1.0);
-//                Vec3 knockback = livingEntity.position().add(0, livingEntity.getBbHeight() * 0.75, 0).subtract(location).normalize().scale(Mth.sqrt(scaledDistance) * knockbackResistance);
-//                if (!this.level().isClientSide) {
-//                    livingEntity.hurtMarked = true;
-//                }
-//                livingEntity.setOnGround(false);
-//                livingEntity.setDeltaMovement(livingEntity.getDeltaMovement().add(knockback.x() * 2.6, knockback.y() * 1.8, knockback.z() * 2.6));
             }
         }
     }

@@ -1,21 +1,56 @@
 package com.unusualmodding.opposing_force.items;
 
-import com.unusualmodding.alkahest.registry.AlkahestMobEffects;
-import com.unusualmodding.alkahest.registry.AlkahestSoundEvents;
+import com.unusualmodding.opposing_force.items.interfaces.ICustomSweepAttack;
+import com.unusualmodding.opposing_force.registry.OPParticles;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.registry.enums.OPTiers.OPItemTiers;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 import org.jetbrains.annotations.NotNull;
 
-public class LaserBladeItem extends SwordItem {
+public class LaserBladeItem extends SwordItem implements ICustomSweepAttack {
+
+    private int swingSoundCooldown = 0;
 
     public LaserBladeItem(Properties properties) {
         super(OPItemTiers.LASER, 3, -2.4F, properties);
+    }
+
+    @Override
+    public boolean canPerformAction(@NotNull ItemStack stack, @NotNull ToolAction toolAction) {
+        return toolAction == ToolActions.SWORD_DIG;
+    }
+
+    @Override
+    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack stack) {
+        return UseAnim.CUSTOM;
+    }
+
+    @Override
+    public int getUseDuration(@NotNull ItemStack stack) {
+        return 72000;
+    }
+
+    @Override
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        player.startUsingItem(hand);
+        return InteractionResultHolder.consume(itemstack);
+    }
+
+    @Override
+    public void onUseTick(@NotNull Level level, @NotNull LivingEntity living, @NotNull ItemStack itemStack, int timeUsing) {
+        super.onUseTick(level, living, itemStack, timeUsing);
     }
 
     @Override
@@ -29,15 +64,26 @@ public class LaserBladeItem extends SwordItem {
 
     @Override
     public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slot, boolean isSelected) {
-        boolean activated = stack.getOrCreateTag().getBoolean("Activated");
+        if (this.swingSoundCooldown > 0) {
+            this.swingSoundCooldown--;
+        }
+    }
 
-        if (isSelected && !activated) {
-            stack.getOrCreateTag().putBoolean("Activated", true);
-            if (level.isClientSide) return;
-            level.playSound(null, entity.blockPosition(), OPSoundEvents.LASER_BLADE_ACTIVATE.get(), SoundSource.PLAYERS, 0.8F, 1.0F);
+    @Override
+    public boolean onLeftClickEntity(ItemStack stack, Player player, Entity target) {
+        this.sweep(player, target, OPParticles.LASER_SWEEP.get());
+        return super.onLeftClickEntity(stack, player, target);
+    }
+
+    @Override
+    public boolean onEntitySwing(@NotNull ItemStack stack, @NotNull LivingEntity entity) {
+        Level level = entity.level();
+
+        if (!level.isClientSide && this.swingSoundCooldown == 0) {
+            this.swingSoundCooldown = 5;
+            level.playSound(null, entity.blockPosition(), OPSoundEvents.LASER_BLADE_SWING.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
         }
-        else if (!isSelected && activated) {
-            stack.getOrCreateTag().putBoolean("Activated", false);
-        }
+
+        return super.onEntitySwing(stack, entity);
     }
 }

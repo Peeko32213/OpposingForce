@@ -332,19 +332,23 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound(OpposingForce.modPrefix("item/blaster/shoot1")).pitch(1.2F)
         );
 
-        this.sound(OPSoundEvents.LASER_BLADE_ACTIVATE,
-                sound(OpposingForce.modPrefix("item/laser_blade/activate1")).attenuationDistance(6),
-                sound(OpposingForce.modPrefix("item/laser_blade/activate2")).attenuationDistance(6),
-                sound(OpposingForce.modPrefix("item/laser_blade/activate3")).attenuationDistance(6),
-                sound(OpposingForce.modPrefix("item/laser_blade/activate4")).attenuationDistance(6),
-                sound(OpposingForce.modPrefix("item/laser_blade/activate5")).attenuationDistance(6)
+        this.sound(OPSoundEvents.LASER_BLADE_BLOCK,
+                sound(OpposingForce.modPrefix("item/laser_blade/block1")),
+                sound(OpposingForce.modPrefix("item/laser_blade/block2")),
+                sound(OpposingForce.modPrefix("item/laser_blade/block3"))
         );
 
-//        this.sound(OPSoundEvents.LASER_BLADE_HIT,
-//                sound(OpposingForce.modPrefix("item/laser_blade/impact1")).attenuationDistance(6),
-//                sound(OpposingForce.modPrefix("item/laser_blade/impact2")).attenuationDistance(6),
-//                sound(OpposingForce.modPrefix("item/laser_blade/impact3")).attenuationDistance(6)
-//        );
+        this.sound(OPSoundEvents.LASER_BLADE_HIT,
+                sound(OpposingForce.modPrefix("item/laser_blade/impact1")),
+                sound(OpposingForce.modPrefix("item/laser_blade/impact2")),
+                sound(OpposingForce.modPrefix("item/laser_blade/impact3"))
+        );
+
+        this.sound(OPSoundEvents.LASER_BLADE_SWING,
+                sound(OpposingForce.modPrefix("item/laser_blade/swing1")),
+                sound(OpposingForce.modPrefix("item/laser_blade/swing2")),
+                sound(OpposingForce.modPrefix("item/laser_blade/swing3"))
+        );
     }
 
     private void soundDefinition(Supplier<SoundEvent> soundEvent, String subtitle, SoundDefinition.Sound... sounds) {

@@ -30,6 +30,7 @@ public final class ClientEvents {
     public static void registerParticleTypes(RegisterParticleProvidersEvent event){
         event.registerSpriteSet(OPParticles.LASER_BOLT_DUST.get(), LaserBoltDustParticle.Factory::new);
         event.registerSpriteSet(OPParticles.MOON_SHOES.get(), MoonShoesParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
     }
 
     @SubscribeEvent

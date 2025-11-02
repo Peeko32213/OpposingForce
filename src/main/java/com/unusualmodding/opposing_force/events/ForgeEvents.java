@@ -9,6 +9,7 @@ import com.unusualmodding.opposing_force.registry.*;
 import com.unusualmodding.opposing_force.registry.OPTrades.*;
 import com.unusualmodding.opposing_force.registry.tags.OPBiomeTags;
 import com.unusualmodding.opposing_force.registry.tags.OPBlockTags;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -19,10 +20,16 @@ import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
@@ -157,6 +164,7 @@ public class ForgeEvents {
     @SubscribeEvent
     public static void onMobHurt(final LivingHurtEvent event) {
         LivingEntity entity = event.getEntity();
+        Entity attacker = event.getSource().getDirectEntity();
         DamageSource damageSource = event.getSource();
 
         for (MobEffectInstance activeEffect : entity.getActiveEffects()) {
@@ -175,5 +183,57 @@ public class ForgeEvents {
                 }
             }
         }
+
+        // laser blade parry
+//        if (entity.isUsingItem() && entity.getUseItem().getItem() == OPItems.LASER_BLADE.get() && entity.getUseItem().getUseDuration() - entity.getUseItemRemainingTicks() <= 10) {
+//            entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
+//            if (attacker instanceof LivingEntity livingAttacker) {
+//                livingAttacker.knockback(0.55F, attacker.getDeltaMovement().x, attacker.getDeltaMovement().z);
+//                livingAttacker.knockback(0.5F, entity.getX() - livingAttacker.getX(), entity.getZ() - livingAttacker.getZ());
+//            }
+//            event.setCanceled(true);
+//        }
+    }
+
+    @SubscribeEvent
+    public static void onMobAttack(final LivingAttackEvent event) {
+        LivingEntity entity = event.getEntity();
+        Entity attacker = event.getSource().getDirectEntity();
+
+        // laser blade parry
+        if (entity.isUsingItem() && entity.getUseItem().getItem() == OPItems.LASER_BLADE.get() && entity.getUseItem().getUseDuration() - entity.getUseItemRemainingTicks() <= 10) {
+            entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
+            if (attacker instanceof LivingEntity livingAttacker) {
+                livingAttacker.knockback(0.55F, attacker.getDeltaMovement().x, attacker.getDeltaMovement().z);
+                livingAttacker.knockback(0.5F, entity.getX() - livingAttacker.getX(), entity.getZ() - livingAttacker.getZ());
+            }
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onProjectileImpact(ProjectileImpactEvent event) {
+        final Projectile projectile = event.getProjectile();
+
+        // laser blade deflection
+//        if (!projectile.getCommandSenderWorld().isClientSide()) {
+        if (event.getRayTraceResult() instanceof EntityHitResult result) {
+            Entity resultEntity = result.getEntity();
+            if (event.getEntity() != null && resultEntity instanceof LivingEntity entityBlocking) {
+                if (entityBlocking.isUsingItem() && entityBlocking.getUseItem().getItem() == OPItems.LASER_BLADE.get() && entityBlocking.getUseItem().getUseDuration() - entityBlocking.getUseItemRemainingTicks() <= 10) {
+                    projectile.setOwner(entityBlocking);
+                    Vec3 rebound = entityBlocking.getLookAngle();
+                    projectile.shoot(rebound.x(), rebound.y(), rebound.z(), 1.5F, 0.0F);
+                    if (projectile instanceof AbstractHurtingProjectile hurting) {
+                        hurting.xPower = rebound.x() * 0.1D;
+                        hurting.yPower = rebound.y() * 0.1D;
+                        hurting.zPower = rebound.z() * 0.1D;
+                    }
+                    entityBlocking.level().playSound(null, entityBlocking.getX(), entityBlocking.getY(), entityBlocking.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entityBlocking.level().getRandom().nextFloat() * 0.4F + 0.8F));
+                    event.setCanceled(true);
+                }
+            }
+        }
+//        }
     }
 }

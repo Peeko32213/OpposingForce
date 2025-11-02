@@ -429,30 +429,29 @@
     ],
     "subtitle": "subtitles.opposing_force.hanging_spider_idle"
   },
-  "laser_blade_activate": {
+  "laser_blade_block": {
     "sounds": [
-      {
-        "attenuation_distance": 6,
-        "name": "opposing_force:item/laser_blade/activate1"
-      },
-      {
-        "attenuation_distance": 6,
-        "name": "opposing_force:item/laser_blade/activate2"
-      },
-      {
-        "attenuation_distance": 6,
-        "name": "opposing_force:item/laser_blade/activate3"
-      },
-      {
-        "attenuation_distance": 6,
-        "name": "opposing_force:item/laser_blade/activate4"
-      },
-      {
-        "attenuation_distance": 6,
-        "name": "opposing_force:item/laser_blade/activate5"
-      }
+      "opposing_force:item/laser_blade/block1",
+      "opposing_force:item/laser_blade/block2",
+      "opposing_force:item/laser_blade/block3"
     ],
-    "subtitle": "subtitles.opposing_force.laser_blade_activate"
+    "subtitle": "subtitles.opposing_force.laser_blade_block"
+  },
+  "laser_blade_hit": {
+    "sounds": [
+      "opposing_force:item/laser_blade/impact1",
+      "opposing_force:item/laser_blade/impact2",
+      "opposing_force:item/laser_blade/impact3"
+    ],
+    "subtitle": "subtitles.opposing_force.laser_blade_hit"
+  },
+  "laser_blade_swing": {
+    "sounds": [
+      "opposing_force:item/laser_blade/swing1",
+      "opposing_force:item/laser_blade/swing2",
+      "opposing_force:item/laser_blade/swing3"
+    ],
+    "subtitle": "subtitles.opposing_force.laser_blade_swing"
   },
   "laser_bolt_impact": {
     "sounds": [

@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "opposing_force:item/laser_blade"
+  }
+}

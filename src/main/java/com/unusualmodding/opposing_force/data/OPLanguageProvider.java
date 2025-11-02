@@ -158,8 +158,9 @@ public class OPLanguageProvider extends LanguageProvider {
 
         this.sound(OPSoundEvents.BLASTER_SHOOT, "Blaster shoots");
 
-        this.sound(OPSoundEvents.LASER_BLADE_ACTIVATE, "Laser Blade activates");
+        this.sound(OPSoundEvents.LASER_BLADE_BLOCK, "Laser Blade blocks");
         this.sound(OPSoundEvents.LASER_BLADE_HIT, "Laser Blade impacts");
+        this.sound(OPSoundEvents.LASER_BLADE_SWING, "Laser Blade swings");
 
         this.addBlock(OPBlocks.INFESTED_AMETHYST_BLOCK, "Infested Block of Amethyst");
 

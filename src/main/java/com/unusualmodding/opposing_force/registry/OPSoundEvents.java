@@ -97,8 +97,9 @@ public class OPSoundEvents {
 
     public static final RegistryObject<SoundEvent> BLASTER_SHOOT = registerSoundEvent("blaster_shoot");
 
-    public static final RegistryObject<SoundEvent> LASER_BLADE_ACTIVATE = registerSoundEvent("laser_blade_activate");
+    public static final RegistryObject<SoundEvent> LASER_BLADE_BLOCK = registerSoundEvent("laser_blade_block");
     public static final RegistryObject<SoundEvent> LASER_BLADE_HIT = registerSoundEvent("laser_blade_hit");
+    public static final RegistryObject<SoundEvent> LASER_BLADE_SWING = registerSoundEvent("laser_blade_swing");
 
     private static RegistryObject<SoundEvent> registerSoundEvent(final String soundName) {
         return SOUND_EVENTS.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(OpposingForce.MOD_ID, soundName)));
