@@ -34,7 +34,7 @@ public class LaserBladeItem extends SwordItem {
         if (isSelected && !activated) {
             stack.getOrCreateTag().putBoolean("Activated", true);
             if (level.isClientSide) return;
-            level.playSound(null, entity.blockPosition(), OPSoundEvents.LASER_BLADE_ACTIVATE.get(), SoundSource.PLAYERS, 0.25F, 1.0F);
+            level.playSound(null, entity.blockPosition(), OPSoundEvents.LASER_BLADE_ACTIVATE.get(), SoundSource.PLAYERS, 0.5F, 1.0F);
         }
         else if (!isSelected && activated) {
             stack.getOrCreateTag().putBoolean("Activated", false);
