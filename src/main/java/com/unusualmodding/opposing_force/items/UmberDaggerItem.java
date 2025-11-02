@@ -25,7 +25,7 @@ public class UmberDaggerItem extends ThrowableWeaponItem {
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EGG_THROW, SoundSource.PLAYERS, 0.5F, 0.4F / (level.random.nextFloat() * 0.4F + 0.8F));
-        player.getCooldowns().addCooldown(this, 20);
+        player.getCooldowns().addCooldown(this, 10);
         if (!level.isClientSide()) {
             UmberDagger umberDagger = new UmberDagger(level, player);
             umberDagger.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 0.75F);

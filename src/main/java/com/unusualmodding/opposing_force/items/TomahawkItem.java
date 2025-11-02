@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class TomahawkItem extends ThrowableWeaponItem {
 
@@ -18,10 +19,10 @@ public class TomahawkItem extends ThrowableWeaponItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EGG_THROW, SoundSource.PLAYERS, 0.5F, 0.4F / (level.random.nextFloat() * 0.4F + 0.8F));
-        player.getCooldowns().addCooldown(this, 20);
+        player.getCooldowns().addCooldown(this, 10);
         if (!level.isClientSide()) {
             Tomahawk tomahawk = new Tomahawk(level, player);
             tomahawk.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.25F, 0.75F);

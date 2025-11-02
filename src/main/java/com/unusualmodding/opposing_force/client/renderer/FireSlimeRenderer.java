@@ -13,27 +13,29 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(Dist.CLIENT)
-public class FireSlimeRenderer extends MobRenderer<FireSlime, FireSlimeModel<FireSlime>> {
+public class FireSlimeRenderer extends MobRenderer<FireSlime, FireSlimeModel> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/fire_slime.png");
 
     public FireSlimeRenderer(EntityRendererProvider.Context context) {
-        super(context, new FireSlimeModel<>(context.bakeLayer(OPModelLayers.FIRE_SLIME)), 0.4F);
+        super(context, new FireSlimeModel(context.bakeLayer(OPModelLayers.FIRE_SLIME)), 0.4F);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(FireSlime entity) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull FireSlime entity) {
         return TEXTURE;
     }
 
     @Override
-    protected @Nullable RenderType getRenderType(FireSlime entity, boolean bodyVisible, boolean translucent, boolean glowing) {
+    protected @Nullable RenderType getRenderType(@NotNull FireSlime entity, boolean bodyVisible, boolean translucent, boolean glowing) {
         return RenderType.entityCutout(TEXTURE);
     }
 
+    @Override
     protected void scale(FireSlime slime, PoseStack poseStack, float scale) {
         poseStack.scale(0.999F, 0.999F, 0.999F);
         poseStack.translate(0.0F, 0.005F, 0.0F);
@@ -42,7 +44,8 @@ public class FireSlimeRenderer extends MobRenderer<FireSlime, FireSlimeModel<Fir
         poseStack.scale(squishScale, 1.0F / squishScale, squishScale);
     }
 
-    protected int getBlockLightLevel(FireSlime entity, BlockPos pos) {
+    @Override
+    protected int getBlockLightLevel(@NotNull FireSlime entity, @NotNull BlockPos pos) {
         return 15;
     }
 }

@@ -1,0 +1,21 @@
+{
+  "parent": "item/handheld",
+  "loader": "forge:separate_transforms",
+  "textures": {
+    "layer0": "opposing_force:item/laser_blade"
+  },
+  "base": {
+    "parent": "opposing_force:item/laser_blade_handheld"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "opposing_force:item/laser_blade_gui"
+    },
+    "fixed": {
+      "parent": "opposing_force:item/laser_blade_gui"
+    },
+    "ground": {
+      "parent": "opposing_force:item/laser_blade_gui"
+    }
+  }
+}

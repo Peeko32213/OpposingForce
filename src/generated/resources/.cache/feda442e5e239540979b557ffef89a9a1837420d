@@ -1,4 +1,4 @@
-// 1.20.1	2025-10-28T22:37:48.8490434	Item Models: opposing_force
+// 1.20.1	2025-11-01T13:13:21.9454384	Item Models: opposing_force
 0242899276479e640e0948ff9d1431d301c73e3a assets/opposing_force/models/item/captured_whizz.json
 99bee2bc20935c1aecb77ae575b7005d27ce12b6 assets/opposing_force/models/item/deepwoven_boots.json
 e54baee97cf734ca4015adce401a3abbf106e572 assets/opposing_force/models/item/deepwoven_hat.json
@@ -28,6 +28,7 @@ a0ac3bf657030a45aebab3ad3144e7afd5770940 assets/opposing_force/models/item/fire_
 4da8ed7d7235701851515bb8835ca13080e610d7 assets/opposing_force/models/item/kinetic_bomb.json
 37a783272e1c99c7f4ddcd54eac1ee4796e28891 assets/opposing_force/models/item/lightning_bomb.json
 5a889e69f738de36192414fa034dc1977c854461 assets/opposing_force/models/item/moon_shoes.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/nymph_spawn_egg.json
 ef1d509eb9487822f1873402258da1e29c7f7efc assets/opposing_force/models/item/opposing_force.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/rambler_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/slug_spawn_egg.json
@@ -35,6 +36,7 @@ e488e2aaec4bd14e84ea61d2940fc2fd3c636e98 assets/opposing_force/models/item/stone
 201c869113dd15f90044d502881795bc976d674b assets/opposing_force/models/item/stone_chestplate.json
 f520914c9a04160cc6a93346e2fcff583038293e assets/opposing_force/models/item/stone_helmet.json
 61d7276bab171f7df329b9765a68af8adfe95615 assets/opposing_force/models/item/stone_leggings.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/tart_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/terror_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/trembler_spawn_egg.json
 9627ce30b8de446af03519521c81f0c153e5a570 assets/opposing_force/models/item/umber_dagger.json

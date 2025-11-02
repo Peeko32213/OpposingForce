@@ -23,6 +23,7 @@ public class SlugInfestation extends MobEffect {
         this.addAttributeModifier(Attributes.MOVEMENT_SPEED, "91AEAA56-376B-4498-935B-2F7F68020638", -0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
+    @Override
     public boolean isDurationEffectTick(int duration, int amplifier) {
         return duration > 0;
     }
@@ -44,7 +45,7 @@ public class SlugInfestation extends MobEffect {
             Vector3f vector3f = entity.getLookAngle().toVector3f().mul(0.3F).mul(1.0F, 1.5F, 1.0F).rotateY(f1);
             slug.moveTo(x, y, z, level.getRandom().nextFloat() * 360.0F, 0.0F);
             slug.setDeltaMovement(new Vec3(vector3f));
-            slug.setFromInfestation(true);
+            slug.setFromSummon(true);
             slug.finalizeSpawn((ServerLevel) entity.level(), entity.level().getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.TRIGGERED, null, null);
             level.addFreshEntity(slug);
             slug.playSound(OPSoundEvents.SLUG_ATTACK.get());

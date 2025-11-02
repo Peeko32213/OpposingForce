@@ -53,6 +53,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.forEntity(OPEntities.NYMPH);
         this.forEntity(OPEntities.RAMBLER);
         this.forEntity(OPEntities.SLUG);
+        this.forEntity(OPEntities.TART);
         this.forEntity(OPEntities.TERROR);
         this.forEntity(OPEntities.TREMBLER);
         this.forEntity(OPEntities.UMBER_SPIDER);
@@ -157,6 +158,9 @@ public class OPLanguageProvider extends LanguageProvider {
 
         this.sound(OPSoundEvents.BLASTER_SHOOT, "Blaster shoots");
 
+        this.sound(OPSoundEvents.LASER_BLADE_ACTIVATE, "Laser Blade activates");
+        this.sound(OPSoundEvents.LASER_BLADE_HIT, "Laser Blade impacts");
+
         this.addBlock(OPBlocks.INFESTED_AMETHYST_BLOCK, "Infested Block of Amethyst");
 
         this.addBlock(OPBlocks.DICER_HEAD, "Dicer Head");
@@ -180,7 +184,6 @@ public class OPLanguageProvider extends LanguageProvider {
 
         this.addEnchantmentWithDesc(OPEnchantments.RAPID_FIRE.get(), "Increases the fire rate of the blaster at the cost of damage per shot");
         this.addEnchantmentWithDesc(OPEnchantments.SPLITTING.get(), "Laser bolts split into multiple laser bolts on hit");
-        this.addEnchantmentWithDesc(OPEnchantments.FREEZE_RAY.get(), "Laser bolts inflict freezing on hit");
         this.addEnchantmentWithDesc(OPEnchantments.POWER_SUPPLY.get(), "Blaster has a chance to not consume redstone dust");
 
         this.addEffect(OPMobEffects.GLOOM_TOXIN, "Gloom Toxin");
@@ -218,6 +221,11 @@ public class OPLanguageProvider extends LanguageProvider {
         this.add("effect.opposing_force.electrified.description", "Inflicts lethal damage over time while in water or rain; higher levels do more damage per second.");
         this.add("effect.opposing_force.gloom_toxin.description", "Inflicts lethal damage over time while in light levels of 7 or less; higher levels do more damage per second.");
         this.add("effect.opposing_force.slug_infestation.description", "Decreases walking speed and gives the entity a 25% chance to spawn between 1 and 2 slugs when hurt; higher levels increase the amount of slugs spawned.");
+
+        // tame commands
+        this.add("entity.opposing_force.all.command_0", "%s is wandering");
+        this.add("entity.opposing_force.all.command_1", "%s is staying");
+        this.add("entity.opposing_force.all.command_2", "%s is following");
 
         this.translateDamageType(OPDamageTypes.ELECTRIC, player -> player + " met a shocking end", (player, entity) -> player + " was zapped by " + entity);
         this.translateDamageType(OPDamageTypes.GLOOM_TOXIN, player -> player + " was consumed by darkness", (player, entity) -> player + " didn't reach the light");

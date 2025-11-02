@@ -1,12 +1,13 @@
 package com.unusualmodding.opposing_force.entity;
 
-import com.unusualmodding.opposing_force.entity.base.TameableMonster;
+import com.unusualmodding.opposing_force.entity.ai.goal.MonsterFollowOwnerGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.MonsterOwnerHurtByTargetGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.MonsterOwnerHurtTargetGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.MonsterSitWhenOrderedToGoal;
+import com.unusualmodding.opposing_force.entity.base.SummonableMonster;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -36,18 +37,14 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.function.BooleanSupplier;
 
-public class FireSlime extends TameableMonster {
-
-    private static final EntityDataAccessor<Boolean> DESPAWN = SynchedEntityData.defineId(FireSlime.class, EntityDataSerializers.BOOLEAN);
-
-    private int despawnTimer = 0;
+public class FireSlime extends SummonableMonster {
 
     public float targetSquish;
     public float squish;
     public float oSquish;
     private boolean wasOnGround;
 
-    public FireSlime(EntityType<? extends TameableMonster> entityType, Level level) {
+    public FireSlime(EntityType<? extends SummonableMonster> entityType, Level level) {
         super(entityType, level);
         this.moveControl = new FireSlimeMoveControl(this);
     }
@@ -58,12 +55,16 @@ public class FireSlime extends TameableMonster {
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FireSlimeFloatGoal(this));
-        this.goalSelector.addGoal(1, new FireSlimeAttackGoal(this));
-        this.goalSelector.addGoal(2, new FireSlimeRandomDirectionGoal(this));
-        this.goalSelector.addGoal(3, new FireSlimeKeepOnJumpingGoal(this));
+        this.goalSelector.addGoal(1, new MonsterSitWhenOrderedToGoal(this));
+        this.goalSelector.addGoal(2, new FireSlimeAttackGoal(this));
+        this.goalSelector.addGoal(3, new MonsterFollowOwnerGoal(this, 1.2D, 5.0F, 2.0F, false));
+        this.goalSelector.addGoal(4, new FireSlimeRandomDirectionGoal(this));
+        this.goalSelector.addGoal(5, new FireSlimeKeepOnJumpingGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (entity) -> Math.abs(entity.getY() - this.getY()) <= (double) 4.0F));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+        this.targetSelector.addGoal(1, new MonsterOwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(2, new MonsterOwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (entity) -> Math.abs(entity.getY() - this.getY()) <= (double) 4.0F));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
     }
 
     protected void dealDamage() {
@@ -143,9 +144,9 @@ public class FireSlime extends TameableMonster {
             this.level().addParticle(ParticleTypes.FLAME, this.getX() + (double) f2, this.getY() + 0.3D, this.getZ() + (double) f3, 0.0D, 0.0D, 0.0D);
         }
 
-        if (this.shouldDespawn()) {
-            this.despawnTimer++;
-            if (this.despawnTimer > 160) {
+        if (this.isFromSummon()) {
+            this.setLifeTicks(this.getLifeTicks() + 1);
+            if (this.getLifeTicks() > 160) {
                 this.navigation.stop();
                 if (this.getTarget() != null) {
                     this.setTarget(null);
@@ -158,8 +159,8 @@ public class FireSlime extends TameableMonster {
                     this.level().addParticle(ParticleTypes.LAVA, this.getX(), this.getRandomY() + 0.5D - d1 * 10.0D, this.getZ(), d0, d1, d2);
                 }
             }
-            if (this.despawnTimer > 200) {
-                this.despawnTimer = 0;
+            if (this.getLifeTicks() > 200) {
+                this.setLifeTicks(0);
                 this.playSound(OPSoundEvents.FIRE_SLIME_POP.get(), this.getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
                 this.spawnAnim();
                 this.remove(RemovalReason.DISCARDED);
@@ -206,34 +207,16 @@ public class FireSlime extends TameableMonster {
         return 360;
     }
 
-    public boolean shouldDespawn() {
-        return this.entityData.get(DESPAWN);
-    }
-
-    public void setShouldDespawn(boolean despawn) {
-        this.entityData.set(DESPAWN, despawn);
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DESPAWN, false);
-    }
-
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        compoundTag.putBoolean("ShouldDespawn", this.shouldDespawn());
         compoundTag.putBoolean("WasOnGround", this.wasOnGround);
-        compoundTag.putInt("DespawnTimer", this.despawnTimer);
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        this.setShouldDespawn(compoundTag.getBoolean("ShouldDespawn"));
         this.wasOnGround = compoundTag.getBoolean("WasOnGround");
-        this.despawnTimer = compoundTag.getInt("DespawnTimer");
     }
 
     public void shootFromGuzzler(double x, double y, double z, float scale) {
@@ -247,53 +230,20 @@ public class FireSlime extends TameableMonster {
         this.yHeadRot = getYRot();
         this.yHeadRotO = getYRot();
         this.yRotO = getYRot();
-        this.setShouldDespawn(true);
-    }
-
-    public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
-        Vec3 vec3 = (new Vec3(x, y, z)).normalize().add(this.random.triangle(0.0D, 0.0172275D * (double) inaccuracy), this.random.triangle(0.0D, 0.0172275D * (double) inaccuracy), this.random.triangle(0.0D, 0.0172275D * (double) inaccuracy)).scale((double) velocity);
-        this.setDeltaMovement(vec3);
-        double d0 = vec3.horizontalDistance();
-        this.setYRot((float)(Mth.atan2(vec3.x, vec3.z) * (double) (180F / (float) Math.PI)));
-        this.setXRot((float)(Mth.atan2(vec3.y, d0) * (double) (180F / (float) Math.PI)));
-        this.yRotO = this.getYRot();
-        this.xRotO = this.getXRot();
-    }
-
-    public void shootFromRotation(Entity shooter, float x, float y, float z, float velocity, float inaccuracy) {
-        float f = -Mth.sin(y * ((float) Math.PI / 180F)) * Mth.cos(x * ((float) Math.PI / 180F));
-        float f1 = -Mth.sin((x + z) * ((float)Math.PI / 180F));
-        float f2 = Mth.cos(y * ((float) Math.PI / 180F)) * Mth.cos(x * ((float) Math.PI / 180F));
-        this.shoot(f, f1, f2, velocity, inaccuracy);
-        Vec3 vec3 = shooter.getDeltaMovement();
-        this.setDeltaMovement(this.getDeltaMovement().add(vec3.x, shooter.onGround() ? 0.0D : vec3.y, vec3.z));
-    }
-
-    public void copyTarget(LivingEntity entity) {
-        LivingEntity priorTarget = this.getTarget();
-        if (priorTarget == null || !priorTarget.isAlive()) {
-            LivingEntity target = null;
-            if (entity.getLastHurtMob() != null) {
-                target = entity.getLastHurtMob();
-            } else if (entity.getLastHurtByMob() != null) {
-                target = entity.getLastHurtByMob();
-            }
-            if (target != null && target.isAlive() && !target.isAlliedTo(entity) && !target.is(entity) && !target.isAlliedTo(this) && !(target instanceof FireSlime) && !(target instanceof Guzzler)) {
-                this.setTarget(target);
-            }
-        }
+        this.setFromSummon(true);
     }
 
     @Override
     public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        if (itemstack.is(Items.BLAZE_POWDER.asItem()) && this.shouldDespawn()) {
+        if (itemstack.is(Items.BLAZE_POWDER.asItem()) && this.isFromSummon()) {
             if (!player.getAbilities().instabuild) {
                 itemstack.shrink(1);
             }
             this.gameEvent(GameEvent.ENTITY_INTERACT);
-            this.setShouldDespawn(false);
-            this.despawnTimer = 0;
+            this.setFromSummon(false);
+            this.setLifeTicks(-1);
+            this.tame(player);
             this.playSound(SoundEvents.BLAZE_BURN, this.getSoundVolume(), this.getVoicePitch());
             this.level().broadcastEntityEvent(this, (byte) 39);
             return InteractionResult.SUCCESS;

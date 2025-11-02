@@ -96,10 +96,10 @@ public class DicerAttackGoal extends AttackGoal {
             } else {
                 this.dicer.getNavigation().moveTo(target, 2.0D);
                 if (distance < this.monster.getBbWidth() * 3.0F * this.monster.getBbWidth() * 3.0F + target.getBbWidth()) {
-                    if (this.dicer.getRandom().nextFloat() < 0.15F) {
+                    if (this.dicer.getRandom().nextFloat() < 0.2F) {
                         this.dicer.setAttackState(3);
                     }
-                    else if (this.dicer.getRandom().nextFloat() < 0.3F) {
+                    else if (this.dicer.getRandom().nextFloat() < 0.4F) {
                         this.dicer.setAttackState(2);
                     }
                     else {

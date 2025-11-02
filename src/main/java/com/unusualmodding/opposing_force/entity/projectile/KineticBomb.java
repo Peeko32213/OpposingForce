@@ -9,6 +9,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -50,13 +51,17 @@ public class KineticBomb extends AbstractBomb {
             if (entity.distanceToSqr(location) > radius * radius || !OPMath.hasLineOfSight(this, entity)) {
                 continue;
             }
-            float scaledDistance = (float) (1 - (entity.position().distanceTo(location) / radius));
-            Vec3 knockback = entity.position().add(0, entity.getBbHeight() * 0.75, 0).subtract(location).normalize().scale(Mth.sqrt(scaledDistance));
-            if (!this.level().isClientSide) {
-                entity.hurtMarked = true;
+            if (entity instanceof LivingEntity livingEntity) {
+                this.doKnockback(livingEntity, 2.6, 1.8);
+//                float scaledDistance = (float) (1 - (livingEntity.position().distanceTo(location) / radius));
+//                double knockbackResistance = 1.0 - Mth.clamp(livingEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE), 0.0, 1.0);
+//                Vec3 knockback = livingEntity.position().add(0, livingEntity.getBbHeight() * 0.75, 0).subtract(location).normalize().scale(Mth.sqrt(scaledDistance) * knockbackResistance);
+//                if (!this.level().isClientSide) {
+//                    livingEntity.hurtMarked = true;
+//                }
+//                livingEntity.setOnGround(false);
+//                livingEntity.setDeltaMovement(livingEntity.getDeltaMovement().add(knockback.x() * 2.6, knockback.y() * 1.8, knockback.z() * 2.6));
             }
-            entity.setOnGround(false);
-            entity.setDeltaMovement(entity.getDeltaMovement().add(knockback.x() * 2.6, knockback.y() * 1.8, knockback.z() * 2.6));
         }
     }
 

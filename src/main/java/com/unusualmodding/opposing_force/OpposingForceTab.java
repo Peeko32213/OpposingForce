@@ -68,6 +68,7 @@ public class OpposingForceTab {
 
                     output.accept(OPItems.DICER_LENS.get());
                     output.accept(OPItems.BLASTER.get());
+                    output.accept(OPItems.LASER_BLADE.get());
 
                     output.accept(OPItems.GUZZLER_SCALES.get());
                     output.accept(OPItems.FIRE_GEL.get());

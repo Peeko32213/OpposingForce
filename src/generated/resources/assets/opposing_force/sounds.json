@@ -429,6 +429,31 @@
     ],
     "subtitle": "subtitles.opposing_force.hanging_spider_idle"
   },
+  "laser_blade_activate": {
+    "sounds": [
+      {
+        "attenuation_distance": 6,
+        "name": "opposing_force:item/laser_blade/activate1"
+      },
+      {
+        "attenuation_distance": 6,
+        "name": "opposing_force:item/laser_blade/activate2"
+      },
+      {
+        "attenuation_distance": 6,
+        "name": "opposing_force:item/laser_blade/activate3"
+      },
+      {
+        "attenuation_distance": 6,
+        "name": "opposing_force:item/laser_blade/activate4"
+      },
+      {
+        "attenuation_distance": 6,
+        "name": "opposing_force:item/laser_blade/activate5"
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.laser_blade_activate"
+  },
   "laser_bolt_impact": {
     "sounds": [
       {

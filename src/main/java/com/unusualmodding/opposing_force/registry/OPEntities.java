@@ -70,7 +70,7 @@ public class OPEntities {
     public static final RegistryObject<EntityType<Nymph>> NYMPH = ENTITY_TYPES.register(
             "nymph", () ->
             EntityType.Builder.of(Nymph::new, MobCategory.MONSTER)
-                    .sized(0.8F, 2.8F)
+                    .sized(0.8F, 3.8F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "nymph").toString())
     );
@@ -89,6 +89,14 @@ public class OPEntities {
                     .sized(0.98F, 0.9F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "slug").toString())
+    );
+
+    public static final RegistryObject<EntityType<Tart>> TART = ENTITY_TYPES.register(
+            "tart", () ->
+            EntityType.Builder.of(Tart::new, MobCategory.MONSTER)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "tart").toString())
     );
 
     public static final RegistryObject<EntityType<Terror>> TERROR = ENTITY_TYPES.register(

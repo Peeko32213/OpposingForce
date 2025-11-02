@@ -3,12 +3,12 @@ package com.unusualmodding.opposing_force.entity;
 import com.google.common.annotations.VisibleForTesting;
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
-import com.unusualmodding.opposing_force.entity.base.TameableMonster;
+import com.unusualmodding.opposing_force.entity.base.SummonableMonster;
+import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPCriterion;
 import com.unusualmodding.opposing_force.registry.OPMobEffects;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -30,9 +30,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
-import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
@@ -44,7 +41,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -53,19 +49,21 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
-public class Slug extends TameableMonster {
+@SuppressWarnings("deprecation")
+public class Slug extends SummonableMonster {
 
     private static final EntityDataAccessor<Integer> SIZE = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> MAX_GROWABLE_SIZE = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> FROM_INFESTATION = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> TAME_ATTEMPTS = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> LAUNCHED = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.BOOLEAN);
 
-    private int limitedLifeTicks = 0;
-
     public final AnimationState idleAnimationState = new AnimationState();
+    public final AnimationState launchStartAnimationState = new AnimationState();
+    public final AnimationState launchedAnimationState = new AnimationState();
 
-    public Slug(EntityType<? extends TameableMonster> entityType, Level level) {
+    private int launchedTicks = 0;
+
+    public Slug(EntityType<? extends SummonableMonster> entityType, Level level) {
         super(entityType, level);
         this.fixupDimensions();
     }
@@ -75,20 +73,21 @@ public class Slug extends TameableMonster {
                 .add(Attributes.MAX_HEALTH, 8.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.14F)
                 .add(Attributes.ATTACK_DAMAGE, 2.0D)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.02D)
-                .add(Attributes.FOLLOW_RANGE, 16.0D);
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.02D);
     }
 
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new SlugAttackGoal(this));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(1, new MonsterSitWhenOrderedToGoal(this));
+        this.goalSelector.addGoal(2, new SlugAttackGoal(this));
+        this.goalSelector.addGoal(3, new MonsterFollowOwnerGoal(this, 1.2D, 5.0F, 2.0F, false));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new SlugOwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(2, new SlugOwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new MonsterOwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(2, new MonsterOwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, false, false, this::hasInfestation));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, this::isInfestationSlug));
     }
@@ -99,7 +98,7 @@ public class Slug extends TameableMonster {
     }
 
     @Override
-    protected void checkFallDamage(double y, boolean onGroundIn, @NotNull BlockState state, @NotNull BlockPos pos) {
+    protected void checkFallDamage(double y, boolean onGround, @NotNull BlockState state, @NotNull BlockPos pos) {
     }
 
     @Override
@@ -108,7 +107,7 @@ public class Slug extends TameableMonster {
     }
 
     @Override
-    public boolean doHurtTarget(Entity entity) {
+    public boolean doHurtTarget(@NotNull Entity entity) {
         if (super.doHurtTarget(entity)) {
             int i = 0;
             Collection<MobEffectInstance> collection = this.getActiveEffects();
@@ -154,7 +153,7 @@ public class Slug extends TameableMonster {
     @Override
     protected void dropFromLootTable(@NotNull DamageSource source, boolean drops) {
         int extraEggs = this.getSlugSize() / 2;
-        if (this.getSlugSize() > 3 && !this.isFromInfestation()) {
+        if (this.getSlugSize() > 3 && !this.isFromSummon()) {
             for (int i = 0; i < extraEggs; i++) {
                 super.dropFromLootTable(source, drops);
             }
@@ -176,7 +175,6 @@ public class Slug extends TameableMonster {
         super.defineSynchedData();
         this.entityData.define(SIZE, 1);
         this.entityData.define(MAX_GROWABLE_SIZE, 0);
-        this.entityData.define(FROM_INFESTATION, false);
         this.entityData.define(TAME_ATTEMPTS, 0);
         this.entityData.define(LAUNCHED, false);
     }
@@ -186,8 +184,6 @@ public class Slug extends TameableMonster {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putInt("Size", this.getSlugSize() - 1);
         compoundTag.putInt("MaxGrowableSize", this.getMaxGrowableSlugSize());
-        compoundTag.putBoolean("FromInfestation", this.isFromInfestation());
-        compoundTag.putInt("LifeTicks", this.limitedLifeTicks);
         compoundTag.putInt("TameAttempts", this.getTameAttempts());
     }
 
@@ -196,8 +192,6 @@ public class Slug extends TameableMonster {
         this.setSlugSize(compoundTag.getInt("Size") + 1);
         super.readAdditionalSaveData(compoundTag);
         this.setMaxGrowableSlugSize(compoundTag.getInt("MaxGrowableSize"));
-        this.setFromInfestation(compoundTag.getBoolean("FromInfestation"));
-        this.limitedLifeTicks = compoundTag.getInt("LifeTicks");
         this.setTameAttempts(compoundTag.getInt("TameAttempts"));
     }
 
@@ -243,14 +237,6 @@ public class Slug extends TameableMonster {
         return this.entityData.get(MAX_GROWABLE_SIZE);
     }
 
-    public boolean isFromInfestation() {
-        return this.entityData.get(FROM_INFESTATION);
-    }
-
-    public void setFromInfestation(boolean infestation) {
-        this.entityData.set(FROM_INFESTATION, infestation);
-    }
-
     public boolean wasLaunched() {
         return this.entityData.get(LAUNCHED);
     }
@@ -265,16 +251,6 @@ public class Slug extends TameableMonster {
     }
 
     @Override
-    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> entityDataAccessor) {
-        if (SIZE.equals(entityDataAccessor)) {
-            this.refreshDimensions();
-            this.setYRot(this.yHeadRot);
-            this.yBodyRot = this.yHeadRot;
-        }
-        super.onSyncedDataUpdated(entityDataAccessor);
-    }
-
-    @Override
     public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
         int size = this.getSlugSize();
         EntityDimensions dimensions = super.getDimensions(pose);
@@ -286,13 +262,17 @@ public class Slug extends TameableMonster {
     public void tick() {
         super.tick();
 
-        if (this.isFromInfestation()) {
-            this.limitedLifeTicks++;
-            if (this.limitedLifeTicks > 300) {
-                this.limitedLifeTicks = 280;
+        if (this.isFromSummon()) {
+            this.setLifeTicks(this.getLifeTicks() + 1);
+            if (this.getLifeTicks() > 260) {
+                this.setLifeTicks(240);
                 this.hurt(this.damageSources().starve(), 2.0F);
             }
         }
+
+        if (this.launchedTicks > 0) launchedTicks--;
+        if ((this.launchedTicks == 0 || (this.launchedTicks < 10 && this.onGround())) && this.getPose() == OPPoses.LAUNCHED.get()) this.setPose(Pose.FALL_FLYING);
+        if (this.getPose() == Pose.FALL_FLYING && this.onGround()) this.setPose(Pose.STANDING);
 
         if (this.wasLaunched()) {
             this.yBodyRot = this.getYRot();
@@ -308,13 +288,13 @@ public class Slug extends TameableMonster {
             }
         }
 
-        if (this.level().isClientSide()){
+        if (this.level().isClientSide){
             this.setupAnimationStates();
         }
     }
 
     private void setupAnimationStates() {
-        this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
+        this.idleAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() <= 1.0E-5F, this.tickCount);
     }
 
     @Override
@@ -324,52 +304,31 @@ public class Slug extends TameableMonster {
         this.walkAnimation.update(f2, 0.4F);
     }
 
-    protected boolean canHitEntity(Entity entity) {
-        return !entity.isSpectator() && !(entity instanceof Slug) && entity != this.getOwner();
-    }
-
     @Override
-    public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.isTame();
-    }
-
-    @Override
-    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
-        return !this.isTame();
-    }
-
-    public void shoot(double pX, double pY, double pZ, float pVelocity, float pInaccuracy) {
-        Vec3 vec3 = (new Vec3(pX, pY, pZ)).normalize().add(this.random.triangle(0.0D, 0.0172275D * (double)pInaccuracy), this.random.triangle(0.0D, 0.0172275D * (double)pInaccuracy), this.random.triangle(0.0D, 0.0172275D * (double)pInaccuracy)).scale((double)pVelocity);
-        this.setDeltaMovement(vec3);
-        double d0 = vec3.horizontalDistance();
-        this.setYRot((float)(Mth.atan2(vec3.x, vec3.z) * (double)(180F / (float)Math.PI)));
-        this.setXRot((float)(Mth.atan2(vec3.y, d0) * (double)(180F / (float)Math.PI)));
-        this.yRotO = this.getYRot();
-        this.xRotO = this.getXRot();
-    }
-
-    public void shootFromRotation(Entity pShooter, float pX, float pY, float pZ, float pVelocity, float pInaccuracy) {
-        float f = -Mth.sin(pY * ((float)Math.PI / 180F)) * Mth.cos(pX * ((float)Math.PI / 180F));
-        float f1 = -Mth.sin((pX + pZ) * ((float)Math.PI / 180F));
-        float f2 = Mth.cos(pY * ((float)Math.PI / 180F)) * Mth.cos(pX * ((float)Math.PI / 180F));
-        this.shoot(f, f1, f2, pVelocity, pInaccuracy);
-        Vec3 vec3 = pShooter.getDeltaMovement();
-        this.setDeltaMovement(this.getDeltaMovement().add(vec3.x, pShooter.onGround() ? 0.0D : vec3.y, vec3.z));
-    }
-
-    public void copyTarget(LivingEntity entity) {
-        LivingEntity priorTarget = this.getTarget();
-        if (priorTarget == null || !priorTarget.isAlive()) {
-            LivingEntity target = null;
-            if (entity.getLastHurtMob() != null) {
-                target = entity.getLastHurtMob();
-            } else if (entity.getLastHurtByMob() != null) {
-                target = entity.getLastHurtByMob();
+    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> entityDataAccessor) {
+        if (SIZE.equals(entityDataAccessor)) {
+            this.refreshDimensions();
+            this.setYRot(this.yHeadRot);
+            this.yBodyRot = this.yHeadRot;
+        }
+        if (DATA_POSE.equals(entityDataAccessor)) {
+            if (this.getPose() == OPPoses.LAUNCHED.get()) {
+                this.launchedTicks = 20;
+                this.launchStartAnimationState.start(this.tickCount);
             }
-            if (target != null && target.isAlive() && !target.isAlliedTo(entity) && !target.is(entity) && !target.isAlliedTo(this) && !(target instanceof Slug)) {
-                this.setTarget(target);
+            else if (this.getPose() == Pose.FALL_FLYING) {
+                this.launchedAnimationState.start(this.tickCount);
+            }
+            else if (this.getPose() == Pose.STANDING) {
+                this.launchStartAnimationState.stop();
+                this.launchedAnimationState.stop();
             }
         }
+        super.onSyncedDataUpdated(entityDataAccessor);
+    }
+
+    protected boolean canHitEntity(Entity entity) {
+        return !entity.isSpectator() && !(entity instanceof Slug) && entity != this.getOwner();
     }
 
     @Override
@@ -392,23 +351,7 @@ public class Slug extends TameableMonster {
     }
 
     public boolean isInfestationSlug(LivingEntity entity) {
-        return !this.isFromInfestation();
-    }
-
-    public boolean wantsToAttack(LivingEntity entity, LivingEntity owner) {
-        if (!(entity instanceof Creeper) && !(entity instanceof Ghast)) {
-            if (entity instanceof Slug slug) {
-                return !slug.isTame() || slug.getOwner() != owner;
-            } else if (entity instanceof Player && !((Player) entity).canHarmPlayer((Player) entity)) {
-                return false;
-            } else if (entity instanceof AbstractHorse horse && horse.isTamed() && horse.getOwner() != owner) {
-                return false;
-            } else {
-                return !(entity instanceof TamableAnimal) || !((TamableAnimal) entity).isTame();
-            }
-        } else {
-            return false;
-        }
+        return !this.isFromSummon();
     }
 
     @Override
@@ -423,7 +366,7 @@ public class Slug extends TameableMonster {
             this.gameEvent(GameEvent.ENTITY_INTERACT);
             this.setSlugSize(size + 1);
             this.playSound(OPSoundEvents.SLUG_EAT.get(), this.getSoundVolume(), this.getVoicePitch() / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-            this.level().broadcastEntityEvent(this, (byte) 39);
+            this.level().broadcastEntityEvent(this, (byte) 8);
             return InteractionResult.SUCCESS;
         }
         if (itemstack.is(Items.SLIME_BALL)) {
@@ -433,9 +376,10 @@ public class Slug extends TameableMonster {
                 }
                 this.gameEvent(GameEvent.ENTITY_INTERACT);
                 this.setTameAttempts(this.getTameAttempts() + 1);
+                this.level().broadcastEntityEvent(this, (byte) 6);
                 if (this.getTameAttempts() > slimeNeeded) {
                     this.tame(player);
-                    this.level().broadcastEntityEvent(this, (byte) 40);
+                    this.level().broadcastEntityEvent(this, (byte) 7);
                     this.setTameAttempts(0);
                 }
                 this.playSound(OPSoundEvents.SLUG_EAT.get(), this.getSoundVolume(), this.getVoicePitch() / (this.getRandom().nextFloat() * 0.4F + 0.8F));
@@ -447,12 +391,7 @@ public class Slug extends TameableMonster {
                 this.gameEvent(GameEvent.ENTITY_INTERACT);
                 this.heal(4.0F);
                 this.playSound(OPSoundEvents.SLUG_EAT.get(), this.getSoundVolume(), this.getVoicePitch() / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-                for (int i = 0; i < 3; i++) {
-                    final double d2 = this.random.nextGaussian() * 0.02D;
-                    final double d0 = this.random.nextGaussian() * 0.02D;
-                    final double d1 = this.random.nextGaussian() * 0.02D;
-                    this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, itemstack), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
-                }
+                this.level().broadcastEntityEvent(this, (byte) 7);
                 return InteractionResult.SUCCESS;
             }
         }
@@ -461,14 +400,12 @@ public class Slug extends TameableMonster {
 
     @Override
     public void handleEntityEvent(byte id) {
-        if (id == 39) {
-            for (int i = 0; i < 5; i++) {
-                level().addParticle(ParticleTypes.HAPPY_VILLAGER, this.getRandomX(0.5F), this.getY(0.8F), this.getRandomZ(0.5F), 0.0D, 0.0D, 0.0D);
-            }
-        }
-        if (id == 40) {
-            for (int i = 0; i < 5; i++) {
-                level().addParticle(ParticleTypes.HEART, this.getRandomX(0.5F), this.getY(0.8F), this.getRandomZ(0.5F), 0.0D, 0.0D, 0.0D);
+        if (id == 8) {
+            for (int i = 0; i < 7; ++i) {
+                double d0 = this.random.nextGaussian() * 0.02D;
+                double d1 = this.random.nextGaussian() * 0.02D;
+                double d2 = this.random.nextGaussian() * 0.02D;
+                this.level().addParticle(ParticleTypes.HAPPY_VILLAGER, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
             }
         }
         super.handleEntityEvent(id);
@@ -508,7 +445,6 @@ public class Slug extends TameableMonster {
     @Nullable
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag compoundTag) {
         RandomSource random = level.getRandom();
-
         if (random.nextInt(150) == 0) {
             if (random.nextFloat() < 0.5F * difficulty.getSpecialMultiplier()) {
                 this.setSlugSize(8 + random.nextInt(32));
@@ -518,7 +454,6 @@ public class Slug extends TameableMonster {
         } else {
             this.setSlugSize(random.nextInt(4));
         }
-
         return super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
     }
 }

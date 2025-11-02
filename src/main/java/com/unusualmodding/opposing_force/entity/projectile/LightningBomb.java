@@ -56,18 +56,20 @@ public class LightningBomb extends AbstractBomb {
             if (entity.distanceToSqr(location) > radius * radius || !OPMath.hasLineOfSight(this, entity)) {
                 continue;
             }
-            float scaledDistance = (float) (1 - (entity.position().distanceTo(location) / radius));
-            float damage = Mth.lerp(Mth.sqrt(scaledDistance), 8, 16);
-            Vec3 knockback = entity.position().add(0, entity.getBbHeight() * 0.5, 0).subtract(location).normalize().scale(Mth.sqrt(scaledDistance));
-            entity.hurt(entity.damageSources().explosion(this, this.getOwner()), damage);
+//            float scaledDistance = (float) (1 - (entity.position().distanceTo(location) / radius));
+//            float damage = Mth.lerp(Mth.sqrt(scaledDistance), 8, 16);
+//            Vec3 knockback = entity.position().add(0, entity.getBbHeight() * 0.5, 0).subtract(location).normalize().scale(Mth.sqrt(scaledDistance));
+//            entity.hurt(entity.damageSources().explosion(this, this.getOwner()), damage);
             if (entity instanceof LivingEntity livingEntity) {
+                this.doKnockback(livingEntity, 1, 1);
+                this.doDamage(livingEntity, 6, 12);
                 livingEntity.addEffect(new MobEffectInstance(AlkahestMobEffects.ELECTRIFIED.get(), 300), this.getOwner());
-                if (livingEntity.isDamageSourceBlocked(entity.damageSources().explosion(this, this.getOwner()))) {
-                    knockback = knockback.scale(3);
-                }
+//                if (livingEntity.isDamageSourceBlocked(entity.damageSources().explosion(this, this.getOwner()))) {
+//                    knockback = knockback.scale(3);
+//                }
             }
-            entity.setOnGround(false);
-            entity.setDeltaMovement(entity.getDeltaMovement().add(knockback));
+//            entity.setOnGround(false);
+//            entity.setDeltaMovement(entity.getDeltaMovement().add(knockback));
         }
     }
 

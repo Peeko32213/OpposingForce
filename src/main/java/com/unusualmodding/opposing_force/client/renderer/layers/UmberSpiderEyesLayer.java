@@ -9,17 +9,19 @@ import net.minecraft.client.renderer.entity.layers.EyesLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
-public class UmberSpiderEyesLayer<T extends UmberSpider, M extends UmberSpiderModel<T>> extends EyesLayer<T, M> {
+public class UmberSpiderEyesLayer extends EyesLayer<UmberSpider, UmberSpiderModel> {
 
-    private static final RenderType SPIDER_EYES = RenderType.eyes(new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/umber_spider/umber_spider_eyes.png"));
+    private static final RenderType EYES = RenderType.eyes(new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/umber_spider/umber_spider_eyes.png"));
 
-    public UmberSpiderEyesLayer(RenderLayerParent<T, M> parentModel) {
+    public UmberSpiderEyesLayer(RenderLayerParent<UmberSpider, UmberSpiderModel> parentModel) {
         super(parentModel);
     }
 
-    public RenderType renderType() {
-        return SPIDER_EYES;
+    @Override
+    public @NotNull RenderType renderType() {
+        return EYES;
     }
 }

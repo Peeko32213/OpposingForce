@@ -112,7 +112,7 @@ public class TremblerRollGoal extends AttackGoal {
                 float knockbackForce = entity.isDamageSourceBlocked(trembler.level().damageSources().mobAttack(trembler)) ? 1.75F : 2.25F;
                 entity.hurt(entity.damageSources().mobAttack(this.trembler), (float) this.trembler.getAttributeValue(Attributes.ATTACK_DAMAGE));
                 entity.knockback((knockbackForce * speedForce) * 1.5F, this.rollDirection.x(), this.rollDirection.z());
-                if (entity.isDamageSourceBlocked(this.trembler.damageSources().mobAttack(this.trembler)) && entity instanceof Player player){
+                if (entity.isDamageSourceBlocked(this.trembler.damageSources().mobAttack(this.trembler)) && entity instanceof Player player) {
                     player.disableShield(true);
                 }
                 this.trembler.swing(InteractionHand.MAIN_HAND);

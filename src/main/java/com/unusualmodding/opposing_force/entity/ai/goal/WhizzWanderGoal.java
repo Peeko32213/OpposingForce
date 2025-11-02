@@ -21,12 +21,12 @@ public class WhizzWanderGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return whizz.getNavigation().isDone() && whizz.getRandom().nextInt(10) == 0;
+        return whizz.getNavigation().isDone() && whizz.getRandom().nextInt(10) == 0 && !whizz.isInSittingPose();
     }
 
     @Override
     public boolean canContinueToUse() {
-        return whizz.getNavigation().isInProgress();
+        return whizz.getNavigation().isInProgress() && !whizz.isInSittingPose();
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
+import com.unusualmodding.opposing_force.entity.base.SummonableMonster;
 import com.unusualmodding.opposing_force.entity.base.TameableMonster;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPItems;
@@ -39,6 +40,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,11 +48,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public class Whizz extends TameableMonster {
+public class Whizz extends SummonableMonster {
 
     private static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> CAPTURED = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> FROM_BOMB = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.BOOLEAN);
 
     @Nullable
     private WhizzWakeUpFriendsGoal friendsGoal;
@@ -66,7 +67,7 @@ public class Whizz extends TameableMonster {
 
     private int attackTicks;
 
-    public Whizz(EntityType<? extends TameableMonster> entityType, Level level) {
+    public Whizz(EntityType<? extends SummonableMonster> entityType, Level level) {
         super(entityType, level);
         this.xpReward = 5;
         this.moveControl = new FlyingMoveControl(this, 20, true);
@@ -88,13 +89,15 @@ public class Whizz extends TameableMonster {
     protected void registerGoals() {
         this.friendsGoal = new WhizzWakeUpFriendsGoal(this);
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new WhizzAttackGoal(this));
-        this.goalSelector.addGoal(2, this.friendsGoal);
-        this.goalSelector.addGoal(4, new WhizzWanderGoal(this));
-        this.goalSelector.addGoal(5, new WhizzSwarmGoal(this));
+        this.goalSelector.addGoal(1, new MonsterSitWhenOrderedToGoal(this));
+        this.goalSelector.addGoal(2, new WhizzAttackGoal(this));
+        this.goalSelector.addGoal(3, new MonsterFollowOwnerGoal(this, 1.2D, 5.0F, 2.0F, true));
+        this.goalSelector.addGoal(4, this.friendsGoal);
+        this.goalSelector.addGoal(5, new WhizzWanderGoal(this));
+        this.goalSelector.addGoal(6, new WhizzSwarmGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this).setAlertOthers());
-        this.targetSelector.addGoal(1, new WhizzOwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(2, new WhizzOwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new MonsterOwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(2, new MonsterOwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, false));
     }
 
@@ -106,6 +109,17 @@ public class Whizz extends TameableMonster {
     @Override
     public @NotNull MobType getMobType() {
         return MobType.ARTHROPOD;
+    }
+
+    @Override
+    public void travel(@NotNull Vec3 travelVec) {
+        if (this.isInSittingPose()) {
+            if (this.getNavigation().getPath() != null) {
+                this.getNavigation().stop();
+            }
+            travelVec = Vec3.ZERO;
+        }
+        super.travel(travelVec);
     }
 
     @Override
@@ -129,7 +143,7 @@ public class Whizz extends TameableMonster {
 
     @Override
     protected void dropFromLootTable(@NotNull DamageSource source, boolean drops) {
-        if (!this.isFromBomb()) {
+        if (!this.isFromSummon()) {
             super.dropFromLootTable(source, drops);
         }
     }
@@ -159,7 +173,7 @@ public class Whizz extends TameableMonster {
         if (attackTicks > 0) attackTicks--;
         if (attackTicks == 0 && this.getPose() == OPPoses.ATTACKING.get()) this.setPose(Pose.STANDING);
 
-        if (this.isFromBomb()) {
+        if (this.isFromSummon()) {
             this.limitedLifeTicks++;
             if (this.limitedLifeTicks > 200) {
                 this.limitedLifeTicks = 180;
@@ -246,7 +260,6 @@ public class Whizz extends TameableMonster {
         super.defineSynchedData();
         this.entityData.define(ATTACKING, false);
         this.entityData.define(CAPTURED, false);
-        this.entityData.define(FROM_BOMB, false);
     }
 
     @Override
@@ -254,7 +267,6 @@ public class Whizz extends TameableMonster {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putBoolean("Attacking", this.isAttacking());
         compoundTag.putBoolean("Captured", this.isCaptured());
-        compoundTag.putBoolean("FromBomb", this.isFromBomb());
     }
 
     @Override
@@ -262,7 +274,6 @@ public class Whizz extends TameableMonster {
         super.readAdditionalSaveData(compoundTag);
         this.setAttacking(compoundTag.getBoolean("Attacking"));
         this.setCaptured(compoundTag.getBoolean("Captured"));
-        this.setFromBomb(compoundTag.getBoolean("FromBomb"));
     }
 
     public void saveData(ItemStack itemStack) {
@@ -273,7 +284,7 @@ public class Whizz extends TameableMonster {
         if (this.isNoGravity()) compoundTag.putBoolean("NoGravity", this.isNoGravity());
         if (this.hasGlowingTag()) compoundTag.putBoolean("Glowing", this.hasGlowingTag());
         if (this.isInvulnerable()) compoundTag.putBoolean("Invulnerable", this.isInvulnerable());
-        if (this.isFromBomb()) compoundTag.putBoolean("FromBomb", this.isFromBomb());
+        if (this.isFromSummon()) compoundTag.putBoolean("FromSummon", this.isFromSummon());
 
         compoundTag.putFloat("Health", this.getHealth());
         if (this.getOwnerUUID() != null) compoundTag.putUUID("Owner", this.getOwnerUUID());
@@ -288,7 +299,7 @@ public class Whizz extends TameableMonster {
         if (compoundTag.contains("Glowing")) this.setGlowingTag(compoundTag.getBoolean("Glowing"));
         if (compoundTag.contains("Invulnerable")) this.setInvulnerable(compoundTag.getBoolean("Invulnerable"));
         if (compoundTag.contains("Health", 99)) this.setHealth(compoundTag.getFloat("Health"));
-        if (compoundTag.contains("FromBomb")) this.setFromBomb(compoundTag.getBoolean("FromBomb"));
+        if (compoundTag.contains("FromSummon")) this.setFromSummon(compoundTag.getBoolean("FromSummon"));
 
         UUID uuid;
         if (compoundTag.hasUUID("Owner")) {
@@ -322,33 +333,6 @@ public class Whizz extends TameableMonster {
 
     public void setCaptured(boolean captured) {
         this.entityData.set(CAPTURED, captured);
-    }
-
-    public boolean isFromBomb() {
-        return this.entityData.get(FROM_BOMB);
-    }
-
-    public void setFromBomb(boolean fromBomb) {
-        this.entityData.set(FROM_BOMB, fromBomb);
-    }
-
-    public boolean wantsToAttack(LivingEntity entity, LivingEntity owner) {
-        return true;
-    }
-
-    public void copyTarget(LivingEntity entity) {
-        LivingEntity priorTarget = this.getTarget();
-        if (priorTarget == null || !priorTarget.isAlive()) {
-            LivingEntity target = null;
-            if (entity.getLastHurtMob() != null) {
-                target = entity.getLastHurtMob();
-            } else if (entity.getLastHurtByMob() != null) {
-                target = entity.getLastHurtByMob();
-            }
-            if (target != null && target.isAlive() && !target.isAlliedTo(entity) && !target.is(entity) && !target.isAlliedTo(this) && !(target instanceof FireSlime) && !(target instanceof Guzzler)) {
-                this.setTarget(target);
-            }
-        }
     }
 
     public int getMaxSwarmSize() {

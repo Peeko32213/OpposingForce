@@ -26,5 +26,6 @@ public class OPTiers {
         public static final Tier UMBER = new OPItemTier(2, 196, 6.0F, 1.0F, 10, () -> Ingredient.of(OPItems.UMBER_FANG.get()));
         public static final Tier ELECTRIC = new OPItemTier(2, 624, 10.0F, 2.0F, 8, () -> Ingredient.of(OPItems.ELECTRIC_CHARGE.get()));
         public static final Tier MOUNTAIN = new OPItemTier(3, 1024, 8.0F, 4.0F, 5, () -> Ingredient.of(Items.DIAMOND));
+        public static final Tier LASER = new OPItemTier(3, 1024, 8.0F, 3.0F, 9, () -> Ingredient.of(OPItems.DICER_LENS.get()));
     }
 }

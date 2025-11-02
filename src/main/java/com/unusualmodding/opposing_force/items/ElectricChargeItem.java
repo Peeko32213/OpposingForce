@@ -35,7 +35,7 @@ public class ElectricChargeItem extends Item {
         ItemStack itemstack = user.getItemInHand(hand);
         user.gameEvent(GameEvent.ITEM_INTERACT_START);
         level.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.EGG_THROW, SoundSource.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
-        user.getCooldowns().addCooldown(this, 12);
+        user.getCooldowns().addCooldown(this, 10);
 
         if (!level.isClientSide) {
             ElectricCharge electricCharge = new ElectricCharge(user, level, user.position().x(), user.getEyePosition().y(), user.position().z());
@@ -51,7 +51,7 @@ public class ElectricChargeItem extends Item {
         return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
     }
 
-    // Tesla bow stuff
+    // Tesla cannon stuff
     @Nullable
     public ElectricCharge shootCharge(Level level, LivingEntity shooter) {
         ElectricCharge charge = this.createCharge(level);

@@ -2,11 +2,9 @@ package com.unusualmodding.opposing_force.entity.projectile;
 
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.utils.OPMath;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -38,10 +36,10 @@ public class FireBomb extends AbstractBomb {
         return 60.0F;
     }
 
-    @Override
-    protected ParticleOptions getTrailParticle() {
-        return ParticleTypes.LAVA;
-    }
+//    @Override
+//    protected ParticleOptions getTrailParticle() {
+//        return ParticleTypes.LAVA;
+//    }
 
     @Override
     protected void createExplosion() {
@@ -57,18 +55,11 @@ public class FireBomb extends AbstractBomb {
             if (entity.distanceToSqr(location) > radius * radius || !OPMath.hasLineOfSight(this, entity)) {
                 continue;
             }
-            float scaledDistance = (float) (1 - (entity.position().distanceTo(location) / radius));
-            float damage = Mth.lerp(Mth.sqrt(scaledDistance), 8, 16);
-            Vec3 knockback = entity.position().add(0, entity.getBbHeight() * 0.5, 0).subtract(location).normalize().scale(Mth.sqrt(scaledDistance));
-            entity.hurt(entity.damageSources().explosion(this, this.getOwner()), damage);
             if (entity instanceof LivingEntity livingEntity) {
+                this.doDamage(livingEntity, 5, 10);
+                this.doKnockback(livingEntity, 1, 1);
                 livingEntity.setSecondsOnFire(10);
-                if (livingEntity.isDamageSourceBlocked(entity.damageSources().explosion(this, this.getOwner()))) {
-                    knockback = knockback.scale(3);
-                }
             }
-            entity.setOnGround(false);
-            entity.setDeltaMovement(entity.getDeltaMovement().add(knockback));
         }
     }
 
@@ -77,6 +68,8 @@ public class FireBomb extends AbstractBomb {
         if (id == 3) {
             Vec3 location = this.position().add(0, this.getBbHeight() * 0.5, 0);
             this.spawnParticles(ParticleTypes.FLAME, 32, 0.4);
+            this.spawnParticles(ParticleTypes.LARGE_SMOKE, 20, 0.3);
+            this.spawnParticles(ParticleTypes.LAVA, 20, 0.5);
             this.level().addParticle(ParticleTypes.FLASH, true, location.x(), location.y(), location.z(), 0, 0, 0);
         }
     }

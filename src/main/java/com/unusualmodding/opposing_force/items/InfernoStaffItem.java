@@ -6,7 +6,6 @@ import com.unusualmodding.opposing_force.entity.FireSlime;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -24,6 +23,7 @@ import net.minecraft.world.item.Vanishable;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("deprecation")
 public class InfernoStaffItem extends Item implements Vanishable {
 
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
@@ -47,7 +47,7 @@ public class InfernoStaffItem extends Item implements Vanishable {
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
         if (super.hurtEnemy(stack, target, attacker)) {
             target.setSecondsOnFire(3);
             return true;
@@ -59,7 +59,7 @@ public class InfernoStaffItem extends Item implements Vanishable {
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         level.playSound(null, player.getX(), player.getY(), player.getZ(), OPSoundEvents.FIRE_SLIME_JUMP.get(), SoundSource.PLAYERS, 0.5F, 0.9F / (level.random.nextFloat() * 0.4F + 0.8F));
-        player.getCooldowns().addCooldown(this, 70);
+        player.getCooldowns().addCooldown(this, 50);
         if (!level.isClientSide()) {
             summonFireSlime(player);
         }
@@ -73,13 +73,13 @@ public class InfernoStaffItem extends Item implements Vanishable {
     private void summonFireSlime(Player summoner) {
         FireSlime fireSlime = OPEntities.FIRE_SLIME.get().create(summoner.level());
         if (fireSlime != null) {
-            float f = summoner.getRandom().nextFloat() * 360;
-            fireSlime.moveTo(summoner.getX(), summoner.getEyeY(), summoner.getZ(), f, -60);
+            float yRot = summoner.getViewYRot(0.0F);
             fireSlime.shootFromRotation(summoner, summoner.getXRot(), summoner.getYRot(), 0.0F, 1.5F, 0.75F);
-            fireSlime.yBodyRot = f;
-            fireSlime.setYHeadRot(f);
+            fireSlime.setPos(summoner.getEyePosition().add(fireSlime.getDeltaMovement().normalize()));
+            fireSlime.yBodyRot = yRot;
+            fireSlime.setYHeadRot(yRot);
             fireSlime.tame(summoner);
-            fireSlime.setShouldDespawn(true);
+            fireSlime.setFromSummon(true);
             fireSlime.finalizeSpawn((ServerLevel) summoner.level(), summoner.level().getCurrentDifficultyAt(summoner.blockPosition()), MobSpawnType.TRIGGERED, null, null);
             summoner.level().addFreshEntity(fireSlime);
             fireSlime.copyTarget(summoner);

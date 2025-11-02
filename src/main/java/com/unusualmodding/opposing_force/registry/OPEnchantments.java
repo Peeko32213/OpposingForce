@@ -25,7 +25,6 @@ public class OPEnchantments {
     public static final EnchantmentCategory BLASTER = EnchantmentCategory.create("blaster", (item -> item == OPItems.BLASTER.get()));
 
     // blaster
-    public static final RegistryObject<Enchantment> FREEZE_RAY = ENCHANTMENTS.register("freeze_ray", () -> new OPEnchantment("freeze_ray", Enchantment.Rarity.VERY_RARE, BLASTER, 1, 25, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> POWER_SUPPLY = ENCHANTMENTS.register("power_supply", () -> new OPEnchantment("power_supply", Enchantment.Rarity.UNCOMMON, BLASTER, 3, 15, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> RAPID_FIRE = ENCHANTMENTS.register("rapid_fire", () -> new OPEnchantment("rapid_fire", Enchantment.Rarity.RARE, BLASTER, 3, 20, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> SPLITTING = ENCHANTMENTS.register("splitting", () -> new OPEnchantment("splitting", Enchantment.Rarity.RARE, BLASTER, 5, 15, EquipmentSlot.MAINHAND));

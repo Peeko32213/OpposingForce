@@ -29,7 +29,6 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void registerParticleTypes(RegisterParticleProvidersEvent event){
         event.registerSpriteSet(OPParticles.LASER_BOLT_DUST.get(), LaserBoltDustParticle.Factory::new);
-        event.registerSpriteSet(OPParticles.ICE_LASER_BOLT_DUST.get(), LaserBoltDustParticle.IceFactory::new);
         event.registerSpriteSet(OPParticles.MOON_SHOES.get(), MoonShoesParticle.Factory::new);
     }
 
@@ -50,6 +49,7 @@ public final class ClientEvents {
         event.registerEntityRenderer(OPEntities.LIGHTNING_BOMB.get(), LightningBombRenderer::new);
         event.registerEntityRenderer(OPEntities.RAMBLER.get(), RamblerRenderer::new);
         event.registerEntityRenderer(OPEntities.SLUG.get(), SlugRenderer::new);
+        event.registerEntityRenderer(OPEntities.TART.get(), TartRenderer::new);
         event.registerEntityRenderer(OPEntities.TERROR.get(), TerrorRenderer::new);
         event.registerEntityRenderer(OPEntities.TOMAHAWK.get(), TomahawkRenderer::new);
         event.registerEntityRenderer(OPEntities.TREMBLER.get(), TremblerRenderer::new);
@@ -70,9 +70,11 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.FROWZY_HEAD, FrowzyHeadModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.GUZZLER, GuzzlerModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.HANGING_SPIDER, HangingSpiderModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.NYMPH, NymphModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.RAMBLER, RamblerModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.RAMBLER_SKULL, RambleSkullModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.SLUG, SlugModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.TART, TartModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.TERROR, TerrorModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.TREMBLER, TremblerModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.UMBER_SPIDER, UmberSpiderModel::createBodyLayer);

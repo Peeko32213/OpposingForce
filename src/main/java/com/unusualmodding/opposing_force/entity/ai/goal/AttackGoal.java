@@ -1,6 +1,6 @@
 package com.unusualmodding.opposing_force.entity.ai.goal;
 
-import com.unusualmodding.opposing_force.entity.utils.IAnimatedAttacker;
+import com.unusualmodding.opposing_force.entity.utils.IAttackState;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -23,7 +23,7 @@ public class AttackGoal extends Goal {
     public void start() {
         this.monster.setAggressive(true);
         this.timer = 0;
-        if (this.monster instanceof IAnimatedAttacker animatedAttacker) {
+        if (this.monster instanceof IAttackState animatedAttacker) {
             animatedAttacker.setAttackState(0);
         }
     }
@@ -36,7 +36,7 @@ public class AttackGoal extends Goal {
         }
         this.monster.setAggressive(false);
         this.monster.getNavigation().stop();
-        if (this.monster instanceof IAnimatedAttacker animatedAttacker) {
+        if (this.monster instanceof IAttackState animatedAttacker) {
             animatedAttacker.setAttackState(0);
         }
     }

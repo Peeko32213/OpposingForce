@@ -3,7 +3,7 @@ package com.unusualmodding.opposing_force.entity;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
-import com.unusualmodding.opposing_force.entity.utils.IAnimatedAttacker;
+import com.unusualmodding.opposing_force.entity.utils.IAttackState;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
@@ -55,7 +55,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class Frowzy extends Monster implements IAnimatedAttacker, VariantHolder<Frowzy.FrowzyVariant> {
+public class Frowzy extends Monster implements IAttackState, VariantHolder<Frowzy.FrowzyVariant> {
 
     private static final EntityDataAccessor<Boolean> IS_BABY = SynchedEntityData.defineId(Frowzy.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Frowzy.class, EntityDataSerializers.INT);
@@ -342,7 +342,7 @@ public class Frowzy extends Monster implements IAnimatedAttacker, VariantHolder<
     }
 
     @Override
-    protected void dropCustomDeathLoot(DamageSource damageSource, int amount, boolean drops) {
+    protected void dropCustomDeathLoot(@NotNull DamageSource damageSource, int amount, boolean drops) {
         super.dropCustomDeathLoot(damageSource, amount, drops);
         Entity entity = damageSource.getEntity();
         if (entity instanceof Creeper creeper) {

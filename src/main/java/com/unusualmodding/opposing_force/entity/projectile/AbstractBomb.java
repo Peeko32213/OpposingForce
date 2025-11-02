@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.entity.projectile;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.events.ScreenShakeEvent;
+import com.unusualmodding.opposing_force.utils.OPMath;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -12,14 +13,12 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.*;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
@@ -258,6 +257,27 @@ public abstract class AbstractBomb extends ThrowableProjectile {
 
     protected void createExplosion() {
         OpposingForce.PROXY.screenShake(new ScreenShakeEvent(this.position(), 10, 2.0F, this.getExplosionRadius() * 2, false));
+    }
+
+    protected void doKnockback(LivingEntity entity, double horizontalMultiplier, double verticalMultiplier) {
+        Vec3 location = this.position().add(0, this.getBbHeight() * 0.5, 0);
+        float radius = this.getExplosionRadius();
+        float scaledDistance = (float) (1 - (entity.position().distanceTo(location) / radius));
+        double knockbackResistance = 1.0 - Mth.clamp(entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE), 0.0, 1.0);
+        Vec3 knockback = entity.position().add(0, entity.getBbHeight() * 0.75, 0).subtract(location).normalize().scale(Mth.sqrt(scaledDistance) * knockbackResistance);
+        if (!this.level().isClientSide) {
+            entity.hurtMarked = true;
+        }
+        entity.setOnGround(false);
+        entity.setDeltaMovement(entity.getDeltaMovement().add(knockback.x() * horizontalMultiplier, knockback.y() * verticalMultiplier, knockback.z() * horizontalMultiplier));
+    }
+
+    protected void doDamage(LivingEntity entity, float minDamage, float maxDamage) {
+        Vec3 location = this.position().add(0, this.getBbHeight() * 0.5, 0);
+        float radius = this.getExplosionRadius();
+        float scaledDistance = (float) (1 - (entity.position().distanceTo(location) / radius));
+        float damage = Mth.lerp(Mth.sqrt(scaledDistance), minDamage, maxDamage);
+        entity.hurt(entity.damageSources().explosion(this, this.getOwner()), damage);
     }
 
     public float getFuse(float partialTicks) {

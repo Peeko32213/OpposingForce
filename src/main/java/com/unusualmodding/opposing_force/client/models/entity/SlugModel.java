@@ -89,8 +89,10 @@ public class SlugModel extends HierarchicalModel<Slug> {
 	public void setupAnim(Slug entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.animateWalk(SlugAnimations.SLIDE, limbSwing, limbSwingAmount, 4, 8);
-		this.animate(entity.idleAnimationState, SlugAnimations.IDLE, ageInTicks, 1);
-	}
+		this.animate(entity.idleAnimationState, SlugAnimations.IDLE, ageInTicks);
+        this.animate(entity.launchStartAnimationState, SlugAnimations.LAUNCH_START, ageInTicks);
+        this.animate(entity.launchedAnimationState, SlugAnimations.LAUNCHING, ageInTicks);
+    }
 
 	@Override
 	public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {

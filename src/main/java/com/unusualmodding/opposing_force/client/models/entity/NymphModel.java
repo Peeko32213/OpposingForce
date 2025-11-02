@@ -90,9 +90,17 @@ public class NymphModel extends HierarchicalModel<Nymph> {
 	@Override
 	public void setupAnim(Nymph entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		this.animateWalk(NymphAnimations.WALK, limbSwing, limbSwingAmount, 4, 8);
-		this.animate(entity.idleAnimationState, SlugAnimations.IDLE, ageInTicks, 1);
-	}
+		this.animateWalk(NymphAnimations.WALK, limbSwing, limbSwingAmount, 2, 4);
+		this.animate(entity.idleAnimationState, NymphAnimations.IDLE, ageInTicks);
+        this.animate(entity.sighAnimationState, NymphAnimations.SIGH, ageInTicks);
+        this.animate(entity.tilt1AnimationState, NymphAnimations.TILT1, ageInTicks);
+        this.animate(entity.tilt2AnimationState, NymphAnimations.TILT2, ageInTicks);
+        this.animate(entity.hideAnimationState, NymphAnimations.HIDE, ageInTicks);
+        this.animate(entity.appearAnimationState, NymphAnimations.APPEAR, ageInTicks);
+        this.animate(entity.swing1AnimationState, NymphAnimations.SWING1, ageInTicks);
+        this.animate(entity.swing2AnimationState, NymphAnimations.SWING2, ageInTicks);
+        this.animate(entity.summonVinesAnimationState, NymphAnimations.SUMMON, ageInTicks);
+    }
 
 	@Override
 	public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {

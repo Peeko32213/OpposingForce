@@ -3,12 +3,10 @@ package com.unusualmodding.opposing_force.entity.projectile;
 import com.unusualmodding.opposing_force.entity.Whizz;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.utils.OPMath;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -72,13 +70,9 @@ public class WhizzBomb extends AbstractBomb {
             if (entity.distanceToSqr(location) > radius * radius || entity instanceof Whizz || !OPMath.hasLineOfSight(this, entity)) {
                 continue;
             }
-            float scaledDistance = (float) (1 - (entity.position().distanceTo(location) / radius));
-            Vec3 knockback = entity.position().add(0, entity.getBbHeight() * 0.5, 0).subtract(location).normalize().scale(Mth.sqrt(scaledDistance));
-            if (!this.level().isClientSide) {
-                entity.hurtMarked = true;
+            if (entity instanceof LivingEntity livingEntity) {
+                this.doKnockback(livingEntity, 1, 1);
             }
-            entity.setOnGround(false);
-            entity.setDeltaMovement(entity.getDeltaMovement().add(knockback));
         }
     }
 
@@ -100,7 +94,7 @@ public class WhizzBomb extends AbstractBomb {
             whizz.yBodyRot = f;
             whizz.setYHeadRot(f);
             whizz.tame(summoner);
-            whizz.setFromBomb(true);
+            whizz.setFromSummon(true);
             whizz.finalizeSpawn((ServerLevel) summoner.level(), summoner.level().getCurrentDifficultyAt(summoner.blockPosition()), MobSpawnType.TRIGGERED, null, null);
             summoner.level().addFreshEntity(whizz);
             whizz.copyTarget(summoner);
@@ -115,7 +109,7 @@ public class WhizzBomb extends AbstractBomb {
             whizz.moveTo(this.getX() + this.random.nextFloat() * distance, this.getEyeY() + this.random.nextFloat() * distance, this.getZ() + this.random.nextFloat() * distance, f, -60);
             whizz.yBodyRot = f;
             whizz.setYHeadRot(f);
-            whizz.setFromBomb(true);
+            whizz.setFromSummon(true);
             whizz.finalizeSpawn((ServerLevel) level, level.getCurrentDifficultyAt(whizz.blockPosition()), MobSpawnType.TRIGGERED, null, null);
             level.addFreshEntity(whizz);
         }

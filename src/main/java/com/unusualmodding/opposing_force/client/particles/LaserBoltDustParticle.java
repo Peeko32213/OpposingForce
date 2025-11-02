@@ -4,7 +4,12 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
+@OnlyIn(Dist.CLIENT)
+@SuppressWarnings("FieldCanBeLocal, unused")
 public class LaserBoltDustParticle extends TextureSheetParticle {
 
     private final SpriteSet sprites;
@@ -18,8 +23,8 @@ public class LaserBoltDustParticle extends TextureSheetParticle {
         this.yd *= 0.25F;
         this.zd *= 0.25F;
         this.rCol = 1.0F;
-        this.gCol = 0.0F;
-        this.bCol = 0.0F;
+        this.gCol = 0.141F;
+        this.bCol = 0.427F;
         this.quadSize *= 0.75F + random.nextFloat() * 0.5F;
         this.lifetime = (int) ((double) 8 / ((double) level.random.nextFloat() * 0.8D + 0.2D));
         this.lifetime = Math.max(this.lifetime, 1);
@@ -38,7 +43,7 @@ public class LaserBoltDustParticle extends TextureSheetParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
+    public @NotNull ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_LIT;
     }
 
@@ -54,25 +59,8 @@ public class LaserBoltDustParticle extends TextureSheetParticle {
             this.sprites = sprites;
         }
 
-        public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            LaserBoltDustParticle particle = new LaserBoltDustParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
-            return particle;
-        }
-    }
-
-    public static class IceFactory implements ParticleProvider<SimpleParticleType> {
-        private final SpriteSet sprites;
-
-        public IceFactory(SpriteSet sprites) {
-            this.sprites = sprites;
-        }
-
-        public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            LaserBoltDustParticle particle = new LaserBoltDustParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
-            particle.rCol = 0.004F;
-            particle.gCol = 0.745F;
-            particle.bCol = 0.949F;
-            return particle;
+        public Particle createParticle(@NotNull SimpleParticleType particleType, @NotNull ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            return new LaserBoltDustParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
         }
     }
 }

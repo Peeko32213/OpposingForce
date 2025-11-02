@@ -92,7 +92,6 @@ public class ElectricCharge extends FrictionlessProjectile {
     public float getChargeDamage() {
         return this.entityData.get(DAMAGE);
     }
-
     public void setChargeDamage(float damage) {
         this.entityData.set(DAMAGE, damage);
     }
@@ -100,7 +99,6 @@ public class ElectricCharge extends FrictionlessProjectile {
     public float getChargeScale() {
         return this.entityData.get(CHARGE_SCALE);
     }
-
     public void setChargeScale(float scale) {
         this.entityData.set(CHARGE_SCALE, scale);
     }
@@ -108,7 +106,6 @@ public class ElectricCharge extends FrictionlessProjectile {
     public int getMaxBounces() {
         return this.entityData.get(MAX_BOUNCES);
     }
-
     public void setMaxBounces(int bounces) {
         this.entityData.set(MAX_BOUNCES, bounces);
     }
@@ -116,7 +113,6 @@ public class ElectricCharge extends FrictionlessProjectile {
     public boolean isBouncy() {
         return this.entityData.get(BOUNCY);
     }
-
     public void setBouncy(boolean bounce) {
         this.entityData.set(BOUNCY, bounce);
     }
@@ -124,7 +120,6 @@ public class ElectricCharge extends FrictionlessProjectile {
     public boolean isQuasar() {
         return this.entityData.get(QUASAR);
     }
-
     public void setQuasar(boolean quasar) {
         this.entityData.set(QUASAR, quasar);
     }
@@ -132,9 +127,49 @@ public class ElectricCharge extends FrictionlessProjectile {
     public boolean isStaticAttraction() {
         return this.entityData.get(STATIC_ATTRACTION);
     }
-
     public void setStaticAttraction(boolean staticAttraction) {
         this.entityData.set(STATIC_ATTRACTION, staticAttraction);
+    }
+
+    @Nullable
+    private Entity getTarget() {
+        return this.level().getEntity(this.getEntityData().get(TARGET));
+    }
+    private void setTarget(@Nullable Entity entity) {
+        this.getEntityData().set(TARGET, entity == null ? -1 : entity.getId());
+    }
+
+    @Override
+    protected void onHitEntity(@NotNull EntityHitResult result) {
+        super.onHitEntity(result);
+        Entity entity = result.getEntity();
+
+        if (!this.level().isClientSide) {
+            this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
+            if (entity instanceof Creeper creeper) {
+                ((CreeperExtension) creeper).opposingForce$setCharged(true);
+            }
+        }
+    }
+
+    @Override
+    protected void onHitBlock(@NotNull BlockHitResult result) {
+        super.onHitBlock(result);
+        BlockPos pos = result.getBlockPos();
+
+        if (!this.level().isClientSide) {
+            if (this.isBouncy()) {
+                Direction hitDirection = result.getDirection();
+                Vector3f surfaceNormal = hitDirection.step();
+                Vec3 velocity = this.getDeltaMovement();
+                Vec3 newVel = new Vec3(velocity.toVector3f().reflect(surfaceNormal));
+                bounce(newVel);
+            } else {
+                this.level().playSound(null, pos.getX(), pos.getY(), pos.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 2.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
+                this.spawnElectricParticles(this, 1 + randomSource.nextInt(3), 0.3F, 12);
+                this.discard();
+            }
+        }
     }
 
     @Override
@@ -167,48 +202,11 @@ public class ElectricCharge extends FrictionlessProjectile {
         }
 
         if (this.isQuasar()) {
-            AABB pull = this.getBoundingBox().inflate(8 + this.getChargeScale(), 8 + this.getChargeScale(), 8 + this.getChargeScale());
-            for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, pull)) {
-                if (entity != getOwner() && !(entity instanceof Volt)) {
-                    Vec3 center = pull.getCenter();
-                    float distance = (float) center.distanceTo(entity.position());
-                    if (distance > (this.getChargeScale() * 3)) {
-                        continue;
-                    }
-                    float f = 1 - distance / (this.getChargeScale() * 3);
-                    float scale = f * f * f * f * 0.18F;
-
-                    Vec3 diff = center.subtract(entity.position()).scale(scale);
-                    entity.push(diff.x, diff.y, diff.z);
-                    entity.resetFallDistance();
-                }
-            }
+            this.doQuasarEffects(0.5F);
         }
 
         if (this.isStaticAttraction()) {
-            if (!this.level().isClientSide()) {
-                this.updateTarget();
-            }
-            Entity target = getTarget();
-            if (target != null) {
-                Vec3 targetVec = getVectorToTarget(target).scale(0.5F);
-                Vec3 courseVec = getMotionVec();
-
-                double courseLength = courseVec.length();
-                double targetLength = targetVec.length();
-                double totalLength = Math.sqrt(courseLength * courseLength + targetLength * targetLength);
-
-                double dotProduct = courseVec.dot(targetVec) / (courseLength * targetLength);
-
-                if (dotProduct > 0.5) {
-                    Vec3 newMotion = courseVec.scale(courseLength / totalLength).add(targetVec.scale(courseLength / totalLength));
-                    if (tickCount % 8 == 0) {
-                        this.setDeltaMovement(newMotion.add(0, 0, 0));
-                    }
-                } else if (!this.level().isClientSide()) {
-                    this.setTarget(null);
-                }
-            }
+            this.doStaticEffects();
         }
     }
 
@@ -216,6 +214,49 @@ public class ElectricCharge extends FrictionlessProjectile {
     public void remove(Entity.@NotNull RemovalReason reason) {
         OpposingForce.PROXY.clearSoundCacheFor(this);
         super.remove(reason);
+    }
+
+    public void doQuasarEffects(float scaleMultiplier) {
+        AABB pull = this.getBoundingBox().inflate(8 + this.getChargeScale(), 8 + this.getChargeScale(), 8 + this.getChargeScale());
+        for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, pull)) {
+            if (entity != getOwner() && !(entity instanceof Volt)) {
+                Vec3 center = pull.getCenter();
+                float distance = (float) center.distanceTo(entity.position());
+                if (distance > (this.getChargeScale() * 3)) {
+                    continue;
+                }
+                float distanceFrom = 1 - distance / (this.getChargeScale() * 3);
+                float scale = distanceFrom * distanceFrom * distanceFrom * distanceFrom * scaleMultiplier;
+                Vec3 diff = center.subtract(entity.position()).scale(scale);
+                entity.push(diff.x, diff.y, diff.z);
+                entity.resetFallDistance();
+            }
+        }
+    }
+
+    public void doStaticEffects() {
+        if (!this.level().isClientSide()) {
+            this.updateTarget();
+        }
+        Entity target = getTarget();
+        Vec3 motionVec = new Vec3(this.getDeltaMovement().x(), this.getDeltaMovement().y(), this.getDeltaMovement().z());
+        if (target != null) {
+            Vec3 targetVec = getVectorToTarget(target).scale(0.9F);
+            Vec3 courseVec = this.getDeltaMovement();
+
+            double courseLength = this.getDeltaMovement().length();
+            double targetLength = targetVec.length();
+            double totalLength = Math.sqrt(courseLength * courseLength + targetLength * targetLength);
+
+            double dotProduct = this.getDeltaMovement().dot(targetVec) / (courseLength * targetLength);
+
+            if (dotProduct > 0.5) {
+                Vec3 newMotion = this.getDeltaMovement().scale(courseLength / totalLength).add(targetVec.scale(courseLength / totalLength));
+                this.setDeltaMovement(newMotion.add(0, 0.045F, 0).normalize());
+            } else if (!this.level().isClientSide()) {
+                this.setTarget(null);
+            }
+        }
     }
 
     public void spawnElectricParticles(ElectricCharge charge, int range, float yHeight, float particleMax) {
@@ -261,39 +302,6 @@ public class ElectricCharge extends FrictionlessProjectile {
         }
     }
 
-    @Override
-    protected void onHitEntity(@NotNull EntityHitResult result) {
-        super.onHitEntity(result);
-        Entity entity = result.getEntity();
-
-        if (!this.level().isClientSide) {
-            this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
-            if (entity instanceof Creeper creeper) {
-                ((CreeperExtension) creeper).opposingForce$setCharged(true);
-            }
-        }
-    }
-
-    @Override
-    protected void onHitBlock(@NotNull BlockHitResult result) {
-        super.onHitBlock(result);
-        BlockPos pos = result.getBlockPos();
-
-        if (!this.level().isClientSide) {
-            if (this.isBouncy()) {
-                Direction hitDirection = result.getDirection();
-                Vector3f surfaceNormal = hitDirection.step();
-                Vec3 velocity = this.getDeltaMovement();
-                Vec3 newVel = new Vec3(velocity.toVector3f().reflect(surfaceNormal));
-                bounce(newVel);
-            } else {
-                this.level().playSound(null, pos.getX(), pos.getY(), pos.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 2.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
-                this.spawnElectricParticles(this, 1 + randomSource.nextInt(3), 0.3F, 12);
-                this.discard();
-            }
-        }
-    }
-
     private void bounce(Vec3 newVel) {
         bounces++;
         float conservedEnergy = 0.9F;
@@ -326,10 +334,10 @@ public class ElectricCharge extends FrictionlessProjectile {
 
             AABB targetBB = positionBB;
 
-            Vec3 courseVec = getMotionVec().scale(5).yRot((float) -Math.PI / 6.0F);
+            Vec3 courseVec = this.getDeltaMovement().scale(5).yRot((float) -Math.PI / 6.0F);
             targetBB = targetBB.minmax(positionBB.move(courseVec));
 
-            courseVec = getMotionVec().scale(5).yRot((float) -Math.PI / 6.0F);
+            courseVec = this.getDeltaMovement().scale(5).yRot((float) -Math.PI / 6.0F);
             targetBB = targetBB.minmax(positionBB.move(courseVec));
 
             targetBB = targetBB.inflate(0, 5 * 0.5, 0);
@@ -361,7 +369,7 @@ public class ElectricCharge extends FrictionlessProjectile {
                 if (living == this.getOwner()) continue;
                 if (getOwner() != null && living instanceof TamableAnimal animal && animal.getOwner() == this.getOwner()) continue;
 
-                Vec3 motionVec = getMotionVec().normalize();
+                Vec3 motionVec = this.getDeltaMovement().normalize();
                 Vec3 targetVec = getVectorToTarget(living).normalize();
                 double dot = motionVec.dot(targetVec);
 
@@ -377,21 +385,12 @@ public class ElectricCharge extends FrictionlessProjectile {
         }
     }
 
-    private Vec3 getMotionVec() {
-        return new Vec3(this.getDeltaMovement().x(), this.getDeltaMovement().y(), this.getDeltaMovement().z());
-    }
+//    private Vec3 getMotionVec() {
+//        return new Vec3(this.getDeltaMovement().x(), this.getDeltaMovement().y(), this.getDeltaMovement().z());
+//    }
 
     private Vec3 getVectorToTarget(Entity target) {
         return new Vec3(target.getX() - this.getX(), (target.getY() + target.getEyeHeight()) - this.getY(), target.getZ() - this.getZ());
-    }
-
-    @Nullable
-    private Entity getTarget() {
-        return this.level().getEntity(this.getEntityData().get(TARGET));
-    }
-
-    private void setTarget(@Nullable Entity entity) {
-        this.getEntityData().set(TARGET, entity == null ? -1 : entity.getId());
     }
 
     @Override

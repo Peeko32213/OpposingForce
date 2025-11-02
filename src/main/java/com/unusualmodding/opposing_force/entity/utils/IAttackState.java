@@ -1,6 +1,6 @@
 package com.unusualmodding.opposing_force.entity.utils;
 
-public interface IAnimatedAttacker {
+public interface IAttackState {
 
     int getAttackState();
 

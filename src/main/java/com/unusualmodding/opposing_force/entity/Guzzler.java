@@ -4,7 +4,7 @@ import com.google.common.collect.Sets;
 import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.entity.ai.goal.GuzzlerAttackGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
-import com.unusualmodding.opposing_force.entity.utils.IAnimatedAttacker;
+import com.unusualmodding.opposing_force.entity.utils.IAttackState;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.utils.OPMath;
 import net.minecraft.core.BlockPos;
@@ -43,7 +43,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
-public class Guzzler extends Monster implements IAnimatedAttacker {
+public class Guzzler extends Monster implements IAttackState {
 
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Guzzler.class, EntityDataSerializers.INT);
 

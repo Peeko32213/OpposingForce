@@ -24,7 +24,8 @@ public enum OPPoses {
     SLASHING,
     CROSS_SLASHING,
     TAIL_SPINNING,
-    LASERING;
+    LASERING,
+    LAUNCHED;
 
     public Pose get() {
         return Pose.valueOf(this.name());

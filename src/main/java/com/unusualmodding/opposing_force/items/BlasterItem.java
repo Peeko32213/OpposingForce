@@ -23,9 +23,11 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Predicate;
 
+@SuppressWarnings("deprecation")
 public class BlasterItem extends Item implements Vanishable {
 
     public static final Predicate<ItemStack> AMMO = (stack) -> stack.is(OPItemTags.BLASTER_AMMO);
@@ -41,7 +43,7 @@ public class BlasterItem extends Item implements Vanishable {
 
     @Override
     public int getEnchantmentValue() {
-        return 8;
+        return 1;
     }
 
     public ItemStack getAmmo(Player player) {
@@ -58,7 +60,7 @@ public class BlasterItem extends Item implements Vanishable {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         ItemStack ammoStack = getAmmo(player);
 
@@ -74,9 +76,10 @@ public class BlasterItem extends Item implements Vanishable {
         Vec3 vec3 = vector3d.normalize();
         float yRot = (float) (Mth.atan2(vec3.z, vec3.x) * (180F / Math.PI)) + 90F;
         float xRot = (float) -(Mth.atan2(vec3.y, Math.sqrt(vec3.x * vec3.x + vec3.z * vec3.z)) * (180F / Math.PI));
-        double xOffset = level.getRandom().nextGaussian() * 0.03D;
-        double yOffset = level.getRandom().nextGaussian() * 0.03D;
-        double zOffset = level.getRandom().nextGaussian() * 0.03D;
+        double inaccuracy = itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) > 0 ? 0.04D : 0.02D;
+        double xOffset = level.getRandom().nextGaussian() * inaccuracy;
+        double yOffset = level.getRandom().nextGaussian() * inaccuracy;
+        double zOffset = level.getRandom().nextGaussian() * inaccuracy;
 
         LaserBolt laserBolt = new LaserBolt(player, level, player.position().x(), player.getEyePosition().y(), player.position().z());
         Vec3 barrelPos = getBarrelVec(player, hand == InteractionHand.MAIN_HAND, new Vec3(0.55F, -0.45F, 1.15F));
@@ -89,17 +92,15 @@ public class BlasterItem extends Item implements Vanishable {
         laserBolt.setYRot(yRot);
         laserBolt.setXRot(xRot);
         laserBolt.setOwner(player);
-        laserBolt.setLaserDamage(5.0F);
+        laserBolt.setLaserDamage(4.0F);
+
         if (itemStack.getEnchantmentLevel(OPEnchantments.SPLITTING.get()) > 0) {
             laserBolt.setDisruptor(true);
             laserBolt.setDisruptorLevel(itemStack.getEnchantmentLevel(OPEnchantments.SPLITTING.get()));
         }
         if (itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) > 0) {
-            laserBolt.setLaserDamage(3.0F);
+            laserBolt.setLaserDamage(2.0F);
             laserBolt.setRapidFire(true);
-        }
-        if (itemStack.getEnchantmentLevel(OPEnchantments.FREEZE_RAY.get()) > 0) {
-            laserBolt.setFreezing(true);
         }
         level.addFreshEntity(laserBolt);
 
@@ -124,7 +125,7 @@ public class BlasterItem extends Item implements Vanishable {
 
         player.awardStat(Stats.ITEM_USED.get(this));
 
-        applyCooldown(player, itemStack, hand, stack -> stack.getItem() instanceof BlasterItem, 15 - (itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) * 3));
+        applyCooldown(player, itemStack, hand, stack -> stack.getItem() instanceof BlasterItem, 10 - (itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) * 2));
         return InteractionResultHolder.success(itemStack);
     }
 
@@ -134,7 +135,7 @@ public class BlasterItem extends Item implements Vanishable {
     }
 
     @Override
-    public UseAnim getUseAnimation(ItemStack stack) {
+    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack stack) {
         return UseAnim.CUSTOM;
     }
 
@@ -144,7 +145,7 @@ public class BlasterItem extends Item implements Vanishable {
     }
 
     @Override
-    public boolean canAttackBlock(BlockState state, Level world, BlockPos pos, Player player) {
+    public boolean canAttackBlock(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player) {
         return false;
     }
 
@@ -164,7 +165,7 @@ public class BlasterItem extends Item implements Vanishable {
     public static void applyCooldown(Player player, ItemStack item, InteractionHand hand, Predicate<ItemStack> predicate, int cooldown) {
         if (cooldown <= 0) return;
         boolean offhandBlaster = predicate.test(player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND));
-        player.getCooldowns().addCooldown(item.getItem(), offhandBlaster ? cooldown * 3 / 4 : cooldown);
+        player.getCooldowns().addCooldown(item.getItem(), offhandBlaster ? (int) (cooldown * 0.8F) : cooldown);
     }
 
     public static Vec3 getBarrelVec(Player player, boolean mainHand, Vec3 rightHandForward) {

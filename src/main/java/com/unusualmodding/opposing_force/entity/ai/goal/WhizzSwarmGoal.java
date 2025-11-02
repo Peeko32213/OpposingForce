@@ -43,7 +43,7 @@ public class WhizzSwarmGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return this.whizz.isFollower() && this.whizz.inRangeOfLeader();
+        return this.whizz.isFollower() && this.whizz.inRangeOfLeader() && !whizz.isInSittingPose();
     }
 
     @Override
