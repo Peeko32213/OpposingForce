@@ -24,6 +24,8 @@ import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.EntityHitResult;
@@ -199,8 +201,18 @@ public class ForgeEvents {
                 if (dot > 0.0) {
                     entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
                     if (attacker instanceof LivingEntity livingAttacker) {
-                        livingAttacker.knockback(0.55F, attacker.getDeltaMovement().x, attacker.getDeltaMovement().z);
-                        livingAttacker.knockback(0.5F, entity.getX() - livingAttacker.getX(), entity.getZ() - livingAttacker.getZ());
+                        double knockbackMulti = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.KNOCKBACK, entity.getUseItem());
+                        if(knockbackMulti != 0) {
+                            knockbackMulti = knockbackMulti == 1 ? 1.5 : 2; //caps at 2x multi
+                        } else {
+                            knockbackMulti = 1;
+                        }
+                        int fireAspect = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, entity.getUseItem());
+                        if(fireAspect > 0) {
+                            livingAttacker.setSecondsOnFire(3 * fireAspect);
+                        }
+                        livingAttacker.knockback(0.55F * knockbackMulti, attacker.getDeltaMovement().x, attacker.getDeltaMovement().z);
+                        livingAttacker.knockback(0.5F * knockbackMulti, entity.getX() - livingAttacker.getX(), entity.getZ() - livingAttacker.getZ());
                     }
                     event.setCanceled(true);
                 }

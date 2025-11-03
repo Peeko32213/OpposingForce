@@ -17,5 +17,13 @@
     "ground": {
       "parent": "opposing_force:item/laser_blade_gui"
     }
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "flaming": 1
+      },
+      "model": "opposing_force:item/flaming_laser_blade"
+    }
+  ]
 }
