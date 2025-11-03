@@ -189,19 +189,21 @@ public class ForgeEvents {
     public static void onMobAttack(final LivingAttackEvent event) {
         LivingEntity entity = event.getEntity();
         Entity attacker = event.getSource().getDirectEntity();
-        Vec3 lookVec = entity.getLookAngle().normalize();
-        Vec3 directionToTarget = attacker.position().subtract(entity.position()).normalize();
-        double dot = lookVec.dot(directionToTarget);
+        if(entity != null && attacker != null) {
+            Vec3 lookVec = entity.getLookAngle().normalize();
+            Vec3 directionToTarget = attacker.position().subtract(entity.position()).normalize();
+            double dot = lookVec.dot(directionToTarget);
 
-        // laser blade parry
-        if (entity != null && attacker != null && entity.isUsingItem() && entity.getUseItem().getItem() == OPItems.LASER_BLADE.get() && entity.getUseItem().getUseDuration() - entity.getUseItemRemainingTicks() <= 5) {
-            if (dot > 0.0) {
-                entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
-                if (attacker instanceof LivingEntity livingAttacker) {
-                    livingAttacker.knockback(0.55F, attacker.getDeltaMovement().x, attacker.getDeltaMovement().z);
-                    livingAttacker.knockback(0.5F, entity.getX() - livingAttacker.getX(), entity.getZ() - livingAttacker.getZ());
+            // laser blade parry
+            if (entity.isUsingItem() && entity.getUseItem().getItem() == OPItems.LASER_BLADE.get() && entity.getUseItem().getUseDuration() - entity.getUseItemRemainingTicks() <= 5) {
+                if (dot > 0.0) {
+                    entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
+                    if (attacker instanceof LivingEntity livingAttacker) {
+                        livingAttacker.knockback(0.55F, attacker.getDeltaMovement().x, attacker.getDeltaMovement().z);
+                        livingAttacker.knockback(0.5F, entity.getX() - livingAttacker.getX(), entity.getZ() - livingAttacker.getZ());
+                    }
+                    event.setCanceled(true);
                 }
-                event.setCanceled(true);
             }
         }
     }
