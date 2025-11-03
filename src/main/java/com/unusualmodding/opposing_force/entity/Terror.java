@@ -6,7 +6,6 @@ import com.unusualmodding.opposing_force.entity.ai.goal.TerrorAttackGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.TerrorRandomStrollGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
-import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

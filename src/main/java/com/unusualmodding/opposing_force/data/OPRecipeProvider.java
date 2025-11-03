@@ -2,7 +2,6 @@ package com.unusualmodding.opposing_force.data;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.registry.OPBlocks;
-import com.unusualmodding.opposing_force.registry.OPItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
