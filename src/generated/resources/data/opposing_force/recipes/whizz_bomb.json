@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "G": {
+      "tag": "forge:gunpowder"
+    },
+    "S": {
+      "tag": "forge:string"
+    },
+    "W": {
+      "item": "opposing_force:captured_whizz"
+    }
+  },
+  "pattern": [
+    "  S",
+    "GW ",
+    "SG "
+  ],
+  "result": {
+    "item": "opposing_force:whizz_bomb"
+  },
+  "show_notification": true
+}
