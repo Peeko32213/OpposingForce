@@ -1,6 +1,16 @@
 {
   "parent": "item/handheld",
+  "loader": "forge:item_layers",
+  "forge_data": {
+    "layers": {
+      "1": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    }
+  },
   "textures": {
-    "layer0": "opposing_force:item/spark_blade"
+    "layer0": "opposing_force:item/spark_blade",
+    "layer1": "opposing_force:item/spark_blade_glow"
   }
 }

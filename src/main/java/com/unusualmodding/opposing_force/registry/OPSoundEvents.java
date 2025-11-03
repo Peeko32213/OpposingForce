@@ -101,6 +101,8 @@ public class OPSoundEvents {
     public static final RegistryObject<SoundEvent> LASER_BLADE_HIT = registerSoundEvent("laser_blade_hit");
     public static final RegistryObject<SoundEvent> LASER_BLADE_SWING = registerSoundEvent("laser_blade_swing");
 
+    public static final RegistryObject<SoundEvent> WALTZ_OF_THE_SLUG_DISC = registerSoundEvent("waltz_of_the_slug_disc");
+
     private static RegistryObject<SoundEvent> registerSoundEvent(final String soundName) {
         return SOUND_EVENTS.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(OpposingForce.MOD_ID, soundName)));
     }

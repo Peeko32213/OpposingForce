@@ -151,7 +151,7 @@ public class OPEntities {
     public static final RegistryObject<EntityType<ElectricCharge>> ELECTRIC_CHARGE = ENTITY_TYPES.register(
             "electric_charge", () ->
             EntityType.Builder.<ElectricCharge>of(ElectricCharge::new, MobCategory.MISC)
-                    .sized(0.1F, 0.1F)
+                    .sized(0.25F, 0.25F)
                     .clientTrackingRange(4)
                     .setShouldReceiveVelocityUpdates(true)
                     .fireImmune()

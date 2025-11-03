@@ -67,6 +67,9 @@ public class OPItems {
 
     // Terror
     public static final RegistryObject<Item> TERROR_SPAWN_EGG = registerSpawnEggItem("terror", OPEntities.TERROR , 0x074230, 0xff0000);
+    public static final RegistryObject<Item> TERROR_LEG = registerItemNoLang("terror_leg", () -> new Item(foodItem(OPFoodValues.RAW_TERROR_LEG)));
+    public static final RegistryObject<Item> FRIED_TERROR_LEG = registerItem("fried_terror_leg", () -> new Item(foodItem(OPFoodValues.FRIED_TERROR_LEG)));
+    public static final RegistryObject<Item> SPICY_TERROR_LEG = registerItem("spicy_terror_leg", () -> new Item(foodItem(OPFoodValues.SPICY_TERROR_LEG)));
 
     // Trembler
     public static final RegistryObject<Item> TREMBLER_SPAWN_EGG = registerSpawnEggItem("trembler", OPEntities.TREMBLER , 0x273030, 0x6d9288);
@@ -123,6 +126,9 @@ public class OPItems {
     // misc
     public static final RegistryObject<Item> TOMAHAWK =  registerItem("tomahawk", () -> new TomahawkItem(new Item.Properties().stacksTo(1).durability(196)));
     public static final RegistryObject<Item> KINETIC_BOMB = registerItem("kinetic_bomb", () -> new KineticBombItem(new Item.Properties().stacksTo(16)));
+
+    // discs
+    public static final RegistryObject<Item> WALTZ_OF_THE_SLUG_DISC = registerItemNoLang("waltz_of_the_slug_disc", () -> new RecordItem(15, OPSoundEvents.WALTZ_OF_THE_SLUG_DISC, new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 3440));
 
     private static <I extends Item> RegistryObject<I> registerItem(String name, Supplier<? extends I> supplier) {
         RegistryObject<I> item = ITEMS.register(name, supplier);

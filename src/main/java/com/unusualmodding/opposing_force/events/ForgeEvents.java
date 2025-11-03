@@ -183,31 +183,26 @@ public class ForgeEvents {
                 }
             }
         }
-
-        // laser blade parry
-//        if (entity.isUsingItem() && entity.getUseItem().getItem() == OPItems.LASER_BLADE.get() && entity.getUseItem().getUseDuration() - entity.getUseItemRemainingTicks() <= 10) {
-//            entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
-//            if (attacker instanceof LivingEntity livingAttacker) {
-//                livingAttacker.knockback(0.55F, attacker.getDeltaMovement().x, attacker.getDeltaMovement().z);
-//                livingAttacker.knockback(0.5F, entity.getX() - livingAttacker.getX(), entity.getZ() - livingAttacker.getZ());
-//            }
-//            event.setCanceled(true);
-//        }
     }
 
     @SubscribeEvent
     public static void onMobAttack(final LivingAttackEvent event) {
         LivingEntity entity = event.getEntity();
         Entity attacker = event.getSource().getDirectEntity();
+        Vec3 lookVec = entity.getLookAngle().normalize();
+        Vec3 directionToTarget = attacker.position().subtract(entity.position()).normalize();
+        double dot = lookVec.dot(directionToTarget);
 
         // laser blade parry
-        if (entity.isUsingItem() && entity.getUseItem().getItem() == OPItems.LASER_BLADE.get() && entity.getUseItem().getUseDuration() - entity.getUseItemRemainingTicks() <= 10) {
-            entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
-            if (attacker instanceof LivingEntity livingAttacker) {
-                livingAttacker.knockback(0.55F, attacker.getDeltaMovement().x, attacker.getDeltaMovement().z);
-                livingAttacker.knockback(0.5F, entity.getX() - livingAttacker.getX(), entity.getZ() - livingAttacker.getZ());
+        if (entity.isUsingItem() && entity.getUseItem().getItem() == OPItems.LASER_BLADE.get() && entity.getUseItem().getUseDuration() - entity.getUseItemRemainingTicks() <= 5) {
+            if (dot > 0.0) {
+                entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
+                if (attacker instanceof LivingEntity livingAttacker) {
+                    livingAttacker.knockback(0.55F, attacker.getDeltaMovement().x, attacker.getDeltaMovement().z);
+                    livingAttacker.knockback(0.5F, entity.getX() - livingAttacker.getX(), entity.getZ() - livingAttacker.getZ());
+                }
+                event.setCanceled(true);
             }
-            event.setCanceled(true);
         }
     }
 
@@ -220,20 +215,25 @@ public class ForgeEvents {
         if (event.getRayTraceResult() instanceof EntityHitResult result) {
             Entity resultEntity = result.getEntity();
             if (event.getEntity() != null && resultEntity instanceof LivingEntity entityBlocking) {
-                if (entityBlocking.isUsingItem() && entityBlocking.getUseItem().getItem() == OPItems.LASER_BLADE.get() && entityBlocking.getUseItem().getUseDuration() - entityBlocking.getUseItemRemainingTicks() <= 10) {
-                    projectile.setOwner(entityBlocking);
-                    Vec3 rebound = entityBlocking.getLookAngle();
-                    projectile.shoot(rebound.x(), rebound.y(), rebound.z(), 1.5F, 0.0F);
-                    if (projectile instanceof AbstractHurtingProjectile hurting) {
-                        hurting.xPower = rebound.x() * 0.1D;
-                        hurting.yPower = rebound.y() * 0.1D;
-                        hurting.zPower = rebound.z() * 0.1D;
+                if (entityBlocking.isUsingItem() && entityBlocking.getUseItem().getItem() == OPItems.LASER_BLADE.get() && entityBlocking.getUseItem().getUseDuration() - entityBlocking.getUseItemRemainingTicks() <= 5) {
+                    Vec3 lookVec = entityBlocking.getLookAngle().normalize();
+                    Vec3 directionToTarget = event.getEntity().position().subtract(entityBlocking.position()).normalize();
+                    double dot = lookVec.dot(directionToTarget);
+
+                    if (dot > 0.0) {
+                        projectile.setOwner(entityBlocking);
+                        Vec3 rebound = entityBlocking.getLookAngle();
+                        projectile.shoot(rebound.x(), rebound.y(), rebound.z(), 1.5F, 0.0F);
+                        if (projectile instanceof AbstractHurtingProjectile hurting) {
+                            hurting.xPower = rebound.x() * 0.1D;
+                            hurting.yPower = rebound.y() * 0.1D;
+                            hurting.zPower = rebound.z() * 0.1D;
+                        }
+                        entityBlocking.level().playSound(null, entityBlocking.getX(), entityBlocking.getY(), entityBlocking.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entityBlocking.level().getRandom().nextFloat() * 0.4F + 0.8F));
+                        event.setCanceled(true);
                     }
-                    entityBlocking.level().playSound(null, entityBlocking.getX(), entityBlocking.getY(), entityBlocking.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entityBlocking.level().getRandom().nextFloat() * 0.4F + 0.8F));
-                    event.setCanceled(true);
                 }
             }
         }
-//        }
     }
 }

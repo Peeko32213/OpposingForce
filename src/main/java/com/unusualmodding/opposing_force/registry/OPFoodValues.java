@@ -16,4 +16,17 @@ public class OPFoodValues {
             .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 600, 0), 1.0F)
             .effect(() -> new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 300, 0), 1.0F)
             .build();
+
+    public static final FoodProperties RAW_TERROR_LEG = (new FoodProperties.Builder())
+            .nutrition(2).saturationMod(0.3F)
+            .build();
+
+    public static final FoodProperties FRIED_TERROR_LEG = (new FoodProperties.Builder())
+            .nutrition(6).saturationMod(0.6F)
+            .build();
+
+    public static final FoodProperties SPICY_TERROR_LEG = (new FoodProperties.Builder())
+            .nutrition(6).saturationMod(0.6F)
+            .effect(() -> new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 600, 0), 1.0F)
+            .build();
 }

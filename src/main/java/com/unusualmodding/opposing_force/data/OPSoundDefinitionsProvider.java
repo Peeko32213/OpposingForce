@@ -349,6 +349,10 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound(OpposingForce.modPrefix("item/laser_blade/swing2")),
                 sound(OpposingForce.modPrefix("item/laser_blade/swing3"))
         );
+
+        this.sound(OPSoundEvents.WALTZ_OF_THE_SLUG_DISC,
+                sound(OpposingForce.modPrefix("music/waltz_of_the_slug_disc")).stream()
+        );
     }
 
     private void soundDefinition(Supplier<SoundEvent> soundEvent, String subtitle, SoundDefinition.Sound... sounds) {

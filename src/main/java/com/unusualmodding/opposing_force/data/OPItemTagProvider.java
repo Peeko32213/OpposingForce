@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.data;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.registry.OPBlocks;
+import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -52,13 +53,9 @@ public class OPItemTagProvider extends ItemTagsProvider {
 
         this.tag(OPItemTags.RAW_VEGETABLES).addTag(OPItemTags.FRUITS).addTag(OPItemTags.VEGETABLES);
 
-//        this.tag(OPItemTags.EXPERIENCE_GAIN_ITEMS).add(
-//                EMERALD_SWORD.get(),
-//                EMERALD_PICKAXE.get(),
-//                EMERALD_AXE.get(),
-//                EMERALD_SHOVEL.get(),
-//                EMERALD_HOE.get()
-//        );
+        this.tag(ItemTags.MUSIC_DISCS).add(
+                WALTZ_OF_THE_SLUG_DISC.get()
+        );
 
         this.tag(ItemTags.FREEZE_IMMUNE_WEARABLES).add(
                 DEEPWOVEN_HAT.get(),

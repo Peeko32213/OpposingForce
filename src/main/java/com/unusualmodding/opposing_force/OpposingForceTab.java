@@ -25,6 +25,27 @@ public class OpposingForceTab {
                         }
                     });
 
+                    // dicer
+                    output.accept(OPItems.DICER_LENS.get());
+                    output.accept(OPItems.BLASTER.get());
+                    output.accept(OPItems.LASER_BLADE.get());
+                    output.accept(OPItems.DICER_HEAD.get());
+
+                    // frowzy
+                    output.accept(OPItems.FROWZY_HEAD.get());
+
+                    // guzzler
+                    output.accept(OPItems.GUZZLER_SCALES.get());
+                    output.accept(OPItems.FIRE_GEL.get());
+                    output.accept(OPItems.FIRE_BOMB.get());
+                    output.accept(OPBlocks.INFERNO_PIE.get());
+                    output.accept(OPItems.INFERNO_PIE_SLICE.get());
+                    output.accept(OPItems.INFERNO_STAFF.get());
+
+                    // rambler
+                    output.accept(OPItems.RAMBLE_SKULL.get());
+
+                    // slug
                     output.accept(OPBlocks.SLUG_EGGS.get());
                     output.accept(OPBlocks.VILE_STONE.get());
                     output.accept(OPBlocks.VILE_STONE_STAIRS.get());
@@ -38,24 +59,23 @@ public class OpposingForceTab {
                     output.accept(OPBlocks.VILE_COBBLESTONE_STAIRS.get());
                     output.accept(OPBlocks.VILE_COBBLESTONE_SLAB.get());
                     output.accept(OPBlocks.VILE_COBBLESTONE_WALL.get());
-
                     output.accept(OPItems.VILE_BOULDER.get());
                     output.accept(OPItems.VILE_STAFF.get());
+                    output.accept(OPItems.WALTZ_OF_THE_SLUG_DISC.get());
 
-                    output.accept(OPItems.ELECTRIC_CHARGE.get());
-                    output.accept(OPItems.LIGHTNING_BOMB.get());
-                    output.accept(OPItems.TESLA_CANNON.get());
-                    output.accept(OPItems.SPARK_BLADE.get());
+                    // terror
+                    output.accept(OPItems.TERROR_LEG.get());
+                    output.accept(OPItems.FRIED_TERROR_LEG.get());
+                    output.accept(OPItems.SPICY_TERROR_LEG.get());
 
-                    output.accept(OPItems.CAPTURED_WHIZZ.get());
-                    output.accept(OPItems.WHIZZ_BOMB.get());
-
+                    // trembler
                     output.accept(OPBlocks.TREMBLER_SHELL.get());
                     output.accept(OPBlocks.TREMBLING_BLOCK.get());
                     output.accept(OPBlocks.TREMBLING_SHINGLES.get());
                     output.accept(OPBlocks.TREMBLING_SHINGLE_STAIRS.get());
                     output.accept(OPBlocks.TREMBLING_SHINGLE_SLAB.get());
 
+                    // umber spider
                     output.accept(OPItems.DEEP_SILK.get());
                     output.accept(OPBlocks.DEEP_SILK_BLOCK.get());
                     output.accept(OPBlocks.DEEP_WEB.get());
@@ -66,16 +86,16 @@ public class OpposingForceTab {
                     output.accept(OPItems.UMBER_FANG.get());
                     output.accept(OPItems.UMBER_DAGGER.get());
 
-                    output.accept(OPItems.DICER_LENS.get());
-                    output.accept(OPItems.BLASTER.get());
-                    output.accept(OPItems.LASER_BLADE.get());
+                    // volt
+                    output.accept(OPItems.ELECTRIC_CHARGE.get());
+                    output.accept(OPItems.LIGHTNING_BOMB.get());
+                    output.accept(OPItems.TESLA_CANNON.get());
+                    output.accept(OPItems.SPARK_BLADE.get());
 
-                    output.accept(OPItems.GUZZLER_SCALES.get());
-                    output.accept(OPItems.FIRE_GEL.get());
-                    output.accept(OPItems.FIRE_BOMB.get());
-                    output.accept(OPBlocks.INFERNO_PIE.get());
-                    output.accept(OPItems.INFERNO_PIE_SLICE.get());
-                    output.accept(OPItems.INFERNO_STAFF.get());
+                    // whizz
+                    output.accept(OPBlocks.INFESTED_AMETHYST_BLOCK.get());
+                    output.accept(OPItems.CAPTURED_WHIZZ.get());
+                    output.accept(OPItems.WHIZZ_BOMB.get());
 
                     output.accept(OPItems.WOODEN_MASK.get());
                     output.accept(OPItems.WOODEN_CHESTPLATE.get());
@@ -98,12 +118,6 @@ public class OpposingForceTab {
                     output.accept(OPItems.TOMAHAWK.get());
                     output.accept(OPItems.KINETIC_BOMB.get());
                     output.accept(OPItems.BLADE_OF_THE_MOUNTAIN.get());
-
-                    output.accept(OPBlocks.INFESTED_AMETHYST_BLOCK.get());
-
-                    output.accept(OPItems.DICER_HEAD.get());
-                    output.accept(OPItems.FROWZY_HEAD.get());
-                    output.accept(OPItems.RAMBLE_SKULL.get());
 
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.TESLA_CANNON);
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.BLASTER);

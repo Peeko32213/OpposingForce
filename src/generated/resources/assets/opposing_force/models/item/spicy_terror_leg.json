@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "opposing_force:item/spicy_terror_leg"
+  }
+}

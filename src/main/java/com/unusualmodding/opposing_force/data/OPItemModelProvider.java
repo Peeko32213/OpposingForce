@@ -50,6 +50,12 @@ public class OPItemModelProvider extends ItemModelProvider {
 
         this.handheldItem(UMBER_DAGGER);
 
+        this.handheldItem(TERROR_LEG);
+        this.handheldItem(FRIED_TERROR_LEG);
+        this.handheldItem(SPICY_TERROR_LEG);
+
+        this.handheldItem(WALTZ_OF_THE_SLUG_DISC);
+
         this.item(WOODEN_MASK);
         this.item(WOODEN_CHESTPLATE);
         this.item(WOODEN_COVER);

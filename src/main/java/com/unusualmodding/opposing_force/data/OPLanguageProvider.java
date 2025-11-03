@@ -162,6 +162,8 @@ public class OPLanguageProvider extends LanguageProvider {
         this.sound(OPSoundEvents.LASER_BLADE_HIT, "Laser Blade impacts");
         this.sound(OPSoundEvents.LASER_BLADE_SWING, "Laser Blade swings");
 
+        this.sound(OPSoundEvents.WALTZ_OF_THE_SLUG_DISC, "Music Disc");
+
         this.addBlock(OPBlocks.INFESTED_AMETHYST_BLOCK, "Infested Block of Amethyst");
 
         this.addBlock(OPBlocks.DICER_HEAD, "Dicer Head");
@@ -172,6 +174,10 @@ public class OPLanguageProvider extends LanguageProvider {
 
         this.addBlock(OPBlocks.RAMBLE_SKULL, "Ramble Skull");
         this.addBlock(OPBlocks.RAMBLE_WALL_SKULL, "Ramble Skull");
+
+        this.musicDisc(OPItems.WALTZ_OF_THE_SLUG_DISC, "Chips The Cat - Waltz of the Slug");
+
+        this.addItem(OPItems.TERROR_LEG, "Raw Terror Leg");
 
         // other
         this.addEnchantmentWithDesc(OPEnchantments.CAPACITANCE.get(), "Increases the size of the fired electric charge");
@@ -276,6 +282,12 @@ public class OPLanguageProvider extends LanguageProvider {
         add("item.minecraft.splash_potion.effect." + regName, "Splash Potion of " + name);
         add("item.minecraft.lingering_potion.effect." + regName, "Lingering Potion of " + name);
         add("item.minecraft.tipped_arrow.effect." + regName, "Arrow of " + name);
+    }
+
+    protected void musicDisc(Supplier<? extends Item> item, String description) {
+        String disc = item.get().getDescriptionId();
+        add(disc, "Music Disc");
+        add(disc + ".desc", description);
     }
 
     private void translateAttribute(RegistryObject<? extends Attribute> attribute) {

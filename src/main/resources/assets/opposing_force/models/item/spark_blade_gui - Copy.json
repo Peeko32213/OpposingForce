@@ -1,6 +1,0 @@
-{
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "opposing_force:item/laser_blade"
-  }
-}

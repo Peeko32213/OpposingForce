@@ -182,13 +182,13 @@ public class ElectricCharge extends FrictionlessProjectile {
         }
 
         this.spawnElectricParticles(this, 1 + randomSource.nextInt(3), 0, 12);
-        this.hurtEntitiesAround(pos, (this.getChargeScale()) + 1.5F, this.getChargeDamage());
+        this.hurtEntitiesAround(pos, (this.getChargeScale()) + 1.3F, this.getChargeDamage());
 
         if (this.level().getBlockState(this.blockPosition().below(0)).is(Blocks.WATER)) {
             this.spawnElectricParticles(this, 7 + randomSource.nextInt(5), 0, 16);
             if (!this.level().isClientSide) {
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 2.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
-                this.hurtEntitiesAround(pos, this.getChargeScale() + 4.0F, this.getChargeDamage() * 1.25F);
+                this.hurtEntitiesAround(pos, this.getChargeScale() + 3.6F, this.getChargeDamage() * 1.25F);
                 this.discard();
             }
         }
@@ -239,11 +239,8 @@ public class ElectricCharge extends FrictionlessProjectile {
             this.updateTarget();
         }
         Entity target = getTarget();
-        Vec3 motionVec = new Vec3(this.getDeltaMovement().x(), this.getDeltaMovement().y(), this.getDeltaMovement().z());
         if (target != null) {
             Vec3 targetVec = getVectorToTarget(target).scale(0.9F);
-            Vec3 courseVec = this.getDeltaMovement();
-
             double courseLength = this.getDeltaMovement().length();
             double targetLength = targetVec.length();
             double totalLength = Math.sqrt(courseLength * courseLength + targetLength * targetLength);
@@ -384,10 +381,6 @@ public class ElectricCharge extends FrictionlessProjectile {
             }
         }
     }
-
-//    private Vec3 getMotionVec() {
-//        return new Vec3(this.getDeltaMovement().x(), this.getDeltaMovement().y(), this.getDeltaMovement().z());
-//    }
 
     private Vec3 getVectorToTarget(Entity target) {
         return new Vec3(target.getX() - this.getX(), (target.getY() + target.getEyeHeight()) - this.getY(), target.getZ() - this.getZ());

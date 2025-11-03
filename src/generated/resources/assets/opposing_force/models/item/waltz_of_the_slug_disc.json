@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "opposing_force:item/waltz_of_the_slug_disc"
+  }
+}
