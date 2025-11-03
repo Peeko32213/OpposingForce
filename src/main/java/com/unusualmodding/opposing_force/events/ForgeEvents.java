@@ -194,7 +194,7 @@ public class ForgeEvents {
         double dot = lookVec.dot(directionToTarget);
 
         // laser blade parry
-        if (entity.isUsingItem() && entity.getUseItem().getItem() == OPItems.LASER_BLADE.get() && entity.getUseItem().getUseDuration() - entity.getUseItemRemainingTicks() <= 5) {
+        if (entity != null && attacker != null && entity.isUsingItem() && entity.getUseItem().getItem() == OPItems.LASER_BLADE.get() && entity.getUseItem().getUseDuration() - entity.getUseItemRemainingTicks() <= 5) {
             if (dot > 0.0) {
                 entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
                 if (attacker instanceof LivingEntity livingAttacker) {
