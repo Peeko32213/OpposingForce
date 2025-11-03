@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_fried_terror_;eg": {
+    "has_fried_terror_leg": {
       "conditions": {
         "items": [
           {

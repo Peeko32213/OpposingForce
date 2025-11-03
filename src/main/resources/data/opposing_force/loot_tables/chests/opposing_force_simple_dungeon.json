@@ -9,8 +9,50 @@
           "weight": 1
         },
         {
+          "type": "minecraft:item",
+          "name": "opposing_force:vile_staff",
+          "weight": 1
+        },
+        {
           "type": "minecraft:empty",
-          "weight": 16
+          "weight": 8
+        }
+      ]
+    },
+    {
+      "rolls": 2,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "opposing_force:fire_bomb",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "opposing_force:lightning_bomb",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 2
         }
       ]
     }
