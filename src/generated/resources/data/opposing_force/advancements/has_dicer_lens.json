@@ -1,0 +1,38 @@
+{
+  "parent": "opposing_force:root",
+  "criteria": {
+    "has_dicer_lens": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "opposing_force:dicer_lens"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.opposing_force.dicer_lens.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "opposing_force:dicer_lens"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.opposing_force.dicer_lens"
+    }
+  },
+  "requirements": [
+    [
+      "has_dicer_lens"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

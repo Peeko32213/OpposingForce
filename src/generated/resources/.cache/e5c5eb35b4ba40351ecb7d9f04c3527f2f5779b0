@@ -1,6 +1,7 @@
-// 1.20.1	2025-08-28T21:42:51.2551047	Advancements
+// 1.20.1	2025-11-03T18:11:26.3829939	Advancements
 348ccfdcd7e6aa4e12cf5a7d152e1d2367d6e76d data/opposing_force/advancements/capture_whizz.json
 8bb8001ae31d53f085729c193d2a07091a63ab0f data/opposing_force/advancements/deepwoven_armor.json
+c31987f0e06d1026c0d8b8b876f808354f07cc92 data/opposing_force/advancements/has_dicer_lens.json
 9ee845bf4a912e806f39c697b1f3a2fc5e821112 data/opposing_force/advancements/ignite_fire_slime.json
 bed2077d02e407337cbb1b6b609a9b922e2f2ed2 data/opposing_force/advancements/root.json
 dcc21a4928a077e4b38431f8ea5da23fcb251695 data/opposing_force/advancements/trembler_shell.json

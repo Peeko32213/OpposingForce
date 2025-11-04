@@ -86,5 +86,15 @@ public class OPAdvancementProvider implements AdvancementGenerator {
                         FrameType.TASK, true, true, false)
                 .addCriterion("trembler_shell", InventoryChangeTrigger.TriggerInstance.hasItems(OPBlocks.TREMBLER_SHELL.get()))
                 .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "trembler_shell"), helper);
+
+        Advancement dicerLens = Advancement.Builder.advancement()
+                .parent(root)
+                .display(OPItems.DICER_LENS.get(),
+                        Component.translatable("advancement.opposing_force.dicer_lens"),
+                        Component.translatable("advancement.opposing_force.dicer_lens.desc"),
+                        null,
+                        FrameType.TASK, true, true, false)
+                .addCriterion("has_dicer_lens", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.DICER_LENS.get()))
+                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "has_dicer_lens"), helper);
     }
 }

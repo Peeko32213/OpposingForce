@@ -1,4 +1,4 @@
-// 1.20.1	2025-11-03T01:14:46.1775066	Recipes
+// 1.20.1	2025-11-03T18:11:26.3809933	Recipes
 19b9af45401a2eea7cbaccf470cc125ee7fee81b data/minecraft/advancements/recipes/food/enchanted_golden_apple.json
 4e6fce234df08980a5f8e058b9497c4d9d72a986 data/minecraft/recipes/enchanted_golden_apple.json
 139da0a86e8b183e3a1799119694c7bc0b55d53e data/opposing_force/advancements/recipes/building_blocks/chiseled_vile_stone_bricks.json
@@ -57,7 +57,7 @@ a7f208b361f43544d02b5746c57495bf6ce2cb42 data/opposing_force/advancements/recipe
 bcb232866522d51b64704b320939d972c65ed358 data/opposing_force/advancements/recipes/food/fried_terror_leg_from_smoking_terror_leg.json
 cc9d0f58ef235f32eb17d983964b9c091e6cb899 data/opposing_force/advancements/recipes/food/inferno_pie.json
 fe975c4a86f74cb9bc1f1dceffa2e5818c7a284d data/opposing_force/advancements/recipes/food/inferno_pie_from_slices.json
-40211890aed8393511eb45a4bc2738b635c8073c data/opposing_force/advancements/recipes/food/spicy_terror_leg.json
+646efe5a89785b2f2abe5613349bf2830a113f34 data/opposing_force/advancements/recipes/food/spicy_terror_leg.json
 51182ada88f45153f71815c32c60512ce014439b data/opposing_force/advancements/recipes/misc/deep_silk.json
 491a1cb57be71bc2fba4175ad0459ec6834d1770 data/opposing_force/recipes/blaster.json
 2077c9e58ebbf188511594ce55019c90394274fa data/opposing_force/recipes/chiseled_vile_stone_bricks.json

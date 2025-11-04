@@ -1,0 +1,26 @@
+{
+  "display": {
+    "announce_to_chat": true,
+    "icon": {
+      "item": "opposing_force:laser_blade"
+    },
+    "title": {
+      "translate": "advancement.opposing_force.warden_challenge"
+    },
+    "description": {
+      "translate": "advancement.opposing_force.warden_challenge.desc"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "parry"
+    ]
+  ],
+  "parent": "opposing_force:has_dicer_lens",
+  "criteria": {
+    "parry": {
+      "trigger": "opposing_force:parry_warden_with_laser_blade"
+    }
+  }
+}
