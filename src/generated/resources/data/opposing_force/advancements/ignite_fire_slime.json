@@ -29,7 +29,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "minecraft:blaze_powder"
+      "item": "opposing_force:fire_gel"
     },
     "show_toast": true,
     "title": {
