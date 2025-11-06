@@ -1,0 +1,30 @@
+{
+  "parent": "opposing_force:root",
+  "criteria": {
+    "misc_root": {
+      "conditions": {},
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.opposing_force.misc_root.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:stone"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancement.opposing_force.misc_root"
+    }
+  },
+  "requirements": [
+    [
+      "misc_root"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

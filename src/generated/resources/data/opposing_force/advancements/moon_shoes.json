@@ -1,12 +1,12 @@
 {
-  "parent": "opposing_force:root",
+  "parent": "opposing_force:misc_root",
   "criteria": {
-    "has_dicer_lens": {
+    "moon_shoes": {
       "conditions": {
         "items": [
           {
             "items": [
-              "opposing_force:dicer_lens"
+              "opposing_force:moon_shoes"
             ]
           }
         ]
@@ -17,21 +17,22 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancement.opposing_force.dicer_lens.desc"
+      "translate": "advancement.opposing_force.moon_shoes.desc"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "opposing_force:dicer_lens"
+      "item": "opposing_force:moon_shoes",
+      "nbt": "{Damage:0}"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancement.opposing_force.dicer_lens"
+      "translate": "advancement.opposing_force.moon_shoes"
     }
   },
   "requirements": [
     [
-      "has_dicer_lens"
+      "moon_shoes"
     ]
   ],
   "sends_telemetry_event": true

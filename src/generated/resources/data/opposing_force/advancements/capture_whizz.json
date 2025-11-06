@@ -1,5 +1,5 @@
 {
-  "parent": "opposing_force:root",
+  "parent": "opposing_force:misc_root",
   "criteria": {
     "capture_whizz": {
       "conditions": {

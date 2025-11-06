@@ -2,7 +2,7 @@
   "display": {
     "announce_to_chat": true,
     "icon": {
-      "item": "opposing_force:laser_blade"
+      "item": "opposing_force:misc_root"
     },
     "title": {
       "translate": "advancement.opposing_force.warden_challenge"

@@ -1,5 +1,5 @@
 {
-  "parent": "opposing_force:root",
+  "parent": "opposing_force:misc_root",
   "criteria": {
     "ignite_fire_slime": {
       "conditions": {
@@ -29,7 +29,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "opposing_force:fire_gel"
+      "item": "minecraft:blaze_powder"
     },
     "show_toast": true,
     "title": {

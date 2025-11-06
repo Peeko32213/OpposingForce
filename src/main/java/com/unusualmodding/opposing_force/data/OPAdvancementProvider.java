@@ -1,7 +1,6 @@
 package com.unusualmodding.opposing_force.data;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.registry.OPBlocks;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import net.minecraft.advancements.Advancement;
@@ -13,6 +12,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
 import net.minecraftforge.common.data.ForgeAdvancementProvider.AdvancementGenerator;
@@ -41,8 +41,17 @@ public class OPAdvancementProvider implements AdvancementGenerator {
                 .addCriterion("root", KilledTrigger.TriggerInstance.playerKilledEntity())
                 .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "root"), helper);
 
-        Advancement igniteFireSlime = Advancement.Builder.advancement()
+        Advancement miscRoot = Advancement.Builder.advancement()
+                .display(Blocks.STONE,
+                        Component.translatable("advancement.opposing_force.misc_root"),
+                        Component.translatable("advancement.opposing_force.misc_root.desc"), null,
+                        FrameType.TASK, false, false, false)
+                .addCriterion("misc_root", KilledTrigger.TriggerInstance.playerKilledEntity())
                 .parent(root)
+                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "misc_root"), helper);
+
+        Advancement igniteFireSlime = Advancement.Builder.advancement()
+                .parent(miscRoot)
                 .display(Items.BLAZE_POWDER,
                         Component.translatable("advancement.opposing_force.ignite_fire_slime"),
                         Component.translatable("advancement.opposing_force.ignite_fire_slime.desc"),
@@ -54,7 +63,7 @@ public class OPAdvancementProvider implements AdvancementGenerator {
                 .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "ignite_fire_slime"), helper);
 
         Advancement captureWhizz = Advancement.Builder.advancement()
-                .parent(root)
+                .parent(miscRoot)
                 .display(OPItems.CAPTURED_WHIZZ.get(),
                         Component.translatable("advancement.opposing_force.capture_whizz"),
                         Component.translatable("advancement.opposing_force.capture_whizz.desc"),
@@ -77,7 +86,55 @@ public class OPAdvancementProvider implements AdvancementGenerator {
                     .addCriterion("deepwoven_boots", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.DEEPWOVEN_BOOTS.get()))
                 .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "deepwoven_armor"), helper);
 
-        Advancement tremblerShell = Advancement.Builder.advancement()
+        Advancement electricCharge = Advancement.Builder.advancement()
+                .parent(root)
+                .display(OPItems.ELECTRIC_CHARGE.get(),
+                        Component.translatable("advancement.opposing_force.electric_charge"),
+                        Component.translatable("advancement.opposing_force.electric_charge.desc"),
+                        null,
+                        FrameType.TASK, true, true, false)
+                .addCriterion("electric_charge", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.ELECTRIC_CHARGE.get()))
+                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "electric_charge"), helper);
+
+        Advancement moonShoes = Advancement.Builder.advancement()
+                .parent(miscRoot)
+                .display(OPItems.MOON_SHOES.get(),
+                        Component.translatable("advancement.opposing_force.moon_shoes"),
+                        Component.translatable("advancement.opposing_force.moon_shoes.desc"),
+                        null,
+                        FrameType.TASK, true, true, false)
+                .addCriterion("moon_shoes", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.MOON_SHOES.get()))
+                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "moon_shoes"), helper);
+
+        Advancement woodenArmor = Advancement.Builder.advancement()
+                .parent(root)
+                .display(OPItems.WOODEN_MASK.get(),
+                        Component.translatable("advancement.opposing_force.wooden_armor"),
+                        Component.translatable("advancement.opposing_force.wooden_armor.desc"),
+                        null,
+                        FrameType.TASK, true, true, false)
+                .requirements(RequirementsStrategy.OR)
+                .addCriterion("wooden_mask", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.WOODEN_MASK.get()))
+                .addCriterion("wooden_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.WOODEN_CHESTPLATE.get()))
+                .addCriterion("wooden_cover", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.WOODEN_COVER.get()))
+                .addCriterion("wooden_boots", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.WOODEN_BOOTS.get()))
+                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "wooden_armor"), helper);
+
+        Advancement stoneArmor = Advancement.Builder.advancement()
+                .parent(root)
+                .display(OPItems.STONE_HELMET.get(),
+                        Component.translatable("advancement.opposing_force.stone_armor"),
+                        Component.translatable("advancement.opposing_force.stone_armor.desc"),
+                        null,
+                        FrameType.TASK, true, true, false)
+                .requirements(RequirementsStrategy.OR)
+                .addCriterion("stone_helmet", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.STONE_HELMET.get()))
+                .addCriterion("stone_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.STONE_CHESTPLATE.get()))
+                .addCriterion("stone_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.STONE_LEGGINGS.get()))
+                .addCriterion("stone_boots", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.STONE_BOOTS.get()))
+                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "stone_armor"), helper);
+
+        /*Advancement tremblerShell = Advancement.Builder.advancement()
                 .parent(root)
                 .display(OPBlocks.TREMBLER_SHELL.get(),
                         Component.translatable("advancement.opposing_force.trembler_shell"),
@@ -85,9 +142,9 @@ public class OPAdvancementProvider implements AdvancementGenerator {
                         null,
                         FrameType.TASK, true, true, false)
                 .addCriterion("trembler_shell", InventoryChangeTrigger.TriggerInstance.hasItems(OPBlocks.TREMBLER_SHELL.get()))
-                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "trembler_shell"), helper);
+                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "trembler_shell"), helper); */
 
-        Advancement dicerLens = Advancement.Builder.advancement()
+        /*Advancement dicerLens = Advancement.Builder.advancement()
                 .parent(root)
                 .display(OPItems.DICER_LENS.get(),
                         Component.translatable("advancement.opposing_force.dicer_lens"),
@@ -95,6 +152,8 @@ public class OPAdvancementProvider implements AdvancementGenerator {
                         null,
                         FrameType.TASK, true, true, false)
                 .addCriterion("has_dicer_lens", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.DICER_LENS.get()))
-                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "has_dicer_lens"), helper);
+                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "has_dicer_lens"), helper);*/
+
+
     }
 }
