@@ -1,0 +1,78 @@
+{
+  "parent": "opposing_force:grow_slug",
+  "criteria": {
+    "slug_baron_boots": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "opposing_force:slug_baron_boots"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "slug_baron_chestplate": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "opposing_force:slug_baron_chestplate"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "slug_baron_helmet": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "opposing_force:slug_baron_helmet"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "slug_baron_leggings": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "opposing_force:slug_baron_leggings"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.opposing_force.slug_baron_armor.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "opposing_force:slug_baron_helmet",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.opposing_force.slug_baron_armor"
+    }
+  },
+  "requirements": [
+    [
+      "slug_baron_helmet",
+      "slug_baron_chestplate",
+      "slug_baron_leggings",
+      "slug_baron_boots"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -14,8 +14,28 @@
           "weight": 1
         },
         {
+          "type": "minecraft:item",
+          "name": "opposing_force:slug_baron_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "opposing_force:slug_baron_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "opposing_force:slug_baron_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "opposing_force:slug_baron_boots",
+          "weight": 1
+        },
+        {
           "type": "minecraft:empty",
-          "weight": 8
+          "weight": 24
         }
       ]
     },
@@ -45,6 +65,20 @@
               "function": "set_count",
               "count": {
                 "min": 0,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "opposing_force:electric_charge",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
                 "max": 2
               }
             }

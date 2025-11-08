@@ -134,6 +134,20 @@ public class OPAdvancementProvider implements AdvancementGenerator {
                 .addCriterion("stone_boots", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.STONE_BOOTS.get()))
                 .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "stone_armor"), helper);
 
+        Advancement slugArmor = Advancement.Builder.advancement()
+                .parent(new ResourceLocation(OpposingForce.MOD_ID, "grow_slug"))
+                .display(OPItems.SLUG_BARON_HELMET.get(),
+                        Component.translatable("advancement.opposing_force.slug_baron_armor"),
+                        Component.translatable("advancement.opposing_force.slug_baron_armor.desc"),
+                        null,
+                        FrameType.TASK, true, true, false)
+                .requirements(RequirementsStrategy.OR)
+                .addCriterion("slug_baron_helmet", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.SLUG_BARON_HELMET.get()))
+                .addCriterion("slug_baron_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.SLUG_BARON_CHESTPLATE.get()))
+                .addCriterion("slug_baron_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.SLUG_BARON_LEGGINGS.get()))
+                .addCriterion("slug_baron_boots", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.SLUG_BARON_BOOTS.get()))
+                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "slug_baron_armor"), helper);
+
         /*Advancement tremblerShell = Advancement.Builder.advancement()
                 .parent(root)
                 .display(OPBlocks.TREMBLER_SHELL.get(),
