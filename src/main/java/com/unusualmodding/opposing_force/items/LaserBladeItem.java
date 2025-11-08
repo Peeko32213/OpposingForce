@@ -60,11 +60,6 @@ public class LaserBladeItem extends SwordItem implements CustomSweepAttack {
     }
 
     @Override
-    public void onUseTick(@NotNull Level level, @NotNull LivingEntity living, @NotNull ItemStack itemStack, int timeUsing) {
-        super.onUseTick(level, living, itemStack, timeUsing);
-    }
-
-    @Override
     public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
         if (super.hurtEnemy(stack, target, attacker)) {
             target.playSound(OPSoundEvents.LASER_BLADE_HIT.get(), 1.0F, 1.0F / (target.level().getRandom().nextFloat() * 0.4F + 0.8F));
@@ -91,12 +86,10 @@ public class LaserBladeItem extends SwordItem implements CustomSweepAttack {
     @Override
     public boolean onEntitySwing(@NotNull ItemStack stack, @NotNull LivingEntity entity) {
         Level level = entity.level();
-
         if (!level.isClientSide && this.swingSoundCooldown == 0) {
-            this.swingSoundCooldown = 5;
+            this.swingSoundCooldown = 7;
             level.playSound(null, entity.blockPosition(), OPSoundEvents.LASER_BLADE_SWING.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
         }
-
         return super.onEntitySwing(stack, entity);
     }
 }

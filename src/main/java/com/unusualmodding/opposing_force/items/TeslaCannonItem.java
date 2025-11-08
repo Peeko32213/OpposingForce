@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.items;
 
 import com.google.common.collect.Lists;
+import com.unusualmodding.opposing_force.enchantments.KickbackEnchantment;
 import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
 import com.unusualmodding.opposing_force.registry.OPEnchantments;
 import com.unusualmodding.opposing_force.registry.OPItems;
@@ -63,16 +64,10 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        int kickback = EnchantmentHelper.getTagEnchantmentLevel(OPEnchantments.KICKBACK.get(), itemstack);
         if (isCharged(itemstack)) {
-            shootCharge(level, player, hand, itemstack);
+            this.shootCharge(level, player, hand, itemstack);
             setCharged(itemstack, false);
-            Vec3 lookVec = player.getLookAngle().multiply(-1,-1,-1);
-            if (kickback > 0) {
-                player.setDeltaMovement(new Vec3(0.5 + (kickback * 0.5), player.getDeltaMovement().y + (kickback * 0.25), 0.5 + (kickback * 0.5)).multiply(lookVec));
-            } else {
-                player.setDeltaMovement(new Vec3(0.5, player.getDeltaMovement().y + 0.25, 0.5).multiply(lookVec));
-            }
+            KickbackEnchantment.doKickback(player, itemstack);
             return InteractionResultHolder.consume(itemstack);
         } else if (!player.getProjectile(itemstack).isEmpty()) {
             if (!isCharged(itemstack)) {

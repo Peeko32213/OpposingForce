@@ -38,7 +38,7 @@ public class ThrownLaserBladeRenderer extends EntityRenderer<ThrownLaserBlade> {
         float scale = 2.0F;
         poseStack.scale(this.scale, this.scale, this.scale);
         poseStack.scale(scale, 0.85F, scale);
-        poseStack.mulPose(Axis.XP.rotationDegrees(90));
+        poseStack.mulPose(Axis.XP.rotationDegrees(entity.counterclockwise ? -90 : 90));
         poseStack.translate(0, 0, -0.25F);
         poseStack.mulPose(Axis.ZP.rotation((entity.tickCount + partialTicks) * 0.99F));
         this.itemRenderer.renderStatic(entity.getItem(), ItemDisplayContext.NONE, packedLight, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, entity.level(), entity.getId());

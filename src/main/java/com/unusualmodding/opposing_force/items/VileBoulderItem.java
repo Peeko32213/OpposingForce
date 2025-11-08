@@ -25,7 +25,6 @@ public class VileBoulderItem extends SwordItem {
             if (!target.hasEffect(OPMobEffects.SLUG_INFESTATION.get()) && !(target instanceof Slug)) {
                 target.addEffect(new MobEffectInstance(OPMobEffects.SLUG_INFESTATION.get(), 400, stack.getEnchantmentLevel(OPEnchantments.PLAGUE.get()), false, true));
                 target.playSound(OPSoundEvents.SLUG_ATTACK.get(), 1.5F, 1);
-
                 for (int i = 0; i < 16; i++) {
                     ((ServerLevel) target.level()).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, OPBlocks.SLUG_EGGS.get().defaultBlockState()), target.getX(), target.getY() + target.getBbHeight() * 0.5F, target.getZ(), 1, target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5, 0);
                 }

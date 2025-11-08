@@ -28,45 +28,40 @@ import org.jetbrains.annotations.NotNull;
 public class ThrownLaserBlade extends ThrowableItemProjectile {
 
     private ItemStack laserBladeItem = new ItemStack(OPItems.LASER_BLADE.get());
-    public Pickup pickup = Pickup.DISALLOWED;
 
-    public int returnTimer = 0;
-    public float damage;
+    private int returnTimer = 0;
+    private boolean hasHitBlock = false;
+    public boolean counterclockwise;
 
     public ThrownLaserBlade(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
         super(entityType, level);
         this.noPhysics = true;
     }
 
-    public ThrownLaserBlade(double x, double y, double z, Level level) {
+    public ThrownLaserBlade(Level level, double x, double y, double z) {
         super(OPEntities.LASER_BLADE.get(), x, y, z, level);
         this.noPhysics = true;
     }
 
-    public void setData(Entity owner, int returnTimer, float damage, ItemStack laserBladeItem) {
+    public void setData(Entity owner, int returnTimer, ItemStack laserBladeItem, boolean counterclockwise) {
         this.setOwner(owner);
         this.returnTimer = returnTimer;
         this.laserBladeItem = laserBladeItem.copy();
-        this.damage = damage;
-        if (owner instanceof Player) {
-            this.pickup = Pickup.ALLOWED;
-        }
+        this.counterclockwise = counterclockwise;
     }
 
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putInt("ReturnTimer", this.returnTimer);
-        compoundTag.putFloat("Damage", this.damage);
-        compoundTag.putByte("CanPickup", (byte) this.pickup.ordinal());
+        compoundTag.putBoolean("Counterclockwise", this.counterclockwise);
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         this.returnTimer = compoundTag.getInt("ReturnTimer");
-        this.damage = compoundTag.getFloat("Damage");
-        this.pickup = Pickup.byOrdinal(compoundTag.getByte("CanPickup"));
+        this.counterclockwise = compoundTag.getBoolean("Counterclockwise");
     }
 
     @Override
@@ -81,14 +76,13 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
             var heldItem = owner.getMainHandItem();
             owner.setItemInHand(InteractionHand.MAIN_HAND, this.getItem());
             target.invulnerableTime = 0;
-            boolean hit = target.hurt(OPDamageTypes.thrownLaserBlade(this.level(), this, this.getOwner()), this.damage);
+            boolean hit = target.hurt(OPDamageTypes.thrownLaserBlade(this.level(), this, this.getOwner()), 7);
             if (hit && target instanceof LivingEntity livingentity) {
                 ItemStack itemStack = this.getItem();
                 int fireAspect = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, itemStack);
                 if (fireAspect > 0) {
                     livingentity.setSecondsOnFire(fireAspect * 4);
                 }
-                returnTimer++;
             }
             owner.setItemInHand(InteractionHand.MAIN_HAND, heldItem);
             this.playSound(OPSoundEvents.LASER_BLADE_HIT.get(), 1.0F, 1.0F / (this.level().getRandom().nextFloat() * 0.4F + 0.8F));
@@ -99,10 +93,13 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
     @Override
     protected void onHitBlock(@NotNull BlockHitResult result) {
         super.onHitBlock(result);
+        if (!this.hasHitBlock) {
+            this.playSound(OPSoundEvents.LASER_BLADE_HIT.get(), 1.0F, 1.0F / (this.level().getRandom().nextFloat() * 0.4F + 0.8F));
+        }
         this.returnTimer = 0;
-        this.playSound(OPSoundEvents.LASER_BLADE_HIT.get(), 1.0F, 1.0F / (this.level().getRandom().nextFloat() * 0.4F + 0.8F));
+        this.hasHitBlock = true;
         if (this.getOwner() instanceof LivingEntity owner) {
-            this.flyBack(owner);
+            this.flyBack(owner, false);
         }
     }
 
@@ -131,10 +128,16 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
         this.setDeltaMovement(this.getDeltaMovement().add(vec3.x, 0, vec3.z));
     }
 
-    public void flyBack(Entity owner) {
-        var ownerPos = owner.position().add(0, owner.getBbHeight() * 0.5F, 0);
-        var returnMotion = ownerPos.subtract(position()).normalize().scale(0.75F);
-        this.setDeltaMovement(returnMotion);
+    public void flyBack(Entity owner, boolean lerpMotion) {
+        Vec3 ownerPos = owner.position().add(0, owner.getBbHeight() * 0.5F, 0);
+        Vec3 returnMotion = ownerPos.subtract(position()).normalize().scale(2.25F);
+        Vec3 motion = this.getDeltaMovement();
+        float delta = 0.1F;
+        double x = Mth.lerp(delta, motion.x, returnMotion.x);
+        double y = Mth.lerp(delta, motion.y, returnMotion.y);
+        double z = Mth.lerp(delta, motion.z, returnMotion.z);
+        if (lerpMotion) this.setDeltaMovement(new Vec3(x, y, z));
+        else this.setDeltaMovement(returnMotion);
     }
 
     private boolean isAcceptableReturnOwner() {
@@ -151,25 +154,17 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
             this.setDeltaMovement(Vec3.ZERO);
             return;
         }
-        if (!this.isAcceptableReturnOwner() && this.pickup == Pickup.ALLOWED) {
+        if (!this.isAcceptableReturnOwner()) {
             this.spawnAtLocation(this.getPickupItem(), 0.1F);
             this.discard();
         }
-        else if (returnTimer <= 0) {
-            var ownerPos = this.getOwner().position().add(0, this.getOwner().getBbHeight() * 0.6F, 0);
-            var motion = this.getDeltaMovement();
-            double velocity = Mth.clamp(motion.length() * 3, 0.5F, 2.25F);
-            var returnMotion = ownerPos.subtract(position()).normalize().scale(velocity);
+        else if (returnTimer == 0) {
+            this.flyBack(this.getOwner(), true);
             if (this.getOwner() instanceof ServerPlayer player) {
                 ThrowingEnchantment.addCooldown(player, this);
             }
-            float delta = 0.1F;
-            double x = Mth.lerp(delta, motion.x, returnMotion.x);
-            double y = Mth.lerp(delta, motion.y, returnMotion.y);
-            double z = Mth.lerp(delta, motion.z, returnMotion.z);
-            this.setDeltaMovement(new Vec3(x, y, z));
         }
-        this.returnTimer--;
+        if (returnTimer > 0) returnTimer--;
         this.updateRotation();
     }
 
@@ -191,33 +186,12 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
     @Override
     public void playerTouch(@NotNull Player player) {
         if (!this.level().isClientSide && (this.ownedBy(player) || this.getOwner() == null) && this.tickCount > 2) {
-            if (!player.isCreative() && this.tryPickup(player)) {
+            if (!player.isCreative() && player.getInventory().add(this.getPickupItem())) {
                 player.take(this, 1);
                 this.discard();
             } else {
                 this.discard();
             }
-        }
-    }
-
-    protected boolean tryPickup(Player player) {
-        return switch (this.pickup) {
-            case ALLOWED -> player.getInventory().add(this.getPickupItem());
-            case CREATIVE_ONLY -> player.getAbilities().instabuild;
-            default -> false;
-        };
-    }
-
-    public enum Pickup {
-        DISALLOWED,
-        ALLOWED,
-        CREATIVE_ONLY;
-
-        public static Pickup byOrdinal(int oridinal) {
-            if (oridinal < 0 || oridinal > values().length) {
-                oridinal = 0;
-            }
-            return values()[oridinal];
         }
     }
 

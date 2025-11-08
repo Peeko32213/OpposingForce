@@ -36,7 +36,7 @@ public class OPEnchantments {
     public static final RegistryObject<Enchantment> QUASAR = ENCHANTMENTS.register("quasar", () -> new OPEnchantment("quasar", Enchantment.Rarity.VERY_RARE, TESLA_CANNON, 1, 30, false, false, true, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> REBOUND = ENCHANTMENTS.register("rebound", () -> new OPEnchantment("rebound", Enchantment.Rarity.UNCOMMON, TESLA_CANNON, 4, 15, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> STATIC_ATTRACTION = ENCHANTMENTS.register("static_attraction", () -> new OPEnchantment("static_attraction", Enchantment.Rarity.VERY_RARE, TESLA_CANNON, 1, 25, true, false, true, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> KICKBACK = ENCHANTMENTS.register("kickback", () -> new OPEnchantment("kickback", Enchantment.Rarity.RARE, TESLA_CANNON, 4, 20, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> KICKBACK = ENCHANTMENTS.register("kickback", KickbackEnchantment::new);
 
     // vile boulder
     public static final RegistryObject<Enchantment> PLAGUE = ENCHANTMENTS.register("plague", () -> new OPEnchantment("plague", Enchantment.Rarity.RARE, VILE_BOULDER, 2, 20, EquipmentSlot.MAINHAND));
@@ -45,9 +45,6 @@ public class OPEnchantments {
     public static final RegistryObject<Enchantment> THROWING = ENCHANTMENTS.register("throwing", ThrowingEnchantment::new);
 
     public static boolean areCompatible(OPEnchantment enchantment1, Enchantment enchantment2) {
-        if (enchantment1 == KICKBACK.get() && (enchantment2 == Enchantments.QUICK_CHARGE)) {
-            return false;
-        }
         if (enchantment1 == CAPACITANCE.get() && (enchantment2 == Enchantments.MULTISHOT || enchantment2 == Enchantments.QUICK_CHARGE)) {
             return false;
         }

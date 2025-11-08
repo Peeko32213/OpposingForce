@@ -8,7 +8,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -29,9 +28,8 @@ public class ThrowingEnchantment extends Enchantment {
     public static void throwBlade(Level level, Player player, InteractionHand hand, ItemStack itemStack) {
         if (player instanceof ServerPlayer) {
             Vec3 position = player.position().add(0, player.getBbHeight() * 0.5F, 0);
-            float damage = (float) player.getAttributes().getValue(Attributes.ATTACK_DAMAGE);
-            ThrownLaserBlade entity = new ThrownLaserBlade(position.x, position.y, position.z, level);
-            entity.setData(player, 9, damage, itemStack);
+            ThrownLaserBlade entity = new ThrownLaserBlade(level, position.x, position.y, position.z);
+            entity.setData(player, 9, itemStack, level.getRandom().nextBoolean());
             entity.setItem(itemStack);
             entity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0F, 2F, 0F);
             level.addFreshEntity(entity);
