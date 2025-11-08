@@ -19,7 +19,7 @@ public class UmberSpiderFearLightGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return !this.umberSpider.isVehicle() && (this.umberSpider.level().getBrightness(LightLayer.BLOCK, this.umberSpider.blockPosition()) > this.umberSpider.getLightThreshold() || this.umberSpider.isOnFire()) && this.umberSpider.fleeFromPosition != null;
+        return !this.umberSpider.isElite() && !this.umberSpider.isVehicle() && (this.umberSpider.level().getBrightness(LightLayer.BLOCK, this.umberSpider.blockPosition()) > this.umberSpider.getLightThreshold() || this.umberSpider.isOnFire()) && this.umberSpider.fleeFromPosition != null;
     }
 
     @Override

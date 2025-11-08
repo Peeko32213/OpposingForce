@@ -3,7 +3,7 @@ package com.unusualmodding.opposing_force.entity;
 import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.entity.ai.goal.VoltShootGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.VoltLeapGoal;
-import com.unusualmodding.opposing_force.entity.utils.IAttackState;
+import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -33,7 +33,7 @@ import net.minecraft.world.level.dimension.DimensionType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class Volt extends Monster implements IAttackState, PowerableMob {
+public class Volt extends Monster implements AttackState, PowerableMob {
 
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Volt.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> CHARGED = SynchedEntityData.defineId(Volt.class, EntityDataSerializers.BOOLEAN);

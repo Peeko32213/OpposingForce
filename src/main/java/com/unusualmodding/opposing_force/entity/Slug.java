@@ -4,6 +4,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.base.SummonableMonster;
+import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPCriterion;
 import com.unusualmodding.opposing_force.registry.OPMobEffects;
@@ -24,6 +25,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -50,12 +52,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 
 @SuppressWarnings("deprecation")
-public class Slug extends SummonableMonster {
+public class Slug extends SummonableMonster implements EliteVariant {
 
     private static final EntityDataAccessor<Integer> SIZE = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> MAX_GROWABLE_SIZE = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> TAME_ATTEMPTS = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> LAUNCHED = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> VILE = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.BOOLEAN);
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState launchStartAnimationState = new AnimationState();
@@ -116,12 +119,15 @@ public class Slug extends SummonableMonster {
             } else if (this.level().getDifficulty() == Difficulty.HARD) {
                 i = 10;
             }
-            if (i > 0) {
+            if (i > 0 && entity instanceof LivingEntity livingEntity) {
                 if (!collection.isEmpty()) {
                     for (MobEffectInstance mobeffectinstance : collection) {
-                        ((LivingEntity) entity).addEffect(new MobEffectInstance(mobeffectinstance.getEffect(), i * 20, 0), this);
+                        livingEntity.addEffect(new MobEffectInstance(mobeffectinstance.getEffect(), i * 20, 0), this);
                     }
                     this.removeAllEffects();
+                }
+                if (this.isElite()) {
+                    livingEntity.addEffect(new MobEffectInstance(OPMobEffects.SLUG_INFESTATION.get(), i * 40, 0), this);
                 }
             }
             this.playSound(OPSoundEvents.SLUG_ATTACK.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
@@ -133,7 +139,7 @@ public class Slug extends SummonableMonster {
 
     @Override
     public boolean canBeAffected(MobEffectInstance effect) {
-        if (effect.getEffect() == OPMobEffects.SLUG_INFESTATION.get()) {
+        if (effect.getEffect() == OPMobEffects.SLUG_INFESTATION.get() || (effect.getEffect() == MobEffects.POISON && this.isElite())) {
             MobEffectEvent.Applicable event = new MobEffectEvent.Applicable(this, effect);
             MinecraftForge.EVENT_BUS.post(event);
             return event.getResult() == Event.Result.ALLOW;
@@ -152,7 +158,7 @@ public class Slug extends SummonableMonster {
 
     @Override
     protected void dropFromLootTable(@NotNull DamageSource source, boolean drops) {
-        int extraEggs = this.getSlugSize() / 2;
+        int extraEggs = this.isElite() ? this.getSlugSize() : this.getSlugSize() / 2;
         if (this.getSlugSize() > 3 && !this.isFromSummon()) {
             for (int i = 0; i < extraEggs; i++) {
                 super.dropFromLootTable(source, drops);
@@ -177,6 +183,7 @@ public class Slug extends SummonableMonster {
         this.entityData.define(MAX_GROWABLE_SIZE, 0);
         this.entityData.define(TAME_ATTEMPTS, 0);
         this.entityData.define(LAUNCHED, false);
+        this.entityData.define(VILE, false);
     }
 
     @Override
@@ -185,6 +192,7 @@ public class Slug extends SummonableMonster {
         compoundTag.putInt("Size", this.getSlugSize() - 1);
         compoundTag.putInt("MaxGrowableSize", this.getMaxGrowableSlugSize());
         compoundTag.putInt("TameAttempts", this.getTameAttempts());
+        compoundTag.putBoolean("Vile", this.isElite());
     }
 
     @Override
@@ -193,6 +201,17 @@ public class Slug extends SummonableMonster {
         super.readAdditionalSaveData(compoundTag);
         this.setMaxGrowableSlugSize(compoundTag.getInt("MaxGrowableSize"));
         this.setTameAttempts(compoundTag.getInt("TameAttempts"));
+        this.setElite(compoundTag.getBoolean("Vile"));
+    }
+
+    @Override
+    public boolean isElite() {
+        return this.entityData.get(VILE);
+    }
+
+    @Override
+    public void setElite(boolean elite) {
+        this.entityData.set(VILE, elite);
     }
 
     public void setTameAttempts(int i) {
@@ -445,15 +464,31 @@ public class Slug extends SummonableMonster {
     @Nullable
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag compoundTag) {
         RandomSource random = level.getRandom();
-        if (random.nextInt(150) == 0) {
-            if (random.nextFloat() < 0.5F * difficulty.getSpecialMultiplier()) {
-                this.setSlugSize(8 + random.nextInt(32));
-            }
-        } else if (random.nextInt(10) == 0) {
-            this.setSlugSize(random.nextInt(8));
-        } else {
-            this.setSlugSize(random.nextInt(4));
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
+
+        if (random.nextInt(this.getEliteSpawnChance()) == 0) {
+            this.setElite(true);
         }
-        return super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
+
+        if (this.isElite()) {
+            if (random.nextInt(100) == 0) {
+                if (random.nextFloat() < 0.5F * difficulty.getSpecialMultiplier()) {
+                    this.setSlugSize(8 + random.nextInt(32));
+                }
+            } else {
+                this.setSlugSize(4 + random.nextInt(8));
+            }
+        } else {
+            if (random.nextInt(150) == 0) {
+                if (random.nextFloat() < 0.5F * difficulty.getSpecialMultiplier()) {
+                    this.setSlugSize(8 + random.nextInt(32));
+                }
+            } else if (random.nextInt(10) == 0) {
+                this.setSlugSize(random.nextInt(8));
+            } else {
+                this.setSlugSize(random.nextInt(4));
+            }
+        }
+        return spawnData;
     }
 }

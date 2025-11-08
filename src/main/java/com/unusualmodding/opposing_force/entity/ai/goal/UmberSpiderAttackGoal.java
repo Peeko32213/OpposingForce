@@ -5,7 +5,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.LightLayer;
 
-import java.util.EnumSet;
 import java.util.Objects;
 
 public class UmberSpiderAttackGoal extends AttackGoal {
@@ -19,12 +18,19 @@ public class UmberSpiderAttackGoal extends AttackGoal {
 
     @Override
     public boolean canUse() {
-        return super.canUse() && this.umberSpider.fleeLightFor <= 0 && this.umberSpider.getTarget().level().getBrightness(LightLayer.BLOCK, this.umberSpider.getTarget().blockPosition()) <= this.umberSpider.getLightThreshold() && !this.umberSpider.isOnFire();
+        return super.canUse() && this.umberSpider.fleeLightFor <= 0 && this.canAttack();
     }
 
     @Override
     public boolean canContinueToUse() {
-        return super.canContinueToUse() && this.umberSpider.fleeLightFor <= 0 && this.umberSpider.getTarget().level().getBrightness(LightLayer.BLOCK, this.umberSpider.getTarget().blockPosition()) <= this.umberSpider.getLightThreshold() && !this.umberSpider.isOnFire();
+        return super.canContinueToUse() && this.umberSpider.fleeLightFor <= 0 && this.canAttack();
+    }
+
+    private boolean canAttack() {
+        if (this.umberSpider.isElite()) {
+            return true;
+        }
+        else return this.umberSpider.getTarget().level().getBrightness(LightLayer.BLOCK, this.umberSpider.getTarget().blockPosition()) <= this.umberSpider.getLightThreshold() && !this.umberSpider.isOnFire();
     }
 
     @Override

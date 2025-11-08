@@ -2,7 +2,7 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
-import com.unusualmodding.opposing_force.entity.utils.IAttackState;
+import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -40,7 +40,7 @@ import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 
-public class HangingSpider extends Spider implements IAttackState {
+public class HangingSpider extends Spider implements AttackState {
 
     private static final EntityDataAccessor<Boolean> UPSIDE_DOWN = SynchedEntityData.defineId(HangingSpider.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Vector3f> CURRENT_WEB_POS = SynchedEntityData.defineId(HangingSpider.class, EntityDataSerializers.VECTOR3);

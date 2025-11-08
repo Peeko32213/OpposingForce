@@ -18,43 +18,45 @@ public class UmberSpiderLeapAtTargetGoal extends Goal {
       this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE));
    }
 
-   @Override
-   public boolean canUse() {
-      if (this.umberSpider.level().getBrightness(LightLayer.BLOCK, this.umberSpider.blockPosition()) > umberSpider.getLightThreshold() && this.umberSpider.fleeLightFor > 0 && this.umberSpider.fleeFromPosition != null && !this.umberSpider.isAttacking()) {
-          return false;
-      } else if (this.umberSpider.isVehicle()) {
-         return false;
-      } else {
-         this.target = this.umberSpider.getTarget();
-         if (this.target == null) {
+    @Override
+    public boolean canUse() {
+        LivingEntity target = this.umberSpider.getTarget();
+        if (target == null) {
             return false;
-         } else {
-            double d0 = this.umberSpider.distanceToSqr(this.target);
-            if (!(d0 < 4.0D) && !(d0 > 16.0D)) {
-               if (!this.umberSpider.onGround()) {
-                  return false;
-               } else {
-                  return this.umberSpider.getRandom().nextInt(reducedTickDelay(5)) == 0;
-               }
-            } else {
-               return false;
-            }
-         }
-      }
-   }
+        }
+        this.target = target;
+        if (!this.canLeap(target)) {
+            return false;
+        }
+        double distanceToSqr = this.umberSpider.distanceToSqr(target);
+        if (distanceToSqr < 4.0D || distanceToSqr > 16.0D) {
+            return false;
+        }
+        if (!this.umberSpider.onGround()) {
+            return false;
+        }
+        return this.umberSpider.getRandom().nextInt(reducedTickDelay(5)) == 0;
+    }
 
-   @Override
-   public boolean canContinueToUse() {
+    private boolean canLeap(LivingEntity target) {
+        if (this.umberSpider.isElite() && !this.umberSpider.isVehicle()) {
+            return true;
+        }
+        return target.level().getBrightness(LightLayer.BLOCK, target.blockPosition()) <= this.umberSpider.getLightThreshold() && !this.umberSpider.isOnFire() && !this.umberSpider.isVehicle();
+    }
+
+    @Override
+    public boolean canContinueToUse() {
       return !this.umberSpider.onGround() && this.umberSpider.level().getBrightness(LightLayer.BLOCK, this.umberSpider.blockPosition()) < umberSpider.getLightThreshold() && this.umberSpider.isAttacking();
-   }
+    }
 
-   @Override
-   public void start() {
-      Vec3 vec3 = this.umberSpider.getDeltaMovement();
-      Vec3 vec31 = new Vec3(this.target.getX() - this.umberSpider.getX(), 0.0D, this.target.getZ() - this.umberSpider.getZ());
-      if (vec31.lengthSqr() > 1.0E-7D) {
-         vec31 = vec31.normalize().scale(0.5D).add(vec3.scale(0.2D));
+    @Override
+    public void start() {
+      Vec3 deltaMovement = this.umberSpider.getDeltaMovement();
+      Vec3 leapVec = new Vec3(this.target.getX() - this.umberSpider.getX(), 0.0D, this.target.getZ() - this.umberSpider.getZ());
+      if (leapVec.lengthSqr() > 1.0E-7D) {
+         leapVec = leapVec.normalize().scale(0.5D).add(deltaMovement.scale(0.2D));
       }
-      this.umberSpider.setDeltaMovement(vec31.x, 0.4D, vec31.z);
-   }
+      this.umberSpider.setDeltaMovement(leapVec.x, 0.4D, leapVec.z);
+    }
 }

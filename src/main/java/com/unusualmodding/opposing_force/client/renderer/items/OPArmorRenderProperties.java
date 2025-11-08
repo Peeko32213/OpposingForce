@@ -14,6 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.jetbrains.annotations.NotNull;
 
 public class OPArmorRenderProperties implements IClientItemExtensions {
 
@@ -24,6 +25,7 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
     public static EmeraldArmorModel EMERALD_MODEL;
     public static StoneArmorModel STONE_MODEL;
     public static MoonShoesModel MOON_SHOES_MODEL;
+    public static SlugBaronArmorModel SLUG_BARON_MODEL;
 
     public static void initializeModels() {
         init = true;
@@ -32,10 +34,11 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
         EMERALD_MODEL = new EmeraldArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.EMERALD_ARMOR));
         STONE_MODEL = new StoneArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.STONE_ARMOR));
         MOON_SHOES_MODEL = new MoonShoesModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.MOON_SHOES));
+        SLUG_BARON_MODEL = new SlugBaronArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.SLUG_BARON_ARMOR));
     }
 
     @Override
-    public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> humanoidModel) {
+    public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> humanoidModel) {
 
         if (!init) {
             initializeModels();
@@ -51,6 +54,9 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
         }
         if (item instanceof EmeraldArmorItem) {
             return EMERALD_MODEL;
+        }
+        if (item instanceof SlugBaronArmorItem) {
+            return SLUG_BARON_MODEL;
         }
         if (item instanceof StoneArmorItem) {
             return STONE_MODEL;

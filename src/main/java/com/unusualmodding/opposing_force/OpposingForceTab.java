@@ -61,6 +61,10 @@ public class OpposingForceTab {
                     output.accept(OPBlocks.VILE_COBBLESTONE_WALL.get());
                     output.accept(OPItems.VILE_BOULDER.get());
                     output.accept(OPItems.VILE_STAFF.get());
+                    output.accept(OPItems.SLUG_BARON_HELMET.get());
+                    output.accept(OPItems.SLUG_BARON_CHESTPLATE.get());
+                    output.accept(OPItems.SLUG_BARON_LEGGINGS.get());
+                    output.accept(OPItems.SLUG_BARON_BOOTS.get());
                     output.accept(OPItems.WALTZ_OF_THE_SLUG_DISC.get());
 
                     // terror

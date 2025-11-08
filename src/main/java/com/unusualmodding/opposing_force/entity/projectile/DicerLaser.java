@@ -47,6 +47,7 @@ public class DicerLaser extends Entity {
     private static final EntityDataAccessor<Boolean> HAS_PLAYER = SynchedEntityData.defineId(DicerLaser.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> CASTER = SynchedEntityData.defineId(DicerLaser.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(DicerLaser.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> FIERY = SynchedEntityData.defineId(DicerLaser.class, EntityDataSerializers.BOOLEAN);
 
     public float prevYaw;
     public float prevPitch;
@@ -129,6 +130,9 @@ public class DicerLaser extends Entity {
                 for (LivingEntity target : entities) {
                     if (caster != null) {
                         if (!this.caster.isAlliedTo(target) && target != caster) {
+                            if (this.isFiery()) {
+                                target.setSecondsOnFire(5);
+                            }
                             target.hurt(OPDamageTypes.laser(this.level(), this, caster), this.getDamage());
                         }
                     }
@@ -159,6 +163,7 @@ public class DicerLaser extends Entity {
         this.entityData.define(DAMAGE, 0F);
         this.entityData.define(HAS_PLAYER, false);
         this.entityData.define(CASTER, -1);
+        this.entityData.define(FIERY, false);
     }
 
     public float getYaw() {
@@ -199,6 +204,14 @@ public class DicerLaser extends Entity {
 
     public void setCasterID(int id) {
         this.entityData.set(CASTER, id);
+    }
+
+    public boolean isFiery() {
+        return this.entityData.get(FIERY);
+    }
+
+    public void setFiery(boolean fiery) {
+        this.entityData.set(FIERY, fiery);
     }
 
     @Override

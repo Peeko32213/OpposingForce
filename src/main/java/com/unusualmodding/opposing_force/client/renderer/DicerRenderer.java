@@ -11,12 +11,14 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(Dist.CLIENT)
 public class DicerRenderer extends MobRenderer<Dicer, DicerModel> {
 
     private static final ResourceLocation DICER = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/dicer/dicer.png");
+    private static final ResourceLocation ARCH_DICER = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/dicer/arch_dicer.png");
 
     public DicerRenderer(EntityRendererProvider.Context context) {
         super(context, new DicerModel(context.bakeLayer(OPModelLayers.DICER)), 0.5F);
@@ -24,12 +26,12 @@ public class DicerRenderer extends MobRenderer<Dicer, DicerModel> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Dicer entity) {
-        return DICER;
+    public @NotNull ResourceLocation getTextureLocation(@NotNull Dicer entity) {
+        return entity.isElite() ? ARCH_DICER : DICER;
     }
 
     @Override
-    protected @Nullable RenderType getRenderType(Dicer entity, boolean bodyVisible, boolean translucent, boolean glowing) {
-        return RenderType.entityCutoutNoCull(DICER);
+    protected @Nullable RenderType getRenderType(@NotNull Dicer entity, boolean bodyVisible, boolean translucent, boolean glowing) {
+        return RenderType.entityCutoutNoCull(this.getTextureLocation(entity));
     }
 }

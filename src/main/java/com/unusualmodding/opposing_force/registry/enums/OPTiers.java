@@ -18,6 +18,7 @@ public class OPTiers {
         public static final ArmorMaterial EMERALD = new OPArmorMaterial("emerald", 33, new int[] {3, 8, 6, 3}, 14, OPSoundEvents.ARMOR_EQUIP_EMERALD.get(), 2F, 0F, ()-> Ingredient.of(Tags.Items.GEMS_EMERALD));
         public static final ArmorMaterial STONE = new OPArmorMaterial("stone", 7, new int[] {2, 5, 4, 1}, 5, OPSoundEvents.ARMOR_EQUIP_STONE.get(), 0F, 0.15F, ()-> Ingredient.of(Tags.Items.STONE));
         public static final ArmorMaterial MOON_SHOES = new OPArmorMaterial("moon_shoes", 13, new int[] {1, 1, 1, 1}, 8, OPSoundEvents.ARMOR_EQUIP_MOON_SHOES.get(), 0F, 0F, ()-> Ingredient.of(Tags.Items.FEATHERS));
+        public static final ArmorMaterial SLUG_BARON = new OPArmorMaterial("slug_baron", 30, new int[] {3, 8, 6, 3}, 5, OPSoundEvents.ARMOR_EQUIP_EMERALD.get(), 0F, 0F, ()-> Ingredient.of(OPBlocks.SLUG_EGGS.get()));
     }
 
     public static class OPItemTiers {

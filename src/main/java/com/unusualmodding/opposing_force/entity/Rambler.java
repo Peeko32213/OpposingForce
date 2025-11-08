@@ -4,7 +4,7 @@ import com.unusualmodding.opposing_force.entity.ai.goal.RamblerFlailGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.RamblerJabGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.RamblerRollGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
-import com.unusualmodding.opposing_force.entity.utils.IAttackState;
+import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPItems;
@@ -43,7 +43,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class Rambler extends Monster implements IAttackState {
+public class Rambler extends Monster implements AttackState {
 
     private static final EntityDataAccessor<Boolean> FLAILING = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> ROLLING = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.BOOLEAN);

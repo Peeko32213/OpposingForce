@@ -1,6 +1,6 @@
 package com.unusualmodding.opposing_force.entity.utils;
 
-public interface IAttackState {
+public interface AttackState {
 
     int getAttackState();
 

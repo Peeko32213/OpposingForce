@@ -18,6 +18,13 @@ public class UmberSpiderRandomLookAroundGoal extends RandomLookAroundGoal {
 
     @Override
     public boolean canUse() {
-        return !this.umberSpider.isVehicle() && this.umberSpider.level().getBrightness(LightLayer.BLOCK, this.umberSpider.blockPosition()) <= this.umberSpider.getLightThreshold() && super.canUse();
+        return !this.umberSpider.isVehicle() && this.canLookAround() && super.canUse();
+    }
+
+    private boolean canLookAround() {
+        if (this.umberSpider.isElite()) {
+            return true;
+        }
+        else return this.umberSpider.level().getBrightness(LightLayer.BLOCK, this.umberSpider.blockPosition()) <= this.umberSpider.getLightThreshold();
     }
 }

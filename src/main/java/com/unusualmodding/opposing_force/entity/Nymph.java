@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.entity.ai.goal.NymphAttackGoal;
-import com.unusualmodding.opposing_force.entity.utils.IAttackState;
+import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -24,7 +24,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class Nymph extends Monster implements IAttackState {
+public class Nymph extends Monster implements AttackState {
 
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Nymph.class, EntityDataSerializers.INT);
 

@@ -15,6 +15,13 @@ public class UmberSpiderRandomStrollGoal extends WaterAvoidingRandomStrollGoal {
 
     @Override
     public boolean canUse() {
-        return !this.umberSpider.isVehicle() && this.umberSpider.level().getBrightness(LightLayer.BLOCK, this.umberSpider.blockPosition()) <= this.umberSpider.getLightThreshold() && super.canUse();
+        return !this.umberSpider.isVehicle() && this.canStroll() && super.canUse();
+    }
+
+    private boolean canStroll() {
+        if (this.umberSpider.isElite()) {
+            return true;
+        }
+        else return this.umberSpider.level().getBrightness(LightLayer.BLOCK, this.umberSpider.blockPosition()) <= this.umberSpider.getLightThreshold();
     }
 }

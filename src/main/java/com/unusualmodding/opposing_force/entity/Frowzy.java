@@ -3,7 +3,7 @@ package com.unusualmodding.opposing_force.entity;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
-import com.unusualmodding.opposing_force.entity.utils.IAttackState;
+import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
@@ -55,7 +55,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class Frowzy extends Monster implements IAttackState, VariantHolder<Frowzy.FrowzyVariant> {
+public class Frowzy extends Monster implements AttackState, VariantHolder<Frowzy.FrowzyVariant> {
 
     private static final EntityDataAccessor<Boolean> IS_BABY = SynchedEntityData.defineId(Frowzy.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Frowzy.class, EntityDataSerializers.INT);

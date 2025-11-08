@@ -118,6 +118,9 @@ public class DicerAttackGoal extends AttackGoal {
                 if (entity.hurt(entity.damageSources().mobAttack(this.dicer), (float) this.dicer.getAttributeValue(Attributes.ATTACK_DAMAGE))) {
                     this.dicer.playSound(OPSoundEvents.DICER_ATTACK.get(), 1.0F, 1.0F / (this.dicer.getRandom().nextFloat() * 0.4F + 0.8F));
                 }
+                if (this.dicer.isElite()) {
+                    entity.setSecondsOnFire(5);
+                }
                 entity.knockback(0.3F, dicer.position().x - entity.getX(), dicer.position().z - entity.getZ());
                 if (entity.isDamageSourceBlocked(dicer.damageSources().mobAttack(dicer)) && entity instanceof Player player) {
                     player.disableShield(true);

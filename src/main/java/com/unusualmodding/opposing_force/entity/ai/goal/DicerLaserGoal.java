@@ -71,7 +71,11 @@ public class DicerLaserGoal extends AttackGoal {
 
                 if (this.timer == 10) {
                     this.dicer.setPose(OPPoses.LASERING.get());
-                    this.laser = new DicerLaser(dicer.level(), dicer, dicer.getX(), dicer.getY() + 2.45F, dicer.getZ(), (float) ((dicer.yHeadRot + 90) * Math.PI / 180), (float) (-dicer.getXRot() * Math.PI / 180), 89, 4);
+                    int damage = this.dicer.isElite() ? 5 : 4;
+                    this.laser = new DicerLaser(dicer.level(), dicer, dicer.getX(), dicer.getY() + 2.45F, dicer.getZ(), (float) ((dicer.yHeadRot + 90) * Math.PI / 180), (float) (-dicer.getXRot() * Math.PI / 180), 89, damage);
+                    if (this.dicer.isElite()) {
+                        this.laser.setFiery(true);
+                    }
                     this.dicer.level().addFreshEntity(laser);
                 }
 

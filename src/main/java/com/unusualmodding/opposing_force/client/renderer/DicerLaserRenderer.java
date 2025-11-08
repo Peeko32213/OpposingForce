@@ -23,6 +23,7 @@ import org.joml.Quaternionf;
 public class DicerLaserRenderer extends EntityRenderer<DicerLaser> {
 
     private static final ResourceLocation LASER = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/dicer/laser.png");
+    private static final ResourceLocation ARCH_LASER = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/dicer/arch_laser.png");
 
     private static final float TEXTURE_WIDTH = 256;
     private static final float TEXTURE_HEIGHT = 32;
@@ -35,7 +36,7 @@ public class DicerLaserRenderer extends EntityRenderer<DicerLaser> {
 
     @Override
     public @NotNull ResourceLocation getTextureLocation(@NotNull DicerLaser entity) {
-        return LASER;
+        return entity.isFiery() ? ARCH_LASER : LASER;
     }
 
     @Override
