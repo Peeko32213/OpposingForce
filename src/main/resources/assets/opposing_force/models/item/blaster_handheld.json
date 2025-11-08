@@ -1,9 +1,9 @@
 {
 	"texture_size": [32, 32],
-  "textures": {
-    "blaster": "opposing_force:item/blaster",
-    "particle": "opposing_force:item/blaster_gui"
-  },
+	"textures": {
+		"blaster": "opposing_force:item/blaster",
+		"glow": "opposing_force:item/blaster_glow"
+	},
 	"elements": [
 		{
 			"from": [7.48, 3.98, 10.98],
@@ -19,8 +19,8 @@
 			"to": [9, 5, 6],
 			"rotation": {"angle": 0, "axis": "y", "origin": [6, 2, 9]},
 			"faces": {
-				"north": {"uv": [9, 5, 10.5, 6.5], "texture": "#blaster"},
-				"south": {"uv": [10.5, 5, 12, 6.5], "texture": "#blaster"}
+				"north": {"uv": [9, 5, 10.5, 6.5], "texture": "#glow"},
+				"south": {"uv": [10.5, 5, 12, 6.5], "texture": "#glow"}
 			}
 		},
 		{
@@ -28,8 +28,8 @@
 			"to": [9, 5, 5],
 			"rotation": {"angle": 0, "axis": "y", "origin": [6, 2, 8]},
 			"faces": {
-				"north": {"uv": [0, 9, 1.5, 10.5], "texture": "#blaster"},
-				"south": {"uv": [1.5, 9, 3, 10.5], "texture": "#blaster"}
+				"north": {"uv": [0, 9, 1.5, 10.5], "texture": "#glow"},
+				"south": {"uv": [1.5, 9, 3, 10.5], "texture": "#glow"}
 			}
 		},
 		{
@@ -37,12 +37,12 @@
 			"to": [8.5, 4.5, 4],
 			"rotation": {"angle": 0, "axis": "y", "origin": [6.5, 1.5, 6]},
 			"faces": {
-				"north": {"uv": [8, 8.5, 9, 9.5], "texture": "#blaster"},
-				"east": {"uv": [7, 8.5, 8, 9.5], "texture": "#blaster"},
-				"south": {"uv": [10, 8.5, 11, 9.5], "texture": "#blaster"},
-				"west": {"uv": [9, 8.5, 10, 9.5], "texture": "#blaster"},
-				"up": {"uv": [9, 8.5, 8, 7.5], "texture": "#blaster"},
-				"down": {"uv": [10, 7.5, 9, 8.5], "texture": "#blaster"}
+				"north": {"uv": [8, 8.5, 9, 9.5], "texture": "#glow"},
+				"east": {"uv": [7, 8.5, 8, 9.5], "texture": "#glow"},
+				"south": {"uv": [10, 8.5, 11, 9.5], "texture": "#glow"},
+				"west": {"uv": [9, 8.5, 10, 9.5], "texture": "#glow"},
+				"up": {"uv": [9, 8.5, 8, 7.5], "texture": "#glow"},
+				"down": {"uv": [10, 7.5, 9, 8.5], "texture": "#glow"}
 			}
 		},
 		{
@@ -50,12 +50,12 @@
 			"to": [8, 4, 8],
 			"rotation": {"angle": 0, "axis": "y", "origin": [6, 2, 6]},
 			"faces": {
-				"north": {"uv": [6, 7, 6.5, 7.5], "texture": "#blaster"},
-				"east": {"uv": [4, 7, 6, 7.5], "texture": "#blaster"},
-				"south": {"uv": [8.5, 7, 9, 7.5], "texture": "#blaster"},
-				"west": {"uv": [6.5, 7, 8.5, 7.5], "texture": "#blaster"},
-				"up": {"uv": [6.5, 7, 6, 5], "texture": "#blaster"},
-				"down": {"uv": [7, 5, 6.5, 7], "texture": "#blaster"}
+				"north": {"uv": [6, 7, 6.5, 7.5], "texture": "#glow"},
+				"east": {"uv": [4, 7, 6, 7.5], "texture": "#glow"},
+				"south": {"uv": [8.5, 7, 9, 7.5], "texture": "#glow"},
+				"west": {"uv": [6.5, 7, 8.5, 7.5], "texture": "#glow"},
+				"up": {"uv": [6.5, 7, 6, 5], "texture": "#glow"},
+				"down": {"uv": [7, 5, 6.5, 7], "texture": "#glow"}
 			}
 		},
 		{
@@ -82,6 +82,19 @@
 				"west": {"uv": [4, 3, 7, 5], "texture": "#blaster"},
 				"up": {"uv": [4, 3, 3, 0], "texture": "#blaster"},
 				"down": {"uv": [5, 0, 4, 3], "texture": "#blaster"}
+			}
+		},
+		{
+			"from": [6.48, 1.98, 7.98],
+			"to": [8.52, 6.02, 14.02],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7.5, 2, 5]},
+			"faces": {
+				"north": {"uv": [3, 3, 4, 5], "texture": "#glow"},
+				"east": {"uv": [0, 3, 3, 5], "texture": "#glow"},
+				"south": {"uv": [7, 3, 8, 5], "texture": "#glow"},
+				"west": {"uv": [4, 3, 7, 5], "texture": "#glow"},
+				"up": {"uv": [4, 3, 3, 0], "texture": "#glow"},
+				"down": {"uv": [5, 0, 4, 3], "texture": "#glow"}
 			}
 		},
 		{
@@ -114,5 +127,13 @@
 			"rotation": [0, 149, 0],
 			"translation": [-0.5, 5.25, 0]
 		}
-	}
+	},
+	"groups": [
+		{
+			"name": "blaster",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+		}
+	]
 }

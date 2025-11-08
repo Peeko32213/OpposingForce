@@ -7,6 +7,7 @@ import com.unusualmodding.opposing_force.client.models.mob_heads.*;
 import com.unusualmodding.opposing_force.client.particles.*;
 import com.unusualmodding.opposing_force.client.renderer.*;
 import com.unusualmodding.opposing_force.client.renderer.blocks.*;
+import com.unusualmodding.opposing_force.items.BlasterItem;
 import com.unusualmodding.opposing_force.items.LaserBladeItem;
 import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -109,6 +110,9 @@ public final class ClientEvents {
         event.register((stack, tintIndex) -> {
                     if (tintIndex == 0) {
                         if (stack.getItem() instanceof LaserBladeItem item) {
+                            return item.getColor(stack);
+                        }
+                        if (stack.getItem() instanceof BlasterItem item) {
                             return item.getColor(stack);
                         }
                         return -1;

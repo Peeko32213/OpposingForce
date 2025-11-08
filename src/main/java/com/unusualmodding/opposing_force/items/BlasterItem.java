@@ -14,10 +14,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.item.Vanishable;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -28,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Predicate;
 
 @SuppressWarnings("deprecation")
-public class BlasterItem extends Item implements Vanishable {
+public class BlasterItem extends Item implements Vanishable, DyeableLeatherItem {
 
     public static final Predicate<ItemStack> AMMO = (stack) -> stack.is(OPItemTags.BLASTER_AMMO);
 
