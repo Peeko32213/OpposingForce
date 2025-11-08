@@ -240,6 +240,9 @@ public class OPLanguageProvider extends LanguageProvider {
         this.add("entity.opposing_force.all.command_1", "%s is staying");
         this.add("entity.opposing_force.all.command_2", "%s is following");
 
+        this.add("item.opposing_force.laser_blade.color", "Color: ");
+        this.add("item.opposing_force.laser_blade.dyeable", "Dyeable");
+
         this.translateDamageType(OPDamageTypes.ELECTRIC, player -> player + " met a shocking end", (player, entity) -> player + " was zapped by " + entity);
         this.translateDamageType(OPDamageTypes.GLOOM_TOXIN, player -> player + " was consumed by darkness", (player, entity) -> player + " didn't reach the light");
         this.translateDamageType(OPDamageTypes.LASER, player -> player + " was vaporized", (player, entity) -> player + " was vaporized by" + entity);

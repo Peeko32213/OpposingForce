@@ -7,11 +7,13 @@ import com.unusualmodding.opposing_force.client.models.mob_heads.*;
 import com.unusualmodding.opposing_force.client.particles.*;
 import com.unusualmodding.opposing_force.client.renderer.*;
 import com.unusualmodding.opposing_force.client.renderer.blocks.*;
+import com.unusualmodding.opposing_force.items.LaserBladeItem;
 import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -31,7 +33,7 @@ public final class ClientEvents {
         event.registerSpriteSet(OPParticles.LASER_BOLT_DUST.get(), LaserBoltDustParticle.Factory::new);
         event.registerSpriteSet(OPParticles.MOON_SHOES.get(), MoonShoesParticle.Factory::new);
         event.registerSpriteSet(OPParticles.LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
-        event.registerSpriteSet(OPParticles.FIRE_LASER_SWEEP.get(), LaserSweepParticle.FireFactory::new);
+        event.registerSpriteSet(OPParticles.DYED_SWEEP.get(), LaserSweepParticle.DyedFactory::new);
     }
 
     @SubscribeEvent
@@ -100,5 +102,20 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(OPBlockEntityTypes.MOB_HEAD.get(), MobHeadBlockEntityRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
+        event.register((stack, tintIndex) -> {
+                    if (tintIndex == 0) {
+                        if (stack.getItem() instanceof LaserBladeItem item) {
+                            return item.getColor(stack);
+                        }
+                        return -1;
+                    }
+                    return 0xFFFFFF;
+                },
+                OPItems.LASER_BLADE.get()
+        );
     }
 }

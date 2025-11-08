@@ -21,9 +21,9 @@
   "overrides": [
     {
       "predicate": {
-        "flaming": 1
+        "opposing_force:dyed": 1
       },
-      "model": "opposing_force:item/flaming_laser_blade"
+      "model": "opposing_force:item/dyed_laser_blade"
     }
   ]
 }

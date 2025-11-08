@@ -133,7 +133,7 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
 
     public void flyBack(Entity owner, boolean lerpMotion) {
         Vec3 ownerPos = owner.position().add(0, owner.getBbHeight() * 0.5F, 0);
-        Vec3 returnMotion = ownerPos.subtract(position()).normalize().scale(2.25F);
+        Vec3 returnMotion = ownerPos.subtract(position()).normalize().scale(2.0F);
         Vec3 motion = this.getDeltaMovement();
         float delta = 0.1F;
         double x = Mth.lerp(delta, motion.x, returnMotion.x);

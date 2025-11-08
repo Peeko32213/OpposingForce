@@ -5,6 +5,7 @@ import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.entity.ai.goal.TerrorAttackGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.TerrorRandomStrollGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
+import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -19,6 +20,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -50,12 +52,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class Terror extends Monster {
+@SuppressWarnings("deprecation")
+public class Terror extends Monster implements EliteVariant {
 
     private static final EntityDataAccessor<Boolean> SAWING = SynchedEntityData.defineId(Terror.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> HAS_LEGS = SynchedEntityData.defineId(Terror.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(Terror.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> FLOP_TIME = SynchedEntityData.defineId(Terror.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> ANTEDILUVIAN = SynchedEntityData.defineId(Terror.class, EntityDataSerializers.BOOLEAN);
 
     private static final EntityDimensions FISH_OUT_OF_WATER_DIMENSIONS = EntityDimensions.scalable(1.3F, 1.7F);
 
@@ -341,6 +345,7 @@ public class Terror extends Monster {
         this.entityData.define(HAS_LEGS, false);
         this.entityData.define(RUNNING, false);
         this.entityData.define(FLOP_TIME, 20 + this.getRandom().nextInt(2 * 10));
+        this.entityData.define(ANTEDILUVIAN, false);
     }
 
     @Override
@@ -349,6 +354,7 @@ public class Terror extends Monster {
         compoundTag.putBoolean("Sawing", this.isSawing());
         compoundTag.putBoolean("HasLegs", this.hasLegs());
         compoundTag.putInt("FlopTime", this.getFlopTime());
+        compoundTag.putBoolean("Antediluvian", this.isElite());
     }
 
     @Override
@@ -357,6 +363,17 @@ public class Terror extends Monster {
         this.setSawing(compoundTag.getBoolean("Sawing"));
         this.setHasLegs(compoundTag.getBoolean("HasLegs"));
         this.setFlopTime(compoundTag.getInt("FlopTime"));
+        this.setElite(compoundTag.getBoolean("Antediluvian"));
+    }
+
+    @Override
+    public boolean isElite() {
+        return this.entityData.get(ANTEDILUVIAN);
+    }
+
+    @Override
+    public void setElite(boolean elite) {
+        this.entityData.set(ANTEDILUVIAN, elite);
     }
 
     public boolean isSawing() {
@@ -414,6 +431,18 @@ public class Terror extends Monster {
     @Override
     public int getAmbientSoundInterval() {
         return 160;
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @javax.annotation.Nullable SpawnGroupData spawnData, @javax.annotation.Nullable CompoundTag compoundTag) {
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
+        RandomSource random = level.getRandom();
+        if (random.nextInt(this.getEliteSpawnChance()) == 0) {
+            this.setElite(true);
+            this.setEliteStats(this);
+        }
+        return spawnData;
     }
 
     @SuppressWarnings("unused")

@@ -12,12 +12,13 @@ public class LaserSweepParticle extends TextureSheetParticle {
 
     private final SpriteSet sprites;
 
-    protected LaserSweepParticle(ClientLevel level, double x, double y, double z, double size, SpriteSet sprites) {
+    protected LaserSweepParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
         super(level, x, y, z, 0.0D, 0.0D, 0.0D);
         this.sprites = sprites;
         this.lifetime = 5;
-        this.quadSize = 1.0F - (float) size * 0.5F;
+        this.quadSize = 1.0F;
         this.setSpriteFromAge(sprites);
+        this.setColor((float) xSpeed, (float) ySpeed, (float) zSpeed);
     }
 
     @Override
@@ -50,21 +51,23 @@ public class LaserSweepParticle extends TextureSheetParticle {
             this.sprites = sprites;
         }
 
-        public Particle createParticle(@NotNull SimpleParticleType particleType, @NotNull ClientLevel level, double x, double y, double z, double xspeed, double yspeed, double zspeed) {
-            return new LaserSweepParticle(level, x, y, z, xspeed, this.sprites);
+        public Particle createParticle(@NotNull SimpleParticleType particleType, @NotNull ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            LaserSweepParticle sweepParticle = new LaserSweepParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.sprites);
+            sweepParticle.setColor(1, 1, 1);
+            return sweepParticle;
         }
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static class FireFactory implements ParticleProvider<SimpleParticleType> {
+    public static class DyedFactory implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprites;
 
-        public FireFactory(SpriteSet sprites) {
+        public DyedFactory(SpriteSet sprites) {
             this.sprites = sprites;
         }
 
-        public Particle createParticle(@NotNull SimpleParticleType particleType, @NotNull ClientLevel level, double x, double y, double z, double xspeed, double yspeed, double zspeed) {
-            return new LaserSweepParticle(level, x, y, z, xspeed, this.sprites);
+        public Particle createParticle(@NotNull SimpleParticleType particleType, @NotNull ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            return new LaserSweepParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.sprites);
         }
     }
 }

@@ -256,6 +256,7 @@ public class UmberSpider extends Spider implements AttackState, EliteVariant {
         RandomSource random = level.getRandom();
         if (random.nextInt(this.getEliteSpawnChance()) == 0) {
             this.setElite(true);
+            this.setEliteStats(this);
         }
         return spawnData;
     }

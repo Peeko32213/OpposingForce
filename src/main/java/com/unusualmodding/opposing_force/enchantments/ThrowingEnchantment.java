@@ -46,8 +46,8 @@ public class ThrowingEnchantment extends Enchantment {
         if (laserBlade.isAlive() && laserBlade.distanceTo(player) < 3.0F && !player.isCreative()) {
             laserBlade.level().playSound(null, player.blockPosition(), OPSoundEvents.LASER_BLADE_CATCH.get(), SoundSource.PLAYERS, 0.5F, 1.0F / (laserBlade.level().getRandom().nextFloat() * 0.4F + 0.8F));
             int enchantmentLevel = laserBlade.getItem().getEnchantmentLevel(OPEnchantments.THROWING.get());
-            if (enchantmentLevel < 4) {
-                int duration = 100 - 32 * (enchantmentLevel - 1);
+            if (enchantmentLevel < 5) {
+                int duration = 100 - 25 * (enchantmentLevel - 1);
                 if (duration > 0) {
                     player.getCooldowns().addCooldown(laserBlade.getItem().getItem(), duration);
                 }

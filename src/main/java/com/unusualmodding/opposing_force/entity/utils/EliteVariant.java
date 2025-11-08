@@ -10,7 +10,7 @@ public interface EliteVariant {
     void setElite(boolean elite);
 
     default int getEliteSpawnChance() {
-        return 50;
+        return 5;
     }
 
     default void setEliteStats(Mob entity) {

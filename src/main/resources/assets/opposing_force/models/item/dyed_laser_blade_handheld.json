@@ -3,15 +3,16 @@
   "loader": "forge:item_layers",
   "forge_data": {
     "layers": {
-      "1": {
+      "0": {
         "block_light": 15,
-        "sky_light": 15
+        "sky_light": 15,
+        "tintindex": 0
       }
     }
   },
   "textures": {
-    "layer0": "opposing_force:item/flaming_laser_blade_huge",
-    "layer1": "opposing_force:item/flaming_laser_blade_huge_glow"
+    "layer0": "opposing_force:item/dyed_laser_blade_huge_glow",
+    "layer1": "opposing_force:item/laser_blade_huge"
   },
   "display": {
     "thirdperson_righthand": {
