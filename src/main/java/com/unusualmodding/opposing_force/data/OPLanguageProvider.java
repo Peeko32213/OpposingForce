@@ -21,6 +21,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.text.WordUtils;
 import org.codehaus.plexus.util.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -67,6 +68,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.forEntity(OPEntities.KINETIC_BOMB);
         this.forEntity(OPEntities.LIGHTNING_BOMB);
         this.forEntity(OPEntities.WHIZZ_BOMB);
+        this.forEntity(OPEntities.LASER_BLADE);
 
         this.potion(OPPotions.GLOOM_TOXIN_POTION, "Gloom Toxin", "gloom_toxin");
         this.potion(OPPotions.LONG_GLOOM_TOXIN_POTION, "Gloom Toxin", "long_gloom_toxin");
@@ -161,6 +163,8 @@ public class OPLanguageProvider extends LanguageProvider {
         this.sound(OPSoundEvents.LASER_BLADE_BLOCK, "Laser Blade blocks");
         this.sound(OPSoundEvents.LASER_BLADE_HIT, "Laser Blade impacts");
         this.sound(OPSoundEvents.LASER_BLADE_SWING, "Laser Blade swings");
+        this.sound(OPSoundEvents.LASER_BLADE_SPIN, "Laser Blade spins");
+        this.sound(OPSoundEvents.LASER_BLADE_CATCH, "Laser Blade caught");
 
         this.sound(OPSoundEvents.WALTZ_OF_THE_SLUG_DISC, "Music Disc");
 
@@ -240,10 +244,12 @@ public class OPLanguageProvider extends LanguageProvider {
         this.translateDamageType(OPDamageTypes.TOMAHAWK, player -> player + " was domed", (player, entity) -> player + " was domed by" + entity);
         this.translateDamageType(OPDamageTypes.UMBER_DAGGER, player -> player + " was stabbed", (player, entity) -> player + " was stabbed by" + entity);
         this.translateDamageType(OPDamageTypes.LASER_BOLT, player -> player + " was blasted", (player, entity) -> player + " was blasted by" + entity);
+        this.translateDamageType(OPDamageTypes.THROWN_LASER_BLADE, player -> player + " was sliced in half", (player, entity) -> player + " was sliced in half by" + entity);
+
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return  OpposingForce.MOD_ID + " Languages: en_us";
     }
 

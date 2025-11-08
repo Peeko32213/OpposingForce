@@ -121,6 +121,7 @@ public class OpposingForceTab {
 
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.TESLA_CANNON);
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.BLASTER);
+                    OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.LASER_BLADE);
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.VILE_BOULDER);
                     OPEnchantments.addAllEnchantsToCreativeTab(output, EnchantmentCategory.CROSSBOW);
 

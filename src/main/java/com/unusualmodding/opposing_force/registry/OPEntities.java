@@ -187,6 +187,15 @@ public class OPEntities {
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "umber_dagger").toString())
     );
 
+    public static final RegistryObject<EntityType<ThrownLaserBlade>> LASER_BLADE = ENTITY_TYPES.register(
+            "laser_blade", () ->
+            EntityType.Builder.<ThrownLaserBlade>of(ThrownLaserBlade::new, MobCategory.MISC)
+                    .sized(2.0F, 0.5F)
+                    .clientTrackingRange(20)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "laser_blade").toString())
+    );
+
+    // bombs
     public static final RegistryObject<EntityType<FireBomb>> FIRE_BOMB = ENTITY_TYPES.register(
             "fire_bomb", () ->
             EntityType.Builder.<FireBomb>of(FireBomb::new, MobCategory.MISC)

@@ -1,9 +1,12 @@
 package com.unusualmodding.opposing_force.items;
 
+import com.unusualmodding.opposing_force.enchantments.ThrowingEnchantment;
 import com.unusualmodding.opposing_force.items.interfaces.ICustomSweepAttack;
+import com.unusualmodding.opposing_force.registry.OPEnchantments;
 import com.unusualmodding.opposing_force.registry.OPParticles;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.registry.enums.OPTiers.OPItemTiers;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -13,6 +16,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
@@ -44,8 +49,14 @@ public class LaserBladeItem extends SwordItem implements ICustomSweepAttack {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        player.startUsingItem(hand);
-        return InteractionResultHolder.consume(itemstack);
+        if (itemstack.getEnchantmentLevel(OPEnchantments.THROWING.get()) > 0) {
+            ThrowingEnchantment.throwBlade(level, player, hand, itemstack);
+            return InteractionResultHolder.success(itemstack);
+        }
+        else {
+            player.startUsingItem(hand);
+            return InteractionResultHolder.consume(itemstack);
+        }
     }
 
     @Override
@@ -71,7 +82,9 @@ public class LaserBladeItem extends SwordItem implements ICustomSweepAttack {
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity target) {
-        this.sweep(player, target, OPParticles.LASER_SWEEP.get());
+        int fireAspect = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, stack);
+        ParticleOptions particle = fireAspect > 0 ? OPParticles.FIRE_LASER_SWEEP.get() : OPParticles.LASER_SWEEP.get();
+        this.sweep(player, target, particle);
         return super.onLeftClickEntity(stack, player, target);
     }
 

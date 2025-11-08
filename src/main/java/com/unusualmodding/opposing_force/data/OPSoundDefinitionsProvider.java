@@ -337,17 +337,23 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound(OpposingForce.modPrefix("item/laser_blade/block2")),
                 sound(OpposingForce.modPrefix("item/laser_blade/block3"))
         );
-
         this.sound(OPSoundEvents.LASER_BLADE_HIT,
                 sound(OpposingForce.modPrefix("item/laser_blade/impact1")),
                 sound(OpposingForce.modPrefix("item/laser_blade/impact2")),
                 sound(OpposingForce.modPrefix("item/laser_blade/impact3"))
         );
-
         this.sound(OPSoundEvents.LASER_BLADE_SWING,
                 sound(OpposingForce.modPrefix("item/laser_blade/swing1")),
                 sound(OpposingForce.modPrefix("item/laser_blade/swing2")),
                 sound(OpposingForce.modPrefix("item/laser_blade/swing3"))
+        );
+        this.sound(OPSoundEvents.LASER_BLADE_SPIN,
+                sound(OpposingForce.modPrefix("item/laser_blade/spin1")).attenuationDistance(20)
+        );
+        this.sound(OPSoundEvents.LASER_BLADE_CATCH,
+                sound(OpposingForce.modPrefix("item/laser_blade/catch1")),
+                sound(OpposingForce.modPrefix("item/laser_blade/catch2")),
+                sound(OpposingForce.modPrefix("item/laser_blade/catch3"))
         );
 
         this.sound(OPSoundEvents.WALTZ_OF_THE_SLUG_DISC,

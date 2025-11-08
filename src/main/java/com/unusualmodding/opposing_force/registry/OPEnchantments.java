@@ -23,6 +23,7 @@ public class OPEnchantments {
     public static final EnchantmentCategory TESLA_CANNON = EnchantmentCategory.create("tesla_cannon", (item -> item == OPItems.TESLA_CANNON.get()));
     public static final EnchantmentCategory VILE_BOULDER = EnchantmentCategory.create("vile_boulder", (item -> item == OPItems.VILE_BOULDER.get()));
     public static final EnchantmentCategory BLASTER = EnchantmentCategory.create("blaster", (item -> item == OPItems.BLASTER.get()));
+    public static final EnchantmentCategory LASER_BLADE = EnchantmentCategory.create("laser_blade", (item -> item == OPItems.LASER_BLADE.get()));
 
     // blaster
     public static final RegistryObject<Enchantment> POWER_SUPPLY = ENCHANTMENTS.register("power_supply", () -> new OPEnchantment("power_supply", Enchantment.Rarity.UNCOMMON, BLASTER, 3, 15, EquipmentSlot.MAINHAND));
@@ -39,6 +40,9 @@ public class OPEnchantments {
 
     // vile boulder
     public static final RegistryObject<Enchantment> PLAGUE = ENCHANTMENTS.register("plague", () -> new OPEnchantment("plague", Enchantment.Rarity.RARE, VILE_BOULDER, 2, 20, EquipmentSlot.MAINHAND));
+
+    // laser blade
+    public static final RegistryObject<Enchantment> THROWING = ENCHANTMENTS.register("throwing", ThrowingEnchantment::new);
 
     public static boolean areCompatible(OPEnchantment enchantment1, Enchantment enchantment2) {
         if (enchantment1 == KICKBACK.get() && (enchantment2 == Enchantments.QUICK_CHARGE)) {

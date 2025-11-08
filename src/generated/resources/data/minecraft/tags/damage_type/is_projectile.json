@@ -3,6 +3,7 @@
     "opposing_force:tomahawk",
     "opposing_force:umber_dagger",
     "opposing_force:laser",
-    "opposing_force:laser_bolt"
+    "opposing_force:laser_bolt",
+    "opposing_force:thrown_laser_blade"
   ]
 }

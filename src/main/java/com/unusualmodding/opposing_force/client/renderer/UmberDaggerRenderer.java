@@ -15,8 +15,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
+@SuppressWarnings("deprecation")
 public class UmberDaggerRenderer extends EntityRenderer<UmberDagger> {
 
     private final ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
@@ -32,7 +34,7 @@ public class UmberDaggerRenderer extends EntityRenderer<UmberDagger> {
     }
 
     @Override
-    public void render(UmberDagger entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(UmberDagger entity, float entityYaw, float partialTicks, PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLightIn) {
         poseStack.pushPose();
         float scale = 1.5F;
         poseStack.scale(this.scale, this.scale, this.scale);
@@ -45,13 +47,13 @@ public class UmberDaggerRenderer extends EntityRenderer<UmberDagger> {
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
         poseStack.translate(0.0F, -0.175F, 0.0F);
 
-        this.itemRenderer.renderStatic(entity.getItem(), ItemDisplayContext.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, poseStack, bufferIn, entity.level(), entity.getId());
+        this.itemRenderer.renderStatic(entity.getItem(), ItemDisplayContext.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, entity.level(), entity.getId());
         poseStack.popPose();
-        super.render(entity, entityYaw, partialTicks, poseStack, bufferIn, packedLightIn);
+        super.render(entity, entityYaw, partialTicks, poseStack, bufferSource, packedLightIn);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(UmberDagger umberDagger) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull UmberDagger umberDagger) {
         return TextureAtlas.LOCATION_BLOCKS;
     }
 }

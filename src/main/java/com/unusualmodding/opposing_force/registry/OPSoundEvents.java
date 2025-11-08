@@ -100,6 +100,8 @@ public class OPSoundEvents {
     public static final RegistryObject<SoundEvent> LASER_BLADE_BLOCK = registerSoundEvent("laser_blade_block");
     public static final RegistryObject<SoundEvent> LASER_BLADE_HIT = registerSoundEvent("laser_blade_hit");
     public static final RegistryObject<SoundEvent> LASER_BLADE_SWING = registerSoundEvent("laser_blade_swing");
+    public static final RegistryObject<SoundEvent> LASER_BLADE_SPIN = registerSoundEvent("laser_blade_spin");
+    public static final RegistryObject<SoundEvent> LASER_BLADE_CATCH = registerSoundEvent("laser_blade_catch");
 
     public static final RegistryObject<SoundEvent> WALTZ_OF_THE_SLUG_DISC = registerSoundEvent("waltz_of_the_slug_disc");
 

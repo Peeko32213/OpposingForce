@@ -9,6 +9,7 @@ import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -20,7 +21,8 @@ public class OPDamageTypeTagProvider extends TagsProvider<DamageType> {
         super(output, Registries.DAMAGE_TYPE, provider, OpposingForce.MOD_ID, helper);
     }
 
-    protected void addTags(Provider provider) {
+    @Override
+    protected void addTags(@NotNull Provider provider) {
 
         this.tag(DamageTypeTags.BYPASSES_ARMOR).add(
                 ELECTRIFIED,
@@ -31,7 +33,8 @@ public class OPDamageTypeTagProvider extends TagsProvider<DamageType> {
                 TOMAHAWK,
                 UMBER_DAGGER,
                 LASER,
-                LASER_BOLT
+                LASER_BOLT,
+                THROWN_LASER_BLADE
         );
 
         this.tag(DamageTypeTags.NO_IMPACT).add(

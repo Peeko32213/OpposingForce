@@ -31,6 +31,7 @@ public final class ClientEvents {
         event.registerSpriteSet(OPParticles.LASER_BOLT_DUST.get(), LaserBoltDustParticle.Factory::new);
         event.registerSpriteSet(OPParticles.MOON_SHOES.get(), MoonShoesParticle.Factory::new);
         event.registerSpriteSet(OPParticles.LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.FIRE_LASER_SWEEP.get(), LaserSweepParticle.FireFactory::new);
     }
 
     @SubscribeEvent
@@ -39,6 +40,7 @@ public final class ClientEvents {
         event.registerEntityRenderer(OPEntities.DICER_LASER.get(), DicerLaserRenderer::new);
         event.registerEntityRenderer(OPEntities.ELECTRIC_CHARGE.get(), ElectricChargeRenderer::new);
         event.registerEntityRenderer(OPEntities.LASER_BOLT.get(), LaserBoltRenderer::new);
+        event.registerEntityRenderer(OPEntities.LASER_BLADE.get(), ThrownLaserBladeRenderer::new);
         event.registerEntityRenderer(OPEntities.EMERALDFISH.get(), EmeraldfishRenderer::new);
         event.registerEntityRenderer(OPEntities.FIRE_BOMB.get(), FireBombRenderer::new);
         event.registerEntityRenderer(OPEntities.FIRE_SLIME.get(), FireSlimeRenderer::new);

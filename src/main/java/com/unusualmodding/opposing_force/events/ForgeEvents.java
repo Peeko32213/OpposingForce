@@ -168,7 +168,6 @@ public class ForgeEvents {
     @SubscribeEvent
     public static void onMobHurt(final LivingHurtEvent event) {
         LivingEntity entity = event.getEntity();
-        Entity attacker = event.getSource().getDirectEntity();
         DamageSource damageSource = event.getSource();
 
         for (MobEffectInstance activeEffect : entity.getActiveEffects()) {
@@ -191,9 +190,10 @@ public class ForgeEvents {
 
     @SubscribeEvent
     public static void onMobAttack(final LivingAttackEvent event) {
-        LivingEntity entity = event.getEntity();
-        Entity attacker = event.getSource().getDirectEntity();
-        if(entity != null && attacker != null) {
+        final LivingEntity entity = event.getEntity();
+        final Entity attacker = event.getSource().getDirectEntity();
+
+        if (entity != null && attacker != null) {
             Vec3 lookVec = entity.getLookAngle().normalize();
             Vec3 directionToTarget = attacker.position().subtract(entity.position()).normalize();
             double dot = lookVec.dot(directionToTarget);
@@ -204,16 +204,16 @@ public class ForgeEvents {
                     entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
                     if (attacker instanceof LivingEntity livingAttacker) {
                         double knockbackMulti = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.KNOCKBACK, entity.getUseItem());
-                        if(knockbackMulti != 0) {
-                            knockbackMulti = knockbackMulti == 1 ? 1.5 : 2; //caps at 2x multi
+                        if (knockbackMulti != 0) {
+                            knockbackMulti = 1 + knockbackMulti * 0.5D;
                         } else {
                             knockbackMulti = 1;
                         }
                         int fireAspect = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, entity.getUseItem());
-                        if(fireAspect > 0) {
+                        if (fireAspect > 0) {
                             livingAttacker.setSecondsOnFire(3 * fireAspect);
                         }
-                        if(livingAttacker instanceof Warden && entity instanceof Player) {
+                        if (livingAttacker instanceof Warden && entity instanceof Player) {
                             OPCriterion.PARRY_WARDEN_WITH_LASER_BLADE.trigger((ServerPlayer) entity);
                         }
                         livingAttacker.knockback(0.55F * knockbackMulti, attacker.getDeltaMovement().x, attacker.getDeltaMovement().z);
@@ -228,15 +228,15 @@ public class ForgeEvents {
     @SubscribeEvent
     public static void onProjectileImpact(ProjectileImpactEvent event) {
         final Projectile projectile = event.getProjectile();
+        final Entity entity = event.getEntity();
 
         // laser blade deflection
-//        if (!projectile.getCommandSenderWorld().isClientSide()) {
         if (event.getRayTraceResult() instanceof EntityHitResult result) {
             Entity resultEntity = result.getEntity();
-            if (event.getEntity() != null && resultEntity instanceof LivingEntity entityBlocking) {
+            if (entity != null && resultEntity instanceof LivingEntity entityBlocking) {
                 if (entityBlocking.isUsingItem() && entityBlocking.getUseItem().getItem() == OPItems.LASER_BLADE.get() && entityBlocking.getUseItem().getUseDuration() - entityBlocking.getUseItemRemainingTicks() <= 5) {
                     Vec3 lookVec = entityBlocking.getLookAngle().normalize();
-                    Vec3 directionToTarget = event.getEntity().position().subtract(entityBlocking.position()).normalize();
+                    Vec3 directionToTarget = entity.position().subtract(entityBlocking.position()).normalize();
                     double dot = lookVec.dot(directionToTarget);
 
                     if (dot > 0.0) {

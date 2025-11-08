@@ -2,14 +2,12 @@ package com.unusualmodding.opposing_force.utils;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.renderer.items.OPArmorRenderProperties;
-import com.unusualmodding.opposing_force.client.sounds.DicerLaserSound;
-import com.unusualmodding.opposing_force.client.sounds.ElectricChargeSound;
-import com.unusualmodding.opposing_force.client.sounds.FrowzyPantingSound;
-import com.unusualmodding.opposing_force.client.sounds.WhizzFlightSound;
+import com.unusualmodding.opposing_force.client.sounds.*;
 import com.unusualmodding.opposing_force.entity.Frowzy;
 import com.unusualmodding.opposing_force.entity.Whizz;
 import com.unusualmodding.opposing_force.entity.projectile.DicerLaser;
 import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
+import com.unusualmodding.opposing_force.entity.projectile.ThrownLaserBlade;
 import com.unusualmodding.opposing_force.events.*;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -105,6 +103,21 @@ public class ClientProxy extends CommonProxy {
                         ENTITY_SOUND_INSTANCE_MAP.put(entity.getId(), sound);
                     } else {
                         sound = (FrowzyPantingSound) oldSound;
+                    }
+                    if (!isSoundPlaying(sound) && sound.canPlaySound()) {
+                        Minecraft.getInstance().getSoundManager().queueTickingSound(sound);
+                    }
+                }
+                break;
+            case 4:
+                if (soundEmitter instanceof ThrownLaserBlade entity) {
+                    LaserBladeSound sound;
+                    AbstractTickableSoundInstance oldSound = ENTITY_SOUND_INSTANCE_MAP.get(entity.getId());
+                    if (oldSound == null || !(oldSound instanceof LaserBladeSound sound1 && sound1.isSameEntity(entity))) {
+                        sound = new LaserBladeSound(entity);
+                        ENTITY_SOUND_INSTANCE_MAP.put(entity.getId(), sound);
+                    } else {
+                        sound = (LaserBladeSound) oldSound;
                     }
                     if (!isSoundPlaying(sound) && sound.canPlaySound()) {
                         Minecraft.getInstance().getSoundManager().queueTickingSound(sound);

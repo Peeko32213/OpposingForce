@@ -38,7 +38,7 @@ public class LaserSweepParticle extends TextureSheetParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
+    public @NotNull ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_LIT;
     }
 
@@ -47,6 +47,19 @@ public class LaserSweepParticle extends TextureSheetParticle {
         private final SpriteSet sprites;
 
         public Factory(SpriteSet sprites) {
+            this.sprites = sprites;
+        }
+
+        public Particle createParticle(@NotNull SimpleParticleType particleType, @NotNull ClientLevel level, double x, double y, double z, double xspeed, double yspeed, double zspeed) {
+            return new LaserSweepParticle(level, x, y, z, xspeed, this.sprites);
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static class FireFactory implements ParticleProvider<SimpleParticleType> {
+        private final SpriteSet sprites;
+
+        public FireFactory(SpriteSet sprites) {
             this.sprites = sprites;
         }
 

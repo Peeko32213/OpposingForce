@@ -176,7 +176,8 @@ public abstract class AbstractBomb extends ThrowableProjectile {
             if (!state.getCollisionShape(this.level(), blockHitResult.getBlockPos()).isEmpty()) {
                 bounceFromDirection(blockHitResult.getDirection());
             }
-        } else if(hitResult instanceof EntityHitResult entityHitResult && !ownedBy(entityHitResult.getEntity()) && !(entityHitResult.getEntity() instanceof AbstractBomb)){
+        }
+        else if (hitResult instanceof EntityHitResult entityHitResult && !ownedBy(entityHitResult.getEntity()) && !(entityHitResult.getEntity() instanceof AbstractBomb)){
             Vec3 vec3 = entityHitResult.getEntity().getEyePosition().subtract(this.getEyePosition());
             float f = -((float) Mth.atan2(vec3.x, vec3.z)) * 180.0F / (float) Math.PI;
             bounceFromDirection(Direction.fromYRot(f));

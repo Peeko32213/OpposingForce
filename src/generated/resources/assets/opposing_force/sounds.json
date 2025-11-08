@@ -437,6 +437,14 @@
     ],
     "subtitle": "subtitles.opposing_force.laser_blade_block"
   },
+  "laser_blade_catch": {
+    "sounds": [
+      "opposing_force:item/laser_blade/catch1",
+      "opposing_force:item/laser_blade/catch2",
+      "opposing_force:item/laser_blade/catch3"
+    ],
+    "subtitle": "subtitles.opposing_force.laser_blade_catch"
+  },
   "laser_blade_hit": {
     "sounds": [
       "opposing_force:item/laser_blade/impact1",
@@ -444,6 +452,15 @@
       "opposing_force:item/laser_blade/impact3"
     ],
     "subtitle": "subtitles.opposing_force.laser_blade_hit"
+  },
+  "laser_blade_spin": {
+    "sounds": [
+      {
+        "attenuation_distance": 20,
+        "name": "opposing_force:item/laser_blade/spin1"
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.laser_blade_spin"
   },
   "laser_blade_swing": {
     "sounds": [
