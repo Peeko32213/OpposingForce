@@ -13,7 +13,7 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
-public interface ICustomSweepAttack {
+public interface CustomSweepAttack {
 
     default void sweep(Player player, Entity target, ParticleOptions particle) {
         double walkDist = player.walkDist - player.walkDistO;

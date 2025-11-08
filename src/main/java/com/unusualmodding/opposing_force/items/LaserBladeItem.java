@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.items;
 
 import com.unusualmodding.opposing_force.enchantments.ThrowingEnchantment;
-import com.unusualmodding.opposing_force.items.interfaces.ICustomSweepAttack;
+import com.unusualmodding.opposing_force.items.interfaces.CustomSweepAttack;
 import com.unusualmodding.opposing_force.registry.OPEnchantments;
 import com.unusualmodding.opposing_force.registry.OPParticles;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
@@ -23,7 +23,7 @@ import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import org.jetbrains.annotations.NotNull;
 
-public class LaserBladeItem extends SwordItem implements ICustomSweepAttack {
+public class LaserBladeItem extends SwordItem implements CustomSweepAttack {
 
     private int swingSoundCooldown = 0;
 
