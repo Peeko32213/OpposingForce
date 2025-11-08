@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.events;
 
 import com.unusualmodding.opposing_force.OpposingForce;
+import com.unusualmodding.opposing_force.enchantments.DoubleJumpEnchantment;
 import com.unusualmodding.opposing_force.items.BlasterItem;
 import com.unusualmodding.opposing_force.items.LaserBladeItem;
 import com.unusualmodding.opposing_force.items.TeslaCannonItem;
@@ -31,6 +32,7 @@ public class ClientForgeEvents {
 
     private static float shakeAmount;
     private static float prevShakeAmount;
+    private static boolean jumpPrevPressed = false;
 
     public static final List<ScreenShakeEvent> SCREEN_SHAKE_EVENTS = new ArrayList<>();
 
@@ -157,6 +159,19 @@ public class ClientForgeEvents {
         if (lerpedShakeAmount > 0) {
             float time = minecraft.cameraEntity == null ? 0.0F : minecraft.cameraEntity.tickCount + minecraft.getPartialTick();
             event.setRoll((float) (lerpedShakeAmount * Math.sin(2.0F * time)));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.options.keyJump.isDown() && minecraft.player != null) {
+            if (!jumpPrevPressed) {
+                DoubleJumpEnchantment.performJump(minecraft.player);
+            }
+            jumpPrevPressed = true;
+        } else {
+            jumpPrevPressed = false;
         }
     }
 }

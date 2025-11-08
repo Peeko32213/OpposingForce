@@ -29,7 +29,7 @@ public class ThrowingEnchantment extends Enchantment {
         if (player instanceof ServerPlayer) {
             Vec3 position = player.position().add(0, player.getBbHeight() * 0.5F, 0);
             ThrownLaserBlade entity = new ThrownLaserBlade(level, position.x, position.y, position.z);
-            entity.setData(player, 9, itemStack, level.getRandom().nextBoolean());
+            entity.setData(player, 9, itemStack);
             entity.setItem(itemStack);
             entity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0F, 2F, 0F);
             level.addFreshEntity(entity);

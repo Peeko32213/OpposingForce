@@ -31,7 +31,7 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
 
     private int returnTimer = 0;
     private boolean hasHitBlock = false;
-    public boolean counterclockwise;
+    public boolean counterclockwise = false;
 
     public ThrownLaserBlade(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
         super(entityType, level);
@@ -43,11 +43,11 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
         this.noPhysics = true;
     }
 
-    public void setData(Entity owner, int returnTimer, ItemStack laserBladeItem, boolean counterclockwise) {
+    public void setData(Entity owner, int returnTimer, ItemStack laserBladeItem) {
         this.setOwner(owner);
         this.returnTimer = returnTimer;
         this.laserBladeItem = laserBladeItem.copy();
-        this.counterclockwise = counterclockwise;
+        this.counterclockwise = this.random.nextBoolean();
     }
 
     @Override
@@ -71,23 +71,26 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
 
     @Override
     protected void onHitEntity(@NotNull EntityHitResult result) {
-        if (this.getOwner() instanceof LivingEntity owner) {
-            Entity target = result.getEntity();
-            var heldItem = owner.getMainHandItem();
-            owner.setItemInHand(InteractionHand.MAIN_HAND, this.getItem());
-            target.invulnerableTime = 0;
-            boolean hit = target.hurt(OPDamageTypes.thrownLaserBlade(this.level(), this, this.getOwner()), 7);
-            if (hit && target instanceof LivingEntity livingentity) {
-                ItemStack itemStack = this.getItem();
-                int fireAspect = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, itemStack);
-                if (fireAspect > 0) {
-                    livingentity.setSecondsOnFire(fireAspect * 4);
-                }
-            }
-            owner.setItemInHand(InteractionHand.MAIN_HAND, heldItem);
-            this.playSound(OPSoundEvents.LASER_BLADE_HIT.get(), 1.0F, 1.0F / (this.level().getRandom().nextFloat() * 0.4F + 0.8F));
-        }
         super.onHitEntity(result);
+        Entity target = result.getEntity();
+
+        if (!this.level().isClientSide) {
+            if (this.getOwner() instanceof LivingEntity owner) {
+                var heldItem = owner.getMainHandItem();
+                owner.setItemInHand(InteractionHand.MAIN_HAND, this.getItem());
+                target.invulnerableTime = 0;
+                boolean hit = target.hurt(OPDamageTypes.thrownLaserBlade(this.level(), this, this.getOwner()), 7);
+                if (hit && target instanceof LivingEntity livingentity) {
+                    ItemStack itemStack = this.getItem();
+                    int fireAspect = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, itemStack);
+                    if (fireAspect > 0) {
+                        livingentity.setSecondsOnFire(fireAspect * 4);
+                    }
+                }
+                owner.setItemInHand(InteractionHand.MAIN_HAND, heldItem);
+                this.playSound(OPSoundEvents.LASER_BLADE_HIT.get(), 1.0F, 1.0F / (this.level().getRandom().nextFloat() * 0.4F + 0.8F));
+            }
+        }
     }
 
     @Override

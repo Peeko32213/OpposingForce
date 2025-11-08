@@ -86,6 +86,8 @@
   "enchantment.opposing_force.splitting.desc": "Laser bolts split into multiple laser bolts on hit",
   "enchantment.opposing_force.static_attraction": "Static Attraction",
   "enchantment.opposing_force.static_attraction.desc": "The fired electric charge seeks out nearby entities",
+  "enchantment.opposing_force.throwing": "Throwing",
+  "enchantment.opposing_force.throwing.desc": "Laser blade parry is replaced by throwing",
   "entity.opposing_force.all.command_0": "%s is wandering",
   "entity.opposing_force.all.command_1": "%s is staying",
   "entity.opposing_force.all.command_2": "%s is following",

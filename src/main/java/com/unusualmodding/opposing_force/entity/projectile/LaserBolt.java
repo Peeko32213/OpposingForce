@@ -2,7 +2,6 @@ package com.unusualmodding.opposing_force.entity.projectile;
 
 import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -125,12 +124,8 @@ public class LaserBolt extends FrictionlessProjectile {
         if (!this.level().isClientSide) {
             this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
             this.level().broadcastEntityEvent(this, (byte) 3);
-            if (this.isRapidFire()) {
-                entity.hurt(damageSource, this.getLaserDamage());
-                entity.invulnerableTime -= 5;
-            } else {
-                entity.hurt(damageSource, this.getLaserDamage());
-            }
+            entity.hurt(damageSource, this.getLaserDamage());
+            entity.invulnerableTime = 0;
             if (this.isDisruptor()) {
                 for (int i = 0; i < 2 + this.getDisruptorLevel(); i++) {
                     LaserBolt laserBolt = OPEntities.LASER_BOLT.get().create(level());

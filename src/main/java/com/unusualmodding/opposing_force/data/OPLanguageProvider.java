@@ -197,6 +197,8 @@ public class OPLanguageProvider extends LanguageProvider {
         this.addEnchantmentWithDesc(OPEnchantments.SPLITTING.get(), "Laser bolts split into multiple laser bolts on hit");
         this.addEnchantmentWithDesc(OPEnchantments.POWER_SUPPLY.get(), "Blaster has a chance to not consume redstone dust");
 
+        this.addEnchantmentWithDesc(OPEnchantments.THROWING.get(), "Laser blade parry is replaced by throwing");
+
         this.addEffect(OPMobEffects.GLOOM_TOXIN, "Gloom Toxin");
         this.addEffect(OPMobEffects.SLUG_INFESTATION, "Slug Infestation");
 
