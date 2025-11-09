@@ -28,6 +28,7 @@ public class OPItemModelProvider extends ItemModelProvider {
 
         this.item(DEEP_SILK);
         this.item(ELECTRIC_CHARGE);
+        this.item(TESLA_INGOT);
         this.item(LIGHTNING_BOMB);
         this.item(CAPTURED_WHIZZ);
         this.item(DEEPWOVEN_HAT);
@@ -72,10 +73,10 @@ public class OPItemModelProvider extends ItemModelProvider {
         this.item(WHIZZ_BOMB);
         this.item(FIRE_BOMB);
 
-//        this.item(SLUG_BARON_HELMET);
+        this.item(SLUG_BARON_HELMET);
         this.item(SLUG_BARON_CHESTPLATE);
-//        this.item(SLUG_BARON_LEGGINGS);
-//        this.item(SLUG_BARON_BOOTS);
+        this.item(SLUG_BARON_LEGGINGS);
+        this.item(SLUG_BARON_BOOTS);
 
         // spawn eggs
         for (Item item : BuiltInRegistries.ITEM) {

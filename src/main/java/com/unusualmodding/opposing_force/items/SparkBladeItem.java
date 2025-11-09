@@ -31,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 public class SparkBladeItem extends SwordItem {
 
     public SparkBladeItem(Properties properties) {
-        super(OPTiers.OPItemTiers.ELECTRIC, 3, -2.8F, properties);
+        super(OPTiers.OPItemTiers.ELECTRIC, 4, -2.8F, properties);
     }
 
     @Override

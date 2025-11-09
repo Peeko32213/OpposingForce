@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_electric_charge": {
+    "has_tesla_ingot": {
       "conditions": {
         "items": [
           {
             "items": [
-              "opposing_force:electric_charge"
+              "opposing_force:tesla_ingot"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_electric_charge",
+      "has_tesla_ingot",
       "has_the_recipe"
     ]
   ],

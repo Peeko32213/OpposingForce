@@ -1,4 +1,4 @@
-// 1.20.1	2025-11-07T22:25:28.7269089	Item Models: opposing_force
+// 1.20.1	2025-11-08T20:01:43.8976448	Item Models: opposing_force
 0242899276479e640e0948ff9d1431d301c73e3a assets/opposing_force/models/item/captured_whizz.json
 99bee2bc20935c1aecb77ae575b7005d27ce12b6 assets/opposing_force/models/item/deepwoven_boots.json
 e54baee97cf734ca4015adce401a3abbf106e572 assets/opposing_force/models/item/deepwoven_hat.json
@@ -32,7 +32,10 @@ a0ac3bf657030a45aebab3ad3144e7afd5770940 assets/opposing_force/models/item/fire_
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/nymph_spawn_egg.json
 ef1d509eb9487822f1873402258da1e29c7f7efc assets/opposing_force/models/item/opposing_force.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/rambler_spawn_egg.json
+2bd48a611147c7c9dd53899a80efa5e607686cfb assets/opposing_force/models/item/slug_baron_boots.json
 1e39c5af1ff9899d8bc36efde8f3729f2476e8a6 assets/opposing_force/models/item/slug_baron_chestplate.json
+dc21d4013faf7cb3156c3797beca65d163775c5a assets/opposing_force/models/item/slug_baron_helmet.json
+02dc29182f6da1b877379d964353af602f85e4c3 assets/opposing_force/models/item/slug_baron_leggings.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/slug_spawn_egg.json
 1e7ad1725daa2239f33b4436eadb7141cf57c352 assets/opposing_force/models/item/spicy_terror_leg.json
 e488e2aaec4bd14e84ea61d2940fc2fd3c636e98 assets/opposing_force/models/item/stone_boots.json
@@ -42,6 +45,7 @@ f520914c9a04160cc6a93346e2fcff583038293e assets/opposing_force/models/item/stone
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/tart_spawn_egg.json
 8370af1222f890823296e071821ce465b71a02ca assets/opposing_force/models/item/terror_leg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/terror_spawn_egg.json
+c21da2040314673de8031002b863be91f2531d57 assets/opposing_force/models/item/tesla_ingot.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/trembler_spawn_egg.json
 9627ce30b8de446af03519521c81f0c153e5a570 assets/opposing_force/models/item/umber_dagger.json
 7cc18f3a72e3c25eaa7a34deafa686dadc0f497a assets/opposing_force/models/item/umber_fang.json
