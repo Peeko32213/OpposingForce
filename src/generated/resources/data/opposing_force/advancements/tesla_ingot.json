@@ -1,0 +1,38 @@
+{
+  "parent": "opposing_force:electric_charge",
+  "criteria": {
+    "tesla_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "opposing_force:tesla_ingot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.opposing_force.tesla_ingot.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "opposing_force:tesla_ingot"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.opposing_force.tesla_ingot"
+    }
+  },
+  "requirements": [
+    [
+      "tesla_ingot"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
