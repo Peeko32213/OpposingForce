@@ -111,7 +111,7 @@ public class MobHeadBlockEntityRenderer implements BlockEntityRenderer<MobHeadBl
         modelBase.renderToBuffer(poseStack, vertexconsumer, i, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
 
         if (modelBase instanceof DicerHeadModel dicerHeadModel) {
-            dicerHeadModel.renderVisorToBuffer(poseStack, vertexconsumer, multiBufferSource, i, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+            dicerHeadModel.renderVisorToBuffer(poseStack, multiBufferSource, i, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
         }
 
         poseStack.popPose();

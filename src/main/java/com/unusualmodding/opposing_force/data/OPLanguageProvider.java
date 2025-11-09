@@ -226,8 +226,6 @@ public class OPLanguageProvider extends LanguageProvider {
         this.translateAttribute(OPAttributes.STEALTH);
         this.translateAttribute(OPAttributes.JUMP_POWER);
         this.translateAttribute(OPAttributes.AIR_SPEED);
-        this.translateAttribute(OPAttributes.FORTUNE);
-        this.translateAttribute(OPAttributes.LOOTING);
         this.translateAttribute(OPAttributes.EXPERIENCE_GAIN);
 
         // jeed compat

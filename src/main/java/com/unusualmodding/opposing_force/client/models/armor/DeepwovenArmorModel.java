@@ -61,7 +61,7 @@ public class DeepwovenArmorModel extends HumanoidModel<LivingEntity> {
 		rightLeg.addOrReplaceChild("right_boot", CubeListBuilder.create()
 				.texOffs(58, 67).mirror().addBox(-2.1F, 9.0F, -2.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.3F)).mirror(false), PartPose.ZERO);
 
-		rightLeg.addOrReplaceChild("left_boot", CubeListBuilder.create()
+		leftLeg.addOrReplaceChild("left_boot", CubeListBuilder.create()
 				.texOffs(58, 67).addBox(-1.85F, 9.0F, -2.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.3F)), PartPose.ZERO);
 
 		return LayerDefinition.create(meshdefinition, 128, 128);

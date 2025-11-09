@@ -5,9 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "opposing_force.refmap.json",
   "mixins": [
-    "ApplyBonusCountMixin",
     "CreeperMixin",
-    "EnchantmentHelperMixin",
     "EntityMixin",
     "FoodDataMixin",
     "LivingEntityMixin",
