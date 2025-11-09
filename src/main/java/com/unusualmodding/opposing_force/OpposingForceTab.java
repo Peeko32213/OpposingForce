@@ -93,6 +93,7 @@ public class OpposingForceTab {
                     // volt
                     output.accept(OPItems.ELECTRIC_CHARGE.get());
                     output.accept(OPItems.LIGHTNING_BOMB.get());
+                    output.accept(OPItems.TESLA_INGOT.get());
                     output.accept(OPItems.TESLA_CANNON.get());
                     output.accept(OPItems.SPARK_BLADE.get());
 
