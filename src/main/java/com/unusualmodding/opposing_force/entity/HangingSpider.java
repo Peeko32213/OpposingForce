@@ -5,6 +5,7 @@ import com.unusualmodding.opposing_force.entity.ai.goal.*;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -44,6 +45,8 @@ public class HangingSpider extends Spider implements AttackState {
 
     private static final EntityDataAccessor<Boolean> UPSIDE_DOWN = SynchedEntityData.defineId(HangingSpider.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Vector3f> CURRENT_WEB_POS = SynchedEntityData.defineId(HangingSpider.class, EntityDataSerializers.VECTOR3);
+    private static final EntityDataAccessor<Direction> BLOCK_FACE = SynchedEntityData.defineId(HangingSpider.class, EntityDataSerializers.DIRECTION);
+
     public static final EntityDataAccessor<Vector3f> TARGET_POS = SynchedEntityData.defineId(HangingSpider.class, EntityDataSerializers.VECTOR3);
     public static final EntityDataAccessor<Boolean> IS_WEB_OUT = SynchedEntityData.defineId(HangingSpider.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> GOING_UP = SynchedEntityData.defineId(HangingSpider.class, EntityDataSerializers.BOOLEAN);
@@ -119,12 +122,63 @@ public class HangingSpider extends Spider implements AttackState {
         return entityDimensions.height * 0.65F;
     }
 
+    private final float orbitRadius = 0.35f;
+    private final float orbitSpeed  = 0.17f;
+    private final float xzSpeed     = 0.10f;
+    private final float xzDrag      = 0.85f;
+    private final float climbUpY    = 0.32f;
+    private final float climbDownY  = -0.28f;
+    private final float orbitSeed   = this.random.nextFloat() * (float)Math.PI * 2f;
+
     @Override
-    public void travel(Vec3 vec3) {
-        if (this.isUpsideDown() || this.isGoingDown() || this.isGoingUp()) {
-            this.setDeltaMovement(this.getDeltaMovement().multiply(0,1,0));
+    public void travel(Vec3 input) {
+        if (this.isUpsideDown()) {
+            this.setDeltaMovement(this.getDeltaMovement().multiply(0, 1, 0));
+            super.travel(input);
+            return;
         }
-        super.travel(vec3);
+
+        if (this.isGoingUp()) {
+            applyHelicalMotion(climbUpY);
+            return;
+        }
+
+        if (this.isGoingDown()) {
+            applyHelicalMotion(climbDownY);
+            return;
+        }
+
+        super.travel(input);
+    }
+
+    private void applyHelicalMotion(double verticalSpeed) {
+        if (!this.level().isClientSide) this.getNavigation().stop();
+
+        LivingEntity tgt = this.getTarget();
+        Vec3 center = (tgt != null ? tgt.position() : this.position());
+
+        float t = this.tickCount * orbitSpeed + orbitSeed;
+
+        float radius = this.horizontalCollision ? orbitRadius * 0.5f : orbitRadius;
+
+        double ox = Math.cos(t) * radius;
+        double oz = Math.sin(t) * radius;
+        Vec3 orbitPoint = center.add(ox, 0.0, oz);
+
+        Vec3 toOrbit = orbitPoint.subtract(this.position());
+        Vec3 horiz = new Vec3(toOrbit.x, 0.0, toOrbit.z);
+        if (horiz.lengthSqr() > 1.0e-4) horiz = horiz.normalize().scale(xzSpeed);
+
+        Vec3 cur = this.getDeltaMovement();
+        Vec3 blended = new Vec3(
+                cur.x * xzDrag + horiz.x * (1.0 - xzDrag),
+                verticalSpeed,
+                cur.z * xzDrag + horiz.z * (1.0 - xzDrag)
+        );
+
+        this.setDeltaMovement(blended);
+        this.hasImpulse = true;
+        super.travel(Vec3.ZERO);
     }
 
     @Override
@@ -231,6 +285,8 @@ public class HangingSpider extends Spider implements AttackState {
         this.entityData.define(GOING_DOWN, false);
         this.entityData.define(GOING_UP_COOLDOWN, this.getRandom().nextInt(20 * 10) + (20 * 10));
         this.entityData.define(GOING_DOWN_COOLDOWN, this.getRandom().nextInt(90 * 50) + (40 * 20));
+        this.entityData.define(BLOCK_FACE, Direction.SOUTH);
+
     }
 
     @Override
@@ -248,6 +304,7 @@ public class HangingSpider extends Spider implements AttackState {
         compoundTag.putBoolean("GoingDown", this.isGoingDown());
         compoundTag.putInt("GoingUpCooldown", this.getGoingUpCooldown());
         compoundTag.putInt("GoingDownCooldown", this.getGoingDownCooldown());
+        compoundTag.putString("direction", this.getWebFace().getName());
     }
 
     @Override
@@ -269,6 +326,7 @@ public class HangingSpider extends Spider implements AttackState {
         this.setGoingDown(compoundTag.getBoolean("GoingDown"));
         this.setGoingUpCooldown(compoundTag.getInt("GoingUpCooldown"));
         this.setGoingDownCooldown(compoundTag.getInt("GoingDownCooldown"));
+        this.setWebFace(Direction.byName(compoundTag.getString("direction")));
     }
 
     @Override
@@ -325,6 +383,11 @@ public class HangingSpider extends Spider implements AttackState {
         return this.entityData.get(CURRENT_WEB_POS);
     }
 
+    public void setWebFace(Direction direction) {  this.entityData.set(BLOCK_FACE, direction); }
+
+
+    public Direction getWebFace() { return this.entityData.get(BLOCK_FACE); }
+
     public void setCurrentWebPos(Vector3f webPos) {
         this.entityData.set(CURRENT_WEB_POS, webPos);
     }
@@ -355,6 +418,12 @@ public class HangingSpider extends Spider implements AttackState {
         ));
 
         if (clip.getBlockPos().getY() < this.blockPosition().getY() + (floor ? -10 : 10)) return BlockHitResult.miss(origin, this.getDirection(), BlockPos.containing(origin));
+
+        if (clip.getType() == HitResult.Type.BLOCK) {
+            setWebFace(clip.getDirection());
+        }
+
+
         return clip;
     }
 
