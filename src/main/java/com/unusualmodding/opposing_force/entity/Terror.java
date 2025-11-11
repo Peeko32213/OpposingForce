@@ -148,10 +148,10 @@ public class Terror extends Monster implements EliteVariant {
     }
 
     @Override
-    protected void dropCustomDeathLoot(DamageSource pSource, int pLooting, boolean pRecentlyHit) {
-        super.dropCustomDeathLoot(pSource, pLooting, pRecentlyHit);
+    protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
+        super.dropCustomDeathLoot(source, looting, recentlyHit);
         LootTable loottable = level().getServer().getLootData().getLootTable(LEGS_LOOT);
-        if(this.hasLegs()) {
+        if (this.hasLegs()) {
             List<ItemStack> items = loottable.getRandomItems((new LootParams.Builder(
                     (ServerLevel) this.level())).withParameter(LootContextParams.THIS_ENTITY,
                     this).create(LootContextParamSets.PIGLIN_BARTER));
