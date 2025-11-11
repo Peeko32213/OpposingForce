@@ -2,6 +2,10 @@ package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.items.*;
+import com.unusualmodding.opposing_force.items.armor.ConfigurableArmorItem;
+import com.unusualmodding.opposing_force.items.armor.MoonShoesItem;
+import com.unusualmodding.opposing_force.items.armor.OPArmorDefinitions;
+import com.unusualmodding.opposing_force.items.armor.WoodenArmorItem;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
@@ -61,10 +65,10 @@ public class OPItems {
     public static final RegistryObject<Item> SLUG_SPAWN_EGG = registerSpawnEggItem("slug", OPEntities.SLUG , 0x7a7139, 0x2e2411);
     public static final RegistryObject<Item> VILE_BOULDER = registerItem("vile_boulder", () -> new VileBoulderItem(new Item.Properties()));
     public static final RegistryObject<Item> VILE_STAFF = registerItem("vile_staff", () -> new VileStaffItem(new Item.Properties().stacksTo(1).defaultDurability(224)));
-    public static final RegistryObject<Item> SLUG_BARON_HELMET = registerItem("slug_baron_helmet", ()-> new SlugBaronArmorItem(ArmorItem.Type.HELMET, new Item.Properties()));
-    public static final RegistryObject<Item> SLUG_BARON_CHESTPLATE = registerItem("slug_baron_chestplate", ()-> new SlugBaronArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final RegistryObject<Item> SLUG_BARON_LEGGINGS = registerItem("slug_baron_leggings", ()-> new SlugBaronArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties()));
-    public static final RegistryObject<Item> SLUG_BARON_BOOTS = registerItem("slug_baron_boots", ()-> new SlugBaronArmorItem(ArmorItem.Type.BOOTS, new Item.Properties()));
+    public static final RegistryObject<Item> SLUG_BARON_HELMET = registerItem("slug_baron_helmet", ()-> new ConfigurableArmorItem(ArmorItem.Type.HELMET, new Item.Properties(), OPArmorDefinitions.DEEPWOVEN));
+    public static final RegistryObject<Item> SLUG_BARON_CHESTPLATE = registerItem("slug_baron_chestplate", ()-> new ConfigurableArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties(), OPArmorDefinitions.DEEPWOVEN));
+    public static final RegistryObject<Item> SLUG_BARON_LEGGINGS = registerItem("slug_baron_leggings", ()-> new ConfigurableArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties(), OPArmorDefinitions.DEEPWOVEN));
+    public static final RegistryObject<Item> SLUG_BARON_BOOTS = registerItem("slug_baron_boots", ()-> new ConfigurableArmorItem(ArmorItem.Type.BOOTS, new Item.Properties(), OPArmorDefinitions.DEEPWOVEN));
 
     // tart
     public static final RegistryObject<Item> TART_SPAWN_EGG = registerSpawnEggItem("tart", OPEntities.TART , 0xb31e1e, 0x2f6e19);
@@ -81,10 +85,10 @@ public class OPItems {
     // Umber Spider
     public static final RegistryObject<Item> UMBER_SPIDER_SPAWN_EGG = registerSpawnEggItem("umber_spider", OPEntities.UMBER_SPIDER , 0x241d2c, 0x44a9f6);
     public static final RegistryObject<Item> DEEP_SILK = registerItem("deep_silk", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> DEEPWOVEN_HAT = registerItem("deepwoven_hat", ()-> new DeepwovenArmorItem(ArmorItem.Type.HELMET, new Item.Properties()));
-    public static final RegistryObject<Item> DEEPWOVEN_TUNIC = registerItem("deepwoven_tunic", ()-> new DeepwovenArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final RegistryObject<Item> DEEPWOVEN_PANTS = registerItem("deepwoven_pants", ()-> new DeepwovenArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties()));
-    public static final RegistryObject<Item> DEEPWOVEN_BOOTS = registerItem("deepwoven_boots", ()-> new DeepwovenArmorItem(ArmorItem.Type.BOOTS, new Item.Properties()));
+    public static final RegistryObject<Item> DEEPWOVEN_HAT = registerItem("deepwoven_hat", ()-> new ConfigurableArmorItem(ArmorItem.Type.HELMET, new Item.Properties(), OPArmorDefinitions.DEEPWOVEN));
+    public static final RegistryObject<Item> DEEPWOVEN_TUNIC = registerItem("deepwoven_tunic", ()-> new ConfigurableArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties(), OPArmorDefinitions.DEEPWOVEN));
+    public static final RegistryObject<Item> DEEPWOVEN_PANTS = registerItem("deepwoven_pants", ()-> new ConfigurableArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties(), OPArmorDefinitions.DEEPWOVEN));
+    public static final RegistryObject<Item> DEEPWOVEN_BOOTS = registerItem("deepwoven_boots", ()-> new ConfigurableArmorItem(ArmorItem.Type.BOOTS, new Item.Properties(), OPArmorDefinitions.DEEPWOVEN));
     public static final RegistryObject<Item> UMBER_FANG = registerItem("umber_fang", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> UMBER_DAGGER = registerItem("umber_dagger", () -> new UmberDaggerItem(new Item.Properties().stacksTo(1)));
 
@@ -102,10 +106,10 @@ public class OPItems {
     public static final RegistryObject<Item> WHIZZ_BOMB = registerItem("whizz_bomb", () -> new WhizzBombItem(new Item.Properties().stacksTo(16)));
 
     // emerald
-    public static final RegistryObject<Item> EMERALD_MASK = registerItem("emerald_mask", ()-> new EmeraldArmorItem(ArmorItem.Type.HELMET, new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> EMERALD_CHESTPLATE = registerItem("emerald_chestplate", ()-> new EmeraldArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> EMERALD_LEGGINGS = registerItem("emerald_leggings", ()-> new EmeraldArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> EMERALD_BOOTS = registerItem("emerald_boots", ()-> new EmeraldArmorItem(ArmorItem.Type.BOOTS, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERALD_MASK = registerItem("emerald_mask", ()-> new ConfigurableArmorItem(ArmorItem.Type.HELMET, new Item.Properties().rarity(Rarity.UNCOMMON), OPArmorDefinitions.EMERALD));
+    public static final RegistryObject<Item> EMERALD_CHESTPLATE = registerItem("emerald_chestplate", ()-> new ConfigurableArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties().rarity(Rarity.UNCOMMON), OPArmorDefinitions.EMERALD));
+    public static final RegistryObject<Item> EMERALD_LEGGINGS = registerItem("emerald_leggings", ()-> new ConfigurableArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.UNCOMMON), OPArmorDefinitions.EMERALD));
+    public static final RegistryObject<Item> EMERALD_BOOTS = registerItem("emerald_boots", ()-> new ConfigurableArmorItem(ArmorItem.Type.BOOTS, new Item.Properties().rarity(Rarity.UNCOMMON), OPArmorDefinitions.EMERALD));
     public static final RegistryObject<Item> EMERALD_SWORD = registerItem("emerald_sword", ()-> new EmeraldSwordItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> EMERALD_PICKAXE = registerItem("emerald_pickaxe", ()-> new EmeraldPickaxeItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> EMERALD_AXE = registerItem("emerald_axe", ()-> new EmeraldAxeItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
@@ -119,10 +123,10 @@ public class OPItems {
     public static final RegistryObject<Item> WOODEN_BOOTS = registerItem("wooden_boots", ()-> new WoodenArmorItem(ArmorItem.Type.BOOTS, new Item.Properties()));
 
     // stone
-    public static final RegistryObject<Item> STONE_HELMET = registerItem("stone_helmet", ()-> new StoneArmorItem(ArmorItem.Type.HELMET, new Item.Properties()));
-    public static final RegistryObject<Item> STONE_CHESTPLATE = registerItem("stone_chestplate", ()-> new StoneArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final RegistryObject<Item> STONE_LEGGINGS = registerItem("stone_leggings", ()-> new StoneArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties()));
-    public static final RegistryObject<Item> STONE_BOOTS = registerItem("stone_boots", ()-> new StoneArmorItem(ArmorItem.Type.BOOTS, new Item.Properties()));
+    public static final RegistryObject<Item> STONE_HELMET = registerItem("stone_helmet", ()-> new ConfigurableArmorItem(ArmorItem.Type.HELMET, new Item.Properties(), OPArmorDefinitions.STONE));
+    public static final RegistryObject<Item> STONE_CHESTPLATE = registerItem("stone_chestplate", ()-> new ConfigurableArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties(), OPArmorDefinitions.STONE));
+    public static final RegistryObject<Item> STONE_LEGGINGS = registerItem("stone_leggings", ()-> new ConfigurableArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties(), OPArmorDefinitions.STONE));
+    public static final RegistryObject<Item> STONE_BOOTS = registerItem("stone_boots", ()-> new ConfigurableArmorItem(ArmorItem.Type.BOOTS, new Item.Properties(), OPArmorDefinitions.STONE));
 
     // treasure
     public static final RegistryObject<Item> MOON_SHOES = registerItem("moon_shoes", ()-> new MoonShoesItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
