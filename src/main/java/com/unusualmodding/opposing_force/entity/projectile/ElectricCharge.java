@@ -202,7 +202,7 @@ public class ElectricCharge extends FrictionlessProjectile {
         }
 
         if (this.isQuasar()) {
-            this.doQuasarEffects(0.5F);
+            this.doQuasarEffects(1F);
         }
 
         if (this.isStaticAttraction()) {

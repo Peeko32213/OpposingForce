@@ -31,10 +31,10 @@ public class VoltLeapGoal extends Goal {
         if (this.volt.getTarget() != null) {
             float targetAngle = -1;
             float leapYaw = (float) Math.toRadians(targetAngle + 90 + this.volt.getRandom().nextFloat() * 150 - 75);
-            float speed = 1.25F;
+            float speed = 1.5F;
             this.volt.playSound(OPSoundEvents.VOLT_SQUISH.get(), 0.2F, 1.0F);
             Vec3 movement = this.volt.getDeltaMovement().add(speed * Math.cos(leapYaw), 0, speed * Math.sin(leapYaw));
-            this.volt.setDeltaMovement(movement.x, 0.7, movement.z);
+            this.volt.setDeltaMovement(movement.x, 0.9, movement.z);
             this.volt.getNavigation().stop();
             this.volt.leapCooldown = 20 * 2 + this.volt.getRandom().nextInt(10 * 2);
         }

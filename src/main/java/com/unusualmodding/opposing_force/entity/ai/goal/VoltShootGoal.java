@@ -28,10 +28,8 @@ public class VoltShootGoal extends AttackGoal {
                 this.timer++;
                 this.cooldown = 24;
                 this.volt.getNavigation().stop();
-                if (this.timer == 7) {
-                    this.volt.playSound(OPSoundEvents.VOLT_SHOOT.get(), 2.0F, 1.0F / (this.volt.getRandom().nextFloat() * 0.4F + 0.8F));
-                }
-                if (this.timer == 8) {
+                if (this.timer == 10) this.volt.playSound(OPSoundEvents.VOLT_SHOOT.get(), 1.0F, 1.0F / (this.volt.getRandom().nextFloat() * 0.4F + 0.8F));
+                if (this.timer == 12) {
                     ElectricCharge electricCharge = new ElectricCharge(this.volt, this.volt.level(), this.volt.position().x(), this.volt.getEyePosition().y(), this.volt.position().z());
                     double tx = target.getX() - this.volt.getX();
                     double ty = target.getY() + target.getEyeHeight() - 1.1D - electricCharge.getY();
@@ -39,14 +37,18 @@ public class VoltShootGoal extends AttackGoal {
                     float heightOffset = Mth.sqrt((float) (tx * tx + tz * tz)) * 0.01F;
                     electricCharge.setChargeScale(0.5F);
                     electricCharge.setChargeDamage(3.0F);
-                    electricCharge.shoot(tx, ty + heightOffset, tz, 0.3F, 2.0F);
+                    electricCharge.shoot(tx, ty + heightOffset, tz, volt.isElite() ? 0.44F : 0.3F, 2.0F);
                     if (this.volt.isPowered()) {
                         electricCharge.setChargeScale(1.5F);
                         electricCharge.setChargeDamage(6.0F);
                     }
+                    if (this.volt.isElite()) {
+                        electricCharge.setQuasar(true);
+                        electricCharge.setChargeScale(electricCharge.getChargeScale() + 0.7F);
+                    }
                     this.volt.level().addFreshEntity(electricCharge);
                 }
-                if (this.timer >= 20) {
+                if (this.timer > 20) {
                     this.timer = 0;
                     this.volt.setAttackState(0);
                 }

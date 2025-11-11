@@ -6,11 +6,11 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -42,12 +42,13 @@ public abstract class EntityMixin {
 
         if (!(entity instanceof LivingEntity living)) return;
 
-        if (isWearingFullDeepwovenSet(living)) {
+        if (opposingForce$isWearingFullDeepwovenSet(living)) {
             cir.setReturnValue(true);
         }
     }
 
-    private static boolean isWearingFullDeepwovenSet(LivingEntity entity) {
+    @Unique
+    private static boolean opposingForce$isWearingFullDeepwovenSet(LivingEntity entity) {
         return entity.getItemBySlot(EquipmentSlot.HEAD).is(OPItems.DEEPWOVEN_HAT.get())
                 && entity.getItemBySlot(EquipmentSlot.CHEST).is(OPItems.DEEPWOVEN_TUNIC.get())
                 && entity.getItemBySlot(EquipmentSlot.LEGS).is(OPItems.DEEPWOVEN_PANTS.get())

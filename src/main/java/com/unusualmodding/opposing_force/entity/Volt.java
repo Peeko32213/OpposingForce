@@ -4,6 +4,7 @@ import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.entity.ai.goal.VoltShootGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.VoltLeapGoal;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
+import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -16,6 +17,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -33,19 +35,23 @@ import net.minecraft.world.level.dimension.DimensionType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class Volt extends Monster implements AttackState, PowerableMob {
+@SuppressWarnings("deprecation")
+public class Volt extends Monster implements AttackState, PowerableMob, EliteVariant {
 
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Volt.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> CHARGED = SynchedEntityData.defineId(Volt.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> QUASAR = SynchedEntityData.defineId(Volt.class, EntityDataSerializers.BOOLEAN);
 
-    public float targetSquish;
-    public float squish;
-    public float oSquish;
     private boolean wasOnGround;
     public int leapCooldown = 20 * 2 + this.getRandom().nextInt(10 * 2);
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState shootAnimationState = new AnimationState();
+    public final AnimationState twitch1AnimationState = new AnimationState();
+    public final AnimationState twitch2AnimationState = new AnimationState();
+    public final AnimationState jumpAnimationState = new AnimationState();
+    public final AnimationState jumpFallAnimationState = new AnimationState();
+    public final AnimationState jumpLandAnimationState = new AnimationState();
 
     public Volt(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -54,7 +60,7 @@ public class Volt extends Monster implements AttackState, PowerableMob {
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 16.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.15F)
+                .add(Attributes.MOVEMENT_SPEED, 0.21F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D);
     }
 
@@ -75,6 +81,7 @@ public class Volt extends Monster implements AttackState, PowerableMob {
         super.defineSynchedData();
         this.entityData.define(ATTACK_STATE, 0);
         this.entityData.define(CHARGED, false);
+        this.entityData.define(QUASAR, false);
     }
 
     @Override
@@ -84,6 +91,7 @@ public class Volt extends Monster implements AttackState, PowerableMob {
         if (this.entityData.get(CHARGED)) {
             compoundTag.putBoolean("Charged", true);
         }
+        compoundTag.putBoolean("Quasar", this.isElite());
     }
 
     @Override
@@ -91,6 +99,7 @@ public class Volt extends Monster implements AttackState, PowerableMob {
         super.readAdditionalSaveData(compoundTag);
         this.setAttackState(compoundTag.getInt("AttackState"));
         this.entityData.set(CHARGED, compoundTag.getBoolean("Charged"));
+        this.setElite(compoundTag.getBoolean("Quasar"));
     }
 
     @Override
@@ -109,7 +118,17 @@ public class Volt extends Monster implements AttackState, PowerableMob {
     }
 
     @Override
-    public void thunderHit(ServerLevel level, LightningBolt lightning) {
+    public boolean isElite() {
+        return this.entityData.get(QUASAR);
+    }
+
+    @Override
+    public void setElite(boolean elite) {
+        this.entityData.set(QUASAR, elite);
+    }
+
+    @Override
+    public void thunderHit(@NotNull ServerLevel level, @NotNull LightningBolt lightning) {
         super.thunderHit(level, lightning);
         this.entityData.set(CHARGED, true);
         this.setRemainingFireTicks(0);
@@ -117,7 +136,7 @@ public class Volt extends Monster implements AttackState, PowerableMob {
     }
 
     @Override
-    public boolean hurt(DamageSource damageSource, float amount) {
+    public boolean hurt(@NotNull DamageSource damageSource, float amount) {
         if (this.isInvulnerableTo(damageSource)) {
             return false;
         } else {
@@ -139,18 +158,11 @@ public class Volt extends Monster implements AttackState, PowerableMob {
             this.setupAnimationStates();
         }
 
-        this.squish += (this.targetSquish - this.squish) * 0.5F;
-        this.oSquish = this.squish;
-
         if (this.onGround() && !this.wasOnGround) {
             this.playSound(OPSoundEvents.VOLT_SQUISH.get(), 0.2F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
-            this.targetSquish = -0.5F;
-        } else if (!this.onGround() && this.wasOnGround) {
-            this.targetSquish = 1.0F;
         }
 
         this.wasOnGround = this.onGround();
-        this.decreaseSquish();
 
         if (this.isPowered()) {
             if (this.tickCount % 100 == 0 && this.getHealth() < this.getMaxHealth()) {
@@ -162,12 +174,8 @@ public class Volt extends Monster implements AttackState, PowerableMob {
     }
 
     private void setupAnimationStates() {
-        this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
+        this.idleAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() <= 1.0E-5F, this.tickCount);
         this.shootAnimationState.animateWhen(this.getAttackState() == 1, this.tickCount);
-    }
-
-    protected void decreaseSquish() {
-        this.targetSquish *= 0.6F;
     }
 
     @Override
@@ -177,12 +185,12 @@ public class Volt extends Monster implements AttackState, PowerableMob {
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
+    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
         return OPSoundEvents.VOLT_HURT.get();
     }
 
     @Override
-    protected SoundEvent getDeathSound() {
+    protected @NotNull SoundEvent getDeathSound() {
         return OPSoundEvents.VOLT_DEATH.get();
     }
 
@@ -197,17 +205,35 @@ public class Volt extends Monster implements AttackState, PowerableMob {
     }
 
     @Override
-    public boolean isInvulnerableTo(DamageSource source) {
+    public boolean isInvulnerableTo(@NotNull DamageSource source) {
         return super.isInvulnerableTo(source) || source.is(DamageTypeTags.IS_FALL);
     }
 
     @Override
-    public boolean causeFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
+    public boolean causeFallDamage(float fallDistance, float multiplier, @NotNull DamageSource source) {
         return false;
     }
 
     @Override
-    protected void checkFallDamage(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
+    protected void checkFallDamage(double y, boolean onGround, @NotNull BlockState state, @NotNull BlockPos pos) {
+    }
+
+    @Override
+    public void setEliteStats(Mob entity) {
+        entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(entity.getAttributeBaseValue(Attributes.MAX_HEALTH) * 1.5F);
+        entity.setHealth(entity.getMaxHealth());
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag compoundTag) {
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
+        RandomSource random = level.getRandom();
+        if (random.nextInt(this.getEliteSpawnChance()) == 0) {
+            this.setElite(true);
+            this.setEliteStats(this);
+        }
+        return spawnData;
     }
 
     @SuppressWarnings("unused")
