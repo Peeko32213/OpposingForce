@@ -34,10 +34,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.MobSpawnEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
@@ -165,6 +162,15 @@ public class ForgeEvents {
             }
         }
     }
+
+   // @SubscribeEvent
+   // public static void hatEquippedEvent(LivingEquipmentChangeEvent event) {
+   //     if (event.getTo().is(OPItems.DEEPWOVEN_HAT.get()) || event.getFrom().is(OPItems.DEEPWOVEN_HAT.get())) {
+   //         if (event.getEntity() instanceof Player player) {
+   //             player.refreshDisplayName();
+   //         }
+   //     }
+   // }
 
     @SubscribeEvent
     public static void onMobHurt(final LivingHurtEvent event) {

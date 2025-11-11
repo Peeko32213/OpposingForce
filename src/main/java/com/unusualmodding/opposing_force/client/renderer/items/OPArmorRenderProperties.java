@@ -3,6 +3,9 @@ package com.unusualmodding.opposing_force.client.renderer.items;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.unusualmodding.opposing_force.client.models.armor.*;
 import com.unusualmodding.opposing_force.items.*;
+import com.unusualmodding.opposing_force.items.armor.MoonShoesItem;
+import com.unusualmodding.opposing_force.items.armor.WoodenArmorItem;
+import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -38,29 +41,46 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
     }
 
     @Override
-    public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> humanoidModel) {
+    public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot armorSlot, HumanoidModel<?> humanoidModel) {
 
         if (!init) {
             initializeModels();
         }
 
-        final var item = itemStack.getItem();
+        final var item = stack.getItem();
 
-        if (item instanceof DeepwovenArmorItem) {
+        if (stack.is(OPItems.DEEPWOVEN_BOOTS.get())
+                || stack.is(OPItems.DEEPWOVEN_HAT.get())
+                || stack.is(OPItems.DEEPWOVEN_PANTS.get())
+                || stack.is(OPItems.DEEPWOVEN_TUNIC.get())) {
             return DEEPWOVEN_MODEL;
         }
+
         if (item instanceof WoodenArmorItem) {
             return WOODEN_MODEL;
         }
-        if (item instanceof EmeraldArmorItem) {
-            return EMERALD_MODEL;
-        }
-        if (item instanceof SlugBaronArmorItem) {
-            return SLUG_BARON_MODEL;
-        }
-        if (item instanceof StoneArmorItem) {
+        if (stack.is(OPItems.STONE_HELMET.get())
+                || stack.is(OPItems.STONE_CHESTPLATE.get())
+                || stack.is(OPItems.STONE_LEGGINGS.get())
+                || stack.is(OPItems.STONE_BOOTS.get())) {
             return STONE_MODEL;
         }
+
+        if (stack.is(OPItems.EMERALD_MASK.get())
+                || stack.is(OPItems.EMERALD_CHESTPLATE.get())
+                || stack.is(OPItems.EMERALD_LEGGINGS.get())
+                || stack.is(OPItems.EMERALD_BOOTS.get())) {
+            return EMERALD_MODEL;
+        }
+
+        if (stack.is(OPItems.SLUG_BARON_BOOTS.get())
+                || stack.is(OPItems.SLUG_BARON_CHESTPLATE.get())
+                || stack.is(OPItems.SLUG_BARON_HELMET.get())
+                || stack.is(OPItems.SLUG_BARON_LEGGINGS.get())) {
+            return SLUG_BARON_MODEL;
+        }
+
+
         if (item instanceof MoonShoesItem) {
             return entity == null ? MOON_SHOES_MODEL : MOON_SHOES_MODEL.withAnimations(entity);
         }

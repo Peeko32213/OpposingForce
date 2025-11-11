@@ -1,6 +1,6 @@
 package com.unusualmodding.opposing_force.mixins;
 
-import com.unusualmodding.opposing_force.items.WoodenArmorItem;
+import com.unusualmodding.opposing_force.items.armor.WoodenArmorItem;
 import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.food.FoodData;
