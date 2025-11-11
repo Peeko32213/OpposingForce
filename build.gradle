@@ -143,3 +143,10 @@ publishing {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
