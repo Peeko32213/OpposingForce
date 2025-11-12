@@ -28,7 +28,7 @@ public class OPItemModelProvider extends ItemModelProvider {
 
         this.item(DEEP_SILK);
         this.item(ELECTRIC_CHARGE);
-        this.item(TESLA_INGOT);
+        this.item(ELECTRIC_ALLOY);
         this.item(LIGHTNING_BOMB);
         this.item(CAPTURED_WHIZZ);
         this.item(DEEPWOVEN_HAT);

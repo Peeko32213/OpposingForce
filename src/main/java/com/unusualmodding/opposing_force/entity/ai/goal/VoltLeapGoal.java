@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.entity.ai.goal;
 
 import com.unusualmodding.opposing_force.entity.Volt;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
 
@@ -18,12 +19,12 @@ public class VoltLeapGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return this.volt.getTarget() != null && this.volt.getTarget().isAlive() && this.volt.leapCooldown <= 0 && this.volt.onGround() && this.volt.distanceToSqr(this.volt.getTarget()) < 30;
+        return this.volt.getTarget() != null && this.volt.getTarget().isAlive() && this.volt.leapCooldown <= 0 && this.volt.onGround() && !this.volt.isInWater() && this.volt.distanceToSqr(this.volt.getTarget()) < 30;
     }
 
     @Override
     public boolean canContinueToUse() {
-        return !this.volt.onGround();
+        return !this.volt.onGround() && !this.volt.isInWater();
     }
 
     @Override
@@ -34,6 +35,7 @@ public class VoltLeapGoal extends Goal {
             float speed = 1.5F;
             this.volt.playSound(OPSoundEvents.VOLT_SQUISH.get(), 0.2F, 1.0F);
             Vec3 movement = this.volt.getDeltaMovement().add(speed * Math.cos(leapYaw), 0, speed * Math.sin(leapYaw));
+            this.volt.setPose(Pose.LONG_JUMPING);
             this.volt.setDeltaMovement(movement.x, 0.9, movement.z);
             this.volt.getNavigation().stop();
             this.volt.leapCooldown = 20 * 2 + this.volt.getRandom().nextInt(10 * 2);

@@ -51,7 +51,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.forEntity(OPEntities.FROWZY);
         this.forEntity(OPEntities.GUZZLER);
         this.forEntity(OPEntities.HANGING_SPIDER);
-        this.forEntity(OPEntities.NYMPH);
+//        this.forEntity(OPEntities.NYMPH);
         this.forEntity(OPEntities.RAMBLER);
         this.forEntity(OPEntities.SLUG);
         this.forEntity(OPEntities.TART);

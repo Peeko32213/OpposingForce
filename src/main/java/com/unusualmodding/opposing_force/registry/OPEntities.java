@@ -67,13 +67,13 @@ public class OPEntities {
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "hanging_spider").toString())
     );
 
-    public static final RegistryObject<EntityType<Nymph>> NYMPH = ENTITY_TYPES.register(
-            "nymph", () ->
-            EntityType.Builder.of(Nymph::new, MobCategory.MONSTER)
-                    .sized(0.8F, 3.8F)
-                    .clientTrackingRange(10)
-                    .build(new ResourceLocation(OpposingForce.MOD_ID, "nymph").toString())
-    );
+//    public static final RegistryObject<EntityType<Nymph>> NYMPH = ENTITY_TYPES.register(
+//            "nymph", () ->
+//            EntityType.Builder.of(Nymph::new, MobCategory.MONSTER)
+//                    .sized(0.8F, 3.8F)
+//                    .clientTrackingRange(10)
+//                    .build(new ResourceLocation(OpposingForce.MOD_ID, "nymph").toString())
+//    );
 
     public static final RegistryObject<EntityType<Rambler>> RAMBLER = ENTITY_TYPES.register(
             "rambler", () ->

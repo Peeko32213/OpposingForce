@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "item": "opposing_force:tesla_ingot"
+      "item": "opposing_force:electric_alloy"
     },
     "A": {
       "item": "opposing_force:electric_charge"

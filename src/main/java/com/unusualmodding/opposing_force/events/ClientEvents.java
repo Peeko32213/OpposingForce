@@ -49,7 +49,7 @@ public final class ClientEvents {
         event.registerEntityRenderer(OPEntities.FROWZY.get(), FrowzyRenderer::new);
         event.registerEntityRenderer(OPEntities.GUZZLER.get(), GuzzlerRenderer::new);
         event.registerEntityRenderer(OPEntities.HANGING_SPIDER.get(), HangingSpiderRenderer::new);
-        event.registerEntityRenderer(OPEntities.NYMPH.get(), NymphRenderer::new);
+//        event.registerEntityRenderer(OPEntities.NYMPH.get(), NymphRenderer::new);
         event.registerEntityRenderer(OPEntities.KINETIC_BOMB.get(), KineticBombRenderer::new);
         event.registerEntityRenderer(OPEntities.LIGHTNING_BOMB.get(), LightningBombRenderer::new);
         event.registerEntityRenderer(OPEntities.RAMBLER.get(), RamblerRenderer::new);

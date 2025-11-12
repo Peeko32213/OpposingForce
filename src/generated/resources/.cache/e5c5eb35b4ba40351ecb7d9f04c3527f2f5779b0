@@ -1,4 +1,4 @@
-// 1.20.1	2025-11-08T19:58:35.5548619	Advancements
+// 1.20.1	2025-11-11T19:45:21.3223346	Advancements
 a9a94891bd90b0d82c5e095fd2a246670d63d67f data/opposing_force/advancements/capture_whizz.json
 8bb8001ae31d53f085729c193d2a07091a63ab0f data/opposing_force/advancements/deepwoven_armor.json
 b33ab69af62f1e24b59d7438751ba3ece1e00a77 data/opposing_force/advancements/electric_charge.json
@@ -8,5 +8,5 @@ f26fa028b49f7e132959ee706405b1f7fb1b4ce0 data/opposing_force/advancements/moon_s
 bed2077d02e407337cbb1b6b609a9b922e2f2ed2 data/opposing_force/advancements/root.json
 d07ece9ba4ec250e0b23b70df86eeb25b6940cd8 data/opposing_force/advancements/slug_baron_armor.json
 3cb943774f5b9d39a6e9171feeb77fda620c79b2 data/opposing_force/advancements/stone_armor.json
-1d326d9e1508699e849c93ae91521a44292656fa data/opposing_force/advancements/tesla_ingot.json
+3fa2288a1a257ba31e4a24989f8a3c30bc72fa98 data/opposing_force/advancements/tesla_ingot.json
 64f84d48c5441c06acdef1f9250955b169b25794 data/opposing_force/advancements/wooden_armor.json

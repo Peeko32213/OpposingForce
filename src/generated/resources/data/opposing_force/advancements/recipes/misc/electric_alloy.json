@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "opposing_force:tesla_ingot"
+        "recipe": "opposing_force:electric_alloy"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "opposing_force:tesla_ingot"
+      "opposing_force:electric_alloy"
     ]
   },
   "sends_telemetry_event": false

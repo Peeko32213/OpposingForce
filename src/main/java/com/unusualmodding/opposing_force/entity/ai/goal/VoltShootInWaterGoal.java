@@ -7,24 +7,24 @@ import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 
-public class VoltShootGoal extends AttackGoal {
+public class VoltShootInWaterGoal extends AttackGoal {
 
     private final Volt volt;
     private int cooldown = 0;
 
-    public VoltShootGoal(Volt volt) {
+    public VoltShootInWaterGoal(Volt volt) {
         super(volt);
         this.volt = volt;
     }
 
     @Override
     public boolean canUse() {
-        return super.canUse() && !volt.isInWater();
+        return super.canUse() && volt.isInWater();
     }
 
     @Override
     public boolean canContinueToUse() {
-        return super.canContinueToUse() && !volt.isInWater();
+        return super.canContinueToUse() && volt.isInWater();
     }
 
     @Override
@@ -33,10 +33,11 @@ public class VoltShootGoal extends AttackGoal {
         if (target != null) {
             this.volt.lookAt(this.volt.getTarget(), 30F, 30F);
             this.volt.getLookControl().setLookAt(this.volt.getTarget().getX(), this.volt.getTarget().getY(), this.volt.getTarget().getZ());
+            double distance = this.volt.distanceToSqr(target.getX(), target.getY(), target.getZ());
 
             if (volt.getAttackState() == 1) {
                 this.timer++;
-                this.cooldown = 24;
+                this.cooldown = 34;
                 this.volt.getNavigation().stop();
                 if (this.timer == 1) this.volt.setPose(OPPoses.SHOOTING.get());
                 if (this.timer == 10) this.volt.playSound(OPSoundEvents.VOLT_SHOOT.get(), 3.0F, 1.0F / (this.volt.getRandom().nextFloat() * 0.4F + 0.8F));
@@ -46,16 +47,16 @@ public class VoltShootGoal extends AttackGoal {
                     double ty = target.getY() + target.getEyeHeight() - 1.1D - electricCharge.getY();
                     double tz = target.getZ() - this.volt.getZ();
                     float heightOffset = Mth.sqrt((float) (tx * tx + tz * tz)) * 0.01F;
-                    electricCharge.setChargeScale(0.5F);
+                    electricCharge.setChargeScale(0.25F);
                     electricCharge.setChargeDamage(3.0F);
                     electricCharge.shoot(tx, ty + heightOffset, tz, volt.isElite() ? 0.44F : 0.3F, 2.0F);
                     if (this.volt.isPowered()) {
-                        electricCharge.setChargeScale(1.5F);
+                        electricCharge.setChargeScale(1.0F);
                         electricCharge.setChargeDamage(6.0F);
                     }
                     if (this.volt.isElite()) {
                         electricCharge.setQuasar(true);
-                        electricCharge.setChargeScale(electricCharge.getChargeScale() + 0.7F);
+                        electricCharge.setChargeScale(electricCharge.getChargeScale() + 0.3F);
                     }
                     this.volt.level().addFreshEntity(electricCharge);
                 }
@@ -64,10 +65,19 @@ public class VoltShootGoal extends AttackGoal {
                     this.volt.setAttackState(0);
                 }
             } else {
-                if (this.volt.onGround() && this.cooldown > 0) this.cooldown--;
-                if (this.volt.onGround() && this.cooldown == 0) this.volt.setAttackState(1);
-                if (target.isInWater() && this.cooldown > 0) this.volt.getNavigation().moveTo(target, 1.1F);
+                this.volt.getNavigation().moveTo(target, 1.1F);
+                if (this.cooldown > 0) {
+                    this.cooldown--;
+                }
+                else if (this.cooldown == 0 && distance <= this.getAttackReachSqr(target)) {
+                    this.volt.setAttackState(1);
+                }
             }
         }
+    }
+
+    @Override
+    protected double getAttackReachSqr(LivingEntity target) {
+        return this.monster.getBbWidth() * 3.0F * this.monster.getBbWidth() * 3.0F + target.getBbWidth();
     }
 }

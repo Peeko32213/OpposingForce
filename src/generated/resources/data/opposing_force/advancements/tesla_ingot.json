@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "opposing_force:tesla_ingot"
+              "opposing_force:electric_alloy"
             ]
           }
         ]
@@ -22,7 +22,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "opposing_force:tesla_ingot"
+      "item": "opposing_force:electric_alloy"
     },
     "show_toast": true,
     "title": {

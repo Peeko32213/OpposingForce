@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "A": {
-      "item": "opposing_force:tesla_ingot"
+      "item": "opposing_force:electric_alloy"
     },
     "B": {
       "tag": "forge:ingots/gold"

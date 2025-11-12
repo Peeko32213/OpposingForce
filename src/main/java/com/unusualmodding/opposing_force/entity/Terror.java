@@ -63,7 +63,7 @@ public class Terror extends Monster implements EliteVariant {
 
     private static final EntityDimensions FISH_OUT_OF_WATER_DIMENSIONS = EntityDimensions.scalable(1.3F, 1.7F);
 
-    public static final ResourceLocation LEGS_LOOT = new ResourceLocation(OpposingForce.MOD_ID, "entities/terror_legs");
+    public static final ResourceLocation LEGS_LOOT = OpposingForce.modPrefix("entities/terror_legs");
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState flopAnimationState = new AnimationState();

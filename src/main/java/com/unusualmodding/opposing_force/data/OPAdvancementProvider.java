@@ -98,12 +98,12 @@ public class OPAdvancementProvider implements AdvancementGenerator {
 
         Advancement teslaIngot = Advancement.Builder.advancement()
                 .parent(electricCharge)
-                .display(OPItems.TESLA_INGOT.get(),
+                .display(OPItems.ELECTRIC_ALLOY.get(),
                         Component.translatable("advancement.opposing_force.tesla_ingot"),
                         Component.translatable("advancement.opposing_force.tesla_ingot.desc"),
                         null,
                         FrameType.TASK, true, true, false)
-                .addCriterion("tesla_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.TESLA_INGOT.get()))
+                .addCriterion("tesla_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.ELECTRIC_ALLOY.get()))
                 .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "tesla_ingot"), helper);
 
         Advancement moonShoes = Advancement.Builder.advancement()

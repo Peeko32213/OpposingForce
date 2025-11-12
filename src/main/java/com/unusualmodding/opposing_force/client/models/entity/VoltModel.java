@@ -8,6 +8,8 @@ import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Pose;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -92,10 +94,23 @@ public class VoltModel extends HierarchicalModel<Volt> {
 	@Override
 	public void setupAnim(Volt entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		this.animateWalk(VoltAnimations.WALK, limbSwing, limbSwingAmount, 2, 4);
-		this.animate(entity.idleAnimationState, VoltAnimations.IDLE, ageInTicks);
+        if (!entity.isInWater() && entity.getPose() == Pose.STANDING) {
+            this.animateWalk(VoltAnimations.WALK, limbSwing, limbSwingAmount, 3, 6);
+        }
+        this.animate(entity.swimmingAnimationState, VoltAnimations.SWIM, ageInTicks, 0.7F + (Mth.clamp(limbSwingAmount, 0.4F, 1.0F) * 1.4F));
+        this.animate(entity.idleAnimationState, VoltAnimations.IDLE, ageInTicks);
 		this.animate(entity.shootAnimationState, VoltAnimations.SHOCK_LAND, ageInTicks);
-	}
+        this.animate(entity.shootWaterAnimationState, VoltAnimations.SHOCK_SWIM, ageInTicks);
+        this.animate(entity.jumpAnimationState, VoltAnimations.JUMP_START, ageInTicks);
+        this.animate(entity.fallingAnimationState, VoltAnimations.JUMP_FALL, ageInTicks);
+        this.animate(entity.landingAnimationState, VoltAnimations.JUMP_END, ageInTicks);
+        this.animate(entity.twitch1AnimationState, VoltAnimations.TWITCH1, ageInTicks);
+        this.animate(entity.twitch2AnimationState, VoltAnimations.TWITCH2, ageInTicks);
+
+        if (entity.isInWaterOrBubble()) {
+            this.root.xRot = headPitch * (Mth.DEG_TO_RAD) / 2;
+        }
+    }
 
 	@Override
 	public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {

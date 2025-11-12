@@ -56,7 +56,7 @@ public class Trembler extends Monster {
     }
 
     @Override
-    protected BodyRotationControl createBodyControl() {
+    protected @NotNull BodyRotationControl createBodyControl() {
         return new TremblerBodyRotationControl(this);
     }
 
