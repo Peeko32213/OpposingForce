@@ -36,6 +36,7 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,6 +44,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
+@SuppressWarnings("deprecation")
 public class Rambler extends Monster implements AttackState {
 
     private static final EntityDataAccessor<Boolean> FLAILING = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.BOOLEAN);
@@ -360,16 +362,22 @@ public class Rambler extends Monster implements AttackState {
     }
 
     @Override
-    protected void dropCustomDeathLoot(DamageSource source, int damage, boolean drops) {
+    protected void dropCustomDeathLoot(@NotNull DamageSource source, int damage, boolean drops) {
         super.dropCustomDeathLoot(source, damage, drops);
         Entity entity = source.getEntity();
-        int skullDrops = 1 + random.nextInt(3);
+        Item middleSkull = RamblerSkulls.getVariantId(this.getMiddleSkull()).getSkullItem();
+        Item leftSkull = RamblerSkulls.getVariantId(this.getLeftSkull()).getSkullItem();
+        Item rightSkull = RamblerSkulls.getVariantId(this.getRightSkull()).getSkullItem();
+        int skullDrops = 1 + random.nextInt(2);
         if (entity instanceof Creeper creeper) {
             if (creeper.canDropMobsSkull()) {
-                for (int i = 0; i < skullDrops; i++) {
-                    creeper.increaseDroppedSkulls();
-                    this.spawnAtLocation(OPItems.ANGRY_RAMBLER_SKULL.get());
-                }
+                this.spawnAtLocation(middleSkull);
+                this.spawnAtLocation(leftSkull);
+                this.spawnAtLocation(rightSkull);
+//                for (int i = 0; i < skullDrops; i++) {
+//                    creeper.increaseDroppedSkulls();
+//                    this.spawnAtLocation(OPItems.ANGRY_RAMBLER_SKULL.get());
+//                }
             }
         }
     }
@@ -382,12 +390,12 @@ public class Rambler extends Monster implements AttackState {
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
         return OPSoundEvents.RAMBLER_HURT.get();
     }
 
     @Override
-    protected SoundEvent getDeathSound() {
+    protected @NotNull SoundEvent getDeathSound() {
         return OPSoundEvents.RAMBLER_DEATH.get();
     }
 
@@ -398,7 +406,7 @@ public class Rambler extends Monster implements AttackState {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag compoundTag) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag compoundTag) {
         spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
 
         RamblerSkulls middle = RamblerSkulls.getRandom(this.getRandom());
@@ -443,31 +451,33 @@ public class Rambler extends Monster implements AttackState {
     }
 
     public enum RamblerSkulls implements StringRepresentable, WeightedEntry {
-        SKELETAL(0,  "skeletal", 100),
-        ANGRY(1, "angry", 100),
-        CLASSIC(2, "classic", 100),
-        EVIL(3, "evil", 100),
-        GRINNING(4, "grinning", 10),
-        SMILING(5, "smiling", 100),
-        STRANGE(6, "strange", 100),
-        MUSICAL(7, "musical", 1),
-        DWARVEN(8, "dwarven", 1),
-        INDOMITABLE(9, "indomitable", 1),
-        MAGMATIC(10, "magmatic", 1),
-        CRUNDLY(11, "crundly", 1),
-        IMPRISONED(12, "imprisoned", 1),
-        NOSY(13, "nosy", 1),
-        LEERING(14, "leering", 1),
-        VALIANT(15, "valiant", 1);
+        SKELETAL(0,  "skeletal", 100, OPItems.SKELETAL_RAMBLER_SKULL.get()),
+        ANGRY(1, "angry", 100, OPItems.ANGRY_RAMBLER_SKULL.get()),
+        CLASSIC(2, "classic", 100, OPItems.CLASSIC_RAMBLER_SKULL.get()),
+        EVIL(3, "evil", 100, OPItems.EVIL_RAMBLER_SKULL.get()),
+        GRINNING(4, "grinning", 10, OPItems.GRINNING_RAMBLER_SKULL.get()),
+        SMILING(5, "smiling", 100, OPItems.SMILING_RAMBLER_SKULL.get()),
+        STRANGE(6, "strange", 100, OPItems.STRANGE_RAMBLER_SKULL.get()),
+        MUSICAL(7, "musical", 1, OPItems.MUSICAL_RAMBLER_SKULL.get()),
+        DWARVEN(8, "dwarven", 1, OPItems.DWARVEN_RAMBLER_SKULL.get()),
+        INDOMITABLE(9, "indomitable", 1, OPItems.INDOMITABLE_RAMBLER_SKULL.get()),
+        MAGMATIC(10, "magmatic", 1, OPItems.MAGMATIC_RAMBLER_SKULL.get()),
+        CRUNDLY(11, "crundly", 1, OPItems.CRUNDLY_RAMBLER_SKULL.get()),
+        IMPRISONED(12, "imprisoned", 1, OPItems.IMPRISONED_RAMBLER_SKULL.get()),
+        NOSY(13, "nosy", 1, OPItems.NOSY_RAMBLER_SKULL.get()),
+        LEERING(14, "leering", 1, OPItems.LEERING_RAMBLER_SKULL.get()),
+        VALIANT(15, "valiant", 1, OPItems.VALIANT_RAMBLER_SKULL.get());
 
         private final int skull;
         private final String name;
         private final Weight weight;
+        private final Item skullItem;
 
-        RamblerSkulls(int skull, String name, int weight) {
+        RamblerSkulls(int skull, String name, int weight, Item skullItem) {
             this.skull = skull;
             this.name = name;
             this.weight = Weight.of(weight);
+            this.skullItem = skullItem;
         }
 
         public static RamblerSkulls getVariantId(int skulls) {
@@ -494,6 +504,10 @@ public class Rambler extends Monster implements AttackState {
 
         public int getSkull() {
             return this.skull;
+        }
+
+        public Item getSkullItem() {
+            return this.skullItem;
         }
 
         @Override
