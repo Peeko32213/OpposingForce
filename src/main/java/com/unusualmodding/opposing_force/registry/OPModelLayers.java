@@ -22,11 +22,11 @@ public class OPModelLayers {
     public static final ModelLayerLocation RAMBLER_SKULL = main("rambler_skull");
     public static final ModelLayerLocation SLUG = main("slug");
     public static final ModelLayerLocation TART = main("tart");
+    public static final ModelLayerLocation TART_HEAD = main("tart_head");
     public static final ModelLayerLocation TERROR = main("terror");
     public static final ModelLayerLocation TREMBLER = main("trembler");
     public static final ModelLayerLocation UMBER_SPIDER = main("umber_spider");
     public static final ModelLayerLocation VOLT = main("volt");
-    public static final ModelLayerLocation VOLT_CHARGED = register("volt", "charged_volt");
     public static final ModelLayerLocation WHIZZ = main("whizz");
 
     public static final ModelLayerLocation MOON_SHOES = main("moon_shoes");

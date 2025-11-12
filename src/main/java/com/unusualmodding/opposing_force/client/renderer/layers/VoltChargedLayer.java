@@ -6,13 +6,8 @@ import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.VoltModel;
 import com.unusualmodding.opposing_force.client.renderer.OPRenderTypes;
 import com.unusualmodding.opposing_force.entity.Volt;
-import com.unusualmodding.opposing_force.registry.OPModelLayers;
-import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
-import net.minecraft.client.renderer.entity.layers.EnergySwirlLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -34,6 +29,7 @@ public class VoltChargedLayer extends RenderLayer<Volt, VoltModel> {
 
     @Override
     public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedlight, Volt volt, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        VertexConsumer vertexconsumer = bufferSource.getBuffer(OPRenderTypes.specialGlint(volt.isElite() ? CHARGED_QUASAR : CHARGED, false));
         if (volt.isPowered()) {
             if (volt.isElite()) {
                 int i = volt.tickCount / 25 + volt.getId();
@@ -46,10 +42,8 @@ public class VoltChargedLayer extends RenderLayer<Volt, VoltModel> {
                 float r = colorArray[0] * (1.0F - time) + colorArray1[0] * time;
                 float g = colorArray[1] * (1.0F - time) + colorArray1[1] * time;
                 float b = colorArray[2] * (1.0F - time) + colorArray1[2] * time;
-                VertexConsumer vertexconsumer = bufferSource.getBuffer(OPRenderTypes.specialGlint(CHARGED_QUASAR, false));
                 this.getParentModel().renderToBuffer(poseStack, vertexconsumer, 0xF000F0, OverlayTexture.NO_OVERLAY, r, g, b, 0.8F);
             } else {
-                VertexConsumer vertexconsumer = bufferSource.getBuffer(OPRenderTypes.specialGlint(CHARGED, false));
                 this.getParentModel().renderToBuffer(poseStack, vertexconsumer, 0xF000F0, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.8F);
             }
         }

@@ -71,7 +71,24 @@ public class OPCompat {
 
         DispenserBlock.registerBehavior(OPItems.DICER_HEAD.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
         DispenserBlock.registerBehavior(OPItems.FROWZY_HEAD.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
-        DispenserBlock.registerBehavior(OPItems.RAMBLE_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
+        DispenserBlock.registerBehavior(OPItems.ANGRY_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
+        DispenserBlock.registerBehavior(OPItems.CLASSIC_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
+        DispenserBlock.registerBehavior(OPItems.CRUNDLY_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
+        DispenserBlock.registerBehavior(OPItems.DWARVEN_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
+        DispenserBlock.registerBehavior(OPItems.EVIL_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
+        DispenserBlock.registerBehavior(OPItems.GRINNING_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
+        DispenserBlock.registerBehavior(OPItems.IMPRISONED_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
+        DispenserBlock.registerBehavior(OPItems.INDOMITABLE_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
+        DispenserBlock.registerBehavior(OPItems.LEERING_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
+        DispenserBlock.registerBehavior(OPItems.MAGMATIC_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
+        DispenserBlock.registerBehavior(OPItems.MUSICAL_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
+        DispenserBlock.registerBehavior(OPItems.NOSY_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
+        DispenserBlock.registerBehavior(OPItems.SKELETAL_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
+        DispenserBlock.registerBehavior(OPItems.SMILING_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
+        DispenserBlock.registerBehavior(OPItems.STRANGE_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
+        DispenserBlock.registerBehavior(OPItems.VALIANT_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
+
+        DispenserBlock.registerBehavior(OPItems.TART_HEAD.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
     }
 
     public static void registerCompostables() {

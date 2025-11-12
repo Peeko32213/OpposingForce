@@ -43,7 +43,13 @@ public class OpposingForceTab {
                     output.accept(OPItems.INFERNO_STAFF.get());
 
                     // rambler
-                    output.accept(OPItems.RAMBLE_SKULL.get());
+                    output.accept(OPItems.ANGRY_RAMBLER_SKULL.get());
+                    output.accept(OPItems.CLASSIC_RAMBLER_SKULL.get());
+                    output.accept(OPItems.EVIL_RAMBLER_SKULL.get());
+                    output.accept(OPItems.GRINNING_RAMBLER_SKULL.get());
+                    output.accept(OPItems.SKELETAL_RAMBLER_SKULL.get());
+                    output.accept(OPItems.SMILING_RAMBLER_SKULL.get());
+                    output.accept(OPItems.STRANGE_RAMBLER_SKULL.get());
 
                     // slug
                     output.accept(OPBlocks.SLUG_EGGS.get());
@@ -66,6 +72,9 @@ public class OpposingForceTab {
                     output.accept(OPItems.SLUG_BARON_LEGGINGS.get());
                     output.accept(OPItems.SLUG_BARON_BOOTS.get());
                     output.accept(OPItems.WALTZ_OF_THE_SLUG_DISC.get());
+
+                    // tart
+                    output.accept(OPItems.TART_HEAD.get());
 
                     // terror
                     output.accept(OPItems.TERROR_LEG.get());

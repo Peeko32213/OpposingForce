@@ -170,14 +170,53 @@ public class OPLanguageProvider extends LanguageProvider {
 
         this.addBlock(OPBlocks.INFESTED_AMETHYST_BLOCK, "Infested Block of Amethyst");
 
-        this.addBlock(OPBlocks.DICER_HEAD, "Dicer Head");
-        this.addBlock(OPBlocks.DICER_WALL_HEAD, "Dicer Head");
+        this.addBlock(OPBlocks.ANGRY_RAMBLER_SKULL.getFirst(), "Rambler Skull");
+        this.add("block.opposing_force.angry_rambler_skull.desc", "Angry");
 
-        this.addBlock(OPBlocks.FROWZY_HEAD, "Frowzy Head");
-        this.addBlock(OPBlocks.FROWZY_WALL_HEAD, "Frowzy Head");
+        this.addBlock(OPBlocks.CLASSIC_RAMBLER_SKULL.getFirst(), "Rambler Skull");
+        this.add("block.opposing_force.classic_rambler_skull.desc", "Classic");
 
-        this.addBlock(OPBlocks.RAMBLE_SKULL, "Ramble Skull");
-        this.addBlock(OPBlocks.RAMBLE_WALL_SKULL, "Ramble Skull");
+        this.addBlock(OPBlocks.CRUNDLY_RAMBLER_SKULL.getFirst(), "Rambler Skull");
+        this.add("block.opposing_force.crundly_rambler_skull.desc", "Crundly");
+
+        this.addBlock(OPBlocks.DWARVEN_RAMBLER_SKULL.getFirst(), "Rambler Skull");
+        this.add("block.opposing_force.dwarven_rambler_skull.desc", "Dwarven");
+
+        this.addBlock(OPBlocks.EVIL_RAMBLER_SKULL.getFirst(), "Rambler Skull");
+        this.add("block.opposing_force.evil_rambler_skull.desc", "Evil");
+
+        this.addBlock(OPBlocks.GRINNING_RAMBLER_SKULL.getFirst(), "Rambler Skull");
+        this.add("block.opposing_force.grinning_rambler_skull.desc", "Grinning");
+
+        this.addBlock(OPBlocks.IMPRISONED_RAMBLER_SKULL.getFirst(), "Rambler Skull");
+        this.add("block.opposing_force.imprisoned_rambler_skull.desc", "Imprisoned");
+
+        this.addBlock(OPBlocks.INDOMITABLE_RAMBLER_SKULL.getFirst(), "Rambler Skull");
+        this.add("block.opposing_force.indomitable_rambler_skull.desc", "Indomitable");
+
+        this.addBlock(OPBlocks.LEERING_RAMBLER_SKULL.getFirst(), "Rambler Skull");
+        this.add("block.opposing_force.leering_rambler_skull.desc", "Leering");
+
+        this.addBlock(OPBlocks.MAGMATIC_RAMBLER_SKULL.getFirst(), "Rambler Skull");
+        this.add("block.opposing_force.magmatic_rambler_skull.desc", "Magmatic");
+
+        this.addBlock(OPBlocks.MUSICAL_RAMBLER_SKULL.getFirst(), "Rambler Skull");
+        this.add("block.opposing_force.musical_rambler_skull.desc", "Musical");
+
+        this.addBlock(OPBlocks.NOSY_RAMBLER_SKULL.getFirst(), "Rambler Skull");
+        this.add("block.opposing_force.nosy_rambler_skull.desc", "Nosy");
+
+        this.addBlock(OPBlocks.SKELETAL_RAMBLER_SKULL.getFirst(), "Rambler Skull");
+        this.add("block.opposing_force.skeletal_rambler_skull.desc", "Skeletal");
+
+        this.addBlock(OPBlocks.SMILING_RAMBLER_SKULL.getFirst(), "Rambler Skull");
+        this.add("block.opposing_force.smiling_rambler_skull.desc", "Smiling");
+
+        this.addBlock(OPBlocks.STRANGE_RAMBLER_SKULL.getFirst(), "Rambler Skull");
+        this.add("block.opposing_force.strange_rambler_skull.desc", "Strange");
+
+        this.addBlock(OPBlocks.VALIANT_RAMBLER_SKULL.getFirst(), "Rambler Skull");
+        this.add("block.opposing_force.valiant_rambler_skull.desc", "Valiant");
 
         this.musicDisc(OPItems.WALTZ_OF_THE_SLUG_DISC, "Chips The Cat - Waltz of the Slug");
 

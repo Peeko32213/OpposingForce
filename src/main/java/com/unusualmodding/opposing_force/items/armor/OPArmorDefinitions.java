@@ -14,36 +14,28 @@ public class OPArmorDefinitions {
             .material(OPTiers.OPArmorMaterials.STONE)
             .attribute(ForgeMod.ENTITY_GRAVITY.get(), 0.05F, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .attribute(Attributes.MOVEMENT_SPEED, -0.1F, AttributeModifier.Operation.MULTIPLY_BASE)
-            .texture(slot -> slot == EquipmentSlot.LEGS
-                    ? OpposingForce.MOD_ID + ":textures/models/armor/stone_armor_layer_2.png"
-                    : OpposingForce.MOD_ID + ":textures/models/armor/stone_armor_layer_1.png")
+            .texture(slot -> slot == EquipmentSlot.LEGS ? OpposingForce.MOD_ID + ":textures/models/armor/stone_armor_layer_2.png" : OpposingForce.MOD_ID + ":textures/models/armor/stone_armor_layer_1.png")
             .build();
 
     public static final ArmorDefinition DEEPWOVEN = new ArmorDefinition.Builder()
             .material(OPTiers.OPArmorMaterials.DEEPWOVEN)
             .attribute(Attributes.MOVEMENT_SPEED, 0.05F, AttributeModifier.Operation.MULTIPLY_BASE)
             .attribute(OPAttributes.STEALTH.get(), 0.15F, AttributeModifier.Operation.ADDITION)
-            .texture(slot -> slot == EquipmentSlot.LEGS
-                    ? OpposingForce.MOD_ID + ":textures/models/armor/deepwoven_armor_layer_2.png"
-                    : OpposingForce.MOD_ID + ":textures/models/armor/deepwoven_armor_layer_1.png")
+            .texture(slot -> slot == EquipmentSlot.LEGS ? OpposingForce.MOD_ID + ":textures/models/armor/deepwoven_armor_layer_2.png" : OpposingForce.MOD_ID + ":textures/models/armor/deepwoven_armor_layer_1.png")
             .walkOnPowderedSnow()
             .build();
 
 
     public static final ArmorDefinition WOODEN = new ArmorDefinition.Builder()
             .material(OPTiers.OPArmorMaterials.WOODEN)
-            .texture(slot -> slot == EquipmentSlot.LEGS
-                    ? OpposingForce.MOD_ID + ":textures/models/armor/wooden_armor_layer_2.png"
-                    : OpposingForce.MOD_ID + ":textures/models/armor/wooden_armor_layer_1.png")
+            .texture(slot -> slot == EquipmentSlot.LEGS ? OpposingForce.MOD_ID + ":textures/models/armor/wooden_armor_layer_2.png" : OpposingForce.MOD_ID + ":textures/models/armor/wooden_armor_layer_1.png")
             .build();
 
 
     public static final ArmorDefinition EMERALD = new ArmorDefinition.Builder()
             .material(OPTiers.OPArmorMaterials.EMERALD)
             .attribute(OPAttributes.EXPERIENCE_GAIN.get(), 0.25F, AttributeModifier.Operation.MULTIPLY_BASE)
-            .texture(slot -> slot == EquipmentSlot.LEGS
-                    ? OpposingForce.MOD_ID + ":textures/models/armor/emerald_armor_layer_2.png"
-                    : OpposingForce.MOD_ID + ":textures/models/armor/emerald_armor_layer_1.png")
+            .texture(slot -> slot == EquipmentSlot.LEGS ? OpposingForce.MOD_ID + ":textures/models/armor/emerald_armor_layer_2.png" : OpposingForce.MOD_ID + ":textures/models/armor/emerald_armor_layer_1.png")
             .build();
 
     public static final ArmorDefinition MOON_SHOES = new ArmorDefinition.Builder()
@@ -56,8 +48,6 @@ public class OPArmorDefinitions {
 
     public static final ArmorDefinition SLUG_BARON = new ArmorDefinition.Builder()
             .material(OPTiers.OPArmorMaterials.SLUG_BARON)
-            .texture(slot -> slot == EquipmentSlot.LEGS
-                    ? OpposingForce.MOD_ID + ":textures/models/armor/slug_baron_armor_layer_2.png"
-                    : OpposingForce.MOD_ID + ":textures/models/armor/slug_baron_armor_layer_1.png")
+            .texture(slot -> slot == EquipmentSlot.LEGS ? OpposingForce.MOD_ID + ":textures/models/armor/slug_baron_armor_layer_2.png" : OpposingForce.MOD_ID + ":textures/models/armor/slug_baron_armor_layer_1.png")
             .build();
 }

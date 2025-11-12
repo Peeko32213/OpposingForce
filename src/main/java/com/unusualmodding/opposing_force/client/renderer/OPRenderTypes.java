@@ -55,11 +55,25 @@ public abstract class OPRenderTypes extends RenderType {
         return create("glowing_z_offset", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true, compositeState);
     }
 
+    public static RenderType eyesZOffset(ResourceLocation resourceLocation) {
+        RenderType.CompositeState compositeState = RenderType.CompositeState.builder()
+                .setShaderState(RENDERTYPE_EYES_SHADER)
+                .setTextureState(new RenderStateShard.TextureStateShard(resourceLocation, false, false))
+                .setTransparencyState(ADDITIVE_TRANSPARENCY)
+                .setCullState(NO_CULL)
+                .setWriteMaskState(COLOR_WRITE)
+                .setOverlayState(OVERLAY)
+                .setLayeringState(VIEW_OFFSET_Z_LAYERING)
+                .createCompositeState(false);
+        return create("eyes_z_offset", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true, compositeState);
+    }
+
     public static RenderType glowingEyes(ResourceLocation location) {
         RenderType.CompositeState compositeState = CompositeState.builder()
                 .setShaderState(RENDERTYPE_EYES_SHADER)
                 .setTextureState(new TextureStateShard(location, false, false))
-                .setTransparencyState(ADDITIVE_TRANSPARENCY).setCullState(NO_CULL)
+                .setTransparencyState(ADDITIVE_TRANSPARENCY)
+                .setCullState(NO_CULL)
                 .setWriteMaskState(COLOR_WRITE)
                 .setOverlayState(OVERLAY)
                 .createCompositeState(false);

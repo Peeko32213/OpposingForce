@@ -50,7 +50,7 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
     }
 
     @Inject(at = @At("TAIL"), method = "<init>(Lnet/minecraft/client/renderer/entity/RenderLayerParent;Lnet/minecraft/client/model/geom/EntityModelSet;FFFLnet/minecraft/client/renderer/ItemInHandRenderer;)V")
-    private void opposingForce$renderHeads(RenderLayerParent parent, EntityModelSet modelSet, float p_234824_, float p_234825_, float p_234826_, ItemInHandRenderer handRenderer, CallbackInfo ci) {
+    private void opposingForce$renderHeads(RenderLayerParent parent, EntityModelSet modelSet, float v, float v1, float v2, ItemInHandRenderer handRenderer, CallbackInfo ci) {
         this.opposingForce$headModelBaseMap = MobHeadBlockEntityRenderer.createMobHeadRenderers(modelSet);
     }
 
@@ -85,9 +85,8 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
                 Entity entity = t.getVehicle();
 
                 WalkAnimationState walkanimationstate;
-                if (entity instanceof LivingEntity livingEntity) {
-                    walkanimationstate = livingEntity.walkAnimation;
-                } else walkanimationstate = t.walkAnimation;
+                if (entity instanceof LivingEntity livingEntity) walkanimationstate = livingEntity.walkAnimation;
+                else walkanimationstate = t.walkAnimation;
                 float f3 = walkanimationstate.position(v2);
 
                 MobHeadBlockEntityRenderer.renderMobHead(null, 180.0F, f3, poseStack, bufferSource, i, skullmodelbase, rendertype, null, type, true);

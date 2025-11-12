@@ -21,6 +21,8 @@ public class OPBlockProperties {
 
     public static final BlockBehaviour.Properties INFERNO_PIE = BlockBehaviour.Properties.of().forceSolidOn().strength(0.5F).sound(SoundType.WOOL).pushReaction(PushReaction.DESTROY).lightLevel(state -> 5);
 
+    public static final BlockBehaviour.Properties MOB_HEAD = BlockBehaviour.Properties.of().strength(1.0F).pushReaction(PushReaction.DESTROY).mapColor(MapColor.STONE);
+
     private static boolean always(BlockState state, BlockGetter blockGetter, BlockPos blockPos) {
         return true;
     }

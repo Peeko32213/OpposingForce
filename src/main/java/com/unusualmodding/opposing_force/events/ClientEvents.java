@@ -10,7 +10,6 @@ import com.unusualmodding.opposing_force.client.renderer.blocks.*;
 import com.unusualmodding.opposing_force.items.BlasterItem;
 import com.unusualmodding.opposing_force.items.LaserBladeItem;
 import com.unusualmodding.opposing_force.registry.*;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -69,23 +68,23 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void registerEntityLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(OPModelLayers.DICER, DicerModel::createBodyLayer);
-        event.registerLayerDefinition(OPModelLayers.DICER_HEAD, DicerHeadModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.DICER_HEAD, DicerHeadModel::createHeadLayer);
         event.registerLayerDefinition(OPModelLayers.EMERALDFISH, EmeraldfishModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.FIRE_SLIME, FireSlimeModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.FROWZY, FrowzyModel::createBodyLayer);
-        event.registerLayerDefinition(OPModelLayers.FROWZY_HEAD, FrowzyHeadModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.FROWZY_HEAD, FrowzyHeadModel::createHeadLayer);
         event.registerLayerDefinition(OPModelLayers.GUZZLER, GuzzlerModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.HANGING_SPIDER, HangingSpiderModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.NYMPH, NymphModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.RAMBLER, RamblerModel::createBodyLayer);
-        event.registerLayerDefinition(OPModelLayers.RAMBLER_SKULL, RambleSkullModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.RAMBLER_SKULL, RamblerSkullModel::createSkullLayer);
         event.registerLayerDefinition(OPModelLayers.SLUG, SlugModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.TART, TartModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.TART_HEAD, TartHeadModel::createHeadLayer);
         event.registerLayerDefinition(OPModelLayers.TERROR, TerrorModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.TREMBLER, TremblerModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.UMBER_SPIDER, UmberSpiderModel::createBodyLayer);
-        event.registerLayerDefinition(OPModelLayers.VOLT, () -> VoltModel.createBodyLayer(new CubeDeformation(0.0F)));
-        event.registerLayerDefinition(OPModelLayers.VOLT_CHARGED, () -> VoltModel.createBodyLayer(new CubeDeformation(0.25F)));
+        event.registerLayerDefinition(OPModelLayers.VOLT, VoltModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.WHIZZ, WhizzModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.LASER_BOLT, LaserBoltModel::createProjectileLayer);
     }

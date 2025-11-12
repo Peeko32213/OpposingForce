@@ -136,6 +136,17 @@ public class Volt extends Monster implements AttackState, PowerableMob, EliteVar
     }
 
     @Override
+    protected void dropFromLootTable(@NotNull DamageSource source, boolean drops) {
+        if (this.isElite()) {
+            for (int i = 0; i < 2; i++) {
+                super.dropFromLootTable(source, drops);
+            }
+        } else {
+            super.dropFromLootTable(source, drops);
+        }
+    }
+
+    @Override
     public boolean hurt(@NotNull DamageSource damageSource, float amount) {
         if (this.isInvulnerableTo(damageSource)) {
             return false;

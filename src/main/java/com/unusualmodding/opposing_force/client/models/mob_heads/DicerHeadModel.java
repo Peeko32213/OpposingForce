@@ -28,17 +28,19 @@ public class DicerHeadModel extends MobHeadModelBase {
         this.visor = this.root.getChild("visor");
     }
 
-    public static LayerDefinition createBodyLayer() {
+    public static LayerDefinition createHeadLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        partdefinition.addOrReplaceChild("head", CubeListBuilder.create().texOffs(28, 37).addBox(-4.0F, -4.4167F, -1.8333F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.2F))
-                .texOffs(72, 71).addBox(-1.0F, -0.4167F, -5.8333F, 2.0F, 3.0F, 4.0F, new CubeDeformation(0.0F))
-                .texOffs(63, 64).addBox(-1.0F, 2.5833F, -5.8333F, 2.0F, 4.0F, 3.0F, new CubeDeformation(0.0F))
-                .texOffs(38, 21).addBox(-4.0F, -4.4167F, -1.8333F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 37).addBox(-1.0F, -8.4167F, -2.8333F, 2.0F, 10.0F, 12.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+        partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+                .texOffs(28, 37).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.2F))
+                .texOffs(72, 71).addBox(-1.0F, -4.0F, -8.0F, 2.0F, 3.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(63, 64).addBox(-1.0F, -1.0F, -8.0F, 2.0F, 4.0F, 3.0F, new CubeDeformation(0.0F))
+                .texOffs(38, 21).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 37).addBox(-1.0F, -12.0F, -5.0F, 2.0F, 10.0F, 12.0F, new CubeDeformation(0.0F)), PartPose.ZERO);
 
-        partdefinition.addOrReplaceChild("visor", CubeListBuilder.create().texOffs(28, 53).addBox(-5.0F, -2.4167F, -2.8333F, 10.0F, 2.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+        partdefinition.addOrReplaceChild("visor", CubeListBuilder.create()
+                .texOffs(28, 53).addBox(-5.0F, -6.0F, -5.0F, 10.0F, 2.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.ZERO);
 
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
@@ -47,12 +49,8 @@ public class DicerHeadModel extends MobHeadModelBase {
     public void setupAnim(float limbSwing, float headY, float headX) {
         this.head.yRot = headY * ((float) Math.PI / 180F);
         this.head.xRot = headX * ((float) Math.PI / 180F);
-        this.head.y = -3.5F;
-
         this.visor.yRot = headY * ((float) Math.PI / 180F);
         this.visor.xRot = headX * ((float) Math.PI / 180F);
-        this.visor.y = -3.5F;
-
     }
 
     @Override
@@ -61,7 +59,7 @@ public class DicerHeadModel extends MobHeadModelBase {
     }
 
     public void renderVisorToBuffer(PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int i1, float r, float g, float b, float a) {
-        VertexConsumer eyesVertexConsumer = multiBufferSource.getBuffer(OPRenderTypes.glowingZOffset(VISOR_TEXTURE));
+        VertexConsumer eyesVertexConsumer = multiBufferSource.getBuffer(OPRenderTypes.eyesZOffset(VISOR_TEXTURE));
         this.visor.render(poseStack, eyesVertexConsumer, i, i1, r, g, b, a);
     }
 }

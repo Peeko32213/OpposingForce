@@ -435,7 +435,7 @@ public class Terror extends Monster implements EliteVariant {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @javax.annotation.Nullable SpawnGroupData spawnData, @javax.annotation.Nullable CompoundTag compoundTag) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag compoundTag) {
         spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
         RandomSource random = level.getRandom();
         if (random.nextInt(this.getEliteSpawnChance()) == 0) {

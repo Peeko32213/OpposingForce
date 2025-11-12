@@ -3,15 +3,14 @@ package com.unusualmodding.opposing_force.entity;
 import com.unusualmodding.opposing_force.entity.ai.goal.TartAttackGoal;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
+import com.unusualmodding.opposing_force.registry.OPItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -20,6 +19,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -56,6 +56,18 @@ public class Tart extends Monster implements AttackState {
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
+
+    @Override
+    protected void dropCustomDeathLoot(@NotNull DamageSource source, int damage, boolean drops) {
+        super.dropCustomDeathLoot(source, damage, drops);
+        Entity entity = source.getEntity();
+        if (entity instanceof Creeper creeper) {
+            if (creeper.canDropMobsSkull()) {
+                creeper.increaseDroppedSkulls();
+                this.spawnAtLocation(OPItems.TART_HEAD.get());
+            }
+        }
     }
 
     @Override

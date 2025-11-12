@@ -368,7 +368,7 @@ public class Rambler extends Monster implements AttackState {
             if (creeper.canDropMobsSkull()) {
                 for (int i = 0; i < skullDrops; i++) {
                     creeper.increaseDroppedSkulls();
-                    this.spawnAtLocation(OPItems.RAMBLE_SKULL.get());
+                    this.spawnAtLocation(OPItems.ANGRY_RAMBLER_SKULL.get());
                 }
             }
         }
@@ -443,12 +443,12 @@ public class Rambler extends Monster implements AttackState {
     }
 
     public enum RamblerSkulls implements StringRepresentable, WeightedEntry {
-        SKELETON(0,  "skeleton", 100),
+        SKELETAL(0,  "skeletal", 100),
         ANGRY(1, "angry", 100),
         CLASSIC(2, "classic", 100),
         EVIL(3, "evil", 100),
-        GRIN(4, "grin", 10),
-        SMILE(5, "smile", 100),
+        GRINNING(4, "grinning", 10),
+        SMILING(5, "smiling", 100),
         STRANGE(6, "strange", 100),
         MUSICAL(7, "musical", 1),
         DWARVEN(8, "dwarven", 1),
@@ -474,7 +474,7 @@ public class Rambler extends Monster implements AttackState {
             for (RamblerSkulls skull : values()) {
                 if (skull.skull == skulls) return skull;
             }
-            return RamblerSkulls.SKELETON;
+            return RamblerSkulls.SKELETAL;
         }
 
         public static RamblerSkulls getRandom(RandomSource random) {
@@ -489,7 +489,7 @@ public class Rambler extends Monster implements AttackState {
                     return skulls;
                 }
             }
-            return RamblerSkulls.SKELETON;
+            return RamblerSkulls.SKELETAL;
         }
 
         public int getSkull() {

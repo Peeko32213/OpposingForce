@@ -7,6 +7,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class FrowzyHeadModel extends MobHeadModelBase {
@@ -19,17 +20,15 @@ public class FrowzyHeadModel extends MobHeadModelBase {
 		this.head = this.root.getChild("head");
 	}
 
-	public static LayerDefinition createBodyLayer() {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
+	public static LayerDefinition createHeadLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.ZERO);
+        partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+                .texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
+                .texOffs(2, 19).addBox(-3.5F, -5.5F, -3.75F, 7.0F, 5.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.ZERO);
 
-		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
-				.texOffs(8, 55).addBox(-3.0F, -6.5F, -3.0F, 6.0F, 6.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.ZERO);
-
-		return LayerDefinition.create(meshdefinition, 64, 64);
+        return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 
 	@Override
@@ -39,7 +38,7 @@ public class FrowzyHeadModel extends MobHeadModelBase {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 }

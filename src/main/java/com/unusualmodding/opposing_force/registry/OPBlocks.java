@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.registry;
 
+import com.mojang.datafixers.util.Pair;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.blocks.*;
 import net.minecraft.world.flag.FeatureFlag;
@@ -24,19 +25,33 @@ public class OPBlocks {
     public static List<RegistryObject<? extends Block>> BLOCK_TRANSLATIONS = new ArrayList<>();
 
     // Dicer
-    public static final RegistryObject<Block> DICER_HEAD = registerBlockWithoutItemNoLang("dicer_head", () -> new MobHeadBlock(MobHeadBlock.Types.DICER, BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CUSTOM_HEAD).strength(1.0F).pushReaction(PushReaction.DESTROY)));
-    public static final RegistryObject<Block> DICER_WALL_HEAD = registerBlockWithoutItemNoLang("dicer_wall_head", () -> new WallMobHeadBlock(MobHeadBlock.Types.DICER, BlockBehaviour.Properties.of().dropsLike(DICER_HEAD.get()).strength(1.0F).pushReaction(PushReaction.DESTROY)));
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> DICER_HEAD = registerMobHead("dicer_head", MobHeadBlock.Types.DICER);
 
     // Frowzy
-    public static final RegistryObject<Block> FROWZY_HEAD = registerBlockWithoutItemNoLang("frowzy_head", () -> new MobHeadBlock(MobHeadBlock.Types.FROWZY, BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CUSTOM_HEAD).strength(1.0F).pushReaction(PushReaction.DESTROY)));
-    public static final RegistryObject<Block> FROWZY_WALL_HEAD = registerBlockWithoutItemNoLang("frowzy_wall_head", () -> new WallMobHeadBlock(MobHeadBlock.Types.FROWZY, BlockBehaviour.Properties.of().dropsLike(FROWZY_HEAD.get()).strength(1.0F).pushReaction(PushReaction.DESTROY)));
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> FROWZY_HEAD = registerMobHead("frowzy_head", MobHeadBlock.Types.FROWZY);
 
     // Guzzler
     public static final RegistryObject<Block> INFERNO_PIE = registerBlock("inferno_pie", () -> new InfernoPieBlock(OPBlockProperties.INFERNO_PIE));
 
     // Rambler
-    public static final RegistryObject<Block> RAMBLE_SKULL = registerBlockWithoutItemNoLang("ramble_skull", () -> new MobHeadBlock(MobHeadBlock.Types.RAMBLE, BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CUSTOM_HEAD).strength(1.0F).pushReaction(PushReaction.DESTROY)));
-    public static final RegistryObject<Block> RAMBLE_WALL_SKULL = registerBlockWithoutItemNoLang("ramble_wall_skull", () -> new WallMobHeadBlock(MobHeadBlock.Types.RAMBLE, BlockBehaviour.Properties.of().dropsLike(RAMBLE_SKULL.get()).strength(1.0F).pushReaction(PushReaction.DESTROY)));
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> ANGRY_RAMBLER_SKULL = registerMobHeadNoLang("angry_rambler_skull", MobHeadBlock.Types.RAMBLER_ANGRY);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> CLASSIC_RAMBLER_SKULL = registerMobHeadNoLang("classic_rambler_skull", MobHeadBlock.Types.RAMBLER_CLASSIC);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> EVIL_RAMBLER_SKULL = registerMobHeadNoLang("evil_rambler_skull", MobHeadBlock.Types.RAMBLER_EVIL);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> GRINNING_RAMBLER_SKULL = registerMobHeadNoLang("grinning_rambler_skull", MobHeadBlock.Types.RAMBLER_GRINNING);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> SKELETAL_RAMBLER_SKULL = registerMobHeadNoLang("skeletal_rambler_skull", MobHeadBlock.Types.RAMBLER_SKELETAL);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> SMILING_RAMBLER_SKULL = registerMobHeadNoLang("smiling_rambler_skull", MobHeadBlock.Types.RAMBLER_SMILING);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> STRANGE_RAMBLER_SKULL = registerMobHeadNoLang("strange_rambler_skull", MobHeadBlock.Types.RAMBLER_STRANGE);
+
+    // dev skulls
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> CRUNDLY_RAMBLER_SKULL = registerMobHeadNoLang("crundly_rambler_skull", MobHeadBlock.Types.RAMBLER_CRUNDLY);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> DWARVEN_RAMBLER_SKULL = registerMobHeadNoLang("dwarven_rambler_skull", MobHeadBlock.Types.RAMBLER_DWARVEN);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> IMPRISONED_RAMBLER_SKULL = registerMobHeadNoLang("imprisoned_rambler_skull", MobHeadBlock.Types.RAMBLER_IMPRISONED);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> INDOMITABLE_RAMBLER_SKULL = registerMobHeadNoLang("indomitable_rambler_skull", MobHeadBlock.Types.RAMBLER_INDOMITABLE);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> LEERING_RAMBLER_SKULL = registerMobHeadNoLang("leering_rambler_skull", MobHeadBlock.Types.RAMBLER_LEERING);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> MAGMATIC_RAMBLER_SKULL = registerMobHeadNoLang("magmatic_rambler_skull", MobHeadBlock.Types.RAMBLER_MAGMATIC);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> MUSICAL_RAMBLER_SKULL = registerMobHeadNoLang("musical_rambler_skull", MobHeadBlock.Types.RAMBLER_MUSICAL);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> NOSY_RAMBLER_SKULL = registerMobHeadNoLang("nosy_rambler_skull", MobHeadBlock.Types.RAMBLER_NOSY);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> VALIANT_RAMBLER_SKULL = registerMobHeadNoLang("valiant_rambler_skull", MobHeadBlock.Types.RAMBLER_VALIANT);
 
     // Slug
     public static final RegistryObject<Block> SLUG_EGGS = registerBlock("slug_eggs", () -> new SlugEggBlock(OPBlockProperties.SLUG_EGGS));
@@ -52,6 +67,9 @@ public class OPBlocks {
     public static final RegistryObject<Block> VILE_STONE_BRICK_SLAB = registerBlock("vile_stone_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(VILE_STONE_BRICKS.get())));
     public static final RegistryObject<Block> VILE_STONE_BRICK_WALL = registerBlock("vile_stone_brick_wall", () -> new WallBlock(BlockBehaviour.Properties.copy(VILE_STONE_BRICKS.get())));
     public static final RegistryObject<Block> CHISELED_VILE_STONE_BRICKS = registerBlock("chiseled_vile_stone_bricks", () -> new Block(OPBlockProperties.VILE_STONE));
+
+    // Tart
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> TART_HEAD = registerMobHead("tart_head", MobHeadBlock.Types.TART);
 
     // Trembler
     public static final RegistryObject<Block> TREMBLER_SHELL = registerBlock("trembler_shell", () -> new TremblerShellBlock(OPBlockProperties.TREMBLING_BLOCK));
@@ -96,5 +114,18 @@ public class OPBlocks {
             properties = properties.requiredFeatures(featureFlags);
         }
         return properties;
+    }
+
+    public static Pair<RegistryObject<Block>, RegistryObject<Block>> registerMobHead(String name, MobHeadBlock.Types type) {
+        RegistryObject<Block> skull = registerBlockWithoutItemNoLang(name, () -> new MobHeadBlock(type, OPBlockProperties.MOB_HEAD));
+        RegistryObject<Block> wallSkull = registerBlockWithoutItemNoLang("wall_" + name, () -> new WallMobHeadBlock(type, OPBlockProperties.MOB_HEAD.lootFrom(skull)));
+        BLOCK_TRANSLATIONS.add(skull);
+        return Pair.of(skull, wallSkull);
+    }
+
+    public static Pair<RegistryObject<Block>, RegistryObject<Block>> registerMobHeadNoLang(String name, MobHeadBlock.Types type) {
+        RegistryObject<Block> skull = registerBlockWithoutItemNoLang(name, () -> new MobHeadBlock(type, OPBlockProperties.MOB_HEAD));
+        RegistryObject<Block> wallSkull = registerBlockWithoutItemNoLang("wall_" + name, () -> new WallMobHeadBlock(type, OPBlockProperties.MOB_HEAD.lootFrom(skull)));
+        return Pair.of(skull, wallSkull);
     }
 }

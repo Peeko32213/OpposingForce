@@ -20,7 +20,9 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("deprecation")
 public class MobHeadBlock extends BaseEntityBlock implements Equipable {
 
     public static final int MAX = RotationSegment.getMaxSegmentIndex();
@@ -37,12 +39,12 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
+    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos, @NotNull CollisionContext context) {
         return SHAPE;
     }
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+    public @NotNull VoxelShape getOcclusionShape(@NotNull BlockState state, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos) {
         return Shapes.empty();
     }
 
@@ -52,12 +54,12 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
     }
 
     @Override
-    public BlockState rotate(BlockState state, Rotation rotation) {
+    public @NotNull BlockState rotate(BlockState state, Rotation rotation) {
         return state.setValue(ROTATION, rotation.rotate(state.getValue(ROTATION), ROTATIONS));
     }
 
     @Override
-    public BlockState mirror(BlockState state, Mirror mirror) {
+    public @NotNull BlockState mirror(BlockState state, Mirror mirror) {
         return state.setValue(ROTATION, mirror.mirror(state.getValue(ROTATION), ROTATIONS));
     }
 
@@ -71,12 +73,12 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, BlockGetter blockGetter, BlockPos pos, PathComputationType computationType) {
+    public boolean isPathfindable(@NotNull BlockState state, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos, @NotNull PathComputationType computationType) {
         return false;
     }
 
     @Override
-    public EquipmentSlot getEquipmentSlot() {
+    public @NotNull EquipmentSlot getEquipmentSlot() {
         return EquipmentSlot.HEAD;
     }
 
@@ -84,13 +86,29 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new MobHeadBlockEntity(pos, state);
     }
 
     public enum Types implements Type {
         DICER,
         FROWZY,
-        RAMBLE
+        RAMBLER_ANGRY,
+        RAMBLER_CLASSIC,
+        RAMBLER_CRUNDLY,
+        RAMBLER_DWARVEN,
+        RAMBLER_EVIL,
+        RAMBLER_GRINNING,
+        RAMBLER_IMPRISONED,
+        RAMBLER_INDOMITABLE,
+        RAMBLER_LEERING,
+        RAMBLER_MAGMATIC,
+        RAMBLER_MUSICAL,
+        RAMBLER_NOSY,
+        RAMBLER_SKELETAL,
+        RAMBLER_SMILING,
+        RAMBLER_STRANGE,
+        RAMBLER_VALIANT,
+        TART
     }
 }

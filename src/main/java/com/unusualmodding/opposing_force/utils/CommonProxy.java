@@ -41,35 +41,4 @@ public class CommonProxy {
 
     public void clearSoundCacheFor(Entity entity) {
     }
-
-    public void registerDispenserBehaviors() {
-        DispenserBlock.registerBehavior(OPItems.ELECTRIC_CHARGE.get(), new AbstractProjectileDispenseBehavior() {
-            @Override
-            protected @NotNull Projectile getProjectile(@NotNull Level level, @NotNull Position pos, @NotNull ItemStack itemStack) {
-                return new ElectricCharge(level, pos.x(), pos.y(), pos.z(), Vec3.ZERO);
-            }
-        });
-
-        DispenserBlock.registerBehavior(OPItems.TOMAHAWK.get(), new AbstractProjectileDispenseBehavior() {
-            @Override
-            protected @NotNull Projectile getProjectile(@NotNull Level level, @NotNull Position pos, @NotNull ItemStack itemStack) {
-                Tomahawk entity = new Tomahawk(level, pos.x(), pos.y(), pos.z());
-                entity.pickup = AbstractArrow.Pickup.ALLOWED;
-                return entity;
-            }
-        });
-
-        DispenserBlock.registerBehavior(OPItems.UMBER_DAGGER.get(), new AbstractProjectileDispenseBehavior() {
-            @Override
-            protected @NotNull Projectile getProjectile(@NotNull Level level, @NotNull Position pos, @NotNull ItemStack itemStack) {
-                UmberDagger entity = new UmberDagger(level, pos.x(), pos.y(), pos.z());
-                entity.pickup = AbstractArrow.Pickup.ALLOWED;
-                return entity;
-            }
-        });
-
-        DispenserBlock.registerBehavior(OPItems.DICER_HEAD.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
-        DispenserBlock.registerBehavior(OPItems.FROWZY_HEAD.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
-        DispenserBlock.registerBehavior(OPItems.RAMBLE_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
-    }
 }

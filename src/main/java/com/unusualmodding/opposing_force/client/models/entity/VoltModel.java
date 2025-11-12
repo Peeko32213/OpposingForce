@@ -46,7 +46,7 @@ public class VoltModel extends HierarchicalModel<Volt> {
         this.tail_tip = this.tail3.getChild("tail_tip");
 	}
 
-	public static LayerDefinition createBodyLayer(CubeDeformation deformation) {
+	public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
