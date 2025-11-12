@@ -368,16 +368,11 @@ public class Rambler extends Monster implements AttackState {
         Item middleSkull = RamblerSkulls.getVariantId(this.getMiddleSkull()).getSkullItem();
         Item leftSkull = RamblerSkulls.getVariantId(this.getLeftSkull()).getSkullItem();
         Item rightSkull = RamblerSkulls.getVariantId(this.getRightSkull()).getSkullItem();
-        int skullDrops = 1 + random.nextInt(2);
         if (entity instanceof Creeper creeper) {
             if (creeper.canDropMobsSkull()) {
                 this.spawnAtLocation(middleSkull);
                 this.spawnAtLocation(leftSkull);
                 this.spawnAtLocation(rightSkull);
-//                for (int i = 0; i < skullDrops; i++) {
-//                    creeper.increaseDroppedSkulls();
-//                    this.spawnAtLocation(OPItems.ANGRY_RAMBLER_SKULL.get());
-//                }
             }
         }
     }
