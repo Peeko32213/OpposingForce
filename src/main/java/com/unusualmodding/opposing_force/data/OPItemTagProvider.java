@@ -34,6 +34,16 @@ public class OPItemTagProvider extends ItemTagsProvider {
 
         this.tag(OPItemTags.PIE_CUTTERS).addTag(OPItemTags.KNIVES).addTag(ItemTags.SWORDS);
 
+        this.tag(OPItemTags.RAMBLER_SKULLS).add(
+                ANGRY_RAMBLER_SKULL.get(),
+                CLASSIC_RAMBLER_SKULL.get(),
+                EVIL_RAMBLER_SKULL.get(),
+                GRINNING_RAMBLER_SKULL.get(),
+                SKELETAL_RAMBLER_SKULL.get(),
+                SMILING_RAMBLER_SKULL.get(),
+                STRANGE_RAMBLER_SKULL.get()
+        );
+
         this.tag(OPItemTags.BLASTER_AMMO).add(
                 Items.REDSTONE
         );

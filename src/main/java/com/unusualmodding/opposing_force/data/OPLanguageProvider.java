@@ -87,6 +87,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.sound(OPSoundEvents.DICER_IDLE, "Dicer screams");
         this.sound(OPSoundEvents.DICER_ATTACK, "Dicer slashes");
         this.sound(OPSoundEvents.DICER_LASER, "Dicer lasers");
+        this.sound(OPSoundEvents.NOTE_BLOCK_IMITATE_DICER, "Dicer screams");
 
         this.sound(OPSoundEvents.ELECTRIC_CHARGE, "Electric Charge whirls");
         this.sound(OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE, "Electric Charge dissipates");
@@ -105,6 +106,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.sound(OPSoundEvents.FROWZY_IDLE, "Frowzy groans");
         this.sound(OPSoundEvents.FROWZY_ATTACK, "Frowzy attacks");
         this.sound(OPSoundEvents.FROWZY_RUN, "Frowzy pants");
+        this.sound(OPSoundEvents.NOTE_BLOCK_IMITATE_FROWZY, "Frowzy groans");
 
         this.sound(OPSoundEvents.GUZZLER_HURT, "Guzzler hurt");
         this.sound(OPSoundEvents.GUZZLER_DEATH, "Guzzler dies");
@@ -120,12 +122,15 @@ public class OPLanguageProvider extends LanguageProvider {
         this.sound(OPSoundEvents.RAMBLER_DEATH, "Rambler dies");
         this.sound(OPSoundEvents.RAMBLER_ATTACK, "Rambler slices");
         this.sound(OPSoundEvents.RAMBLER_IDLE, "Rambler clatters");
+        this.sound(OPSoundEvents.NOTE_BLOCK_IMITATE_RAMBLER, "Rambler clatters");
 
         this.sound(OPSoundEvents.SLUG_DEATH, "Slug dies");
         this.sound(OPSoundEvents.SLUG_HURT, "Slug hurts");
         this.sound(OPSoundEvents.SLUG_SLIDE, "Footsteps");
         this.sound(OPSoundEvents.SLUG_EAT, "Slug eats");
         this.sound(OPSoundEvents.SLUG_ATTACK, "Slug attacks");
+
+        this.sound(OPSoundEvents.NOTE_BLOCK_IMITATE_TART, "Tart tarts");
 
         this.sound(OPSoundEvents.TERROR_DEATH, "Terror dies");
         this.sound(OPSoundEvents.TERROR_HURT, "Terror hurts");
@@ -155,6 +160,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.sound(OPSoundEvents.WHIZZ_HURT, "Whizz hurts");
         this.sound(OPSoundEvents.WHIZZ_FLY, "Whizz buzzes");
         this.sound(OPSoundEvents.WHIZZ_ATTACK, "Whizz bites");
+        this.sound(OPSoundEvents.NOTE_BLOCK_IMITATE_WHIZZ, "Whizz bites");
 
         this.sound(OPSoundEvents.LASER_BOLT_IMPACT, "Laser impacts");
 

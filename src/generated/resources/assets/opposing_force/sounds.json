@@ -479,6 +479,60 @@
     ],
     "subtitle": "subtitles.opposing_force.laser_bolt_impact"
   },
+  "note_block_imitate_dicer": {
+    "sounds": [
+      {
+        "name": "opposing_force:entity/dicer/idle1",
+        "volume": 0.8
+      },
+      {
+        "name": "opposing_force:entity/dicer/idle2",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.note_block_imitate_dicer"
+  },
+  "note_block_imitate_frowzy": {
+    "sounds": [
+      "opposing_force:entity/frowzy/idle1",
+      "opposing_force:entity/frowzy/idle2",
+      "opposing_force:entity/frowzy/idle3"
+    ],
+    "subtitle": "subtitles.opposing_force.note_block_imitate_frowzy"
+  },
+  "note_block_imitate_rambler": {
+    "sounds": [
+      "opposing_force:entity/ramble/idle1"
+    ],
+    "subtitle": "subtitles.opposing_force.note_block_imitate_rambler"
+  },
+  "note_block_imitate_tart": {
+    "sounds": [
+      "opposing_force:entity/ramble/idle1"
+    ],
+    "subtitle": "subtitles.opposing_force.note_block_imitate_tart"
+  },
+  "note_block_imitate_whizz": {
+    "sounds": [
+      {
+        "name": "block/amethyst/resonate1",
+        "pitch": 1.2
+      },
+      {
+        "name": "block/amethyst/resonate2",
+        "pitch": 1.2
+      },
+      {
+        "name": "block/amethyst/resonate3",
+        "pitch": 1.2
+      },
+      {
+        "name": "block/amethyst/resonate4",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.note_block_imitate_whizz"
+  },
   "rambler_attack": {
     "sounds": [
       {

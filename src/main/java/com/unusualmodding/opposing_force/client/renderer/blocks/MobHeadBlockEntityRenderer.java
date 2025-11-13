@@ -54,6 +54,7 @@ public class MobHeadBlockEntityRenderer implements BlockEntityRenderer<MobHeadBl
         map.put(MobHeadBlock.Types.RAMBLER_STRANGE, OpposingForce.modPrefix("textures/entity/rambler/skulls/strange.png"));
         map.put(MobHeadBlock.Types.RAMBLER_VALIANT, OpposingForce.modPrefix("textures/entity/rambler/skulls/valiant.png"));
         map.put(MobHeadBlock.Types.TART, OpposingForce.modPrefix("textures/entity/tart.png"));
+        map.put(MobHeadBlock.Types.WHIZZ, OpposingForce.modPrefix("textures/entity/whizz/whizz.png"));
     });
 
     public static Map<MobHeadBlock.Type, MobHeadModelBase> createMobHeadRenderers(EntityModelSet root) {
@@ -77,6 +78,7 @@ public class MobHeadBlockEntityRenderer implements BlockEntityRenderer<MobHeadBl
         builder.put(MobHeadBlock.Types.RAMBLER_STRANGE, new RamblerSkullModel(root.bakeLayer(OPModelLayers.RAMBLER_SKULL)));
         builder.put(MobHeadBlock.Types.RAMBLER_VALIANT, new RamblerSkullModel(root.bakeLayer(OPModelLayers.RAMBLER_SKULL)));
         builder.put(MobHeadBlock.Types.TART, new TartHeadModel(root.bakeLayer(OPModelLayers.TART_HEAD)));
+        builder.put(MobHeadBlock.Types.WHIZZ, new WhizzHeadModel(root.bakeLayer(OPModelLayers.WHIZZ_HEAD)));
         return builder.build();
     }
 
@@ -116,6 +118,12 @@ public class MobHeadBlockEntityRenderer implements BlockEntityRenderer<MobHeadBl
                     poseStack.translate(0.0F, -0.1F, 0.0F);
                 }
             }
+            if (type == MobHeadBlock.Types.WHIZZ) {
+                if (context == ItemDisplayContext.GUI) {
+                    poseStack.scale(0.75F, 0.75F, 0.75F);
+                    poseStack.translate(0.2F, -0.5F, 0.0F);
+                }
+            }
             else {
                 if (context == ItemDisplayContext.GUI) {
                     poseStack.scale(1, 1, 1);
@@ -124,6 +132,9 @@ public class MobHeadBlockEntityRenderer implements BlockEntityRenderer<MobHeadBl
         }
 
         if (isLayer) {
+            if (type == MobHeadBlock.Types.WHIZZ) {
+                poseStack.translate(0.0F, -0.1F, 0.0F);
+            }
             poseStack.scale(1, 1,1);
         }
 

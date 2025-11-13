@@ -12,10 +12,12 @@ public class OPItemTags {
     public static final TagKey<Item> RAW_VEGETABLES = modItemTag("raw_vegetables");
     public static final TagKey<Item> PIE_CUTTERS = modItemTag("pie_cutters");
     public static final TagKey<Item> KNIVES = modItemTag("knives");
+    public static final TagKey<Item> RAMBLER_SKULLS = modItemTag("rambler_skulls");
 
     public static final TagKey<Item> BERRIES = forgeItemTag("berries");
     public static final TagKey<Item> FRUITS = forgeItemTag("fruits");
     public static final TagKey<Item> VEGETABLES = forgeItemTag("vegetables");
+
 
     private static TagKey<Item> modItemTag(String name) {
         return itemTag(OpposingForce.MOD_ID, name);

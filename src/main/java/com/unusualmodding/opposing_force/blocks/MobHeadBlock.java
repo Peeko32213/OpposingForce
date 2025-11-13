@@ -1,16 +1,21 @@
 package com.unusualmodding.opposing_force.blocks;
 
 import com.unusualmodding.opposing_force.blocks.entity.MobHeadBlockEntity;
+import com.unusualmodding.opposing_force.registry.OPBlockEntityTypes;
+import com.unusualmodding.opposing_force.registry.OPBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -22,6 +27,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
+
 @SuppressWarnings("deprecation")
 public class MobHeadBlock extends BaseEntityBlock implements Equipable {
 
@@ -31,6 +38,7 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
     public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
 
     protected static final VoxelShape SHAPE = Block.box(4, 0, 4, 12, 8, 12);
+    protected static final VoxelShape WHIZZ_SHAPE = Block.box(4, 0, 4, 12, 6, 12);
 
     public MobHeadBlock(Type type, Properties properties) {
         super(properties);
@@ -40,7 +48,8 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
 
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos, @NotNull CollisionContext context) {
-        return SHAPE;
+        if (this.type == Types.WHIZZ) return WHIZZ_SHAPE;
+        else return SHAPE;
     }
 
     @Override
@@ -82,12 +91,24 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
         return EquipmentSlot.HEAD;
     }
 
-    public interface Type {
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
+        if (level.isClientSide) {
+            boolean shouldAnimate = state.is(OPBlocks.WHIZZ_HEAD.getFirst().get()) || state.is(OPBlocks.WHIZZ_HEAD.getSecond().get());
+            if (shouldAnimate) {
+                return createTickerHelper(type, OPBlockEntityTypes.MOB_HEAD.get(), MobHeadBlockEntity::animation);
+            }
+        }
+        return null;
     }
 
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new MobHeadBlockEntity(pos, state);
+    }
+
+    public interface Type {
     }
 
     public enum Types implements Type {
@@ -109,6 +130,7 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
         RAMBLER_SMILING,
         RAMBLER_STRANGE,
         RAMBLER_VALIANT,
-        TART
+        TART,
+        WHIZZ
     }
 }

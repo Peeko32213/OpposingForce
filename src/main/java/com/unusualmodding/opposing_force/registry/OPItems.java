@@ -123,6 +123,7 @@ public class OPItems {
     public static final RegistryObject<Item> WHIZZ_SPAWN_EGG = registerSpawnEggItem("whizz", OPEntities.WHIZZ, 0x8a6ce0, 0xffe7f8);
     public static final RegistryObject<Item> CAPTURED_WHIZZ = registerItem("captured_whizz", () -> new MobItem(OPEntities.WHIZZ::get, SoundEvents.AMETHYST_BLOCK_RESONATE, new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> WHIZZ_BOMB = registerItem("whizz_bomb", () -> new WhizzBombItem(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> WHIZZ_HEAD = registerItemNoLang("whizz_head", () -> new MobHeadItem(OPBlocks.WHIZZ_HEAD.getFirst().get(), OPBlocks.WHIZZ_HEAD.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
 
     // emerald
     public static final RegistryObject<Item> EMERALD_MASK = registerItem("emerald_mask", ()-> new ConfigurableArmorItem(ArmorItem.Type.HELMET, new Item.Properties().rarity(Rarity.UNCOMMON), OPArmorDefinitions.EMERALD));

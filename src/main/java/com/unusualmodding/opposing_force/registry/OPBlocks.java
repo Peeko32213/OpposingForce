@@ -25,33 +25,33 @@ public class OPBlocks {
     public static List<RegistryObject<? extends Block>> BLOCK_TRANSLATIONS = new ArrayList<>();
 
     // Dicer
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> DICER_HEAD = registerMobHead("dicer_head", MobHeadBlock.Types.DICER);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> DICER_HEAD = registerMobHead("dicer_head", MobHeadBlock.Types.DICER, OPNoteBlockInstruments.DICER.get());
 
     // Frowzy
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> FROWZY_HEAD = registerMobHead("frowzy_head", MobHeadBlock.Types.FROWZY);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> FROWZY_HEAD = registerMobHead("frowzy_head", MobHeadBlock.Types.FROWZY, OPNoteBlockInstruments.FROWZY.get());
 
     // Guzzler
     public static final RegistryObject<Block> INFERNO_PIE = registerBlock("inferno_pie", () -> new InfernoPieBlock(OPBlockProperties.INFERNO_PIE));
 
     // Rambler
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> ANGRY_RAMBLER_SKULL = registerMobHeadNoLang("angry_rambler_skull", MobHeadBlock.Types.RAMBLER_ANGRY);
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> CLASSIC_RAMBLER_SKULL = registerMobHeadNoLang("classic_rambler_skull", MobHeadBlock.Types.RAMBLER_CLASSIC);
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> EVIL_RAMBLER_SKULL = registerMobHeadNoLang("evil_rambler_skull", MobHeadBlock.Types.RAMBLER_EVIL);
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> GRINNING_RAMBLER_SKULL = registerMobHeadNoLang("grinning_rambler_skull", MobHeadBlock.Types.RAMBLER_GRINNING);
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> SKELETAL_RAMBLER_SKULL = registerMobHeadNoLang("skeletal_rambler_skull", MobHeadBlock.Types.RAMBLER_SKELETAL);
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> SMILING_RAMBLER_SKULL = registerMobHeadNoLang("smiling_rambler_skull", MobHeadBlock.Types.RAMBLER_SMILING);
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> STRANGE_RAMBLER_SKULL = registerMobHeadNoLang("strange_rambler_skull", MobHeadBlock.Types.RAMBLER_STRANGE);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> ANGRY_RAMBLER_SKULL = registerMobHeadNoLang("angry_rambler_skull", MobHeadBlock.Types.RAMBLER_ANGRY, OPNoteBlockInstruments.RAMBLER.get());
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> CLASSIC_RAMBLER_SKULL = registerMobHeadNoLang("classic_rambler_skull", MobHeadBlock.Types.RAMBLER_CLASSIC, OPNoteBlockInstruments.RAMBLER.get());
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> EVIL_RAMBLER_SKULL = registerMobHeadNoLang("evil_rambler_skull", MobHeadBlock.Types.RAMBLER_EVIL, OPNoteBlockInstruments.RAMBLER.get());
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> GRINNING_RAMBLER_SKULL = registerMobHeadNoLang("grinning_rambler_skull", MobHeadBlock.Types.RAMBLER_GRINNING, OPNoteBlockInstruments.RAMBLER.get());
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> SKELETAL_RAMBLER_SKULL = registerMobHeadNoLang("skeletal_rambler_skull", MobHeadBlock.Types.RAMBLER_SKELETAL, OPNoteBlockInstruments.RAMBLER.get());
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> SMILING_RAMBLER_SKULL = registerMobHeadNoLang("smiling_rambler_skull", MobHeadBlock.Types.RAMBLER_SMILING, OPNoteBlockInstruments.RAMBLER.get());
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> STRANGE_RAMBLER_SKULL = registerMobHeadNoLang("strange_rambler_skull", MobHeadBlock.Types.RAMBLER_STRANGE, OPNoteBlockInstruments.RAMBLER.get());
 
     // dev skulls
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> CRUNDLY_RAMBLER_SKULL = registerMobHeadNoLang("crundly_rambler_skull", MobHeadBlock.Types.RAMBLER_CRUNDLY);
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> DWARVEN_RAMBLER_SKULL = registerMobHeadNoLang("dwarven_rambler_skull", MobHeadBlock.Types.RAMBLER_DWARVEN);
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> IMPRISONED_RAMBLER_SKULL = registerMobHeadNoLang("imprisoned_rambler_skull", MobHeadBlock.Types.RAMBLER_IMPRISONED);
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> INDOMITABLE_RAMBLER_SKULL = registerMobHeadNoLang("indomitable_rambler_skull", MobHeadBlock.Types.RAMBLER_INDOMITABLE);
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> LEERING_RAMBLER_SKULL = registerMobHeadNoLang("leering_rambler_skull", MobHeadBlock.Types.RAMBLER_LEERING);
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> MAGMATIC_RAMBLER_SKULL = registerMobHeadNoLang("magmatic_rambler_skull", MobHeadBlock.Types.RAMBLER_MAGMATIC);
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> MUSICAL_RAMBLER_SKULL = registerMobHeadNoLang("musical_rambler_skull", MobHeadBlock.Types.RAMBLER_MUSICAL);
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> NOSY_RAMBLER_SKULL = registerMobHeadNoLang("nosy_rambler_skull", MobHeadBlock.Types.RAMBLER_NOSY);
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> VALIANT_RAMBLER_SKULL = registerMobHeadNoLang("valiant_rambler_skull", MobHeadBlock.Types.RAMBLER_VALIANT);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> CRUNDLY_RAMBLER_SKULL = registerMobHeadNoLang("crundly_rambler_skull", MobHeadBlock.Types.RAMBLER_CRUNDLY, OPNoteBlockInstruments.RAMBLER.get());
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> DWARVEN_RAMBLER_SKULL = registerMobHeadNoLang("dwarven_rambler_skull", MobHeadBlock.Types.RAMBLER_DWARVEN, OPNoteBlockInstruments.RAMBLER.get());
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> IMPRISONED_RAMBLER_SKULL = registerMobHeadNoLang("imprisoned_rambler_skull", MobHeadBlock.Types.RAMBLER_IMPRISONED, OPNoteBlockInstruments.RAMBLER.get());
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> INDOMITABLE_RAMBLER_SKULL = registerMobHeadNoLang("indomitable_rambler_skull", MobHeadBlock.Types.RAMBLER_INDOMITABLE, OPNoteBlockInstruments.RAMBLER.get());
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> LEERING_RAMBLER_SKULL = registerMobHeadNoLang("leering_rambler_skull", MobHeadBlock.Types.RAMBLER_LEERING, OPNoteBlockInstruments.RAMBLER.get());
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> MAGMATIC_RAMBLER_SKULL = registerMobHeadNoLang("magmatic_rambler_skull", MobHeadBlock.Types.RAMBLER_MAGMATIC, OPNoteBlockInstruments.RAMBLER.get());
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> MUSICAL_RAMBLER_SKULL = registerMobHeadNoLang("musical_rambler_skull", MobHeadBlock.Types.RAMBLER_MUSICAL, OPNoteBlockInstruments.RAMBLER.get());
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> NOSY_RAMBLER_SKULL = registerMobHeadNoLang("nosy_rambler_skull", MobHeadBlock.Types.RAMBLER_NOSY, OPNoteBlockInstruments.RAMBLER.get());
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> VALIANT_RAMBLER_SKULL = registerMobHeadNoLang("valiant_rambler_skull", MobHeadBlock.Types.RAMBLER_VALIANT, OPNoteBlockInstruments.RAMBLER.get());
 
     // Slug
     public static final RegistryObject<Block> SLUG_EGGS = registerBlock("slug_eggs", () -> new SlugEggBlock(OPBlockProperties.SLUG_EGGS));
@@ -69,7 +69,7 @@ public class OPBlocks {
     public static final RegistryObject<Block> CHISELED_VILE_STONE_BRICKS = registerBlock("chiseled_vile_stone_bricks", () -> new Block(OPBlockProperties.VILE_STONE));
 
     // Tart
-    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> TART_HEAD = registerMobHead("tart_head", MobHeadBlock.Types.TART);
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> TART_HEAD = registerMobHead("tart_head", MobHeadBlock.Types.TART, OPNoteBlockInstruments.TART.get());
 
     // Trembler
     public static final RegistryObject<Block> TREMBLER_SHELL = registerBlock("trembler_shell", () -> new TremblerShellBlock(OPBlockProperties.TREMBLING_BLOCK));
@@ -84,6 +84,7 @@ public class OPBlocks {
 
     // Whizz
     public static final RegistryObject<Block> INFESTED_AMETHYST_BLOCK = registerBlockNoLang("infested_amethyst_block", () -> new InfestedAmethystBlock(Blocks.AMETHYST_BLOCK, BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_PURPLE).sound(SoundType.AMETHYST)));
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> WHIZZ_HEAD = registerMobHead("whizz_head", MobHeadBlock.Types.WHIZZ, OPNoteBlockInstruments.WHIZZ.get());
 
     private static <B extends Block> RegistryObject<B> registerBlock(String name, Supplier<? extends B> supplier) {
         RegistryObject<B> block = BLOCKS.register(name, supplier);
@@ -116,15 +117,15 @@ public class OPBlocks {
         return properties;
     }
 
-    public static Pair<RegistryObject<Block>, RegistryObject<Block>> registerMobHead(String name, MobHeadBlock.Types type) {
-        RegistryObject<Block> skull = registerBlockWithoutItemNoLang(name, () -> new MobHeadBlock(type, OPBlockProperties.MOB_HEAD));
+    public static Pair<RegistryObject<Block>, RegistryObject<Block>> registerMobHead(String name, MobHeadBlock.Types type, NoteBlockInstrument instrument) {
+        RegistryObject<Block> skull = registerBlockWithoutItemNoLang(name, () -> new MobHeadBlock(type, OPBlockProperties.MOB_HEAD.instrument(instrument)));
         RegistryObject<Block> wallSkull = registerBlockWithoutItemNoLang("wall_" + name, () -> new WallMobHeadBlock(type, OPBlockProperties.MOB_HEAD.lootFrom(skull)));
         BLOCK_TRANSLATIONS.add(skull);
         return Pair.of(skull, wallSkull);
     }
 
-    public static Pair<RegistryObject<Block>, RegistryObject<Block>> registerMobHeadNoLang(String name, MobHeadBlock.Types type) {
-        RegistryObject<Block> skull = registerBlockWithoutItemNoLang(name, () -> new MobHeadBlock(type, OPBlockProperties.MOB_HEAD));
+    public static Pair<RegistryObject<Block>, RegistryObject<Block>> registerMobHeadNoLang(String name, MobHeadBlock.Types type, NoteBlockInstrument instrument) {
+        RegistryObject<Block> skull = registerBlockWithoutItemNoLang(name, () -> new MobHeadBlock(type, OPBlockProperties.MOB_HEAD.instrument(instrument)));
         RegistryObject<Block> wallSkull = registerBlockWithoutItemNoLang("wall_" + name, () -> new WallMobHeadBlock(type, OPBlockProperties.MOB_HEAD.lootFrom(skull)));
         return Pair.of(skull, wallSkull);
     }

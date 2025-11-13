@@ -359,6 +359,32 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
         this.sound(OPSoundEvents.WALTZ_OF_THE_SLUG_DISC,
                 sound(OpposingForce.modPrefix("music/waltz_of_the_slug_disc")).stream()
         );
+
+        this.sound(OPSoundEvents.NOTE_BLOCK_IMITATE_DICER,
+                sound(OpposingForce.modPrefix("entity/dicer/idle1")).volume(0.8F),
+                sound(OpposingForce.modPrefix("entity/dicer/idle2")).volume(0.8F)
+        );
+
+        this.sound(OPSoundEvents.NOTE_BLOCK_IMITATE_FROWZY,
+                sound(OpposingForce.modPrefix("entity/frowzy/idle1")),
+                sound(OpposingForce.modPrefix("entity/frowzy/idle2")),
+                sound(OpposingForce.modPrefix("entity/frowzy/idle3"))
+        );
+
+        this.sound(OPSoundEvents.NOTE_BLOCK_IMITATE_RAMBLER,
+                sound(OpposingForce.modPrefix("entity/ramble/idle1"))
+        );
+
+        this.sound(OPSoundEvents.NOTE_BLOCK_IMITATE_TART,
+                sound(OpposingForce.modPrefix("entity/ramble/idle1"))
+        );
+
+        this.sound(OPSoundEvents.NOTE_BLOCK_IMITATE_WHIZZ,
+                sound("block/amethyst/resonate1").pitch(1.2F),
+                sound("block/amethyst/resonate2").pitch(1.2F),
+                sound("block/amethyst/resonate3").pitch(1.2F),
+                sound("block/amethyst/resonate4").pitch(1.2F)
+        );
     }
 
     private void soundDefinition(Supplier<SoundEvent> soundEvent, String subtitle, SoundDefinition.Sound... sounds) {

@@ -42,7 +42,7 @@ public class MobHeadBlockEntity extends BlockEntity {
     public static void animation(Level level, BlockPos pos, BlockState state, MobHeadBlockEntity blockEntity) {
         if (level.hasNeighborSignal(pos)) {
             blockEntity.isAnimating = true;
-            ++blockEntity.animationTickCount;
+            blockEntity.animationTickCount++;
         } else {
             blockEntity.isAnimating = false;
         }

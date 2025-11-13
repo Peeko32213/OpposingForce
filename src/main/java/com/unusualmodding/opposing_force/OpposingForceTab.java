@@ -110,6 +110,7 @@ public class OpposingForceTab {
                     output.accept(OPBlocks.INFESTED_AMETHYST_BLOCK.get());
                     output.accept(OPItems.CAPTURED_WHIZZ.get());
                     output.accept(OPItems.WHIZZ_BOMB.get());
+                    output.accept(OPItems.WHIZZ_HEAD.get());
 
                     output.accept(OPItems.WOODEN_MASK.get());
                     output.accept(OPItems.WOODEN_CHESTPLATE.get());

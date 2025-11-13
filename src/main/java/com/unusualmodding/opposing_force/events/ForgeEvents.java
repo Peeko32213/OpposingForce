@@ -10,6 +10,7 @@ import com.unusualmodding.opposing_force.registry.*;
 import com.unusualmodding.opposing_force.registry.OPTrades.MultipleInputsTrade;
 import com.unusualmodding.opposing_force.registry.tags.OPBiomeTags;
 import com.unusualmodding.opposing_force.registry.tags.OPBlockTags;
+import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -148,7 +149,10 @@ public class ForgeEvents {
 
     @SubscribeEvent
     public static void onLivingVisibility(LivingEvent.LivingVisibilityEvent event) {
-        if (event.getLookingEntity() != null) {
+        LivingEntity entity = event.getEntity();
+        EntityType<?> looking = event.getLookingEntity().getType();
+        ItemStack headStack = entity.getItemBySlot(EquipmentSlot.HEAD);
+        if (looking != null) {
             double attributeValue = 0.0D;
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 ItemStack stack = event.getEntity().getItemBySlot(slot);
@@ -159,6 +163,16 @@ public class ForgeEvents {
             }
             if (attributeValue > 0.0D) {
                 event.modifyVisibility(Math.max(1.0D - attributeValue, 0.0D));
+            }
+
+            if (
+                    looking == OPEntities.DICER.get() && headStack.is(OPItems.DICER_HEAD.get()) ||
+                    looking == OPEntities.FROWZY.get() && headStack.is(OPItems.FROWZY_HEAD.get()) ||
+                    looking == OPEntities.RAMBLER.get() && headStack.is(OPItemTags.RAMBLER_SKULLS) ||
+                    looking == OPEntities.TART.get() && headStack.is(OPItems.TART_HEAD.get()) ||
+                    looking == OPEntities.WHIZZ.get() && headStack.is(OPItems.WHIZZ_HEAD.get())
+            ) {
+                event.modifyVisibility(0.5F);
             }
         }
     }

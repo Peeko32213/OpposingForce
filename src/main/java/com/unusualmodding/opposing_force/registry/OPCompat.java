@@ -87,8 +87,8 @@ public class OPCompat {
         DispenserBlock.registerBehavior(OPItems.SMILING_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
         DispenserBlock.registerBehavior(OPItems.STRANGE_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
         DispenserBlock.registerBehavior(OPItems.VALIANT_RAMBLER_SKULL.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
-
         DispenserBlock.registerBehavior(OPItems.TART_HEAD.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
+        DispenserBlock.registerBehavior(OPItems.WHIZZ_HEAD.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
     }
 
     public static void registerCompostables() {

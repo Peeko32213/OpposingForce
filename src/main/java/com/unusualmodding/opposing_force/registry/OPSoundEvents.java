@@ -1,14 +1,16 @@
 package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-@Mod.EventBusSubscriber(modid = OpposingForce.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@SuppressWarnings("deprecation")
 public class OPSoundEvents {
 
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, OpposingForce.MOD_ID);
@@ -105,7 +107,17 @@ public class OPSoundEvents {
 
     public static final RegistryObject<SoundEvent> WALTZ_OF_THE_SLUG_DISC = registerSoundEvent("waltz_of_the_slug_disc");
 
+    public static final Holder.Reference<SoundEvent> NOTE_BLOCK_IMITATE_DICER = registerSoundEventHolder("note_block_imitate_dicer");
+    public static final Holder.Reference<SoundEvent> NOTE_BLOCK_IMITATE_FROWZY = registerSoundEventHolder("note_block_imitate_frowzy");
+    public static final Holder.Reference<SoundEvent> NOTE_BLOCK_IMITATE_RAMBLER = registerSoundEventHolder("note_block_imitate_rambler");
+    public static final Holder.Reference<SoundEvent> NOTE_BLOCK_IMITATE_TART = registerSoundEventHolder("note_block_imitate_tart");
+    public static final Holder.Reference<SoundEvent> NOTE_BLOCK_IMITATE_WHIZZ = registerSoundEventHolder("note_block_imitate_whizz");
+
     private static RegistryObject<SoundEvent> registerSoundEvent(final String soundName) {
         return SOUND_EVENTS.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(OpposingForce.MOD_ID, soundName)));
+    }
+
+    private static Holder.Reference<SoundEvent> registerSoundEventHolder(String name) {
+        return Registry.registerForHolder(BuiltInRegistries.SOUND_EVENT, OpposingForce.modPrefix(name), SoundEvent.createVariableRangeEvent(OpposingForce.modPrefix(name)));
     }
 }
