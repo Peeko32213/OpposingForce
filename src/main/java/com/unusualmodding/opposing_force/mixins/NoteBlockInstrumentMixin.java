@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.mixins;
 
 import com.unusualmodding.opposing_force.registry.OPNoteBlockInstruments;
 import net.minecraft.core.Holder;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,7 +26,7 @@ public class NoteBlockInstrumentMixin {
     private static NoteBlockInstrument[] $VALUES;
 
     @Invoker("<init>")
-    public static NoteBlockInstrument newInstrument(String name, int id, String enumName, Holder sound, NoteBlockInstrument.Type type) {
+    public static NoteBlockInstrument newInstrument(String name, int id, String enumName, Holder<SoundEvent> sound, NoteBlockInstrument.Type type) {
         throw new AssertionError();
     }
 

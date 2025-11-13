@@ -48,6 +48,8 @@ public class OPArmorDefinitions {
 
     public static final ArmorDefinition SLUG_BARON = new ArmorDefinition.Builder()
             .material(OPTiers.OPArmorMaterials.SLUG_BARON)
+            .attribute(OPAttributes.SUMMON_DAMAGE.get(), 0.15F, AttributeModifier.Operation.MULTIPLY_BASE)
+            .attribute(OPAttributes.SUMMON_DURATION.get(), 0.1F, AttributeModifier.Operation.MULTIPLY_BASE)
             .texture(slot -> slot == EquipmentSlot.LEGS ? OpposingForce.MOD_ID + ":textures/models/armor/slug_baron_armor_layer_2.png" : OpposingForce.MOD_ID + ":textures/models/armor/slug_baron_armor_layer_1.png")
             .build();
 }

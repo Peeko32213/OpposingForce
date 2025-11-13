@@ -3,9 +3,9 @@ package com.unusualmodding.opposing_force.events;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.effects.SlugInfestation;
-import com.unusualmodding.opposing_force.enchantments.DoubleJumpEnchantment;
 import com.unusualmodding.opposing_force.entity.Frowzy;
 import com.unusualmodding.opposing_force.entity.UmberSpider;
+import com.unusualmodding.opposing_force.items.armor.SlugBaronArmorItem;
 import com.unusualmodding.opposing_force.registry.*;
 import com.unusualmodding.opposing_force.registry.OPTrades.MultipleInputsTrade;
 import com.unusualmodding.opposing_force.registry.tags.OPBiomeTags;
@@ -152,7 +152,7 @@ public class ForgeEvents {
         LivingEntity entity = event.getEntity();
         EntityType<?> looking = event.getLookingEntity().getType();
         ItemStack headStack = entity.getItemBySlot(EquipmentSlot.HEAD);
-        if (looking != null) {
+        if (event.getLookingEntity() != null) {
             double attributeValue = 0.0D;
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 ItemStack stack = event.getEntity().getItemBySlot(slot);
@@ -207,7 +207,12 @@ public class ForgeEvents {
                 }
             }
         }
+
+        if (SlugBaronArmorItem.wearingFullSlugBaronSet(entity)) {
+            SlugBaronArmorItem.onHurt(entity);
+        }
     }
+
 
     @SubscribeEvent
     public static void onMobAttack(final LivingAttackEvent event) {

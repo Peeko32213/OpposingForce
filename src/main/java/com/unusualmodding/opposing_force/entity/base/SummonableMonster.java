@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity.base;
 
+import com.unusualmodding.opposing_force.registry.OPAttributes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -8,7 +9,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +24,50 @@ public abstract class SummonableMonster extends TameableMonster {
 
     protected SummonableMonster(EntityType<? extends SummonableMonster> entityType, Level level) {
         super(entityType, level);
+    }
+
+    private float getSummonDamage() {
+        if (this.getOwner() != null && this.getOwner().getAttributes().hasAttribute(OPAttributes.SUMMON_DAMAGE.get())) {
+            return 1 + (float) this.getOwner().getAttributeValue(OPAttributes.SUMMON_DAMAGE.get());
+        }
+        else return 1;
+    }
+
+    private int getSummonDuration() {
+        if (this.getOwner() != null && this.getOwner().getAttributes().hasAttribute(OPAttributes.SUMMON_DURATION.get())) {
+            return (int) (1 + this.getOwner().getAttributeValue(OPAttributes.SUMMON_DURATION.get()));
+        }
+        else return 1;
+    }
+
+    @Override
+    public boolean doHurtTarget(@NotNull Entity entity) {
+        float damage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * this.getSummonDamage();
+        float knockback = (float) this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+        if (entity instanceof LivingEntity livingEntity) {
+            damage += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), livingEntity.getMobType());
+            knockback += (float) EnchantmentHelper.getKnockbackBonus(this);
+        }
+
+        int i = EnchantmentHelper.getFireAspect(this);
+        if (i > 0) {
+            entity.setSecondsOnFire(i * 4);
+        }
+
+        boolean didHurt = entity.hurt(this.damageSources().mobAttack(this), damage);
+        if (didHurt) {
+            if (knockback > 0.0F && entity instanceof LivingEntity livingEntity) {
+                livingEntity.knockback(knockback * 0.5F, Mth.sin(this.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float) Math.PI / 180F)));
+                this.setDeltaMovement(this.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
+            }
+            if (entity instanceof Player player) {
+                this.maybeDisableShield(player, this.getMainHandItem(), player.isUsingItem() ? player.getUseItem() : ItemStack.EMPTY);
+            }
+            this.doEnchantDamageEffects(this, entity);
+            this.setLastHurtMob(entity);
+        }
+
+        return didHurt;
     }
 
     public void copyTarget(LivingEntity entity) {
@@ -83,6 +131,10 @@ public abstract class SummonableMonster extends TameableMonster {
 
     public void setLifeTicks(int limitedTicks) {
         this.entityData.set(LIFE_TICKS, limitedTicks);
+    }
+
+    public int getMaxLifeTicks() {
+        return 250 * this.getSummonDuration();
     }
 
     public boolean isFromSummon() {

@@ -36,10 +36,10 @@ public class WallMobHeadBlock extends BaseEntityBlock implements Equipable {
 
     private static final Map<Direction, VoxelShape> AABBS = Maps.newEnumMap(
             ImmutableMap.of(
-            Direction.NORTH, Block.box(4, 4, 8, 12, 12, 16),
-            Direction.SOUTH, Block.box(4, 4, 0, 12, 12, 8),
-            Direction.EAST, Block.box(0, 4, 4, 8, 12, 12),
-            Direction.WEST, Block.box(8, 4, 4, 16, 12, 12)
+                    Direction.NORTH, Block.box(4, 4, 8, 12, 12, 16),
+                    Direction.SOUTH, Block.box(4, 4, 0, 12, 12, 8),
+                    Direction.EAST, Block.box(0, 4, 4, 8, 12, 12),
+                    Direction.WEST, Block.box(8, 4, 4, 16, 12, 12)
         )
     );
 
@@ -52,6 +52,15 @@ public class WallMobHeadBlock extends BaseEntityBlock implements Equipable {
             )
     );
 
+    private static final Map<Direction, VoxelShape> TART_AABBS = Maps.newEnumMap(
+            ImmutableMap.of(
+                    Direction.NORTH, Block.box(4.5, 4, 8.5, 11.5, 11, 15.5),
+                    Direction.SOUTH, Block.box(4.5, 4, 0.5, 11.5, 11, 7.5),
+                    Direction.EAST, Block.box(0.5, 4, 4.5, 7.5, 11, 11.5),
+                    Direction.WEST, Block.box(8.5, 4, 4.5, 15.5, 11, 11.5)
+            )
+    );
+
     public WallMobHeadBlock(MobHeadBlock.Type type, Properties properties) {
         super(properties);
         this.type = type;
@@ -61,7 +70,8 @@ public class WallMobHeadBlock extends BaseEntityBlock implements Equipable {
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos, @NotNull CollisionContext context) {
         if (this.type == MobHeadBlock.Types.WHIZZ) return WHIZZ_AABBS.get(state.getValue(FACING));
-        return AABBS.get(state.getValue(FACING));
+        else if (this.type == MobHeadBlock.Types.TART) return TART_AABBS.get(state.getValue(FACING));
+        else return AABBS.get(state.getValue(FACING));
     }
 
     @Override

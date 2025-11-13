@@ -39,6 +39,7 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
 
     protected static final VoxelShape SHAPE = Block.box(4, 0, 4, 12, 8, 12);
     protected static final VoxelShape WHIZZ_SHAPE = Block.box(4, 0, 4, 12, 6, 12);
+    protected static final VoxelShape TART_SHAPE = Block.box(4.5, 0, 4.5, 11.5, 7, 11.5);
 
     public MobHeadBlock(Type type, Properties properties) {
         super(properties);
@@ -49,6 +50,7 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos, @NotNull CollisionContext context) {
         if (this.type == Types.WHIZZ) return WHIZZ_SHAPE;
+        else if (this.type == Types.TART) return TART_SHAPE;
         else return SHAPE;
     }
 

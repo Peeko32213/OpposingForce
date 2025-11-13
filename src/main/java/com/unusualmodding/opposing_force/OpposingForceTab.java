@@ -112,14 +112,20 @@ public class OpposingForceTab {
                     output.accept(OPItems.WHIZZ_BOMB.get());
                     output.accept(OPItems.WHIZZ_HEAD.get());
 
+                    output.accept(OPItems.TOMAHAWK.get());
+                    output.accept(OPItems.KINETIC_BOMB.get());
+                    output.accept(OPItems.BLADE_OF_THE_MOUNTAIN.get());
+
                     output.accept(OPItems.WOODEN_MASK.get());
                     output.accept(OPItems.WOODEN_CHESTPLATE.get());
                     output.accept(OPItems.WOODEN_COVER.get());
                     output.accept(OPItems.WOODEN_BOOTS.get());
+
                     output.accept(OPItems.STONE_HELMET.get());
                     output.accept(OPItems.STONE_CHESTPLATE.get());
                     output.accept(OPItems.STONE_LEGGINGS.get());
                     output.accept(OPItems.STONE_BOOTS.get());
+
                     output.accept(OPItems.EMERALD_SWORD.get());
                     output.accept(OPItems.EMERALD_SHOVEL.get());
                     output.accept(OPItems.EMERALD_PICKAXE.get());
@@ -129,10 +135,8 @@ public class OpposingForceTab {
                     output.accept(OPItems.EMERALD_CHESTPLATE.get());
                     output.accept(OPItems.EMERALD_LEGGINGS.get());
                     output.accept(OPItems.EMERALD_BOOTS.get());
+
                     output.accept(OPItems.MOON_SHOES.get());
-                    output.accept(OPItems.TOMAHAWK.get());
-                    output.accept(OPItems.KINETIC_BOMB.get());
-                    output.accept(OPItems.BLADE_OF_THE_MOUNTAIN.get());
 
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.TESLA_CANNON);
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.BLASTER);

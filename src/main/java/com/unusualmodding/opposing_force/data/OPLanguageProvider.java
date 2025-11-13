@@ -228,6 +228,8 @@ public class OPLanguageProvider extends LanguageProvider {
 
         this.addItem(OPItems.TERROR_LEG, "Raw Terror Leg");
 
+        this.add("item.opposing_force.slug_baron_set_bonus.desc", "Set Bonus: Summon slugs when hit");
+
         // other
         this.addEnchantmentWithDesc(OPEnchantments.CAPACITANCE.get(), "Increases the size of the fired electric charge");
         this.addEnchantmentWithDesc(OPEnchantments.REBOUND.get(), "The fired electric charge bounces off blocks and passes through mobs");
@@ -272,6 +274,8 @@ public class OPLanguageProvider extends LanguageProvider {
         this.translateAttribute(OPAttributes.JUMP_POWER);
         this.translateAttribute(OPAttributes.AIR_SPEED);
         this.translateAttribute(OPAttributes.EXPERIENCE_GAIN);
+        this.translateAttribute(OPAttributes.SUMMON_DAMAGE);
+        this.translateAttribute(OPAttributes.SUMMON_DURATION);
 
         // jeed compat
         this.add("effect.opposing_force.electrified.description", "Inflicts lethal damage over time while in water or rain; higher levels do more damage per second.");

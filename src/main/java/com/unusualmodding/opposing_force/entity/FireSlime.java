@@ -146,7 +146,7 @@ public class FireSlime extends SummonableMonster {
 
         if (this.isFromSummon()) {
             this.setLifeTicks(this.getLifeTicks() + 1);
-            if (this.getLifeTicks() > 160) {
+            if (this.getLifeTicks() > this.getMaxLifeTicks() - 40) {
                 this.navigation.stop();
                 if (this.getTarget() != null) {
                     this.setTarget(null);
@@ -159,7 +159,7 @@ public class FireSlime extends SummonableMonster {
                     this.level().addParticle(ParticleTypes.LAVA, this.getX(), this.getRandomY() + 0.5D - d1 * 10.0D, this.getZ(), d0, d1, d2);
                 }
             }
-            if (this.getLifeTicks() > 200) {
+            if (this.getLifeTicks() > this.getMaxLifeTicks()) {
                 this.setLifeTicks(0);
                 this.playSound(OPSoundEvents.FIRE_SLIME_POP.get(), this.getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
                 this.spawnAnim();

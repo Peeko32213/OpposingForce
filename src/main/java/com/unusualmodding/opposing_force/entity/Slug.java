@@ -283,8 +283,8 @@ public class Slug extends SummonableMonster implements EliteVariant {
 
         if (this.isFromSummon()) {
             this.setLifeTicks(this.getLifeTicks() + 1);
-            if (this.getLifeTicks() > 260) {
-                this.setLifeTicks(240);
+            if (this.getLifeTicks() > this.getMaxLifeTicks()) {
+                this.setLifeTicks(this.getMaxLifeTicks() - 20);
                 this.hurt(this.damageSources().starve(), 2.0F);
             }
         }

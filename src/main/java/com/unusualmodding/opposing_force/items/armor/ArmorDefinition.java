@@ -1,13 +1,9 @@
 package com.unusualmodding.opposing_force.items.armor;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.*;
 import java.util.function.Function;
@@ -21,10 +17,7 @@ public class ArmorDefinition {
 
     public record AttributeEntry(Attribute attribute, double value, AttributeModifier.Operation operation) {}
 
-    private ArmorDefinition(ArmorMaterial material,
-                            List<AttributeEntry> attributes,
-                            Function<EquipmentSlot, String> textureFunction,
-                            boolean walkOnPowderedSnow) {
+    private ArmorDefinition(ArmorMaterial material, List<AttributeEntry> attributes, Function<EquipmentSlot, String> textureFunction, boolean walkOnPowderedSnow) {
         this.material = material;
         this.attributes = attributes;
         this.textureFunction = textureFunction;

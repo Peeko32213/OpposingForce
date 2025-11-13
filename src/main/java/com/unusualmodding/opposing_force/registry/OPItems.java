@@ -2,10 +2,7 @@ package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.items.*;
-import com.unusualmodding.opposing_force.items.armor.ConfigurableArmorItem;
-import com.unusualmodding.opposing_force.items.armor.MoonShoesItem;
-import com.unusualmodding.opposing_force.items.armor.OPArmorDefinitions;
-import com.unusualmodding.opposing_force.items.armor.WoodenArmorItem;
+import com.unusualmodding.opposing_force.items.armor.*;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
@@ -83,10 +80,10 @@ public class OPItems {
     public static final RegistryObject<Item> SLUG_SPAWN_EGG = registerSpawnEggItem("slug", OPEntities.SLUG , 0x7a7139, 0x2e2411);
     public static final RegistryObject<Item> VILE_BOULDER = registerItem("vile_boulder", () -> new VileBoulderItem(new Item.Properties()));
     public static final RegistryObject<Item> VILE_STAFF = registerItem("vile_staff", () -> new VileStaffItem(new Item.Properties().stacksTo(1).defaultDurability(224)));
-    public static final RegistryObject<Item> SLUG_BARON_HELMET = registerItem("slug_baron_helmet", ()-> new ConfigurableArmorItem(ArmorItem.Type.HELMET, new Item.Properties(), OPArmorDefinitions.SLUG_BARON));
-    public static final RegistryObject<Item> SLUG_BARON_CHESTPLATE = registerItem("slug_baron_chestplate", ()-> new ConfigurableArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties(), OPArmorDefinitions.SLUG_BARON));
-    public static final RegistryObject<Item> SLUG_BARON_LEGGINGS = registerItem("slug_baron_leggings", ()-> new ConfigurableArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties(), OPArmorDefinitions.SLUG_BARON));
-    public static final RegistryObject<Item> SLUG_BARON_BOOTS = registerItem("slug_baron_boots", ()-> new ConfigurableArmorItem(ArmorItem.Type.BOOTS, new Item.Properties(), OPArmorDefinitions.SLUG_BARON));
+    public static final RegistryObject<Item> SLUG_BARON_HELMET = registerItem("slug_baron_helmet", ()-> new SlugBaronArmorItem(ArmorItem.Type.HELMET, new Item.Properties()));
+    public static final RegistryObject<Item> SLUG_BARON_CHESTPLATE = registerItem("slug_baron_chestplate", ()-> new SlugBaronArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+    public static final RegistryObject<Item> SLUG_BARON_LEGGINGS = registerItem("slug_baron_leggings", ()-> new SlugBaronArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties()));
+    public static final RegistryObject<Item> SLUG_BARON_BOOTS = registerItem("slug_baron_boots", ()-> new SlugBaronArmorItem(ArmorItem.Type.BOOTS, new Item.Properties()));
 
     // tart
     public static final RegistryObject<Item> TART_SPAWN_EGG = registerSpawnEggItem("tart", OPEntities.TART , 0xb31e1e, 0x2f6e19);
