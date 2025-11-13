@@ -1,4 +1,4 @@
-// 1.20.1	2025-11-02T19:11:00.0351474	Tags for minecraft:item mod id opposing_force
+// 1.20.1	2025-11-12T22:59:21.8455605	Tags for minecraft:item mod id opposing_force
 77ac89a930866cc64d9a879f8e79db163ce2486e data/forge/tags/items/armors.json
 c88cff156ae7bbec38b2b021e6a64c4b2e1360aa data/forge/tags/items/armors/boots.json
 5b750b392920c5fb39220654ba6b02b0a8597a23 data/forge/tags/items/armors/chestplates.json
@@ -14,4 +14,5 @@ fa962cfb051064838bfe77648022f15eeb37a5bc data/minecraft/tags/items/music_discs.j
 5db69586b6c50b2befacf44de1aedc4a5af092fe data/opposing_force/tags/items/blaster_ammo.json
 3dad7227f5898364f7923651bb07b56d4949c73c data/opposing_force/tags/items/knives.json
 ea19c79fe99786b2b6d6b235164d367661b15d50 data/opposing_force/tags/items/pie_cutters.json
+bb96c0da5c01ecc05ce4c955e2cc1b0d0112a329 data/opposing_force/tags/items/rambler_skulls.json
 73b65f8cc30505320b7b2a992214c6ab931aa2e1 data/opposing_force/tags/items/raw_vegetables.json
