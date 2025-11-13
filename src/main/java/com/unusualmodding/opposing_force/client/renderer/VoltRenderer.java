@@ -24,7 +24,7 @@ public class VoltRenderer extends MobRenderer<Volt, VoltModel> {
     public VoltRenderer(EntityRendererProvider.Context context) {
         super(context, new VoltModel(context.bakeLayer(OPModelLayers.VOLT)), 0.5F);
         this.addLayer(new VoltGlowLayer(this));
-        this.addLayer(new VoltChargedLayer(this));
+        this.addLayer(new VoltChargedLayer(this, context.getModelSet()));
     }
 
     @Override

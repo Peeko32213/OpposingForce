@@ -117,7 +117,7 @@ public class Rambler extends Monster implements AttackState {
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+    protected float getStandingEyeHeight(@NotNull Pose pose, EntityDimensions dimensions) {
         return dimensions.height * 0.7F;
     }
 
@@ -339,7 +339,7 @@ public class Rambler extends Monster implements AttackState {
     }
 
     @Override
-    public boolean hurt(DamageSource source, float f) {
+    public boolean hurt(@NotNull DamageSource source, float f) {
         if (this.isFlailing() || this.isRolling() || source.is(DamageTypeTags.IS_PROJECTILE)) {
             f *= 0.5F;
         }

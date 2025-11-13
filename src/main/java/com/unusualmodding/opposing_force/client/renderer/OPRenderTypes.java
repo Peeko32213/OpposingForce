@@ -17,7 +17,7 @@ public abstract class OPRenderTypes extends RenderType {
 
     protected static final RenderStateShard.TexturingStateShard GLINT_TEXTURING = new RenderStateShard.TexturingStateShard("entity_glint_texturing", () -> setupGlintTexturing(1F, 8L), RenderSystem::resetTextureMatrix);
 
-    public static RenderType specialGlint(ResourceLocation resourceLocation, boolean blur) {
+    public static RenderType specialGlint(ResourceLocation resourceLocation, boolean blur, boolean outline) {
         RenderStateShard.TextureStateShard shard = new RenderStateShard.TextureStateShard(resourceLocation, blur, false);
         RenderType.CompositeState compositeState = RenderType.CompositeState.builder()
                 .setShaderState(RENDERTYPE_ENERGY_SWIRL_SHADER)
@@ -28,7 +28,7 @@ public abstract class OPRenderTypes extends RenderType {
                 .setTexturingState(GLINT_TEXTURING)
                 .setOverlayState(OVERLAY)
                 .setWriteMaskState(COLOR_WRITE)
-                .createCompositeState(true);
+                .createCompositeState(outline);
         return create("special_glint", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true, compositeState);
     }
 

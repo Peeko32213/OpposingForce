@@ -27,6 +27,7 @@ public class OPModelLayers {
     public static final ModelLayerLocation TREMBLER = main("trembler");
     public static final ModelLayerLocation UMBER_SPIDER = main("umber_spider");
     public static final ModelLayerLocation VOLT = main("volt");
+    public static final ModelLayerLocation VOLT_CHARGED = main("volt_charged");
     public static final ModelLayerLocation WHIZZ = main("whizz");
 
     public static final ModelLayerLocation MOON_SHOES = main("moon_shoes");

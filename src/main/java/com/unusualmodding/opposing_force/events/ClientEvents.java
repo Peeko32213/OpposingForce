@@ -10,6 +10,7 @@ import com.unusualmodding.opposing_force.client.renderer.blocks.*;
 import com.unusualmodding.opposing_force.items.BlasterItem;
 import com.unusualmodding.opposing_force.items.LaserBladeItem;
 import com.unusualmodding.opposing_force.registry.*;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -84,7 +85,8 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.TERROR, TerrorModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.TREMBLER, TremblerModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.UMBER_SPIDER, UmberSpiderModel::createBodyLayer);
-        event.registerLayerDefinition(OPModelLayers.VOLT, VoltModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.VOLT, () -> VoltModel.createBodyLayer(new CubeDeformation(0.0F)));
+        event.registerLayerDefinition(OPModelLayers.VOLT_CHARGED, () -> VoltModel.createBodyLayer(new CubeDeformation(1.0F)));
         event.registerLayerDefinition(OPModelLayers.WHIZZ, WhizzModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.LASER_BOLT, LaserBoltModel::createProjectileLayer);
     }
