@@ -26,10 +26,3 @@ mandatory = true
 versionRange = "[47.1.3,)"
 ordering = "AFTER"
 side = "BOTH"
-
-[[dependencies.opposing_force]]
-modId = "alkahest"
-mandatory = true
-versionRange = "[1.0.0,)"
-ordering = "AFTER"
-side = "BOTH"

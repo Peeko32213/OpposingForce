@@ -30,11 +30,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
+@SuppressWarnings("FieldCanBeLocal")
 @Mixin(HumanoidArmorLayer.class)
 public abstract class HumanoidArmorLayerMixin extends RenderLayer {
 
+    @Unique
     private static final Map<String, ResourceLocation> OP_ARMOR_LOCATION_CACHE = Maps.newHashMap();
-    private ItemStack lastArmorItemStackRendered = ItemStack.EMPTY;
+
+    @Unique
+    private ItemStack opposingForce$lastArmorItemStackRendered = ItemStack.EMPTY;
 
     @Shadow
     protected abstract void setPartVisibility(HumanoidModel humanoidModel, EquipmentSlot equipmentSlot);
@@ -48,7 +52,7 @@ public abstract class HumanoidArmorLayerMixin extends RenderLayer {
         ItemStack itemstack = livingEntity.getItemBySlot(equipmentSlot);
         if (itemstack.getItem() instanceof CustomArmorRender) {
             ci.cancel();
-            lastArmorItemStackRendered = livingEntity.getItemBySlot(equipmentSlot);
+            opposingForce$lastArmorItemStackRendered = livingEntity.getItemBySlot(equipmentSlot);
             Item item = itemstack.getItem();
             if (item instanceof ArmorItem armorItem) {
                 if (armorItem.getEquipmentSlot() == equipmentSlot) {
@@ -57,7 +61,7 @@ public abstract class HumanoidArmorLayerMixin extends RenderLayer {
                     Model armorModel = ForgeHooksClient.getArmorModel(livingEntity, itemstack, equipmentSlot, model);
                     setPartVisibility((HumanoidModel) armorModel, equipmentSlot);
                     ResourceLocation texture = opposingForce$getArmorResource(livingEntity, itemstack, equipmentSlot, null);
-                    OPArmorRenderProperties.renderCustomArmor(poseStack, multiBufferSource, light, lastArmorItemStackRendered, armorItem, armorModel, legs, texture);
+                    OPArmorRenderProperties.renderCustomArmor(poseStack, multiBufferSource, light, opposingForce$lastArmorItemStackRendered, armorItem, armorModel, legs, texture);
                 }
             }
         }

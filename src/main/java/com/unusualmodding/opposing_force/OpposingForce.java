@@ -1,6 +1,6 @@
 package com.unusualmodding.opposing_force;
 
-import com.unusualmodding.opposing_force.data.*;
+import com.unusualmodding.opposing_force.datagen.*;
 import com.unusualmodding.opposing_force.registry.*;
 import com.unusualmodding.opposing_force.utils.*;
 import net.minecraft.core.HolderLookup.Provider;
@@ -43,7 +43,7 @@ public class OpposingForce {
         OPItems.ITEMS.register(modEventBus);
         OpposingForceTab.CREATIVE_TABS.register(modEventBus);
         OPMobEffects.MOB_EFFECTS.register(modEventBus);
-        OPEntities.ENTITY_TYPES.register(modEventBus);
+        OPEntities.ENTITY_TYPE.register(modEventBus);
         OPSoundEvents.SOUND_EVENTS.register(modEventBus);
         OPParticles.PARTICLE_TYPES.register(modEventBus);
         OPEnchantments.ENCHANTMENTS.register(modEventBus);
@@ -51,8 +51,11 @@ public class OpposingForce {
         OPAttributes.ATTRIBUTES.register(modEventBus);
         OPLootModifiers.LOOT_MODIFIERS.register(modEventBus);
         OPBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
+        OPRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(PROXY);
+        PROXY.init();
     }
 
     public void commonSetup(final FMLCommonSetupEvent event) {
@@ -90,8 +93,6 @@ public class OpposingForce {
         generator.addProvider(server, new OPRecipeProvider(output));
 
         generator.addProvider(server, OPAdvancementProvider.register(output, provider, helper));
-
-        generator.addProvider(server, new OPMobTypeProvider(output));
 
         boolean client = data.includeClient();
 

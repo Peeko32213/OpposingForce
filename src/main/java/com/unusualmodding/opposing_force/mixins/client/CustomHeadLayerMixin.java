@@ -80,7 +80,7 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
                 poseStack.translate(-0.5D, 0.0D, -0.5D);
 
                 MobHeadBlock.Type type = block instanceof MobHeadBlock ? ((MobHeadBlock) block).getType() : ((WallMobHeadBlock) block).getType();
-                MobHeadModelBase skullmodelbase = this.opposingForce$headModelBaseMap.get(type);
+                MobHeadModelBase headModelBase = this.opposingForce$headModelBaseMap.get(type);
                 RenderType rendertype = MobHeadBlockEntityRenderer.getRenderType(type);
                 Entity entity = t.getVehicle();
 
@@ -89,7 +89,7 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
                 else walkanimationstate = t.walkAnimation;
                 float f3 = walkanimationstate.position(v2);
 
-                MobHeadBlockEntityRenderer.renderMobHead(null, 180.0F, f3, poseStack, bufferSource, i, skullmodelbase, rendertype, null, type, true);
+                MobHeadBlockEntityRenderer.renderMobHead(null, 180.0F, f3, poseStack, bufferSource, i, headModelBase, rendertype, null, type, true);
 
                 poseStack.popPose();
             }

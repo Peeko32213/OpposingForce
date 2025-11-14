@@ -122,6 +122,7 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
         }
     }
 
+    @Override
     public void shootFromRotation(Entity shooter, float rotationPitch, float rotationYaw, float pitchOffset, float velocity, float inaccuracy) {
         float x = -Mth.sin(rotationYaw * ((float) Math.PI / 180F)) * Mth.cos(rotationPitch * ((float) Math.PI / 180F));
         float y = -Mth.sin((rotationPitch + pitchOffset) * ((float) Math.PI / 180F));

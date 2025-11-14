@@ -40,6 +40,7 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
     protected static final VoxelShape SHAPE = Block.box(4, 0, 4, 12, 8, 12);
     protected static final VoxelShape WHIZZ_SHAPE = Block.box(4, 0, 4, 12, 6, 12);
     protected static final VoxelShape TART_SHAPE = Block.box(4.5, 0, 4.5, 11.5, 7, 11.5);
+    protected static final VoxelShape SKYVERN_SHAPE = Block.box(2, 0, 2, 14, 12, 14);
 
     public MobHeadBlock(Type type, Properties properties) {
         super(properties);
@@ -49,8 +50,9 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
 
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos, @NotNull CollisionContext context) {
-        if (this.type == Types.WHIZZ) return WHIZZ_SHAPE;
+        if (this.type == Types.SKYVERN) return SKYVERN_SHAPE;
         else if (this.type == Types.TART) return TART_SHAPE;
+        else if (this.type == Types.WHIZZ) return WHIZZ_SHAPE;
         else return SHAPE;
     }
 
@@ -97,12 +99,17 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
         if (level.isClientSide) {
-            boolean shouldAnimate = state.is(OPBlocks.WHIZZ_HEAD.getFirst().get()) || state.is(OPBlocks.WHIZZ_HEAD.getSecond().get());
-            if (shouldAnimate) {
+            if (shouldAnimate(state)) {
                 return createTickerHelper(type, OPBlockEntityTypes.MOB_HEAD.get(), MobHeadBlockEntity::animation);
             }
         }
         return null;
+    }
+
+    public static boolean shouldAnimate(BlockState state) {
+        if (state.is(OPBlocks.WHIZZ_HEAD.getFirst().get()) || state.is(OPBlocks.WHIZZ_HEAD.getSecond().get())) return true;
+        else if (state.is(OPBlocks.SKYVERN_HEAD.getFirst().get()) || state.is(OPBlocks.SKYVERN_HEAD.getSecond().get())) return true;
+        else return false;
     }
 
     @Override
@@ -132,6 +139,7 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
         RAMBLER_SMILING,
         RAMBLER_STRANGE,
         RAMBLER_VALIANT,
+        SKYVERN,
         TART,
         WHIZZ
     }

@@ -1,6 +1,5 @@
 package com.unusualmodding.opposing_force.entity.projectile;
 
-import com.unusualmodding.alkahest.registry.AlkahestMobEffects;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.entity.Volt;
 import com.unusualmodding.opposing_force.utils.CreeperExtension;
@@ -288,7 +287,7 @@ public class ElectricCharge extends FrictionlessProjectile {
                 if (this.getOwner() != null && !living.is(this.getOwner())) {
                     if (living.hurt(damageSource, damageAmount)) {
                         this.spawnElectricParticles(this, 4 + randomSource.nextInt(3), 0, 12);
-                        living.addEffect(new MobEffectInstance(AlkahestMobEffects.ELECTRIFIED.get(), 200), this.getOwner());
+                        living.addEffect(new MobEffectInstance(OPMobEffects.ELECTRIFIED.get(), 200), this.getOwner());
                         this.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
                     }
                 }

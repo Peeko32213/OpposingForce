@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.utils;
 
-import com.unusualmodding.alkahest.network.LightningSyncPacket;
-import com.unusualmodding.alkahest.registry.AlkahestNetwork;
+import com.unusualmodding.opposing_force.network.LightningSyncPacket;
+import com.unusualmodding.opposing_force.registry.OPNetwork;
 
 public class ParticleUtils {
 
@@ -12,6 +12,6 @@ public class ParticleUtils {
                 .size(0.08F)
                 .color(red, green, blue, 1F)
                 .build();
-        AlkahestNetwork.sendToClients(packet);
+        OPNetwork.sendToClients(packet);
     }
 }

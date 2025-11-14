@@ -19,6 +19,14 @@ public class OpposingForceConfig {
     public static final String CATEGORY_HANGING_SPIDER = "hanging_spider";
     public static ForgeConfigSpec.IntValue HANGING_SPIDER_SPAWN_HEIGHT;
 
+    public static final String CATEGORY_SKYVERN = "skyvern";
+
+    public static ForgeConfigSpec.BooleanValue SKYVERN_SPAWNING;
+    public static ForgeConfigSpec.DoubleValue SKYVERN_SPAWN_CHANCE;
+    public static ForgeConfigSpec.IntValue SKYVERN_SPAWN_TIMER;
+    public static ForgeConfigSpec.IntValue SKYVERN_SPAWN_HEIGHT;
+    public static ForgeConfigSpec.BooleanValue SKYVERN_SPAWN_POST_DRAGON;
+
     public static final String CATEGORY_TERROR = "terror";
     public static ForgeConfigSpec.IntValue TERROR_SPAWN_HEIGHT;
 
@@ -53,6 +61,14 @@ public class OpposingForceConfig {
         // Hanging Spider
         COMMON_BUILDER.push(CATEGORY_HANGING_SPIDER);
         HANGING_SPIDER_SPAWN_HEIGHT = COMMON_BUILDER.comment("Maximum height hanging spiders can spawn").defineInRange("hangingSpiderSpawnHeight", 32, -64, 320);
+        COMMON_BUILDER.pop();
+
+        COMMON_BUILDER.push(CATEGORY_SKYVERN);
+        SKYVERN_SPAWNING = COMMON_BUILDER.comment("Do Skyverns spawn").define("skyvernSpawning", true);
+        SKYVERN_SPAWN_CHANCE = COMMON_BUILDER.comment("Compounding spawn chance for Skyverns, default is 2%").defineInRange("skyvernSpawnChance", 0.02, 0.0, 1.0);
+        SKYVERN_SPAWN_TIMER = COMMON_BUILDER.comment("The time between Skyvern spawn attempts in ticks, default is 30 seconds").defineInRange("skyvernSpawnTimer", 600, 20, 2400);
+        SKYVERN_SPAWN_HEIGHT = COMMON_BUILDER.comment("Spawn height for Skyverns, default is cloud height").defineInRange("skyvernSpawnHeight", 196, -64, 320);
+        SKYVERN_SPAWN_POST_DRAGON = COMMON_BUILDER.comment("Skyverns only spawn after at least one Ender Dragon has been defeated").define("skyvernSpawnPostDragon", true);
         COMMON_BUILDER.pop();
 
         // Terror

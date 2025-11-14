@@ -53,6 +53,9 @@ public class OPBlocks {
     public static final Pair<RegistryObject<Block>, RegistryObject<Block>> NOSY_RAMBLER_SKULL = registerMobHeadNoLang("nosy_rambler_skull", MobHeadBlock.Types.RAMBLER_NOSY, OPNoteBlockInstruments.RAMBLER.get());
     public static final Pair<RegistryObject<Block>, RegistryObject<Block>> VALIANT_RAMBLER_SKULL = registerMobHeadNoLang("valiant_rambler_skull", MobHeadBlock.Types.RAMBLER_VALIANT, OPNoteBlockInstruments.RAMBLER.get());
 
+    // Skyvern
+    public static final Pair<RegistryObject<Block>, RegistryObject<Block>> SKYVERN_HEAD = registerMobHead("skyvern_head", MobHeadBlock.Types.SKYVERN, OPNoteBlockInstruments.SKYVERN.get());
+
     // Slug
     public static final RegistryObject<Block> SLUG_EGGS = registerBlock("slug_eggs", () -> new SlugEggBlock(OPBlockProperties.SLUG_EGGS));
     public static final RegistryObject<Block> VILE_STONE = registerBlock("vile_stone", () -> new Block(OPBlockProperties.VILE_STONE));

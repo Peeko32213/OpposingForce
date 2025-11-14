@@ -1,8 +1,7 @@
 package com.unusualmodding.opposing_force.items;
 
-import com.unusualmodding.alkahest.registry.AlkahestMobEffects;
-import com.unusualmodding.alkahest.registry.AlkahestSoundEvents;
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
+import com.unusualmodding.opposing_force.registry.OPMobEffects;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.registry.enums.OPTiers;
 import com.unusualmodding.opposing_force.utils.OPMath;
@@ -50,8 +49,8 @@ public class SparkBladeItem extends SwordItem {
             if (!target.level().isClientSide) {
                 this.sendElectricParticles(target, 3);
             }
-            target.addEffect(new MobEffectInstance(AlkahestMobEffects.ELECTRIFIED.get(), 100, 0));
-            target.playSound(AlkahestSoundEvents.ELECTRIC_ZAP.get(), 1.0F, 1.0F / (target.level().getRandom().nextFloat() * 0.4F + 0.8F));
+            target.addEffect(new MobEffectInstance(OPMobEffects.ELECTRIFIED.get(), 100, 0));
+            target.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 1.0F, 1.0F / (target.level().getRandom().nextFloat() * 0.4F + 0.8F));
             return true;
         }
         return false;
@@ -127,7 +126,7 @@ public class SparkBladeItem extends SwordItem {
             }
             entity.push(direction.x * 0.25, 0.25, direction.z * 0.25);
             if (entity instanceof LivingEntity livingEntity) {
-                livingEntity.addEffect(new MobEffectInstance(AlkahestMobEffects.ELECTRIFIED.get(), 100, 0));
+                livingEntity.addEffect(new MobEffectInstance(OPMobEffects.ELECTRIFIED.get(), 100, 0));
             }
             attacker.swing(InteractionHand.MAIN_HAND);
         }

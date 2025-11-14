@@ -22,6 +22,7 @@ public class OPTiers {
     }
 
     public static class OPItemTiers {
+        public static final Tier BONE = new OPItemTier(2, 192, 6.0F, 2.0F, 9, () -> Ingredient.of(Tags.Items.BONES));
         public static final Tier VILE = new OPItemTier(0, 224, 3.0F, 0.0F, 8, () -> Ingredient.of(OPBlocks.SLUG_EGGS.get()));
         public static final Tier EMERALD = new OPItemTier(3, 1561, 8.0F, 3.0F, 14, () -> Ingredient.of(Tags.Items.GEMS_EMERALD));
         public static final Tier UMBER = new OPItemTier(2, 196, 6.0F, 1.0F, 10, () -> Ingredient.of(OPItems.UMBER_FANG.get()));

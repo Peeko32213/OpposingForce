@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.registry;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.items.*;
 import com.unusualmodding.opposing_force.items.armor.*;
+import com.unusualmodding.opposing_force.items.tools.*;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
@@ -51,11 +52,19 @@ public class OPItems {
     // Hanging Spider
     public static final RegistryObject<Item> HANGING_SPIDER_SPAWN_EGG = registerSpawnEggItem("hanging_spider", OPEntities.HANGING_SPIDER, 0x2c231e, 0xf5e83b);
 
+    // Ladybug
+    public static final RegistryObject<Item> LADYBUG_SPAWN_EGG = registerSpawnEggItem("ladybug", OPEntities.LADYBUG, 0xd03434, 0x110d17);
+
     // Nymph
 //    public static final RegistryObject<Item> NYMPH_SPAWN_EGG = registerSpawnEggItem("nymph", OPEntities.NYMPH , 0x271c15, 0x678349);
 
     // Rambler
-    public static final RegistryObject<Item> RAMBLER_SPAWN_EGG = registerSpawnEggItem("rambler", OPEntities.RAMBLER, 0xb0ac8f, 0x998d6d);
+    public static final RegistryObject<Item> RAMBLER_SPAWN_EGG = registerSpawnEggItem("rambler", OPEntities.RAMBLER, 0xededcf, 0x685944);
+    public static final RegistryObject<Item> BONE_SWORD = registerItem("bone_sword", ()-> new BoneSwordItem(new Item.Properties()));
+    public static final RegistryObject<Item> BONE_PICKAXE = registerItem("bone_pickaxe", ()-> new BonePickaxeItem(new Item.Properties()));
+    public static final RegistryObject<Item> BONE_AXE = registerItem("bone_axe", ()-> new BoneAxeItem(new Item.Properties()));
+    public static final RegistryObject<Item> BONE_SHOVEL = registerItem("bone_shovel", ()-> new BoneShovelItem(new Item.Properties()));
+    public static final RegistryObject<Item> BONE_HOE = registerItem("bone_hoe", ()-> new BoneHoeItem(new Item.Properties()));
 
     public static final RegistryObject<Item> ANGRY_RAMBLER_SKULL = registerItemNoLang("angry_rambler_skull", () -> new RamblerSkullItem(OPBlocks.ANGRY_RAMBLER_SKULL.getFirst().get(), OPBlocks.ANGRY_RAMBLER_SKULL.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
     public static final RegistryObject<Item> CLASSIC_RAMBLER_SKULL = registerItemNoLang("classic_rambler_skull", () -> new RamblerSkullItem(OPBlocks.CLASSIC_RAMBLER_SKULL.getFirst().get(), OPBlocks.CLASSIC_RAMBLER_SKULL.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
@@ -75,6 +84,13 @@ public class OPItems {
     public static final RegistryObject<Item> MUSICAL_RAMBLER_SKULL = registerItemNoLang("musical_rambler_skull", () -> new RamblerSkullItem(OPBlocks.MUSICAL_RAMBLER_SKULL.getFirst().get(), OPBlocks.MUSICAL_RAMBLER_SKULL.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
     public static final RegistryObject<Item> NOSY_RAMBLER_SKULL = registerItemNoLang("nosy_rambler_skull", () -> new RamblerSkullItem(OPBlocks.NOSY_RAMBLER_SKULL.getFirst().get(), OPBlocks.NOSY_RAMBLER_SKULL.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
     public static final RegistryObject<Item> VALIANT_RAMBLER_SKULL = registerItemNoLang("valiant_rambler_skull", () -> new RamblerSkullItem(OPBlocks.VALIANT_RAMBLER_SKULL.getFirst().get(), OPBlocks.VALIANT_RAMBLER_SKULL.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
+
+    // Skyvern
+    public static final RegistryObject<Item> SKYVERN_SPAWN_EGG = registerSpawnEggItem("skyvern", OPEntities.SKYVERN, 0xf0e2e7, 0x124077);
+    public static final RegistryObject<Item> SKYVERN_CLAW = registerItem("skyvern_claw", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> SKYVERN_EGG = registerItem("skyvern_egg", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> STRATO_BOW = registerItem("strato_bow", () -> new StratoBowItem(new Item.Properties().stacksTo(1).defaultDurability(1341)));
+    public static final RegistryObject<Item> SKYVERN_HEAD = registerItemNoLang("skyvern_head", () -> new MobHeadItem(OPBlocks.SKYVERN_HEAD.getFirst().get(), OPBlocks.SKYVERN_HEAD.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
 
     // Slug
     public static final RegistryObject<Item> SLUG_SPAWN_EGG = registerSpawnEggItem("slug", OPEntities.SLUG , 0x7a7139, 0x2e2411);
@@ -127,11 +143,11 @@ public class OPItems {
     public static final RegistryObject<Item> EMERALD_CHESTPLATE = registerItem("emerald_chestplate", ()-> new ConfigurableArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties().rarity(Rarity.UNCOMMON), OPArmorDefinitions.EMERALD));
     public static final RegistryObject<Item> EMERALD_LEGGINGS = registerItem("emerald_leggings", ()-> new ConfigurableArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.UNCOMMON), OPArmorDefinitions.EMERALD));
     public static final RegistryObject<Item> EMERALD_BOOTS = registerItem("emerald_boots", ()-> new ConfigurableArmorItem(ArmorItem.Type.BOOTS, new Item.Properties().rarity(Rarity.UNCOMMON), OPArmorDefinitions.EMERALD));
-    public static final RegistryObject<Item> EMERALD_SWORD = registerItem("emerald_sword", ()-> new EmeraldSwordItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> EMERALD_PICKAXE = registerItem("emerald_pickaxe", ()-> new EmeraldPickaxeItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> EMERALD_AXE = registerItem("emerald_axe", ()-> new EmeraldAxeItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> EMERALD_SHOVEL = registerItem("emerald_shovel", ()-> new EmeraldShovelItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> EMERALD_HOE = registerItem("emerald_hoe", ()-> new EmeraldHoeItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERALD_SWORD = registerItem("emerald_sword", ()-> new ConfigurableSwordItem(OPToolDefinitions.EMERALD, 3, -2.4F, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERALD_PICKAXE = registerItem("emerald_pickaxe", ()-> new ConfigurablePickaxetem(OPToolDefinitions.EMERALD, 1, -2.8F, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERALD_AXE = registerItem("emerald_axe", ()-> new ConfigurableAxeItem(OPToolDefinitions.EMERALD, 5, -3.0F, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERALD_SHOVEL = registerItem("emerald_shovel", ()-> new ConfigurableShovelItem(OPToolDefinitions.EMERALD, 1.5F, -3.0F, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> EMERALD_HOE = registerItem("emerald_hoe", ()-> new ConfigurableHoeItem(OPToolDefinitions.EMERALD, -3, 0.0F, new Item.Properties().rarity(Rarity.UNCOMMON)));
 
     // wooden
     public static final RegistryObject<Item> WOODEN_MASK = registerItem("wooden_mask", ()-> new WoodenArmorItem(ArmorItem.Type.HELMET, new Item.Properties()));

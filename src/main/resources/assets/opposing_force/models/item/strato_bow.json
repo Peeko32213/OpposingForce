@@ -1,0 +1,31 @@
+{
+  "parent": "opposing_force:item/strato_bow_standby",
+  "overrides": [
+    {
+      "predicate": {
+        "opposing_force:pulling": 0
+      },
+      "model": "opposing_force:item/strato_bow_standby"
+    },
+    {
+      "predicate": {
+        "opposing_force:pulling": 1
+      },
+      "model": "opposing_force:item/strato_bow_pulling_0"
+    },
+    {
+      "predicate": {
+        "opposing_force:pulling": 1,
+        "opposing_force:pull": 0.65
+      },
+      "model": "opposing_force:item/strato_bow_pulling_1"
+    },
+    {
+      "predicate": {
+        "opposing_force:pulling": 1,
+        "opposing_force:pull": 0.9
+      },
+      "model": "opposing_force:item/strato_bow_pulling_2"
+    }
+  ]
+}

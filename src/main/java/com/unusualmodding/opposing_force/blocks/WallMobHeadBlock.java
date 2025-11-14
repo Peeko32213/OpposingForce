@@ -43,12 +43,12 @@ public class WallMobHeadBlock extends BaseEntityBlock implements Equipable {
         )
     );
 
-    private static final Map<Direction, VoxelShape> WHIZZ_AABBS = Maps.newEnumMap(
+    private static final Map<Direction, VoxelShape> SKYVERN_AABBS = Maps.newEnumMap(
             ImmutableMap.of(
-                    Direction.NORTH, Block.box(4, 4, 8, 12, 10, 16),
-                    Direction.SOUTH, Block.box(4, 4, 0, 12, 10, 8),
-                    Direction.EAST, Block.box(0, 4, 4, 8, 10, 12),
-                    Direction.WEST, Block.box(8, 4, 4, 16, 10, 12)
+                    Direction.NORTH, Block.box(2, 2, 4, 14, 14, 16),
+                    Direction.SOUTH, Block.box(2, 2, 0, 14, 14, 12),
+                    Direction.EAST,  Block.box(0, 2, 2, 12, 14, 14),
+                    Direction.WEST,  Block.box(4, 2, 2, 16, 14, 14)
             )
     );
 
@@ -61,6 +61,15 @@ public class WallMobHeadBlock extends BaseEntityBlock implements Equipable {
             )
     );
 
+    private static final Map<Direction, VoxelShape> WHIZZ_AABBS = Maps.newEnumMap(
+            ImmutableMap.of(
+                    Direction.NORTH, Block.box(4, 4, 8, 12, 10, 16),
+                    Direction.SOUTH, Block.box(4, 4, 0, 12, 10, 8),
+                    Direction.EAST, Block.box(0, 4, 4, 8, 10, 12),
+                    Direction.WEST, Block.box(8, 4, 4, 16, 10, 12)
+            )
+    );
+
     public WallMobHeadBlock(MobHeadBlock.Type type, Properties properties) {
         super(properties);
         this.type = type;
@@ -69,8 +78,9 @@ public class WallMobHeadBlock extends BaseEntityBlock implements Equipable {
 
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos, @NotNull CollisionContext context) {
-        if (this.type == MobHeadBlock.Types.WHIZZ) return WHIZZ_AABBS.get(state.getValue(FACING));
+        if (this.type == MobHeadBlock.Types.SKYVERN) return SKYVERN_AABBS.get(state.getValue(FACING));
         else if (this.type == MobHeadBlock.Types.TART) return TART_AABBS.get(state.getValue(FACING));
+        else if (this.type == MobHeadBlock.Types.WHIZZ) return WHIZZ_AABBS.get(state.getValue(FACING));
         else return AABBS.get(state.getValue(FACING));
     }
 
@@ -131,8 +141,7 @@ public class WallMobHeadBlock extends BaseEntityBlock implements Equipable {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
         if (level.isClientSide) {
-            boolean shouldAnimate = state.is(OPBlocks.WHIZZ_HEAD.getFirst().get()) || state.is(OPBlocks.WHIZZ_HEAD.getSecond().get());
-            if (shouldAnimate) {
+            if (MobHeadBlock.shouldAnimate(state)) {
                 return createTickerHelper(type, OPBlockEntityTypes.MOB_HEAD.get(), MobHeadBlockEntity::animation);
             }
         }

@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.blocks.MobHeadBlock;
 import com.unusualmodding.opposing_force.blocks.WallMobHeadBlock;
@@ -53,6 +54,7 @@ public class MobHeadBlockEntityRenderer implements BlockEntityRenderer<MobHeadBl
         map.put(MobHeadBlock.Types.RAMBLER_SMILING, OpposingForce.modPrefix("textures/entity/rambler/skulls/smiling.png"));
         map.put(MobHeadBlock.Types.RAMBLER_STRANGE, OpposingForce.modPrefix("textures/entity/rambler/skulls/strange.png"));
         map.put(MobHeadBlock.Types.RAMBLER_VALIANT, OpposingForce.modPrefix("textures/entity/rambler/skulls/valiant.png"));
+        map.put(MobHeadBlock.Types.SKYVERN, OpposingForce.modPrefix("textures/entity/skyvern/cloudy.png"));
         map.put(MobHeadBlock.Types.TART, OpposingForce.modPrefix("textures/entity/tart.png"));
         map.put(MobHeadBlock.Types.WHIZZ, OpposingForce.modPrefix("textures/entity/whizz/whizz.png"));
     });
@@ -77,6 +79,7 @@ public class MobHeadBlockEntityRenderer implements BlockEntityRenderer<MobHeadBl
         builder.put(MobHeadBlock.Types.RAMBLER_SMILING, new RamblerSkullModel(root.bakeLayer(OPModelLayers.RAMBLER_SKULL)));
         builder.put(MobHeadBlock.Types.RAMBLER_STRANGE, new RamblerSkullModel(root.bakeLayer(OPModelLayers.RAMBLER_SKULL)));
         builder.put(MobHeadBlock.Types.RAMBLER_VALIANT, new RamblerSkullModel(root.bakeLayer(OPModelLayers.RAMBLER_SKULL)));
+        builder.put(MobHeadBlock.Types.SKYVERN, new SkyvernHeadModel(root.bakeLayer(OPModelLayers.SKYVERN_HEAD)));
         builder.put(MobHeadBlock.Types.TART, new TartHeadModel(root.bakeLayer(OPModelLayers.TART_HEAD)));
         builder.put(MobHeadBlock.Types.WHIZZ, new WhizzHeadModel(root.bakeLayer(OPModelLayers.WHIZZ_HEAD)));
         return builder.build();
@@ -118,6 +121,33 @@ public class MobHeadBlockEntityRenderer implements BlockEntityRenderer<MobHeadBl
                     poseStack.translate(0.0F, -0.1F, 0.0F);
                 }
             }
+            if (type == MobHeadBlock.Types.SKYVERN) {
+                if (context == ItemDisplayContext.GUI) {
+                    poseStack.scale(0.34F, 0.34F, 0.34F);
+                    poseStack.translate(0.0F, -0.1F, 0.0F);
+                }
+                if (context == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND) {
+                    poseStack.scale(0.3F, 0.3F, 0.3F);
+                    poseStack.translate(0.0F, -1F, 0.0F);
+                    poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+                }
+                if (context == ItemDisplayContext.FIRST_PERSON_LEFT_HAND) {
+                    poseStack.scale(0.3F, 0.3F, 0.3F);
+                    poseStack.translate(0.0F, -1F, 0.0F);
+                    poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+                }
+                if (context == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND) {
+                    poseStack.scale(0.5F, 0.5F, 0.5F);
+                    poseStack.mulPose(Axis.YN.rotationDegrees(180.0F));
+                }
+                if (context == ItemDisplayContext.THIRD_PERSON_LEFT_HAND) {
+                    poseStack.scale(0.5F, 0.5F, 0.5F);
+                    poseStack.mulPose(Axis.YN.rotationDegrees(180.0F));
+                }
+                if (context == ItemDisplayContext.GROUND) {
+                    poseStack.scale(0.5F, 0.5F, 0.5F);
+                }
+            }
             if (type == MobHeadBlock.Types.WHIZZ) {
                 if (context == ItemDisplayContext.GUI) {
                     poseStack.scale(0.75F, 0.75F, 0.75F);
@@ -132,10 +162,13 @@ public class MobHeadBlockEntityRenderer implements BlockEntityRenderer<MobHeadBl
         }
 
         if (isLayer) {
+            poseStack.scale(1, 1,1);
+            if (type == MobHeadBlock.Types.SKYVERN) {
+                poseStack.scale(0.8125F, 0.8125F,0.8125F);
+            }
             if (type == MobHeadBlock.Types.WHIZZ) {
                 poseStack.translate(0.0F, -0.1F, 0.0F);
             }
-            poseStack.scale(1, 1,1);
         }
 
         modelBase.setupAnim(v1, v, 0);

@@ -1,4 +1,4 @@
-// 1.20.1	2025-11-11T19:45:21.3223346	Recipes
+// 1.20.1	2025-11-13T18:30:53.0014306	Recipes
 19b9af45401a2eea7cbaccf470cc125ee7fee81b data/minecraft/advancements/recipes/food/enchanted_golden_apple.json
 4e6fce234df08980a5f8e058b9497c4d9d72a986 data/minecraft/recipes/enchanted_golden_apple.json
 139da0a86e8b183e3a1799119694c7bc0b55d53e data/opposing_force/advancements/recipes/building_blocks/chiseled_vile_stone_bricks.json
@@ -46,6 +46,7 @@ a2e5be8aa43d803a9a1b52bd0f5706b16d8463ee data/opposing_force/advancements/recipe
 8033562b7c277f414b75b13a9fea5e342c5b7106 data/opposing_force/advancements/recipes/combat/stone_chestplate.json
 eb7b0fdc0bab97db359b9c1b418b874a1f00cce0 data/opposing_force/advancements/recipes/combat/stone_helmet.json
 80e5b0787c13b4d075232bbbf01b81831925b30e data/opposing_force/advancements/recipes/combat/stone_leggings.json
+da53d4de85307f2fef2b85c471383ce0abffae2c data/opposing_force/advancements/recipes/combat/strato_bow.json
 b1b62295b6a16a30e6b70193d4336e9faa6787d1 data/opposing_force/advancements/recipes/combat/tesla_cannon.json
 5b8ec5743f8163a8d69108a72bea8eabf0abe238 data/opposing_force/advancements/recipes/combat/tomahawk.json
 08930c6742f76d96a63b66a4f6e585e951a88df3 data/opposing_force/advancements/recipes/combat/umber_dagger.json
@@ -84,6 +85,7 @@ b0c131639f8d90f11b6afb1e3a54c2f7946fe6ef data/opposing_force/recipes/fried_terro
 067f2677f3d5243acbbb3e7c7924685959af5dae data/opposing_force/recipes/stone_chestplate.json
 33808b9290a55144d15cbc78673f891972581923 data/opposing_force/recipes/stone_helmet.json
 c4676facd5d41e416ced9c75808123396ad4af92 data/opposing_force/recipes/stone_leggings.json
+93ef843ce6a5b969d3dab256aca6d8c10c9c63d9 data/opposing_force/recipes/strato_bow.json
 c0d237b4df6762fd6b0f50dcb0cf7c427d3359fb data/opposing_force/recipes/tesla_cannon.json
 b6fe5bab79b6678ae663dfdab5f1ec2250297428 data/opposing_force/recipes/tomahawk.json
 77101d5f8b4acb943b87f3266ab5c0784ac7e174 data/opposing_force/recipes/trembling_block.json

@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.mixins.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unusualmodding.opposing_force.client.renderer.gui.ElectrifiedHeartType;
 import com.unusualmodding.opposing_force.client.renderer.gui.GloomToxinHeartType;
 import com.unusualmodding.opposing_force.registry.OPMobEffects;
 import net.minecraft.client.Minecraft;
@@ -24,14 +25,27 @@ public abstract class GuiMixin {
 
     @Unique
     private static boolean opposingForce$hasAnyCustomHearts(Player player) {
-        return player.hasEffect(OPMobEffects.GLOOM_TOXIN.get());
+        return player.hasEffect(OPMobEffects.GLOOM_TOXIN.get()) || player.hasEffect(OPMobEffects.ELECTRIFIED.get());
     }
 
     @Inject(method = "renderHeart", at = @At("HEAD"), cancellable = true)
     private void opposingForce$renderHeart(GuiGraphics stack, Gui.HeartType __, int x, int y, int v, boolean blinking, boolean halfHeart, CallbackInfo cbi) {
         if (!blinking && opposingForce$drawForHeartType(__) && Minecraft.getInstance().cameraEntity instanceof Player player && opposingForce$hasAnyCustomHearts(player)) {
 
+            ElectrifiedHeartType electrified = ElectrifiedHeartType.getType(player);
             GloomToxinHeartType gloomToxin = GloomToxinHeartType.getType(player);
+
+            if (electrified != null) {
+                boolean hardcore = player.level().getLevelData().isHardcore();
+                Pair<Integer, Integer> pos = electrified.getHeartPos(hardcore);
+                if (halfHeart) {
+                    pos = electrified.getHalfHeartPos(hardcore);
+                }
+                RenderSystem.setShaderTexture(0, ElectrifiedHeartType.ATLAS);
+                stack.blit(ElectrifiedHeartType.ATLAS, x, y, pos.getLeft(), pos.getRight(), 9, 9, ElectrifiedHeartType.ATLAS_W, ElectrifiedHeartType.ATLAS_H);
+                RenderSystem.setShaderTexture(0, Gui.GUI_ICONS_LOCATION);
+                cbi.cancel();
+            }
 
             if (gloomToxin != null) {
                 boolean hardcore = player.level().getLevelData().isHardcore();

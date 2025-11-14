@@ -169,6 +169,7 @@ public class ForgeEvents {
                     looking == OPEntities.DICER.get() && headStack.is(OPItems.DICER_HEAD.get()) ||
                     looking == OPEntities.FROWZY.get() && headStack.is(OPItems.FROWZY_HEAD.get()) ||
                     looking == OPEntities.RAMBLER.get() && headStack.is(OPItemTags.RAMBLER_SKULLS) ||
+                    looking == OPEntities.SKYVERN.get() && headStack.is(OPItems.SKYVERN_HEAD.get()) ||
                     looking == OPEntities.TART.get() && headStack.is(OPItems.TART_HEAD.get()) ||
                     looking == OPEntities.WHIZZ.get() && headStack.is(OPItems.WHIZZ_HEAD.get())
             ) {

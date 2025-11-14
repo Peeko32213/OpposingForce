@@ -3,8 +3,10 @@ package com.unusualmodding.opposing_force.events;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.armor.*;
 import com.unusualmodding.opposing_force.client.models.entity.*;
+import com.unusualmodding.opposing_force.client.models.entity.skyvern.*;
 import com.unusualmodding.opposing_force.client.models.mob_heads.*;
 import com.unusualmodding.opposing_force.client.particles.*;
+import com.unusualmodding.opposing_force.client.particles.lightning.LightningParticle;
 import com.unusualmodding.opposing_force.client.renderer.*;
 import com.unusualmodding.opposing_force.client.renderer.blocks.*;
 import com.unusualmodding.opposing_force.items.BlasterItem;
@@ -35,6 +37,7 @@ public final class ClientEvents {
         event.registerSpriteSet(OPParticles.MOON_SHOES.get(), MoonShoesParticle.Factory::new);
         event.registerSpriteSet(OPParticles.LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
         event.registerSpriteSet(OPParticles.DYED_SWEEP.get(), LaserSweepParticle.DyedFactory::new);
+        event.registerSpecial(OPParticles.LIGHTNING.get(), new LightningParticle.Factory());
     }
 
     @SubscribeEvent
@@ -50,10 +53,14 @@ public final class ClientEvents {
         event.registerEntityRenderer(OPEntities.FROWZY.get(), FrowzyRenderer::new);
         event.registerEntityRenderer(OPEntities.GUZZLER.get(), GuzzlerRenderer::new);
         event.registerEntityRenderer(OPEntities.HANGING_SPIDER.get(), HangingSpiderRenderer::new);
+        event.registerEntityRenderer(OPEntities.LADYBUG.get(), LadybugRenderer::new);
 //        event.registerEntityRenderer(OPEntities.NYMPH.get(), NymphRenderer::new);
         event.registerEntityRenderer(OPEntities.KINETIC_BOMB.get(), KineticBombRenderer::new);
         event.registerEntityRenderer(OPEntities.LIGHTNING_BOMB.get(), LightningBombRenderer::new);
         event.registerEntityRenderer(OPEntities.RAMBLER.get(), RamblerRenderer::new);
+        event.registerEntityRenderer(OPEntities.SKYVERN.get(), SkyvernHeadRenderer::new);
+        event.registerEntityRenderer(OPEntities.SKYVERN_SEGMENT.get(), SkyvernSegmentRenderer::new);
+        event.registerEntityRenderer(OPEntities.STRATO_ARROW.get(), StratoArrowRenderer::new);
         event.registerEntityRenderer(OPEntities.SLUG.get(), SlugRenderer::new);
         event.registerEntityRenderer(OPEntities.TART.get(), TartRenderer::new);
         event.registerEntityRenderer(OPEntities.TERROR.get(), TerrorRenderer::new);
@@ -76,9 +83,14 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.FROWZY_HEAD, FrowzyHeadModel::createHeadLayer);
         event.registerLayerDefinition(OPModelLayers.GUZZLER, GuzzlerModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.HANGING_SPIDER, HangingSpiderModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.LADYBUG, LadybugModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.NYMPH, NymphModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.RAMBLER, RamblerModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.RAMBLER_SKULL, RamblerSkullModel::createSkullLayer);
+        event.registerLayerDefinition(OPModelLayers.SKYVERN, SkyvernModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.SKYVERN_BODY, SkyvernBodyModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.SKYVERN_TAIL, SkyvernTailModel::createBodyLayer);
+        event.registerLayerDefinition(OPModelLayers.SKYVERN_HEAD, SkyvernHeadModel::createHeadLayer);
         event.registerLayerDefinition(OPModelLayers.SLUG, SlugModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.TART, TartModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.TART_HEAD, TartHeadModel::createHeadLayer);
@@ -90,10 +102,8 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.WHIZZ, WhizzModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.WHIZZ_HEAD, WhizzHeadModel::createHeadLayer);
         event.registerLayerDefinition(OPModelLayers.LASER_BOLT, LaserBoltModel::createProjectileLayer);
-    }
 
-    @SubscribeEvent
-    public static void registerArmorLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        // Armor
         event.registerLayerDefinition(OPModelLayers.MOON_SHOES, MoonShoesModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.DEEPWOVEN_ARMOR, DeepwovenArmorModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.WOODEN_ARMOR, WoodenArmorModel::createArmorLayer);

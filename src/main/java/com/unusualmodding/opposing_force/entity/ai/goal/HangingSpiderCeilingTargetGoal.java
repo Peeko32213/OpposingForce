@@ -1,6 +1,5 @@
 package com.unusualmodding.opposing_force.entity.ai.goal;
 
-import com.unusualmodding.opposing_force.data.OPEntityTagProvider;
 import com.unusualmodding.opposing_force.entity.HangingSpider;
 import com.unusualmodding.opposing_force.registry.tags.OPEntityTypeTags;
 import net.minecraft.core.BlockPos;

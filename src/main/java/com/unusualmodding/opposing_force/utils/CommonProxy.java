@@ -1,27 +1,24 @@
 package com.unusualmodding.opposing_force.utils;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
-import com.unusualmodding.opposing_force.entity.projectile.Tomahawk;
-import com.unusualmodding.opposing_force.entity.projectile.UmberDagger;
+import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.events.ScreenShakeEvent;
-import com.unusualmodding.opposing_force.items.MobHeadItem;
-import com.unusualmodding.opposing_force.registry.OPItems;
-import net.minecraft.core.Position;
-import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
+import com.unusualmodding.opposing_force.world.SkyvernSpawner;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = OpposingForce.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonProxy {
+
+    private static final Map<ServerLevel, SkyvernSpawner> SKYVERN_SPAWNER_MAP = new HashMap<>();
 
     public void init() {
     }
@@ -40,5 +37,16 @@ public class CommonProxy {
     }
 
     public void clearSoundCacheFor(Entity entity) {
+    }
+
+    @SubscribeEvent
+    public void onServerTick(TickEvent.LevelTickEvent tick) {
+        if (!tick.level.isClientSide && tick.level instanceof ServerLevel serverLevel && OpposingForceConfig.SKYVERN_SPAWNING.get() && tick.level.getDifficulty() != Difficulty.PEACEFUL) {
+            if (SKYVERN_SPAWNER_MAP.get(serverLevel) == null) {
+                SKYVERN_SPAWNER_MAP.put(serverLevel, new SkyvernSpawner(serverLevel));
+            }
+            SkyvernSpawner spawner = SKYVERN_SPAWNER_MAP.get(serverLevel);
+            spawner.tick();
+        }
     }
 }

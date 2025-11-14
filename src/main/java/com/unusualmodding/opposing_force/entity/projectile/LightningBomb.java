@@ -1,13 +1,12 @@
 package com.unusualmodding.opposing_force.entity.projectile;
 
-import com.unusualmodding.alkahest.registry.AlkahestMobEffects;
 import com.unusualmodding.opposing_force.registry.OPEntities;
+import com.unusualmodding.opposing_force.registry.OPMobEffects;
 import com.unusualmodding.opposing_force.utils.OPMath;
 import com.unusualmodding.opposing_force.utils.ParticleUtils;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -56,20 +55,11 @@ public class LightningBomb extends AbstractBomb {
             if (entity.distanceToSqr(location) > radius * radius || !OPMath.hasLineOfSight(this, entity)) {
                 continue;
             }
-//            float scaledDistance = (float) (1 - (entity.position().distanceTo(location) / radius));
-//            float damage = Mth.lerp(Mth.sqrt(scaledDistance), 8, 16);
-//            Vec3 knockback = entity.position().add(0, entity.getBbHeight() * 0.5, 0).subtract(location).normalize().scale(Mth.sqrt(scaledDistance));
-//            entity.hurt(entity.damageSources().explosion(this, this.getOwner()), damage);
             if (entity instanceof LivingEntity livingEntity) {
                 this.doKnockback(livingEntity, 1, 1);
                 this.doDamage(livingEntity, 6, 12);
-                livingEntity.addEffect(new MobEffectInstance(AlkahestMobEffects.ELECTRIFIED.get(), 300), this.getOwner());
-//                if (livingEntity.isDamageSourceBlocked(entity.damageSources().explosion(this, this.getOwner()))) {
-//                    knockback = knockback.scale(3);
-//                }
+                livingEntity.addEffect(new MobEffectInstance(OPMobEffects.ELECTRIFIED.get(), 300), this.getOwner());
             }
-//            entity.setOnGround(false);
-//            entity.setDeltaMovement(entity.getDeltaMovement().add(knockback));
         }
     }
 

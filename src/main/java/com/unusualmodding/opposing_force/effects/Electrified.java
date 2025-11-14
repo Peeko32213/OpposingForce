@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.effects;
 
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,16 +13,22 @@ public class Electrified extends MobEffect {
         super(MobEffectCategory.HARMFUL, 0x0080c3);
     }
 
+    @Override
     public void applyEffectTick(LivingEntity entity, int amplifier) {
-        if (entity.isInWaterRainOrBubble()) {
-            entity.hurt(entity.damageSources().source(OPDamageTypes.ELECTRIFIED), 2.0F + (amplifier * 1.5F));
-            if (entity.tickCount % 10 == 0 && entity.isAlive()) {
-                entity.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 1.0F, 1.0F / (entity.getRandom().nextFloat() * 0.4F + 0.8F));
+        if (entity.isInWaterRainOrBubble() && entity.isAlive() && !entity.level().isClientSide()) {
+            if (entity.hurt(entity.damageSources().source(OPDamageTypes.ELECTRIFIED), 2.0F)) {
+                entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entity.getRandom().nextFloat() * 0.4F + 0.8F));
             }
         }
     }
 
+    @Override
     public boolean isDurationEffectTick(int duration, int amplifier) {
-        return duration > 0;
+        int j = 20 >> amplifier;
+        if (j > 0) {
+            return duration % j == 0;
+        } else {
+            return true;
+        }
     }
 }
