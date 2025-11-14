@@ -2,8 +2,11 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
+import com.unusualmodding.opposing_force.entity.ai.goal.whizz.WhizzAttackGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.whizz.WhizzSwarmGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.whizz.WhizzWakeUpFriendsGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.whizz.WhizzWanderGoal;
 import com.unusualmodding.opposing_force.entity.base.SummonableMonster;
-import com.unusualmodding.opposing_force.entity.base.TameableMonster;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;

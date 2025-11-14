@@ -1,6 +1,7 @@
-package com.unusualmodding.opposing_force.entity.ai.goal;
+package com.unusualmodding.opposing_force.entity.ai.goal.frowzy;
 
 import com.unusualmodding.opposing_force.entity.Frowzy;
+import com.unusualmodding.opposing_force.entity.ai.goal.AttackGoal;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.world.InteractionHand;

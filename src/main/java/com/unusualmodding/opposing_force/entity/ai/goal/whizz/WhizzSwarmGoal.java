@@ -1,4 +1,4 @@
-package com.unusualmodding.opposing_force.entity.ai.goal;
+package com.unusualmodding.opposing_force.entity.ai.goal.whizz;
 
 import com.mojang.datafixers.DataFixUtils;
 import com.unusualmodding.opposing_force.entity.Whizz;

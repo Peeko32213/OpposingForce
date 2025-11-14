@@ -121,17 +121,18 @@ public class SkyvernChargeGoal extends Goal {
             }
 
             if (timer > 16) {
-                double dx = -Mth.sin(skyvern.getYRot() * ((float) Math.PI / 180F)) * 2.0F;
-                double dz = Mth.cos(skyvern.getYRot() * ((float) Math.PI / 180F)) * 2.0F;
-                this.skyvern.setDeltaMovement(dx, skyvern.getDeltaMovement().y, dz);
+                Vec3 rollDirection = new Vec3(target.getX() - skyvern.getX(), target.getY() - skyvern.getY(), target.getZ() - skyvern.getZ()).normalize();
+                float YRot = Mth.approachDegrees(skyvern.getYRot(), (float) (Mth.atan2(rollDirection.z, rollDirection.x) * (180F / Math.PI)) - 90.0F, 1.5F);
+                this.skyvern.setYRot(YRot);
+                this.skyvern.setYBodyRot(YRot);
+                this.skyvern.setDeltaMovement(-Mth.sin(YRot * ((float) Math.PI / 180F)) * 1.75F, skyvern.getDeltaMovement().y, Mth.cos(YRot * ((float) Math.PI / 180F)) * 1.75F);
                 this.hurtNearbyEntities();
-                this.skyvern.setYRot(this.skyvern.getYHeadRot());
             }
 
-            if (timer > 32 || collisionTicks > 20) {
+            if (timer == 32 || collisionTicks > 20) {
                 this.clockwise = skyvern.getRandom().nextBoolean();
                 this.skyvern.setPose(OPPoses.ATTACK_END.get());
-                this.maxOrbitTime = 40 + skyvern.getRandom().nextInt(20);
+                this.maxOrbitTime = 40 + skyvern.getRandom().nextInt(40);
                 this.startOrbitFrom = target.getEyePosition();
                 this.timer = 0;
                 this.skyvern.setAttackState(0);
@@ -164,6 +165,6 @@ public class SkyvernChargeGoal extends Goal {
         if (target == null) {
             return false;
         }
-        return Math.abs(target.getY() - skyvern.getY()) < 4 && skyvern.distanceTo(target) < 32 && !(skyvern.getY() < target.getY());
+        return Math.abs(target.getY() - skyvern.getY()) < 4 && skyvern.distanceTo(target) < 64 && !(skyvern.getY() < target.getY());
     }
 }

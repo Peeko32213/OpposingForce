@@ -1,4 +1,4 @@
-package com.unusualmodding.opposing_force.entity.ai.goal;
+package com.unusualmodding.opposing_force.entity.ai.goal.frowzy;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;

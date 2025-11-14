@@ -702,6 +702,24 @@
     ],
     "subtitle": "subtitles.opposing_force.terror_idle"
   },
+  "terror_saw": {
+    "sounds": [
+      "opposing_force:entity/terror/saw_loop1"
+    ],
+    "subtitle": "subtitles.opposing_force.terror_saw"
+  },
+  "terror_saw_end": {
+    "sounds": [
+      "opposing_force:entity/terror/saw_end1"
+    ],
+    "subtitle": "subtitles.opposing_force.terror_saw_end"
+  },
+  "terror_saw_start": {
+    "sounds": [
+      "opposing_force:entity/terror/saw_start1"
+    ],
+    "subtitle": "subtitles.opposing_force.terror_saw_start"
+  },
   "tesla_bow_charged": {
     "sounds": [
       "opposing_force:item/tesla_bow/charged1"

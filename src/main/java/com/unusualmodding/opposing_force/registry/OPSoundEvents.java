@@ -70,6 +70,9 @@ public class OPSoundEvents {
     public static final RegistryObject<SoundEvent> TERROR_DEATH = registerSoundEvent("terror_death");
     public static final RegistryObject<SoundEvent> TERROR_IDLE = registerSoundEvent("terror_idle");
     public static final RegistryObject<SoundEvent> TERROR_FLOP = registerSoundEvent("terror_flop");
+    public static final RegistryObject<SoundEvent> TERROR_SAW_START = registerSoundEvent("terror_saw_start");
+    public static final RegistryObject<SoundEvent> TERROR_SAW = registerSoundEvent("terror_saw");
+    public static final RegistryObject<SoundEvent> TERROR_SAW_END = registerSoundEvent("terror_saw_end");
 
     public static final RegistryObject<SoundEvent> TESLA_BOW_CHARGED = registerSoundEvent("tesla_bow_charged");
     public static final RegistryObject<SoundEvent> TESLA_BOW_SHOOT = registerSoundEvent("tesla_bow_shoot");

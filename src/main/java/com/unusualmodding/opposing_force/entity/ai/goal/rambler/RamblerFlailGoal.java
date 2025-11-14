@@ -1,6 +1,7 @@
-package com.unusualmodding.opposing_force.entity.ai.goal;
+package com.unusualmodding.opposing_force.entity.ai.goal.rambler;
 
 import com.unusualmodding.opposing_force.entity.Rambler;
+import com.unusualmodding.opposing_force.entity.ai.goal.AttackGoal;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.world.InteractionHand;

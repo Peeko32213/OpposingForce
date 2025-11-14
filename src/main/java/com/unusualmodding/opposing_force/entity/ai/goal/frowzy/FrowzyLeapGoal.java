@@ -1,4 +1,4 @@
-package com.unusualmodding.opposing_force.entity.ai.goal;
+package com.unusualmodding.opposing_force.entity.ai.goal.frowzy;
 
 import com.unusualmodding.opposing_force.entity.Frowzy;
 import net.minecraft.world.entity.LivingEntity;

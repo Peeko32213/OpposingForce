@@ -1,4 +1,4 @@
-package com.unusualmodding.opposing_force.entity.ai.goal;
+package com.unusualmodding.opposing_force.entity.ai.goal.whizz;
 
 import com.unusualmodding.opposing_force.blocks.InfestedAmethystBlock;
 import com.unusualmodding.opposing_force.entity.Whizz;

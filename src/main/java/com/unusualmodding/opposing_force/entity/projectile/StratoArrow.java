@@ -54,7 +54,7 @@ public class StratoArrow extends BaseArrow {
         double z2 = this.getZ() + z1;
 
         if (this.level().isClientSide) {
-            if (this.isCritArrow()) {
+            if (this.isCritArrow() && this.tickCount > 1) {
                 for (int i = 0; i < 2; i++) {
                     this.level().addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), -x1 * 0.1D, -y1 * 0.1D, -z1 * 0.1D);
                 }

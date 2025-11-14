@@ -1,6 +1,7 @@
-package com.unusualmodding.opposing_force.entity.ai.goal;
+package com.unusualmodding.opposing_force.entity.ai.goal.whizz;
 
 import com.unusualmodding.opposing_force.entity.Whizz;
+import com.unusualmodding.opposing_force.entity.ai.goal.AttackGoal;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;

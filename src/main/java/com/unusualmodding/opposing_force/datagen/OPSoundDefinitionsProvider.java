@@ -230,6 +230,15 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound(OpposingForce.modPrefix("entity/terror/idle1")),
                 sound(OpposingForce.modPrefix("entity/terror/idle2"))
         );
+        this.sound(OPSoundEvents.TERROR_SAW_START,
+                sound(OpposingForce.modPrefix("entity/terror/saw_start1"))
+        );
+        this.sound(OPSoundEvents.TERROR_SAW,
+                sound(OpposingForce.modPrefix("entity/terror/saw_loop1"))
+        );
+        this.sound(OPSoundEvents.TERROR_SAW_END,
+                sound(OpposingForce.modPrefix("entity/terror/saw_end1"))
+        );
         this.sound(OPSoundEvents.TERROR_FLOP,
                 sound("entity/fish/flop1").volume(0.3F).pitch(0.8F),
                 sound("entity/fish/flop2").volume(0.3F).pitch(0.8F),

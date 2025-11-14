@@ -1,4 +1,4 @@
-package com.unusualmodding.opposing_force.entity.ai.goal;
+package com.unusualmodding.opposing_force.entity.ai.goal.umber_spider;
 
 import com.unusualmodding.opposing_force.entity.UmberSpider;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;

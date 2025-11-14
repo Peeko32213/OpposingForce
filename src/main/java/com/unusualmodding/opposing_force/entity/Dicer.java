@@ -105,9 +105,7 @@ public class Dicer extends Monster implements AttackState, EliteVariant {
     public void tick() {
         super.tick();
 
-        if (this.getPose() == Pose.STANDING) {
-            if (laserCooldown > 0) laserCooldown--;
-        }
+        if (this.getPose() == Pose.STANDING) if (laserCooldown > 0) laserCooldown--;
 
         if (slashTicks > 0) slashTicks--;
         if (crossSlashTicks > 0) crossSlashTicks--;
@@ -119,9 +117,7 @@ public class Dicer extends Monster implements AttackState, EliteVariant {
         if (tailSpinTicks == 0 && this.getPose() == OPPoses.TAIL_SPINNING.get()) this.setPose(Pose.STANDING);
         if (laserTicks == 0 && this.getPose() == OPPoses.LASERING.get()) this.setPose(Pose.STANDING);
 
-        if (this.level().isClientSide) {
-            this.setupAnimationStates();
-        }
+        if (this.level().isClientSide) this.setupAnimationStates();
     }
 
     private void setupAnimationStates() {

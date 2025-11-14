@@ -28,7 +28,7 @@ public class LadybugFlightGoal extends Goal {
         if (mob.isVehicle() || (mob.getTarget() != null && mob.getTarget().isAlive()) || mob.isPassenger()) {
             return false;
         }
-        if (!mob.isFlying() && mob.getRandom().nextInt(600) != 0) {
+        if (!mob.isFlying() && mob.getRandom().nextInt(800) != 0) {
             return false;
         }
         Vec3 target = this.findFlightPos();
@@ -59,7 +59,7 @@ public class LadybugFlightGoal extends Goal {
         if (mob.isFlying() && mob.onGround() && mob.flightTicks > 40) {
             mob.setFlying(false);
         }
-        if ((mob.isFlying() && mob.flightTicks % 300 == 0 && !isOverWaterOrVoid()) || mob.isInWaterOrBubble()) {
+        if ((mob.isFlying() && mob.getRandom().nextInt(800) == 0 && !isOverWaterOrVoid()) || mob.isInWaterOrBubble()) {
             mob.landingFlag = true;
         }
         if (isOverWaterOrVoid()) {

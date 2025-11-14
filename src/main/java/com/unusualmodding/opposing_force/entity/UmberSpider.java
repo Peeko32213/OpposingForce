@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.OpposingForceConfig;
-import com.unusualmodding.opposing_force.entity.ai.goal.*;
+import com.unusualmodding.opposing_force.entity.ai.goal.umber_spider.*;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
 import com.unusualmodding.opposing_force.registry.OPMobEffects;

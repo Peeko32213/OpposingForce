@@ -1,7 +1,9 @@
 package com.unusualmodding.opposing_force.entity.ai.goal;
 
+import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.entity.Terror;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
+import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
@@ -56,6 +58,7 @@ public class TerrorAttackGoal extends AttackGoal {
                 timer++;
 
                 if (this.timer == 1) {
+                    this.terror.playSound(OPSoundEvents.TERROR_SAW_START.get(), 1.0F, 1.0F);
                     this.terror.setPose(OPPoses.START_SAWING.get());
                 }
 
@@ -69,7 +72,10 @@ public class TerrorAttackGoal extends AttackGoal {
                     this.hurtNearbyEntities();
                 }
 
-                if (timer == 100) this.terror.setPose(OPPoses.RECOVERING.get());
+                if (timer == 100) {
+                    this.terror.setPose(OPPoses.RECOVERING.get());
+                    this.terror.playSound(OPSoundEvents.TERROR_SAW_END.get(), 1.0F, 1.0F);
+                }
 
                 if (timer > 100) {
                     this.terror.getNavigation().moveTo(target, 0.75D);

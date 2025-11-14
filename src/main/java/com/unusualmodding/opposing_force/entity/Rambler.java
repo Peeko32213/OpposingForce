@@ -1,8 +1,8 @@
 package com.unusualmodding.opposing_force.entity;
 
-import com.unusualmodding.opposing_force.entity.ai.goal.RamblerFlailGoal;
-import com.unusualmodding.opposing_force.entity.ai.goal.RamblerJabGoal;
-import com.unusualmodding.opposing_force.entity.ai.goal.RamblerRollGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.rambler.RamblerFlailGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.rambler.RamblerJabGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.rambler.RamblerRollGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;

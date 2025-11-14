@@ -193,6 +193,12 @@ public class Terror extends Monster implements EliteVariant {
         super.tick();
         if (this.level().isClientSide) {
             this.setupAnimationStates();
+            if (this.isAggressive() && this.isAlive() && this.getPose() == OPPoses.SAWING.get()) {
+                OpposingForce.PROXY.playWorldSound(this, (byte) 5);
+            }
+            if (this.getPose() != OPPoses.SAWING.get()) {
+                OpposingForce.PROXY.clearSoundCacheFor(this);
+            }
         } else {
             if (random.nextInt(600) == 0) {
                 this.spinSaw();
@@ -274,6 +280,12 @@ public class Terror extends Monster implements EliteVariant {
             this.spinSawTicks = 40;
             this.spinSawCooldown = 200 + random.nextInt(200);
         }
+    }
+
+    @Override
+    public void remove(Entity.@NotNull RemovalReason reason) {
+        OpposingForce.PROXY.clearSoundCacheFor(this);
+        super.remove(reason);
     }
 
     @Override

@@ -37,7 +37,7 @@ public class MobHeadBlockEntityRenderer implements BlockEntityRenderer<MobHeadBl
 
     public static final Map<MobHeadBlock.Type, ResourceLocation> SKIN_BY_TYPE = Util.make(Maps.newHashMap(), (map) -> {
         map.put(MobHeadBlock.Types.DICER, OpposingForce.modPrefix("textures/entity/dicer/dicer.png"));
-        map.put(MobHeadBlock.Types.FROWZY, OpposingForce.modPrefix("textures/entity/frowzy.png"));
+        map.put(MobHeadBlock.Types.FROWZY, OpposingForce.modPrefix("textures/entity/frowzy/blue.png"));
         map.put(MobHeadBlock.Types.RAMBLER_ANGRY, OpposingForce.modPrefix("textures/entity/rambler/skulls/angry.png"));
         map.put(MobHeadBlock.Types.RAMBLER_CLASSIC, OpposingForce.modPrefix("textures/entity/rambler/skulls/classic.png"));
         map.put(MobHeadBlock.Types.RAMBLER_CRUNDLY, OpposingForce.modPrefix("textures/entity/rambler/skulls/crundly.png"));

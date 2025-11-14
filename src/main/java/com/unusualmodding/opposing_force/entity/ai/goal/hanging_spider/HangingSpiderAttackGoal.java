@@ -1,6 +1,7 @@
-package com.unusualmodding.opposing_force.entity.ai.goal;
+package com.unusualmodding.opposing_force.entity.ai.goal.hanging_spider;
 
 import com.unusualmodding.opposing_force.entity.HangingSpider;
+import com.unusualmodding.opposing_force.entity.ai.goal.AttackGoal;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 

@@ -1,6 +1,7 @@
-package com.unusualmodding.opposing_force.entity.ai.goal;
+package com.unusualmodding.opposing_force.entity.ai.goal.umber_spider;
 
 import com.unusualmodding.opposing_force.entity.UmberSpider;
+import com.unusualmodding.opposing_force.entity.ai.goal.AttackGoal;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.LightLayer;

@@ -11,7 +11,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class LadybugRenderer extends MobRenderer<Ladybug, LadybugModel> {
 
-    private static final ResourceLocation LADYBUG = OpposingForce.modPrefix("textures/entity/ladybug.png");
+    private static final ResourceLocation LADYBUG = OpposingForce.modPrefix("textures/entity/ladybug/ladybug.png");
+    private static final ResourceLocation ELITE_LADYBUG = OpposingForce.modPrefix("textures/entity/ladybug/shady_ladybug.png");
 
     public LadybugRenderer(EntityRendererProvider.Context context) {
         super(context, new LadybugModel(context.bakeLayer(OPModelLayers.LADYBUG)), 0.4F);
@@ -19,6 +20,6 @@ public class LadybugRenderer extends MobRenderer<Ladybug, LadybugModel> {
 
     @Override
     public @NotNull ResourceLocation getTextureLocation(@NotNull Ladybug entity) {
-        return LADYBUG;
+        return entity.isElite() ? ELITE_LADYBUG : LADYBUG;
     }
 }

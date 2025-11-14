@@ -2,7 +2,9 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.OpposingForceConfig;
-import com.unusualmodding.opposing_force.entity.ai.goal.*;
+import com.unusualmodding.opposing_force.entity.ai.goal.frowzy.FrowzyAttackGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.frowzy.FrowzyAttackTurtleEggGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.frowzy.FrowzyLeapGoal;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPItems;

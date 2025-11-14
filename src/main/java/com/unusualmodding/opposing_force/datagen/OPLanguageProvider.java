@@ -141,6 +141,9 @@ public class OPLanguageProvider extends LanguageProvider {
         this.translateSound(OPSoundEvents.TERROR_HURT, "Terror hurts");
         this.translateSound(OPSoundEvents.TERROR_IDLE, "Terror grumbles");
         this.translateSound(OPSoundEvents.TERROR_FLOP, "Terror flops");
+        this.translateSound(OPSoundEvents.TERROR_SAW_START, "Terror starts sawing");
+        this.translateSound(OPSoundEvents.TERROR_SAW, "Terror sawing");
+        this.translateSound(OPSoundEvents.TERROR_SAW_END, "Terror stops sawing");
 
         this.translateSound(OPSoundEvents.TESLA_BOW_CHARGED, "Tesla Bow loads");
         this.translateSound(OPSoundEvents.TESLA_BOW_SHOOT, "Tesla Bow fires");

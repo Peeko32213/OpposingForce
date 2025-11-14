@@ -1,9 +1,9 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.OpposingForceConfig;
-import com.unusualmodding.opposing_force.entity.ai.goal.VoltShootGoal;
-import com.unusualmodding.opposing_force.entity.ai.goal.VoltLeapGoal;
-import com.unusualmodding.opposing_force.entity.ai.goal.VoltShootInWaterGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.volt.VoltShootGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.volt.VoltLeapGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.volt.VoltShootInWaterGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
