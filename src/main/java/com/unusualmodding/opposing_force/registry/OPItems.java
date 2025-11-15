@@ -6,6 +6,7 @@ import com.unusualmodding.opposing_force.items.armor.*;
 import com.unusualmodding.opposing_force.items.tools.*;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.food.FoodProperties;
@@ -171,6 +172,11 @@ public class OPItems {
 
     // discs
     public static final RegistryObject<Item> WALTZ_OF_THE_SLUG_DISC = registerItemNoLang("waltz_of_the_slug_disc", () -> new RecordItem(15, OPSoundEvents.WALTZ_OF_THE_SLUG_DISC, new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 3440));
+
+    // discs
+    public static final RegistryObject<Item> ELECTRIC_BATON = registerItem("electric_baton", () -> new SelfInflictMobEffectItem(new Item.Properties().stacksTo(1).durability(256).rarity(Rarity.RARE), OPMobEffects.ELECTRIFIED));
+
+
 
     private static <I extends Item> RegistryObject<I> registerItem(String name, Supplier<? extends I> supplier) {
         RegistryObject<I> item = ITEMS.register(name, supplier);
