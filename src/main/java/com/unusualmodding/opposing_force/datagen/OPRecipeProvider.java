@@ -65,8 +65,8 @@ public class OPRecipeProvider extends RecipeProvider {
 
         ShapedRecipeBuilder.shaped(FOOD, Items.ENCHANTED_GOLDEN_APPLE).define('G', Tags.Items.STORAGE_BLOCKS_GOLD).define('A', Items.APPLE).pattern("GGG").pattern("GAG").pattern("GGG").unlockedBy("has_gold", has(Tags.Items.INGOTS_GOLD)).save(consumer);
 
-        furanceRecipe(RecipeSerializer.SMELTING_RECIPE, List.of(TERROR_LEG.get()), FOOD, FRIED_TERROR_LEG.get(), 0.25f, 200, "_from_smelting", consumer);
-        furanceRecipe(RecipeSerializer.SMOKING_RECIPE, List.of(TERROR_LEG.get()), FOOD, FRIED_TERROR_LEG.get(), 0.25f, 100, "_from_smoking", consumer);
+        furnaceRecipe(RecipeSerializer.SMELTING_RECIPE, List.of(TERROR_LEG.get()), FOOD, FRIED_TERROR_LEG.get(), 0.25f, 200, "_from_smelting", consumer);
+        furnaceRecipe(RecipeSerializer.SMOKING_RECIPE, List.of(TERROR_LEG.get()), FOOD, FRIED_TERROR_LEG.get(), 0.25f, 100, "_from_smoking", consumer);
         ShapelessRecipeBuilder.shapeless(FOOD, SPICY_TERROR_LEG.get(), 1).requires(FIRE_GEL.get()).requires(FRIED_TERROR_LEG.get()).unlockedBy("has_fried_terror_leg", has(FRIED_TERROR_LEG.get())).save(consumer);
 
         ShapedRecipeBuilder.shaped(FOOD, OPBlocks.INFERNO_PIE.get()).define('G', GUZZLER_SCALES.get()).define('F', FIRE_GEL.get()).define('S', Items.SUGAR).define('E', Tags.Items.EGGS).pattern("FFF").pattern("SES").pattern("GGG").unlockedBy("has_fire_gel", has(FIRE_GEL.get())).save(consumer);
@@ -130,8 +130,8 @@ public class OPRecipeProvider extends RecipeProvider {
         return ForgeRegistries.ITEMS.getKey(item.asItem());
     }
 
-    protected static void furanceRecipe(RecipeSerializer<? extends AbstractCookingRecipe> pCookingSerializer,
-                                     List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pRecipeName, Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
+    protected static void furnaceRecipe(RecipeSerializer<? extends AbstractCookingRecipe> pCookingSerializer,
+                                        List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pRecipeName, Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
         for(ItemLike itemlike : pIngredients) {
             SimpleCookingRecipeBuilder.generic(Ingredient.of(itemlike), pCategory, pResult, pExperience, pCookingTime,
                             pCookingSerializer).unlockedBy(getHasName(itemlike), has(itemlike))
