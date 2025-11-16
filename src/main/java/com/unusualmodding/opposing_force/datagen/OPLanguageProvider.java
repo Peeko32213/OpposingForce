@@ -45,6 +45,7 @@ public class OPLanguageProvider extends LanguageProvider {
         OPItems.ITEM_TRANSLATIONS.forEach(this::forItems);
 
         this.addItem(OPItems.INFERNO_PIE_SLICE, "Slice of Inferno Pie");
+        this.addItem(OPItems.RAW_TART, "Raw Tart");
 
         this.forEntity(OPEntities.DICER);
         this.forEntity(OPEntities.EMERALDFISH);

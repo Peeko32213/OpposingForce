@@ -31,8 +31,6 @@ public class OPItemTagProvider extends ItemTagsProvider {
                 UMBER_DAGGER.get()
         ).addOptionalTag(new ResourceLocation("farmersdelight", "tools/knives"));
 
-        this.tag(OPItemTags.PIE_CUTTERS).addTag(OPItemTags.KNIVES).addTag(ItemTags.SWORDS);
-
         this.tag(OPItemTags.RAMBLER_SKULLS).add(
                 ANGRY_RAMBLER_SKULL.get(),
                 CLASSIC_RAMBLER_SKULL.get(),
@@ -119,7 +117,11 @@ public class OPItemTagProvider extends ItemTagsProvider {
                 SLUG_BARON_HELMET.get(),
                 SLUG_BARON_CHESTPLATE.get(),
                 SLUG_BARON_LEGGINGS.get(),
-                SLUG_BARON_BOOTS.get()
+                SLUG_BARON_BOOTS.get(),
+                BONE_HELMET.get(),
+                BONE_CHESTPLATE.get(),
+                BONE_LEGGINGS.get(),
+                BONE_BOOTS.get()
         );
 
         this.tag(Tags.Items.ARMORS_HELMETS).add(
@@ -127,7 +129,8 @@ public class OPItemTagProvider extends ItemTagsProvider {
                 WOODEN_MASK.get(),
                 EMERALD_MASK.get(),
                 STONE_HELMET.get(),
-                SLUG_BARON_HELMET.get()
+                SLUG_BARON_HELMET.get(),
+                BONE_HELMET.get()
         );
 
         this.tag(Tags.Items.ARMORS_CHESTPLATES).add(
@@ -135,7 +138,8 @@ public class OPItemTagProvider extends ItemTagsProvider {
                 WOODEN_CHESTPLATE.get(),
                 EMERALD_CHESTPLATE.get(),
                 STONE_CHESTPLATE.get(),
-                SLUG_BARON_CHESTPLATE.get()
+                SLUG_BARON_CHESTPLATE.get(),
+                BONE_CHESTPLATE.get()
         );
 
         this.tag(Tags.Items.ARMORS_LEGGINGS).add(
@@ -143,7 +147,8 @@ public class OPItemTagProvider extends ItemTagsProvider {
                 WOODEN_COVER.get(),
                 EMERALD_LEGGINGS.get(),
                 STONE_LEGGINGS.get(),
-                SLUG_BARON_LEGGINGS.get()
+                SLUG_BARON_LEGGINGS.get(),
+                BONE_LEGGINGS.get()
         );
 
         this.tag(Tags.Items.ARMORS_BOOTS).add(
@@ -152,7 +157,8 @@ public class OPItemTagProvider extends ItemTagsProvider {
                 EMERALD_BOOTS.get(),
                 STONE_BOOTS.get(),
                 MOON_SHOES.get(),
-                SLUG_BARON_BOOTS.get()
+                SLUG_BARON_BOOTS.get(),
+                BONE_BOOTS.get()
         );
 
         this.tag(Tags.Items.STRING).add(DEEP_SILK.get());

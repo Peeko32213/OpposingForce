@@ -13,6 +13,10 @@ import com.unusualmodding.opposing_force.items.BlasterItem;
 import com.unusualmodding.opposing_force.items.LaserBladeItem;
 import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.FoliageColor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -110,11 +114,24 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.EMERALD_ARMOR, EmeraldArmorModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.STONE_ARMOR, StoneArmorModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.SLUG_BARON_ARMOR, SlugBaronArmorModel::createArmorLayer);
+        event.registerLayerDefinition(OPModelLayers.BONE_ARMOR, BoneArmorModel::createArmorLayer);
     }
 
     @SubscribeEvent
     public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(OPBlockEntityTypes.MOB_HEAD.get(), MobHeadBlockEntityRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
+        event.register((state, world, pos, tintIndex) -> {
+                    if (world == null || pos == null) {
+                        return FoliageColor.getDefaultColor();
+                    }
+                    return BiomeColors.getAverageFoliageColor(world, pos);
+                },
+                OPBlocks.INFESTED_OAK_LEAVES.get()
+        );
     }
 
     @SubscribeEvent
@@ -132,6 +149,12 @@ public final class ClientEvents {
                     return 0xFFFFFF;
                 },
                 OPItems.LASER_BLADE.get()
+        );
+        event.register((stack, tintIndex) -> {
+                    BlockState blockstate = ((BlockItem)stack.getItem()).getBlock().defaultBlockState();
+                    return event.getBlockColors().getColor(blockstate, null, null, tintIndex);
+                },
+                OPBlocks.INFESTED_OAK_LEAVES.get()
         );
     }
 }

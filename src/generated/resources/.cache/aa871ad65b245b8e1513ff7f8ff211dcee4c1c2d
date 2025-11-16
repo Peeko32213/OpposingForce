@@ -1,9 +1,9 @@
-// 1.20.1	2025-11-13T21:07:40.7059341	Tags for minecraft:item mod id opposing_force
-7ca06d8dafd4215690039fd010dab1bff7d5ff19 data/forge/tags/items/armors.json
-d49a96576835aabcbd1ce9ba9048b764942ee9e5 data/forge/tags/items/armors/boots.json
-0afddb188efc1147bcfc2bf335784ba376fd3467 data/forge/tags/items/armors/chestplates.json
-b4f6faea6a5f2cc98fff8c6747478d66823d9709 data/forge/tags/items/armors/helmets.json
-423424c1f81bcb19bed13977c861815b3d8d16d7 data/forge/tags/items/armors/leggings.json
+// 1.20.1	2025-11-15T16:43:57.478189	Tags for minecraft:item mod id opposing_force
+f253183273b478e0a188a4fcecca15612adfda71 data/forge/tags/items/armors.json
+dd984da372e8d84d9c8bc9b1467ce272a82913af data/forge/tags/items/armors/boots.json
+34e3c1a300123be162910b05bcf1b98ce37f0e28 data/forge/tags/items/armors/chestplates.json
+814ff7dca6a5deedee42fe6468175181f53fedba data/forge/tags/items/armors/helmets.json
+e0d334299feb61665a4c7950ecda1df8259046f5 data/forge/tags/items/armors/leggings.json
 02dfdb41688ccea8169a8d046943461f0aa3c361 data/forge/tags/items/berries.json
 e0d067eb5cc3823e9509f98b04be972a1122c97f data/forge/tags/items/eggs.json
 42b3a843ae5c2cee54bdafa9cd297c82b89453fc data/forge/tags/items/fruits.json
@@ -18,6 +18,5 @@ aab8cc36c3a161099727654ff98b5cc3de198890 data/minecraft/tags/items/shovels.json
 582c20e700cf0cfd8ac3110ab317bd3f202ebaf5 data/minecraft/tags/items/swords.json
 5db69586b6c50b2befacf44de1aedc4a5af092fe data/opposing_force/tags/items/blaster_ammo.json
 3dad7227f5898364f7923651bb07b56d4949c73c data/opposing_force/tags/items/knives.json
-ea19c79fe99786b2b6d6b235164d367661b15d50 data/opposing_force/tags/items/pie_cutters.json
 bb96c0da5c01ecc05ce4c955e2cc1b0d0112a329 data/opposing_force/tags/items/rambler_skulls.json
 73b65f8cc30505320b7b2a992214c6ab931aa2e1 data/opposing_force/tags/items/raw_vegetables.json

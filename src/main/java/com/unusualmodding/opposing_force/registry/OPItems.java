@@ -66,7 +66,10 @@ public class OPItems {
     public static final RegistryObject<Item> BONE_AXE = registerItem("bone_axe", ()-> new BoneAxeItem(new Item.Properties()));
     public static final RegistryObject<Item> BONE_SHOVEL = registerItem("bone_shovel", ()-> new BoneShovelItem(new Item.Properties()));
     public static final RegistryObject<Item> BONE_HOE = registerItem("bone_hoe", ()-> new BoneHoeItem(new Item.Properties()));
-
+    public static final RegistryObject<Item> BONE_HELMET = registerItem("bone_helmet", ()-> new ConfigurableArmorItem(ArmorItem.Type.HELMET, new Item.Properties(), OPArmorDefinitions.BONE));
+    public static final RegistryObject<Item> BONE_CHESTPLATE = registerItem("bone_chestplate", ()-> new ConfigurableArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties(), OPArmorDefinitions.BONE));
+    public static final RegistryObject<Item> BONE_LEGGINGS = registerItem("bone_leggings", ()-> new ConfigurableArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties(), OPArmorDefinitions.BONE));
+    public static final RegistryObject<Item> BONE_BOOTS = registerItem("bone_boots", ()-> new ConfigurableArmorItem(ArmorItem.Type.BOOTS, new Item.Properties(), OPArmorDefinitions.BONE));
     public static final RegistryObject<Item> ANGRY_RAMBLER_SKULL = registerItemNoLang("angry_rambler_skull", () -> new RamblerSkullItem(OPBlocks.ANGRY_RAMBLER_SKULL.getFirst().get(), OPBlocks.ANGRY_RAMBLER_SKULL.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
     public static final RegistryObject<Item> CLASSIC_RAMBLER_SKULL = registerItemNoLang("classic_rambler_skull", () -> new RamblerSkullItem(OPBlocks.CLASSIC_RAMBLER_SKULL.getFirst().get(), OPBlocks.CLASSIC_RAMBLER_SKULL.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
     public static final RegistryObject<Item> EVIL_RAMBLER_SKULL = registerItemNoLang("evil_rambler_skull", () -> new RamblerSkullItem(OPBlocks.EVIL_RAMBLER_SKULL.getFirst().get(), OPBlocks.EVIL_RAMBLER_SKULL.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
@@ -74,8 +77,6 @@ public class OPItems {
     public static final RegistryObject<Item> SKELETAL_RAMBLER_SKULL = registerItemNoLang("skeletal_rambler_skull", () -> new RamblerSkullItem(OPBlocks.SKELETAL_RAMBLER_SKULL.getFirst().get(), OPBlocks.SKELETAL_RAMBLER_SKULL.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
     public static final RegistryObject<Item> SMILING_RAMBLER_SKULL = registerItemNoLang("smiling_rambler_skull", () -> new RamblerSkullItem(OPBlocks.SMILING_RAMBLER_SKULL.getFirst().get(), OPBlocks.SMILING_RAMBLER_SKULL.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
     public static final RegistryObject<Item> STRANGE_RAMBLER_SKULL = registerItemNoLang("strange_rambler_skull", () -> new RamblerSkullItem(OPBlocks.STRANGE_RAMBLER_SKULL.getFirst().get(), OPBlocks.STRANGE_RAMBLER_SKULL.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
-
-    // dev skulls
     public static final RegistryObject<Item> CRUNDLY_RAMBLER_SKULL = registerItemNoLang("crundly_rambler_skull", () -> new RamblerSkullItem(OPBlocks.CRUNDLY_RAMBLER_SKULL.getFirst().get(), OPBlocks.CRUNDLY_RAMBLER_SKULL.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
     public static final RegistryObject<Item> DWARVEN_RAMBLER_SKULL = registerItemNoLang("dwarven_rambler_skull", () -> new RamblerSkullItem(OPBlocks.DWARVEN_RAMBLER_SKULL.getFirst().get(), OPBlocks.DWARVEN_RAMBLER_SKULL.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
     public static final RegistryObject<Item> IMPRISONED_RAMBLER_SKULL = registerItemNoLang("imprisoned_rambler_skull", () -> new RamblerSkullItem(OPBlocks.IMPRISONED_RAMBLER_SKULL.getFirst().get(), OPBlocks.IMPRISONED_RAMBLER_SKULL.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
@@ -102,8 +103,10 @@ public class OPItems {
     public static final RegistryObject<Item> SLUG_BARON_LEGGINGS = registerItem("slug_baron_leggings", ()-> new SlugBaronArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties()));
     public static final RegistryObject<Item> SLUG_BARON_BOOTS = registerItem("slug_baron_boots", ()-> new SlugBaronArmorItem(ArmorItem.Type.BOOTS, new Item.Properties()));
 
-    // tart
+    // Tart
     public static final RegistryObject<Item> TART_SPAWN_EGG = registerSpawnEggItem("tart", OPEntities.TART , 0xb31e1e, 0x2f6e19);
+    public static final RegistryObject<Item> RAW_TART = registerItemNoLang("tart", () -> new Item(foodItem(OPFoodValues.RAW_TART)));
+    public static final RegistryObject<Item> COOKED_TART = registerItem("cooked_tart", () -> new Item(foodItem(OPFoodValues.COOKED_TART)));
     public static final RegistryObject<Item> TART_HEAD = registerItemNoLang("tart_head", () -> new MobHeadItem(OPBlocks.TART_HEAD.getFirst().get(), OPBlocks.TART_HEAD.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
 
     // Terror
@@ -132,6 +135,7 @@ public class OPItems {
     public static final RegistryObject<Item> TESLA_CANNON = registerItem("tesla_cannon", () -> new TeslaCannonItem(new Item.Properties().stacksTo(1).durability(465)));
     public static final RegistryObject<Item> SPARK_BLADE = registerItem("spark_blade", () -> new SparkBladeItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> LIGHTNING_BOMB = registerItem("lightning_bomb", () -> new LightningBombItem(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> ELECTRIC_BATON = registerItem("electric_baton", () -> new SelfInflictMobEffectItem(new Item.Properties(), OPMobEffects.ELECTRIFIED, 200, 0));
 
     // Whizz
     public static final RegistryObject<Item> WHIZZ_SPAWN_EGG = registerSpawnEggItem("whizz", OPEntities.WHIZZ, 0x8a6ce0, 0xffe7f8);
@@ -172,11 +176,6 @@ public class OPItems {
 
     // discs
     public static final RegistryObject<Item> WALTZ_OF_THE_SLUG_DISC = registerItemNoLang("waltz_of_the_slug_disc", () -> new RecordItem(15, OPSoundEvents.WALTZ_OF_THE_SLUG_DISC, new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 3440));
-
-    // discs
-    public static final RegistryObject<Item> ELECTRIC_BATON = registerItem("electric_baton", () -> new SelfInflictMobEffectItem(new Item.Properties().stacksTo(1).durability(256).rarity(Rarity.RARE), OPMobEffects.ELECTRIFIED));
-
-
 
     private static <I extends Item> RegistryObject<I> registerItem(String name, Supplier<? extends I> supplier) {
         RegistryObject<I> item = ITEMS.register(name, supplier);

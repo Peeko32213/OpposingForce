@@ -29,4 +29,12 @@ public class OPFoodValues {
             .nutrition(6).saturationMod(0.6F)
             .effect(() -> new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 600, 0), 1.0F)
             .build();
+
+    public static final FoodProperties RAW_TART = (new FoodProperties.Builder())
+            .nutrition(2).saturationMod(0.2F)
+            .build();
+
+    public static final FoodProperties COOKED_TART = (new FoodProperties.Builder())
+            .nutrition(5).saturationMod(0.8F)
+            .build();
 }

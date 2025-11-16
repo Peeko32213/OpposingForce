@@ -20,6 +20,10 @@
     "opposing_force:slug_baron_helmet",
     "opposing_force:slug_baron_chestplate",
     "opposing_force:slug_baron_leggings",
-    "opposing_force:slug_baron_boots"
+    "opposing_force:slug_baron_boots",
+    "opposing_force:bone_helmet",
+    "opposing_force:bone_chestplate",
+    "opposing_force:bone_leggings",
+    "opposing_force:bone_boots"
   ]
 }

@@ -25,12 +25,15 @@ public class OPArmorDefinitions {
             .walkOnPowderedSnow()
             .build();
 
-
     public static final ArmorDefinition WOODEN = new ArmorDefinition.Builder()
             .material(OPTiers.OPArmorMaterials.WOODEN)
             .texture(slot -> slot == EquipmentSlot.LEGS ? OpposingForce.MOD_ID + ":textures/models/armor/wooden_armor_layer_2.png" : OpposingForce.MOD_ID + ":textures/models/armor/wooden_armor_layer_1.png")
             .build();
 
+    public static final ArmorDefinition BONE = new ArmorDefinition.Builder()
+            .material(OPTiers.OPArmorMaterials.DEEPWOVEN)
+            .texture(slot -> slot == EquipmentSlot.LEGS ? OpposingForce.MOD_ID + ":textures/models/armor/bone_armor_layer_2.png" : OpposingForce.MOD_ID + ":textures/models/armor/bone_armor_layer_1.png")
+            .build();
 
     public static final ArmorDefinition EMERALD = new ArmorDefinition.Builder()
             .material(OPTiers.OPArmorMaterials.EMERALD)

@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.entity.ai.goal.TartAttackGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.TartWakeUpFriendsGoal;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPItems;
@@ -8,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -24,10 +26,14 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class Tart extends Monster implements AttackState {
 
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Tart.class, EntityDataSerializers.INT);
+
+    @Nullable
+    private TartWakeUpFriendsGoal friendsGoal;
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState sitAnimationState = new AnimationState();
@@ -49,13 +55,27 @@ public class Tart extends Monster implements AttackState {
 
     @Override
     protected void registerGoals() {
+        this.friendsGoal = new TartWakeUpFriendsGoal(this);
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new TartAttackGoal(this));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(2, this.friendsGoal);
+        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
+
+    @Override
+    public boolean hurt(@NotNull DamageSource source, float pAmount) {
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        } else {
+            if ((source.getEntity() != null || source.is(DamageTypeTags.ALWAYS_TRIGGERS_SILVERFISH)) && this.friendsGoal != null) {
+                this.friendsGoal.notifyHurt();
+            }
+            return super.hurt(source, pAmount);
+        }
     }
 
     @Override

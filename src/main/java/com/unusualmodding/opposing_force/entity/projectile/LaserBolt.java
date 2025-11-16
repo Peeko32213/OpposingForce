@@ -12,6 +12,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 import org.jetbrains.annotations.NotNull;
@@ -22,8 +27,11 @@ public class LaserBolt extends FrictionlessProjectile {
     private static final EntityDataAccessor<Boolean> DISRUPTOR = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> RAPID_FIRE = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<ItemStack> ITEM_STACK = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.ITEM_STACK);
 
     protected RandomSource randomSource = level.getRandom();
+    private final Vec3[] trailPositions = new Vec3[64];
+    private int trailPointer = -1;
 
     public LaserBolt(EntityType<? extends FrictionlessProjectile> entityType, Level level) {
         super(entityType, level);
@@ -50,6 +58,7 @@ public class LaserBolt extends FrictionlessProjectile {
         this.getEntityData().define(DISRUPTOR, false);
         this.getEntityData().define(DISRUPTOR_LEVEL, 0);
         this.getEntityData().define(RAPID_FIRE, false);
+        this.getEntityData().define(ITEM_STACK, ItemStack.EMPTY);
     }
 
     @Override
@@ -59,6 +68,10 @@ public class LaserBolt extends FrictionlessProjectile {
         compoundTag.putBoolean("IsDisruptor", this.isDisruptor());
         compoundTag.putInt("DisruptorLevel", this.getDisruptorLevel());
         compoundTag.putBoolean("IsRapidFire", this.isRapidFire());
+        ItemStack itemstack = this.getItemRaw();
+        if (!itemstack.isEmpty()) {
+            compoundTag.put("Item", itemstack.save(new CompoundTag()));
+        }
     }
 
     @Override
@@ -68,6 +81,8 @@ public class LaserBolt extends FrictionlessProjectile {
         this.setDisruptor(compoundTag.getBoolean("IsDisruptor"));
         this.setDisruptorLevel(compoundTag.getInt("DisruptorLevel"));
         this.setRapidFire(compoundTag.getBoolean("IsRapidFire"));
+        ItemStack itemstack = ItemStack.of(compoundTag.getCompound("Item"));
+        this.setItem(itemstack);
     }
 
     public boolean isDisruptor() {
@@ -102,10 +117,44 @@ public class LaserBolt extends FrictionlessProjectile {
         this.entityData.set(DAMAGE, damage);
     }
 
+    public void setItem(ItemStack stack) {
+        if (!stack.is(this.getDefaultItem()) || stack.hasTag()) {
+            this.getEntityData().set(ITEM_STACK, stack.copyWithCount(1));
+        }
+    }
+
+    protected Item getDefaultItem() {
+        return OPItems.BLASTER.get();
+    }
+
+    protected ItemStack getItemRaw() {
+        return this.getEntityData().get(ITEM_STACK);
+    }
+
+    @Override
+    public @NotNull ItemStack getItem() {
+        ItemStack itemstack = this.getItemRaw();
+        return itemstack.isEmpty() ? new ItemStack(this.getDefaultItem()) : itemstack;
+    }
+
     @Override
     public void tick() {
         super.tick();
-        this.level().addParticle(OPParticles.LASER_BOLT_DUST.get(), this.getX(), this.getY(), this.getZ(), 0.0, 0.0, 0.0);
+
+        float red = 1;
+        float green = 0;
+        float blue = 0;
+
+        CompoundTag compoundTag = this.getItem().getTagElement("blasterColor");
+        if (compoundTag != null && compoundTag.contains("color", 99) && compoundTag.getInt("color") != -1) {
+            int decimal = compoundTag.getInt("color");
+            red = (float) ((decimal & 16711680) >> 16) / 255.0F;
+            green = (float) ((decimal & '\uff00') >> 8) / 255.0F;
+            blue = (float) ((decimal & 255)) / 255.0F;
+        }
+
+        this.level().addParticle(OPParticles.LASER_BOLT_DUST.get(), this.getX(), this.getY() + 0.225F, this.getZ(), red, green, blue);
+
         if (tickCount > 160 || this.getBlockY() > this.level().getMaxBuildHeight() + 30) {
             if (!this.level().isClientSide) {
                 this.level().broadcastEntityEvent(this, (byte) 3);
@@ -113,6 +162,8 @@ public class LaserBolt extends FrictionlessProjectile {
                 this.discard();
             }
         }
+
+        this.tickTrail();
     }
 
     @Override
@@ -166,11 +217,51 @@ public class LaserBolt extends FrictionlessProjectile {
         return 0;
     }
 
+    private void tickTrail() {
+        Vec3 trailAt = this.position().add(0, this.getBbHeight() / 2F, 0);
+        if (trailPointer == -1) {
+            Vec3 backAt = trailAt;
+            for (int i = 0; i < trailPositions.length; i++) {
+                trailPositions[i] = backAt;
+            }
+        }
+        if (++this.trailPointer == this.trailPositions.length) {
+            this.trailPointer = 0;
+        }
+        this.trailPositions[this.trailPointer] = trailAt;
+    }
+
+    public Vec3 getTrailPosition(int pointer, float partialTick) {
+        if (this.isRemoved()) {
+            partialTick = 1.0F;
+        }
+        int i = this.trailPointer - pointer & 63;
+        int j = this.trailPointer - pointer - 1 & 63;
+        Vec3 d0 = this.trailPositions[j];
+        Vec3 d1 = this.trailPositions[i].subtract(d0);
+        return d0.add(d1.scale(partialTick));
+    }
+
+    public boolean hasTrail() {
+        return trailPointer != -1;
+    }
+
     @Override
     public void handleEntityEvent(byte id) {
         if (id == 3) {
+            float red = 1;
+            float green = 0;
+            float blue = 0;
+            CompoundTag compoundTag = this.getItem().getTagElement("blasterColor");
+            if (compoundTag != null && compoundTag.contains("color", 99) && compoundTag.getInt("color") != -1) {
+                int decimal = compoundTag.getInt("color");
+                red = (float) ((decimal & 16711680) >> 16) / 255.0F;
+                green = (float) ((decimal & '\uff00') >> 8) / 255.0F;
+                blue = (float) ((decimal & 255)) / 255.0F;
+            }
+
             for (int i = 0; i < 8; i++) {
-                this.level().addParticle(OPParticles.LASER_BOLT_DUST.get(), this.getX(), this.getY(), this.getZ(), this.getDeltaMovement().scale(0.05D).x, 0.3, this.getDeltaMovement().scale(0.05D).z);
+                this.level().addParticle(OPParticles.LASER_BOLT_DUST.get(), this.getX(), this.getY(), this.getZ(), red, green, blue);
             }
         }
     }

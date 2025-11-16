@@ -13,33 +13,26 @@ import org.jetbrains.annotations.NotNull;
 public class LaserBoltDustParticle extends TextureSheetParticle {
 
     private final SpriteSet sprites;
+    private final boolean rainbow;
 
-    protected LaserBoltDustParticle(ClientLevel level, double x, double y, double z, double xMotion, double yMotion, double zMotion, SpriteSet sprites) {
-        super(level, x, y, z, xMotion, yMotion, zMotion);
+    protected LaserBoltDustParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zMotion, SpriteSet sprites, boolean rainbow) {
+        super(level, x, y, z, xSpeed, ySpeed, zMotion);
         this.sprites = sprites;
-        this.friction = 0.9F;
-        this.speedUpWhenYMotionIsBlocked = true;
-        this.xd *= 0.25F;
-        this.yd *= 0.25F;
-        this.zd *= 0.25F;
-        this.rCol = 1.0F;
-        this.gCol = 0.141F;
-        this.bCol = 0.427F;
+        this.rainbow = rainbow;
         this.quadSize *= 0.75F + random.nextFloat() * 0.5F;
+        this.xd = (Math.random() * 2.0D - 1.0D) * (double) 0.02F;
+        this.yd = (Math.random() * 2.0D - 1.0D) * (double) 0.02F;
+        this.zd = (Math.random() * 2.0D - 1.0D) * (double) 0.02F;
         this.lifetime = (int) ((double) 8 / ((double) level.random.nextFloat() * 0.8D + 0.2D));
         this.lifetime = Math.max(this.lifetime, 1);
         this.setSpriteFromAge(sprites);
         this.hasPhysics = false;
+        this.setColor((float) xSpeed, (float) ySpeed, (float) zMotion);
     }
 
     @Override
     public float getQuadSize(float f) {
         return this.quadSize * Mth.clamp(((float) this.age + f) / (float) this.lifetime * 48.0F, 0.0F, 1.0F);
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
     }
 
     @Override
@@ -60,7 +53,7 @@ public class LaserBoltDustParticle extends TextureSheetParticle {
         }
 
         public Particle createParticle(@NotNull SimpleParticleType particleType, @NotNull ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new LaserBoltDustParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
+            return new LaserBoltDustParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites, false);
         }
     }
 }

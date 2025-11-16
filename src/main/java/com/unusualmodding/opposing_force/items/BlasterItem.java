@@ -5,23 +5,33 @@ import com.unusualmodding.opposing_force.registry.OPEnchantments;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 @SuppressWarnings("deprecation")
@@ -82,7 +92,7 @@ public class BlasterItem extends Item implements Vanishable, DyeableLeatherItem 
         Vec3 barrelPos = getBarrelVec(player, hand == InteractionHand.MAIN_HAND, new Vec3(0.55F, -0.45F, 1.15F));
         Vec3 correction = getBarrelVec(player, hand == InteractionHand.MAIN_HAND, new Vec3(-0.035F, 0, 0)).subtract(player.position().add(0, player.getEyeHeight(), 0));
         Vec3 lookVec = player.getLookAngle().add(xOffset, yOffset, zOffset).normalize();
-        Vec3 motion = lookVec.add(correction).normalize().scale(2.0F);
+        Vec3 motion = lookVec.add(correction).normalize().scale(1.55F);
 
         laserBolt.setPos(barrelPos.x, barrelPos.y, barrelPos.z);
         laserBolt.setDeltaMovement(motion);
@@ -90,6 +100,7 @@ public class BlasterItem extends Item implements Vanishable, DyeableLeatherItem 
         laserBolt.setXRot(xRot);
         laserBolt.setOwner(player);
         laserBolt.setLaserDamage(4.0F);
+        laserBolt.setItem(player.getItemInHand(hand));
 
         if (itemStack.getEnchantmentLevel(OPEnchantments.SPLITTING.get()) > 0) {
             laserBolt.setDisruptor(true);
@@ -122,7 +133,7 @@ public class BlasterItem extends Item implements Vanishable, DyeableLeatherItem 
 
         player.awardStat(Stats.ITEM_USED.get(this));
 
-        applyCooldown(player, itemStack, hand, stack -> stack.getItem() instanceof BlasterItem, 10 - (itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) * 2));
+        applyCooldown(player, itemStack, hand, stack -> stack.getItem() instanceof BlasterItem, (int) (10 - (itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) * 1.5F)));
         return InteractionResultHolder.success(itemStack);
     }
 
@@ -172,5 +183,72 @@ public class BlasterItem extends Item implements Vanishable, DyeableLeatherItem 
         int flip = mainHand == (player.getMainArm() == HumanoidArm.RIGHT) ? -1 : 1;
         Vec3 barrelPosNoTransform = new Vec3(flip * rightHandForward.x, rightHandForward.y, rightHandForward.z);
         return start.add(barrelPosNoTransform.xRot(pitch).yRot(yaw));
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, level, list, tooltipFlag);
+        CompoundTag compoundTag = stack.getTagElement("blasterColor");
+        if (compoundTag != null && compoundTag.contains("color", 99) && compoundTag.getInt("color") != -1) {
+            int remainder;
+            int decimal = compoundTag.getInt("color");
+            StringBuilder hex= new StringBuilder();
+            char[] hexchars = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+            while(decimal > 0) {
+                remainder = decimal % 16;
+                hex.insert(0, hexchars[remainder]);
+                decimal = decimal / 16;
+            }
+            list.add(Component.translatable("item.opposing_force.laser_blade.color").withStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)).append(Component.translatable("#" + hex).withStyle(Style.EMPTY.withColor(compoundTag.getInt("color")))));
+        } else {
+            list.add(Component.translatable("item.opposing_force.laser_blade.dyeable").withStyle(Style.EMPTY.withColor(ChatFormatting.GRAY).withItalic(true)));
+        }
+    }
+
+    @Override
+    public @NotNull InteractionResult useOn(UseOnContext context) {
+        Level level = context.getLevel();
+        BlockPos blockPos = context.getClickedPos();
+        BlockState state = context.getLevel().getBlockState(blockPos);
+        ItemStack itemStack = context.getPlayer().getItemInHand(context.getHand());
+
+        if (state.is(Blocks.WATER_CAULDRON) && this.hasCustomColor(itemStack)) {
+            ItemStack itemStack2 = itemStack.copy();
+            this.clearColor(itemStack2);
+            context.getPlayer().setItemInHand(context.getHand(), itemStack2);
+            LayeredCauldronBlock.lowerFillLevel(level.getBlockState(blockPos), level, blockPos);
+            return InteractionResult.SUCCESS;
+        }
+        return super.useOn(context);
+    }
+
+    public static boolean isDyed(ItemStack stack) {
+        CompoundTag compoundtag = stack.getTagElement("blasterColor");
+        return compoundtag != null && compoundtag.contains("color", 99);
+    }
+
+    @Override
+    public boolean hasCustomColor(ItemStack stack) {
+        CompoundTag compoundtag = stack.getTagElement("blasterColor");
+        return compoundtag != null && compoundtag.contains("color", 99);
+    }
+
+    @Override
+    public int getColor(ItemStack stack) {
+        CompoundTag compoundtag = stack.getTagElement("blasterColor");
+        return compoundtag != null && compoundtag.contains("color", 99) ? compoundtag.getInt("color") : -1;
+    }
+
+    @Override
+    public void clearColor(ItemStack stack) {
+        CompoundTag compoundtag = stack.getTagElement("blasterColor");
+        if (compoundtag != null && compoundtag.contains("color")) {
+            compoundtag.remove("color");
+        }
+    }
+
+    @Override
+    public void setColor(ItemStack stack, int color) {
+        stack.getOrCreateTagElement("blasterColor").putInt("color", color);
     }
 }

@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -31,6 +32,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
@@ -41,7 +43,7 @@ public class InfernoPieBlock extends Block {
 
 	protected static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 5.0D, 15.0D);
 
-	public InfernoPieBlock(Properties properties) {
+    public InfernoPieBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(BITES, 0));
 	}
@@ -59,21 +61,21 @@ public class InfernoPieBlock extends Block {
 	@Override
 	public @NotNull InteractionResult use(@NotNull BlockState state, Level level, @NotNull BlockPos pos, Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
 		ItemStack heldStack = player.getItemInHand(hand);
-		if (level.isClientSide) {
-			if (heldStack.is(OPItemTags.KNIVES)) {
+        boolean canSlice = ModList.get().isLoaded("farmersdelight") ? heldStack.is(OPItemTags.KNIVES) : heldStack.is(ItemTags.SWORDS);
+
+        if (level.isClientSide) {
+			if (canSlice) {
 				return cutSlice(level, pos, state, player);
 			}
-
 			if (this.consumeBite(level, pos, state, player) == InteractionResult.SUCCESS) {
 				return InteractionResult.SUCCESS;
 			}
-
 			if (heldStack.isEmpty()) {
 				return InteractionResult.CONSUME;
 			}
 		}
 
-		if (heldStack.is(OPItemTags.KNIVES)) {
+		if (canSlice) {
 			return cutSlice(level, pos, state, player);
 		}
 		return this.consumeBite(level, pos, state, player);

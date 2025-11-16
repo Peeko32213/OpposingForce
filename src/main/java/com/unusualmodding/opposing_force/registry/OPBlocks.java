@@ -23,6 +23,7 @@ public class OPBlocks {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, OpposingForce.MOD_ID);
     public static List<RegistryObject<? extends Block>> BLOCK_TRANSLATIONS = new ArrayList<>();
+    public static List<Supplier<Block>> MOB_HEADS = new ArrayList<>();
 
     // Dicer
     public static final Pair<RegistryObject<Block>, RegistryObject<Block>> DICER_HEAD = registerMobHead("dicer_head", MobHeadBlock.Types.DICER, OPNoteBlockInstruments.DICER.get());
@@ -41,8 +42,6 @@ public class OPBlocks {
     public static final Pair<RegistryObject<Block>, RegistryObject<Block>> SKELETAL_RAMBLER_SKULL = registerMobHeadNoLang("skeletal_rambler_skull", MobHeadBlock.Types.RAMBLER_SKELETAL, OPNoteBlockInstruments.RAMBLER.get());
     public static final Pair<RegistryObject<Block>, RegistryObject<Block>> SMILING_RAMBLER_SKULL = registerMobHeadNoLang("smiling_rambler_skull", MobHeadBlock.Types.RAMBLER_SMILING, OPNoteBlockInstruments.RAMBLER.get());
     public static final Pair<RegistryObject<Block>, RegistryObject<Block>> STRANGE_RAMBLER_SKULL = registerMobHeadNoLang("strange_rambler_skull", MobHeadBlock.Types.RAMBLER_STRANGE, OPNoteBlockInstruments.RAMBLER.get());
-
-    // dev skulls
     public static final Pair<RegistryObject<Block>, RegistryObject<Block>> CRUNDLY_RAMBLER_SKULL = registerMobHeadNoLang("crundly_rambler_skull", MobHeadBlock.Types.RAMBLER_CRUNDLY, OPNoteBlockInstruments.RAMBLER.get());
     public static final Pair<RegistryObject<Block>, RegistryObject<Block>> DWARVEN_RAMBLER_SKULL = registerMobHeadNoLang("dwarven_rambler_skull", MobHeadBlock.Types.RAMBLER_DWARVEN, OPNoteBlockInstruments.RAMBLER.get());
     public static final Pair<RegistryObject<Block>, RegistryObject<Block>> IMPRISONED_RAMBLER_SKULL = registerMobHeadNoLang("imprisoned_rambler_skull", MobHeadBlock.Types.RAMBLER_IMPRISONED, OPNoteBlockInstruments.RAMBLER.get());
@@ -72,6 +71,7 @@ public class OPBlocks {
     public static final RegistryObject<Block> CHISELED_VILE_STONE_BRICKS = registerBlock("chiseled_vile_stone_bricks", () -> new Block(OPBlockProperties.VILE_STONE));
 
     // Tart
+    public static final RegistryObject<Block> INFESTED_OAK_LEAVES = registerBlock("infested_oak_leaves", () -> new InfestedOakLeavesBlock(Blocks.OAK_LEAVES, BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)));
     public static final Pair<RegistryObject<Block>, RegistryObject<Block>> TART_HEAD = registerMobHead("tart_head", MobHeadBlock.Types.TART, OPNoteBlockInstruments.TART.get());
 
     // Trembler
@@ -124,12 +124,14 @@ public class OPBlocks {
         RegistryObject<Block> skull = registerBlockWithoutItemNoLang(name, () -> new MobHeadBlock(type, OPBlockProperties.MOB_HEAD.instrument(instrument)));
         RegistryObject<Block> wallSkull = registerBlockWithoutItemNoLang("wall_" + name, () -> new WallMobHeadBlock(type, OPBlockProperties.MOB_HEAD.lootFrom(skull)));
         BLOCK_TRANSLATIONS.add(skull);
+        MOB_HEADS.add(skull);
         return Pair.of(skull, wallSkull);
     }
 
     public static Pair<RegistryObject<Block>, RegistryObject<Block>> registerMobHeadNoLang(String name, MobHeadBlock.Types type, NoteBlockInstrument instrument) {
         RegistryObject<Block> skull = registerBlockWithoutItemNoLang(name, () -> new MobHeadBlock(type, OPBlockProperties.MOB_HEAD.instrument(instrument)));
         RegistryObject<Block> wallSkull = registerBlockWithoutItemNoLang("wall_" + name, () -> new WallMobHeadBlock(type, OPBlockProperties.MOB_HEAD.lootFrom(skull)));
+        MOB_HEADS.add(skull);
         return Pair.of(skull, wallSkull);
     }
 }

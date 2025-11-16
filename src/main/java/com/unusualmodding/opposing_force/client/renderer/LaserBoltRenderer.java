@@ -7,21 +7,30 @@ import com.unusualmodding.opposing_force.client.models.entity.LaserBoltModel;
 import com.unusualmodding.opposing_force.entity.projectile.LaserBolt;
 import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 @OnlyIn(Dist.CLIENT)
 public class LaserBoltRenderer extends EntityRenderer<LaserBolt> {
 
-    private static final ResourceLocation OUTER = new ResourceLocation(OpposingForce.MOD_ID,"textures/entity/projectiles/laser_bolt_outer.png");
-    private static final ResourceLocation INNER = new ResourceLocation(OpposingForce.MOD_ID,"textures/entity/projectiles/laser_bolt_inner.png");
+    private static final ResourceLocation OUTER = OpposingForce.modPrefix("textures/entity/projectiles/laser_bolt_outer.png");
+    private static final ResourceLocation INNER = OpposingForce.modPrefix("textures/entity/projectiles/laser_bolt_inner.png");
+    private static final ResourceLocation TRAIL_TEXTURE = OpposingForce.modPrefix("textures/particle/trail.png");
 
     private final LaserBoltModel model;
 
@@ -31,18 +40,66 @@ public class LaserBoltRenderer extends EntityRenderer<LaserBolt> {
     }
 
     @Override
-    public void render(@NotNull LaserBolt laserBolt, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void render(@NotNull LaserBolt laserBolt, float entityYaw, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight) {
+        float red = 1;
+        float green = 0;
+        float blue = 0;
+        ItemStack blaster = laserBolt.getItem();
+        CompoundTag compoundTag = blaster.getTagElement("blasterColor");
+        if (compoundTag != null && compoundTag.contains("color", 99) && compoundTag.getInt("color") != -1) {
+            int decimal = compoundTag.getInt("color");
+            red = (float) ((decimal & 16711680) >> 16) / 255.0F;
+            green = (float) ((decimal & '\uff00') >> 8) / 255.0F;
+            blue = (float) ((decimal & 255)) / 255.0F;
+        }
+
         poseStack.pushPose();
-        VertexConsumer VertexConsumer = buffer.getBuffer(OPRenderTypes.glowingEyes(this.getTextureLocation(laserBolt)));
+        VertexConsumer innerTexture = buffer.getBuffer(OPRenderTypes.laserBoltInner(this.getTextureLocation(laserBolt)));
         poseStack.scale(-1.0F, -1.0F, 1.0F);
-        float yrot = Mth.rotLerp(partialTicks, laserBolt.yRotO, laserBolt.getYRot());
-        float xrot = Mth.lerp(partialTicks, laserBolt.xRotO, laserBolt.getXRot());
-        this.model.setupRotation(yrot, xrot);
-        this.model.renderToBuffer(poseStack, VertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-        VertexConsumer VertexConsumer2 = buffer.getBuffer(OPRenderTypes.glowingEyes(getOuterTextureLocation(laserBolt)));
-        this.model.renderToBuffer(poseStack, VertexConsumer2, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 0.5F);
+        float yRot = Mth.rotLerp(partialTicks, laserBolt.yRotO, laserBolt.getYRot());
+        float xRot = Mth.lerp(partialTicks, laserBolt.xRotO, laserBolt.getXRot());
+        this.model.setupRotation(yRot, xRot);
+        this.model.renderToBuffer(poseStack, innerTexture, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+        VertexConsumer outerTexture = buffer.getBuffer(OPRenderTypes.laserBoltOuter(getOuterTextureLocation(laserBolt)));
+        this.model.renderToBuffer(poseStack, outerTexture, packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1);
         poseStack.popPose();
+        if (laserBolt.hasTrail()) {
+            double x = Mth.lerp(partialTicks, laserBolt.xOld, laserBolt.getX());
+            double y = Mth.lerp(partialTicks, laserBolt.yOld, laserBolt.getY());
+            double z = Mth.lerp(partialTicks, laserBolt.zOld, laserBolt.getZ());
+            poseStack.pushPose();
+            poseStack.translate(-x, -y, -z);
+            renderTrail(laserBolt, partialTicks, poseStack, buffer, red, green, blue, 0.8F, packedLight);
+            poseStack.popPose();
+        }
         super.render(laserBolt, entityYaw, partialTicks, poseStack, buffer, packedLight);
+    }
+
+    private void renderTrail(LaserBolt laserBolt, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, float red, float green, float blue, float alpha, int packedLight) {
+        int samples = 0;
+        int sampleSize = 3;
+        float trailHeight = 0.1F;
+        float trailZRot = 0;
+        Vec3 topAngleVec = new Vec3(0, trailHeight, 0).zRot(trailZRot);
+        Vec3 bottomAngleVec = new Vec3(0, -trailHeight, 0).zRot(trailZRot);
+        Vec3 drawFrom = laserBolt.getTrailPosition(0, partialTicks);
+        VertexConsumer vertexconsumer = bufferSource.getBuffer(RenderType.entityTranslucentEmissive(TRAIL_TEXTURE));
+        while (samples < sampleSize) {
+            Vec3 sample = laserBolt.getTrailPosition(samples + 2, partialTicks);
+            float u1 = samples / (float) sampleSize;
+            float u2 = u1 + 1 / (float) sampleSize;
+            Vec3 draw1 = drawFrom;
+            Vec3 draw2 = sample;
+            PoseStack.Pose lastPose = poseStack.last();
+            Matrix4f matrix4f = lastPose.pose();
+            Matrix3f matrix3f = lastPose.normal();
+            vertexconsumer.vertex(matrix4f, (float) draw1.x + (float) bottomAngleVec.x, (float) draw1.y + (float) bottomAngleVec.y, (float) draw1.z + (float) bottomAngleVec.z).color(red, green, blue, alpha).uv(u1, 1F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
+            vertexconsumer.vertex(matrix4f, (float) draw2.x + (float) bottomAngleVec.x, (float) draw2.y + (float) bottomAngleVec.y, (float) draw2.z + (float) bottomAngleVec.z).color(red, green, blue, alpha).uv(u2, 1F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
+            vertexconsumer.vertex(matrix4f, (float) draw2.x + (float) topAngleVec.x, (float) draw2.y + (float) topAngleVec.y, (float) draw2.z + (float) topAngleVec.z).color(red, green, blue, alpha).uv(u2, 0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
+            vertexconsumer.vertex(matrix4f, (float) draw1.x + (float) topAngleVec.x, (float) draw1.y + (float) topAngleVec.y, (float) draw1.z + (float) topAngleVec.z).color(red, green, blue, alpha).uv(u1, 0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
+            samples++;
+            drawFrom = sample;
+        }
     }
 
     @Override

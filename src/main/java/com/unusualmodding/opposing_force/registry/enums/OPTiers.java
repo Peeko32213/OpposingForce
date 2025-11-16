@@ -13,6 +13,7 @@ import net.minecraftforge.common.Tags;
 public class OPTiers {
 
     public static class OPArmorMaterials {
+        public static final ArmorMaterial BONE = new OPArmorMaterial("bone", 9, new int[] {2, 6, 5, 2}, 9, OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN.get(), 0F, 0F, ()-> Ingredient.of(Tags.Items.BONES));
         public static final ArmorMaterial DEEPWOVEN = new OPArmorMaterial("deepwoven", 12, new int[] {2, 5, 4, 1}, 12, OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN.get(), 0F, 0F, ()-> Ingredient.of(OPItems.DEEP_SILK.get()));
         public static final ArmorMaterial WOODEN = new OPArmorMaterial("wooden", 5, new int[] {1, 3, 2, 1}, 9, OPSoundEvents.ARMOR_EQUIP_WOODEN.get(), 0F, 0F, ()-> Ingredient.of(ItemTags.PLANKS));
         public static final ArmorMaterial EMERALD = new OPArmorMaterial("emerald", 33, new int[] {3, 8, 6, 3}, 14, OPSoundEvents.ARMOR_EQUIP_EMERALD.get(), 2F, 0F, ()-> Ingredient.of(Tags.Items.GEMS_EMERALD));

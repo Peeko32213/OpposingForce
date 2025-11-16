@@ -48,6 +48,10 @@ public class OpposingForceTab {
                     output.accept(OPItems.BONE_PICKAXE.get());
                     output.accept(OPItems.BONE_AXE.get());
                     output.accept(OPItems.BONE_HOE.get());
+                    output.accept(OPItems.BONE_HELMET.get());
+                    output.accept(OPItems.BONE_CHESTPLATE.get());
+                    output.accept(OPItems.BONE_LEGGINGS.get());
+                    output.accept(OPItems.BONE_BOOTS.get());
                     output.accept(OPItems.ANGRY_RAMBLER_SKULL.get());
                     output.accept(OPItems.CLASSIC_RAMBLER_SKULL.get());
                     output.accept(OPItems.EVIL_RAMBLER_SKULL.get());
@@ -85,6 +89,9 @@ public class OpposingForceTab {
                     output.accept(OPItems.WALTZ_OF_THE_SLUG_DISC.get());
 
                     // Tart
+                    output.accept(OPBlocks.INFESTED_OAK_LEAVES.get());
+                    output.accept(OPItems.RAW_TART.get());
+                    output.accept(OPItems.COOKED_TART.get());
                     output.accept(OPItems.TART_HEAD.get());
 
                     // Terror
@@ -116,6 +123,7 @@ public class OpposingForceTab {
                     output.accept(OPItems.ELECTRIC_ALLOY.get());
                     output.accept(OPItems.TESLA_CANNON.get());
                     output.accept(OPItems.SPARK_BLADE.get());
+                    output.accept(OPItems.ELECTRIC_BATON.get());
 
                     // Whizz
                     output.accept(OPBlocks.INFESTED_AMETHYST_BLOCK.get());

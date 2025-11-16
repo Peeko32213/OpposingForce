@@ -16,7 +16,5 @@ public class OPParticles {
     public static final RegistryObject<SimpleParticleType> MOON_SHOES = PARTICLE_TYPES.register("moon_shoes", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> LASER_SWEEP = PARTICLE_TYPES.register("laser_sweep", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> DYED_SWEEP = PARTICLE_TYPES.register("dyed_sweep", () -> new SimpleParticleType(true));
-
     public static final RegistryObject<LightningParticleType> LIGHTNING = PARTICLE_TYPES.register("lightning", () -> new LightningParticleType(false));
-
 }

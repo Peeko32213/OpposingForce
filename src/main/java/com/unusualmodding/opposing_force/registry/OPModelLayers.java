@@ -42,6 +42,7 @@ public class OPModelLayers {
     public static final ModelLayerLocation SLUG_BARON_ARMOR = main("slug_baron_armor");
     public static final ModelLayerLocation STONE_ARMOR = main("stone_armor");
     public static final ModelLayerLocation WOODEN_ARMOR = main("wooden_armor");
+    public static final ModelLayerLocation BONE_ARMOR = main("bone_armor");
 
     public static final ModelLayerLocation LASER_BOLT = main("laser_bolt");
 

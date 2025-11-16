@@ -29,6 +29,7 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
     public static StoneArmorModel STONE_MODEL;
     public static MoonShoesModel MOON_SHOES_MODEL;
     public static SlugBaronArmorModel SLUG_BARON_MODEL;
+    public static BoneArmorModel BONE_MODEL;
 
     public static void initializeModels() {
         init = true;
@@ -38,6 +39,7 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
         STONE_MODEL = new StoneArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.STONE_ARMOR));
         MOON_SHOES_MODEL = new MoonShoesModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.MOON_SHOES));
         SLUG_BARON_MODEL = new SlugBaronArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.SLUG_BARON_ARMOR));
+        BONE_MODEL = new BoneArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.BONE_ARMOR));
     }
 
     @Override
@@ -80,6 +82,12 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
             return SLUG_BARON_MODEL;
         }
 
+        if (stack.is(OPItems.BONE_HELMET.get())
+                || stack.is(OPItems.BONE_CHESTPLATE.get())
+                || stack.is(OPItems.BONE_LEGGINGS.get())
+                || stack.is(OPItems.BONE_BOOTS.get())) {
+            return BONE_MODEL;
+        }
 
         if (item instanceof MoonShoesItem) {
             return entity == null ? MOON_SHOES_MODEL : MOON_SHOES_MODEL.withAnimations(entity);
