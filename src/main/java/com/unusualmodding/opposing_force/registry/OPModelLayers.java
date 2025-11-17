@@ -36,13 +36,14 @@ public class OPModelLayers {
     public static final ModelLayerLocation WHIZZ = main("whizz");
     public static final ModelLayerLocation WHIZZ_HEAD = main("whizz_head");
 
-    public static final ModelLayerLocation MOON_SHOES = main("moon_shoes");
+    public static final ModelLayerLocation BONE_ARMOR = main("bone_armor");
     public static final ModelLayerLocation DEEPWOVEN_ARMOR = main("deepwoven_armor");
     public static final ModelLayerLocation EMERALD_ARMOR = main("emerald_armor");
+    public static final ModelLayerLocation MOON_SHOES = main("moon_shoes");
+    public static final ModelLayerLocation RECON_KNIGHT_ARMOR = main("recon_knight_armor");
     public static final ModelLayerLocation SLUG_BARON_ARMOR = main("slug_baron_armor");
     public static final ModelLayerLocation STONE_ARMOR = main("stone_armor");
     public static final ModelLayerLocation WOODEN_ARMOR = main("wooden_armor");
-    public static final ModelLayerLocation BONE_ARMOR = main("bone_armor");
 
     public static final ModelLayerLocation LASER_BOLT = main("laser_bolt");
 

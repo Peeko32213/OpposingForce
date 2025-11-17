@@ -38,7 +38,16 @@ public class OPItemTagProvider extends ItemTagsProvider {
                 GRINNING_RAMBLER_SKULL.get(),
                 SKELETAL_RAMBLER_SKULL.get(),
                 SMILING_RAMBLER_SKULL.get(),
-                STRANGE_RAMBLER_SKULL.get()
+                STRANGE_RAMBLER_SKULL.get(),
+                CRUNDLY_RAMBLER_SKULL.get(),
+                DWARVEN_RAMBLER_SKULL.get(),
+                IMPRISONED_RAMBLER_SKULL.get(),
+                INDOMITABLE_RAMBLER_SKULL.get(),
+                LEERING_RAMBLER_SKULL.get(),
+                MAGMATIC_RAMBLER_SKULL.get(),
+                MUSICAL_RAMBLER_SKULL.get(),
+                NOSY_RAMBLER_SKULL.get(),
+                VALIANT_RAMBLER_SKULL.get()
         );
 
         this.tag(OPItemTags.BLASTER_AMMO).add(
@@ -97,68 +106,76 @@ public class OPItemTagProvider extends ItemTagsProvider {
         );
 
         this.tag(Tags.Items.ARMORS).add(
-                DEEPWOVEN_HAT.get(),
-                DEEPWOVEN_TUNIC.get(),
-                DEEPWOVEN_PANTS.get(),
-                DEEPWOVEN_BOOTS.get(),
-                WOODEN_MASK.get(),
-                WOODEN_CHESTPLATE.get(),
-                WOODEN_COVER.get(),
-                WOODEN_BOOTS.get(),
-                EMERALD_MASK.get(),
-                EMERALD_CHESTPLATE.get(),
-                EMERALD_LEGGINGS.get(),
-                EMERALD_BOOTS.get(),
-                STONE_HELMET.get(),
-                STONE_CHESTPLATE.get(),
-                STONE_LEGGINGS.get(),
-                STONE_BOOTS.get(),
-                MOON_SHOES.get(),
-                SLUG_BARON_HELMET.get(),
-                SLUG_BARON_CHESTPLATE.get(),
-                SLUG_BARON_LEGGINGS.get(),
-                SLUG_BARON_BOOTS.get(),
                 BONE_HELMET.get(),
                 BONE_CHESTPLATE.get(),
                 BONE_LEGGINGS.get(),
-                BONE_BOOTS.get()
+                BONE_BOOTS.get(),
+                DEEPWOVEN_HAT.get(),
+                DEEPWOVEN_TUNIC.get(),
+                DEEPWOVEN_PANTS.get(),
+                DEEPWOVEN_BOOTS.get(),
+                EMERALD_MASK.get(),
+                EMERALD_CHESTPLATE.get(),
+                EMERALD_LEGGINGS.get(),
+                EMERALD_BOOTS.get(),
+                MOON_SHOES.get(),
+                RECON_KNIGHT_HELMET.get(),
+                RECON_KNIGHT_CHESTPLATE.get(),
+                RECON_KNIGHT_LEGGINGS.get(),
+                RECON_KNIGHT_BOOTS.get(),
+                SLUG_BARON_HELMET.get(),
+                SLUG_BARON_CHESTPLATE.get(),
+                SLUG_BARON_LEGGINGS.get(),
+                SLUG_BARON_BOOTS.get(),
+                STONE_HELMET.get(),
+                STONE_CHESTPLATE.get(),
+                STONE_LEGGINGS.get(),
+                STONE_BOOTS.get(),
+                WOODEN_MASK.get(),
+                WOODEN_CHESTPLATE.get(),
+                WOODEN_COVER.get(),
+                WOODEN_BOOTS.get()
         );
 
         this.tag(Tags.Items.ARMORS_HELMETS).add(
+                BONE_HELMET.get(),
                 DEEPWOVEN_HAT.get(),
-                WOODEN_MASK.get(),
                 EMERALD_MASK.get(),
-                STONE_HELMET.get(),
+                RECON_KNIGHT_HELMET.get(),
                 SLUG_BARON_HELMET.get(),
-                BONE_HELMET.get()
+                STONE_HELMET.get(),
+                WOODEN_MASK.get()
         );
 
         this.tag(Tags.Items.ARMORS_CHESTPLATES).add(
+                BONE_CHESTPLATE.get(),
                 DEEPWOVEN_TUNIC.get(),
-                WOODEN_CHESTPLATE.get(),
                 EMERALD_CHESTPLATE.get(),
-                STONE_CHESTPLATE.get(),
+                RECON_KNIGHT_CHESTPLATE.get(),
                 SLUG_BARON_CHESTPLATE.get(),
-                BONE_CHESTPLATE.get()
+                STONE_CHESTPLATE.get(),
+                WOODEN_CHESTPLATE.get()
         );
 
         this.tag(Tags.Items.ARMORS_LEGGINGS).add(
+                BONE_LEGGINGS.get(),
                 DEEPWOVEN_PANTS.get(),
-                WOODEN_COVER.get(),
                 EMERALD_LEGGINGS.get(),
-                STONE_LEGGINGS.get(),
+                RECON_KNIGHT_LEGGINGS.get(),
                 SLUG_BARON_LEGGINGS.get(),
-                BONE_LEGGINGS.get()
+                STONE_LEGGINGS.get(),
+                WOODEN_COVER.get()
         );
 
         this.tag(Tags.Items.ARMORS_BOOTS).add(
+                BONE_BOOTS.get(),
                 DEEPWOVEN_BOOTS.get(),
-                WOODEN_BOOTS.get(),
                 EMERALD_BOOTS.get(),
-                STONE_BOOTS.get(),
                 MOON_SHOES.get(),
+                RECON_KNIGHT_BOOTS.get(),
                 SLUG_BARON_BOOTS.get(),
-                BONE_BOOTS.get()
+                STONE_BOOTS.get(),
+                WOODEN_BOOTS.get()
         );
 
         this.tag(Tags.Items.STRING).add(DEEP_SILK.get());

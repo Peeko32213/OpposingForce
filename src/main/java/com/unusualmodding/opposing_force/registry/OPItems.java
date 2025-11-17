@@ -136,6 +136,10 @@ public class OPItems {
     public static final RegistryObject<Item> SPARK_BLADE = registerItem("spark_blade", () -> new SparkBladeItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> LIGHTNING_BOMB = registerItem("lightning_bomb", () -> new LightningBombItem(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<Item> ELECTRIC_BATON = registerItem("electric_baton", () -> new SelfInflictMobEffectItem(new Item.Properties(), OPMobEffects.ELECTRIFIED, 200, 0));
+    public static final RegistryObject<Item> RECON_KNIGHT_HELMET = registerItem("recon_knight_helmet", ()-> new ConfigurableArmorItem(ArmorItem.Type.HELMET, new Item.Properties(), OPArmorDefinitions.RECON_KNIGHT));
+    public static final RegistryObject<Item> RECON_KNIGHT_CHESTPLATE = registerItem("recon_knight_chestplate", ()-> new ConfigurableArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties(), OPArmorDefinitions.RECON_KNIGHT));
+    public static final RegistryObject<Item> RECON_KNIGHT_LEGGINGS = registerItem("recon_knight_leggings", ()-> new ConfigurableArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties(), OPArmorDefinitions.RECON_KNIGHT));
+    public static final RegistryObject<Item> RECON_KNIGHT_BOOTS = registerItem("recon_knight_boots", ()-> new ConfigurableArmorItem(ArmorItem.Type.BOOTS, new Item.Properties(), OPArmorDefinitions.RECON_KNIGHT));
 
     // Whizz
     public static final RegistryObject<Item> WHIZZ_SPAWN_EGG = registerSpawnEggItem("whizz", OPEntities.WHIZZ, 0x8a6ce0, 0xffe7f8);

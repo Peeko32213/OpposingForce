@@ -1,10 +1,11 @@
 {
   "values": [
+    "opposing_force:bone_chestplate",
     "opposing_force:deepwoven_tunic",
-    "opposing_force:wooden_chestplate",
     "opposing_force:emerald_chestplate",
-    "opposing_force:stone_chestplate",
+    "opposing_force:recon_knight_chestplate",
     "opposing_force:slug_baron_chestplate",
-    "opposing_force:bone_chestplate"
+    "opposing_force:stone_chestplate",
+    "opposing_force:wooden_chestplate"
   ]
 }

@@ -13,6 +13,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -186,7 +187,12 @@ public class LaserBolt extends FrictionlessProjectile {
                     Vec3 vec31 = new Vec3(0, 0, 1.5F).yRot((float) -Math.toRadians(f + boltAngle - boltAngle * i));
                     laserBolt.setPos(entity.getEyePosition().add(vec31));
                     laserBolt.setDeltaMovement(vec31);
-                    laserBolt.setOwner(this.getOwner());
+                    if (this.getOwner() != null) {
+                        laserBolt.setOwner(this.getOwner());
+                        if (this.getOwner() instanceof Player player) {
+                            laserBolt.setItem(player.getItemInHand(player.getUsedItemHand()));
+                        }
+                    }
                     laserBolt.setDisruptor(false);
                     float yRot = (float) (Mth.atan2(vec31.z, vec31.x) * (180F / Math.PI)) + 90F;
                     float xRot = (float) -(Mth.atan2(vec31.y, Math.sqrt(vec31.x * vec31.x + vec31.z * vec31.z)) * (180F / Math.PI));

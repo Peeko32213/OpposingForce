@@ -9,7 +9,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 
-public class MoonShoesModel extends HumanoidModel {
+public class MoonShoesModel extends HumanoidModel<LivingEntity> {
 
 	public ModelPart right_wing;
 	public ModelPart left_wing;

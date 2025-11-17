@@ -124,6 +124,10 @@ public class OpposingForceTab {
                     output.accept(OPItems.TESLA_CANNON.get());
                     output.accept(OPItems.SPARK_BLADE.get());
                     output.accept(OPItems.ELECTRIC_BATON.get());
+                    output.accept(OPItems.RECON_KNIGHT_HELMET.get());
+                    output.accept(OPItems.RECON_KNIGHT_CHESTPLATE.get());
+                    output.accept(OPItems.RECON_KNIGHT_LEGGINGS.get());
+                    output.accept(OPItems.RECON_KNIGHT_BOOTS.get());
 
                     // Whizz
                     output.accept(OPBlocks.INFESTED_AMETHYST_BLOCK.get());
