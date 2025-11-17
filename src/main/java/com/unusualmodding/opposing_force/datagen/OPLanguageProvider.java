@@ -268,9 +268,6 @@ public class OPLanguageProvider extends LanguageProvider {
         this.translateAdvancement("deepwoven_armor", "A Cozy Caver");
         this.translateAdvancementDesc("deepwoven_armor", "Conceal yourself with a piece Deepwoven armor");
 
-        this.translateAdvancement("ignite_fire_slime", "Protocol III");
-        this.translateAdvancementDesc("ignite_fire_slime", "Reignite a Fire Slime with Blaze Powder to prevent it from evaporating");
-
         this.translateAdvancement("tame_slug", "Go my Slug");
         this.translateAdvancementDesc("tame_slug", "Tame a Slug using Slime Balls");
 

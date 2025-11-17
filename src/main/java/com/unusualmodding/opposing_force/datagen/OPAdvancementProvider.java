@@ -50,18 +50,6 @@ public class OPAdvancementProvider implements AdvancementGenerator {
                 .parent(root)
                 .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "misc_root"), helper);
 
-        Advancement igniteFireSlime = Advancement.Builder.advancement()
-                .parent(miscRoot)
-                .display(Items.BLAZE_POWDER,
-                        Component.translatable("advancement.opposing_force.ignite_fire_slime"),
-                        Component.translatable("advancement.opposing_force.ignite_fire_slime.desc"),
-                        null,
-                        FrameType.TASK, true, true, false)
-                .addCriterion("ignite_fire_slime", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(
-                        ItemPredicate.Builder.item().of(Items.BLAZE_POWDER),
-                        EntityPredicate.wrap(EntityPredicate.Builder.entity().of(OPEntities.FIRE_SLIME.get()).build())))
-                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "ignite_fire_slime"), helper);
-
         Advancement captureWhizz = Advancement.Builder.advancement()
                 .parent(miscRoot)
                 .display(OPItems.CAPTURED_WHIZZ.get(),
