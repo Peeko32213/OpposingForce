@@ -234,24 +234,6 @@ public class FireSlime extends SummonableMonster {
     }
 
     @Override
-    public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
-        if (itemstack.is(Items.BLAZE_POWDER.asItem()) && this.isFromSummon()) {
-            if (!player.getAbilities().instabuild) {
-                itemstack.shrink(1);
-            }
-            this.gameEvent(GameEvent.ENTITY_INTERACT);
-            this.setFromSummon(false);
-            this.setLifeTicks(-1);
-            this.tame(player);
-            this.playSound(SoundEvents.BLAZE_BURN, this.getSoundVolume(), this.getVoicePitch());
-            this.level().broadcastEntityEvent(this, (byte) 39);
-            return InteractionResult.SUCCESS;
-        }
-        return super.mobInteract(player, hand);
-    }
-
-    @Override
     public void handleEntityEvent(byte id) {
         if (id == 39) {
             for (int i = 0; i < 15; i++) {
