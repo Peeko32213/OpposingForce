@@ -1,7 +1,7 @@
 package com.unusualmodding.opposing_force.datagen;
 
-import com.unusualmodding.opposing_force.OpposingForceTab;
 import com.unusualmodding.opposing_force.OpposingForce;
+import com.unusualmodding.opposing_force.OpposingForceTab;
 import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;

@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.entity;
 
-import com.unusualmodding.opposing_force.entity.ai.goal.*;
+import com.unusualmodding.opposing_force.entity.ai.goal.DicerAttackGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.DicerLaserGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
@@ -21,7 +22,10 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;

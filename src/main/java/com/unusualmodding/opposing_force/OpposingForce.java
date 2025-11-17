@@ -2,7 +2,8 @@ package com.unusualmodding.opposing_force;
 
 import com.unusualmodding.opposing_force.datagen.*;
 import com.unusualmodding.opposing_force.registry.*;
-import com.unusualmodding.opposing_force.utils.*;
+import com.unusualmodding.opposing_force.utils.ClientProxy;
+import com.unusualmodding.opposing_force.utils.CommonProxy;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;

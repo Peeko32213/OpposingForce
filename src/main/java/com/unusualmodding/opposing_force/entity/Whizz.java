@@ -4,10 +4,10 @@ import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
 import com.unusualmodding.opposing_force.entity.ai.goal.whizz.WhizzAttackGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.whizz.WhizzSwarmGoal;
-import com.unusualmodding.opposing_force.entity.ai.goal.whizz.WhizzWakeUpFriendsGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.whizz.WhizzWanderGoal;
 import com.unusualmodding.opposing_force.entity.base.SummonableMonster;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
+import com.unusualmodding.opposing_force.registry.OPBlocks;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -57,7 +57,7 @@ public class Whizz extends SummonableMonster {
     private static final EntityDataAccessor<Boolean> CAPTURED = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.BOOLEAN);
 
     @Nullable
-    private WhizzWakeUpFriendsGoal friendsGoal;
+    private WakeUpInfestationsGoal friendsGoal;
 
     @Nullable
     private Whizz leader;
@@ -90,7 +90,7 @@ public class Whizz extends SummonableMonster {
     }
 
     protected void registerGoals() {
-        this.friendsGoal = new WhizzWakeUpFriendsGoal(this);
+        this.friendsGoal = new WakeUpInfestationsGoal(this, OPBlocks.INFESTED_AMETHYST_BLOCK.get());
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MonsterSitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new WhizzAttackGoal(this));

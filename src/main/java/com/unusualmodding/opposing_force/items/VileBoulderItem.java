@@ -1,7 +1,10 @@
 package com.unusualmodding.opposing_force.items;
 
 import com.unusualmodding.opposing_force.entity.Slug;
-import com.unusualmodding.opposing_force.registry.*;
+import com.unusualmodding.opposing_force.registry.OPBlocks;
+import com.unusualmodding.opposing_force.registry.OPEnchantments;
+import com.unusualmodding.opposing_force.registry.OPMobEffects;
+import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.registry.enums.OPTiers.OPItemTiers;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;

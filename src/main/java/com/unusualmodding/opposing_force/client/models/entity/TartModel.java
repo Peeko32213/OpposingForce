@@ -2,9 +2,7 @@ package com.unusualmodding.opposing_force.client.models.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.unusualmodding.opposing_force.client.animations.SlugAnimations;
 import com.unusualmodding.opposing_force.client.animations.TartAnimations;
-import com.unusualmodding.opposing_force.entity.Slug;
 import com.unusualmodding.opposing_force.entity.Tart;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;

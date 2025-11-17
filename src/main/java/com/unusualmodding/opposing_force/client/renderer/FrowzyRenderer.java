@@ -1,7 +1,6 @@
 package com.unusualmodding.opposing_force.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.FrowzyModel;
 import com.unusualmodding.opposing_force.client.renderer.layers.FrowzyHelmetLayer;
 import com.unusualmodding.opposing_force.entity.Frowzy;

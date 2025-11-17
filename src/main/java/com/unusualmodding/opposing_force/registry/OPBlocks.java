@@ -71,7 +71,7 @@ public class OPBlocks {
     public static final RegistryObject<Block> CHISELED_VILE_STONE_BRICKS = registerBlock("chiseled_vile_stone_bricks", () -> new Block(OPBlockProperties.VILE_STONE));
 
     // Tart
-    public static final RegistryObject<Block> INFESTED_OAK_LEAVES = registerBlock("infested_oak_leaves", () -> new InfestedOakLeavesBlock(Blocks.OAK_LEAVES, BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)));
+    public static final RegistryObject<Block> INFESTED_OAK_LEAVES = registerBlock("infested_oak_leaves", () -> new InfestationBlock(Blocks.OAK_LEAVES, BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES), OPEntities.TART, 0.2F));
     public static final Pair<RegistryObject<Block>, RegistryObject<Block>> TART_HEAD = registerMobHead("tart_head", MobHeadBlock.Types.TART, OPNoteBlockInstruments.TART.get());
 
     // Trembler
@@ -86,7 +86,7 @@ public class OPBlocks {
     public static final RegistryObject<Block> DEEP_SILK_BLOCK = registerBlock("deep_silk_block", () -> new Block(OPBlockProperties.DEEP_SILK_BLOCK));
 
     // Whizz
-    public static final RegistryObject<Block> INFESTED_AMETHYST_BLOCK = registerBlockNoLang("infested_amethyst_block", () -> new InfestedAmethystBlock(Blocks.AMETHYST_BLOCK, BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_PURPLE).sound(SoundType.AMETHYST)));
+    public static final RegistryObject<Block> INFESTED_AMETHYST_BLOCK = registerBlockNoLang("infested_amethyst_block", () -> new InfestationBlock(Blocks.AMETHYST_BLOCK, BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_PURPLE).sound(SoundType.AMETHYST), OPEntities.WHIZZ, 0.5F));
     public static final Pair<RegistryObject<Block>, RegistryObject<Block>> WHIZZ_HEAD = registerMobHead("whizz_head", MobHeadBlock.Types.WHIZZ, OPNoteBlockInstruments.WHIZZ.get());
 
     private static <B extends Block> RegistryObject<B> registerBlock(String name, Supplier<? extends B> supplier) {

@@ -2,7 +2,7 @@ package com.unusualmodding.opposing_force.registry;
 
 import com.mojang.serialization.Codec;
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.loot.modifier.*;
+import com.unusualmodding.opposing_force.loot.modifier.AddLootTableModifier;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

@@ -1,23 +1,17 @@
 package com.unusualmodding.opposing_force.client.renderer.items;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.blocks.MobHeadBlock;
 import com.unusualmodding.opposing_force.blocks.WallMobHeadBlock;
-import com.unusualmodding.opposing_force.client.models.item.BlasterModel;
 import com.unusualmodding.opposing_force.client.models.mob_heads.MobHeadModelBase;
 import com.unusualmodding.opposing_force.client.renderer.blocks.MobHeadBlockEntityRenderer;
-import com.unusualmodding.opposing_force.registry.OPItems;
-import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -30,8 +24,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.Map;
-
-import static com.unusualmodding.opposing_force.OpposingForce.modPrefix;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = OpposingForce.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class OPItemRenderers extends BlockEntityWithoutLevelRenderer {
