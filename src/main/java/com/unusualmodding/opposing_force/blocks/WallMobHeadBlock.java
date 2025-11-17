@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.unusualmodding.opposing_force.blocks.entity.MobHeadBlockEntity;
 import com.unusualmodding.opposing_force.registry.OPBlockEntityTypes;
-import com.unusualmodding.opposing_force.registry.OPBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EquipmentSlot;

@@ -1,7 +1,10 @@
 package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.enchantments.*;
+import com.unusualmodding.opposing_force.enchantments.DoubleJumpEnchantment;
+import com.unusualmodding.opposing_force.enchantments.KickbackEnchantment;
+import com.unusualmodding.opposing_force.enchantments.OPEnchantment;
+import com.unusualmodding.opposing_force.enchantments.ThrowingEnchantment;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.EnchantedBookItem;

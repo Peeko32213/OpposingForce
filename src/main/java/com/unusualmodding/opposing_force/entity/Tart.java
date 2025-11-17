@@ -1,9 +1,10 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.entity.ai.goal.TartAttackGoal;
-import com.unusualmodding.opposing_force.entity.ai.goal.TartWakeUpFriendsGoal;
+import com.unusualmodding.opposing_force.entity.ai.goal.WakeUpInfestationsGoal;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
+import com.unusualmodding.opposing_force.registry.OPBlocks;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -33,7 +34,7 @@ public class Tart extends Monster implements AttackState {
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Tart.class, EntityDataSerializers.INT);
 
     @Nullable
-    private TartWakeUpFriendsGoal friendsGoal;
+    private WakeUpInfestationsGoal friendsGoal;
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState sitAnimationState = new AnimationState();
@@ -55,7 +56,7 @@ public class Tart extends Monster implements AttackState {
 
     @Override
     protected void registerGoals() {
-        this.friendsGoal = new TartWakeUpFriendsGoal(this);
+        this.friendsGoal = new WakeUpInfestationsGoal(this, OPBlocks.INFESTED_OAK_LEAVES.get());
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new TartAttackGoal(this));
         this.goalSelector.addGoal(2, this.friendsGoal);

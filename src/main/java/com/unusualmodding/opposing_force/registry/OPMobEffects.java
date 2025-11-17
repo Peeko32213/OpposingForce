@@ -1,7 +1,9 @@
 package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.effects.*;
+import com.unusualmodding.opposing_force.effects.Electrified;
+import com.unusualmodding.opposing_force.effects.GloomToxin;
+import com.unusualmodding.opposing_force.effects.SlugInfestation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

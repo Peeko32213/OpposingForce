@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.VoltModel;
-import com.unusualmodding.opposing_force.client.renderer.OPRenderTypes;
 import com.unusualmodding.opposing_force.entity.Volt;
 import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.model.EntityModel;

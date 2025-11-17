@@ -1,6 +1,5 @@
 package com.unusualmodding.opposing_force.entity.ai.goal;
 
-import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.entity.Terror;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;

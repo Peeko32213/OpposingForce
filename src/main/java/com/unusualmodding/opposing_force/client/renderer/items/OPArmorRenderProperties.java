@@ -2,7 +2,6 @@ package com.unusualmodding.opposing_force.client.renderer.items;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.unusualmodding.opposing_force.client.models.armor.*;
-import com.unusualmodding.opposing_force.items.*;
 import com.unusualmodding.opposing_force.items.armor.MoonShoesItem;
 import com.unusualmodding.opposing_force.items.armor.SlugBaronArmorItem;
 import com.unusualmodding.opposing_force.items.armor.WoodenArmorItem;

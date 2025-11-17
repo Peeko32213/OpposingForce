@@ -1,7 +1,8 @@
 package com.unusualmodding.opposing_force.mixins.client;
 
 import com.unusualmodding.opposing_force.events.PoseHandEvent;
-import net.minecraft.client.model.*;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;

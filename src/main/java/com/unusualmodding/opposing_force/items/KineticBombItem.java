@@ -1,7 +1,6 @@
 package com.unusualmodding.opposing_force.items;
 
 import com.unusualmodding.opposing_force.entity.projectile.KineticBomb;
-import com.unusualmodding.opposing_force.entity.projectile.LightningBomb;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
