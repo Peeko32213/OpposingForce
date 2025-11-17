@@ -156,7 +156,7 @@ public class Trembler extends Monster {
     }
 
     @Override
-    public boolean hurt(DamageSource damageSource, float pAmount) {
+    public boolean hurt(@NotNull DamageSource damageSource, float pAmount) {
         if (this.isInvulnerableTo(damageSource)) {
             return false;
         } else {
@@ -169,7 +169,7 @@ public class Trembler extends Monster {
     }
 
     @Override
-    public boolean causeFallDamage(float f, float g, DamageSource damageSource) {
+    public boolean causeFallDamage(float f, float g, @NotNull DamageSource damageSource) {
         return !this.isRolling();
     }
 
