@@ -34,10 +34,9 @@ public class WakeUpInfestationsGoal extends Goal {
     @Override
     public boolean canUse() {
         boolean friends = this.lookForFriends > 0;
-        if(this.monster instanceof TameableMonster monster) {
+        if (this.monster instanceof TameableMonster monster) {
             return friends && !monster.isTame();
         }
-        
         return friends;
     }
 
