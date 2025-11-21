@@ -56,60 +56,96 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
         final var item = stack.getItem();
 
         if (stack.is(OPItems.BONE_HELMET.get()) || stack.is(OPItems.BONE_CHESTPLATE.get()) || stack.is(OPItems.BONE_LEGGINGS.get()) || stack.is(OPItems.BONE_BOOTS.get())) {
-            setModelParts(humanoidModel);
             return BONE_MODEL;
         }
 
         if (stack.is(OPItems.DEEPWOVEN_HAT.get()) || stack.is(OPItems.DEEPWOVEN_TUNIC.get()) || stack.is(OPItems.DEEPWOVEN_PANTS.get()) || stack.is(OPItems.DEEPWOVEN_BOOTS.get())) {
-            setModelParts(humanoidModel);
             return DEEPWOVEN_MODEL;
         }
 
         if (stack.is(OPItems.EMERALD_MASK.get()) || stack.is(OPItems.EMERALD_CHESTPLATE.get()) || stack.is(OPItems.EMERALD_LEGGINGS.get()) || stack.is(OPItems.EMERALD_BOOTS.get())) {
-            setModelParts(humanoidModel);
             return EMERALD_MODEL;
         }
 
         if (item instanceof MoonShoesItem) {
-            setModelParts(humanoidModel);
             return entity == null ? MOON_SHOES_MODEL : MOON_SHOES_MODEL.withAnimations(entity);
         }
 
         if (stack.is(OPItems.RECON_KNIGHT_HELMET.get()) || stack.is(OPItems.RECON_KNIGHT_CHESTPLATE.get()) || stack.is(OPItems.RECON_KNIGHT_LEGGINGS.get()) || stack.is(OPItems.RECON_KNIGHT_BOOTS.get())) {
-            setModelParts(humanoidModel);
             return entity == null ? RECON_KNIGHT_MODEL : RECON_KNIGHT_MODEL.withAnimations(entity);
         }
 
         if (item instanceof SlugBaronArmorItem) {
-            setModelParts(humanoidModel);
             return SLUG_BARON_MODEL;
         }
 
         if (stack.is(OPItems.STONE_HELMET.get()) || stack.is(OPItems.STONE_CHESTPLATE.get()) || stack.is(OPItems.STONE_LEGGINGS.get()) || stack.is(OPItems.STONE_BOOTS.get())) {
-            setModelParts(humanoidModel);
             return STONE_MODEL;
         }
 
         if (item instanceof WoodenArmorItem) {
-            setModelParts(humanoidModel);
             return WOODEN_MODEL;
         }
 
         return humanoidModel;
     }
 
-    public static void setModelParts(HumanoidModel<?> humanoidModel) {
+    public static void setModelParts(Model humanoidModel) {
         if(humanoidModel instanceof PlayerModel<?> model) {
             model.jacket.visible = false;
             model.leftPants.visible = false;
             model.rightPants.visible = false;
             model.leftSleeve.visible = false;
             model.rightSleeve.visible = false;
+            model.hat.visible = false;
         }
-        humanoidModel.hat.visible = false;
     }
 
-    public static void renderCustomArmor(PoseStack poseStack, MultiBufferSource multiBufferSource, int light, ItemStack itemStack, ArmorItem armorItem, Model armorModel, boolean legs, ResourceLocation texture) {
+    public static void renderCustomArmor(PoseStack poseStack, MultiBufferSource multiBufferSource, int light, ItemStack stack, ArmorItem armorItem, Model humanoidModel, boolean legs, ResourceLocation texture) {
+        final var item = stack.getItem();
+        if (stack.is(OPItems.BONE_HELMET.get()) || stack.is(OPItems.BONE_CHESTPLATE.get()) || stack.is(OPItems.BONE_LEGGINGS.get()) || stack.is(OPItems.BONE_BOOTS.get())) {
+            setModelParts(humanoidModel);
+            return;
+        }
 
+        if (stack.is(OPItems.DEEPWOVEN_HAT.get()) || stack.is(OPItems.DEEPWOVEN_TUNIC.get()) || stack.is(OPItems.DEEPWOVEN_PANTS.get()) || stack.is(OPItems.DEEPWOVEN_BOOTS.get())) {
+            setModelParts(humanoidModel);
+            return;
+        }
+
+        if (stack.is(OPItems.EMERALD_MASK.get()) || stack.is(OPItems.EMERALD_CHESTPLATE.get()) || stack.is(OPItems.EMERALD_LEGGINGS.get()) || stack.is(OPItems.EMERALD_BOOTS.get())) {
+            setModelParts(humanoidModel);
+            return;
+        }
+
+        if (item instanceof MoonShoesItem) {
+            setModelParts(humanoidModel);
+            return;
+
+        }
+
+        if (stack.is(OPItems.RECON_KNIGHT_HELMET.get()) || stack.is(OPItems.RECON_KNIGHT_CHESTPLATE.get()) || stack.is(OPItems.RECON_KNIGHT_LEGGINGS.get()) || stack.is(OPItems.RECON_KNIGHT_BOOTS.get())) {
+            setModelParts(humanoidModel);
+            return;
+
+        }
+
+        if (item instanceof SlugBaronArmorItem) {
+            setModelParts(humanoidModel);
+            return;
+
+        }
+
+        if (stack.is(OPItems.STONE_HELMET.get()) || stack.is(OPItems.STONE_CHESTPLATE.get()) || stack.is(OPItems.STONE_LEGGINGS.get()) || stack.is(OPItems.STONE_BOOTS.get())) {
+            setModelParts(humanoidModel);
+            return;
+
+        }
+
+        if (item instanceof WoodenArmorItem) {
+            setModelParts(humanoidModel);
+            return;
+
+        }
     }
 }
