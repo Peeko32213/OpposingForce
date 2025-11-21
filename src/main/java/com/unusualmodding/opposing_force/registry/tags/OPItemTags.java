@@ -12,6 +12,7 @@ public class OPItemTags {
     public static final TagKey<Item> RAW_VEGETABLES = modItemTag("raw_vegetables");
     public static final TagKey<Item> KNIVES = modItemTag("knives");
     public static final TagKey<Item> RAMBLER_SKULLS = modItemTag("rambler_skulls");
+    public static final TagKey<Item> PREVENT_CAPE_RENDERING = modItemTag("prevent_cape_rendering");
 
     public static final TagKey<Item> BERRIES = forgeItemTag("berries");
     public static final TagKey<Item> FRUITS = forgeItemTag("fruits");

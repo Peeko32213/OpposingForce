@@ -17,6 +17,7 @@
     "PoseMixin"
   ],
   "client": [
+    "client.CapeLayerMixin",
     "client.CustomHeadLayerMixin",
     "client.GuiMixin",
     "client.HumanoidArmorLayerMixin",
