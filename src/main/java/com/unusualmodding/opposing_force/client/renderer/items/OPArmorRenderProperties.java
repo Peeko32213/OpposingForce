@@ -10,6 +10,7 @@ import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -99,7 +100,7 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
         }
     }
 
-    public static void renderCustomArmor(PoseStack poseStack, MultiBufferSource multiBufferSource, int light, ItemStack stack, ArmorItem armorItem, Model humanoidModel, boolean legs, ResourceLocation texture) {
+    public static void renderCustomArmor(PoseStack poseStack, MultiBufferSource multiBufferSource, int light, ItemStack stack, ArmorItem armorItem, Model armorModel,Model humanoidModel, boolean legs, ResourceLocation texture) {
         final var item = stack.getItem();
         if (stack.is(OPItems.BONE_HELMET.get()) || stack.is(OPItems.BONE_CHESTPLATE.get()) || stack.is(OPItems.BONE_LEGGINGS.get()) || stack.is(OPItems.BONE_BOOTS.get())) {
             setModelParts(humanoidModel);

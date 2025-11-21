@@ -61,7 +61,7 @@ public abstract class HumanoidArmorLayerMixin extends RenderLayer {
                     Model armorModel = ForgeHooksClient.getArmorModel(livingEntity, itemstack, equipmentSlot, model);
                     setPartVisibility((HumanoidModel) armorModel, equipmentSlot);
                     ResourceLocation texture = opposingForce$getArmorResource(livingEntity, itemstack, equipmentSlot, null);
-                    OPArmorRenderProperties.renderCustomArmor(poseStack, multiBufferSource, light, opposingForce$lastArmorItemStackRendered, armorItem, armorModel, legs, texture);
+                    OPArmorRenderProperties.renderCustomArmor(poseStack, multiBufferSource, light, opposingForce$lastArmorItemStackRendered, armorItem, armorModel,model, legs, texture);
                 }
             }
         }
