@@ -39,7 +39,7 @@ public class InfestationBlock extends Block{
         Entity entity = toSpawn.get().create(level);
         if (entity != null) {
             entity.moveTo((double) pos.getX() + (double) 0.5F, pos.getY(), (double) pos.getZ() + (double) 0.5F, 0.0F, 0.0F);
-            level.addFreshEntity(entity);
+            level.addFreshEntity(entity)
         }
     }
 
