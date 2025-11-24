@@ -146,6 +146,20 @@ public class OPAdvancementProvider implements AdvancementGenerator {
                 .addCriterion("slug_baron_boots", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.SLUG_BARON_BOOTS.get()))
                 .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "slug_baron_armor"), helper);
 
+        Advancement reconArmor = Advancement.Builder.advancement()
+                .parent(teslaIngot)
+                .display(OPItems.RECON_KNIGHT_HELMET.get(),
+                        Component.translatable("advancement.opposing_force.recon_knight_armor"),
+                        Component.translatable("advancement.opposing_force.recon_knight_armor.desc"),
+                        null,
+                        FrameType.TASK, true, true, false)
+                .requirements(RequirementsStrategy.OR)
+                .addCriterion("recon_knight_helmet", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.RECON_KNIGHT_HELMET.get()))
+                .addCriterion("recon_knight_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.RECON_KNIGHT_CHESTPLATE.get()))
+                .addCriterion("recon_knight_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.RECON_KNIGHT_LEGGINGS.get()))
+                .addCriterion("recon_knight_boots", InventoryChangeTrigger.TriggerInstance.hasItems(OPItems.RECON_KNIGHT_BOOTS.get()))
+                .save(consumer, new ResourceLocation(OpposingForce.MOD_ID, "recon_knight_armor"), helper);
+
         /*Advancement tremblerShell = Advancement.Builder.advancement()
                 .parent(root)
                 .display(OPBlocks.TREMBLER_SHELL.get(),

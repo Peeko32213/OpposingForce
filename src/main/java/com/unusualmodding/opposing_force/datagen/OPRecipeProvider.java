@@ -38,6 +38,12 @@ public class OPRecipeProvider extends RecipeProvider {
         ShapedRecipeBuilder.shaped(COMBAT, TESLA_CANNON.get()).define('#', ELECTRIC_ALLOY.get()).define('X', DEEP_SILK.get()).define('Y', Tags.Items.RODS_WOODEN).define('Z', Blocks.TRIPWIRE_HOOK).define('A', ELECTRIC_CHARGE.get()).pattern("#A#").pattern("XZX").pattern(" Y ").unlockedBy("has_tesla_ingot", has(ELECTRIC_ALLOY.get())).save(consumer);
         ShapedRecipeBuilder.shaped(MISC, ELECTRIC_ALLOY.get(), 2).define('A', ELECTRIC_CHARGE.get()).define('B', Tags.Items.INGOTS_GOLD).define('C', Tags.Items.GEMS_DIAMOND).pattern(" A ").pattern("BCB").pattern(" A ").unlockedBy("has_electric_charge", has(ELECTRIC_CHARGE.get())).save(consumer);
         ShapedRecipeBuilder.shaped(COMBAT, SPARK_BLADE.get()).define('B', Tags.Items.INGOTS_GOLD).define('A', ELECTRIC_ALLOY.get()).pattern(" A ").pattern(" A ").pattern(" B ").unlockedBy("has_tesla_ingot", has(ELECTRIC_ALLOY.get())).save(consumer);
+
+        ShapedRecipeBuilder.shaped(COMBAT, RECON_KNIGHT_HELMET.get()).define('#', ELECTRIC_ALLOY.get()).pattern("###").pattern("# #").unlockedBy("has_electric_alloy", has(ELECTRIC_ALLOY.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, RECON_KNIGHT_CHESTPLATE.get()).define('#', ELECTRIC_ALLOY.get()).pattern("# #").pattern("###").pattern("###").unlockedBy("has_electric_alloy", has(ELECTRIC_ALLOY.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, RECON_KNIGHT_LEGGINGS.get()).define('#', ELECTRIC_ALLOY.get()).pattern("###").pattern("# #").pattern("# #").unlockedBy("has_electric_alloy", has(ELECTRIC_ALLOY.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, RECON_KNIGHT_BOOTS.get()).define('#', ELECTRIC_ALLOY.get()).pattern("# #").pattern("# #").unlockedBy("has_electric_alloy", has(ELECTRIC_ALLOY.get())).save(consumer);
+
         ShapedRecipeBuilder.shaped(COMBAT, TOMAHAWK.get()).define('I', Tags.Items.INGOTS_IRON).define('W', Tags.Items.RODS_WOODEN).pattern("II").pattern("IW").unlockedBy("has_iron_ingot", has(Tags.Items.INGOTS_IRON)).save(consumer);
         ShapedRecipeBuilder.shaped(COMBAT, UMBER_DAGGER.get()).define('F', UMBER_FANG.get()).define('W', Tags.Items.RODS_WOODEN).pattern("F").pattern("W").unlockedBy("has_umber_fang", has(UMBER_FANG.get())).save(consumer);
 
