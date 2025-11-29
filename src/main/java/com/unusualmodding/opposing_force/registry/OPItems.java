@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-@SuppressWarnings("unused")
 public class OPItems {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, OpposingForce.MOD_ID);
@@ -137,7 +136,6 @@ public class OPItems {
     public static final RegistryObject<Item> TESLA_CANNON = registerItem("tesla_cannon", () -> new TeslaCannonItem(new Item.Properties().stacksTo(1).durability(465)));
     public static final RegistryObject<Item> SPARK_BLADE = registerItem("spark_blade", () -> new SparkBladeItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> LIGHTNING_BOMB = registerItem("lightning_bomb", () -> new LightningBombItem(new Item.Properties().stacksTo(16)));
-    public static final RegistryObject<Item> ELECTRIC_BATON = registerItem("electric_baton", () -> new SelfInflictMobEffectItem(new Item.Properties(), OPMobEffects.ELECTRIFIED, 200, 0));
     public static final RegistryObject<Item> RECON_KNIGHT_HELMET = registerItem("recon_knight_helmet", ()-> new ConfigurableArmorItem(ArmorItem.Type.HELMET, new Item.Properties(), OPArmorDefinitions.RECON_KNIGHT));
     public static final RegistryObject<Item> RECON_KNIGHT_CHESTPLATE = registerItem("recon_knight_chestplate", ()-> new ConfigurableArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties(), OPArmorDefinitions.RECON_KNIGHT));
     public static final RegistryObject<Item> RECON_KNIGHT_LEGGINGS = registerItem("recon_knight_leggings", ()-> new ConfigurableArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties(), OPArmorDefinitions.RECON_KNIGHT));
@@ -190,8 +188,7 @@ public class OPItems {
     }
 
     private static <I extends Item> RegistryObject<I> registerItemNoLang(String name, Supplier<? extends I> supplier) {
-        RegistryObject<I> item = ITEMS.register(name, supplier);
-        return item;
+        return ITEMS.register(name, supplier);
     }
 
     private static RegistryObject<Item> registerSpawnEggItem(String name, RegistryObject<? extends EntityType<? extends Mob>> type, int baseColor, int spotColor) {
