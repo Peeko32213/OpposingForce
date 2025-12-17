@@ -55,7 +55,7 @@ public class MobHeadBlockEntityRenderer implements BlockEntityRenderer<MobHeadBl
         map.put(MobHeadBlock.Types.RAMBLER_STRANGE, OpposingForce.modPrefix("textures/entity/rambler/skulls/strange.png"));
         map.put(MobHeadBlock.Types.RAMBLER_VALIANT, OpposingForce.modPrefix("textures/entity/rambler/skulls/valiant.png"));
         map.put(MobHeadBlock.Types.SKYVERN, OpposingForce.modPrefix("textures/entity/skyvern/cloudy.png"));
-        map.put(MobHeadBlock.Types.TART, OpposingForce.modPrefix("textures/entity/tart.png"));
+        map.put(MobHeadBlock.Types.TART, OpposingForce.modPrefix("textures/entity/tart/tart.png"));
         map.put(MobHeadBlock.Types.WHIZZ, OpposingForce.modPrefix("textures/entity/whizz/whizz.png"));
     });
 

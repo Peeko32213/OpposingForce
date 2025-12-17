@@ -15,6 +15,11 @@ public class OPParticles {
     public static final RegistryObject<SimpleParticleType> LASER_BOLT_DUST = PARTICLE_TYPES.register("laser_bolt_dust", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> MOON_SHOES = PARTICLE_TYPES.register("moon_shoes", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> LASER_SWEEP = PARTICLE_TYPES.register("laser_sweep", () -> new SimpleParticleType(true));
-    public static final RegistryObject<SimpleParticleType> DYED_SWEEP = PARTICLE_TYPES.register("dyed_sweep", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> RED_LASER_SWEEP = PARTICLE_TYPES.register("red_laser_sweep", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> ORANGE_LASER_SWEEP = PARTICLE_TYPES.register("orange_laser_sweep", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> YELLOW_LASER_SWEEP = PARTICLE_TYPES.register("yellow_laser_sweep", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> LIME_LASER_SWEEP = PARTICLE_TYPES.register("lime_laser_sweep", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> GREEN_LASER_SWEEP = PARTICLE_TYPES.register("green_laser_sweep", () -> new SimpleParticleType(true));
+
     public static final RegistryObject<LightningParticleType> LIGHTNING = PARTICLE_TYPES.register("lightning", () -> new LightningParticleType(false));
 }

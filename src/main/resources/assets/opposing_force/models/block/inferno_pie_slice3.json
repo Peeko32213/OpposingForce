@@ -1,36 +1,36 @@
 {
-	"texture_size": [32, 32],
 	"render_type": "cutout",
+	"texture_size": [32, 32],
 	"textures": {
-		"particle": "opposing_force:block/inferno_pie_particle",
 		"pie": "opposing_force:block/inferno_pie_slice3",
-		"pie_glow": "opposing_force:block/inferno_pie_slice3_glow"
+		"pie_glow": "opposing_force:block/inferno_pie_slice3_glow",
+		"particle": "opposing_force:block/inferno_pie_particle"
 	},
 	"elements": [
 		{
-			"from": [1, 0, 1],
-			"to": [8, 5, 8],
-			"rotation": {"angle": 0, "axis": "y", "origin": [1, 0, 1]},
+			"from": [8, 0, 8],
+			"to": [15, 5, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [15, 0, 15]},
 			"faces": {
-				"north": {"uv": [3.5, 3.5, 7, 6], "texture": "#pie"},
-				"east": {"uv": [0, 3.5, 3.5, 6], "texture": "#pie"},
-				"south": {"uv": [10.5, 3.5, 14, 6], "texture": "#pie"},
-				"west": {"uv": [7, 3.5, 10.5, 6], "texture": "#pie"},
-				"up": {"uv": [7, 3.5, 3.5, 0], "texture": "#pie"},
-				"down": {"uv": [10.5, 0, 7, 3.5], "texture": "#pie"}
+				"north": {"uv": [3.5, 0, 7, 2.5], "texture": "#pie"},
+				"east": {"uv": [3.5, 2.5, 7, 5], "texture": "#pie"},
+				"south": {"uv": [3.5, 5, 7, 7.5], "texture": "#pie"},
+				"west": {"uv": [0, 7, 3.5, 9.5], "texture": "#pie"},
+				"up": {"uv": [3.5, 3.5, 0, 0], "texture": "#pie"},
+				"down": {"uv": [3.5, 3.5, 0, 7], "texture": "#pie"}
 			}
 		},
 		{
-			"from": [1, 0, 1],
-			"to": [8, 5, 8],
-			"rotation": {"angle": 0, "axis": "y", "origin": [1, 0, 1]},
+			"from": [8, 0, 8],
+			"to": [15, 5, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [15, 0, 15]},
 			"faces": {
-				"north": {"uv": [3.5, 3.5, 7, 6], "texture": "#pie_glow"},
-				"east": {"uv": [0, 3.5, 3.5, 6], "texture": "#pie_glow"},
-				"south": {"uv": [10.5, 3.5, 14, 6], "texture": "#pie_glow"},
-				"west": {"uv": [7, 3.5, 10.5, 6], "texture": "#pie_glow"},
-				"up": {"uv": [7, 3.5, 3.5, 0], "texture": "#pie_glow"},
-				"down": {"uv": [10.5, 0, 7, 3.5], "texture": "#pie_glow"}
+				"north": {"uv": [3.5, 0, 7, 2.5], "texture": "#pie_glow"},
+				"east": {"uv": [3.5, 2.5, 7, 5], "texture": "#pie_glow"},
+				"south": {"uv": [3.5, 5, 7, 7.5], "texture": "#pie_glow"},
+				"west": {"uv": [0, 7, 3.5, 9.5], "texture": "#pie_glow"},
+				"up": {"uv": [3.5, 3.5, 0, 0], "texture": "#pie_glow"},
+				"down": {"uv": [3.5, 3.5, 0, 7], "texture": "#pie_glow"}
 			},
                 "forge_data": {
                 "block_light": 15,

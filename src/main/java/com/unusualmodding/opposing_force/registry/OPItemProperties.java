@@ -1,6 +1,5 @@
 package com.unusualmodding.opposing_force.registry;
 
-import com.unusualmodding.opposing_force.items.LaserBladeItem;
 import com.unusualmodding.opposing_force.items.TeslaCannonItem;
 import net.minecraft.client.renderer.item.ItemProperties;
 
@@ -9,13 +8,8 @@ import static com.unusualmodding.opposing_force.OpposingForce.modPrefix;
 public class OPItemProperties {
 
     public static void registerItemProperties(){
-        registerLaserBlade();
         registerStratoBow();
         registerTeslaCannon();
-    }
-
-    private static void registerLaserBlade() {
-        ItemProperties.register(OPItems.LASER_BLADE.get(), modPrefix("dyed"), (itemStack, clientLevel, entity, useTicks) -> LaserBladeItem.isDyed(itemStack) ? 1.0F : 0.0F);
     }
 
     private static void registerStratoBow(){

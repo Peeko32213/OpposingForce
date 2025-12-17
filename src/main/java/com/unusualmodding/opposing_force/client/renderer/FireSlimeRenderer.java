@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 @OnlyIn(Dist.CLIENT)
 public class FireSlimeRenderer extends MobRenderer<FireSlime, FireSlimeModel> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/fire_slime.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/fire_slime/fire_slime.png");
 
     public FireSlimeRenderer(EntityRendererProvider.Context context) {
         super(context, new FireSlimeModel(context.bakeLayer(OPModelLayers.FIRE_SLIME)), 0.4F);

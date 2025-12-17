@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.models.entity.LaserBoltModel;
 import com.unusualmodding.opposing_force.entity.projectile.LaserBolt;
+import com.unusualmodding.opposing_force.items.BlasterItem;
 import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -43,9 +44,8 @@ public class LaserBoltRenderer extends EntityRenderer<LaserBolt> {
         float green = 0;
         float blue = 0;
         ItemStack blaster = laserBolt.getItem();
-        CompoundTag compoundTag = blaster.getTagElement("blasterColor");
-        if (compoundTag != null && compoundTag.contains("color", 99) && compoundTag.getInt("color") != -1) {
-            int decimal = compoundTag.getInt("color");
+        if (blaster.getItem() instanceof BlasterItem blasterItem) {
+            int decimal = blasterItem.getLaserColor();
             red = (float) ((decimal & 16711680) >> 16) / 255.0F;
             green = (float) ((decimal & '\uff00') >> 8) / 255.0F;
             blue = (float) ((decimal & 255)) / 255.0F;

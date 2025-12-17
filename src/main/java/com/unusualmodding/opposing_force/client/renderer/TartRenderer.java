@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 @OnlyIn(Dist.CLIENT)
 public class TartRenderer extends MobRenderer<Tart, TartModel> {
 
-    private static final ResourceLocation TART = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/tart.png");
+    private static final ResourceLocation TART = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/tart/tart.png");
 
     public TartRenderer(EntityRendererProvider.Context context) {
         super(context, new TartModel(context.bakeLayer(OPModelLayers.TART)), 0.2F);
@@ -29,6 +29,6 @@ public class TartRenderer extends MobRenderer<Tart, TartModel> {
 
     @Override
     protected @Nullable RenderType getRenderType(@NotNull Tart entity, boolean bodyVisible, boolean translucent, boolean glowing) {
-        return RenderType.entityCutoutNoCull(TART);
+        return RenderType.entityCutoutNoCull(this.getTextureLocation(entity));
     }
 }

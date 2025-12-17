@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.mixins.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import com.unusualmodding.opposing_force.items.LaserBladeItem;
 import com.unusualmodding.opposing_force.items.TeslaCannonItem;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import net.minecraft.client.Minecraft;
@@ -112,7 +113,7 @@ public abstract class ItemInHandRendererMixin {
         }
 
         // laser blade blocking
-        if (stack.getItem() == OPItems.LASER_BLADE.get()) {
+        if (stack.getItem() instanceof LaserBladeItem) {
             if (player.isUsingItem() && player.getUseItemRemainingTicks() > 0 && player.getUsedItemHand() == hand) {
                 ci.cancel();
                 poseStack.pushPose();

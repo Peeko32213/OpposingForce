@@ -5,6 +5,7 @@ import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.effects.SlugInfestation;
 import com.unusualmodding.opposing_force.entity.Frowzy;
 import com.unusualmodding.opposing_force.entity.UmberSpider;
+import com.unusualmodding.opposing_force.items.LaserBladeItem;
 import com.unusualmodding.opposing_force.items.armor.SlugBaronArmorItem;
 import com.unusualmodding.opposing_force.registry.*;
 import com.unusualmodding.opposing_force.registry.OPTrades.MultipleInputsTrade;
@@ -266,7 +267,7 @@ public class ForgeEvents {
             double dot = lookVec.dot(directionToTarget);
 
             // laser blade parry
-            if (entity.isUsingItem() && entity.getUseItem().getItem() == OPItems.LASER_BLADE.get() && entity.getUseItem().getUseDuration() - entity.getUseItemRemainingTicks() <= 5) {
+            if (entity.isUsingItem() && entity.getUseItem().getItem() instanceof LaserBladeItem && entity.getUseItem().getUseDuration() - entity.getUseItemRemainingTicks() <= 5) {
                 if (dot > 0.0) {
                     entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
                     if (attacker instanceof LivingEntity livingAttacker) {
@@ -301,7 +302,7 @@ public class ForgeEvents {
         if (event.getRayTraceResult() instanceof EntityHitResult result) {
             Entity resultEntity = result.getEntity();
             if (entity != null && resultEntity instanceof LivingEntity entityBlocking) {
-                if (entityBlocking.isUsingItem() && entityBlocking.getUseItem().getItem() == OPItems.LASER_BLADE.get() && entityBlocking.getUseItem().getUseDuration() - entityBlocking.getUseItemRemainingTicks() <= 5) {
+                if (entityBlocking.isUsingItem() && entityBlocking.getUseItem().getItem() instanceof LaserBladeItem && entityBlocking.getUseItem().getUseDuration() - entityBlocking.getUseItemRemainingTicks() <= 5) {
                     Vec3 lookVec = entityBlocking.getLookAngle().normalize();
                     Vec3 directionToTarget = entity.position().subtract(entityBlocking.position()).normalize();
                     double dot = lookVec.dot(directionToTarget);

@@ -51,10 +51,18 @@ public class OPItemTagProvider extends ItemTagsProvider {
                 VALIANT_RAMBLER_SKULL.get()
         );
 
-        this.tag(OPItemTags.PREVENT_CAPE_RENDERING)
-                .add(
-                        RECON_KNIGHT_CHESTPLATE.get()
-                );
+        this.tag(OPItemTags.PREVENT_CAPE_RENDERING).add(
+                RECON_KNIGHT_CHESTPLATE.get()
+        );
+
+        this.tag(OPItemTags.LASER_BLADES).add(
+                LASER_BLADE.get(),
+                RED_LASER_BLADE.get(),
+                ORANGE_LASER_BLADE.get(),
+                YELLOW_LASER_BLADE.get(),
+                LIME_LASER_BLADE.get(),
+                GREEN_LASER_BLADE.get()
+        );
 
         this.tag(OPItemTags.BLASTER_AMMO).add(
                 Items.REDSTONE

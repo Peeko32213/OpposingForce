@@ -1,0 +1,16 @@
+{
+  "parent": "item/generated",
+  "loader": "forge:item_layers",
+  "forge_data": {
+    "layers": {
+      "0": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    }
+  },
+  "textures": {
+    "layer0": "opposing_force:item/green_laser_blade_glow",
+    "layer1": "opposing_force:item/laser_blade_handle"
+  }
+}

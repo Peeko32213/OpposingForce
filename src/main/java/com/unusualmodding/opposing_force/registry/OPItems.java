@@ -32,12 +32,20 @@ public class OPItems {
     // Dicer
     public static final RegistryObject<Item> DICER_SPAWN_EGG = registerSpawnEggItem("dicer", OPEntities.DICER , 0x1c0d1c, 0x3850f9);
     public static final RegistryObject<Item> DICER_LENS = registerItem("dicer_lens", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> BLASTER = registerItem("blaster", () -> new BlasterItem(new Item.Properties().stacksTo(1).durability(651)));
-    public static final RegistryObject<Item> LASER_BLADE = registerItem("laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1)));
+
+    public static final RegistryObject<Item> BLASTER = registerItem("blaster", () -> new BlasterItem(new Item.Properties().stacksTo(1).durability(651), 16726271));
+
+    public static final RegistryObject<Item> LASER_BLADE = registerItem("laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.LASER_SWEEP.get()));
+    public static final RegistryObject<Item> RED_LASER_BLADE = registerItem("red_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.RED_LASER_SWEEP.get()));
+    public static final RegistryObject<Item> ORANGE_LASER_BLADE = registerItem("orange_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.ORANGE_LASER_SWEEP.get()));
+    public static final RegistryObject<Item> YELLOW_LASER_BLADE = registerItem("yellow_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.YELLOW_LASER_SWEEP.get()));
+    public static final RegistryObject<Item> LIME_LASER_BLADE = registerItem("lime_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.LIME_LASER_SWEEP.get()));
+    public static final RegistryObject<Item> GREEN_LASER_BLADE = registerItem("green_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.GREEN_LASER_SWEEP.get()));
+
     public static final RegistryObject<Item> DICER_HEAD = registerItemNoLang("dicer_head", () -> new MobHeadItem(OPBlocks.DICER_HEAD.getFirst().get(), OPBlocks.DICER_HEAD.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
 
     // Fire Slime
-    public static final RegistryObject<Item> FIRE_SLIME_SPAWN_EGG = registerSpawnEggItem("fire_slime", OPEntities.FIRE_SLIME , 0xdb3709, 0xfee44e);
+    public static final RegistryObject<Item> FIRE_SLIME_SPAWN_EGG = registerSpawnEggItem("fire_slime", OPEntities.FIRE_SLIME , 0xfb921b, 0xdb3709);
     public static final RegistryObject<Item> FIRE_GEL = registerItem("fire_gel", () -> new Item(foodItem(OPFoodValues.FIRE_GEL)));
 
     // Frowzy
@@ -45,7 +53,7 @@ public class OPItems {
     public static final RegistryObject<Item> FROWZY_HEAD = registerItemNoLang("frowzy_head", () -> new MobHeadItem(OPBlocks.FROWZY_HEAD.getFirst().get(), OPBlocks.FROWZY_HEAD.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
 
     // Guzzler
-    public static final RegistryObject<Item> GUZZLER_SPAWN_EGG = registerSpawnEggItem("guzzler", OPEntities.GUZZLER , 0x06030b, 0x59316a);
+    public static final RegistryObject<Item> GUZZLER_SPAWN_EGG = registerSpawnEggItem("guzzler", OPEntities.GUZZLER , 0x160e2c, 0x8956c2);
     public static final RegistryObject<Item> GUZZLER_SCALES = registerItem("guzzler_scales", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> INFERNO_PIE_SLICE = registerItemNoLang("inferno_pie_slice", () -> new Item(foodItem(OPFoodValues.INFERNO_PIE)));
     public static final RegistryObject<Item> INFERNO_STAFF = registerItem("inferno_staff", () -> new InfernoStaffItem(new Item.Properties().stacksTo(1).defaultDurability(236)));

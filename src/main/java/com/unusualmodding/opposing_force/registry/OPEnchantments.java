@@ -5,6 +5,7 @@ import com.unusualmodding.opposing_force.enchantments.DoubleJumpEnchantment;
 import com.unusualmodding.opposing_force.enchantments.KickbackEnchantment;
 import com.unusualmodding.opposing_force.enchantments.OPEnchantment;
 import com.unusualmodding.opposing_force.enchantments.ThrowingEnchantment;
+import com.unusualmodding.opposing_force.items.LaserBladeItem;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.EnchantedBookItem;
@@ -26,7 +27,7 @@ public class OPEnchantments {
     public static final EnchantmentCategory TESLA_CANNON = EnchantmentCategory.create("tesla_cannon", (item -> item == OPItems.TESLA_CANNON.get()));
     public static final EnchantmentCategory VILE_BOULDER = EnchantmentCategory.create("vile_boulder", (item -> item == OPItems.VILE_BOULDER.get()));
     public static final EnchantmentCategory BLASTER = EnchantmentCategory.create("blaster", (item -> item == OPItems.BLASTER.get()));
-    public static final EnchantmentCategory LASER_BLADE = EnchantmentCategory.create("laser_blade", (item -> item == OPItems.LASER_BLADE.get()));
+    public static final EnchantmentCategory LASER_BLADE = EnchantmentCategory.create("laser_blade", (item -> item instanceof LaserBladeItem));
 
     // blaster
     public static final RegistryObject<Enchantment> POWER_SUPPLY = ENCHANTMENTS.register("power_supply", () -> new OPEnchantment("power_supply", Enchantment.Rarity.UNCOMMON, BLASTER, 3, 15, EquipmentSlot.MAINHAND));

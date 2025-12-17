@@ -13,8 +13,6 @@ import com.unusualmodding.opposing_force.client.particles.MoonShoesParticle;
 import com.unusualmodding.opposing_force.client.particles.lightning.LightningParticle;
 import com.unusualmodding.opposing_force.client.renderer.*;
 import com.unusualmodding.opposing_force.client.renderer.blocks.MobHeadBlockEntityRenderer;
-import com.unusualmodding.opposing_force.items.BlasterItem;
-import com.unusualmodding.opposing_force.items.LaserBladeItem;
 import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.renderer.BiomeColors;
@@ -44,7 +42,11 @@ public final class ClientEvents {
         event.registerSpriteSet(OPParticles.LASER_BOLT_DUST.get(), LaserBoltDustParticle.Factory::new);
         event.registerSpriteSet(OPParticles.MOON_SHOES.get(), MoonShoesParticle.Factory::new);
         event.registerSpriteSet(OPParticles.LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
-        event.registerSpriteSet(OPParticles.DYED_SWEEP.get(), LaserSweepParticle.DyedFactory::new);
+        event.registerSpriteSet(OPParticles.RED_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.ORANGE_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.YELLOW_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.LIME_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.GREEN_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
         event.registerSpecial(OPParticles.LIGHTNING.get(), new LightningParticle.Factory());
     }
 
@@ -141,20 +143,6 @@ public final class ClientEvents {
 
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
-        event.register((stack, tintIndex) -> {
-                    if (tintIndex == 0) {
-                        if (stack.getItem() instanceof LaserBladeItem item) {
-                            return item.getColor(stack);
-                        }
-                        if (stack.getItem() instanceof BlasterItem item) {
-                            return item.getColor(stack);
-                        }
-                        return -1;
-                    }
-                    return 0xFFFFFF;
-                },
-                OPItems.LASER_BLADE.get()
-        );
         event.register((stack, tintIndex) -> {
                     BlockState blockstate = ((BlockItem)stack.getItem()).getBlock().defaultBlockState();
                     return event.getBlockColors().getColor(blockstate, null, null, tintIndex);

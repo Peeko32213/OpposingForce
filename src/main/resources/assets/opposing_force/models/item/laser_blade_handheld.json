@@ -10,8 +10,8 @@
     }
   },
   "textures": {
-    "layer0": "opposing_force:item/laser_blade_huge",
-    "layer1": "opposing_force:item/laser_blade_huge_glow"
+    "layer0": "opposing_force:item/laser_blade_handle_huge",
+    "layer1": "opposing_force:item/laser_blade_glow_huge"
   },
   "display": {
     "thirdperson_righthand": {

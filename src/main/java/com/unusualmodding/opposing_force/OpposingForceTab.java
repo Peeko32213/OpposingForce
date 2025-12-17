@@ -30,6 +30,12 @@ public class OpposingForceTab {
                     output.accept(OPItems.DICER_LENS.get());
                     output.accept(OPItems.BLASTER.get());
                     output.accept(OPItems.LASER_BLADE.get());
+                    output.accept(OPItems.RED_LASER_BLADE.get());
+                    output.accept(OPItems.ORANGE_LASER_BLADE.get());
+                    output.accept(OPItems.YELLOW_LASER_BLADE.get());
+                    output.accept(OPItems.LIME_LASER_BLADE.get());
+                    output.accept(OPItems.GREEN_LASER_BLADE.get());
+
                     output.accept(OPItems.DICER_HEAD.get());
 
                     // Frowzy

@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity.projectile;
 
+import com.unusualmodding.opposing_force.items.BlasterItem;
 import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -145,9 +146,8 @@ public class LaserBolt extends FrictionlessProjectile {
         float green = 0;
         float blue = 0;
 
-        CompoundTag compoundTag = this.getItem().getTagElement("blasterColor");
-        if (compoundTag != null && compoundTag.contains("color", 99) && compoundTag.getInt("color") != -1) {
-            int decimal = compoundTag.getInt("color");
+        if (this.getItem().getItem() instanceof BlasterItem blasterItem) {
+            int decimal = blasterItem.getLaserColor();
             red = (float) ((decimal & 16711680) >> 16) / 255.0F;
             green = (float) ((decimal & '\uff00') >> 8) / 255.0F;
             blue = (float) ((decimal & 255)) / 255.0F;
@@ -257,9 +257,8 @@ public class LaserBolt extends FrictionlessProjectile {
             float red = 1;
             float green = 0;
             float blue = 0;
-            CompoundTag compoundTag = this.getItem().getTagElement("blasterColor");
-            if (compoundTag != null && compoundTag.contains("color", 99) && compoundTag.getInt("color") != -1) {
-                int decimal = compoundTag.getInt("color");
+            if (this.getItem().getItem() instanceof BlasterItem blasterItem) {
+                int decimal = blasterItem.getLaserColor();
                 red = (float) ((decimal & 16711680) >> 16) / 255.0F;
                 green = (float) ((decimal & '\uff00') >> 8) / 255.0F;
                 blue = (float) ((decimal & 255)) / 255.0F;
