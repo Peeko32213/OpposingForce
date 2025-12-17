@@ -11,7 +11,14 @@ import com.unusualmodding.opposing_force.registry.OPTrades.MultipleInputsTrade;
 import com.unusualmodding.opposing_force.registry.tags.OPBiomeTags;
 import com.unusualmodding.opposing_force.registry.tags.OPBlockTags;
 import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
+import com.unusualmodding.opposing_force.world.OPWorldData;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.PlayerList;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -35,10 +42,8 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.MobSpawnEvent;
+import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
@@ -180,6 +185,27 @@ public class ForgeEvents {
             }
         }
     }
+
+    @SubscribeEvent
+    public static void changedDimensionEvent(PlayerEvent.PlayerChangedDimensionEvent event) {
+        Player player = event.getEntity();
+        ServerLevel level = player.getServer().overworld();
+        OPWorldData worldData = OPWorldData.get(level);
+        if (event.getTo().equals(Level.NETHER) && !worldData.isHasNetherBeenEnteredBefore()) {
+            worldData.setHasNetherBeenEnteredBefore(true);
+            MinecraftServer server = level.getServer();
+            PlayerList list = server.getPlayerList();
+            List<ServerPlayer> players = list.getPlayers();
+            MutableComponent component = Component.translatable("opposing_force.nether_progression.enabled");
+            component = component.withStyle(ChatFormatting.RED);
+
+            for(ServerPlayer serverPlayer : players) {
+                serverPlayer.sendSystemMessage(component);
+            }
+        }
+    }
+
+
 
    // @SubscribeEvent
    // public static void hatEquippedEvent(LivingEquipmentChangeEvent event) {

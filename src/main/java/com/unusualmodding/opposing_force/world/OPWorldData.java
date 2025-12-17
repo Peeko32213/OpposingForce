@@ -16,9 +16,11 @@ import java.util.UUID;
 public class OPWorldData extends SavedData {
 
     private static final String IDENTIFIER = "hostile_takeover_world_data";
+    private static final String NETHER_ENTERED = "nether_entered";
+
     private Map<UUID, Double> skyvernSpawnChance = new HashMap<>();
     private final double SKYVERN_CHANCE_STEP = OpposingForceConfig.SKYVERN_SPAWN_CHANCE.get();
-
+    private boolean hasNetherBeenEnteredBefore;
     private OPWorldData() {
         super();
     }
@@ -45,6 +47,9 @@ public class OPWorldData extends SavedData {
                 data.skyvernSpawnChance.put(innerTag.getUUID("UUID"), innerTag.getDouble("Chance"));
             }
         }
+        if(nbt.contains(NETHER_ENTERED)) {
+            data.setHasNetherBeenEnteredBefore(nbt.getBoolean(NETHER_ENTERED));
+        }
         return data;
     }
 
@@ -60,6 +65,8 @@ public class OPWorldData extends SavedData {
             }
             compound.put("SkyvernSpawnChance", listTag);
         }
+
+        compound.putBoolean(NETHER_ENTERED, hasNetherBeenEnteredBefore);
         return compound;
     }
 
@@ -86,5 +93,13 @@ public class OPWorldData extends SavedData {
 
     public void resetSkyvernSpawnChance(UUID uuid) {
         skyvernSpawnChance.put(uuid, SKYVERN_CHANCE_STEP);
+    }
+
+    public void setHasNetherBeenEnteredBefore(boolean hasNetherBeenEnteredBefore) {
+        this.hasNetherBeenEnteredBefore = hasNetherBeenEnteredBefore;
+    }
+
+    public boolean isHasNetherBeenEnteredBefore() {
+        return hasNetherBeenEnteredBefore;
     }
 }

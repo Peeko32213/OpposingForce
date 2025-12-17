@@ -7,6 +7,7 @@ import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNa
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.utils.OPMath;
+import com.unusualmodding.opposing_force.world.OPWorldData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -248,10 +249,15 @@ public class Guzzler extends Monster implements AttackState {
 
     @SuppressWarnings("unused")
     public static boolean canGuzzlerSpawn(EntityType<Guzzler> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if(level instanceof Level level1) {
+            OPWorldData worldData = OPWorldData.get(level1);
+            if (!worldData.isHasNetherBeenEnteredBefore()) return false;
+        }
         return pos.getY() <= OpposingForceConfig.GUZZLER_SPAWN_HEIGHT.get() && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random);
     }
 
     public static boolean isDarkEnoughToSpawnNoSkylight(ServerLevelAccessor level, BlockPos pos, RandomSource random) {
+
         if (level.getBrightness(LightLayer.SKY, pos) > 0) {
             return false;
         } else {
