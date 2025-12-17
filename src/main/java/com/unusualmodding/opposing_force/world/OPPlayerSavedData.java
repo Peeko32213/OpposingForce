@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.storage.DimensionDataStorage;
@@ -101,19 +102,19 @@ public class OPPlayerSavedData extends SavedData {
         return compound;
     }
 
-    public void markEndMessageSent(UUID player) {
-        PlayerData data = getPlayerData(player);
+    public void markEndMessageSent(Player player) {
+        PlayerData data = getPlayerData(player.getUUID());
         if (!data.hasGottenEndMessage()) {
-            data.setHasGottenEndMessage(true);
+            data.sendEndMessageAndMarkComplete(player);
             setDirty();
         }
     }
 
 
-    public void markNetherMessageSent(UUID player) {
-        PlayerData data = getPlayerData(player);
+    public void sendNetherMessageAndMarkComplete(Player player) {
+        PlayerData data = getPlayerData(player.getUUID());
         if (!data.hasGottenNetherMessage()) {
-            data.setHasGottenNetherMessage(true);
+            data.sendNetherMessageAndMarkComplete(player);
             setDirty();
         }
     }

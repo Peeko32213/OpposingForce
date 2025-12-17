@@ -2,6 +2,10 @@ package com.unusualmodding.opposing_force.world;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.player.Player;
 
 public class PlayerData {
 
@@ -42,5 +46,19 @@ public class PlayerData {
 
     public void setHasGottenNetherMessage(boolean value) {
         this.hasGottenNetherMessage = value;
+    }
+
+    public void sendNetherMessageAndMarkComplete(Player player) {
+        MutableComponent component = Component.translatable("opposing_force.nether_progression.enabled");
+        component = component.withStyle(ChatFormatting.RED);
+        player.sendSystemMessage(component);
+        setHasGottenNetherMessage(true);
+    }
+
+    public void sendEndMessageAndMarkComplete(Player player) {
+        MutableComponent component = Component.translatable("opposing_force.end_progression.enabled");
+        component = component.withStyle(ChatFormatting.YELLOW);
+        player.sendSystemMessage(component);
+        setHasGottenEndMessage(true);
     }
 }

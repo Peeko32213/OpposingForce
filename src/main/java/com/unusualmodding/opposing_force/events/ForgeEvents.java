@@ -198,13 +198,10 @@ public class ForgeEvents {
             MinecraftServer server = level.getServer();
             PlayerList list = server.getPlayerList();
             List<ServerPlayer> players = list.getPlayers();
-            MutableComponent component = Component.translatable("opposing_force.nether_progression.enabled");
-            component = component.withStyle(ChatFormatting.RED);
             OPPlayerSavedData playerSavedData = OPPlayerSavedData.get(level);
 
             for (ServerPlayer serverPlayer : players) {
-                serverPlayer.sendSystemMessage(component);
-                playerSavedData.markNetherMessageSent(serverPlayer.getUUID());
+                playerSavedData.sendNetherMessageAndMarkComplete(serverPlayer);
             }
         }
     }
@@ -217,10 +214,7 @@ public class ForgeEvents {
         OPPlayerSavedData playerSavedData = OPPlayerSavedData.get(level);
         PlayerData data = playerSavedData.getPlayerData(player.getUUID());
         if (worldData.isHasNetherBeenEnteredBefore() && !data.hasGottenNetherMessage()) {
-            MutableComponent component = Component.translatable("opposing_force.nether_progression.enabled");
-            component = component.withStyle(ChatFormatting.RED);
-            player.sendSystemMessage(component);
-            playerSavedData.markNetherMessageSent(player.getUUID());
+            playerSavedData.sendNetherMessageAndMarkComplete(player);
         }
     }
 
