@@ -34,6 +34,27 @@
         }
       ],
       "rolls": 1
+    },
+    {
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 1.0,
+                "min": -3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "opposing_force:sawblade"
+        }
+      ],
+      "rolls": 1
     }
   ],
   "random_sequence": "opposing_force:entities/terror"

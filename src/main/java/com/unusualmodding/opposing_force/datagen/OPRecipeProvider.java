@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.ICondition;
+import net.minecraftforge.common.data.ForgeItemTagsProvider;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
@@ -69,6 +70,17 @@ public class OPRecipeProvider extends RecipeProvider {
         ShapedRecipeBuilder.shaped(COMBAT, STONE_LEGGINGS.get()).define('#', ItemTags.STONE_TOOL_MATERIALS).pattern("###").pattern("# #").pattern("# #").unlockedBy("has_cobbled_stone", has(ItemTags.STONE_TOOL_MATERIALS)).save(consumer);
         ShapedRecipeBuilder.shaped(COMBAT, STONE_BOOTS.get()).define('#', ItemTags.STONE_TOOL_MATERIALS).pattern("# #").pattern("# #").unlockedBy("has_cobbled_stone", has(ItemTags.STONE_TOOL_MATERIALS)).save(consumer);
 
+        ShapedRecipeBuilder.shaped(COMBAT, BONE_SWORD.get()).define('#', HEAVY_BONE.get()).define('X', Tags.Items.RODS_WOODEN).pattern("#").pattern("#").pattern("X").unlockedBy("has_heavy_bone", has(HEAVY_BONE.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, BONE_PICKAXE.get()).define('#', HEAVY_BONE.get()).define('X', Tags.Items.RODS_WOODEN).pattern("###").pattern(" X ").pattern(" X ").unlockedBy("has_heavy_bone", has(HEAVY_BONE.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, BONE_AXE.get()).define('#', HEAVY_BONE.get()).define('X', Tags.Items.RODS_WOODEN).pattern("##").pattern("#X").pattern(" X").unlockedBy("has_heavy_bone", has(HEAVY_BONE.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, BONE_SHOVEL.get()).define('#', HEAVY_BONE.get()).define('X', Tags.Items.RODS_WOODEN).pattern("#").pattern("X").pattern("X").unlockedBy("has_heavy_bone", has(HEAVY_BONE.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, BONE_HOE.get()).define('#', HEAVY_BONE.get()).define('X', Tags.Items.RODS_WOODEN).pattern("##").pattern(" X").pattern(" X").unlockedBy("has_heavy_bone", has(HEAVY_BONE.get())).save(consumer);
+
+        ShapedRecipeBuilder.shaped(COMBAT, BONE_HELMET.get()).define('#', HEAVY_BONE.get()).pattern("###").pattern("# #").unlockedBy("has_heavy_bone", has(HEAVY_BONE.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, BONE_CHESTPLATE.get()).define('#', HEAVY_BONE.get()).pattern("# #").pattern("###").pattern("###").unlockedBy("has_heavy_bone", has(HEAVY_BONE.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, BONE_LEGGINGS.get()).define('#', HEAVY_BONE.get()).pattern("###").pattern("# #").pattern("# #").unlockedBy("has_heavy_bone", has(HEAVY_BONE.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, BONE_BOOTS.get()).define('#', HEAVY_BONE.get()).pattern("# #").pattern("# #").unlockedBy("has_heavy_bone", has(HEAVY_BONE.get())).save(consumer);
+
         ShapedRecipeBuilder.shaped(FOOD, Items.ENCHANTED_GOLDEN_APPLE).define('G', Tags.Items.STORAGE_BLOCKS_GOLD).define('A', Items.APPLE).pattern("GGG").pattern("GAG").pattern("GGG").unlockedBy("has_gold", has(Tags.Items.INGOTS_GOLD)).save(consumer);
 
         furnaceRecipe(RecipeSerializer.SMELTING_RECIPE, List.of(TERROR_LEG.get()), FOOD, FRIED_TERROR_LEG.get(), 0.25f, 200, "_from_smelting", consumer);
@@ -77,6 +89,9 @@ public class OPRecipeProvider extends RecipeProvider {
 
         ShapedRecipeBuilder.shaped(FOOD, OPBlocks.INFERNO_PIE.get()).define('G', GUZZLER_SCALES.get()).define('F', FIRE_GEL.get()).define('S', Items.SUGAR).define('E', Tags.Items.EGGS).pattern("FFF").pattern("SES").pattern("GGG").unlockedBy("has_fire_gel", has(FIRE_GEL.get())).save(consumer);
         ShapedRecipeBuilder.shaped(FOOD, OPBlocks.INFERNO_PIE.get()).define('I', INFERNO_PIE_SLICE.get()).pattern("II").pattern("II").unlockedBy("has_fire_gel", has(FIRE_GEL.get())).save(consumer, getSaveLocation("inferno_pie_from_slices"));
+
+        furnaceRecipe(RecipeSerializer.SMELTING_RECIPE, List.of(RAW_TART.get()), FOOD, COOKED_TART.get(), 0.25f, 200, "_from_smelting", consumer);
+        furnaceRecipe(RecipeSerializer.SMOKING_RECIPE, List.of(RAW_TART.get()), FOOD, COOKED_TART.get(), 0.25f, 100, "_from_smoking", consumer);
 
         ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, OPBlocks.TREMBLING_BLOCK.get(), 16).define('T', OPBlocks.TREMBLER_SHELL.get()).pattern("TT").pattern("TT").unlockedBy("has_trembler_shell", has(OPBlocks.TREMBLER_SHELL.get())).save(consumer);
 
