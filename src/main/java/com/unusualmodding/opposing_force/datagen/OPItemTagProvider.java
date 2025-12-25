@@ -9,6 +9,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
@@ -57,11 +58,22 @@ public class OPItemTagProvider extends ItemTagsProvider {
 
         this.tag(OPItemTags.LASER_BLADES).add(
                 LASER_BLADE.get(),
+                WHITE_LASER_BLADE.get(),
+                LIGHT_GRAY_LASER_BLADE.get(),
+                GRAY_LASER_BLADE.get(),
+                BLACK_LASER_BLADE.get(),
+                BROWN_LASER_BLADE.get(),
                 RED_LASER_BLADE.get(),
                 ORANGE_LASER_BLADE.get(),
                 YELLOW_LASER_BLADE.get(),
                 LIME_LASER_BLADE.get(),
-                GREEN_LASER_BLADE.get()
+                GREEN_LASER_BLADE.get(),
+                CYAN_LASER_BLADE.get(),
+                LIGHT_BLUE_LASER_BLADE.get(),
+                BLUE_LASER_BLADE.get(),
+                PURPLE_LASER_BLADE.get(),
+                MAGENTA_LASER_BLADE.get(),
+                PINK_LASER_BLADE.get()
         );
 
         this.tag(OPItemTags.BLASTER_AMMO).add(

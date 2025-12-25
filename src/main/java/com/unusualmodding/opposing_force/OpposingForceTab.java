@@ -30,11 +30,22 @@ public class OpposingForceTab {
                     output.accept(OPItems.DICER_LENS.get());
                     output.accept(OPItems.BLASTER.get());
                     output.accept(OPItems.LASER_BLADE.get());
+                    output.accept(OPItems.WHITE_LASER_BLADE.get());
+                    output.accept(OPItems.LIGHT_GRAY_LASER_BLADE.get());
+                    output.accept(OPItems.GRAY_LASER_BLADE.get());
+                    output.accept(OPItems.BLACK_LASER_BLADE.get());
+                    output.accept(OPItems.BROWN_LASER_BLADE.get());
                     output.accept(OPItems.RED_LASER_BLADE.get());
                     output.accept(OPItems.ORANGE_LASER_BLADE.get());
                     output.accept(OPItems.YELLOW_LASER_BLADE.get());
                     output.accept(OPItems.LIME_LASER_BLADE.get());
                     output.accept(OPItems.GREEN_LASER_BLADE.get());
+                    output.accept(OPItems.CYAN_LASER_BLADE.get());
+                    output.accept(OPItems.LIGHT_BLUE_LASER_BLADE.get());
+                    output.accept(OPItems.BLUE_LASER_BLADE.get());
+                    output.accept(OPItems.PURPLE_LASER_BLADE.get());
+                    output.accept(OPItems.MAGENTA_LASER_BLADE.get());
+                    output.accept(OPItems.PINK_LASER_BLADE.get());
 
                     output.accept(OPItems.DICER_HEAD.get());
 

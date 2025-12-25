@@ -1,10 +1,21 @@
 {
   "values": [
     "opposing_force:laser_blade",
+    "opposing_force:white_laser_blade",
+    "opposing_force:light_gray_laser_blade",
+    "opposing_force:gray_laser_blade",
+    "opposing_force:black_laser_blade",
+    "opposing_force:brown_laser_blade",
     "opposing_force:red_laser_blade",
     "opposing_force:orange_laser_blade",
     "opposing_force:yellow_laser_blade",
     "opposing_force:lime_laser_blade",
-    "opposing_force:green_laser_blade"
+    "opposing_force:green_laser_blade",
+    "opposing_force:cyan_laser_blade",
+    "opposing_force:light_blue_laser_blade",
+    "opposing_force:blue_laser_blade",
+    "opposing_force:purple_laser_blade",
+    "opposing_force:magenta_laser_blade",
+    "opposing_force:pink_laser_blade"
   ]
 }

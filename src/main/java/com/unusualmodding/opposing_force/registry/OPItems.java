@@ -36,11 +36,22 @@ public class OPItems {
     public static final RegistryObject<Item> BLASTER = registerItem("blaster", () -> new BlasterItem(new Item.Properties().stacksTo(1).durability(651), 16726271));
 
     public static final RegistryObject<Item> LASER_BLADE = registerItem("laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.LASER_SWEEP.get()));
+    public static final RegistryObject<Item> WHITE_LASER_BLADE = registerItem("white_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.WHITE_LASER_SWEEP.get()));
+    public static final RegistryObject<Item> LIGHT_GRAY_LASER_BLADE = registerItem("light_gray_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.LIGHT_GRAY_LASER_SWEEP.get()));
+    public static final RegistryObject<Item> GRAY_LASER_BLADE = registerItem("gray_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.GRAY_LASER_SWEEP.get()));
+    public static final RegistryObject<Item> BLACK_LASER_BLADE = registerItem("black_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.BLACK_LASER_SWEEP.get()));
+    public static final RegistryObject<Item> BROWN_LASER_BLADE = registerItem("brown_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.BROWN_LASER_SWEEP.get()));
     public static final RegistryObject<Item> RED_LASER_BLADE = registerItem("red_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.RED_LASER_SWEEP.get()));
     public static final RegistryObject<Item> ORANGE_LASER_BLADE = registerItem("orange_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.ORANGE_LASER_SWEEP.get()));
     public static final RegistryObject<Item> YELLOW_LASER_BLADE = registerItem("yellow_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.YELLOW_LASER_SWEEP.get()));
     public static final RegistryObject<Item> LIME_LASER_BLADE = registerItem("lime_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.LIME_LASER_SWEEP.get()));
     public static final RegistryObject<Item> GREEN_LASER_BLADE = registerItem("green_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.GREEN_LASER_SWEEP.get()));
+    public static final RegistryObject<Item> CYAN_LASER_BLADE = registerItem("cyan_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.CYAN_LASER_SWEEP.get()));
+    public static final RegistryObject<Item> LIGHT_BLUE_LASER_BLADE = registerItem("light_blue_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.LIGHT_BLUE_LASER_SWEEP.get()));
+    public static final RegistryObject<Item> BLUE_LASER_BLADE = registerItem("blue_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.BLUE_LASER_SWEEP.get()));
+    public static final RegistryObject<Item> PURPLE_LASER_BLADE = registerItem("purple_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.PURPLE_LASER_SWEEP.get()));
+    public static final RegistryObject<Item> MAGENTA_LASER_BLADE = registerItem("magenta_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.MAGENTA_LASER_SWEEP.get()));
+    public static final RegistryObject<Item> PINK_LASER_BLADE = registerItem("pink_laser_blade", () -> new LaserBladeItem(new Item.Properties().stacksTo(1), OPParticles.PINK_LASER_SWEEP.get()));
 
     public static final RegistryObject<Item> DICER_HEAD = registerItemNoLang("dicer_head", () -> new MobHeadItem(OPBlocks.DICER_HEAD.getFirst().get(), OPBlocks.DICER_HEAD.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
 

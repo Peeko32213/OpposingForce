@@ -42,11 +42,22 @@ public final class ClientEvents {
         event.registerSpriteSet(OPParticles.LASER_BOLT_DUST.get(), LaserBoltDustParticle.Factory::new);
         event.registerSpriteSet(OPParticles.MOON_SHOES.get(), MoonShoesParticle.Factory::new);
         event.registerSpriteSet(OPParticles.LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.WHITE_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.LIGHT_GRAY_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.GRAY_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.BLACK_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.BROWN_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
         event.registerSpriteSet(OPParticles.RED_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
         event.registerSpriteSet(OPParticles.ORANGE_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
         event.registerSpriteSet(OPParticles.YELLOW_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
         event.registerSpriteSet(OPParticles.LIME_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
         event.registerSpriteSet(OPParticles.GREEN_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.CYAN_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.LIGHT_BLUE_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.BLUE_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.PURPLE_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.MAGENTA_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.PINK_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
         event.registerSpecial(OPParticles.LIGHTNING.get(), new LightningParticle.Factory());
     }
 
