@@ -75,12 +75,14 @@ public class OPItems {
 
     // Ladybug
     public static final RegistryObject<Item> LADYBUG_SPAWN_EGG = registerSpawnEggItem("ladybug", OPEntities.LADYBUG, 0xd03434, 0x110d17);
+    public static final RegistryObject<Item> LADYBUG_HUSK = registerItem("ladybug_husk", () -> new Item(new Item.Properties()));
 
     // Nymph
 //    public static final RegistryObject<Item> NYMPH_SPAWN_EGG = registerSpawnEggItem("nymph", OPEntities.NYMPH , 0x271c15, 0x678349);
 
     // Rambler
     public static final RegistryObject<Item> RAMBLER_SPAWN_EGG = registerSpawnEggItem("rambler", OPEntities.RAMBLER, 0xededcf, 0x685944);
+    public static final RegistryObject<Item> HEAVY_BONE = registerItem("heavy_bone", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> BONE_SWORD = registerItem("bone_sword", ()-> new BoneSwordItem(new Item.Properties()));
     public static final RegistryObject<Item> BONE_PICKAXE = registerItem("bone_pickaxe", ()-> new BonePickaxeItem(new Item.Properties()));
     public static final RegistryObject<Item> BONE_AXE = registerItem("bone_axe", ()-> new BoneAxeItem(new Item.Properties()));
@@ -131,6 +133,8 @@ public class OPItems {
 
     // Terror
     public static final RegistryObject<Item> TERROR_SPAWN_EGG = registerSpawnEggItem("terror", OPEntities.TERROR , 0x074230, 0xff0000);
+    public static final RegistryObject<Item> SAWBLADE = registerItem("sawblade", () -> new Item(new Item.Properties()));
+
     public static final RegistryObject<Item> TERROR_LEG = registerItemNoLang("terror_leg", () -> new Item(foodItem(OPFoodValues.RAW_TERROR_LEG)));
     public static final RegistryObject<Item> FRIED_TERROR_LEG = registerItem("fried_terror_leg", () -> new Item(foodItem(OPFoodValues.FRIED_TERROR_LEG)));
     public static final RegistryObject<Item> SPICY_TERROR_LEG = registerItem("spicy_terror_leg", () -> new Item(foodItem(OPFoodValues.SPICY_TERROR_LEG)));

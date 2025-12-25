@@ -46,8 +46,10 @@ public class OPItemModelProvider extends ItemModelProvider {
         // Hanging Spider
 
         // Ladybug
+        this.item(LADYBUG_HUSK);
 
         // Rambler
+        this.item(HEAVY_BONE);
         this.handheldItem(BONE_SWORD);
         this.handheldItem(BONE_PICKAXE);
         this.handheldItem(BONE_AXE);
@@ -77,6 +79,7 @@ public class OPItemModelProvider extends ItemModelProvider {
         this.handheldItem(TERROR_LEG);
         this.handheldItem(FRIED_TERROR_LEG);
         this.handheldItem(SPICY_TERROR_LEG);
+        this.item(SAWBLADE);
 
         // Trembler
         this.item(OPBlocks.TREMBLER_SHELL);

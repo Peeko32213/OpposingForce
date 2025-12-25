@@ -60,7 +60,11 @@ public class OpposingForceTab {
                     output.accept(OPItems.INFERNO_PIE_SLICE.get());
                     output.accept(OPItems.INFERNO_STAFF.get());
 
+                    // Ladybug
+                    output.accept(OPItems.LADYBUG_HUSK.get());
+
                     // Rambler
+                    output.accept(OPItems.HEAVY_BONE.get());
                     output.accept(OPItems.BONE_SWORD.get());
                     output.accept(OPItems.BONE_SHOVEL.get());
                     output.accept(OPItems.BONE_PICKAXE.get());
@@ -116,6 +120,7 @@ public class OpposingForceTab {
                     output.accept(OPItems.TERROR_LEG.get());
                     output.accept(OPItems.FRIED_TERROR_LEG.get());
                     output.accept(OPItems.SPICY_TERROR_LEG.get());
+                    output.accept(OPItems.SAWBLADE.get());
 
                     // Trembler
                     output.accept(OPBlocks.TREMBLER_SHELL.get());
