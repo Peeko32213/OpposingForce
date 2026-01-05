@@ -71,7 +71,7 @@ public class Terror extends Monster implements EliteVariant {
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState flopAnimationState = new AnimationState();
     public final AnimationState cooldownAnimationState = new AnimationState();
-    public final AnimationState swimAnimationState = new AnimationState();
+    public final AnimationState swimIdleAnimationState = new AnimationState();
     public final AnimationState growLegsAnimationState = new AnimationState();
     public final AnimationState startSawingAnimationState = new AnimationState();
     public final AnimationState sawingAnimationState = new AnimationState();
@@ -265,9 +265,9 @@ public class Terror extends Monster implements EliteVariant {
         if (startSawingTicks == 0 && this.startSawingAnimationState.isStarted()) this.startSawingAnimationState.stop();
         if (stopSawingTicks == 0 && this.cooldownAnimationState.isStarted()) this.cooldownAnimationState.stop();
         if (spinSawTicks == 0 && this.spinSawAnimationState.isStarted()) this.spinSawAnimationState.stop();
-        this.idleAnimationState.animateWhen(!this.isInWaterOrBubble() && this.hasLegs() && this.getDeltaMovement().horizontalDistance() <= 1.0E-5F, this.tickCount);
+        this.idleAnimationState.animateWhen(!this.isInWaterOrBubble() && this.hasLegs(), this.tickCount);
         this.flopAnimationState.animateWhen(!this.isInWaterOrBubble() && !this.hasLegs() && this.getPose() != OPPoses.GROWING_LEGS.get(), this.tickCount);
-        this.swimAnimationState.animateWhen(this.isInWaterOrBubble() && this.getPose() != OPPoses.RETRACTING_LEGS.get(), this.tickCount);
+        this.swimIdleAnimationState.animateWhen(this.isInWaterOrBubble() && this.getPose() != OPPoses.RETRACTING_LEGS.get(), this.tickCount);
     }
 
     @Override
@@ -302,7 +302,7 @@ public class Terror extends Monster implements EliteVariant {
                 this.growLegsAnimationState.start(this.tickCount);
             }
             else if (this.getPose() == OPPoses.RETRACTING_LEGS.get()) {
-                this.swimAnimationState.stop();
+                this.swimIdleAnimationState.stop();
                 this.retractLegsAnimationState.start(this.tickCount);
             }
             else if (this.getPose() == OPPoses.START_SAWING.get()) {

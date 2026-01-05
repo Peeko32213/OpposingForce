@@ -2,10 +2,10 @@ package com.unusualmodding.opposing_force.client.models.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.unusualmodding.opposing_force.client.animations.DicerAnimations;
 import com.unusualmodding.opposing_force.client.animations.RamblerAnimations;
-import com.unusualmodding.opposing_force.client.animations.RamblerIdleAnimations;
+import com.unusualmodding.opposing_force.client.models.entity.base.OPModel;
 import com.unusualmodding.opposing_force.entity.Rambler;
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class RamblerModel extends HierarchicalModel<Rambler> {
+public class RamblerModel extends OPModel<Rambler> {
 
     private final ModelPart root;
     private final ModelPart body_main;
@@ -140,17 +140,17 @@ public class RamblerModel extends HierarchicalModel<Rambler> {
 	@Override
 	public void setupAnim(Rambler entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-        this.animate(entity.walkAnimationState, RamblerAnimations.WALK, ageInTicks, 0.75F + (Mth.clamp(limbSwingAmount, 0.25F, 1.0F) * 1.25F));
-        this.animate(entity.idleAnimationState, RamblerIdleAnimations.IDLE, ageInTicks);
-		this.animate(entity.recoverAnimationState, RamblerAnimations.RECOVER, ageInTicks);
-        this.animate(entity.flailStartAnimationState, RamblerAnimations.FLAIL_START, ageInTicks);
-        this.animate(entity.flailAnimationState, RamblerAnimations.FLAIL, ageInTicks);
-        this.animate(entity.flailEndAnimationState, RamblerAnimations.FLAIL_END, ageInTicks);
-        this.animate(entity.jab1AnimationState, RamblerAnimations.JAB1, ageInTicks);
-        this.animate(entity.jab2AnimationState, RamblerAnimations.JAB2, ageInTicks);
-        this.animate(entity.jab3AnimationState, RamblerAnimations.JAB3, ageInTicks);
-        this.animate(entity.jab4AnimationState, RamblerAnimations.JAB4, ageInTicks);
-        this.animate(entity.jabRushAnimationState, RamblerAnimations.JAB_RUSH, ageInTicks);
+        this.animateWalk(RamblerAnimations.WALK, limbSwing, limbSwingAmount, 3.1F, 6.2F);
+        this.animateIdle(entity.idleAnimationState, RamblerAnimations.IDLE, ageInTicks, 1, limbSwingAmount * 4);
+		this.animate(entity.recoverAnimationState, RamblerAnimations.RECOVER_BLEND, ageInTicks);
+        this.animate(entity.flailStartAnimationState, RamblerAnimations.FLAIL_START_BLEND, ageInTicks);
+        this.animate(entity.flailAnimationState, RamblerAnimations.FLAIL_BLEND, ageInTicks);
+        this.animate(entity.flailEndAnimationState, RamblerAnimations.FLAIL_END_BLEND, ageInTicks);
+        this.animate(entity.jab1AnimationState, RamblerAnimations.JAB_BLEND1, ageInTicks);
+        this.animate(entity.jab2AnimationState, RamblerAnimations.JAB_BLEND2, ageInTicks);
+        this.animate(entity.jab3AnimationState, RamblerAnimations.JAB_BLEND3, ageInTicks);
+        this.animate(entity.jab4AnimationState, RamblerAnimations.JAB_BLEND4, ageInTicks);
+        this.animate(entity.jabRushAnimationState, RamblerAnimations.JAB_RUSH_BLEND, ageInTicks);
         this.animate(entity.rollStartAnimationState, RamblerAnimations.ROLL_START, ageInTicks);
         this.animate(entity.rollAnimationState, RamblerAnimations.ROLL, ageInTicks);
         this.animate(entity.rollEndAnimationState, RamblerAnimations.ROLL_END, ageInTicks);

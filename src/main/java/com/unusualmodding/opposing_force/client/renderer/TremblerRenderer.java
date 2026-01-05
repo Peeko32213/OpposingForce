@@ -10,24 +10,26 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(Dist.CLIENT)
 public class TremblerRenderer extends MobRenderer<Trembler, TremblerModel> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/trembler.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/trembler/trembler.png");
+    private static final ResourceLocation ELITE_TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/trembler/turbo_trembler.png");
 
     public TremblerRenderer(EntityRendererProvider.Context context) {
         super(context, new TremblerModel(context.bakeLayer(OPModelLayers.TREMBLER)), 0.5F);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Trembler entity) {
-        return TEXTURE;
+    public @NotNull ResourceLocation getTextureLocation(Trembler entity) {
+        return entity.isElite() ? ELITE_TEXTURE : TEXTURE;
     }
 
     @Override
-    protected @Nullable RenderType getRenderType(Trembler entity, boolean bodyVisible, boolean translucent, boolean glowing) {
-        return RenderType.entityCutoutNoCull(TEXTURE);
+    protected @Nullable RenderType getRenderType(@NotNull Trembler entity, boolean bodyVisible, boolean translucent, boolean glowing) {
+        return RenderType.entityCutoutNoCull(this.getTextureLocation(entity));
     }
 }

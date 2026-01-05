@@ -3,9 +3,8 @@ package com.unusualmodding.opposing_force.client.models.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.DicerAnimations;
-import com.unusualmodding.opposing_force.client.animations.DicerAttackAnimations;
+import com.unusualmodding.opposing_force.client.models.entity.base.OPModel;
 import com.unusualmodding.opposing_force.entity.Dicer;
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -15,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class DicerModel extends HierarchicalModel<Dicer> {
+public class DicerModel extends OPModel<Dicer> {
 
     private final ModelPart root;
     private final ModelPart spin_control;
@@ -87,10 +86,10 @@ public class DicerModel extends HierarchicalModel<Dicer> {
         PartDefinition sail_r2 = waist.addOrReplaceChild("sail_r2", CubeListBuilder.create().texOffs(20, 62).addBox(0.0F, -2.0F, 0.0F, 0.0F, 10.0F, 7.0F, new CubeDeformation(0.0025F)), PartPose.offsetAndRotation(2.0F, -8.0F, 1.5F, 0.0F, 0.4363F, 0.0F));
 
         PartDefinition head = waist.addOrReplaceChild("head", CubeListBuilder.create().texOffs(28, 37).addBox(-5.0F, -9.0F, -3.5F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.2F))
-                .texOffs(72, 71).addBox(-2.0F, -5.0F, -7.5F, 2.0F, 3.0F, 4.0F, new CubeDeformation(0.0F))
-                .texOffs(63, 64).addBox(-2.0F, -2.0F, -7.5F, 2.0F, 4.0F, 3.0F, new CubeDeformation(0.0F))
                 .texOffs(38, 21).addBox(-5.0F, -9.0F, -3.5F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 37).addBox(-2.0F, -13.0F, -4.5F, 2.0F, 10.0F, 12.0F, new CubeDeformation(0.0F)), PartPose.offset(1.0F, -11.0F, -0.5F));
+                .texOffs(0, 37).addBox(-2.0F, -13.0F, -4.5F, 2.0F, 10.0F, 12.0F, new CubeDeformation(0.0F))
+                .texOffs(63, 64).addBox(-2.0F, -2.0F, -7.5F, 2.0F, 4.0F, 3.0F, new CubeDeformation(0.0F))
+                .texOffs(72, 71).addBox(-2.0F, -5.0F, -7.5F, 2.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(1.0F, -11.0F, -0.5F));
 
         PartDefinition visor = head.addOrReplaceChild("visor", CubeListBuilder.create().texOffs(28, 53).addBox(-5.0F, -1.0F, -3.5F, 10.0F, 2.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(-1.0F, -6.0F, -1.0F));
 
@@ -144,12 +143,12 @@ public class DicerModel extends HierarchicalModel<Dicer> {
 			this.animateWalk(DicerAnimations.WALK, limbSwing, limbSwingAmount, 2, 4);
 		}
 
-		this.animate(entity.idleAnimationState, DicerAnimations.IDLE, ageInTicks);
-		this.animate(entity.slash1AnimationState, DicerAttackAnimations.SLASH1, ageInTicks);
-		this.animate(entity.slash2AnimationState, DicerAttackAnimations.SLASH2, ageInTicks);
-		this.animate(entity.crossSlashAnimationState, DicerAttackAnimations.CROSS_SLASH, ageInTicks);
-        this.animate(entity.tailSpinAnimationState, DicerAttackAnimations.TAIL_SPIN, ageInTicks);
-        this.animate(entity.laserAnimationState, DicerAttackAnimations.LASER, ageInTicks);
+		this.animateIdle(entity.idleAnimationState, DicerAnimations.IDLE, ageInTicks, 1, limbSwingAmount * 4);
+		this.animate(entity.slash1AnimationState, DicerAnimations.SLASH_BLEND2, ageInTicks);
+		this.animate(entity.slash2AnimationState, DicerAnimations.SLASH_BLEND1, ageInTicks);
+		this.animate(entity.crossSlashAnimationState, DicerAnimations.CROSSSLASH, ageInTicks);
+        this.animate(entity.tailSpinAnimationState, DicerAnimations.TAILWHIP, ageInTicks);
+        this.animate(entity.laserAnimationState, DicerAnimations.LASER, ageInTicks);
 
         this.head.xRot += headPitch * ((float) Math.PI / 180) - (headPitch * ((float) Math.PI / 180)) / 2;
         this.head.yRot += netHeadYaw * ((float) Math.PI / 180) - (netHeadYaw * ((float) Math.PI / 180)) / 2;

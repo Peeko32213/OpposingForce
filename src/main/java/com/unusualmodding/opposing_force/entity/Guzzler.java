@@ -153,16 +153,16 @@ public class Guzzler extends Monster implements AttackState {
     }
 
     private void setupAnimationStates() {
-        this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
+        this.idleAnimationState.animateWhen(this.getAttackState() == 0, this.tickCount);
         this.spewAnimationState.animateWhen(this.getAttackState() == 1, this.tickCount);
         this.stompAnimationState.animateWhen(this.getAttackState() == 2, this.tickCount);
     }
 
     @Override
     public void calculateEntityAnimation(boolean flying) {
-        float f1 = (float) Mth.length(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
-        float f2 = Math.min(f1 * 10.0F, 1.0F);
-        this.walkAnimation.update(f2, 0.4F);
+        float pos = (float) Mth.length(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
+        float speed = Math.min(pos * 10.0F, 1.0F);
+        this.walkAnimation.update(speed, 0.4F);
     }
 
     @Override

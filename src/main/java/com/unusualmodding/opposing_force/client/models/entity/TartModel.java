@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.client.models.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.TartAnimations;
+import com.unusualmodding.opposing_force.client.models.entity.base.OPModel;
 import com.unusualmodding.opposing_force.entity.Tart;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class TartModel extends HierarchicalModel<Tart> {
+public class TartModel extends OPModel<Tart> {
 
     private final ModelPart root;
     private final ModelPart body_main;
@@ -67,7 +68,7 @@ public class TartModel extends HierarchicalModel<Tart> {
 	public void setupAnim(Tart entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.animateWalk(TartAnimations.WALK, limbSwing, limbSwingAmount, 4, 8);
-		this.animate(entity.idleAnimationState, TartAnimations.IDLE, ageInTicks);
+		this.animateIdle(entity.idleAnimationState, TartAnimations.IDLE, ageInTicks, 1, limbSwingAmount * 4);
         this.animate(entity.attackAnimationState, TartAnimations.ATTACK, ageInTicks);
         this.animate(entity.sitAnimationState, TartAnimations.SIT, ageInTicks);
         this.animate(entity.fallAnimationState, TartAnimations.FALL, ageInTicks);

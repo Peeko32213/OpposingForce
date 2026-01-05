@@ -18,13 +18,13 @@ public class SkyvernMoveControl extends MoveControl {
             final double length = vector3d.length();
             if (length < mob.getBoundingBox().getSize()) {
                 this.operation = Operation.WAIT;
-                mob.setDeltaMovement(mob.getDeltaMovement().scale(0.5D));
+                this.mob.setDeltaMovement(mob.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.07D / length).multiply(0.9F, 0.9F, 0.9F)));
             } else {
-                mob.setDeltaMovement(mob.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.06D / length).multiply(0.9F, 0.9F, 0.9F)));
+                this.mob.setDeltaMovement(mob.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.08D / length).multiply(0.9F, 0.9F, 0.9F)));
                 final Vec3 vector3d1 = mob.getDeltaMovement();
                 float f = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * 180.0F / (float) Math.PI;
-                mob.setYRot(Mth.approachDegrees(mob.getYRot(), f, 20));
-                mob.yBodyRot = mob.getYRot();
+                this.mob.setYRot(Mth.approachDegrees(mob.getYRot(), f, 6));
+                this.mob.yBodyRot = mob.getYRot();
             }
         }
     }

@@ -14,12 +14,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(Dist.CLIENT)
-public class WhizzRenderer extends MobRenderer<Whizz, WhizzModel<Whizz>> {
+public class WhizzRenderer extends MobRenderer<Whizz, WhizzModel> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID,"textures/entity/whizz/whizz.png");
 
     public WhizzRenderer(EntityRendererProvider.Context context) {
-        super(context, new WhizzModel<>(context.bakeLayer(OPModelLayers.WHIZZ)), 0.2F);
+        super(context, new WhizzModel(context.bakeLayer(OPModelLayers.WHIZZ)), 0.2F);
     }
 
     @Override

@@ -138,7 +138,7 @@ public class LightningParticle extends Particle {
         Entity nextEntity = level.getEntity(nextId);
         if (nextEntity != null) {
             LightningDamagePacket damagePacket = new LightningDamagePacket(data.senderId, nextId, 5, new Vec3(0,0,0));
-            OPNetwork.sendToServer(damagePacket);
+            OPNetwork.sendPacketToServer(damagePacket);
             LightningParticleType.Data newData = getData(nextEntity.getId(), remaining);
 
             Minecraft.getInstance().level.addParticle(newData, true, lightningOrigin.x, lightningOrigin.y, lightningOrigin.z, 0, 0, 0);

@@ -16,11 +16,16 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = OpposingForce.MOD_ID, value = Dist.CLIENT)
@@ -28,11 +33,50 @@ public class ClientProxy extends CommonProxy {
 
     public static final Int2ObjectMap<AbstractTickableSoundInstance> ENTITY_SOUND_INSTANCE_MAP = new Int2ObjectOpenHashMap<>();
 
+    public static List<UUID> blockedEntityRenders = new ArrayList<>();
+
     public void init() {
     }
 
     public void clientInit() {
         MinecraftForge.EVENT_BUS.register(new ClientForgeEvents());
+    }
+
+    @Override
+    public boolean isKeyDown(int keyType) {
+        if (keyType == 0) {
+            return Minecraft.getInstance().options.keyJump.isDown();
+        }
+        if (keyType == 1) {
+            return Minecraft.getInstance().options.keySprint.isDown();
+        }
+        if (keyType == 3) {
+            return Minecraft.getInstance().options.keyAttack.isDown();
+        }
+        if (keyType == 4) {
+            return Minecraft.getInstance().options.keyShift.isDown();
+        }
+        return false;
+    }
+
+    @Override
+    public Player getClientSidePlayer() {
+        return Minecraft.getInstance().player;
+    }
+
+    @Override
+    public boolean isFirstPersonPlayer(Entity entity) {
+        return entity.equals(Minecraft.getInstance().cameraEntity) && Minecraft.getInstance().options.getCameraType().isFirstPerson();
+    }
+
+    @Override
+    public void blockRenderingEntity(UUID id) {
+        blockedEntityRenders.add(id);
+    }
+
+    @Override
+    public void releaseRenderingEntity(UUID id) {
+        blockedEntityRenders.remove(id);
     }
 
     @Override

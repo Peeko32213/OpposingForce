@@ -6,6 +6,7 @@ import com.unusualmodding.opposing_force.items.BlasterItem;
 import com.unusualmodding.opposing_force.items.LaserBladeItem;
 import com.unusualmodding.opposing_force.items.TeslaCannonItem;
 import com.unusualmodding.opposing_force.registry.OPItems;
+import com.unusualmodding.opposing_force.utils.ClientProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -15,8 +16,10 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderNameTagEvent;
 import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -35,6 +38,17 @@ public class ClientForgeEvents {
     private static boolean jumpPrevPressed = false;
 
     public static final List<ScreenShakeEvent> SCREEN_SHAKE_EVENTS = new ArrayList<>();
+
+    @SubscribeEvent
+    public void preRenderLiving(RenderLivingEvent.Pre event) {
+        if (ClientProxy.blockedEntityRenders.contains(event.getEntity().getUUID())) {
+            if (!OpposingForce.PROXY.isFirstPersonPlayer(event.getEntity())) {
+                MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Post(event.getEntity(), event.getRenderer(), event.getPartialTick(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight()));
+                event.setCanceled(true);
+            }
+            ClientProxy.blockedEntityRenders.remove(event.getEntity().getUUID());
+        }
+    }
 
     @SubscribeEvent
     public static void renderNameplate(RenderNameTagEvent event) {

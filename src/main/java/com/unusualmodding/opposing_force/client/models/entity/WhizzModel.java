@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.client.models.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.WhizzAnimations;
+import com.unusualmodding.opposing_force.client.models.entity.base.OPModel;
 import com.unusualmodding.opposing_force.entity.Whizz;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class WhizzModel<T extends Whizz> extends HierarchicalModel<T> {
+public class WhizzModel extends OPModel<Whizz> {
 
     private final ModelPart root;
     private final ModelPart left_mandible;

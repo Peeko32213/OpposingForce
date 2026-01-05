@@ -140,7 +140,7 @@ public class OPItems {
     public static final RegistryObject<Item> SPICY_TERROR_LEG = registerItem("spicy_terror_leg", () -> new Item(foodItem(OPFoodValues.SPICY_TERROR_LEG)));
 
     // Trembler
-    public static final RegistryObject<Item> TREMBLER_SPAWN_EGG = registerSpawnEggItem("trembler", OPEntities.TREMBLER , 0x273030, 0x6d9288);
+    public static final RegistryObject<Item> TREMBLER_SPAWN_EGG = registerSpawnEggItem("trembler", OPEntities.TREMBLER , 0x465641, 0x0d0e0d);
 
     // Umber Spider
     public static final RegistryObject<Item> UMBER_SPIDER_SPAWN_EGG = registerSpawnEggItem("umber_spider", OPEntities.UMBER_SPIDER , 0x241d2c, 0x44a9f6);

@@ -7,6 +7,7 @@ import com.unusualmodding.opposing_force.world.SkyvernSpawner;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = OpposingForce.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonProxy {
@@ -24,6 +26,24 @@ public class CommonProxy {
     }
 
     public void clientInit() {
+    }
+
+    public boolean isKeyDown(int keyType) {
+        return false;
+    }
+
+    public Player getClientSidePlayer() {
+        return null;
+    }
+
+    public boolean isFirstPersonPlayer(Entity entity) {
+        return false;
+    }
+
+    public void blockRenderingEntity(UUID id) {
+    }
+
+    public void releaseRenderingEntity(UUID id) {
     }
 
     public Object getArmorRenderProperties() {

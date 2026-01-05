@@ -71,7 +71,7 @@ public class Volt extends Monster implements AttackState, PowerableMob, EliteVar
     public final AnimationState jumpAnimationState = new AnimationState();
     public final AnimationState fallingAnimationState = new AnimationState();
     public final AnimationState landingAnimationState = new AnimationState();
-    public final AnimationState swimmingAnimationState = new AnimationState();
+    public final AnimationState swimIdleAnimationState = new AnimationState();
 
     private int jumpTicks;
     private int fallingTicks;
@@ -315,8 +315,8 @@ public class Volt extends Monster implements AttackState, PowerableMob, EliteVar
         if (jumpTicks == 0 && this.jumpAnimationState.isStarted()) this.jumpAnimationState.stop();
         if (fallingTicks == 0 && this.fallingAnimationState.isStarted()) this.fallingAnimationState.stop();
         if (landingTicks == 0 && this.landingAnimationState.isStarted()) this.landingAnimationState.stop();
-        this.idleAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() <= 1.0E-5F && !this.isInWater() && this.getPose() == Pose.STANDING, this.tickCount);
-        this.swimmingAnimationState.animateWhen(this.isInWater() && this.getPose() == Pose.STANDING, this.tickCount);
+        this.idleAnimationState.animateWhen(!this.isInWater() && this.getPose() == Pose.STANDING, this.tickCount);
+        this.swimIdleAnimationState.animateWhen(this.isInWater() && this.getPose() == Pose.STANDING, this.tickCount);
     }
 
     @Override

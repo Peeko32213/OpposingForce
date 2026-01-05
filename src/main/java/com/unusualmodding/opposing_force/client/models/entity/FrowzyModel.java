@@ -3,10 +3,10 @@ package com.unusualmodding.opposing_force.client.models.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.FrowzyAnimations;
+import com.unusualmodding.opposing_force.client.models.entity.base.OPModel;
 import com.unusualmodding.opposing_force.entity.Frowzy;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.HeadedModel;
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class FrowzyModel extends HierarchicalModel<Frowzy> implements ArmedModel, HeadedModel {
+public class FrowzyModel extends OPModel<Frowzy> implements ArmedModel, HeadedModel {
 
     private final ModelPart root;
     private final ModelPart upper_body;
@@ -68,7 +68,7 @@ public class FrowzyModel extends HierarchicalModel<Frowzy> implements ArmedModel
 	public void setupAnim(Frowzy entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.animateWalk(FrowzyAnimations.WALK, limbSwing, limbSwingAmount, 1, 2);
-		this.animate(entity.idleAnimationState, FrowzyAnimations.IDLE, ageInTicks);
+		this.animateIdle(entity.idleAnimationState, FrowzyAnimations.IDLE, ageInTicks, 1, limbSwingAmount * 4);
 		this.animate(entity.attack1AnimationState, FrowzyAnimations.ATTACK_IDLE, ageInTicks);
         this.animate(entity.attack2AnimationState, FrowzyAnimations.ATTACK_WALK, ageInTicks);
 
@@ -81,7 +81,7 @@ public class FrowzyModel extends HierarchicalModel<Frowzy> implements ArmedModel
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int j, float f, float g, float h, float k) {
+	public void renderToBuffer(PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int i, int j, float f, float g, float h, float k) {
 		if (this.young) {
 			float babyScale = 0.5F;
 			float bodyYOffset = 24.0F;
@@ -96,12 +96,12 @@ public class FrowzyModel extends HierarchicalModel<Frowzy> implements ArmedModel
 	}
 
     @Override
-	public ModelPart root() {
+	public @NotNull ModelPart root() {
 		return this.root;
 	}
 
     @Override
-    public void translateToHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToHand(@NotNull HumanoidArm arm, @NotNull PoseStack poseStack) {
         this.root.translateAndRotate(poseStack);
         this.upper_body.translateAndRotate(poseStack);
         if (arm == HumanoidArm.RIGHT) {

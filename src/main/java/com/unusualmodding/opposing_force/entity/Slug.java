@@ -317,7 +317,7 @@ public class Slug extends SummonableMonster implements EliteVariant {
     }
 
     private void setupAnimationStates() {
-        this.idleAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() <= 1.0E-5F, this.tickCount);
+        this.idleAnimationState.animateWhen(this.getPose() == Pose.STANDING, this.tickCount);
     }
 
     @Override

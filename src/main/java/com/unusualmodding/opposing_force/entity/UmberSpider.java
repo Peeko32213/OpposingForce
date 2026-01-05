@@ -205,9 +205,7 @@ public class UmberSpider extends Spider implements AttackState, EliteVariant {
     public void tick() {
         super.tick();
 
-        if (this.level().isClientSide()) {
-            this.setupAnimationStates();
-        }
+        if (this.level().isClientSide) this.setupAnimationStates();
     }
 
     private void setupAnimationStates() {

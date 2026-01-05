@@ -3,8 +3,8 @@ package com.unusualmodding.opposing_force.client.models.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.VoltAnimations;
+import com.unusualmodding.opposing_force.client.models.entity.base.OPModel;
 import com.unusualmodding.opposing_force.entity.Volt;
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class VoltModel extends HierarchicalModel<Volt> {
+public class VoltModel extends OPModel<Volt> {
 
     private final ModelPart root;
     private final ModelPart body_main;
@@ -94,12 +94,13 @@ public class VoltModel extends HierarchicalModel<Volt> {
 	@Override
 	public void setupAnim(Volt entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-        if (!entity.isInWater() && entity.getPose() == Pose.STANDING) {
-            this.animateWalk(VoltAnimations.WALK, limbSwing, limbSwingAmount, 3, 6);
+        if (entity.getPose() == Pose.STANDING) {
+            if (entity.isInWater()) this.animateWalk(VoltAnimations.SWIM, limbSwing, limbSwingAmount, 2.5F, 5);
+            else this.animateWalk(VoltAnimations.WALK, limbSwing, limbSwingAmount, 3, 6);
         }
-        this.animate(entity.swimmingAnimationState, VoltAnimations.SWIM, ageInTicks, 0.7F + (Mth.clamp(limbSwingAmount, 0.4F, 1.0F) * 1.4F));
-        this.animate(entity.idleAnimationState, VoltAnimations.IDLE, ageInTicks);
-		this.animate(entity.shootAnimationState, VoltAnimations.SHOCK_LAND, ageInTicks);
+        this.animateIdle(entity.idleAnimationState, VoltAnimations.IDLE, ageInTicks, 1, limbSwingAmount * 4);
+        this.animateIdle(entity.swimIdleAnimationState, VoltAnimations.SWIM, ageInTicks, 1, limbSwingAmount * 4);
+        this.animate(entity.shootAnimationState, VoltAnimations.SHOCK_LAND, ageInTicks);
         this.animate(entity.shootWaterAnimationState, VoltAnimations.SHOCK_SWIM, ageInTicks);
         this.animate(entity.jumpAnimationState, VoltAnimations.JUMP_START, ageInTicks);
         this.animate(entity.fallingAnimationState, VoltAnimations.JUMP_FALL, ageInTicks);

@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.entity.ai.goal.TremblerRollGoal;
+import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.registry.tags.OPDamageTypeTags;
 import net.minecraft.core.BlockPos;
@@ -12,8 +13,10 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -40,11 +43,13 @@ import org.jetbrains.annotations.Nullable;
 import java.time.LocalDate;
 import java.time.Month;
 
-public class Trembler extends Monster {
+@SuppressWarnings("deprecation")
+public class Trembler extends Monster implements EliteVariant {
 
     private static final EntityDataAccessor<Boolean> ROLLING = SynchedEntityData.defineId(Trembler.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Integer> ROLL_COOLDOWN = SynchedEntityData.defineId(Trembler.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> STUNNED_TICKS = SynchedEntityData.defineId(Trembler.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> TURBO = SynchedEntityData.defineId(Trembler.class, EntityDataSerializers.BOOLEAN);
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState rollAnimationState = new AnimationState();
@@ -112,9 +117,16 @@ public class Trembler extends Monster {
     }
 
     private void setupAnimationStates() {
-        this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
+        this.idleAnimationState.animateWhen(!this.isRolling(), this.tickCount);
         this.rollAnimationState.animateWhen(this.isRolling(), this.tickCount);
         this.stunnedAnimationState.animateWhen(this.getStunnedTicks() > 0, this.tickCount);
+    }
+
+    @Override
+    public void calculateEntityAnimation(boolean flying) {
+        float pos = (float) Mth.length(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
+        float speed = Math.min(pos * 16.0F, 1.0F);
+        this.walkAnimation.update(speed, 0.4F);
     }
 
     private void stunEffect() {
@@ -181,22 +193,19 @@ public class Trembler extends Monster {
         this.entityData.define(ROLLING, false);
         this.entityData.define(ROLL_COOLDOWN, 60);
         this.entityData.define(STUNNED_TICKS, 0);
+        this.entityData.define(TURBO, false);
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compoundTag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        compoundTag.putBoolean("Rolling", this.isRolling());
-        compoundTag.putInt("RollCooldown", this.getRollCooldown());
-        compoundTag.putInt("StunnedTicks", this.getStunnedTicks());
+        compoundTag.putBoolean("Turbo", this.isElite());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compoundTag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        this.setRolling(compoundTag.getBoolean("Rolling"));
-        this.setRollCooldown(compoundTag.getInt("RollCooldown"));
-        this.setStunnedTicks(compoundTag.getInt("StunnedTicks"));
+        this.setElite(compoundTag.getBoolean("Turbo"));
     }
 
     public boolean isRolling() {
@@ -232,6 +241,16 @@ public class Trembler extends Monster {
     }
 
     @Override
+    public boolean isElite() {
+        return this.entityData.get(TURBO);
+    }
+
+    @Override
+    public void setElite(boolean elite) {
+        this.entityData.set(TURBO, elite);
+    }
+
+    @Override
     @Nullable
     protected SoundEvent getAmbientSound() {
         if ((this.random.nextInt(1000) == 0 && this.getName().getString().equalsIgnoreCase("valiant")) || (LocalDate.now().getMonth() == Month.APRIL && LocalDate.now().getDayOfMonth() == 1)) {
@@ -241,12 +260,12 @@ public class Trembler extends Monster {
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
         return OPSoundEvents.TREMBLER_HURT.get();
     }
 
     @Override
-    protected SoundEvent getDeathSound() {
+    protected @NotNull SoundEvent getDeathSound() {
         return OPSoundEvents.TREMBLER_DEATH.get();
     }
 
@@ -264,6 +283,18 @@ public class Trembler extends Monster {
     @Override
     public int getAmbientSoundInterval() {
         return 200;
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag compoundTag) {
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
+        RandomSource random = level.getRandom();
+        if (random.nextInt(this.getEliteSpawnChance()) == 0) {
+            this.setElite(true);
+            this.setEliteStats(this);
+        }
+        return spawnData;
     }
 
     @SuppressWarnings("unused")

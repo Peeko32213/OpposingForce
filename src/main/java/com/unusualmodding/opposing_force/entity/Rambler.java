@@ -257,7 +257,7 @@ public class Rambler extends Monster implements AttackState {
         if (jabRushTicks == 0 && this.jabRushAnimationState.isStarted()) this.jabRushAnimationState.stop();
         if (startRollingTicks == 0 && this.rollStartAnimationState.isStarted()) this.rollStartAnimationState.stop();
         if (stopRollingTicks == 0 && this.rollEndAnimationState.isStarted()) this.rollEndAnimationState.stop();
-        this.idleAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() <= 1.0E-5F && !this.isRolling(), this.tickCount);
+        this.idleAnimationState.animateWhen(!this.isRolling(), this.tickCount);
         this.walkAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() > 1.0E-5F && !this.isRolling(), this.tickCount);
     }
 

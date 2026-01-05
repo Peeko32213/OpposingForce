@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.HangingSpiderAnimations;
+import com.unusualmodding.opposing_force.client.models.entity.base.OPModel;
 import com.unusualmodding.opposing_force.entity.HangingSpider;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -11,12 +12,13 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class HangingSpiderModel extends HierarchicalModel<HangingSpider> {
+public class HangingSpiderModel extends OPModel<HangingSpider> {
 
     private final ModelPart root;
     private final ModelPart head;
@@ -101,19 +103,19 @@ public class HangingSpiderModel extends HierarchicalModel<HangingSpider> {
         if (!(entity.isGoingUp() || entity.isGoingDown())) {
             this.animateWalk(HangingSpiderAnimations.SCURRY, limbSwing, limbSwingAmount, 2, 4);
         }
-		this.animate(entity.idleAnimationState, HangingSpiderAnimations.IDLE, ageInTicks);
+		this.animateIdle(entity.idleAnimationState, HangingSpiderAnimations.IDLE, ageInTicks, 1, limbSwingAmount * 4);
         this.animate(entity.goingUpAnimationState, HangingSpiderAnimations.GOING_UP, ageInTicks);
         this.animate(entity.goingDownAnimationState, HangingSpiderAnimations.GOING_DOWN, ageInTicks);
         this.animate(entity.biteAnimationState, HangingSpiderAnimations.BITE, ageInTicks);
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
     @Override
-	public ModelPart root() {
+	public @NotNull ModelPart root() {
 		return this.root;
 	}
 

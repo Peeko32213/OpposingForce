@@ -132,10 +132,7 @@ public class Dicer extends Monster implements AttackState, EliteVariant {
         if (crossSlashTicks == 0 && this.crossSlashAnimationState.isStarted()) this.crossSlashAnimationState.stop();
         if (tailSpinTicks == 0 && this.tailSpinAnimationState.isStarted()) this.tailSpinAnimationState.stop();
         if (laserTicks == 0 && this.laserAnimationState.isStarted()) this.laserAnimationState.stop();
-        this.idleAnimationState.animateWhen(this.getDeltaMovement().horizontalDistanceSqr() <= 1.0E-6, this.tickCount);
-        if (this.getPose() != Pose.STANDING) {
-            this.idleAnimationState.stop();
-        }
+        this.idleAnimationState.animateWhen(this.getPose() != OPPoses.LASERING.get() && this.getPose() != OPPoses.CROSS_SLASHING.get() && this.getPose() != OPPoses.TAIL_SPINNING.get(), this.tickCount);
     }
 
     @Override

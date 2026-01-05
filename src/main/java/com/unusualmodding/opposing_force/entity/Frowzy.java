@@ -205,7 +205,7 @@ public class Frowzy extends Monster implements AttackState, VariantHolder<Frowzy
             this.attack1AnimationState.stop();
             this.attack2AnimationState.stop();
         }
-        this.idleAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() <= 1.0E-5F, this.tickCount);
+        this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
     }
 
     @Override

@@ -12,6 +12,6 @@ public class ParticleUtils {
                 .size(0.08F)
                 .color(red, green, blue, 1F)
                 .build();
-        OPNetwork.sendToClients(packet);
+        OPNetwork.sendPacketToClients(packet);
     }
 }

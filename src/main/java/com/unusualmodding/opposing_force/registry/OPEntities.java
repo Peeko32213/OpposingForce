@@ -160,7 +160,7 @@ public class OPEntities {
     public static final RegistryObject<EntityType<Trembler>> TREMBLER = ENTITY_TYPE.register(
             "trembler", () ->
             EntityType.Builder.of(Trembler::new, MobCategory.MONSTER)
-                    .sized(0.9F, 0.98F)
+                    .sized(0.8F, 0.9F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "trembler").toString())
     );
