@@ -8,6 +8,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -94,6 +95,9 @@ public class OPItemTagProvider extends ItemTagsProvider {
         );
 
         this.tag(OPItemTags.RAW_VEGETABLES).addTag(OPItemTags.FRUITS).addTag(OPItemTags.VEGETABLES);
+
+        this.copy(BlockTags.LEAVES, ItemTags.LEAVES);
+        this.copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
 
         this.tag(ItemTags.MUSIC_DISCS).add(
                 WALTZ_OF_THE_SLUG_DISC.get()

@@ -111,7 +111,13 @@ public class OpposingForceTab {
                     output.accept(OPItems.WALTZ_OF_THE_SLUG_DISC.get());
 
                     // Tart
-                    output.accept(OPBlocks.INFESTED_OAK_LEAVES.get());
+                    output.accept(OPBlocks.APPLE_SAPLING.get());
+                    output.accept(OPBlocks.APPLE_LEAVES.get());
+                    output.accept(OPBlocks.FLOWERING_APPLE_LEAVES.get());
+                    output.accept(OPBlocks.FRUITFUL_APPLE_LEAVES.get());
+                    output.accept(OPBlocks.INFESTED_APPLE_LEAVES.get());
+                    output.accept(OPBlocks.FLOWERING_INFESTED_APPLE_LEAVES.get());
+                    output.accept(OPBlocks.FRUITFUL_INFESTED_APPLE_LEAVES.get());
                     output.accept(OPItems.RAW_TART.get());
                     output.accept(OPItems.COOKED_TART.get());
                     output.accept(OPItems.TART_HEAD.get());

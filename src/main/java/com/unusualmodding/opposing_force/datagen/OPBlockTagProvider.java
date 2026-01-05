@@ -32,6 +32,19 @@ public class OPBlockTagProvider extends BlockTagsProvider {
         this.tag(OPBlockTags.FROWZY_SPAWNABLE_ON).addTag(OPBlockTags.CAVE_MOB_SPAWNABLE_ON);
         this.tag(OPBlockTags.UMBER_SPIDER_SPAWNABLE_ON).addTag(OPBlockTags.CAVE_MOB_SPAWNABLE_ON);
 
+        this.tag(BlockTags.LEAVES).add(
+                APPLE_LEAVES.get(),
+                FRUITFUL_APPLE_LEAVES.get(),
+                FLOWERING_APPLE_LEAVES.get(),
+                INFESTED_APPLE_LEAVES.get(),
+                FRUITFUL_INFESTED_APPLE_LEAVES.get(),
+                FLOWERING_INFESTED_APPLE_LEAVES.get()
+        );
+
+        this.tag(BlockTags.SAPLINGS).add(
+                APPLE_SAPLING.get()
+        );
+
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
                 TREMBLER_SHELL.get(),
                 TREMBLING_SHINGLES.get(),
@@ -57,7 +70,13 @@ public class OPBlockTagProvider extends BlockTagsProvider {
         );
 
         this.tag(BlockTags.MINEABLE_WITH_HOE).add(
-                DEEP_SILK_BLOCK.get()
+                DEEP_SILK_BLOCK.get(),
+                APPLE_LEAVES.get(),
+                FRUITFUL_APPLE_LEAVES.get(),
+                FLOWERING_APPLE_LEAVES.get(),
+                INFESTED_APPLE_LEAVES.get(),
+                FRUITFUL_INFESTED_APPLE_LEAVES.get(),
+                FLOWERING_INFESTED_APPLE_LEAVES.get()
         );
 
         this.tag(BlockTags.FALL_DAMAGE_RESETTING).add(

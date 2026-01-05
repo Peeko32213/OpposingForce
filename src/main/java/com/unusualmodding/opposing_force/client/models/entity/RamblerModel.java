@@ -151,9 +151,6 @@ public class RamblerModel extends OPModel<Rambler> {
         this.animate(entity.jab3AnimationState, RamblerAnimations.JAB_BLEND3, ageInTicks);
         this.animate(entity.jab4AnimationState, RamblerAnimations.JAB_BLEND4, ageInTicks);
         this.animate(entity.jabRushAnimationState, RamblerAnimations.JAB_RUSH_BLEND, ageInTicks);
-        this.animate(entity.rollStartAnimationState, RamblerAnimations.ROLL_START, ageInTicks);
-        this.animate(entity.rollAnimationState, RamblerAnimations.ROLL, ageInTicks);
-        this.animate(entity.rollEndAnimationState, RamblerAnimations.ROLL_END, ageInTicks);
     }
 
 	@Override

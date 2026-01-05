@@ -22,6 +22,8 @@ public class DicerVisorLayer extends RenderLayer<Dicer, DicerModel> {
     private static final RenderType VISOR_LASERING = RenderType.eyes(modPrefix("textures/entity/dicer/visor_lasering.png"));
     private static final RenderType ARCH_VISOR = RenderType.eyes(modPrefix("textures/entity/dicer/arch_visor.png"));
     private static final RenderType ARCH_VISOR_LASERING = RenderType.eyes(modPrefix("textures/entity/dicer/arch_visor_lasering.png"));
+    private static final RenderType GIGAN_VISOR = RenderType.eyes(modPrefix("textures/entity/dicer/gigan_visor.png"));
+    private static final RenderType GIGAN_VISOR_LASERING = RenderType.eyes(modPrefix("textures/entity/dicer/gigan_visor_lasering.png"));
 
     public DicerVisorLayer(RenderLayerParent<Dicer, DicerModel> parentModel) {
         super(parentModel);
@@ -30,6 +32,9 @@ public class DicerVisorLayer extends RenderLayer<Dicer, DicerModel> {
     @Override
     public void render(@NotNull PoseStack poseStack, MultiBufferSource multiBufferSource, int i, Dicer entity, float f, float g, float h, float j, float k, float l) {
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(entity.isLasering() ? (entity.isElite() ? ARCH_VISOR_LASERING : VISOR_LASERING) : (entity.isElite() ? ARCH_VISOR : VISOR));
+        if (entity.getName().getString().contains("gigan")) {
+            vertexConsumer = multiBufferSource.getBuffer(entity.isLasering() ? GIGAN_VISOR_LASERING : GIGAN_VISOR);
+        }
         this.getParentModel().renderToBuffer(poseStack, vertexConsumer, 0xF00000, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
     }
 }

@@ -1,5 +1,11 @@
 {
   "values": [
-    "opposing_force:deep_silk_block"
+    "opposing_force:deep_silk_block",
+    "opposing_force:apple_leaves",
+    "opposing_force:fruitful_apple_leaves",
+    "opposing_force:flowering_apple_leaves",
+    "opposing_force:infested_apple_leaves",
+    "opposing_force:fruitful_infested_apple_leaves",
+    "opposing_force:flowering_infested_apple_leaves"
   ]
 }

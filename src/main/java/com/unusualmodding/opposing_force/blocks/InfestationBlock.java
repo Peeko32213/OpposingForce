@@ -22,8 +22,8 @@ public class InfestationBlock extends Block{
 
     private final Block hostBlock;
     private static final Map<BlockState, BlockState> INFESTED_TO_HOST_STATES = Maps.newIdentityHashMap();
-
     private final Supplier<? extends EntityType<?>> toSpawn;
+
     public InfestationBlock(Block hostBlock, Properties properties, Supplier<? extends EntityType<?>> toSpawn, float explosionResistance) {
         super(properties.destroyTime(hostBlock.defaultDestroyTime() / 2.0F).explosionResistance(explosionResistance));
         this.hostBlock = hostBlock;
@@ -35,7 +35,7 @@ public class InfestationBlock extends Block{
     }
 
     private void spawnInfestation(ServerLevel level, BlockPos pos) {
-        if(toSpawn.get() == null) return;
+        if (toSpawn.get() == null) return;
         Entity entity = toSpawn.get().create(level);
         if (entity != null) {
             entity.moveTo((double) pos.getX() + (double) 0.5F, pos.getY(), (double) pos.getZ() + (double) 0.5F, 0.0F, 0.0F);

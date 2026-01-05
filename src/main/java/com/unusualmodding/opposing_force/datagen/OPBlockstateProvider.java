@@ -8,6 +8,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.*;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -45,6 +46,8 @@ public class OPBlockstateProvider extends BlockStateProvider {
         this.slab(VILE_STONE_BRICK_SLAB, this.blockTexture(VILE_STONE_BRICKS.get()));
         this.wall(VILE_STONE_BRICK_WALL, this.blockTexture(VILE_STONE_BRICKS.get()));
         this.cubeAllBlock(CHISELED_VILE_STONE_BRICKS);
+
+        this.pottedPlant(APPLE_SAPLING, POTTED_APPLE_SAPLING);
 
         this.mobHead(DICER_HEAD);
         this.mobHead(FROWZY_HEAD);
@@ -112,8 +115,19 @@ public class OPBlockstateProvider extends BlockStateProvider {
 
 
     private void mobHead(Pair<RegistryObject<Block>, RegistryObject<Block>> skull) {
-        getVariantBuilder(skull.getFirst().get()).forAllStatesExcept(blockstate -> ConfiguredModel.builder().modelFile(models().getExistingFile(new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/" + "skull"))).build(), SkullBlock.ROTATION);
-        getVariantBuilder(skull.getSecond().get()).forAllStatesExcept(blockstate -> ConfiguredModel.builder().modelFile(models().getExistingFile(new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/" + "skull"))).build(), WallSkullBlock.FACING);
+        this.getVariantBuilder(skull.getFirst().get()).forAllStatesExcept(blockstate -> ConfiguredModel.builder().modelFile(models().getExistingFile(new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/" + "skull"))).build(), SkullBlock.ROTATION);
+        this.getVariantBuilder(skull.getSecond().get()).forAllStatesExcept(blockstate -> ConfiguredModel.builder().modelFile(models().getExistingFile(new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/" + "skull"))).build(), WallSkullBlock.FACING);
+    }
+
+    private void pot(RegistryObject<Block> pot, ResourceLocation texture) {
+        ModelFile model = this.models().withExistingParent(getBlockName(pot.get()), "block/flower_pot_cross").texture("plant", texture).renderType("cutout");
+        this.simpleBlock(pot.get(), model);
+    }
+
+    private void pottedPlant(RegistryObject<Block> plant, RegistryObject<Block> pot) {
+        this.pot(pot, this.blockTexture(plant.get()));
+        this.simpleCross(plant);
+        this.generatedItem(plant.get(), TextureFolder.BLOCK);
     }
 
     // utils

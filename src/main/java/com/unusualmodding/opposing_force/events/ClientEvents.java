@@ -148,7 +148,12 @@ public final class ClientEvents {
                     }
                     return BiomeColors.getAverageFoliageColor(world, pos);
                 },
-                OPBlocks.INFESTED_OAK_LEAVES.get()
+                OPBlocks.APPLE_LEAVES.get(),
+                OPBlocks.FLOWERING_APPLE_LEAVES.get(),
+                OPBlocks.FRUITFUL_APPLE_LEAVES.get(),
+                OPBlocks.INFESTED_APPLE_LEAVES.get(),
+                OPBlocks.FLOWERING_INFESTED_APPLE_LEAVES.get(),
+                OPBlocks.FRUITFUL_INFESTED_APPLE_LEAVES.get()
         );
     }
 
@@ -158,7 +163,12 @@ public final class ClientEvents {
                     BlockState blockstate = ((BlockItem)stack.getItem()).getBlock().defaultBlockState();
                     return event.getBlockColors().getColor(blockstate, null, null, tintIndex);
                 },
-                OPBlocks.INFESTED_OAK_LEAVES.get()
+                OPBlocks.APPLE_LEAVES.get(),
+                OPBlocks.FLOWERING_APPLE_LEAVES.get(),
+                OPBlocks.FRUITFUL_APPLE_LEAVES.get(),
+                OPBlocks.INFESTED_APPLE_LEAVES.get(),
+                OPBlocks.FLOWERING_INFESTED_APPLE_LEAVES.get(),
+                OPBlocks.FRUITFUL_INFESTED_APPLE_LEAVES.get()
         );
     }
 }

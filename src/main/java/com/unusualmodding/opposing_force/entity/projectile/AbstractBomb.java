@@ -163,12 +163,10 @@ public abstract class AbstractBomb extends ThrowableProjectile {
     @Override
     protected void onHitEntity(@NotNull EntityHitResult hitResult) {
         super.onHitEntity(hitResult);
-        Entity entity = hitResult.getEntity();
-        Entity owner = this.getOwner();
-        if ((owner == null || !entity.is(owner) && !entity.isAlliedTo(owner) && !owner.isAlliedTo(entity))) {
-            this.playSound(SoundEvents.CHAIN_HIT);
-            hitResult.getEntity().hurt(this.damageSources().mobProjectile(this, (LivingEntity) this.getOwner()), 1.0F);
-        }
+        this.playSound(SoundEvents.CHAIN_HIT);
+        this.createExplosion();
+        this.discard();
+        hitResult.getEntity().hurt(this.damageSources().mobProjectile(this, (LivingEntity) this.getOwner()), 1.0F);
         this.level().gameEvent(GameEvent.PROJECTILE_LAND, hitResult.getLocation(), GameEvent.Context.of(this, null));
     }
 

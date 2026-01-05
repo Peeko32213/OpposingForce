@@ -3,9 +3,12 @@ package com.unusualmodding.opposing_force.registry;
 import com.mojang.datafixers.util.Pair;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.blocks.*;
+import com.unusualmodding.opposing_force.blocks.trees.AppleTreeGrower;
+import com.unusualmodding.opposing_force.blocks.utils.FruitLeaves;
 import net.minecraft.world.flag.FeatureFlag;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -71,7 +74,14 @@ public class OPBlocks {
     public static final RegistryObject<Block> CHISELED_VILE_STONE_BRICKS = registerBlock("chiseled_vile_stone_bricks", () -> new Block(OPBlockProperties.VILE_STONE));
 
     // Tart
-    public static final RegistryObject<Block> INFESTED_OAK_LEAVES = registerBlock("infested_oak_leaves", () -> new InfestationBlock(Blocks.OAK_LEAVES, BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES), OPEntities.TART, 0.2F));
+    public static final RegistryObject<Block> APPLE_SAPLING = registerBlock("apple_sapling", () -> new SaplingBlock(new AppleTreeGrower(), BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)));
+    public static final RegistryObject<Block> POTTED_APPLE_SAPLING = registerBlockWithoutItemNoLang("potted_apple_sapling", () -> new FlowerPotBlock(APPLE_SAPLING.get(), registerFlowerPot()));
+    public static final RegistryObject<Block> APPLE_LEAVES = registerBlock("apple_leaves", () -> new GrowingLeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES), FruitLeaves.FruitState.FRUITLESS));
+    public static final RegistryObject<Block> FLOWERING_APPLE_LEAVES = registerBlock("flowering_apple_leaves", () -> new GrowingLeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES), FruitLeaves.FruitState.FLOWERING));
+    public static final RegistryObject<Block> FRUITFUL_APPLE_LEAVES = registerBlock("fruitful_apple_leaves", () -> new FruitfulLeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES), () -> Items.APPLE, OPBlocks.APPLE_LEAVES));
+    public static final RegistryObject<Block> INFESTED_APPLE_LEAVES = registerBlock("infested_apple_leaves", () -> new GrowingLeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES), FruitLeaves.FruitState.FRUITLESS));
+    public static final RegistryObject<Block> FLOWERING_INFESTED_APPLE_LEAVES = registerBlock("flowering_infested_apple_leaves", () -> new GrowingLeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES), FruitLeaves.FruitState.FLOWERING));
+    public static final RegistryObject<Block> FRUITFUL_INFESTED_APPLE_LEAVES = registerBlock("fruitful_infested_apple_leaves", () -> new InfestedLeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES), OPEntities.TART, OPBlocks.INFESTED_APPLE_LEAVES));
     public static final Pair<RegistryObject<Block>, RegistryObject<Block>> TART_HEAD = registerMobHead("tart_head", MobHeadBlock.Types.TART, OPNoteBlockInstruments.TART.get());
 
     // Trembler

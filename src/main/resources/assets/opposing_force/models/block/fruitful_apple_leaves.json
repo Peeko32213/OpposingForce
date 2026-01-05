@@ -2,7 +2,7 @@
     "parent": "minecraft:block/oak_leaves",
     "render_type": "minecraft:cutout_mipped",
     "textures": {
-        "overlay": "opposing_force:block/infested_oak_leaves_overlay"
+        "overlay": "opposing_force:block/apple_leaves_overlay"
     },
     "elements": [
         {   

@@ -1,7 +1,6 @@
 package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.enchantments.DoubleJumpEnchantment;
 import com.unusualmodding.opposing_force.enchantments.KickbackEnchantment;
 import com.unusualmodding.opposing_force.enchantments.OPEnchantment;
 import com.unusualmodding.opposing_force.enchantments.ThrowingEnchantment;
@@ -47,8 +46,6 @@ public class OPEnchantments {
 
     // laser blade
     public static final RegistryObject<Enchantment> THROWING = ENCHANTMENTS.register("throwing", ThrowingEnchantment::new);
-
-    public static final RegistryObject<Enchantment> DOUBLE_JUMP = ENCHANTMENTS.register("double_jump", DoubleJumpEnchantment::new);
 
     public static boolean areCompatible(OPEnchantment enchantment1, Enchantment enchantment2) {
         if (enchantment1 == CAPACITANCE.get() && (enchantment2 == Enchantments.MULTISHOT || enchantment2 == Enchantments.QUICK_CHARGE)) {

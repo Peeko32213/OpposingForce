@@ -19,6 +19,7 @@ public class DicerRenderer extends MobRenderer<Dicer, DicerModel> {
 
     private static final ResourceLocation DICER = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/dicer/dicer.png");
     private static final ResourceLocation ARCH_DICER = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/dicer/arch_dicer.png");
+    private static final ResourceLocation GIGAN = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/dicer/gigan.png");
 
     public DicerRenderer(EntityRendererProvider.Context context) {
         super(context, new DicerModel(context.bakeLayer(OPModelLayers.DICER)), 0.5F);
@@ -27,6 +28,7 @@ public class DicerRenderer extends MobRenderer<Dicer, DicerModel> {
 
     @Override
     public @NotNull ResourceLocation getTextureLocation(@NotNull Dicer entity) {
+        if (entity.getName().getString().contains("gigan")) return GIGAN;
         return entity.isElite() ? ARCH_DICER : DICER;
     }
 

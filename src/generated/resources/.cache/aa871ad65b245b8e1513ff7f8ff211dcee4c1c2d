@@ -1,4 +1,4 @@
-// 1.20.1	2025-12-25T09:22:20.1438861	Tags for minecraft:item mod id opposing_force
+// 1.20.1	2026-01-05T09:39:43.2730511	Tags for minecraft:item mod id opposing_force
 a304e99c6cedbc457aca2e599b404720d5a902b9 data/forge/tags/items/armors.json
 bb84466db145b5c4beb7db52e0954f92dc49ddee data/forge/tags/items/armors/boots.json
 b8ff562ca31cffac5ddc6711c910951cb52837b4 data/forge/tags/items/armors/chestplates.json
@@ -12,8 +12,10 @@ f651379db3bd93084b50c5759f13066cb9859ee2 data/forge/tags/items/vegetables.json
 9a313d728c140ceb68bb2ee824b2768eb33dfed4 data/minecraft/tags/items/axes.json
 77911999257dc499a1d4b88ec283f161f967ff86 data/minecraft/tags/items/freeze_immune_wearables.json
 9c21fcd30662f78e308e22c36c2efd56244578db data/minecraft/tags/items/hoes.json
+5affc1be0fb478bd370be43728d235d8c45884f0 data/minecraft/tags/items/leaves.json
 fa962cfb051064838bfe77648022f15eeb37a5bc data/minecraft/tags/items/music_discs.json
 0a565c920355618d6b5049a84c48463a0e2d1263 data/minecraft/tags/items/pickaxes.json
+8f59a3c2599d813213dd5c2e296f4ea0110ec6fc data/minecraft/tags/items/saplings.json
 aab8cc36c3a161099727654ff98b5cc3de198890 data/minecraft/tags/items/shovels.json
 582c20e700cf0cfd8ac3110ab317bd3f202ebaf5 data/minecraft/tags/items/swords.json
 5db69586b6c50b2befacf44de1aedc4a5af092fe data/opposing_force/tags/items/blaster_ammo.json

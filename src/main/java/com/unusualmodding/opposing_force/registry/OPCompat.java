@@ -17,6 +17,8 @@ public class OPCompat {
 
     public static void registerCompat() {
         registerDispenserBehaviors();
+        registerCompostables();
+        registerFlammables();
     }
 
     public static void registerDispenserBehaviors() {
@@ -93,9 +95,22 @@ public class OPCompat {
     }
 
     public static void registerCompostables() {
+        registerCompostable(OPBlocks.APPLE_SAPLING.get(), 0.3F);
+        registerCompostable(OPBlocks.APPLE_LEAVES.get(), 0.3F);
+        registerCompostable(OPBlocks.FLOWERING_APPLE_LEAVES.get(), 0.3F);
+        registerCompostable(OPBlocks.FRUITFUL_APPLE_LEAVES.get(), 0.3F);
+        registerCompostable(OPBlocks.INFESTED_APPLE_LEAVES.get(), 0.3F);
+        registerCompostable(OPBlocks.FLOWERING_INFESTED_APPLE_LEAVES.get(), 0.3F);
+        registerCompostable(OPBlocks.FRUITFUL_INFESTED_APPLE_LEAVES.get(), 0.3F);
     }
 
     public static void registerFlammables() {
+        registerFlammable(OPBlocks.APPLE_LEAVES.get(), 30, 60);
+        registerFlammable(OPBlocks.FLOWERING_APPLE_LEAVES.get(), 30, 60);
+        registerFlammable(OPBlocks.FRUITFUL_APPLE_LEAVES.get(), 30, 60);
+        registerFlammable(OPBlocks.INFESTED_APPLE_LEAVES.get(), 30, 60);
+        registerFlammable(OPBlocks.FLOWERING_INFESTED_APPLE_LEAVES.get(), 30, 60);
+        registerFlammable(OPBlocks.FRUITFUL_INFESTED_APPLE_LEAVES.get(), 30, 60);
     }
 
     public static void registerCompostable(ItemLike item, float chance) {

@@ -86,7 +86,7 @@ public class RamblerFlailGoal extends AttackGoal {
             } else {
                 if (this.rambler.flailCooldown == 0) {
                     this.rambler.getNavigation().moveTo(target, 1.25D);
-                    if (distance <= this.getAttackReachSqr(target)) {
+                    if (this.isInAttackRange(target, 3.0D)) {
                         this.rambler.setFlailing(true);
                     }
                 } else {
