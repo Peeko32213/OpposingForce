@@ -89,7 +89,7 @@ public class BlasterItem extends Item implements Vanishable {
         Vec3 barrelPos = getBarrelVec(player, hand == InteractionHand.MAIN_HAND, new Vec3(0.55F, -0.45F, 1.15F));
         Vec3 correction = getBarrelVec(player, hand == InteractionHand.MAIN_HAND, new Vec3(-0.035F, 0, 0)).subtract(player.position().add(0, player.getEyeHeight(), 0));
         Vec3 lookVec = player.getLookAngle().add(xOffset, yOffset, zOffset).normalize();
-        Vec3 motion = lookVec.add(correction).normalize().scale(1.55F);
+        Vec3 motion = lookVec.add(correction).normalize().scale(1.4F);
 
         laserBolt.setPos(barrelPos.x, barrelPos.y, barrelPos.z);
         laserBolt.setDeltaMovement(motion);

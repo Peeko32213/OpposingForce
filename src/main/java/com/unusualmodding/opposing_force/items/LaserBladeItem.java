@@ -74,9 +74,7 @@ public class LaserBladeItem extends SwordItem implements CustomSweepAttack {
 
     @Override
     public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slot, boolean isSelected) {
-        if (this.swingSoundCooldown > 0) {
-            this.swingSoundCooldown--;
-        }
+        if (this.swingSoundCooldown > 0) this.swingSoundCooldown--;
     }
 
     @Override

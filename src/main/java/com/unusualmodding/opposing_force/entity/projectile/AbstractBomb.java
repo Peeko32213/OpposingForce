@@ -117,10 +117,10 @@ public abstract class AbstractBomb extends ThrowableProjectile {
     @Override
     public void tick() {
         super.tick();
-        fuse++;
+        this.fuse++;
         if (this.level().isClientSide) {
-            prevFuse = fuse;
-            prevSpin = spin;
+            this.prevFuse = fuse;
+            this.prevSpin = spin;
             if (fuse > 3) {
                 float horizontalSpeed = 0.01F;
                 Vec3 direction = this.getPosition(0).subtract(this.getPosition(1));

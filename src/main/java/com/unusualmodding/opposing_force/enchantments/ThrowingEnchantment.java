@@ -29,9 +29,9 @@ public class ThrowingEnchantment extends Enchantment {
         if (player instanceof ServerPlayer) {
             Vec3 position = player.position().add(0, player.getBbHeight() * 0.5F, 0);
             ThrownLaserBlade entity = new ThrownLaserBlade(level, position.x, position.y, position.z);
-            entity.setData(player, 9, itemStack);
+            entity.setData(player, 8, itemStack);
             entity.setItem(itemStack);
-            entity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0F, 2F, 0F);
+            entity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0F, 2.25F, 0F);
             level.addFreshEntity(entity);
             if (!player.getAbilities().instabuild) {
                 player.getInventory().removeItem(itemStack);
@@ -48,9 +48,8 @@ public class ThrowingEnchantment extends Enchantment {
             int enchantmentLevel = laserBlade.getItem().getEnchantmentLevel(OPEnchantments.THROWING.get());
             if (enchantmentLevel < 5) {
                 int duration = 100 - 25 * (enchantmentLevel - 1);
-                if (duration > 0) {
-                    player.getCooldowns().addCooldown(laserBlade.getItem().getItem(), duration);
-                }
+                if (laserBlade.enemiesHit > 0) duration -= (laserBlade.enemiesHit+1) * 20;
+                if (duration > 0) player.getCooldowns().addCooldown(laserBlade.getItem().getItem(), duration);
             }
         }
     }

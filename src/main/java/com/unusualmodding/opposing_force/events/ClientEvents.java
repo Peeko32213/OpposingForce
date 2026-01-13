@@ -8,6 +8,7 @@ import com.unusualmodding.opposing_force.client.models.entity.skyvern.SkyvernMod
 import com.unusualmodding.opposing_force.client.models.entity.skyvern.SkyvernTailModel;
 import com.unusualmodding.opposing_force.client.models.mob_heads.*;
 import com.unusualmodding.opposing_force.client.particles.LaserBoltDustParticle;
+import com.unusualmodding.opposing_force.client.particles.LaserImpactParticle;
 import com.unusualmodding.opposing_force.client.particles.LaserSweepParticle;
 import com.unusualmodding.opposing_force.client.particles.MoonShoesParticle;
 import com.unusualmodding.opposing_force.client.particles.lightning.LightningParticle;
@@ -58,6 +59,7 @@ public final class ClientEvents {
         event.registerSpriteSet(OPParticles.PURPLE_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
         event.registerSpriteSet(OPParticles.MAGENTA_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
         event.registerSpriteSet(OPParticles.PINK_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.LASER_IMPACT.get(), LaserImpactParticle.Factory::new);
         event.registerSpecial(OPParticles.LIGHTNING.get(), new LightningParticle.Factory());
     }
 

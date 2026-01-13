@@ -32,6 +32,7 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
     private int returnTimer = 0;
     private boolean hasHitBlock = false;
     public boolean counterclockwise = false;
+    public int enemiesHit;
 
     public ThrownLaserBlade(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
         super(entityType, level);
@@ -55,6 +56,9 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putInt("ReturnTimer", this.returnTimer);
         compoundTag.putBoolean("Counterclockwise", this.counterclockwise);
+        if (enemiesHit != 0) {
+            compoundTag.putInt("EnemiesHit", enemiesHit);
+        }
     }
 
     @Override
@@ -62,6 +66,7 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
         super.readAdditionalSaveData(compoundTag);
         this.returnTimer = compoundTag.getInt("ReturnTimer");
         this.counterclockwise = compoundTag.getBoolean("Counterclockwise");
+        this.enemiesHit = compoundTag.getInt("EnemiesHit");
     }
 
     @Override
@@ -86,6 +91,7 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
                     if (fireAspect > 0) {
                         livingentity.setSecondsOnFire(fireAspect * 4);
                     }
+                    this.enemiesHit += 1;
                 }
                 owner.setItemInHand(InteractionHand.MAIN_HAND, heldItem);
                 this.playSound(OPSoundEvents.LASER_BLADE_HIT.get(), 1.0F, 1.0F / (this.level().getRandom().nextFloat() * 0.4F + 0.8F));
@@ -113,7 +119,7 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
             this.returnToOwner();
             var motion = getDeltaMovement();
             if (xRotO == 0.0F && yRotO == 0.0F) {
-                setYRot((float) (Mth.atan2(motion.x, motion.z) * (double) (180F / (float) Math.PI)));
+                this.setYRot((float) (Mth.atan2(motion.x, motion.z) * (double) (180F / (float) Math.PI)));
                 yRotO = getYRot();
                 xRotO = getXRot();
             }

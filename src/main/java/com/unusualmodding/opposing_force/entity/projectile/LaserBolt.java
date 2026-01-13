@@ -31,7 +31,7 @@ public class LaserBolt extends FrictionlessProjectile {
     private static final EntityDataAccessor<ItemStack> ITEM_STACK = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.ITEM_STACK);
 
     protected RandomSource randomSource = level.getRandom();
-    private final Vec3[] trailPositions = new Vec3[64];
+    private Vec3[] trailPositions = new Vec3[64];
     private int trailPointer = -1;
 
     public LaserBolt(EntityType<? extends FrictionlessProjectile> entityType, Level level) {
@@ -267,6 +267,7 @@ public class LaserBolt extends FrictionlessProjectile {
             for (int i = 0; i < 8; i++) {
                 this.level().addParticle(OPParticles.LASER_BOLT_DUST.get(), this.getX(), this.getY(), this.getZ(), red, green, blue);
             }
+            this.level().addParticle(OPParticles.LASER_IMPACT.get(), this.getX(), this.getY() + 0.5F, this.getZ(), 0, 0, 0);
         }
     }
 }

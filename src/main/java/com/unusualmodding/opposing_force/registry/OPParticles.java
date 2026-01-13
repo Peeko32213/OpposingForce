@@ -12,8 +12,8 @@ public class OPParticles {
 
     public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, OpposingForce.MOD_ID);
 
-    public static final RegistryObject<SimpleParticleType> LASER_BOLT_DUST = PARTICLE_TYPES.register("laser_bolt_dust", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> MOON_SHOES = PARTICLE_TYPES.register("moon_shoes", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> MOON_SHOES = PARTICLE_TYPES.register("moon_shoes", () -> new SimpleParticleType(false));
+
     public static final RegistryObject<SimpleParticleType> LASER_SWEEP = PARTICLE_TYPES.register("laser_sweep", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> WHITE_LASER_SWEEP = PARTICLE_TYPES.register("white_laser_sweep", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> LIGHT_GRAY_LASER_SWEEP = PARTICLE_TYPES.register("light_gray_laser_sweep", () -> new SimpleParticleType(true));
@@ -31,6 +31,9 @@ public class OPParticles {
     public static final RegistryObject<SimpleParticleType> PURPLE_LASER_SWEEP = PARTICLE_TYPES.register("purple_laser_sweep", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> MAGENTA_LASER_SWEEP = PARTICLE_TYPES.register("magenta_laser_sweep", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> PINK_LASER_SWEEP = PARTICLE_TYPES.register("pink_laser_sweep", () -> new SimpleParticleType(true));
+
+    public static final RegistryObject<SimpleParticleType> LASER_BOLT_DUST = PARTICLE_TYPES.register("laser_bolt_dust", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> LASER_IMPACT = PARTICLE_TYPES.register("laser_impact", () -> new SimpleParticleType(false));
 
     public static final RegistryObject<LightningParticleType> LIGHTNING = PARTICLE_TYPES.register("lightning", () -> new LightningParticleType(false));
 }
