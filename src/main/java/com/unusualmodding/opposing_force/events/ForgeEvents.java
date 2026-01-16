@@ -229,6 +229,14 @@ public class ForgeEvents {
     // }
 
     @SubscribeEvent
+    public void livingHurt(LivingDamageEvent event) {
+        if (event.getEntity() instanceof Player player && event.getSource().is(DamageTypes.FALL) && (player.getItemBySlot(EquipmentSlot.FEET).is(OPItems.MOON_SHOES.get()) || player.getItemBySlot(EquipmentSlot.LEGS).is(OPItems.LEAPING_LEGGINGS.get()))) {
+            player.fallDistance = 0.0F;
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
     public static void onMobHurt(final LivingHurtEvent event) {
         LivingEntity entity = event.getEntity();
         DamageSource damageSource = event.getSource();
