@@ -23,11 +23,11 @@ public class LeapingLeggingsModel extends HumanoidModel<LivingEntity> {
 		PartDefinition leftLeg = root.getChild("left_leg");
 		PartDefinition rightLeg = root.getChild("right_leg");
 
-        body.addOrReplaceChild("belt", CubeListBuilder.create().texOffs(32, 43).addBox(-4.0F, 7.0F, -2.0F, 8.0F, 4.0F, 4.0F, new CubeDeformation(0.531F)), PartPose.ZERO);
+        body.addOrReplaceChild("belt", CubeListBuilder.create().texOffs(96, 107).addBox(-4.0F, 7.0F, -2.0F, 8.0F, 4.0F, 4.0F, new CubeDeformation(0.531F)), PartPose.ZERO);
 
-        rightLeg.addOrReplaceChild("right_legging", CubeListBuilder.create().texOffs(48, 51).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 9.0F, 4.0F, new CubeDeformation(0.501F)), PartPose.ZERO);
+        rightLeg.addOrReplaceChild("right_legging", CubeListBuilder.create().texOffs(112, 115).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 9.0F, 4.0F, new CubeDeformation(0.51F)), PartPose.ZERO);
 
-        leftLeg.addOrReplaceChild("left_legging", CubeListBuilder.create().texOffs(32, 51).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 9.0F, 4.0F, new CubeDeformation(0.502F)), PartPose.ZERO);
+        leftLeg.addOrReplaceChild("left_legging", CubeListBuilder.create().texOffs(96, 115).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 9.0F, 4.0F, new CubeDeformation(0.52F)), PartPose.ZERO);
 
         return LayerDefinition.create(meshdefinition, 128, 128);
 	}

@@ -1,9 +1,8 @@
-package com.unusualmodding.opposing_force.entity.ai.goal;
+package com.unusualmodding.opposing_force.entity.ai.goal.skyvern;
 
 import com.unusualmodding.opposing_force.entity.Skyvern;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
@@ -76,67 +75,58 @@ public class SkyvernChargeGoal extends Goal {
     @Override
     public void tick() {
         LivingEntity target = skyvern.getTarget();
-        RandomSource random = skyvern.getRandom();
         int attackState = skyvern.getAttackState();
         if (target != null) {
             if (startOrbitFrom == null) {
-                this.skyvern.getNavigation().moveTo(target, 1.6D);
+                this.skyvern.getNavigation().moveTo(target, 1.0D);
             } else if (orbitTime < maxOrbitTime) {
                 this.orbitTime++;
-                Vec3 orbitPos = orbitAroundPos(64.0F);
-                this.skyvern.getNavigation().moveTo(orbitPos.x, orbitPos.y + 3 + random.nextInt(6), orbitPos.z, 1.6D);
+                Vec3 orbitPos = orbitAroundPos(32.0F);
+                this.skyvern.getNavigation().moveTo(orbitPos.x, orbitPos.y, orbitPos.z, 1.2D);
             } else {
                 this.orbitTime = 0;
                 this.startOrbitFrom = null;
             }
 
-            if (attackState == 1) {
-                this.tickCharge();
-            } else if (orbitTime == 0 && attackState == 0) {
-                if (this.isWithinRange(target)) {
-                    this.skyvern.setAttackState(1);
-                }
-            }
+            if (attackState == 1) this.tickCharge();
+            else if (attackState == 0 && this.isWithinRange(target) && orbitTime == 0) this.skyvern.setAttackState(1);
         }
     }
 
     private void tickCharge() {
-        timer++;
+        this.timer++;
         LivingEntity target = skyvern.getTarget();
 
-        if (this.skyvern.verticalCollisionBelow || this.skyvern.horizontalCollision || this.skyvern.verticalCollision || this.skyvern.minorHorizontalCollision) {
+        if (skyvern.verticalCollisionBelow || skyvern.horizontalCollision || skyvern.verticalCollision || skyvern.minorHorizontalCollision) {
             this.collisionTicks++;
         }
 
-        if (target != null) {
-            if (timer < 16) {
-                this.skyvern.getNavigation().stop();
-                this.skyvern.setDeltaMovement(0.0D, 0.0D, 0.0D);
-                this.skyvern.setYRot(Mth.rotLerp(1.0F, skyvern.getYRot(), (float) (Mth.atan2(target.getZ() - skyvern.getZ(), target.getX() - skyvern.getX()) * (180F / Math.PI)) - 90.0F));
-                this.skyvern.getLookControl().setLookAt(target, 360.0F, 90.0F);
-            }
+        if (timer == 5) this.skyvern.setPose(OPPoses.ATTACK_START.get());
 
-            if (timer == 12) {
-                this.skyvern.setPose(OPPoses.ATTACK_START.get());
-            }
+        if (timer < 9) {
+            this.skyvern.getNavigation().stop();
+            this.skyvern.setDeltaMovement(0.0D, 0.0D, 0.0D);
+            this.skyvern.setYRot(Mth.rotLerp(1.0F, skyvern.getYRot(), (float) (Mth.atan2(target.getZ() - skyvern.getZ(), target.getX() - skyvern.getX()) * (180F / Math.PI)) - 90.0F));
+            this.skyvern.getLookControl().setLookAt(target, 360.0F, 90.0F);
+        }
 
-            if (timer > 16) {
-                Vec3 rollDirection = new Vec3(target.getX() - skyvern.getX(), target.getY() - skyvern.getY(), target.getZ() - skyvern.getZ()).normalize();
-                float YRot = Mth.approachDegrees(skyvern.getYRot(), (float) (Mth.atan2(rollDirection.z, rollDirection.x) * (180F / Math.PI)) - 90.0F, 1.5F);
-                this.skyvern.setYRot(YRot);
-                this.skyvern.setYBodyRot(YRot);
-                this.skyvern.setDeltaMovement(-Mth.sin(YRot * ((float) Math.PI / 180F)) * 1.75F, skyvern.getDeltaMovement().y, Mth.cos(YRot * ((float) Math.PI / 180F)) * 1.75F);
-                this.hurtNearbyEntities();
-            }
+        if (timer > 9) {
+            Vec3 rollDirection = new Vec3(target.getX() - skyvern.getX(), target.getY() - skyvern.getY(), target.getZ() - skyvern.getZ()).normalize();
+            float yRot = Mth.approachDegrees(skyvern.getYRot(), (float) (Mth.atan2(rollDirection.z, rollDirection.x) * (180F / Math.PI)) - 90.0F, 2.5F);
+            float speed = 2.0F;
+            this.skyvern.setYRot(yRot);
+            this.skyvern.setYBodyRot(yRot);
+            this.skyvern.setDeltaMovement(-Mth.sin(yRot * ((float) Math.PI / 180F)) * speed, skyvern.getDeltaMovement().y, Mth.cos(yRot * ((float) Math.PI / 180F)) * speed);
+            this.hurtNearbyEntities();
+        }
 
-            if (timer == 32 || collisionTicks > 20) {
-                this.clockwise = skyvern.getRandom().nextBoolean();
-                this.skyvern.setPose(OPPoses.ATTACK_END.get());
-                this.maxOrbitTime = 40 + skyvern.getRandom().nextInt(40);
-                this.startOrbitFrom = target.getEyePosition();
-                this.timer = 0;
-                this.skyvern.setAttackState(0);
-            }
+        if (timer == 28 || collisionTicks > 15) {
+            this.clockwise = skyvern.getRandom().nextBoolean();
+            this.skyvern.setPose(OPPoses.ATTACK_END.get());
+            this.maxOrbitTime = 30 + skyvern.getRandom().nextInt(30);
+            this.startOrbitFrom = target.getEyePosition();
+            this.timer = 0;
+            this.skyvern.setAttackState(0);
         }
     }
 
@@ -148,7 +138,7 @@ public class SkyvernChargeGoal extends Goal {
     }
 
     private void hurtNearbyEntities() {
-        List<LivingEntity> nearbyEntities = skyvern.level().getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), skyvern, skyvern.getBoundingBox().inflate(1.6));
+        List<LivingEntity> nearbyEntities = skyvern.level().getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), skyvern, skyvern.getBoundingBox().inflate(1.5D));
         if (!nearbyEntities.isEmpty()) {
             LivingEntity entity = nearbyEntities.get(0);
             if (!(entity instanceof Skyvern)) {

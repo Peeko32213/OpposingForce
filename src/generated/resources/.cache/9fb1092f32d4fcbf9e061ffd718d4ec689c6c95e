@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-15T19:44:01.5839349	Recipes
+// 1.20.1	2026-01-16T14:40:35.0468746	Recipes
 19b9af45401a2eea7cbaccf470cc125ee7fee81b data/minecraft/advancements/recipes/food/enchanted_golden_apple.json
 4e6fce234df08980a5f8e058b9497c4d9d72a986 data/minecraft/recipes/enchanted_golden_apple.json
 139da0a86e8b183e3a1799119694c7bc0b55d53e data/opposing_force/advancements/recipes/building_blocks/chiseled_vile_stone_bricks.json
@@ -136,7 +136,7 @@ c588c906731b996c907cec77ee45bcb8de4c4ff0 data/opposing_force/recipes/deepwoven_p
 aa8d5725442bc9ea492526a897d7fe64583c1daa data/opposing_force/recipes/deepwoven_tunic.json
 6970568f0ff2f71a58cd25c0ae229fee501f414c data/opposing_force/recipes/deep_silk.json
 03d735bfcb8c1c1d40179ffd561d52a9e0d6286f data/opposing_force/recipes/deep_silk_block.json
-e0dbd9c9d631117b8c66d6708e22b6d099bc561a data/opposing_force/recipes/electric_alloy.json
+1a3b484dbac3b4e98d35ceb6539edfd8ef5b1a73 data/opposing_force/recipes/electric_alloy.json
 73d85126050104ea614ef417eeebf31e2a333e02 data/opposing_force/recipes/fire_bomb.json
 38e601a72808a6983efad9289d4c23b0b8a3d708 data/opposing_force/recipes/fried_terror_leg_from_smelting_terror_leg.json
 b0c131639f8d90f11b6afb1e3a54c2f7946fe6ef data/opposing_force/recipes/fried_terror_leg_from_smoking_terror_leg.json

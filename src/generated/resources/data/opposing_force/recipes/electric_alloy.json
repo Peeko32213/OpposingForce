@@ -1,25 +1,22 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "minecraft:crafting_shapeless",
   "category": "misc",
-  "key": {
-    "A": {
+  "ingredients": [
+    {
       "item": "opposing_force:electric_charge"
     },
-    "B": {
+    {
+      "item": "opposing_force:electric_charge"
+    },
+    {
       "tag": "forge:ingots/gold"
     },
-    "C": {
+    {
       "tag": "forge:gems/diamond"
     }
-  },
-  "pattern": [
-    " A ",
-    "BCB",
-    " A "
   ],
   "result": {
     "count": 2,
     "item": "opposing_force:electric_alloy"
-  },
-  "show_notification": true
+  }
 }

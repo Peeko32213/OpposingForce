@@ -4,10 +4,8 @@ import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
 import net.minecraft.client.renderer.entity.layers.CapeLayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(CapeLayer.class)

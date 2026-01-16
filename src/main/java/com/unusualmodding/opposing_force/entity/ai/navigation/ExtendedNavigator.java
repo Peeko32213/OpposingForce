@@ -3,14 +3,17 @@ package com.unusualmodding.opposing_force.entity.ai.navigation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.PathNavigationRegion;
 import net.minecraft.world.level.chunk.BulkSectionAccess;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.level.pathfinder.NodeEvaluator;
-import net.minecraft.world.level.pathfinder.Path;
-import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.pathfinder.*;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nullable;
+import java.util.Set;
 
 /*
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
@@ -18,7 +21,7 @@ import net.minecraft.world.phys.Vec3;
  * https://mozilla.org/MPL/2.0/.
  *
  * Source: SmartBrainLib - https://github.com/Tslat/SmartBrainLib/tree/1.20
- * Modifications by: Opposing Force - 10/1/2025
+ * Modifications by: Opposing Force - 1/16/2026
  */
 
 public interface ExtendedNavigator {
@@ -44,28 +47,45 @@ public interface ExtendedNavigator {
     }
 
     default boolean isCloseToNextNode(float distance) {
-        final Mob mob = getMobEN();
-        final Path path = getPathEN();
+        final Mob mob = this.getMobEN();
+        final Path path = this.getPathEN();
         final Vec3 nextNodePos = getEntityPosAtNode(path.getNextNodeIndex());
 
-        return Math.abs(mob.getX() - nextNodePos.x) < distance &&
-                Math.abs(mob.getZ() - nextNodePos.z) < distance &&
-                Math.abs(mob.getY() - nextNodePos.y) < 1;
+        return Math.abs(mob.getX() - nextNodePos.x) < distance && Math.abs(mob.getZ() - nextNodePos.z) < distance && Math.abs(mob.getY() - nextNodePos.y) < 1;
     }
 
     default boolean isAboutToTraverseVertically() {
-        final Mob mob = getMobEN();
-        final Path path = getPathEN();
+        final Mob mob = this.getMobEN();
+        final Path path = this.getPathEN();
         final int fromNode = path.getNextNodeIndex();
         final int fromNodeHeight = path.getNode(fromNode).y;
         final int toNode = Math.min(path.getNodeCount(), fromNode + Mth.ceil(mob.getBbWidth() * 0.5d) + 1);
 
         for (int i = fromNode + 1; i < toNode; i++) {
-            if (path.getNode(i).y != fromNodeHeight)
-                return true;
+            if (path.getNode(i).y != fromNodeHeight) return true;
         }
 
         return false;
+    }
+
+    @Nullable
+    default Path patchPath(@Nullable Path path) {
+        return path == null ? null : new Path(path.nodes, path.getTarget(), path.canReach()) {
+            @Override
+            public @NotNull Vec3 getEntityPosAtNode(@NotNull Entity entity, int nodeIndex) {
+                return ExtendedNavigator.this.getEntityPosAtNode(nodeIndex);
+            }
+        };
+    }
+
+    default PathFinder createSmoothPathFinder(NodeEvaluator nodeEvaluator, int maxVisitedNodes) {
+        return new PathFinder(nodeEvaluator, maxVisitedNodes) {
+            @Nullable
+            @Override
+            public Path findPath(@NotNull PathNavigationRegion navigationRegion, @NotNull Mob mob, @NotNull Set<BlockPos> targetPositions, float maxRange, int accuracy, float searchDepthMultiplier) {
+                return patchPath(super.findPath(navigationRegion, mob, targetPositions, maxRange, accuracy, searchDepthMultiplier));
+            }
+        };
     }
 
     default boolean attemptShortcut(int targetNode, Vec3 safeSurfacePos) {
@@ -77,14 +97,11 @@ public interface ExtendedNavigator {
 
         for (int nodeIndex = targetNode - 1; nodeIndex > path.getNextNodeIndex(); nodeIndex--) {
             final Vec3 nodeDelta = getEntityPosAtNode(nodeIndex).subtract(position);
-
             if (isCollisionFreeTraversal(nodeDelta, minBounds, maxBounds)) {
                 path.setNextNodeIndex(nodeIndex);
-
                 return true;
             }
         }
-
         return false;
     }
 
@@ -92,15 +109,13 @@ public interface ExtendedNavigator {
         final Mob mob = getMobEN();
         final Path path = getPathEN();
         final double lateralOffset = Mth.floor(mob.getBbWidth() + 1d) / 2d;
-
         return Vec3.atLowerCornerOf(path.getNodePos(nodeIndex)).add(lateralOffset, 0, lateralOffset);
     }
 
     default boolean isCollisionFreeTraversal(Vec3 traversalVector, Vec3 minBoundsPos, Vec3 leadingEdgePos) {
         final float traversalDistance = (float)traversalVector.length();
 
-        if (traversalDistance < EPSILON)
-            return true;
+        if (traversalDistance < EPSILON) return true;
 
         final VoxelRayDetails ray = new VoxelRayDetails();
 
@@ -109,7 +124,6 @@ public interface ExtendedNavigator {
             final float axisLength = lengthForAxis(traversalVector, axis);
             final boolean isPositive = axisLength >= 0;
             final float maxPos = lengthForAxis(isPositive ? leadingEdgePos : minBoundsPos, axis);
-
             ray.absStep[index] = isPositive ? 1 : -1;
             ray.minPos[index] = lengthForAxis(isPositive ? minBoundsPos : leadingEdgePos, axis);
             ray.leadingEdgeBound[index] = Mth.floor(maxPos - ray.absStep[index] * EPSILON);
@@ -124,7 +138,7 @@ public interface ExtendedNavigator {
     }
 
     default boolean collidesWhileTraversing(VoxelRayDetails ray, float traversalDistance) {
-        final Mob mob = getMobEN();
+        final Mob mob = this.getMobEN();
         final Level level = mob.level();
 
         try (BulkSectionAccess sectionAccess = new BulkSectionAccess(level)) {
@@ -133,21 +147,17 @@ public interface ExtendedNavigator {
             float target = 0;
 
             do {
-                final Direction.Axis longestEdge = ray.rayTargetLength[0] < ray.rayTargetLength[1] ?
-                        ray.rayTargetLength[0] < ray.rayTargetLength[2] ? Direction.Axis.X : Direction.Axis.Z :
-                        ray.rayTargetLength[1] < ray.rayTargetLength[2] ? Direction.Axis.Y : Direction.Axis.Z;
+                final Direction.Axis longestEdge = ray.rayTargetLength[0] < ray.rayTargetLength[1] ? ray.rayTargetLength[0] < ray.rayTargetLength[2] ? Direction.Axis.X : Direction.Axis.Z : ray.rayTargetLength[1] < ray.rayTargetLength[2] ? Direction.Axis.Y : Direction.Axis.Z;
                 final int index = longestEdge.ordinal();
                 final float rayDelta = ray.rayTargetLength[index] - target;
                 target = ray.rayTargetLength[index];
                 ray.leadingEdgeBound[index] += ray.absStep[index];
                 ray.rayTargetLength[index] += ray.axisSteps[index];
-
                 for (Direction.Axis axis : Direction.Axis.values()) {
                     final int index2 = axis.ordinal();
                     ray.minPos[index2] += rayDelta * ray.axisLengthNormalised[index2];
                     ray.trailingEdgeBound[index2] = Mth.floor(ray.minPos[index2] + ray.absStep[index2] * EPSILON);
                 }
-
                 final int xStep = ray.absStep[0];
                 final int yStep = ray.absStep[1];
                 final int zStep = ray.absStep[2];
@@ -157,25 +167,19 @@ public interface ExtendedNavigator {
                 final int xStepBound = ray.leadingEdgeBound[0] + xStep;
                 final int yStepBound = ray.leadingEdgeBound[1] + yStep;
                 final int zStepBound = ray.leadingEdgeBound[2] + zStep;
-
                 for (int x = xBound; x != xStepBound; x += xStep) {
                     for (int z = zBound; z != zStepBound; z += zStep) {
                         for (int y = yBound; y != yStepBound; y += yStep) {
-                            if (!sectionAccess.getBlockState(pos.set(x, y, z)).isPathfindable(level, pos, PathComputationType.LAND))
-                                return false;
+                            if (!sectionAccess.getBlockState(pos.set(x, y, z)).isPathfindable(level, pos, PathComputationType.LAND)) return false;
                         }
-
-                        if (!canPathOnto(nodeEvaluator.getBlockPathType(level, x, yBound - 1, z)))
-                            return false;
+                        if (!canPathOnto(nodeEvaluator.getBlockPathType(level, x, yBound - 1, z))) return false;
 
                         final BlockPathTypes insidePathType = nodeEvaluator.getBlockPathType(level, x, yBound, z);
                         final float pathMalus = mob.getPathfindingMalus(insidePathType);
 
-                        if (pathMalus < 0 || pathMalus >= 8)
-                            return false;
+                        if (pathMalus < 0 || pathMalus >= 8) return false;
 
-                        if (canPathInto(insidePathType))
-                            return false;
+                        if (canPathInto(insidePathType)) return false;
                     }
                 }
             } while (target <= traversalDistance);
@@ -191,6 +195,6 @@ public interface ExtendedNavigator {
     }
 
     default float lengthForAxis(Vec3 vector, Direction.Axis axis) {
-        return (float)axis.choose(vector.x, vector.y, vector.z);
+        return (float) axis.choose(vector.x, vector.y, vector.z);
     }
 }

@@ -130,10 +130,7 @@
   },
   "blaster_shoot": {
     "sounds": [
-      {
-        "name": "opposing_force:item/blaster/shoot1",
-        "pitch": 1.2
-      }
+      "opposing_force:item/blaster/shoot1"
     ],
     "subtitle": "subtitles.opposing_force.blaster_shoot"
   },
@@ -466,16 +463,14 @@
     "sounds": [
       "opposing_force:item/laser_blade/swing1",
       "opposing_force:item/laser_blade/swing2",
-      "opposing_force:item/laser_blade/swing3"
+      "opposing_force:item/laser_blade/swing3",
+      "opposing_force:item/laser_blade/swing4"
     ],
     "subtitle": "subtitles.opposing_force.laser_blade_swing"
   },
   "laser_bolt_impact": {
     "sounds": [
-      {
-        "name": "opposing_force:entity/laser_bolt/impact1",
-        "pitch": 1.1
-      }
+      "opposing_force:entity/laser_bolt/impact1"
     ],
     "subtitle": "subtitles.opposing_force.laser_bolt_impact"
   },

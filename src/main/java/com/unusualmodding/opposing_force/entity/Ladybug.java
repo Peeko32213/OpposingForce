@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.entity.ai.goal.LadybugAttackGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.LadybugFlightGoal;
+import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothFlyingPathNavigation;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
@@ -13,6 +14,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -28,7 +30,6 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -51,6 +52,7 @@ public class Ladybug extends Monster implements FlyingAnimal, AttackState, Elite
     public int flightTicks = 0;
     public int groundTicks = 0;
     public boolean landingFlag;
+    public int flightCooldown = 0;
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState flyingAnimationState = new AnimationState();
@@ -62,15 +64,15 @@ public class Ladybug extends Monster implements FlyingAnimal, AttackState, Elite
     public Ladybug(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
         this.switchNavigator(false);
-        this.setMaxUpStep(0.8F);
+        this.setMaxUpStep(1.0F);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, 0.25D)
-                .add(Attributes.FLYING_SPEED, 1.1D)
-                .add(Attributes.MAX_HEALTH, 40.0D)
-                .add(Attributes.ATTACK_DAMAGE, 6.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.28D)
+                .add(Attributes.FLYING_SPEED, 1.25D)
+                .add(Attributes.MAX_HEALTH, 50.0D)
+                .add(Attributes.ATTACK_DAMAGE, 7.0D)
                 .add(Attributes.ARMOR, 10.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
     }
@@ -95,11 +97,11 @@ public class Ladybug extends Monster implements FlyingAnimal, AttackState, Elite
     public void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new SmoothGroundPathNavigation(this, level());
+            this.navigation = new SmoothGroundPathNavigation(this, this.level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new FlyingMoveControl(this, 20, true);
-            FlyingPathNavigation navigation = new FlyingPathNavigation(this, level()) {
+            SmoothFlyingPathNavigation navigation = new SmoothFlyingPathNavigation(this, this.level(), 1.0F) {
                 @Override
                 public boolean isStableDestination(BlockPos pos) {
                     return !level().getBlockState(pos.below()).isAir();
@@ -127,6 +129,21 @@ public class Ladybug extends Monster implements FlyingAnimal, AttackState, Elite
     protected void checkFallDamage(double y, boolean onGround, @NotNull BlockState state, @NotNull BlockPos pos) {
     }
 
+    public void strongKnockback(Entity entity, double horizontalStrength, double verticalStrength) {
+        double x = entity.getX() - this.getX();
+        double y = entity.getZ() - this.getZ();
+        double scale = Math.max(x * x + y * y, 0.001D);
+        entity.push(x / scale * horizontalStrength, verticalStrength, y / scale * horizontalStrength);
+    }
+
+    @Override
+    public boolean hurt(@NotNull DamageSource source, float amount) {
+        if (source.is(DamageTypeTags.IS_PROJECTILE)) {
+            amount *= 0.6F;
+        }
+        return super.hurt(source, amount);
+    }
+
     @Override
     public void tick() {
         super.tick();
@@ -144,25 +161,25 @@ public class Ladybug extends Monster implements FlyingAnimal, AttackState, Elite
             this.bashAnimationState.stop();
             this.airBashAnimationState.stop();
         }
-        this.idleAnimationState.animateWhen(this.getDeltaMovement().horizontalDistance() <= 1.0E-5F && !this.isFlying() && this.getPose() == Pose.STANDING, this.tickCount);
-        this.flyingAnimationState.animateWhen(this.isFlying(), this.tickCount);
+        this.idleAnimationState.animateWhen(!this.isFlying() && this.getPose() != OPPoses.ATTACKING.get(), this.tickCount);
+        this.flyingAnimationState.animateWhen(this.isFlying() && this.getPose() != OPPoses.ATTACKING.get(), this.tickCount);
     }
 
     @Override
     public void calculateEntityAnimation(boolean flying) {
         float f1 = (float) Mth.length(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
-        float f2 = Math.min(f1 * 10.0F, 1.0F);
+        float f2 = Math.min(f1 * 12.0F, 1.0F);
         this.walkAnimation.update(f2, 0.4F);
     }
 
     public void tickFlight() {
         if (this.isFlying()) {
-            flightTicks++;
+            this.flightTicks++;
             this.setNoGravity(true);
             if (this.isLandNavigator) switchNavigator(false);
             if (groundTicks > 0) this.setFlying(false);
         } else {
-            flightTicks = 0;
+            this.flightTicks = 0;
             this.setNoGravity(false);
             if (!this.isLandNavigator) switchNavigator(true);
         }
@@ -175,15 +192,17 @@ public class Ladybug extends Monster implements FlyingAnimal, AttackState, Elite
                     this.setDeltaMovement(this.getDeltaMovement().add(0, 0.05D, 0));
                 }
             }
-            if (this.isFlying() && flightTicks > 40 && this.onGround()) this.setFlying(false);
+            if (this.isFlying() && (flightTicks > 40 || flightCooldown > 0) && this.onGround()) this.setFlying(false);
         }
+
+        if (flightCooldown > 0) flightCooldown--;
     }
 
     @Override
     public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> entityDataAccessor) {
         if (DATA_POSE.equals(entityDataAccessor)) {
             if (this.getPose() == OPPoses.ATTACKING.get()) {
-                this.bashTicks = 20;
+                this.bashTicks = 30;
                 if (this.isFlying()) this.airBashAnimationState.start(this.tickCount);
                 else this.bashAnimationState.start(this.tickCount);
             }
@@ -206,14 +225,12 @@ public class Ladybug extends Monster implements FlyingAnimal, AttackState, Elite
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        compoundTag.putInt("AttackState", this.getAttackState());
         compoundTag.putBoolean("TwiceStabbed", this.isElite());
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        this.setAttackState(compoundTag.getInt("AttackState"));
         this.setElite(compoundTag.getBoolean("TwiceStabbed"));
     }
 

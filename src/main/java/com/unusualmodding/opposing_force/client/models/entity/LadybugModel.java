@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.client.models.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.LadybugAnimations;
+import com.unusualmodding.opposing_force.client.models.entity.base.OPModel;
 import com.unusualmodding.opposing_force.entity.Ladybug;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class LadybugModel extends HierarchicalModel<Ladybug> {
+public class LadybugModel extends OPModel<Ladybug> {
 
     private final ModelPart root;
     private final ModelPart body;
@@ -104,9 +105,9 @@ public class LadybugModel extends HierarchicalModel<Ladybug> {
 
         PartDefinition leg_2 = leg_bone_2.addOrReplaceChild("leg_2", CubeListBuilder.create().texOffs(64, 14).addBox(0.0F, 0.0F, -0.5F, 4.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        PartDefinition leg_bone_3 = left_leg_cluster.addOrReplaceChild("leg_bone_3", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, -1.0F, 2.5F, 0.0F, 0.0F, 0.7418F));
+        PartDefinition leg_bone_3 = left_leg_cluster.addOrReplaceChild("leg_bone_3", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, -1.0F, 1.5F, 0.0F, 0.0F, 0.7418F));
 
-        PartDefinition leg_3 = leg_bone_3.addOrReplaceChild("leg_3", CubeListBuilder.create().texOffs(64, 14).addBox(0.0F, 0.0F, -0.5F, 4.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition leg_3 = leg_bone_3.addOrReplaceChild("leg_3", CubeListBuilder.create().texOffs(64, 14).addBox(0.0F, 0.0F, -0.5F, 4.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, -0.1745F, 0.0F));
 
         PartDefinition right_leg_cluster = root.addOrReplaceChild("right_leg_cluster", CubeListBuilder.create(), PartPose.offset(-8.0F, 5.0F, -2.0F));
 
@@ -118,9 +119,9 @@ public class LadybugModel extends HierarchicalModel<Ladybug> {
 
         PartDefinition leg_5 = leg_bone_5.addOrReplaceChild("leg_5", CubeListBuilder.create().texOffs(64, 14).mirror().addBox(-4.0F, 0.0F, -0.5F, 4.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        PartDefinition leg_bone_6 = right_leg_cluster.addOrReplaceChild("leg_bone_6", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, -1.0F, 2.5F, 0.0F, 0.0F, -0.7418F));
+        PartDefinition leg_bone_6 = right_leg_cluster.addOrReplaceChild("leg_bone_6", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, -1.0F, 1.5F, 0.0F, 0.0F, -0.7418F));
 
-        PartDefinition leg_6 = leg_bone_6.addOrReplaceChild("leg_6", CubeListBuilder.create().texOffs(64, 14).mirror().addBox(-4.0F, 0.0F, -0.5F, 4.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition leg_6 = leg_bone_6.addOrReplaceChild("leg_6", CubeListBuilder.create().texOffs(64, 14).mirror().addBox(-4.0F, 0.0F, -0.5F, 4.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.1745F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 128, 128);
 	}
@@ -129,9 +130,9 @@ public class LadybugModel extends HierarchicalModel<Ladybug> {
 	public void setupAnim(Ladybug entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
         if (!entity.isFlying()) {
-            this.animateWalk(LadybugAnimations.WALK, limbSwing, limbSwingAmount, 2, 4);
+            this.animateWalk(LadybugAnimations.WALK, limbSwing, limbSwingAmount, 2.5F, 5);
         }
-        this.animate(entity.idleAnimationState, LadybugAnimations.IDLE, ageInTicks);
+        this.animateIdle(entity.idleAnimationState, LadybugAnimations.IDLE, ageInTicks, 1, limbSwingAmount * 4);
         this.animate(entity.flyingAnimationState, LadybugAnimations.FLYING, ageInTicks);
         this.animate(entity.bashAnimationState, LadybugAnimations.BASH_GROUND, ageInTicks);
         this.animate(entity.airBashAnimationState, LadybugAnimations.BASH_FLY, ageInTicks);

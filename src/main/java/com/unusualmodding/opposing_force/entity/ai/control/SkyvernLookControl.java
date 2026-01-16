@@ -1,4 +1,4 @@
-package com.unusualmodding.opposing_force.entity.ai.navigation;
+package com.unusualmodding.opposing_force.entity.ai.control;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;

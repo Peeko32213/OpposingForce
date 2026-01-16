@@ -1,4 +1,4 @@
-package com.unusualmodding.opposing_force.entity.ai.goal;
+package com.unusualmodding.opposing_force.entity.ai.goal.skyvern;
 
 import com.unusualmodding.opposing_force.entity.Skyvern;
 import net.minecraft.core.BlockPos;
@@ -51,7 +51,6 @@ public class SkyvernFlightGoal extends Goal {
         this.x = 0;
         this.y = 0;
         this.z = 0;
-        super.stop();
     }
 
     @Override
@@ -65,7 +64,7 @@ public class SkyvernFlightGoal extends Goal {
         BlockPos blockpos = null;
         BlockPos origin = skyvern.hasRestriction() ? this.skyvern.getRestrictCenter() : skyvern.blockPosition();
         for (int i = 0; i < 15; i++) {
-            BlockPos targetPos = origin.offset(random.nextInt(32 * 2) - 32, random.nextInt(16 * 2) - 16, random.nextInt(32 * 2) - 32);
+            BlockPos targetPos = origin.offset(random.nextInt(16 * 2) - 16, random.nextInt(16 * 2) - 16, random.nextInt(16 * 2) - 16);
             if (canBlockPosBeSeen(targetPos) && this.skyvern.level().isEmptyBlock(targetPos)) {
                 blockpos = targetPos;
             }

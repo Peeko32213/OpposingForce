@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.datagen;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.registry.OPBlocks;
+import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
@@ -16,7 +17,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.ICondition;
-import net.minecraftforge.common.data.ForgeItemTagsProvider;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,9 +24,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static com.unusualmodding.opposing_force.registry.OPItems.*;
-import static com.unusualmodding.opposing_force.registry.OPItems.BLACK_BLASTER;
-import static com.unusualmodding.opposing_force.registry.OPItems.BROWN_BLASTER;
-import static com.unusualmodding.opposing_force.registry.OPItems.GREEN_BLASTER;
 import static net.minecraft.data.recipes.RecipeCategory.*;
 
 public class OPRecipeProvider extends RecipeProvider {
@@ -75,8 +72,8 @@ public class OPRecipeProvider extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(COMBAT, MAGENTA_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_MAGENTA).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
         ShapelessRecipeBuilder.shapeless(COMBAT, PINK_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_PINK).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
 
+        ShapelessRecipeBuilder.shapeless(MISC, ELECTRIC_ALLOY.get(), 2).requires(ELECTRIC_CHARGE.get()).requires(ELECTRIC_CHARGE.get()).requires(Tags.Items.INGOTS_GOLD).requires(Tags.Items.GEMS_DIAMOND).unlockedBy("has_electric_charge", has(ELECTRIC_CHARGE.get())).save(consumer);
         ShapedRecipeBuilder.shaped(COMBAT, TESLA_CANNON.get()).define('#', ELECTRIC_ALLOY.get()).define('X', DEEP_SILK.get()).define('Y', Tags.Items.RODS_WOODEN).define('Z', Blocks.TRIPWIRE_HOOK).define('A', ELECTRIC_CHARGE.get()).pattern("#A#").pattern("XZX").pattern(" Y ").unlockedBy("has_tesla_ingot", has(ELECTRIC_ALLOY.get())).save(consumer);
-        ShapedRecipeBuilder.shaped(MISC, ELECTRIC_ALLOY.get(), 2).define('A', ELECTRIC_CHARGE.get()).define('B', Tags.Items.INGOTS_GOLD).define('C', Tags.Items.GEMS_DIAMOND).pattern(" A ").pattern("BCB").pattern(" A ").unlockedBy("has_electric_charge", has(ELECTRIC_CHARGE.get())).save(consumer);
         ShapedRecipeBuilder.shaped(COMBAT, SPARK_BLADE.get()).define('B', Tags.Items.INGOTS_GOLD).define('A', ELECTRIC_ALLOY.get()).pattern(" A ").pattern(" A ").pattern(" B ").unlockedBy("has_tesla_ingot", has(ELECTRIC_ALLOY.get())).save(consumer);
 
         ShapedRecipeBuilder.shaped(COMBAT, RECON_KNIGHT_HELMET.get()).define('#', ELECTRIC_ALLOY.get()).pattern("###").pattern("# #").unlockedBy("has_electric_alloy", has(ELECTRIC_ALLOY.get())).save(consumer);

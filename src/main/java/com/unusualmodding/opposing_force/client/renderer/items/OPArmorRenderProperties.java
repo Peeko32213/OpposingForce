@@ -88,7 +88,7 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
     }
 
     public static void setModelParts(Model humanoidModel) {
-        if(humanoidModel instanceof PlayerModel<?> model) {
+        if (humanoidModel instanceof PlayerModel<?> model) {
             model.jacket.visible = false;
             model.leftPants.visible = false;
             model.rightPants.visible = false;
@@ -115,22 +115,24 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
             return;
         }
 
+        if (item instanceof LeapingLeggingsItem) {
+            setModelParts(humanoidModel);
+            return;
+        }
+
         if (item instanceof MoonShoesItem) {
             setModelParts(humanoidModel);
             return;
-
         }
 
         if (stack.is(OPItems.RECON_KNIGHT_HELMET.get()) || stack.is(OPItems.RECON_KNIGHT_CHESTPLATE.get()) || stack.is(OPItems.RECON_KNIGHT_LEGGINGS.get()) || stack.is(OPItems.RECON_KNIGHT_BOOTS.get())) {
             setModelParts(humanoidModel);
             return;
-
         }
 
         if (item instanceof SlugBaronArmorItem) {
             setModelParts(humanoidModel);
             return;
-
         }
 
         if (stack.is(OPItems.STONE_HELMET.get()) || stack.is(OPItems.STONE_CHESTPLATE.get()) || stack.is(OPItems.STONE_LEGGINGS.get()) || stack.is(OPItems.STONE_BOOTS.get())) {
@@ -142,7 +144,6 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
         if (item instanceof WoodenArmorItem) {
             setModelParts(humanoidModel);
             return;
-
         }
     }
 }

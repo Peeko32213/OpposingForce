@@ -334,11 +334,11 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
         );
 
         this.sound(OPSoundEvents.LASER_BOLT_IMPACT,
-                sound(OpposingForce.modPrefix("entity/laser_bolt/impact1")).pitch(1.1F)
+                sound(OpposingForce.modPrefix("entity/laser_bolt/impact1"))
         );
 
         this.sound(OPSoundEvents.BLASTER_SHOOT,
-                sound(OpposingForce.modPrefix("item/blaster/shoot1")).pitch(1.2F)
+                sound(OpposingForce.modPrefix("item/blaster/shoot1"))
         );
 
         this.sound(OPSoundEvents.LASER_BLADE_BLOCK,
@@ -354,7 +354,8 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
         this.sound(OPSoundEvents.LASER_BLADE_SWING,
                 sound(OpposingForce.modPrefix("item/laser_blade/swing1")),
                 sound(OpposingForce.modPrefix("item/laser_blade/swing2")),
-                sound(OpposingForce.modPrefix("item/laser_blade/swing3"))
+                sound(OpposingForce.modPrefix("item/laser_blade/swing3")),
+                sound(OpposingForce.modPrefix("item/laser_blade/swing4"))
         );
         this.sound(OPSoundEvents.LASER_BLADE_SPIN,
                 sound(OpposingForce.modPrefix("item/laser_blade/spin1")).attenuationDistance(20)

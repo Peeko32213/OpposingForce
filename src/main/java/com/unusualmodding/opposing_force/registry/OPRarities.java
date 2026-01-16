@@ -7,11 +7,12 @@ import java.awt.*;
 
 public class OPRarities {
 
-    public static final Rarity RAINBOW = Rarity.create("opposing_force:rainbow", style -> style.withColor(Color.HSBtoRGB((System.currentTimeMillis() % 10000) / 10000F, 1F, 1F)));
-    public static final Rarity LEGENDARY = Rarity.create("opposing_force:legendary", style -> interpolateColors(style, new Color(235, 79, 52), new Color(235, 52, 89)));
+    public static final Rarity RAINBOW = Rarity.create("opposing_force:rainbow", style -> style.withColor(Color.HSBtoRGB((System.currentTimeMillis() % 8000) / 8000F, 1F, 1F)));
+//    public static final Rarity LEGENDARY = Rarity.create("opposing_force:legendary", style -> interpolateColors(style, new Color(245, 66, 147), new Color(245, 158, 66)));
+    public static final Rarity LEGENDARY = Rarity.create("opposing_force:legendary", style -> style.withColor(0xff4f38));
 
     private static Style interpolateColors(Style style, Color start, Color end) {
-        float time = (System.currentTimeMillis() % 10000L) / 10000F;
+        float time = (System.currentTimeMillis() % 8000L) / 8000F;
         time = (float) (0.5F - 0.5F * Math.cos(time * Math.PI * 2));
 
         int r = (int) (start.getRed() + time * (end.getRed() - start.getRed()));

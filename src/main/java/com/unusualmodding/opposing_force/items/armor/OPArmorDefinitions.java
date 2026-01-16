@@ -32,8 +32,8 @@ public class OPArmorDefinitions {
     public static final ArmorDefinition LEAPING_LEGGINGS = new ArmorDefinition.Builder()
             .material(OPTiers.OPArmorMaterials.LEAPING_LEGGINGS)
             .attribute(ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.0F, AttributeModifier.Operation.ADDITION)
-            .attribute(OPAttributes.JUMP_POWER.get(), 5.0F, AttributeModifier.Operation.ADDITION)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.75F, AttributeModifier.Operation.MULTIPLY_BASE)
+            .attribute(OPAttributes.JUMP_POWER.get(), 3.0F, AttributeModifier.Operation.ADDITION)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.5F, AttributeModifier.Operation.MULTIPLY_BASE)
             .texture(slot -> OpposingForce.MOD_ID + ":textures/models/armor/leaping_leggings_layer_1.png")
             .build();
 
@@ -47,6 +47,7 @@ public class OPArmorDefinitions {
 
     public static final ArmorDefinition RECON_KNIGHT = new ArmorDefinition.Builder()
             .material(OPTiers.OPArmorMaterials.RECON_KNIGHT)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.05F, AttributeModifier.Operation.MULTIPLY_BASE)
             .texture(slot -> slot == EquipmentSlot.LEGS ? OpposingForce.MOD_ID + ":textures/models/armor/recon_knight_armor_layer_2.png" : OpposingForce.MOD_ID + ":textures/models/armor/recon_knight_armor_layer_1.png")
             .build();
 

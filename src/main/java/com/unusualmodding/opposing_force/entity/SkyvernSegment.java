@@ -1,12 +1,8 @@
 package com.unusualmodding.opposing_force.entity;
 
-import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.entity.utils.KeybindUsingMount;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
-import com.unusualmodding.opposing_force.network.MountedEntityKeyPacket;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPItems;
-import com.unusualmodding.opposing_force.registry.OPNetwork;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -15,18 +11,14 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityTypeTest;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
@@ -38,7 +30,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class SkyvernSegment extends Entity implements KeybindUsingMount {
+public class SkyvernSegment extends Entity {
 
     private static final EntityDataAccessor<Optional<UUID>> HEAD_ENTITY_UUID = SynchedEntityData.defineId(SkyvernSegment.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Integer> HEAD_ENTITY_ID = SynchedEntityData.defineId(SkyvernSegment.class, EntityDataSerializers.INT);
@@ -260,15 +252,13 @@ public class SkyvernSegment extends Entity implements KeybindUsingMount {
         if (ridingSegment == null) {
             ridingSegment = prev;
         }
-        skyvern.setRidingSegmentUUID(ridingSegment.getUUID());
-        skyvern.setRidingSegmentId(ridingSegment.getId());
     }
 
     public Vec3 getIdealPosition(@Nullable Entity parent) {
         Entity head = getHeadEntity();
         Entity front = parent == null ? getFrontEntity() : parent;
         if (front != null) {
-            float backStretch = -0.66F;
+            float backStretch = -0.6F;
             if (head != null) {
                 float headDelta = Mth.clamp((float) head.getDeltaMovement().length(), 0.0F, 1.0F);
                 if (front == head) {
@@ -304,21 +294,6 @@ public class SkyvernSegment extends Entity implements KeybindUsingMount {
     }
 
     @Override
-    public @NotNull InteractionResult interact(@NotNull Player player, @NotNull InteractionHand hand) {
-        Entity head = this.getHeadEntity();
-        if (head instanceof Skyvern skyvern && skyvern.isTame() && skyvern.isOwnedBy(player)) {
-            if (!player.level().isClientSide) {
-                Entity segment = skyvern.getRidingSegment();
-                if (segment != null && player.startRiding(segment)) {
-                    return InteractionResult.CONSUME;
-                }
-            }
-            return InteractionResult.SUCCESS;
-        }
-        return super.interact(player, hand);
-    }
-
-    @Override
     public void tick() {
         super.tick();
         Entity head = getHeadEntity();
@@ -326,7 +301,6 @@ public class SkyvernSegment extends Entity implements KeybindUsingMount {
         Entity back = getBackEntity();
         if (level().isClientSide) {
             this.setupAnimationStates();
-            this.tickMountedPlayer();
             if (head instanceof Skyvern skyvern) {
                 this.renderHurtFlag = skyvern.hurtTime > 0 || skyvern.deathTime > 0;
             }
@@ -355,15 +329,15 @@ public class SkyvernSegment extends Entity implements KeybindUsingMount {
                     this.discard();
                 }
             } else {
-                float maxDistFromFront = 0.66F;
+                float maxDistFromFront = 0.6F;
                 Vec3 ideal = getIdealPosition(front);
                 Vec3 distVec = ideal.subtract(this.position());
                 float extraLength = (float) Math.max(distVec.length() - maxDistFromFront, 0.0F);
                 Vec3 vec31 = distVec.length() > 1.0F ? distVec.normalize().scale(1.0F + extraLength) : distVec;
-                Vec3 vec32 = this.position().add(vec31.scale(0.66F));
+                Vec3 vec32 = this.position().add(vec31.scale(0.6F));
                 this.setTargetPos(vec32.toVector3f());
                 this.setPos(new Vec3(getTargetPos().x(), getTargetPos().y(), getTargetPos().z()));
-                Vec3 frontsBack = front.position().add(new Vec3(0.0F, 0.0F, 0.66F).xRot(-(float) Math.toRadians(front.getXRot())).yRot(-(float) Math.toRadians(front.getYRot())));
+                Vec3 frontsBack = front.position().add(new Vec3(0.0F, 0.0F, 0.6F).xRot(-(float) Math.toRadians(front.getXRot())).yRot(-(float) Math.toRadians(front.getYRot())));
                 double x = frontsBack.x - this.getX();
                 double y = frontsBack.y - this.getY();
                 double z = frontsBack.z - this.getZ();
@@ -527,78 +501,5 @@ public class SkyvernSegment extends Entity implements KeybindUsingMount {
     @Override
     public ItemStack getPickResult() {
         return new ItemStack(OPItems.SKYVERN_SPAWN_EGG.get());
-    }
-
-    // Riding
-    protected void tickMountedPlayer() {
-        Player clientPlayer = OpposingForce.PROXY.getClientSidePlayer();
-        if (clientPlayer != null && clientPlayer.isPassengerOfSameVehicle(this)) {
-            Player player = OpposingForce.PROXY.getClientSidePlayer();
-            if (player != null && player.isPassengerOfSameVehicle(this)) {
-                if (OpposingForce.PROXY.isKeyDown(0) && !OpposingForce.PROXY.isKeyDown(1) && controlUpTicks < 2) {
-                    OPNetwork.sendPacketToServer(new MountedEntityKeyPacket(this.getId(), player.getId(), 0));
-                    this.controlUpTicks = 5;
-                }
-                if (OpposingForce.PROXY.isKeyDown(1) && !OpposingForce.PROXY.isKeyDown(0) && controlDownTicks < 2) {
-                    OPNetwork.sendPacketToServer(new MountedEntityKeyPacket(this.getId(), player.getId(), 1));
-                    this.controlDownTicks = 5;
-                }
-            }
-        }
-    }
-
-    protected void clampRotation(LivingEntity livingEntity) {
-        livingEntity.setYBodyRot(this.getYRot());
-        float f = Mth.wrapDegrees(livingEntity.getYRot() - this.getYRot());
-        float f1 = Mth.clamp(f, -105.0F, 105.0F);
-        livingEntity.yRotO += f1 - f;
-        livingEntity.yBodyRotO += f1 - f;
-        livingEntity.setYRot(livingEntity.getYRot() + f1 - f);
-        livingEntity.setYHeadRot(livingEntity.getYRot());
-    }
-
-    public Vec3 getRiderPosition(Entity playerOwner) {
-        float f = (float) (this.getBbHeight() + 0.25F + playerOwner.getMyRidingOffset());
-        Vec3 offset = new Vec3(0.0F, f, 0.15F).xRot((float) -Math.toRadians(this.getXRot())).yRot((float) -Math.toRadians(this.getYRot()));
-        Vec3 position = this.position().add(offset);
-        return new Vec3(position.x, position.y, position.z);
-    }
-
-    @Override
-    public void positionRider(@NotNull Entity passenger, @NotNull MoveFunction moveFunction) {
-        if (this.isPassengerOfSameVehicle(passenger) && passenger instanceof LivingEntity living && !this.touchingUnloadedChunk()) {
-            clampRotation(living);
-            if (passenger instanceof Player player && this.getHeadEntity() instanceof Skyvern skyvern) {
-                skyvern.tickController(player);
-            }
-            Vec3 riderPosition = getRiderPosition(passenger);
-            moveFunction.accept(passenger, riderPosition.x, riderPosition.y, riderPosition.z);
-        } else {
-            super.positionRider(passenger, moveFunction);
-        }
-    }
-
-    @Override
-    public boolean isControlledByLocalInstance() {
-        return this.isEffectiveAi();
-    }
-
-    @Override
-    public LivingEntity getControllingPassenger() {
-        Entity entity = this.getFirstPassenger();
-        if (entity instanceof Player player) return player;
-        else return null;
-    }
-
-    @Override
-    public void onKeyPacket(Entity keyPresser, int type) {
-        if (keyPresser.isPassengerOfSameVehicle(this)) {
-            if (type == 0) {
-                this.controlUpTicks = 10;
-            }
-            if (type == 1) {
-                this.controlDownTicks = 10;
-            }
-        }
     }
 }

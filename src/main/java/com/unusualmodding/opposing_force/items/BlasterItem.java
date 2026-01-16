@@ -13,7 +13,10 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.Vanishable;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -101,7 +104,7 @@ public class BlasterItem extends Item implements Vanishable {
         }
         level.addFreshEntity(laserBolt);
 
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), OPSoundEvents.BLASTER_SHOOT.get(), SoundSource.PLAYERS, 1.0F, (level.getRandom().nextFloat() * 0.5F + (itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) > 0 ? 1F : 0.8F)));
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), OPSoundEvents.BLASTER_SHOOT.get(), SoundSource.PLAYERS, 1.0F, (level.getRandom().nextFloat() * 0.25F + (itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) > 0 ? 1.1F : 0.9F)));
 
         if (!player.isCreative()) {
             itemStack.hurtAndBreak(1, player, (player1) -> player1.broadcastBreakEvent(hand));

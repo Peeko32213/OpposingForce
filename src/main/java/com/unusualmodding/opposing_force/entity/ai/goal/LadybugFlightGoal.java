@@ -41,30 +41,30 @@ public class LadybugFlightGoal extends Goal {
     @Override
     public void start() {
         this.mob.setFlying(true);
-        mob.getNavigation().moveTo(this.x, this.y, this.z, 1);
+        this.mob.getNavigation().moveTo(this.x, this.y, this.z, 1);
     }
 
     @Override
     public void stop() {
-        mob.getNavigation().stop();
-        mob.landingFlag = false;
-        x = 0;
-        y = 0;
-        z = 0;
+        this.mob.getNavigation().stop();
+        this.mob.landingFlag = false;
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
         super.stop();
     }
 
     @Override
     public void tick() {
         if (mob.isFlying() && mob.onGround() && mob.flightTicks > 40) {
-            mob.setFlying(false);
+            this.mob.setFlying(false);
         }
         if ((mob.isFlying() && mob.getRandom().nextInt(800) == 0 && !isOverWaterOrVoid()) || mob.isInWaterOrBubble()) {
-            mob.landingFlag = true;
+            this.mob.landingFlag = true;
         }
-        if (isOverWaterOrVoid()) {
-            mob.setFlying(true);
-            mob.landingFlag = false;
+        if (this.isOverWaterOrVoid()) {
+            this.mob.setFlying(true);
+            this.mob.landingFlag = false;
         }
     }
 

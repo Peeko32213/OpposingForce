@@ -9,7 +9,6 @@ import net.minecraft.world.entity.Pose;
 public class LadybugAttackGoal extends AttackGoal {
 
     private final Ladybug ladybug;
-    private int flightCooldown = 0;
 
     public LadybugAttackGoal(Ladybug ladybug) {
         super(ladybug);
@@ -34,40 +33,39 @@ public class LadybugAttackGoal extends AttackGoal {
         if (target != null) {
             double distance = this.ladybug.distanceToSqr(target.getX(), target.getY(), target.getZ());
             int attackState = this.ladybug.getAttackState();
-            this.ladybug.lookAt(target, 30F, 30F);
-            this.ladybug.getLookControl().setLookAt(target, 30F, 30F);
-            if (this.flightCooldown > 0) flightCooldown--;
-            if (!this.isWithinFlightRange(target) && this.flightCooldown == 0) {
-                this.flightCooldown = 100;
+            if (!this.isWithinFlightRange(target) && ladybug.flightCooldown == 0) {
+                this.ladybug.flightCooldown = 100;
                 this.ladybug.setFlying(true);
             }
             if (attackState == 1) {
                 this.timer++;
                 this.ladybug.getNavigation().stop();
                 if (this.timer == 1) this.ladybug.setPose(OPPoses.ATTACKING.get());
-                if (this.timer == 10) this.ladybug.addDeltaMovement(this.ladybug.getLookAngle().scale(2.0D).multiply(0.34D, 0, 0.34D));
-                if (this.timer == 13) {
-                    if (this.ladybug.distanceTo(target) < this.getAttackReachSqr(target)) {
+                if (this.timer < 16) {
+                    this.ladybug.lookAt(target, 30F, 30F);
+                    this.ladybug.getLookControl().setLookAt(target, 30F, 30F);
+                }
+                if (this.timer == 20) this.ladybug.addDeltaMovement(this.ladybug.getLookAngle().scale(2.0D).multiply(0.45D, 0, 0.45D));
+                if (this.timer == 23) {
+                    if (this.isInAttackRange(target, 1)) {
                         this.ladybug.doHurtTarget(target);
+                        this.ladybug.strongKnockback(target, 0.7D, 0.01D);
                         this.ladybug.swing(InteractionHand.MAIN_HAND);
                     }
                 }
-                if (this.timer > 24) {
+                if (this.timer > 33) {
                     this.timer = 0;
                     this.ladybug.setAttackState(0);
                 }
             } else {
-                this.ladybug.getNavigation().moveTo(target, 1.25D);
+                this.ladybug.lookAt(target, 30F, 30F);
+                this.ladybug.getLookControl().setLookAt(target, 30F, 30F);
+                this.ladybug.getNavigation().moveTo(target, ladybug.isFlying() ? 1.4D : 1.3D);
                 if (distance < this.getAttackReachSqr(target)) {
                     this.ladybug.setAttackState(1);
                 }
             }
         }
-    }
-
-    @Override
-    protected double getAttackReachSqr(LivingEntity target) {
-        return this.monster.getBbWidth() * 1.5F * this.monster.getBbWidth() * 1.5F + target.getBbWidth();
     }
 
     public boolean isWithinFlightRange(LivingEntity target) {
