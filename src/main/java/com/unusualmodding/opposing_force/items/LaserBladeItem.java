@@ -30,8 +30,8 @@ public class LaserBladeItem extends SwordItem implements CustomSweepAttack {
     private final ParticleOptions sweepParticle;
     private int swingSoundCooldown = 0;
 
-    public LaserBladeItem(Properties properties, ParticleOptions sweepParticle) {
-        super(OPItemTiers.LASER, 3, -2.4F, properties);
+    public LaserBladeItem(ParticleOptions sweepParticle) {
+        super(OPItemTiers.LASER, 3, -2.4F, new Properties().stacksTo(1));
         this.sweepParticle = sweepParticle;
     }
 

@@ -77,6 +77,26 @@ public class OPItemTagProvider extends ItemTagsProvider {
                 PINK_LASER_BLADE.get()
         );
 
+        this.tag(OPItemTags.BLASTERS).add(
+                BLASTER.get(),
+                WHITE_BLASTER.get(),
+                LIGHT_GRAY_BLASTER.get(),
+                GRAY_BLASTER.get(),
+                BLACK_BLASTER.get(),
+                BROWN_BLASTER.get(),
+                RED_BLASTER.get(),
+                ORANGE_BLASTER.get(),
+                YELLOW_BLASTER.get(),
+                LIME_BLASTER.get(),
+                GREEN_BLASTER.get(),
+                CYAN_BLASTER.get(),
+                LIGHT_BLUE_BLASTER.get(),
+                BLUE_BLASTER.get(),
+                PURPLE_BLASTER.get(),
+                MAGENTA_BLASTER.get(),
+                PINK_BLASTER.get()
+        );
+
         this.tag(OPItemTags.BLASTER_AMMO).add(
                 Items.REDSTONE
         );

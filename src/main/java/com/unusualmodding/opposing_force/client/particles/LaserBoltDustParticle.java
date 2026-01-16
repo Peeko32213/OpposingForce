@@ -13,12 +13,10 @@ import org.jetbrains.annotations.NotNull;
 public class LaserBoltDustParticle extends TextureSheetParticle {
 
     private final SpriteSet sprites;
-    private final boolean rainbow;
 
-    protected LaserBoltDustParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zMotion, SpriteSet sprites, boolean rainbow) {
-        super(level, x, y, z, xSpeed, ySpeed, zMotion);
+    protected LaserBoltDustParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
+        super(level, x, y, z, xSpeed, ySpeed, zSpeed);
         this.sprites = sprites;
-        this.rainbow = rainbow;
         this.quadSize *= 0.75F + random.nextFloat() * 0.5F;
         this.xd = (Math.random() * 2.0D - 1.0D) * (double) 0.02F;
         this.yd = (Math.random() * 2.0D - 1.0D) * (double) 0.02F;
@@ -27,7 +25,7 @@ public class LaserBoltDustParticle extends TextureSheetParticle {
         this.lifetime = Math.max(this.lifetime, 1);
         this.setSpriteFromAge(sprites);
         this.hasPhysics = false;
-        this.setColor((float) xSpeed, (float) ySpeed, (float) zMotion);
+        this.setColor((float) xSpeed, (float) ySpeed, (float) zSpeed);
     }
 
     @Override
@@ -45,6 +43,7 @@ public class LaserBoltDustParticle extends TextureSheetParticle {
         return 240;
     }
 
+    @OnlyIn(Dist.CLIENT)
     public static class Factory implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprites;
 
@@ -53,7 +52,7 @@ public class LaserBoltDustParticle extends TextureSheetParticle {
         }
 
         public Particle createParticle(@NotNull SimpleParticleType particleType, @NotNull ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new LaserBoltDustParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites, false);
+            return new LaserBoltDustParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
         }
     }
 }

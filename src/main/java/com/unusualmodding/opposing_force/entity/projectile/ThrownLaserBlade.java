@@ -7,6 +7,9 @@ import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -26,6 +29,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class ThrownLaserBlade extends ThrowableItemProjectile {
+
+    private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(ThrownLaserBlade.class, EntityDataSerializers.FLOAT);
 
     private ItemStack laserBladeItem = new ItemStack(OPItems.LASER_BLADE.get());
 
@@ -52,8 +57,15 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
     }
 
     @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.getEntityData().define(DAMAGE, 7.0F);
+    }
+
+    @Override
     public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
+        compoundTag.putFloat("Damage", this.getLaserDamage());
         compoundTag.putInt("ReturnTimer", this.returnTimer);
         compoundTag.putBoolean("Counterclockwise", this.counterclockwise);
         if (enemiesHit != 0) {
@@ -64,9 +76,18 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
+        this.setLaserDamage(compoundTag.getFloat("Damage"));
         this.returnTimer = compoundTag.getInt("ReturnTimer");
         this.counterclockwise = compoundTag.getBoolean("Counterclockwise");
         this.enemiesHit = compoundTag.getInt("EnemiesHit");
+    }
+
+    public float getLaserDamage() {
+        return this.entityData.get(DAMAGE);
+    }
+
+    public void setLaserDamage(float damage) {
+        this.entityData.set(DAMAGE, damage);
     }
 
     @Override
@@ -83,8 +104,7 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
             if (this.getOwner() instanceof LivingEntity owner) {
                 var heldItem = owner.getMainHandItem();
                 owner.setItemInHand(InteractionHand.MAIN_HAND, this.getItem());
-                target.invulnerableTime = 0;
-                boolean hit = target.hurt(OPDamageTypes.thrownLaserBlade(this.level(), this, this.getOwner()), 7);
+                boolean hit = target.hurt(OPDamageTypes.thrownLaserBlade(this.level(), this, this.getOwner()), this.getLaserDamage());
                 if (hit && target instanceof LivingEntity livingentity) {
                     ItemStack itemStack = this.getItem();
                     int fireAspect = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, itemStack);
@@ -117,11 +137,11 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
         super.tick();
         if (!this.level().isClientSide) {
             this.returnToOwner();
-            var motion = getDeltaMovement();
+            var motion = this.getDeltaMovement();
             if (xRotO == 0.0F && yRotO == 0.0F) {
                 this.setYRot((float) (Mth.atan2(motion.x, motion.z) * (double) (180F / (float) Math.PI)));
-                yRotO = getYRot();
-                xRotO = getXRot();
+                this.yRotO = getYRot();
+                this.xRotO = getXRot();
             }
         } else {
             OpposingForce.PROXY.playWorldSound(this, (byte) 4);
@@ -140,7 +160,7 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
 
     public void flyBack(Entity owner, boolean lerpMotion) {
         Vec3 ownerPos = owner.position().add(0, owner.getBbHeight() * 0.5F, 0);
-        Vec3 returnMotion = ownerPos.subtract(position()).normalize().scale(2.0F);
+        Vec3 returnMotion = ownerPos.subtract(position()).normalize().scale(2.75F);
         Vec3 motion = this.getDeltaMovement();
         float delta = 0.1F;
         double x = Mth.lerp(delta, motion.x, returnMotion.x);
@@ -152,11 +172,8 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
 
     private boolean isAcceptableReturnOwner() {
         Entity entity = this.getOwner();
-        if (entity != null && entity.isAlive()) {
-            return !(entity instanceof ServerPlayer) || !entity.isSpectator();
-        } else {
-            return false;
-        }
+        if (entity != null && entity.isAlive()) return !(entity instanceof ServerPlayer) || !entity.isSpectator();
+        return false;
     }
 
     private void returnToOwner() {
@@ -196,10 +213,11 @@ public class ThrownLaserBlade extends ThrowableItemProjectile {
     @Override
     public void playerTouch(@NotNull Player player) {
         if (!this.level().isClientSide && (this.ownedBy(player) || this.getOwner() == null) && this.tickCount > 2) {
-            if (!player.isCreative() && player.getInventory().add(this.getPickupItem())) {
+            if (player.getInventory().add(this.getPickupItem())) {
                 player.take(this, 1);
                 this.discard();
             } else {
+                this.spawnAtLocation(this.getPickupItem(), 0.1F);
                 this.discard();
             }
         }

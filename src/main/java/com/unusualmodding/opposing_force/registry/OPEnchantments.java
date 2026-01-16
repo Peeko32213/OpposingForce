@@ -4,6 +4,7 @@ import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.enchantments.KickbackEnchantment;
 import com.unusualmodding.opposing_force.enchantments.OPEnchantment;
 import com.unusualmodding.opposing_force.enchantments.ThrowingEnchantment;
+import com.unusualmodding.opposing_force.items.BlasterItem;
 import com.unusualmodding.opposing_force.items.LaserBladeItem;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.CreativeModeTab;
@@ -25,13 +26,12 @@ public class OPEnchantments {
 
     public static final EnchantmentCategory TESLA_CANNON = EnchantmentCategory.create("tesla_cannon", (item -> item == OPItems.TESLA_CANNON.get()));
     public static final EnchantmentCategory VILE_BOULDER = EnchantmentCategory.create("vile_boulder", (item -> item == OPItems.VILE_BOULDER.get()));
-    public static final EnchantmentCategory BLASTER = EnchantmentCategory.create("blaster", (item -> item == OPItems.BLASTER.get()));
+    public static final EnchantmentCategory BLASTER = EnchantmentCategory.create("blaster", (item -> item instanceof BlasterItem));
     public static final EnchantmentCategory LASER_BLADE = EnchantmentCategory.create("laser_blade", (item -> item instanceof LaserBladeItem));
 
     // blaster
     public static final RegistryObject<Enchantment> POWER_SUPPLY = ENCHANTMENTS.register("power_supply", () -> new OPEnchantment("power_supply", Enchantment.Rarity.UNCOMMON, BLASTER, 3, 15, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> RAPID_FIRE = ENCHANTMENTS.register("rapid_fire", () -> new OPEnchantment("rapid_fire", Enchantment.Rarity.RARE, BLASTER, 3, 20, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> SPLITTING = ENCHANTMENTS.register("splitting", () -> new OPEnchantment("splitting", Enchantment.Rarity.RARE, BLASTER, 5, 15, EquipmentSlot.MAINHAND));
 
     // tesla cannon
     public static final RegistryObject<Enchantment> BATTERY = ENCHANTMENTS.register("battery", () -> new OPEnchantment("battery", Enchantment.Rarity.UNCOMMON, TESLA_CANNON, 3, 15, EquipmentSlot.MAINHAND));
@@ -55,9 +55,6 @@ public class OPEnchantments {
             return false;
         }
         if (enchantment1 == STATIC_ATTRACTION.get() && (enchantment2 == CAPACITANCE.get() || enchantment2 == QUASAR.get())) {
-            return false;
-        }
-        if (enchantment1 == RAPID_FIRE.get() && (enchantment2 == SPLITTING.get())) {
             return false;
         }
         return true;

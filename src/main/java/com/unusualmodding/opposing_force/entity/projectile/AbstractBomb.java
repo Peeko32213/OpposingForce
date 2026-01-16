@@ -62,14 +62,18 @@ public abstract class AbstractBomb extends ThrowableProjectile {
     }
 
     protected float getMaxFuse() {
-        return -1F;
+        return 10.0F;
     }
 
     protected ParticleOptions getTrailParticle() {
         return ParticleTypes.SMOKE;
     }
 
-    protected boolean explodesOnWaterContact() {
+    public boolean explodesOnWaterContact() {
+        return true;
+    }
+
+    public boolean explodesOnImpact() {
         return true;
     }
 
@@ -129,8 +133,8 @@ public abstract class AbstractBomb extends ThrowableProjectile {
             }
             this.prevSpin = this.spin;
             Vec3 deltaMovement = this.getPosition(0).subtract(this.getPosition(1));
-            float spinAmount = (float) (deltaMovement.length() / (Mth.TWO_PI * 6F));
-            float spinInRadians = spinAmount * Mth.TWO_PI * 2F;
+            float spinAmount = (float) (deltaMovement.length() / (Mth.TWO_PI * 6.0F));
+            float spinInRadians = spinAmount * Mth.TWO_PI * 3.0F;
             this.spin += spinInRadians;
 
             if (this.lSteps > 0) {
@@ -148,7 +152,7 @@ public abstract class AbstractBomb extends ThrowableProjectile {
             this.reapplyPosition();
             this.setRot(this.getYRot(), this.getXRot());
         }
-        if (fuse > this.getMaxFuse()) {
+        if (fuse > this.getMaxFuse() && !this.explodesOnImpact()) {
             this.createExplosion();
             this.discard();
         }
@@ -161,28 +165,28 @@ public abstract class AbstractBomb extends ThrowableProjectile {
     }
 
     @Override
-    protected void onHitEntity(@NotNull EntityHitResult hitResult) {
-        super.onHitEntity(hitResult);
-        this.playSound(SoundEvents.CHAIN_HIT);
-        this.createExplosion();
-        this.discard();
-        hitResult.getEntity().hurt(this.damageSources().mobProjectile(this, (LivingEntity) this.getOwner()), 1.0F);
-        this.level().gameEvent(GameEvent.PROJECTILE_LAND, hitResult.getLocation(), GameEvent.Context.of(this, null));
-    }
-
-    @Override
     protected void onHit(@NotNull HitResult hitResult) {
         super.onHit(hitResult);
         if (hitResult instanceof BlockHitResult blockHitResult) {
             BlockState state = this.level().getBlockState(blockHitResult.getBlockPos());
             if (!state.getCollisionShape(this.level(), blockHitResult.getBlockPos()).isEmpty()) {
-                bounceFromDirection(blockHitResult.getDirection());
+                if (this.explodesOnImpact()) {
+                    this.createExplosion();
+                    this.discard();
+                } else {
+                    this.bounceFromDirection(blockHitResult.getDirection());
+                }
             }
         }
-        else if (hitResult instanceof EntityHitResult entityHitResult && !ownedBy(entityHitResult.getEntity()) && !(entityHitResult.getEntity() instanceof AbstractBomb)){
-            Vec3 vec3 = entityHitResult.getEntity().getEyePosition().subtract(this.getEyePosition());
-            float f = -((float) Mth.atan2(vec3.x, vec3.z)) * 180.0F / (float) Math.PI;
-            bounceFromDirection(Direction.fromYRot(f));
+        else if (hitResult instanceof EntityHitResult entityHitResult && !(entityHitResult.getEntity() instanceof AbstractBomb)) {
+            if (this.explodesOnImpact()) {
+                this.createExplosion();
+                this.discard();
+            } else {
+                Vec3 vec3 = entityHitResult.getEntity().getEyePosition().subtract(this.getEyePosition());
+                float f = -((float) Mth.atan2(vec3.x, vec3.z)) * 180.0F / (float) Math.PI;
+                this.bounceFromDirection(Direction.fromYRot(f));
+            }
         }
     }
 
@@ -245,7 +249,7 @@ public abstract class AbstractBomb extends ThrowableProjectile {
                 if (entity instanceof AbstractBomb) return false;
                 if (!this.level().isClientSide) {
                     Vec3 vec3 = entity.getLookAngle();
-                    this.setDeltaMovement(this.getDeltaMovement().add(vec3.scale(0.5)));
+                    this.setDeltaMovement(this.getDeltaMovement().add(vec3.scale(0.6)));
                     this.setOwner(entity);
                     this.level().playSound(null, this.position().x(), this.position().y(), this.position().z(), SoundEvents.TRIDENT_HIT, SoundSource.BLOCKS, 1.0F, 1.25F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
                 }

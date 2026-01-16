@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-05T09:39:43.2730511	Tags for minecraft:item mod id opposing_force
+// 1.20.1	2026-01-15T18:14:54.621195	Tags for minecraft:item mod id opposing_force
 a304e99c6cedbc457aca2e599b404720d5a902b9 data/forge/tags/items/armors.json
 bb84466db145b5c4beb7db52e0954f92dc49ddee data/forge/tags/items/armors/boots.json
 b8ff562ca31cffac5ddc6711c910951cb52837b4 data/forge/tags/items/armors/chestplates.json
@@ -18,6 +18,7 @@ fa962cfb051064838bfe77648022f15eeb37a5bc data/minecraft/tags/items/music_discs.j
 8f59a3c2599d813213dd5c2e296f4ea0110ec6fc data/minecraft/tags/items/saplings.json
 aab8cc36c3a161099727654ff98b5cc3de198890 data/minecraft/tags/items/shovels.json
 582c20e700cf0cfd8ac3110ab317bd3f202ebaf5 data/minecraft/tags/items/swords.json
+82e91af709a4cefb3160a903a54e5d43e601907f data/opposing_force/tags/items/blasters.json
 5db69586b6c50b2befacf44de1aedc4a5af092fe data/opposing_force/tags/items/blaster_ammo.json
 3dad7227f5898364f7923651bb07b56d4949c73c data/opposing_force/tags/items/knives.json
 0051c61cbd46b6c799d48ff49f811c7ce229301c data/opposing_force/tags/items/laser_blades.json

@@ -12,12 +12,16 @@ public class LaserImpactParticle extends TextureSheetParticle {
 
     private final SpriteSet sprites;
 
-    protected LaserImpactParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites) {
+    protected LaserImpactParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
         super(level, x, y, z, 0.0D, 0.0D, 0.0D);
         this.sprites = sprites;
         this.lifetime = 4;
         this.quadSize = 0.4F;
+        this.xd = 0.0F;
+        this.yd = 0.0F;
+        this.zd = 0.0F;
         this.setSpriteFromAge(sprites);
+        this.setColor((float) xSpeed, (float) ySpeed, (float) zSpeed);
     }
 
     @Override
@@ -51,7 +55,7 @@ public class LaserImpactParticle extends TextureSheetParticle {
         }
 
         public Particle createParticle(@NotNull SimpleParticleType particleType, @NotNull ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new LaserImpactParticle(level, x, y, z, this.sprites);
+            return new LaserImpactParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.sprites);
         }
     }
 }

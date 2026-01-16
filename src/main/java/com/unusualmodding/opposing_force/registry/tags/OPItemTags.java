@@ -14,6 +14,7 @@ public class OPItemTags {
     public static final TagKey<Item> RAMBLER_SKULLS = modItemTag("rambler_skulls");
     public static final TagKey<Item> PREVENT_CAPE_RENDERING = modItemTag("prevent_cape_rendering");
     public static final TagKey<Item> LASER_BLADES = modItemTag("laser_blades");
+    public static final TagKey<Item> BLASTERS = modItemTag("blasters");
 
     public static final TagKey<Item> BERRIES = forgeItemTag("berries");
     public static final TagKey<Item> FRUITS = forgeItemTag("fruits");

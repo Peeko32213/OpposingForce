@@ -27,7 +27,7 @@ public class OPTiers {
         public static final Tier BONE = new OPItemTier(2, 192, 6.0F, 2.0F, 9, () -> Ingredient.of(Tags.Items.BONES));
         public static final Tier ELECTRIC = new OPItemTier(2, 624, 10.0F, 2.0F, 8, () -> Ingredient.of(OPItems.ELECTRIC_CHARGE.get()));
         public static final Tier EMERALD = new OPItemTier(3, 1561, 8.0F, 3.0F, 14, () -> Ingredient.of(Tags.Items.GEMS_EMERALD));
-        public static final Tier LASER = new OPItemTier(3, 1024, 8.0F, 3.0F, 9, () -> Ingredient.of(OPItems.DICER_LENS.get()));
+        public static final Tier LASER = new OPItemTier(3, 1024, 8.0F, 4.0F, 9, () -> Ingredient.of(OPItems.DICER_LENS.get()));
         public static final Tier MOUNTAIN = new OPItemTier(3, 1024, 8.0F, 4.0F, 5, () -> Ingredient.of(Items.DIAMOND));
         public static final Tier UMBER = new OPItemTier(2, 196, 6.0F, 1.0F, 10, () -> Ingredient.of(OPItems.UMBER_FANG.get()));
         public static final Tier VILE = new OPItemTier(0, 224, 3.0F, 0.0F, 8, () -> Ingredient.of(OPBlocks.SLUG_EGGS.get()));

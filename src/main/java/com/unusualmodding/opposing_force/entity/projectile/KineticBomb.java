@@ -32,11 +32,6 @@ public class KineticBomb extends AbstractBomb {
     }
 
     @Override
-    protected float getMaxFuse() {
-        return 20.0F;
-    }
-
-    @Override
     protected void createExplosion() {
         super.createExplosion();
         Vec3 location = this.position().add(0, this.getBbHeight() * 0.5, 0);
@@ -49,6 +44,7 @@ public class KineticBomb extends AbstractBomb {
             if (entity.distanceToSqr(location) > radius * radius || !OPMath.hasLineOfSight(this, entity)) {
                 continue;
             }
+            entity.resetFallDistance();
             if (entity instanceof LivingEntity livingEntity) {
                 this.doKnockback(livingEntity, 2.6, 1.8);
             }

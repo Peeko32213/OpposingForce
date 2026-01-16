@@ -28,7 +28,11 @@ public abstract class AbstractBombRenderer<T extends AbstractBomb> extends Entit
         Vec3 directionTowardsCamera = this.entityRenderDispatcher.camera.getPosition().subtract(bomb.getPosition(partialTicks)).normalize();
         Vec3 dir = directionTowardsCamera.scale(8 / 16.0F);
         float bombFuse = bomb.getFuse(partialTicks);
-        float bombFlash = 1F - 0.5F * (1F + Mth.sin((bomb.tickCount + partialTicks) * (bombFuse / 2)));
+        float time = bomb.tickCount + partialTicks;
+        float bombFlash = 1F - 0.5F * (1F + Mth.sin(time * (bombFuse / 2)));
+        if (bomb.explodesOnImpact()) {
+            bombFlash = 1F - 0.5F * (1F + Mth.sin(time * 0.6F));
+        }
         int light = LightTexture.pack(Math.max((int) (bombFlash * 16), bomb.level().getBrightness(LightLayer.BLOCK, bomb.blockPosition())), bomb.level().getBrightness(LightLayer.SKY, bomb.blockPosition()));
         int overlay = OverlayTexture.pack(OverlayTexture.u(bombFlash), 10);
 
@@ -42,7 +46,7 @@ public abstract class AbstractBombRenderer<T extends AbstractBomb> extends Entit
 
         poseStack.translate(0, bomb.getBbHeight() * 0.5F, 0);
         float size = 1;
-        size *= (float) (1 + Mth.sqrt(bombFlash) * 0.2);
+        size *= (float) (1 + Mth.sqrt(bombFlash) * 0.3F);
         size *= 0.6F;
         poseStack.scale(size, size, size);
 

@@ -35,11 +35,6 @@ public class LightningBomb extends AbstractBomb {
     }
 
     @Override
-    protected float getMaxFuse() {
-        return 60.0F;
-    }
-
-    @Override
     protected void createExplosion() {
         super.createExplosion();
         Vec3 location = this.position().add(0, this.getBbHeight() * 0.5, 0);

@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -52,14 +51,14 @@ public class LaserBoltRenderer extends EntityRenderer<LaserBolt> {
         }
 
         poseStack.pushPose();
-        VertexConsumer innerTexture = buffer.getBuffer(OPRenderTypes.laserBoltInner(this.getTextureLocation(laserBolt)));
+        VertexConsumer innerTexture = buffer.getBuffer(OPRenderTypes.laserBolt(this.getTextureLocation(laserBolt)));
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         float yRot = Mth.rotLerp(partialTicks, laserBolt.yRotO, laserBolt.getYRot());
         float xRot = Mth.lerp(partialTicks, laserBolt.xRotO, laserBolt.getXRot());
         this.model.setupRotation(yRot, xRot);
         this.model.renderToBuffer(poseStack, innerTexture, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-        VertexConsumer outerTexture = buffer.getBuffer(OPRenderTypes.laserBoltOuter(getOuterTextureLocation(laserBolt)));
-        this.model.renderToBuffer(poseStack, outerTexture, packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1);
+        VertexConsumer outerTexture = buffer.getBuffer(OPRenderTypes.laserBolt(this.getOuterTextureLocation(laserBolt)));
+        this.model.renderToBuffer(poseStack, outerTexture, packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 0.25F);
         poseStack.popPose();
         if (laserBolt.hasTrail()) {
             double x = Mth.lerp(partialTicks, laserBolt.xOld, laserBolt.getX());
@@ -67,7 +66,7 @@ public class LaserBoltRenderer extends EntityRenderer<LaserBolt> {
             double z = Mth.lerp(partialTicks, laserBolt.zOld, laserBolt.getZ());
             poseStack.pushPose();
             poseStack.translate(-x, -y, -z);
-            renderTrail(laserBolt, partialTicks, poseStack, buffer, red, green, blue, 0.8F, packedLight);
+            this.renderTrail(laserBolt, partialTicks, poseStack, buffer, red, green, blue, 0.75F, packedLight);
             poseStack.popPose();
         }
         super.render(laserBolt, entityYaw, partialTicks, poseStack, buffer, packedLight);
@@ -75,19 +74,18 @@ public class LaserBoltRenderer extends EntityRenderer<LaserBolt> {
 
     private void renderTrail(LaserBolt laserBolt, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, float red, float green, float blue, float alpha, int packedLight) {
         int samples = 0;
-        int sampleSize = 3;
-        float trailHeight = 0.1F;
+        int sampleSize = 1;
+        float trailHeight = 0.07F;
         float trailZRot = 0;
         Vec3 topAngleVec = new Vec3(0, trailHeight, 0).zRot(trailZRot);
         Vec3 bottomAngleVec = new Vec3(0, -trailHeight, 0).zRot(trailZRot);
         Vec3 drawFrom = laserBolt.getTrailPosition(0, partialTicks);
         VertexConsumer vertexconsumer = bufferSource.getBuffer(RenderType.entityTranslucentEmissive(TRAIL_TEXTURE));
         while (samples < sampleSize) {
-            Vec3 sample = laserBolt.getTrailPosition(samples + 2, partialTicks);
+            Vec3 draw2 = laserBolt.getTrailPosition(samples + 2, partialTicks);
             float u1 = samples / (float) sampleSize;
             float u2 = u1 + 1 / (float) sampleSize;
             Vec3 draw1 = drawFrom;
-            Vec3 draw2 = sample;
             PoseStack.Pose lastPose = poseStack.last();
             Matrix4f matrix4f = lastPose.pose();
             Matrix3f matrix3f = lastPose.normal();
@@ -96,7 +94,7 @@ public class LaserBoltRenderer extends EntityRenderer<LaserBolt> {
             vertexconsumer.vertex(matrix4f, (float) draw2.x + (float) topAngleVec.x, (float) draw2.y + (float) topAngleVec.y, (float) draw2.z + (float) topAngleVec.z).color(red, green, blue, alpha).uv(u2, 0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
             vertexconsumer.vertex(matrix4f, (float) draw1.x + (float) topAngleVec.x, (float) draw1.y + (float) topAngleVec.y, (float) draw1.z + (float) topAngleVec.z).color(red, green, blue, alpha).uv(u1, 0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
             samples++;
-            drawFrom = sample;
+            drawFrom = draw2;
         }
     }
 

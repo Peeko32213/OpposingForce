@@ -2,7 +2,6 @@ package com.unusualmodding.opposing_force.items;
 
 import com.unusualmodding.opposing_force.entity.projectile.LaserBolt;
 import com.unusualmodding.opposing_force.registry.OPEnchantments;
-import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
 import net.minecraft.core.BlockPos;
@@ -30,8 +29,8 @@ public class BlasterItem extends Item implements Vanishable {
     public static final Predicate<ItemStack> AMMO = (stack) -> stack.is(OPItemTags.BLASTER_AMMO);
     private final int laserColor;
 
-    public BlasterItem(Properties properties, int laserColor) {
-        super(properties);
+    public BlasterItem(int laserColor) {
+        super(new Properties().stacksTo(1).durability(651));
         this.laserColor = laserColor;
     }
 
@@ -58,7 +57,6 @@ public class BlasterItem extends Item implements Vanishable {
         return ItemStack.EMPTY;
     }
 
-    // Decimal color
     public int getLaserColor() {
         return this.laserColor;
     }
@@ -69,18 +67,16 @@ public class BlasterItem extends Item implements Vanishable {
         ItemStack ammoStack = getAmmo(player);
 
         if (ammoStack.isEmpty() && !player.isCreative()) {
-            return InteractionResultHolder.pass(itemStack);
+            player.getCooldowns().addCooldown(itemStack.getItem(), 10);
+            return InteractionResultHolder.success(itemStack);
         }
-
-        if (shouldSwap(player, itemStack, hand, stack -> stack.getItem() instanceof BlasterItem)) {
-            return InteractionResultHolder.fail(itemStack);
-        }
+        if (shouldSwap(player, itemStack, hand, stack -> stack.getItem() instanceof BlasterItem)) return InteractionResultHolder.fail(itemStack);
 
         Vec3 vector3d = player.getViewVector(1F);
         Vec3 vec3 = vector3d.normalize();
         float yRot = (float) (Mth.atan2(vec3.z, vec3.x) * (180F / Math.PI)) + 90F;
         float xRot = (float) -(Mth.atan2(vec3.y, Math.sqrt(vec3.x * vec3.x + vec3.z * vec3.z)) * (180F / Math.PI));
-        double inaccuracy = itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) > 0 ? 0.04D : 0.02D;
+        double inaccuracy = itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) > 0 ? 0.03D : 0.015D;
         double xOffset = level.getRandom().nextGaussian() * inaccuracy;
         double yOffset = level.getRandom().nextGaussian() * inaccuracy;
         double zOffset = level.getRandom().nextGaussian() * inaccuracy;
@@ -89,22 +85,18 @@ public class BlasterItem extends Item implements Vanishable {
         Vec3 barrelPos = getBarrelVec(player, hand == InteractionHand.MAIN_HAND, new Vec3(0.55F, -0.45F, 1.15F));
         Vec3 correction = getBarrelVec(player, hand == InteractionHand.MAIN_HAND, new Vec3(-0.035F, 0, 0)).subtract(player.position().add(0, player.getEyeHeight(), 0));
         Vec3 lookVec = player.getLookAngle().add(xOffset, yOffset, zOffset).normalize();
-        Vec3 motion = lookVec.add(correction).normalize().scale(1.4F);
+        Vec3 motion = lookVec.add(correction).normalize().scale(1.75F);
 
         laserBolt.setPos(barrelPos.x, barrelPos.y, barrelPos.z);
         laserBolt.setDeltaMovement(motion);
         laserBolt.setYRot(yRot);
         laserBolt.setXRot(xRot);
         laserBolt.setOwner(player);
-        laserBolt.setLaserDamage(4.0F);
+        laserBolt.setLaserDamage(6.0F);
         laserBolt.setItem(player.getItemInHand(hand));
 
-        if (itemStack.getEnchantmentLevel(OPEnchantments.SPLITTING.get()) > 0) {
-            laserBolt.setDisruptor(true);
-            laserBolt.setDisruptorLevel(itemStack.getEnchantmentLevel(OPEnchantments.SPLITTING.get()));
-        }
         if (itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) > 0) {
-            laserBolt.setLaserDamage(2.0F);
+            laserBolt.setLaserDamage(3.0F);
             laserBolt.setRapidFire(true);
         }
         level.addFreshEntity(laserBolt);
@@ -136,7 +128,7 @@ public class BlasterItem extends Item implements Vanishable {
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return !oldStack.is(OPItems.BLASTER.get()) || !newStack.is(OPItems.BLASTER.get());
+        return !(oldStack.getItem() instanceof BlasterItem) || !(newStack.getItem() instanceof BlasterItem);
     }
 
     @Override

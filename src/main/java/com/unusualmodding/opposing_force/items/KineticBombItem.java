@@ -22,10 +22,10 @@ public class KineticBombItem extends Item {
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
-        player.getCooldowns().addCooldown(this, 40);
+        player.getCooldowns().addCooldown(this, 10);
         if (!level.isClientSide()) {
             KineticBomb kineticBomb = new KineticBomb(level, player);
-            kineticBomb.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 0.75F, 0.0F);
+            kineticBomb.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 0.9F, 0.0F);
             kineticBomb.setPos(player.getEyePosition().add(kineticBomb.getDeltaMovement().normalize()));
             level.addFreshEntity(kineticBomb);
         }

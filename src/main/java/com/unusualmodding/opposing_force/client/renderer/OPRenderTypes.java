@@ -68,26 +68,15 @@ public abstract class OPRenderTypes extends RenderType {
         return create("eyes_z_offset", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true, compositeState);
     }
 
-    public static RenderType laserBoltInner(ResourceLocation location) {
+    public static RenderType laserBolt(ResourceLocation resourceLocation) {
         RenderType.CompositeState compositeState = CompositeState.builder()
-                .setTextureState(new TextureStateShard(location, false, false))
+                .setTextureState(new TextureStateShard(resourceLocation, false, false))
                 .setShaderState(RenderType.RENDERTYPE_ENERGY_SWIRL_SHADER)
                 .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
                 .setCullState(NO_CULL)
                 .setLightmapState(LIGHTMAP)
                 .createCompositeState(false);
-        return create("laser_bolt_inner", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256,false,true, compositeState);
-    }
-
-    public static RenderType laserBoltOuter(ResourceLocation location) {
-        RenderType.CompositeState compositeState = CompositeState.builder()
-                .setTextureState(new TextureStateShard(location, false, false))
-                .setShaderState(RenderType.RENDERTYPE_ENERGY_SWIRL_SHADER)
-                .setTransparencyState(ADDITIVE_TRANSPARENCY)
-                .setCullState(NO_CULL)
-                .setLightmapState(LIGHTMAP)
-                .createCompositeState(false);
-        return create("laser_bolt_outer", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256,false,true, compositeState);
+        return create("laser_bolt", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256,false,true, compositeState);
     }
 
     private static void setupGlintTexturing(float in, long time) {

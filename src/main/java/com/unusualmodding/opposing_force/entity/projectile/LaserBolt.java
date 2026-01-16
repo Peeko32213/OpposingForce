@@ -10,7 +10,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
@@ -30,7 +29,6 @@ public class LaserBolt extends FrictionlessProjectile {
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<ItemStack> ITEM_STACK = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.ITEM_STACK);
 
-    protected RandomSource randomSource = level.getRandom();
     private Vec3[] trailPositions = new Vec3[64];
     private int trailPointer = -1;
 
@@ -55,7 +53,7 @@ public class LaserBolt extends FrictionlessProjectile {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.getEntityData().define(DAMAGE, 4.0F);
+        this.getEntityData().define(DAMAGE, 6.0F);
         this.getEntityData().define(DISRUPTOR, false);
         this.getEntityData().define(DISRUPTOR_LEVEL, 0);
         this.getEntityData().define(RAPID_FIRE, false);
@@ -158,7 +156,7 @@ public class LaserBolt extends FrictionlessProjectile {
         if (tickCount > 160 || this.getBlockY() > this.level().getMaxBuildHeight() + 30) {
             if (!this.level().isClientSide) {
                 this.level().broadcastEntityEvent(this, (byte) 3);
-                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
+                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (random.nextFloat() - random.nextFloat()) * 0.2F);
                 this.discard();
             }
         }
@@ -173,7 +171,7 @@ public class LaserBolt extends FrictionlessProjectile {
         DamageSource damageSource = this.damageSources().source(OPDamageTypes.LASER_BOLT);
 
         if (!this.level().isClientSide) {
-            this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
+            this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (random.nextFloat() - random.nextFloat()) * 0.2F);
             this.level().broadcastEntityEvent(this, (byte) 3);
             entity.hurt(damageSource, this.getLaserDamage());
             entity.invulnerableTime = 0;
@@ -212,7 +210,7 @@ public class LaserBolt extends FrictionlessProjectile {
 
         if (!this.level().isClientSide) {
             this.level().broadcastEntityEvent(this, (byte) 3);
-            this.level().playSound(null, pos.getX(), pos.getY(), pos.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
+            this.level().playSound(null, pos.getX(), pos.getY(), pos.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (random.nextFloat() - random.nextFloat()) * 0.2F);
             this.discard();
         }
     }
@@ -264,10 +262,10 @@ public class LaserBolt extends FrictionlessProjectile {
                 blue = (float) ((decimal & 255)) / 255.0F;
             }
 
+            this.level().addParticle(OPParticles.LASER_IMPACT.get(), this.getX(), this.getY() + 0.25F, this.getZ(), red, green, blue);
             for (int i = 0; i < 8; i++) {
                 this.level().addParticle(OPParticles.LASER_BOLT_DUST.get(), this.getX(), this.getY(), this.getZ(), red, green, blue);
             }
-            this.level().addParticle(OPParticles.LASER_IMPACT.get(), this.getX(), this.getY() + 0.5F, this.getZ(), 0, 0, 0);
         }
     }
 }

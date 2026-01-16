@@ -75,6 +75,8 @@ public class OPLanguageProvider extends LanguageProvider {
         this.forEntity(OPEntities.LIGHTNING_BOMB);
         this.forEntity(OPEntities.WHIZZ_BOMB);
         this.forEntity(OPEntities.LASER_BLADE);
+        this.forEntity(OPEntities.LASER_BOLT);
+        this.forEntity(OPEntities.DICER_LASER);
 
         this.translatePotion(OPPotions.GLOOM_TOXIN_POTION, "Gloom Toxin", "gloom_toxin");
         this.translatePotion(OPPotions.LONG_GLOOM_TOXIN_POTION, "Gloom Toxin", "long_gloom_toxin");
@@ -254,7 +256,6 @@ public class OPLanguageProvider extends LanguageProvider {
         this.translateEnchantmentWithDesc(OPEnchantments.PLAGUE.get(), "Increases the level of slug infestation inflicted");
 
         this.translateEnchantmentWithDesc(OPEnchantments.RAPID_FIRE.get(), "Increases the fire rate of the blaster at the cost of damage per shot");
-        this.translateEnchantmentWithDesc(OPEnchantments.SPLITTING.get(), "Laser bolts split into multiple laser bolts on hit");
         this.translateEnchantmentWithDesc(OPEnchantments.POWER_SUPPLY.get(), "Blaster has a chance to not consume redstone dust");
 
         this.translateEnchantmentWithDesc(OPEnchantments.THROWING.get(), "Laser blade parry is replaced by throwing");
