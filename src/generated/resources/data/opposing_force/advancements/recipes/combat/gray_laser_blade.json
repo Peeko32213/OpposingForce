@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "opposing_force:laser_blade"
-            ]
+            "tag": "opposing_force:laser_blades"
           }
         ]
       },

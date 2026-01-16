@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_laser_blade": {
+    "has_blaster": {
       "conditions": {
         "items": [
           {
-            "tag": "opposing_force:laser_blades"
+            "tag": "opposing_force:blasters"
           }
         ]
       },
@@ -13,20 +13,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "opposing_force:blue_laser_blade"
+        "recipe": "opposing_force:light_gray_blaster"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_laser_blade",
+      "has_blaster",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "opposing_force:blue_laser_blade"
+      "opposing_force:light_gray_blaster"
     ]
   },
   "sends_telemetry_event": false
