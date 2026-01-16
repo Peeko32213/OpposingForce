@@ -1,9 +1,9 @@
-// 1.20.1	2026-01-15T18:14:54.621195	Tags for minecraft:item mod id opposing_force
-a304e99c6cedbc457aca2e599b404720d5a902b9 data/forge/tags/items/armors.json
+// 1.20.1	2026-01-15T20:45:23.7303265	Tags for minecraft:item mod id opposing_force
+ab9267517e8e117ff204624c177efec966684350 data/forge/tags/items/armors.json
 bb84466db145b5c4beb7db52e0954f92dc49ddee data/forge/tags/items/armors/boots.json
 b8ff562ca31cffac5ddc6711c910951cb52837b4 data/forge/tags/items/armors/chestplates.json
 044955b694b1d6eef455152c58ea135018b2d43e data/forge/tags/items/armors/helmets.json
-65f81a4dac362867f978f27c6862407a4379dcf6 data/forge/tags/items/armors/leggings.json
+7b1ac7e02f46bf463a53338d751e35db7ee1ca6d data/forge/tags/items/armors/leggings.json
 02dfdb41688ccea8169a8d046943461f0aa3c361 data/forge/tags/items/berries.json
 e0d067eb5cc3823e9509f98b04be972a1122c97f data/forge/tags/items/eggs.json
 42b3a843ae5c2cee54bdafa9cd297c82b89453fc data/forge/tags/items/fruits.json

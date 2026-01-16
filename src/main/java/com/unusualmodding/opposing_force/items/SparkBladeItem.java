@@ -69,7 +69,7 @@ public class SparkBladeItem extends SwordItem {
         if (i >= 10) {
             if (entity instanceof Player player) {
                 player.getCooldowns().addCooldown(this, 80);
-                Vec3 teleportPos = findTeleportLocation(level, player, 14);
+                Vec3 teleportPos = findTeleportLocation(level, player, 16);
                 player.awardStat(Stats.ITEM_USED.get(this));
                 if (!player.getAbilities().instabuild) {
                     stack.hurtAndBreak(2, player, (player1) -> player1.broadcastBreakEvent(EquipmentSlot.MAINHAND));
@@ -110,8 +110,8 @@ public class SparkBladeItem extends SwordItem {
     public static BlockHitResult getTargetBlock(Level level, LivingEntity entity, ClipContext.Fluid clipContext, double reach) {
         var rotation = entity.getLookAngle().normalize().scale(reach);
         var pos = entity.getEyePosition();
-        var dest = rotation.add(pos);
-        return level.clip(new ClipContext(pos, dest, ClipContext.Block.COLLIDER, clipContext, entity));
+        var destination = rotation.add(pos);
+        return level.clip(new ClipContext(pos, destination, ClipContext.Block.COLLIDER, clipContext, entity));
     }
 
     private void tryToHurt(LivingEntity attacker) {

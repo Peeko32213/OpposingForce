@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.entity.projectile;
 
 import com.unusualmodding.opposing_force.registry.OPEntities;
+import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPMobEffects;
 import com.unusualmodding.opposing_force.utils.OPMath;
 import com.unusualmodding.opposing_force.utils.ParticleUtils;
@@ -11,9 +12,11 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public class LightningBomb extends AbstractBomb {
 
@@ -66,5 +69,10 @@ public class LightningBomb extends AbstractBomb {
             this.spawnParticles(ParticleTypes.LARGE_SMOKE, 16, 0.3);
             this.level().addParticle(ParticleTypes.FLASH, true, location.x(), location.y(), location.z(), 0, 0, 0);
         }
+    }
+
+    @Override
+    protected @NotNull Item getDefaultItem() {
+        return OPItems.LIGHTNING_BOMB.get();
     }
 }

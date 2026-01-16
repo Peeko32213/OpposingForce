@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.entity.projectile;
 
 import com.unusualmodding.opposing_force.entity.Whizz;
 import com.unusualmodding.opposing_force.registry.OPEntities;
+import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.utils.OPMath;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
@@ -113,5 +115,10 @@ public class WhizzBomb extends AbstractBomb {
             whizz.finalizeSpawn((ServerLevel) level, level.getCurrentDifficultyAt(whizz.blockPosition()), MobSpawnType.TRIGGERED, null, null);
             level.addFreshEntity(whizz);
         }
+    }
+
+    @Override
+    protected @NotNull Item getDefaultItem() {
+        return OPItems.WHIZZ_BOMB.get();
     }
 }

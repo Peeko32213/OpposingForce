@@ -16,6 +16,7 @@ public class OPTiers {
         public static final ArmorMaterial BONE = new OPArmorMaterial("bone", 9, new int[] {2, 6, 5, 2}, 9, OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN.get(), 0F, 0F, ()-> Ingredient.of(Tags.Items.BONES));
         public static final ArmorMaterial DEEPWOVEN = new OPArmorMaterial("deepwoven", 12, new int[] {2, 5, 4, 1}, 12, OPSoundEvents.ARMOR_EQUIP_DEEPWOVEN.get(), 0F, 0F, ()-> Ingredient.of(OPItems.DEEP_SILK.get()));
         public static final ArmorMaterial EMERALD = new OPArmorMaterial("emerald", 33, new int[] {3, 8, 6, 3}, 14, OPSoundEvents.ARMOR_EQUIP_EMERALD.get(), 2F, 0F, ()-> Ingredient.of(Tags.Items.GEMS_EMERALD));
+        public static final ArmorMaterial LEAPING_LEGGINGS = new OPArmorMaterial("leaping_leggings", 13, new int[] {1, 1, 1, 1}, 8, OPSoundEvents.ARMOR_EQUIP_MOON_SHOES.get(), 0F, 0F, ()-> Ingredient.of(Tags.Items.GEMS_DIAMOND));
         public static final ArmorMaterial MOON_SHOES = new OPArmorMaterial("moon_shoes", 13, new int[] {1, 1, 1, 1}, 8, OPSoundEvents.ARMOR_EQUIP_MOON_SHOES.get(), 0F, 0F, ()-> Ingredient.of(Tags.Items.FEATHERS));
         public static final ArmorMaterial RECON_KNIGHT = new OPArmorMaterial("recon_knight", 30, new int[] {3, 8, 6, 3}, 9, OPSoundEvents.ARMOR_EQUIP_EMERALD.get(), 0F, 0F, ()-> Ingredient.of(OPItems.ELECTRIC_ALLOY.get()));
         public static final ArmorMaterial SLUG_BARON = new OPArmorMaterial("slug_baron", 30, new int[] {3, 8, 6, 3}, 5, OPSoundEvents.ARMOR_EQUIP_EMERALD.get(), 1F, 0F, ()-> Ingredient.of(OPBlocks.SLUG_EGGS.get()));

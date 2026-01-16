@@ -29,11 +29,18 @@ public class OPArmorDefinitions {
             .texture(slot -> slot == EquipmentSlot.LEGS ? OpposingForce.MOD_ID + ":textures/models/armor/emerald_armor_layer_2.png" : OpposingForce.MOD_ID + ":textures/models/armor/emerald_armor_layer_1.png")
             .build();
 
+    public static final ArmorDefinition LEAPING_LEGGINGS = new ArmorDefinition.Builder()
+            .material(OPTiers.OPArmorMaterials.LEAPING_LEGGINGS)
+            .attribute(ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.0F, AttributeModifier.Operation.ADDITION)
+            .attribute(OPAttributes.JUMP_POWER.get(), 5.0F, AttributeModifier.Operation.ADDITION)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.75F, AttributeModifier.Operation.MULTIPLY_BASE)
+            .texture(slot -> OpposingForce.MOD_ID + ":textures/models/armor/leaping_leggings_layer_1.png")
+            .build();
+
     public static final ArmorDefinition MOON_SHOES = new ArmorDefinition.Builder()
             .material(OPTiers.OPArmorMaterials.MOON_SHOES)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.2F, AttributeModifier.Operation.MULTIPLY_BASE)
-            .attribute(OPAttributes.JUMP_POWER.get(), 2.0F, AttributeModifier.Operation.ADDITION)
-            .attribute(OPAttributes.AIR_SPEED.get(), 0.3F, AttributeModifier.Operation.MULTIPLY_BASE)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.25F, AttributeModifier.Operation.MULTIPLY_BASE)
+            .attribute(OPAttributes.AIR_SPEED.get(), 0.25F, AttributeModifier.Operation.MULTIPLY_BASE)
             .attribute(ForgeMod.ENTITY_GRAVITY.get(), -0.5F, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .texture(slot -> OpposingForce.MOD_ID + ":textures/models/armor/moon_shoes_layer_1.png")
             .build();

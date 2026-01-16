@@ -71,15 +71,15 @@ public final class ClientEvents {
         event.registerEntityRenderer(OPEntities.LASER_BOLT.get(), LaserBoltRenderer::new);
         event.registerEntityRenderer(OPEntities.LASER_BLADE.get(), ThrownLaserBladeRenderer::new);
         event.registerEntityRenderer(OPEntities.EMERALDFISH.get(), EmeraldfishRenderer::new);
-        event.registerEntityRenderer(OPEntities.FIRE_BOMB.get(), FireBombRenderer::new);
+        event.registerEntityRenderer(OPEntities.FIRE_BOMB.get(), BombRenderer::new);
         event.registerEntityRenderer(OPEntities.FIRE_SLIME.get(), FireSlimeRenderer::new);
         event.registerEntityRenderer(OPEntities.FROWZY.get(), FrowzyRenderer::new);
         event.registerEntityRenderer(OPEntities.GUZZLER.get(), GuzzlerRenderer::new);
         event.registerEntityRenderer(OPEntities.HANGING_SPIDER.get(), HangingSpiderRenderer::new);
         event.registerEntityRenderer(OPEntities.LADYBUG.get(), LadybugRenderer::new);
 //        event.registerEntityRenderer(OPEntities.NYMPH.get(), NymphRenderer::new);
-        event.registerEntityRenderer(OPEntities.KINETIC_BOMB.get(), KineticBombRenderer::new);
-        event.registerEntityRenderer(OPEntities.LIGHTNING_BOMB.get(), LightningBombRenderer::new);
+        event.registerEntityRenderer(OPEntities.KINETIC_BOMB.get(), BombRenderer::new);
+        event.registerEntityRenderer(OPEntities.LIGHTNING_BOMB.get(), BombRenderer::new);
         event.registerEntityRenderer(OPEntities.RAMBLER.get(), RamblerRenderer::new);
         event.registerEntityRenderer(OPEntities.SKYVERN.get(), SkyvernHeadRenderer::new);
         event.registerEntityRenderer(OPEntities.SKYVERN_SEGMENT.get(), SkyvernSegmentRenderer::new);
@@ -93,7 +93,7 @@ public final class ClientEvents {
         event.registerEntityRenderer(OPEntities.UMBER_SPIDER.get(), UmberSpiderRenderer::new);
         event.registerEntityRenderer(OPEntities.VOLT.get(), VoltRenderer::new);
         event.registerEntityRenderer(OPEntities.WHIZZ.get(), WhizzRenderer::new);
-        event.registerEntityRenderer(OPEntities.WHIZZ_BOMB.get(), WhizzBombRenderer::new);
+        event.registerEntityRenderer(OPEntities.WHIZZ_BOMB.get(), BombRenderer::new);
     }
 
     @SubscribeEvent
@@ -130,6 +130,7 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.BONE_ARMOR, BoneArmorModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.DEEPWOVEN_ARMOR, DeepwovenArmorModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.EMERALD_ARMOR, EmeraldArmorModel::createArmorLayer);
+        event.registerLayerDefinition(OPModelLayers.LEAPING_LEGGINGS, LeapingLeggingsModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.MOON_SHOES, MoonShoesModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.RECON_KNIGHT_ARMOR, ReconKnightArmorModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.SLUG_BARON_ARMOR, SlugBaronArmorModel::createArmorLayer);

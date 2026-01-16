@@ -130,6 +130,7 @@ public class OPItemModelProvider extends ItemModelProvider {
         this.item(STONE_BOOTS);
 
         // Treasure
+        this.item(LEAPING_LEGGINGS);
         this.item(MOON_SHOES);
 
         // Misc

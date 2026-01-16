@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.entity.projectile;
 
 import com.unusualmodding.opposing_force.registry.OPEntities;
+import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.utils.OPMath;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -8,9 +9,12 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ItemSupplier;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public class KineticBomb extends AbstractBomb {
 
@@ -57,5 +61,10 @@ public class KineticBomb extends AbstractBomb {
             Vec3 location = this.position().add(0, this.getBbHeight() * 0.5, 0);
             this.level().addParticle(ParticleTypes.FLASH, true, location.x(), location.y(), location.z(), 0, 0, 0);
         }
+    }
+
+    @Override
+    protected @NotNull Item getDefaultItem() {
+        return OPItems.KINETIC_BOMB.get();
     }
 }

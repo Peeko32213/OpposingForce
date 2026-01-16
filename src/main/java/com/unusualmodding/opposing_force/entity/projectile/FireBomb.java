@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.entity.projectile;
 
 import com.unusualmodding.opposing_force.registry.OPEntities;
+import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.utils.OPMath;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -8,9 +9,11 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public class FireBomb extends AbstractBomb {
 
@@ -72,5 +75,10 @@ public class FireBomb extends AbstractBomb {
             this.spawnParticles(ParticleTypes.LAVA, 20, 0.5);
             this.level().addParticle(ParticleTypes.FLASH, true, location.x(), location.y(), location.z(), 0, 0, 0);
         }
+    }
+
+    @Override
+    protected @NotNull Item getDefaultItem() {
+        return OPItems.FIRE_BOMB.get();
     }
 }

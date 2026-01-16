@@ -168,6 +168,7 @@ public class OPItemTagProvider extends ItemTagsProvider {
                 EMERALD_CHESTPLATE.get(),
                 EMERALD_LEGGINGS.get(),
                 EMERALD_BOOTS.get(),
+                LEAPING_LEGGINGS.get(),
                 MOON_SHOES.get(),
                 RECON_KNIGHT_HELMET.get(),
                 RECON_KNIGHT_CHESTPLATE.get(),
@@ -214,7 +215,8 @@ public class OPItemTagProvider extends ItemTagsProvider {
                 RECON_KNIGHT_LEGGINGS.get(),
                 SLUG_BARON_LEGGINGS.get(),
                 STONE_LEGGINGS.get(),
-                WOODEN_COVER.get()
+                WOODEN_COVER.get(),
+                LEAPING_LEGGINGS.get()
         );
 
         this.tag(Tags.Items.ARMORS_BOOTS).add(

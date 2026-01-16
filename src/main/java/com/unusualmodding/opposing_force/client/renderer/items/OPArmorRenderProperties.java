@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.client.renderer.items;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.unusualmodding.opposing_force.client.models.armor.*;
+import com.unusualmodding.opposing_force.items.armor.LeapingLeggingsItem;
 import com.unusualmodding.opposing_force.items.armor.MoonShoesItem;
 import com.unusualmodding.opposing_force.items.armor.SlugBaronArmorItem;
 import com.unusualmodding.opposing_force.items.armor.WoodenArmorItem;
@@ -27,6 +28,7 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
     public static BoneArmorModel BONE_MODEL;
     public static DeepwovenArmorModel DEEPWOVEN_MODEL;
     public static EmeraldArmorModel EMERALD_MODEL;
+    public static LeapingLeggingsModel LEAPING_LEGGINGS_MODEL;
     public static MoonShoesModel MOON_SHOES_MODEL;
     public static ReconKnightArmorModel RECON_KNIGHT_MODEL;
     public static SlugBaronArmorModel SLUG_BARON_MODEL;
@@ -38,6 +40,7 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
         BONE_MODEL = new BoneArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.BONE_ARMOR));
         DEEPWOVEN_MODEL = new DeepwovenArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.DEEPWOVEN_ARMOR));
         EMERALD_MODEL = new EmeraldArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.EMERALD_ARMOR));
+        LEAPING_LEGGINGS_MODEL = new LeapingLeggingsModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.LEAPING_LEGGINGS));
         MOON_SHOES_MODEL = new MoonShoesModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.MOON_SHOES));
         RECON_KNIGHT_MODEL = new ReconKnightArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.RECON_KNIGHT_ARMOR));
         SLUG_BARON_MODEL = new SlugBaronArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(OPModelLayers.SLUG_BARON_ARMOR));
@@ -66,25 +69,20 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
             return EMERALD_MODEL;
         }
 
-        if (item instanceof MoonShoesItem) {
-            return entity == null ? MOON_SHOES_MODEL : MOON_SHOES_MODEL.withAnimations(entity);
-        }
+        if (item instanceof LeapingLeggingsItem) return LEAPING_LEGGINGS_MODEL;
+        if (item instanceof MoonShoesItem) return entity == null ? MOON_SHOES_MODEL : MOON_SHOES_MODEL.withAnimations(entity);
 
         if (stack.is(OPItems.RECON_KNIGHT_HELMET.get()) || stack.is(OPItems.RECON_KNIGHT_CHESTPLATE.get()) || stack.is(OPItems.RECON_KNIGHT_LEGGINGS.get()) || stack.is(OPItems.RECON_KNIGHT_BOOTS.get())) {
             return entity == null ? RECON_KNIGHT_MODEL : RECON_KNIGHT_MODEL.withAnimations(entity);
         }
 
-        if (item instanceof SlugBaronArmorItem) {
-            return SLUG_BARON_MODEL;
-        }
+        if (item instanceof SlugBaronArmorItem) return SLUG_BARON_MODEL;
 
         if (stack.is(OPItems.STONE_HELMET.get()) || stack.is(OPItems.STONE_CHESTPLATE.get()) || stack.is(OPItems.STONE_LEGGINGS.get()) || stack.is(OPItems.STONE_BOOTS.get())) {
             return STONE_MODEL;
         }
 
-        if (item instanceof WoodenArmorItem) {
-            return WOODEN_MODEL;
-        }
+        if (item instanceof WoodenArmorItem) return WOODEN_MODEL;
 
         return humanoidModel;
     }

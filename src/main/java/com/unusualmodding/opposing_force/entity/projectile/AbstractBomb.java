@@ -15,10 +15,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -26,7 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AbstractBomb extends ThrowableProjectile {
+public abstract class AbstractBomb extends ThrowableItemProjectile {
 
     private float fuse = 0;
     private float prevFuse;
@@ -78,7 +77,7 @@ public abstract class AbstractBomb extends ThrowableProjectile {
     }
 
     protected void spawnParticles(ParticleOptions particle, int amount, double speed) {
-        Vec3 location = this.position().add(0, this.getBbHeight() * 0.5, 0);
+        Vec3 location = this.position().add(0, 0, 0);
         for (int i = 0; i < amount; i++) {
             double theta = random.nextFloat() * 2 * Math.PI;
             double alpha = random.nextFloat() * 2 * Math.PI;
@@ -116,6 +115,7 @@ public abstract class AbstractBomb extends ThrowableProjectile {
 
     @Override
     protected void defineSynchedData() {
+        super.defineSynchedData();
     }
 
     @Override
@@ -134,7 +134,7 @@ public abstract class AbstractBomb extends ThrowableProjectile {
             this.prevSpin = this.spin;
             Vec3 deltaMovement = this.getPosition(0).subtract(this.getPosition(1));
             float spinAmount = (float) (deltaMovement.length() / (Mth.TWO_PI * 6.0F));
-            float spinInRadians = spinAmount * Mth.TWO_PI * 3.0F;
+            float spinInRadians = spinAmount * Mth.TWO_PI * 2.5F;
             this.spin += spinInRadians;
 
             if (this.lSteps > 0) {

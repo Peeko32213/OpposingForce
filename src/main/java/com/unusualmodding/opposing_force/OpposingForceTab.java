@@ -28,23 +28,6 @@ public class OpposingForceTab {
 
                     // Dicer
                     output.accept(OPItems.DICER_LENS.get());
-                    output.accept(OPItems.BLASTER.get());
-                    output.accept(OPItems.WHITE_BLASTER.get());
-                    output.accept(OPItems.LIGHT_GRAY_BLASTER.get());
-                    output.accept(OPItems.GRAY_BLASTER.get());
-                    output.accept(OPItems.BLACK_BLASTER.get());
-                    output.accept(OPItems.BROWN_BLASTER.get());
-                    output.accept(OPItems.RED_BLASTER.get());
-                    output.accept(OPItems.ORANGE_BLASTER.get());
-                    output.accept(OPItems.YELLOW_BLASTER.get());
-                    output.accept(OPItems.LIME_BLASTER.get());
-                    output.accept(OPItems.GREEN_BLASTER.get());
-                    output.accept(OPItems.CYAN_BLASTER.get());
-                    output.accept(OPItems.LIGHT_BLUE_BLASTER.get());
-                    output.accept(OPItems.BLUE_BLASTER.get());
-                    output.accept(OPItems.PURPLE_BLASTER.get());
-                    output.accept(OPItems.MAGENTA_BLASTER.get());
-                    output.accept(OPItems.PINK_BLASTER.get());
 
                     output.accept(OPItems.LASER_BLADE.get());
                     output.accept(OPItems.WHITE_LASER_BLADE.get());
@@ -63,6 +46,24 @@ public class OpposingForceTab {
                     output.accept(OPItems.PURPLE_LASER_BLADE.get());
                     output.accept(OPItems.MAGENTA_LASER_BLADE.get());
                     output.accept(OPItems.PINK_LASER_BLADE.get());
+
+                    output.accept(OPItems.BLASTER.get());
+                    output.accept(OPItems.WHITE_BLASTER.get());
+                    output.accept(OPItems.LIGHT_GRAY_BLASTER.get());
+                    output.accept(OPItems.GRAY_BLASTER.get());
+                    output.accept(OPItems.BLACK_BLASTER.get());
+                    output.accept(OPItems.BROWN_BLASTER.get());
+                    output.accept(OPItems.RED_BLASTER.get());
+                    output.accept(OPItems.ORANGE_BLASTER.get());
+                    output.accept(OPItems.YELLOW_BLASTER.get());
+                    output.accept(OPItems.LIME_BLASTER.get());
+                    output.accept(OPItems.GREEN_BLASTER.get());
+                    output.accept(OPItems.CYAN_BLASTER.get());
+                    output.accept(OPItems.LIGHT_BLUE_BLASTER.get());
+                    output.accept(OPItems.BLUE_BLASTER.get());
+                    output.accept(OPItems.PURPLE_BLASTER.get());
+                    output.accept(OPItems.MAGENTA_BLASTER.get());
+                    output.accept(OPItems.PINK_BLASTER.get());
 
                     output.accept(OPItems.DICER_HEAD.get());
 
@@ -204,6 +205,7 @@ public class OpposingForceTab {
                     output.accept(OPItems.EMERALD_LEGGINGS.get());
                     output.accept(OPItems.EMERALD_BOOTS.get());
 
+                    output.accept(OPItems.LEAPING_LEGGINGS.get());
                     output.accept(OPItems.MOON_SHOES.get());
 
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.TESLA_CANNON);
