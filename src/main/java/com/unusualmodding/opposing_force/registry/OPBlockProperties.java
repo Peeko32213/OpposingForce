@@ -20,6 +20,7 @@ public class OPBlockProperties {
     public static final BlockBehaviour.Properties SLUG_EGGS = BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_LIGHT_GREEN).instrument(NoteBlockInstrument.DIDGERIDOO).sound(SoundType.SLIME_BLOCK).instabreak().noOcclusion().strength(1.0F);
 
     public static final BlockBehaviour.Properties INFERNO_PIE = BlockBehaviour.Properties.of().forceSolidOn().strength(0.5F).sound(SoundType.WOOL).pushReaction(PushReaction.DESTROY).lightLevel(state -> 5);
+    public static final BlockBehaviour.Properties GUZZLER_SCALE_BLOCK = BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).instrument(NoteBlockInstrument.GUITAR).sound(SoundType.BASALT).requiresCorrectToolForDrops().strength(2.0F, 3.0F);
 
     public static final BlockBehaviour.Properties MOB_HEAD = BlockBehaviour.Properties.of().strength(1.0F).pushReaction(PushReaction.DESTROY).mapColor(MapColor.STONE);
 

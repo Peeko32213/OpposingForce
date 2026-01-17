@@ -123,11 +123,30 @@ public class OPRecipeProvider extends RecipeProvider {
         furnaceRecipe(RecipeSerializer.SMOKING_RECIPE, List.of(TERROR_LEG.get()), FOOD, FRIED_TERROR_LEG.get(), 0.25f, 100, "_from_smoking", consumer);
         ShapelessRecipeBuilder.shapeless(FOOD, SPICY_TERROR_LEG.get(), 1).requires(FIRE_GEL.get()).requires(FRIED_TERROR_LEG.get()).unlockedBy("has_fried_terror_leg", has(FRIED_TERROR_LEG.get())).save(consumer);
 
+        ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, OPBlocks.GUZZLER_SCALE_BLOCK.get(), 1).define('G', GUZZLER_SCALES.get()).pattern("GGG").pattern("GGG").pattern("GGG").unlockedBy("has_guzzler_scales", has(GUZZLER_SCALES.get())).save(consumer);
+        ShapelessRecipeBuilder.shapeless(MISC, GUZZLER_SCALES.get(), 9).requires(OPBlocks.GUZZLER_SCALE_BLOCK.get()).unlockedBy("has_guzzler_scales", has(GUZZLER_SCALES.get())).save(consumer);
+
+        ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, OPBlocks.GUZZLER_SCALE_BRICKS.get(), 16).define('G', OPBlocks.GUZZLER_SCALE_BLOCK.get()).pattern("GG").pattern("GG").unlockedBy("has_guzzler_scales", has(GUZZLER_SCALES.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, OPBlocks.GUZZLER_SCALE_BRICK_STAIRS.get(), 4).define('G', OPBlocks.GUZZLER_SCALE_BRICKS.get()).pattern("G  ").pattern("GG ").pattern("GGG").unlockedBy("has_guzzler_scales", has(GUZZLER_SCALES.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, OPBlocks.GUZZLER_SCALE_BRICK_SLAB.get(), 3).define('G', OPBlocks.GUZZLER_SCALE_BRICKS.get()).pattern("GGG").unlockedBy("has_guzzler_scales", has(GUZZLER_SCALES.get())).save(consumer);
+
+        ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, OPBlocks.TREMBLING_GUZZLER_SCALE_BRICKS.get(), 8).define('G', OPBlocks.GUZZLER_SCALE_BRICKS.get()).define('T', OPBlocks.TREMBLER_SHELL.get()).pattern("GGG").pattern("GTG").pattern("GGG").unlockedBy("has_guzzler_scales", has(GUZZLER_SCALES.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, OPBlocks.TREMBLING_GUZZLER_SCALE_BRICK_STAIRS.get(), 4).define('G', OPBlocks.TREMBLING_GUZZLER_SCALE_BRICKS.get()).pattern("G  ").pattern("GG ").pattern("GGG").unlockedBy("has_guzzler_scales", has(GUZZLER_SCALES.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, OPBlocks.TREMBLING_GUZZLER_SCALE_BRICK_SLAB.get(), 3).define('G', OPBlocks.TREMBLING_GUZZLER_SCALE_BRICKS.get()).pattern("GGG").unlockedBy("has_guzzler_scales", has(GUZZLER_SCALES.get())).save(consumer);
+
+        ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, OPBlocks.TREMBLING_GUZZLER_SCALE_SHINGLES.get(), 8).define('T', OPBlocks.TREMBLING_SHINGLES.get()).define('G', GUZZLER_SCALES.get()).pattern("TTT").pattern("TGT").pattern("TTT").unlockedBy("has_trembler_shell", has(OPBlocks.TREMBLER_SHELL.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, OPBlocks.TREMBLING_GUZZLER_SCALE_SHINGLE_STAIRS.get(), 4).define('G', OPBlocks.TREMBLING_GUZZLER_SCALE_SHINGLES.get()).pattern("G  ").pattern("GG ").pattern("GGG").unlockedBy("has_guzzler_scales", has(GUZZLER_SCALES.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, OPBlocks.TREMBLING_GUZZLER_SCALE_SHINGLE_SLAB.get(), 3).define('G', OPBlocks.TREMBLING_GUZZLER_SCALE_SHINGLES.get()).pattern("GGG").unlockedBy("has_guzzler_scales", has(GUZZLER_SCALES.get())).save(consumer);
+
         ShapedRecipeBuilder.shaped(FOOD, OPBlocks.INFERNO_PIE.get()).define('G', GUZZLER_SCALES.get()).define('F', FIRE_GEL.get()).define('S', Items.SUGAR).define('E', Tags.Items.EGGS).pattern("FFF").pattern("SES").pattern("GGG").unlockedBy("has_fire_gel", has(FIRE_GEL.get())).save(consumer);
         ShapedRecipeBuilder.shaped(FOOD, OPBlocks.INFERNO_PIE.get()).define('I', INFERNO_PIE_SLICE.get()).pattern("II").pattern("II").unlockedBy("has_fire_gel", has(FIRE_GEL.get())).save(consumer, getSaveLocation("inferno_pie_from_slices"));
 
         furnaceRecipe(RecipeSerializer.SMELTING_RECIPE, List.of(RAW_TART.get()), FOOD, COOKED_TART.get(), 0.25f, 200, "_from_smelting", consumer);
         furnaceRecipe(RecipeSerializer.SMOKING_RECIPE, List.of(RAW_TART.get()), FOOD, COOKED_TART.get(), 0.25f, 100, "_from_smoking", consumer);
+
+        ShapedRecipeBuilder.shaped(COMBAT, SAWBLADE.get(), 1).define('I', Tags.Items.INGOTS_IRON).define('T', TERROR_SAW.get()).define('R', Tags.Items.DUSTS_REDSTONE).pattern(" TI").pattern(" RI").pattern(" I ").unlockedBy("has_terror_saw", has(TERROR_SAW.get())).save(consumer);
+
+        ShapedRecipeBuilder.shaped(COMBAT, TREMBLING_SLAMMER.get(), 1).define('I', Tags.Items.INGOTS_GOLD).define('T', OPBlocks.TREMBLER_SHELL.get()).define('G', GUZZLER_SCALES.get()).pattern(" TG").pattern(" G ").pattern(" I ").unlockedBy("has_trembler_shell", has(OPBlocks.TREMBLER_SHELL.get())).save(consumer);
 
         ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, OPBlocks.TREMBLING_BLOCK.get(), 16).define('T', OPBlocks.TREMBLER_SHELL.get()).pattern("TT").pattern("TT").unlockedBy("has_trembler_shell", has(OPBlocks.TREMBLER_SHELL.get())).save(consumer);
 

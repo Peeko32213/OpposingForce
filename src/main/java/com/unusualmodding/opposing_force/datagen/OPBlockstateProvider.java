@@ -25,6 +25,19 @@ public class OPBlockstateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
+        this.cubeAllBlock(GUZZLER_SCALE_BLOCK);
+        this.cubeAllBlock(GUZZLER_SCALE_BRICKS);
+        this.stairs(GUZZLER_SCALE_BRICK_STAIRS, this.blockTexture(GUZZLER_SCALE_BRICKS.get()));
+        this.slab(GUZZLER_SCALE_BRICK_SLAB, this.blockTexture(GUZZLER_SCALE_BRICKS.get()));
+
+        this.cubeAllBlock(TREMBLING_GUZZLER_SCALE_BRICKS);
+        this.stairs(TREMBLING_GUZZLER_SCALE_BRICK_STAIRS, this.blockTexture(TREMBLING_GUZZLER_SCALE_BRICKS.get()));
+        this.slab(TREMBLING_GUZZLER_SCALE_BRICK_SLAB, this.blockTexture(TREMBLING_GUZZLER_SCALE_BRICKS.get()));
+
+        this.cubeAllBlock(TREMBLING_GUZZLER_SCALE_SHINGLES);
+        this.stairs(TREMBLING_GUZZLER_SCALE_SHINGLE_STAIRS, this.blockTexture(TREMBLING_GUZZLER_SCALE_SHINGLES.get()));
+        this.slab(TREMBLING_GUZZLER_SCALE_SHINGLE_SLAB, this.blockTexture(TREMBLING_GUZZLER_SCALE_SHINGLES.get()));
+
         this.cubeAllBlock(TREMBLING_BLOCK);
         this.cubeAllBlock(TREMBLING_SHINGLES);
         this.stairs(TREMBLING_SHINGLE_STAIRS, this.blockTexture(TREMBLING_SHINGLES.get()));

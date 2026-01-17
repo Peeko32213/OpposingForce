@@ -90,7 +90,7 @@ public class OPItems {
     public static final RegistryObject<Item> HANGING_SPIDER_SPAWN_EGG = registerSpawnEggItem("hanging_spider", OPEntities.HANGING_SPIDER, 0x2c231e, 0xf5e83b);
 
     // Ladybug
-    public static final RegistryObject<Item> LADYBUG_SPAWN_EGG = registerSpawnEggItem("ladybug", OPEntities.LADYBUG, 0xd03434, 0x110d17);
+    public static final RegistryObject<Item> LADYBUG_SPAWN_EGG = registerSpawnEggItem("ladybug", OPEntities.LADYBUG, 0xda3131, 0x2a1d28);
     public static final RegistryObject<Item> LADYBUG_HUSK = registerItem("ladybug_husk", () -> new Item(new Item.Properties()));
 
     // Nymph
@@ -149,7 +149,8 @@ public class OPItems {
 
     // Terror
     public static final RegistryObject<Item> TERROR_SPAWN_EGG = registerSpawnEggItem("terror", OPEntities.TERROR , 0x074230, 0xff0000);
-    public static final RegistryObject<Item> SAWBLADE = registerItem("sawblade", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> TERROR_SAW = registerItem("terror_saw", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> SAWBLADE = registerItem("sawblade", () -> new SawbladeItem(new Item.Properties()));
 
     public static final RegistryObject<Item> TERROR_LEG = registerItemNoLang("terror_leg", () -> new Item(foodItem(OPFoodValues.RAW_TERROR_LEG)));
     public static final RegistryObject<Item> FRIED_TERROR_LEG = registerItem("fried_terror_leg", () -> new Item(foodItem(OPFoodValues.FRIED_TERROR_LEG)));
@@ -157,6 +158,7 @@ public class OPItems {
 
     // Trembler
     public static final RegistryObject<Item> TREMBLER_SPAWN_EGG = registerSpawnEggItem("trembler", OPEntities.TREMBLER , 0x465641, 0x0d0e0d);
+    public static final RegistryObject<Item> TREMBLING_SLAMMER = registerItem("trembling_slammer", () -> new TremblingSlammer(new Item.Properties()));
 
     // Umber Spider
     public static final RegistryObject<Item> UMBER_SPIDER_SPAWN_EGG = registerSpawnEggItem("umber_spider", OPEntities.UMBER_SPIDER , 0x241d2c, 0x44a9f6);

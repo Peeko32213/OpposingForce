@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "opposing_force:block/guzzler_scale_bricks",
+    "side": "opposing_force:block/guzzler_scale_bricks",
+    "top": "opposing_force:block/guzzler_scale_bricks"
+  }
+}

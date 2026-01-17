@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "G": {
+      "item": "opposing_force:guzzler_scale_block"
+    }
+  },
+  "pattern": [
+    "GG",
+    "GG"
+  ],
+  "result": {
+    "count": 16,
+    "item": "opposing_force:guzzler_scale_bricks"
+  },
+  "show_notification": true
+}

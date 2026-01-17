@@ -1,0 +1,21 @@
+{
+  "parent": "item/handheld",
+  "loader": "forge:separate_transforms",
+  "textures": {
+    "layer0": "opposing_force:item/trembling_slammer"
+  },
+  "base": {
+    "parent": "opposing_force:item/trembling_slammer_handheld"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "opposing_force:item/trembling_slammer_gui"
+    },
+    "fixed": {
+      "parent": "opposing_force:item/trembling_slammer_gui"
+    },
+    "ground": {
+      "parent": "opposing_force:item/trembling_slammer_gui"
+    }
+  }
+}

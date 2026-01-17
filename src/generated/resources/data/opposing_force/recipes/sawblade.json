@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "T": {
+      "item": "opposing_force:terror_saw"
+    }
+  },
+  "pattern": [
+    " TI",
+    " RI",
+    " I "
+  ],
+  "result": {
+    "item": "opposing_force:sawblade"
+  },
+  "show_notification": true
+}

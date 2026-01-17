@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "opposing_force:block/trembling_guzzler_scale_shingles",
+    "side": "opposing_force:block/trembling_guzzler_scale_shingles",
+    "top": "opposing_force:block/trembling_guzzler_scale_shingles"
+  }
+}

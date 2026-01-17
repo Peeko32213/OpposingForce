@@ -35,6 +35,20 @@ public class OPBlocks {
     public static final Pair<RegistryObject<Block>, RegistryObject<Block>> FROWZY_HEAD = registerMobHead("frowzy_head", MobHeadBlock.Types.FROWZY, OPNoteBlockInstruments.FROWZY.get());
 
     // Guzzler
+    public static final RegistryObject<Block> GUZZLER_SCALE_BLOCK = registerBlock("guzzler_scale_block", () -> new Block(OPBlockProperties.GUZZLER_SCALE_BLOCK));
+
+    public static final RegistryObject<Block> GUZZLER_SCALE_BRICKS = registerBlock("guzzler_scale_bricks", () -> new Block(OPBlockProperties.GUZZLER_SCALE_BLOCK));
+    public static final RegistryObject<Block> GUZZLER_SCALE_BRICK_STAIRS = registerBlock("guzzler_scale_brick_stairs", () -> new StairBlock(() -> GUZZLER_SCALE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(GUZZLER_SCALE_BRICKS.get())));
+    public static final RegistryObject<Block> GUZZLER_SCALE_BRICK_SLAB = registerBlock("guzzler_scale_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(GUZZLER_SCALE_BRICKS.get())));
+
+    public static final RegistryObject<Block> TREMBLING_GUZZLER_SCALE_BRICKS = registerBlock("trembling_guzzler_scale_bricks", () -> new Block(OPBlockProperties.GUZZLER_SCALE_BLOCK));
+    public static final RegistryObject<Block> TREMBLING_GUZZLER_SCALE_BRICK_STAIRS = registerBlock("trembling_guzzler_scale_brick_stairs", () -> new StairBlock(() -> TREMBLING_GUZZLER_SCALE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(TREMBLING_GUZZLER_SCALE_BRICKS.get())));
+    public static final RegistryObject<Block> TREMBLING_GUZZLER_SCALE_BRICK_SLAB = registerBlock("trembling_guzzler_scale_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(TREMBLING_GUZZLER_SCALE_BRICKS.get())));
+
+    public static final RegistryObject<Block> TREMBLING_GUZZLER_SCALE_SHINGLES = registerBlock("trembling_guzzler_scale_shingles", () -> new Block(OPBlockProperties.GUZZLER_SCALE_BLOCK));
+    public static final RegistryObject<Block> TREMBLING_GUZZLER_SCALE_SHINGLE_STAIRS = registerBlock("trembling_guzzler_scale_shingle_stairs", () -> new StairBlock(() -> TREMBLING_GUZZLER_SCALE_SHINGLES.get().defaultBlockState(), BlockBehaviour.Properties.copy(TREMBLING_GUZZLER_SCALE_SHINGLES.get())));
+    public static final RegistryObject<Block> TREMBLING_GUZZLER_SCALE_SHINGLE_SLAB = registerBlock("trembling_guzzler_scale_shingle_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(TREMBLING_GUZZLER_SCALE_SHINGLES.get())));
+
     public static final RegistryObject<Block> INFERNO_PIE = registerBlock("inferno_pie", () -> new InfernoPieBlock(OPBlockProperties.INFERNO_PIE));
 
     // Rambler

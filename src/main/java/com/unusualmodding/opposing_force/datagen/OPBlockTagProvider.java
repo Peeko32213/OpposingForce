@@ -46,6 +46,16 @@ public class OPBlockTagProvider extends BlockTagsProvider {
         );
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
+                GUZZLER_SCALE_BRICKS.get(),
+                GUZZLER_SCALE_BRICK_STAIRS.get(),
+                GUZZLER_SCALE_BRICK_SLAB.get(),
+                GUZZLER_SCALE_BLOCK.get(),
+                TREMBLING_GUZZLER_SCALE_BRICKS.get(),
+                TREMBLING_GUZZLER_SCALE_BRICK_STAIRS.get(),
+                TREMBLING_GUZZLER_SCALE_BRICK_SLAB.get(),
+                TREMBLING_GUZZLER_SCALE_SHINGLES.get(),
+                TREMBLING_GUZZLER_SCALE_SHINGLE_STAIRS.get(),
+                TREMBLING_GUZZLER_SCALE_SHINGLE_SLAB.get(),
                 TREMBLER_SHELL.get(),
                 TREMBLING_SHINGLES.get(),
                 TREMBLING_SHINGLE_STAIRS.get(),
@@ -84,6 +94,9 @@ public class OPBlockTagProvider extends BlockTagsProvider {
         );
 
         this.tag(BlockTags.STAIRS).add(
+                GUZZLER_SCALE_BRICK_STAIRS.get(),
+                TREMBLING_GUZZLER_SCALE_BRICK_STAIRS.get(),
+                TREMBLING_GUZZLER_SCALE_SHINGLE_STAIRS.get(),
                 TREMBLING_SHINGLE_STAIRS.get(),
                 VILE_STONE_STAIRS.get(),
                 VILE_COBBLESTONE_STAIRS.get(),
@@ -91,6 +104,9 @@ public class OPBlockTagProvider extends BlockTagsProvider {
         );
 
         this.tag(BlockTags.SLABS).add(
+                GUZZLER_SCALE_BRICK_SLAB.get(),
+                TREMBLING_GUZZLER_SCALE_BRICK_SLAB.get(),
+                TREMBLING_GUZZLER_SCALE_SHINGLE_SLAB.get(),
                 TREMBLING_SHINGLE_SLAB.get(),
                 VILE_STONE_SLAB.get(),
                 VILE_COBBLESTONE_SLAB.get(),

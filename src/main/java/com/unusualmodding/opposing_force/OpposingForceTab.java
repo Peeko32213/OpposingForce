@@ -72,6 +72,16 @@ public class OpposingForceTab {
 
                     // Guzzler
                     output.accept(OPItems.GUZZLER_SCALES.get());
+                    output.accept(OPBlocks.GUZZLER_SCALE_BLOCK.get());
+                    output.accept(OPBlocks.GUZZLER_SCALE_BRICKS.get());
+                    output.accept(OPBlocks.GUZZLER_SCALE_BRICK_STAIRS.get());
+                    output.accept(OPBlocks.GUZZLER_SCALE_BRICK_SLAB.get());
+                    output.accept(OPBlocks.TREMBLING_GUZZLER_SCALE_BRICKS.get());
+                    output.accept(OPBlocks.TREMBLING_GUZZLER_SCALE_BRICK_STAIRS.get());
+                    output.accept(OPBlocks.TREMBLING_GUZZLER_SCALE_BRICK_SLAB.get());
+                    output.accept(OPBlocks.TREMBLING_GUZZLER_SCALE_SHINGLES.get());
+                    output.accept(OPBlocks.TREMBLING_GUZZLER_SCALE_SHINGLE_STAIRS.get());
+                    output.accept(OPBlocks.TREMBLING_GUZZLER_SCALE_SHINGLE_SLAB.get());
                     output.accept(OPItems.FIRE_GEL.get());
                     output.accept(OPItems.FIRE_BOMB.get());
                     output.accept(OPBlocks.INFERNO_PIE.get());
@@ -144,10 +154,12 @@ public class OpposingForceTab {
                     output.accept(OPItems.TERROR_LEG.get());
                     output.accept(OPItems.FRIED_TERROR_LEG.get());
                     output.accept(OPItems.SPICY_TERROR_LEG.get());
+                    output.accept(OPItems.TERROR_SAW.get());
                     output.accept(OPItems.SAWBLADE.get());
 
                     // Trembler
                     output.accept(OPBlocks.TREMBLER_SHELL.get());
+                    output.accept(OPItems.TREMBLING_SLAMMER.get());
                     output.accept(OPBlocks.TREMBLING_BLOCK.get());
                     output.accept(OPBlocks.TREMBLING_SHINGLES.get());
                     output.accept(OPBlocks.TREMBLING_SHINGLE_STAIRS.get());

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "G": {
+      "item": "opposing_force:guzzler_scales"
+    },
+    "I": {
+      "tag": "forge:ingots/gold"
+    },
+    "T": {
+      "item": "opposing_force:trembler_shell"
+    }
+  },
+  "pattern": [
+    " TG",
+    " G ",
+    " I "
+  ],
+  "result": {
+    "item": "opposing_force:trembling_slammer"
+  },
+  "show_notification": true
+}

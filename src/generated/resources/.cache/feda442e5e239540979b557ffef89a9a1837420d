@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-15T20:45:23.7313239	Item Models: opposing_force
+// 1.20.1	2026-01-16T20:55:54.9387859	Item Models: opposing_force
 43d32e7d031485f83a1b4eb56ecb3cc40a456163 assets/opposing_force/models/item/angry_rambler_skull.json
 76e32b619b6a338b691da2b22d3ae2be3d549c59 assets/opposing_force/models/item/bone_axe.json
 1aae6a213c7ddb8099e7177c1fbbdfbc2f2f37b5 assets/opposing_force/models/item/bone_boots.json
@@ -65,7 +65,6 @@ ff7d0abd1703b5553006c4793b5e4ea9b3119c49 assets/opposing_force/models/item/recon
 f8d41632b55b2add3c86f9e3cfb3d2a3167e4e11 assets/opposing_force/models/item/recon_knight_chestplate.json
 ef562996af5ddaacf2ab58feb0a5582f9bee0350 assets/opposing_force/models/item/recon_knight_helmet.json
 633695ee80720c2c746f7ce6f983430a2e9d6712 assets/opposing_force/models/item/recon_knight_leggings.json
-21d541450df6bb84626ef2a80746e4d720d98182 assets/opposing_force/models/item/sawblade.json
 43d32e7d031485f83a1b4eb56ecb3cc40a456163 assets/opposing_force/models/item/skeletal_rambler_skull.json
 d7ec0f9ced421f0b4b26fcf33813c71cde0378f5 assets/opposing_force/models/item/skyvern_claw.json
 407c181c35a189576218d9b7740a5a6c75179839 assets/opposing_force/models/item/skyvern_egg.json
@@ -88,6 +87,7 @@ f520914c9a04160cc6a93346e2fcff583038293e assets/opposing_force/models/item/stone
 43d32e7d031485f83a1b4eb56ecb3cc40a456163 assets/opposing_force/models/item/tart_head.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/tart_spawn_egg.json
 8370af1222f890823296e071821ce465b71a02ca assets/opposing_force/models/item/terror_leg.json
+28c869ecd5b88e1b91fcc4f508349377623be755 assets/opposing_force/models/item/terror_saw.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/terror_spawn_egg.json
 67181118504fdab7779eb2d609ad3f54960fd88b assets/opposing_force/models/item/tomahawk.json
 0769a06d3845b62c24c0187116be1a5038deeeaf assets/opposing_force/models/item/trembler_shell.json

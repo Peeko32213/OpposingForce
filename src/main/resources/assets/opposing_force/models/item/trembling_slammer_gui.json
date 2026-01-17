@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "opposing_force:item/trembling_slammer"
+  }
+}

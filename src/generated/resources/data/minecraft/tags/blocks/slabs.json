@@ -1,5 +1,8 @@
 {
   "values": [
+    "opposing_force:guzzler_scale_brick_slab",
+    "opposing_force:trembling_guzzler_scale_brick_slab",
+    "opposing_force:trembling_guzzler_scale_shingle_slab",
     "opposing_force:trembling_shingle_slab",
     "opposing_force:vile_stone_slab",
     "opposing_force:vile_cobblestone_slab",

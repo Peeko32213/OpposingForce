@@ -6,6 +6,7 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,20 +21,38 @@ public class OPBlockLootTableProvider extends BlockLootSubProvider {
     }
 
     @Override
-    protected void add(Block block, LootTable.Builder builder) {
+    protected void add(@NotNull Block block, LootTable.@NotNull Builder builder) {
         super.add(block, builder);
-        knownBlocks.add(block);
+        this.knownBlocks.add(block);
     }
 
     @Override
     protected void generate() {
+        this.dropSelf(GUZZLER_SCALE_BRICKS.get());
+        this.dropSelf(GUZZLER_SCALE_BRICK_STAIRS.get());
+        this.add(GUZZLER_SCALE_BRICK_SLAB.get(), this::createSlabItemTable);
+
+        this.dropSelf(TREMBLING_GUZZLER_SCALE_BRICKS.get());
+        this.dropSelf(TREMBLING_GUZZLER_SCALE_BRICK_STAIRS.get());
+        this.add(TREMBLING_GUZZLER_SCALE_BRICK_SLAB.get(), this::createSlabItemTable);
+
+        this.dropSelf(TREMBLING_GUZZLER_SCALE_SHINGLES.get());
+        this.dropSelf(TREMBLING_GUZZLER_SCALE_SHINGLE_STAIRS.get());
+        this.add(TREMBLING_GUZZLER_SCALE_SHINGLE_SLAB.get(), this::createSlabItemTable);
+
+        this.dropSelf(TREMBLING_SHINGLES.get());
+        this.dropSelf(TREMBLING_SHINGLE_STAIRS.get());
+        this.add(TREMBLING_SHINGLE_SLAB.get(), this::createSlabItemTable);
+
         this.dropSelf(TREMBLER_SHELL.get());
         this.dropSelf(TREMBLING_SHINGLES.get());
         this.dropSelf(TREMBLING_SHINGLE_STAIRS.get());
         this.add(TREMBLING_SHINGLE_SLAB.get(), this::createSlabItemTable);
         this.dropSelf(TREMBLING_BLOCK.get());
+
         this.dropSelf(DEEP_SILK_BLOCK.get());
         createSilkTouchOrShearsDispatchTable(DEEP_WEB.get(), this.applyExplosionCondition(DEEP_WEB.get(), LootItem.lootTableItem(OPItems.DEEP_SILK.get())));
+
         this.dropSelf(VILE_STONE.get());
         this.dropSelf(VILE_STONE_STAIRS.get());
         this.add(VILE_STONE_SLAB.get(), this::createSlabItemTable);

@@ -10,6 +10,14 @@ public class OPToolDefinitions {
             .tier(OPTiers.OPItemTiers.BONE)
             .build();
 
+    public static final ToolDefinition SAWBLADE = new ToolDefinition.Builder()
+            .tier(OPTiers.OPItemTiers.SAWBLADE)
+            .build();
+
+    public static final ToolDefinition TREMBLING = new ToolDefinition.Builder()
+            .tier(OPTiers.OPItemTiers.TREMBLING)
+            .build();
+
     public static final ToolDefinition EMERALD = new ToolDefinition.Builder()
             .tier(OPTiers.OPItemTiers.EMERALD)
             .attribute(OPAttributes.EXPERIENCE_GAIN.get(), 0.5F, AttributeModifier.Operation.MULTIPLY_BASE)
