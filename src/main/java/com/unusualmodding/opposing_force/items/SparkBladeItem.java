@@ -46,9 +46,7 @@ public class SparkBladeItem extends SwordItem {
     @Override
     public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
         if (super.hurtEnemy(stack, target, attacker)) {
-            if (!target.level().isClientSide) {
-                this.sendElectricParticles(target, 3);
-            }
+            if (!target.level().isClientSide) this.sendElectricParticles(target, 3);
             target.addEffect(new MobEffectInstance(OPMobEffects.ELECTRIFIED.get(), 100, 0));
             target.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 1.0F, 1.0F / (target.level().getRandom().nextFloat() * 0.4F + 0.8F));
             return true;
@@ -76,13 +74,13 @@ public class SparkBladeItem extends SwordItem {
                 }
 
                 level.playSound(null, player.getX(), player.getY(), player.getZ(), OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), player.getSoundSource(), 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 0.8F));
-                this.sendElectricParticles(player, 3);
+                if (!level.isClientSide) this.sendElectricParticles(player, 3);
                 this.tryToHurt(player);
 
                 player.teleportTo(teleportPos.x, teleportPos.y, teleportPos.z);
 
                 level.playSound(null, teleportPos.x(), teleportPos.y(), teleportPos.z(), OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), player.getSoundSource(), 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 0.8F));
-                this.sendElectricParticles(player, 3);
+                if (!level.isClientSide) this.sendElectricParticles(player, 3);
                 this.tryToHurt(player);
             }
         }
