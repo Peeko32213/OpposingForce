@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-15T20:45:23.7303265	Tags for minecraft:item mod id opposing_force
+// 1.20.1	2026-01-20T21:24:19.9705897	Tags for minecraft:item mod id opposing_force
 ab9267517e8e117ff204624c177efec966684350 data/forge/tags/items/armors.json
 bb84466db145b5c4beb7db52e0954f92dc49ddee data/forge/tags/items/armors/boots.json
 b8ff562ca31cffac5ddc6711c910951cb52837b4 data/forge/tags/items/armors/chestplates.json
@@ -21,7 +21,7 @@ aab8cc36c3a161099727654ff98b5cc3de198890 data/minecraft/tags/items/shovels.json
 82e91af709a4cefb3160a903a54e5d43e601907f data/opposing_force/tags/items/blasters.json
 5db69586b6c50b2befacf44de1aedc4a5af092fe data/opposing_force/tags/items/blaster_ammo.json
 3dad7227f5898364f7923651bb07b56d4949c73c data/opposing_force/tags/items/knives.json
-0051c61cbd46b6c799d48ff49f811c7ce229301c data/opposing_force/tags/items/laser_blades.json
+bade3105f993cd8336983d4833ed640cd643e481 data/opposing_force/tags/items/laser_blades.json
 0aa44f0a119dbe3e5dfba2b18c125ca0b0e9b00d data/opposing_force/tags/items/prevent_cape_rendering.json
 6c8a817e41b966796e81be0c35f86363aff8c672 data/opposing_force/tags/items/rambler_skulls.json
 73b65f8cc30505320b7b2a992214c6ab931aa2e1 data/opposing_force/tags/items/raw_vegetables.json

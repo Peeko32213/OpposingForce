@@ -46,6 +46,7 @@ public class OpposingForceTab {
                     output.accept(OPItems.PURPLE_LASER_BLADE.get());
                     output.accept(OPItems.MAGENTA_LASER_BLADE.get());
                     output.accept(OPItems.PINK_LASER_BLADE.get());
+                    output.accept(OPItems.RAINBOW_LASER_BLADE.get());
 
                     output.accept(OPItems.BLASTER.get());
                     output.accept(OPItems.WHITE_BLASTER.get());
