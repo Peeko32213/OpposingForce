@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "tag": "opposing_force:laser_blades"
+    },
+    {
+      "tag": "opposing_force:laser_blades"
+    },
+    {
+      "tag": "opposing_force:laser_blades"
+    },
+    {
+      "tag": "opposing_force:laser_blades"
+    },
+    {
+      "tag": "opposing_force:laser_blades"
+    },
+    {
+      "tag": "opposing_force:laser_blades"
+    },
+    {
+      "tag": "opposing_force:laser_blades"
+    },
+    {
+      "tag": "opposing_force:laser_blades"
+    }
+  ],
+  "result": {
+    "item": "opposing_force:rainbow_laser_blade"
+  }
+}

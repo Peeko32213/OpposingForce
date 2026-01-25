@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-16T21:32:03.0790171	Recipes
+// 1.20.1	2026-01-24T20:19:44.7801251	Recipes
 19b9af45401a2eea7cbaccf470cc125ee7fee81b data/minecraft/advancements/recipes/food/enchanted_golden_apple.json
 4e6fce234df08980a5f8e058b9497c4d9d72a986 data/minecraft/recipes/enchanted_golden_apple.json
 139da0a86e8b183e3a1799119694c7bc0b55d53e data/opposing_force/advancements/recipes/building_blocks/chiseled_vile_stone_bricks.json
@@ -86,6 +86,7 @@ ce3d2903a836e8ba8a9247ece84e43660a5d7f08 data/opposing_force/advancements/recipe
 ea20c2e00bbb714aa1ac3474fb3fee94eeeff7e1 data/opposing_force/advancements/recipes/combat/pink_laser_blade.json
 456eb3f752db14572ab0354b16e202b420b03d49 data/opposing_force/advancements/recipes/combat/purple_blaster.json
 32da33a4fec5e0f2a904caf1291ce25aa9a7b0dc data/opposing_force/advancements/recipes/combat/purple_laser_blade.json
+d55d9a7a94ce664e71f65cd33d5c383294ba292a data/opposing_force/advancements/recipes/combat/rainbow_laser_blade.json
 0922e146c5b80e28f3f8a9898664b1351e093f78 data/opposing_force/advancements/recipes/combat/recon_knight_boots.json
 a3b09768abf61fd63ca45efb176110f560feff4b data/opposing_force/advancements/recipes/combat/recon_knight_chestplate.json
 7fbc49cca3ac17ac31ac46ff6abb0eca8f38df1a data/opposing_force/advancements/recipes/combat/recon_knight_helmet.json
@@ -181,6 +182,7 @@ e4db872c539c0bcb98d607127c08d68937a3d681 data/opposing_force/recipes/pink_blaste
 1838fcad65bc668c5ab9efdcada843d390e563a9 data/opposing_force/recipes/pink_laser_blade.json
 ba8257c0d8824003b6aa64d61e5bd1c9e6bb8488 data/opposing_force/recipes/purple_blaster.json
 9af583b3b913280e896e3661728bfbfa07cc299d data/opposing_force/recipes/purple_laser_blade.json
+694b4d65469c4dcefe575610dbd188fa068479eb data/opposing_force/recipes/rainbow_laser_blade.json
 ff8457ac68e63ad7d8674fee24062029419773c3 data/opposing_force/recipes/recon_knight_boots.json
 057e038a37a6a2e3d7201fd40b4ab43ec6bbcfed data/opposing_force/recipes/recon_knight_chestplate.json
 642449634a7565750c447f83cdf253a6316a5bd6 data/opposing_force/recipes/recon_knight_helmet.json

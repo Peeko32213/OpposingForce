@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class LaserBladeItem extends SwordItem implements CustomSweepAttack {
 
-    private final ParticleOptions sweepParticle;
+    protected ParticleOptions sweepParticle;
     private int swingSoundCooldown = 0;
 
     public LaserBladeItem(ParticleOptions sweepParticle) {

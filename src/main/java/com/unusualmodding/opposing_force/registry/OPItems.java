@@ -68,7 +68,7 @@ public class OPItems {
     public static final RegistryObject<Item> PURPLE_LASER_BLADE = registerItem("purple_laser_blade", () -> new LaserBladeItem(OPParticles.PURPLE_LASER_SWEEP.get()));
     public static final RegistryObject<Item> MAGENTA_LASER_BLADE = registerItem("magenta_laser_blade", () -> new LaserBladeItem(OPParticles.MAGENTA_LASER_SWEEP.get()));
     public static final RegistryObject<Item> PINK_LASER_BLADE = registerItem("pink_laser_blade", () -> new LaserBladeItem(OPParticles.PINK_LASER_SWEEP.get()));
-    public static final RegistryObject<Item> RAINBOW_LASER_BLADE = registerItem("rainbow_laser_blade", () -> new LaserBladeItem(OPParticles.LASER_SWEEP.get()));
+    public static final RegistryObject<Item> RAINBOW_LASER_BLADE = registerItem("rainbow_laser_blade", () -> new RainbowLaserBladeItem(OPParticles.LASER_SWEEP.get()));
 
     public static final RegistryObject<Item> DICER_HEAD = registerItemNoLang("dicer_head", () -> new MobHeadItem(OPBlocks.DICER_HEAD.getFirst().get(), OPBlocks.DICER_HEAD.getSecond().get(), (new Item.Properties()).rarity(Rarity.UNCOMMON), Direction.DOWN));
 
