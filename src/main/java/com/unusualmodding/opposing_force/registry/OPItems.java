@@ -213,8 +213,8 @@ public class OPItems {
     public static final RegistryObject<Item> STONE_BOOTS = registerItem("stone_boots", ()-> new ConfigurableArmorItem(ArmorItem.Type.BOOTS, new Item.Properties(), OPArmorDefinitions.STONE));
 
     // treasure
-    public static final RegistryObject<Item> LEAPING_LEGGINGS = registerItem("leaping_leggings", ()-> new LeapingLeggingsItem(new Item.Properties().rarity(OPRarities.LEGENDARY)));
-    public static final RegistryObject<Item> MOON_SHOES = registerItem("moon_shoes", ()-> new MoonShoesItem(new Item.Properties().rarity(OPRarities.LEGENDARY)));
+    public static final RegistryObject<Item> LEAPING_LEGGINGS = registerItem("leaping_leggings", ()-> new LeapingLeggingsItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> MOON_SHOES = registerItem("moon_shoes", ()-> new MoonShoesItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> BLADE_OF_THE_MOUNTAIN = registerItem("blade_of_the_mountain", () -> new BladeOfTheMountainItem(new Item.Properties().rarity(Rarity.RARE)));
 
     // misc
