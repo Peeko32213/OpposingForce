@@ -31,7 +31,7 @@ public class OPArmorDefinitions {
 
     public static final ArmorDefinition LEAPING_LEGGINGS = new ArmorDefinition.Builder()
             .material(OPTiers.OPArmorMaterials.LEAPING_LEGGINGS)
-            .attribute(OPAttributes.JUMP_POWER.get(), 3.0F, AttributeModifier.Operation.ADDITION)
+            .attribute(OPAttributes.JUMP_POWER.get(), 2.0F, AttributeModifier.Operation.ADDITION)
             .attribute(Attributes.MOVEMENT_SPEED, 0.1F, AttributeModifier.Operation.MULTIPLY_BASE)
             .attribute(ForgeMod.STEP_HEIGHT_ADDITION.get(), 0.5F, AttributeModifier.Operation.ADDITION)
             .texture(slot -> OpposingForce.MOD_ID + ":textures/models/armor/leaping_leggings_layer_1.png")
