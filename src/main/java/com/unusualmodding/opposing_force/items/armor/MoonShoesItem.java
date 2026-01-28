@@ -17,7 +17,7 @@ public class MoonShoesItem extends ConfigurableArmorItem {
     @Override
     public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slot, boolean isSelected) {
         if (entity instanceof LivingEntity living && living.getItemBySlot(EquipmentSlot.FEET) == stack) {
-            if (!living.onGround() && !living.onClimbable() && !living.isInWaterOrBubble()) {
+            if (!living.onGround() && !living.onClimbable() && !living.isInWaterOrBubble() && !living.isPassenger()) {
                 if (level.getRandom().nextFloat() < 0.5F) {
                     living.level().addParticle(OPParticles.MOON_SHOES.get(), living.position().x, living.position().y, living.position().z, (level.getRandom().nextFloat() - 0.5F) / 3.0F, 0.0D, (level.getRandom().nextFloat() - 0.5F) / 3.0F);
                 }
