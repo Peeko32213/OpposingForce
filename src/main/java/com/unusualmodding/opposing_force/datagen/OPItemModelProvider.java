@@ -136,6 +136,7 @@ public class OPItemModelProvider extends ItemModelProvider {
         // Misc
         this.handheldItem(TOMAHAWK);
         this.item(KINETIC_BOMB);
+        this.item(DONUT);
 
         // Music Discs
         this.item(WALTZ_OF_THE_SLUG_DISC);

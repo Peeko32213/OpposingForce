@@ -67,6 +67,7 @@ public final class ClientEvents {
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(OPEntities.DICER.get(), DicerRenderer::new);
         event.registerEntityRenderer(OPEntities.DICER_LASER.get(), DicerLaserRenderer::new);
+        event.registerEntityRenderer(OPEntities.DONUT.get(), OPThrownItemRenderer::new);
         event.registerEntityRenderer(OPEntities.ELECTRIC_CHARGE.get(), ElectricChargeRenderer::new);
         event.registerEntityRenderer(OPEntities.LASER_BOLT.get(), LaserBoltRenderer::new);
         event.registerEntityRenderer(OPEntities.LASER_BLADE.get(), ThrownLaserBladeRenderer::new);

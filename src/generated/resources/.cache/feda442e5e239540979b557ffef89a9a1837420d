@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-16T20:55:54.9387859	Item Models: opposing_force
+// 1.20.1	2026-02-05T19:12:35.7185118	Item Models: opposing_force
 43d32e7d031485f83a1b4eb56ecb3cc40a456163 assets/opposing_force/models/item/angry_rambler_skull.json
 76e32b619b6a338b691da2b22d3ae2be3d549c59 assets/opposing_force/models/item/bone_axe.json
 1aae6a213c7ddb8099e7177c1fbbdfbc2f2f37b5 assets/opposing_force/models/item/bone_boots.json
@@ -21,6 +21,7 @@ d256aa1ba7cda7ec587416f75d5e16d43f31a091 assets/opposing_force/models/item/deepw
 43d32e7d031485f83a1b4eb56ecb3cc40a456163 assets/opposing_force/models/item/dicer_head.json
 c3228ffb3363b07da7ea21debf3882ed5ee40be9 assets/opposing_force/models/item/dicer_lens.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/dicer_spawn_egg.json
+f30c860d40d1350ab8dbe11be9d3675e55512481 assets/opposing_force/models/item/donut.json
 43d32e7d031485f83a1b4eb56ecb3cc40a456163 assets/opposing_force/models/item/dwarven_rambler_skull.json
 57173b2895baf46f4e979315aa463dbc30e04a37 assets/opposing_force/models/item/electric_alloy.json
 9c7be6622d0582d8e8d5505b874ffd4a754cbd34 assets/opposing_force/models/item/electric_charge.json

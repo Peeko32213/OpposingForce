@@ -212,6 +212,15 @@ public class OPEntities {
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "laser_bolt").toString())
     );
 
+    public static final RegistryObject<EntityType<Donut>> DONUT = ENTITY_TYPE.register(
+            "donut", () ->
+            EntityType.Builder.<Donut>of(Donut::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(new ResourceLocation(OpposingForce.MOD_ID, "donut").toString())
+    );
+
     public static final RegistryObject<EntityType<Tomahawk>> TOMAHAWK = ENTITY_TYPE.register(
             "tomahawk", () ->
             EntityType.Builder.<Tomahawk>of(Tomahawk::new, MobCategory.MISC)

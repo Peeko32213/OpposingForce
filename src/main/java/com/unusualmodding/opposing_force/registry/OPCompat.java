@@ -59,6 +59,12 @@ public class OPCompat {
             }
         });
 
+        DispenserBlock.registerBehavior(OPItems.DONUT.get(), new AbstractProjectileDispenseBehavior() {
+            protected Projectile getProjectile(Level level, Position position, ItemStack itemStack) {
+                return new Donut(level, position.x(), position.y(), position.z());
+            }
+        });
+
         DispenserBlock.registerBehavior(OPItems.LIGHTNING_BOMB.get(), new AbstractProjectileDispenseBehavior() {
             protected Projectile getProjectile(Level level, Position position, ItemStack itemStack) {
                 return new LightningBomb(level, position.x(), position.y(), position.z());
