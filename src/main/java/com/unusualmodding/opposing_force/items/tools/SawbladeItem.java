@@ -18,7 +18,9 @@ import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class SawbladeItem extends ConfigurableAxeItem {
 
@@ -75,7 +77,7 @@ public class SawbladeItem extends ConfigurableAxeItem {
             if (!logState.is(BlockTags.LOGS)) continue;
             level.destroyBlock(logPos, true, player);
 
-            if (!player.isCreative() && level.getRandom().nextFloat() < 0.33F) {
+            if (!player.isCreative() && level.getRandom().nextBoolean()) {
                 stack.hurtAndBreak(1, serverPlayer, (livingEntity) -> livingEntity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
             }
         }
@@ -112,8 +114,9 @@ public class SawbladeItem extends ConfigurableAxeItem {
     }
 
     private static List<BlockPos> getLogsToBreak(Level level, BlockPos pos, List<BlockPos> logsToBreak, int logCount, Block logType) {
+        if (logsToBreak.size() >= 256) return logsToBreak;
         List<BlockPos> checkAround = new ArrayList<>();
-        int downY = pos.getY()-1;
+        int downY = pos.getY() - 1;
         List<BlockPos> aroundLogs = new ArrayList<>();
         for (BlockPos aL : BlockPos.betweenClosed(pos.getX() - 1, pos.getY() - 1, pos.getZ() - 1, pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1)) {
             aroundLogs.add(aL.immutable());

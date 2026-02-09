@@ -1,6 +1,28 @@
 {
-  "parent": "opposing_force:item/handheld_large",
-  "textures": {
-    "layer0": "opposing_force:item/sawblade_huge"
-  }
+	"parent": "item/handheld",
+	"textures": {
+		"layer0": "opposing_force:item/sawblade_huge"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, -90, 45],
+			"translation": [0, 13, 2],
+			"scale": [2, 2, 0.85]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, 90, -45],
+			"translation": [0, 13, 2],
+			"scale": [2, 2, 0.85]
+		},
+		"firstperson_righthand": {
+			"rotation": [-170, -90, -70],
+			"translation": [2, 4, -2],
+			"scale": [1.5, 1.5, 0.68]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-170, 90, 70],
+			"translation": [2, 4, -2],
+			"scale": [1.5, 1.5, 0.68]
+		}
+	}
 }

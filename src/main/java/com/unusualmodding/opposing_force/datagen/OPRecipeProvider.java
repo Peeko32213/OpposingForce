@@ -2,7 +2,6 @@ package com.unusualmodding.opposing_force.datagen;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.registry.OPBlocks;
-import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
