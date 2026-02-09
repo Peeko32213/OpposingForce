@@ -69,6 +69,7 @@ public class OPLanguageProvider extends LanguageProvider {
 
         this.forEntity(OPEntities.DONUT);
         this.forEntity(OPEntities.ELECTRIC_CHARGE);
+        this.forEntity(OPEntities.TERROR_SAW);
         this.forEntity(OPEntities.TOMAHAWK);
         this.forEntity(OPEntities.UMBER_DAGGER);
         this.forEntity(OPEntities.FIRE_BOMB);

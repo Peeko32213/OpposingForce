@@ -1,10 +1,7 @@
 package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.entity.projectile.DicerLaser;
-import com.unusualmodding.opposing_force.entity.projectile.ThrownLaserBlade;
-import com.unusualmodding.opposing_force.entity.projectile.Tomahawk;
-import com.unusualmodding.opposing_force.entity.projectile.UmberDagger;
+import com.unusualmodding.opposing_force.entity.projectile.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
@@ -25,6 +22,7 @@ public class OPDamageTypes {
     public static final ResourceKey<DamageType> TOMAHAWK = register("tomahawk");
     public static final ResourceKey<DamageType> UMBER_DAGGER = register("umber_dagger");
     public static final ResourceKey<DamageType> THROWN_LASER_BLADE = register("thrown_laser_blade");
+    public static final ResourceKey<DamageType> TERROR_SAW = register("terror_saw");
 
     public static void bootstrap(BootstapContext<DamageType> context) {
         context.register(ELECTRIC, new DamageType("electric", 0.1F));
@@ -35,6 +33,7 @@ public class OPDamageTypes {
         context.register(LASER_BOLT, new DamageType("laser_bolt", 0.1F));
         context.register(UMBER_DAGGER, new DamageType("umber_dagger", 0.1F));
         context.register(THROWN_LASER_BLADE, new DamageType("thrown_laser_blade", 0.1F));
+        context.register(TERROR_SAW, new DamageType("terror_saw", 0.1F));
     }
 
     public static DamageSource laser(Level level, DicerLaser laser, @Nullable Entity indirectEntity) {
@@ -47,6 +46,10 @@ public class OPDamageTypes {
 
     public static DamageSource tomahawk(Level level, Tomahawk tomahawk, @Nullable Entity indirectEntity) {
         return level.damageSources().source(TOMAHAWK, tomahawk, indirectEntity);
+    }
+
+    public static DamageSource terrorSaw(Level level, TerrorSaw terrorSaw, @Nullable Entity indirectEntity) {
+        return level.damageSources().source(TERROR_SAW, terrorSaw, indirectEntity);
     }
 
     public static DamageSource umberDagger(Level level, UmberDagger umberKnife, @Nullable Entity indirectEntity) {

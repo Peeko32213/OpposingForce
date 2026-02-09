@@ -1,6 +1,6 @@
 package com.unusualmodding.opposing_force.items;
 
-import com.unusualmodding.opposing_force.entity.projectile.Donut;
+import com.unusualmodding.opposing_force.entity.projectile.TerrorSaw;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -12,9 +12,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class DonutIItem extends Item {
+public class TerrorSawItem extends Item {
 
-    public DonutIItem(Properties properties) {
+    public TerrorSawItem(Properties properties) {
         super(properties);
     }
 
@@ -24,9 +24,9 @@ public class DonutIItem extends Item {
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EGG_THROW, SoundSource.PLAYERS, 0.5F, 0.4F / (level.random.nextFloat() * 0.4F + 0.8F));
         player.getCooldowns().addCooldown(this, 10);
         if (!level.isClientSide) {
-            Donut donut = new Donut(level, player);
-            donut.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
-            level.addFreshEntity(donut);
+            TerrorSaw terrorSaw = new TerrorSaw(level, player);
+            terrorSaw.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
+            level.addFreshEntity(terrorSaw);
         }
         player.awardStat(Stats.ITEM_USED.get(this));
         if (!player.getAbilities().instabuild) {

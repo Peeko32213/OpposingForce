@@ -65,6 +65,12 @@ public class OPCompat {
             }
         });
 
+        DispenserBlock.registerBehavior(OPItems.TERROR_SAW.get(), new AbstractProjectileDispenseBehavior() {
+            protected Projectile getProjectile(Level level, Position position, ItemStack itemStack) {
+                return new TerrorSaw(level, position.x(), position.y(), position.z());
+            }
+        });
+
         DispenserBlock.registerBehavior(OPItems.LIGHTNING_BOMB.get(), new AbstractProjectileDispenseBehavior() {
             protected Projectile getProjectile(Level level, Position position, ItemStack itemStack) {
                 return new LightningBomb(level, position.x(), position.y(), position.z());

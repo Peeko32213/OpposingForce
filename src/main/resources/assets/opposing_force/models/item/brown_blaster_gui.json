@@ -1,0 +1,16 @@
+{
+  "parent": "item/generated",
+  "loader": "forge:item_layers",
+  "forge_data": {
+    "layers": {
+      "1": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    }
+  },
+  "textures": {
+    "layer0": "opposing_force:item/blaster_gui",
+    "layer1": "opposing_force:item/blaster_gui_glow_brown"
+  }
+}
