@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.items.tools;
 import com.unusualmodding.opposing_force.registry.OPAttributes;
 import com.unusualmodding.opposing_force.registry.enums.OPTiers;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class OPToolDefinitions {
 
@@ -16,6 +17,7 @@ public class OPToolDefinitions {
 
     public static final ToolDefinition TREMBLING = new ToolDefinition.Builder()
             .tier(OPTiers.OPItemTiers.TREMBLING)
+            .attribute(Attributes.ATTACK_KNOCKBACK, 2.0F, AttributeModifier.Operation.ADDITION)
             .build();
 
     public static final ToolDefinition EMERALD = new ToolDefinition.Builder()

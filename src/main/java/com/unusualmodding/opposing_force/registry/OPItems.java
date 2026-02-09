@@ -91,7 +91,7 @@ public class OPItems {
     public static final RegistryObject<Item> HANGING_SPIDER_SPAWN_EGG = registerSpawnEggItem("hanging_spider", OPEntities.HANGING_SPIDER, 0x2c231e, 0xf5e83b);
 
     // Ladybug
-    public static final RegistryObject<Item> LADYBUG_SPAWN_EGG = registerSpawnEggItem("ladybug", OPEntities.LADYBUG, 0xda3131, 0x2a1d28);
+//    public static final RegistryObject<Item> LADYBUG_SPAWN_EGG = registerSpawnEggItem("ladybug", OPEntities.LADYBUG, 0xda3131, 0x2a1d28);
     public static final RegistryObject<Item> LADYBUG_HUSK = registerItem("ladybug_husk", () -> new Item(new Item.Properties()));
 
     // Nymph

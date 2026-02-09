@@ -1,4 +1,4 @@
-// 1.20.1	2026-02-05T19:12:35.7185118	Item Models: opposing_force
+// 1.20.1	2026-02-09T10:25:15.1294672	Item Models: opposing_force
 43d32e7d031485f83a1b4eb56ecb3cc40a456163 assets/opposing_force/models/item/angry_rambler_skull.json
 76e32b619b6a338b691da2b22d3ae2be3d549c59 assets/opposing_force/models/item/bone_axe.json
 1aae6a213c7ddb8099e7177c1fbbdfbc2f2f37b5 assets/opposing_force/models/item/bone_boots.json
@@ -52,7 +52,6 @@ bd946293b1358b66d7b31dac141fcf9c98269884 assets/opposing_force/models/item/infer
 5e0c1064691a0dd4670df1de818a6284f43b84f2 assets/opposing_force/models/item/inferno_pie_slice.json
 4da8ed7d7235701851515bb8835ca13080e610d7 assets/opposing_force/models/item/kinetic_bomb.json
 24190a6e86d325a1721fe3691f721dadcb8d7e07 assets/opposing_force/models/item/ladybug_husk.json
-63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/ladybug_spawn_egg.json
 4ebf08708ac5cf103852aa12fb5be908d5c945fd assets/opposing_force/models/item/leaping_leggings.json
 43d32e7d031485f83a1b4eb56ecb3cc40a456163 assets/opposing_force/models/item/leering_rambler_skull.json
 37a783272e1c99c7f4ddcd54eac1ee4796e28891 assets/opposing_force/models/item/lightning_bomb.json

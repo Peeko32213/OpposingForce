@@ -47,7 +47,7 @@ public class LightningBomb extends AbstractBomb {
                 ParticleUtils.spawnLightningParticles(location.x(), location.y(), location.z(), 6 + this.random.nextInt(2), 0.3F + (this.random.nextFloat() / 8), 0.5F + (this.random.nextFloat() / 8), 0.8F + (this.random.nextFloat() / 8));
             }
             this.level().broadcastEntityEvent(this, (byte) 3);
-            this.level().playSound(null, location.x(), location.y(), location.z(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.NEUTRAL, 2.5F, 1.8F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+            this.level().playSound(null, location.x(), location.y(), location.z(), SoundEvents.GENERIC_EXPLODE, SoundSource.NEUTRAL, 2.5F, 1.25F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         }
 
         for (Entity entity : this.level().getEntities(this, new AABB(location.subtract(radius, radius, radius), location.add(radius, radius, radius)))) {

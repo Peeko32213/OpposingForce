@@ -51,7 +51,7 @@ public class FireBomb extends AbstractBomb {
         float radius = this.getExplosionRadius();
         if (!this.level().isClientSide) {
             this.level().broadcastEntityEvent(this, (byte) 3);
-            this.level().playSound(null, location.x(), location.y(), location.z(), SoundEvents.GENERIC_EXPLODE, SoundSource.NEUTRAL, 2.5F, 1.8F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+            this.level().playSound(null, location.x(), location.y(), location.z(), SoundEvents.GENERIC_EXPLODE, SoundSource.NEUTRAL, 2.5F, 1.25F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         }
 
         for (Entity entity : this.level().getEntities(this, new AABB(location.subtract(radius, radius, radius), location.add(radius, radius, radius)))) {

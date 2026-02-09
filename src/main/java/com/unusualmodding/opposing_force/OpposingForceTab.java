@@ -90,7 +90,7 @@ public class OpposingForceTab {
                     output.accept(OPItems.INFERNO_STAFF.get());
 
                     // Ladybug
-                    output.accept(OPItems.LADYBUG_HUSK.get());
+//                    output.accept(OPItems.LADYBUG_HUSK.get());
 
                     // Rambler
                     output.accept(OPItems.HEAVY_BONE.get());
@@ -196,7 +196,7 @@ public class OpposingForceTab {
 
                     output.accept(OPItems.TOMAHAWK.get());
                     output.accept(OPItems.KINETIC_BOMB.get());
-                    output.accept(OPItems.BLADE_OF_THE_MOUNTAIN.get());
+//                    output.accept(OPItems.BLADE_OF_THE_MOUNTAIN.get());
 
                     output.accept(OPItems.WOODEN_MASK.get());
                     output.accept(OPItems.WOODEN_CHESTPLATE.get());

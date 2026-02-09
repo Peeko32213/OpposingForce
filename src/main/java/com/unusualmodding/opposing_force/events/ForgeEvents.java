@@ -7,6 +7,7 @@ import com.unusualmodding.opposing_force.entity.Frowzy;
 import com.unusualmodding.opposing_force.entity.UmberSpider;
 import com.unusualmodding.opposing_force.items.LaserBladeItem;
 import com.unusualmodding.opposing_force.items.armor.SlugBaronArmorItem;
+import com.unusualmodding.opposing_force.items.tools.SawbladeItem;
 import com.unusualmodding.opposing_force.registry.*;
 import com.unusualmodding.opposing_force.registry.OPTrades.MultipleInputsTrade;
 import com.unusualmodding.opposing_force.registry.tags.OPBiomeTags;
@@ -15,11 +16,13 @@ import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
 import com.unusualmodding.opposing_force.world.OPPlayerSavedData;
 import com.unusualmodding.opposing_force.world.OPWorldData;
 import com.unusualmodding.opposing_force.world.PlayerData;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -39,6 +42,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
@@ -326,6 +330,17 @@ public class ForgeEvents {
                     }
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onBlockBreak(BlockEvent.BreakEvent event) {
+        Level level = event.getPlayer().level();
+        Player player = event.getPlayer();
+        BlockPos pos = event.getPos();
+
+        if (player.getMainHandItem().getItem() instanceof SawbladeItem && !player.isShiftKeyDown()) {
+            SawbladeItem.chopTree(level, pos, player);
         }
     }
 }

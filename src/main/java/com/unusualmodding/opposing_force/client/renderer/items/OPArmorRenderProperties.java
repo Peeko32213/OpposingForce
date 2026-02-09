@@ -11,7 +11,6 @@ import com.unusualmodding.opposing_force.registry.OPModelLayers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
-import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -87,63 +86,7 @@ public class OPArmorRenderProperties implements IClientItemExtensions {
         return humanoidModel;
     }
 
-    public static void setModelParts(Model humanoidModel) {
-        if (humanoidModel instanceof PlayerModel<?> model) {
-            model.jacket.visible = false;
-            model.leftPants.visible = false;
-            model.rightPants.visible = false;
-            model.leftSleeve.visible = false;
-            model.rightSleeve.visible = false;
-            model.hat.visible = false;
-        }
-    }
-
     public static void renderCustomArmor(PoseStack poseStack, MultiBufferSource multiBufferSource, int light, ItemStack stack, ArmorItem armorItem, Model armorModel,Model humanoidModel, boolean legs, ResourceLocation texture) {
-        final var item = stack.getItem();
-        if (stack.is(OPItems.BONE_HELMET.get()) || stack.is(OPItems.BONE_CHESTPLATE.get()) || stack.is(OPItems.BONE_LEGGINGS.get()) || stack.is(OPItems.BONE_BOOTS.get())) {
-            setModelParts(humanoidModel);
-            return;
-        }
 
-        if (stack.is(OPItems.DEEPWOVEN_HAT.get()) || stack.is(OPItems.DEEPWOVEN_TUNIC.get()) || stack.is(OPItems.DEEPWOVEN_PANTS.get()) || stack.is(OPItems.DEEPWOVEN_BOOTS.get())) {
-            setModelParts(humanoidModel);
-            return;
-        }
-
-        if (stack.is(OPItems.EMERALD_MASK.get()) || stack.is(OPItems.EMERALD_CHESTPLATE.get()) || stack.is(OPItems.EMERALD_LEGGINGS.get()) || stack.is(OPItems.EMERALD_BOOTS.get())) {
-            setModelParts(humanoidModel);
-            return;
-        }
-
-        if (item instanceof LeapingLeggingsItem) {
-            setModelParts(humanoidModel);
-            return;
-        }
-
-        if (item instanceof MoonShoesItem) {
-            setModelParts(humanoidModel);
-            return;
-        }
-
-        if (stack.is(OPItems.RECON_KNIGHT_HELMET.get()) || stack.is(OPItems.RECON_KNIGHT_CHESTPLATE.get()) || stack.is(OPItems.RECON_KNIGHT_LEGGINGS.get()) || stack.is(OPItems.RECON_KNIGHT_BOOTS.get())) {
-            setModelParts(humanoidModel);
-            return;
-        }
-
-        if (item instanceof SlugBaronArmorItem) {
-            setModelParts(humanoidModel);
-            return;
-        }
-
-        if (stack.is(OPItems.STONE_HELMET.get()) || stack.is(OPItems.STONE_CHESTPLATE.get()) || stack.is(OPItems.STONE_LEGGINGS.get()) || stack.is(OPItems.STONE_BOOTS.get())) {
-            setModelParts(humanoidModel);
-            return;
-
-        }
-
-        if (item instanceof WoodenArmorItem) {
-            setModelParts(humanoidModel);
-            return;
-        }
     }
 }
