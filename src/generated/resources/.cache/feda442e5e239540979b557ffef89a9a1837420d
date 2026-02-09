@@ -1,4 +1,4 @@
-// 1.20.1	2026-02-09T10:25:15.1294672	Item Models: opposing_force
+// 1.20.1	2026-02-09T16:01:22.6562999	Item Models: opposing_force
 43d32e7d031485f83a1b4eb56ecb3cc40a456163 assets/opposing_force/models/item/angry_rambler_skull.json
 76e32b619b6a338b691da2b22d3ae2be3d549c59 assets/opposing_force/models/item/bone_axe.json
 1aae6a213c7ddb8099e7177c1fbbdfbc2f2f37b5 assets/opposing_force/models/item/bone_boots.json
@@ -87,7 +87,7 @@ f520914c9a04160cc6a93346e2fcff583038293e assets/opposing_force/models/item/stone
 43d32e7d031485f83a1b4eb56ecb3cc40a456163 assets/opposing_force/models/item/tart_head.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/tart_spawn_egg.json
 8370af1222f890823296e071821ce465b71a02ca assets/opposing_force/models/item/terror_leg.json
-28c869ecd5b88e1b91fcc4f508349377623be755 assets/opposing_force/models/item/terror_saw.json
+70910e7ce9ce8375d6081f977aa2a88d3fcc182d assets/opposing_force/models/item/terror_saw.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/terror_spawn_egg.json
 67181118504fdab7779eb2d609ad3f54960fd88b assets/opposing_force/models/item/tomahawk.json
 0769a06d3845b62c24c0187116be1a5038deeeaf assets/opposing_force/models/item/trembler_shell.json

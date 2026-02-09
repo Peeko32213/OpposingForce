@@ -1,0 +1,25 @@
+package com.unusualmodding.opposing_force.client.sounds;
+
+import com.unusualmodding.opposing_force.items.SawbladeItem;
+import com.unusualmodding.opposing_force.registry.OPItems;
+import com.unusualmodding.opposing_force.registry.OPSoundEvents;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+
+public class SawbladeSound extends ItemTickableSound {
+
+    public SawbladeSound(LivingEntity user) {
+        super(user, OPSoundEvents.TERROR_SAW.get());
+    }
+
+    public void tickVolume(ItemStack itemStack) {
+        float useAmount = SawbladeItem.getLerpedUseTime(itemStack, 1.0F) / 5F;
+        this.volume = useAmount;
+        this.pitch = 0.2F + 0.8F * useAmount;
+    }
+
+    @Override
+    public boolean isValidItem(ItemStack itemStack) {
+        return itemStack.is(OPItems.SAWBLADE.get());
+    }
+}

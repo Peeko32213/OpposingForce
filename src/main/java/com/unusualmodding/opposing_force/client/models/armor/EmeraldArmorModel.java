@@ -33,7 +33,7 @@ public class EmeraldArmorModel extends HumanoidModel<LivingEntity> {
 
         body.addOrReplaceChild("chestplate", CubeListBuilder.create()
                 .texOffs(86, 92).addBox(-4.0F, 0.5F, -2.5F, 8.0F, 8.0F, 5.0F, new CubeDeformation(0.6F))
-                .texOffs(96, 77).addBox(-4.0F, 4.0F, -2.5F, 8.0F, 8.0F, 5.0F, new CubeDeformation(0.51F)), PartPose.ZERO);
+                .texOffs(96, 77).addBox(-4.0F, 4.0F, -2.5F, 8.0F, 8.0F, 5.0F, new CubeDeformation(0.52F)), PartPose.ZERO);
 
         rightArm.addOrReplaceChild("right_shoulder_pad", CubeListBuilder.create()
                 .texOffs(62, 120).addBox(-3.475F, -2.0F, -2.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.5F))

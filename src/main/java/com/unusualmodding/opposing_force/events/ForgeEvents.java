@@ -7,7 +7,7 @@ import com.unusualmodding.opposing_force.entity.Frowzy;
 import com.unusualmodding.opposing_force.entity.UmberSpider;
 import com.unusualmodding.opposing_force.items.LaserBladeItem;
 import com.unusualmodding.opposing_force.items.armor.SlugBaronArmorItem;
-import com.unusualmodding.opposing_force.items.tools.SawbladeItem;
+import com.unusualmodding.opposing_force.items.SawbladeItem;
 import com.unusualmodding.opposing_force.registry.*;
 import com.unusualmodding.opposing_force.registry.OPTrades.MultipleInputsTrade;
 import com.unusualmodding.opposing_force.registry.tags.OPBiomeTags;

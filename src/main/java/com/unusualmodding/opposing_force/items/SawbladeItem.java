@@ -1,12 +1,27 @@
-package com.unusualmodding.opposing_force.items.tools;
+package com.unusualmodding.opposing_force.items;
 
+import com.unusualmodding.opposing_force.OpposingForce;
+import com.unusualmodding.opposing_force.enchantments.ThrowingEnchantment;
+import com.unusualmodding.opposing_force.entity.Terror;
+import com.unusualmodding.opposing_force.items.tools.ConfigurableAxeItem;
+import com.unusualmodding.opposing_force.items.tools.OPToolDefinitions;
+import com.unusualmodding.opposing_force.registry.OPEnchantments;
+import com.unusualmodding.opposing_force.registry.OPItems;
+import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -28,6 +43,95 @@ public class SawbladeItem extends ConfigurableAxeItem {
 
     public SawbladeItem(Properties properties) {
         super(OPToolDefinitions.SAWBLADE, 1, -3.0F, properties);
+    }
+
+    @Override
+    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack stack) {
+        return UseAnim.BOW;
+    }
+
+    @Override
+    public int getUseDuration(@NotNull ItemStack itemStack) {
+        return 72000;
+    }
+
+    @Override
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        player.startUsingItem(hand);
+        return InteractionResultHolder.consume(itemstack);
+    }
+
+    @Override
+    public void onUseTick(@NotNull Level level, @NotNull LivingEntity living, @NotNull ItemStack itemStack, int timeUsing) {
+        super.onUseTick(level, living, itemStack, timeUsing);
+        if (living instanceof Player player) {
+            this.hurtNearbyEntities(player);
+        }
+        OpposingForce.PROXY.playWorldSound(living, (byte) 6);
+    }
+
+    private void hurtNearbyEntities(Player player) {
+        List<LivingEntity> nearbyEntities = player.level().getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), player, player.getBoundingBox().inflate(1.25D));
+        if (!nearbyEntities.isEmpty()) {
+            LivingEntity entity = nearbyEntities.get(0);
+            entity.hurt(entity.damageSources().playerAttack(player), (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE));
+            if (entity.isDamageSourceBlocked(player.damageSources().playerAttack(player)) && entity instanceof Player player1) {
+                player1.disableShield(true);
+            }
+        }
+    }
+
+    @Override
+    public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity living, int useTimeLeft) {
+        super.releaseUsing(stack, level, living, useTimeLeft);
+        if (living instanceof Player player) {
+            player.getCooldowns().addCooldown(this, 50);
+        }
+        OpposingForce.PROXY.clearSoundCacheFor(living);
+        living.playSound(OPSoundEvents.TERROR_SAW_END.get());
+    }
+
+    @Override
+    public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int i, boolean held) {
+        super.inventoryTick(stack, level, entity, i, held);
+        boolean using = entity instanceof LivingEntity living && living.getUseItem().equals(stack);
+        if (level.isClientSide) {
+            int useTime = getUseTime(stack);
+            CompoundTag compoundTag = stack.getOrCreateTag();
+            if (compoundTag.getInt("PrevUseTime") != compoundTag.getInt("UseTime")) {
+                compoundTag.putInt("PrevUseTime", getUseTime(stack));
+            }
+            if (using && useTime < 5.0F) {
+                setUseTime(stack, useTime + 1);
+            }
+            if (!using && useTime > 0.0F) {
+                setUseTime(stack, useTime - 1);
+            }
+        }
+    }
+
+    public static void setUseTime(ItemStack stack, int useTime) {
+        CompoundTag compoundTag = stack.getOrCreateTag();
+        compoundTag.putInt("PrevUseTime", getUseTime(stack));
+        compoundTag.putInt("UseTime", useTime);
+    }
+
+    public static int getUseTime(ItemStack stack) {
+        CompoundTag compoundTag = stack.getTag();
+        return compoundTag != null ? compoundTag.getInt("UseTime") : 0;
+    }
+
+    public static float getLerpedUseTime(ItemStack stack, float f) {
+        CompoundTag compoundTag = stack.getTag();
+        float prev = compoundTag != null ? (float) compoundTag.getInt("PrevUseTime") : 0F;
+        float current = compoundTag != null ? (float) compoundTag.getInt("UseTime") : 0F;
+        return prev + f * (current - prev);
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return !oldStack.is(OPItems.SAWBLADE.get()) || !newStack.is(OPItems.SAWBLADE.get());
     }
 
     @Override

@@ -79,7 +79,7 @@ public class OPItemModelProvider extends ItemModelProvider {
         this.handheldItem(TERROR_LEG);
         this.handheldItem(FRIED_TERROR_LEG);
         this.handheldItem(SPICY_TERROR_LEG);
-        this.item(TERROR_SAW);
+        this.handheldItem(TERROR_SAW);
 
         // Trembler
         this.item(OPBlocks.TREMBLER_SHELL);

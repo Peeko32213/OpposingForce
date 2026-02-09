@@ -23,7 +23,7 @@ public class LeapingLeggingsModel extends HumanoidModel<LivingEntity> {
 		PartDefinition leftLeg = root.getChild("left_leg");
 		PartDefinition rightLeg = root.getChild("right_leg");
 
-        body.addOrReplaceChild("belt", CubeListBuilder.create().texOffs(96, 107).addBox(-4.0F, 7.0F, -2.0F, 8.0F, 4.0F, 4.0F, new CubeDeformation(0.531F)), PartPose.ZERO);
+        body.addOrReplaceChild("belt", CubeListBuilder.create().texOffs(96, 107).addBox(-4.0F, 7.0F, -2.0F, 8.0F, 4.0F, 4.0F, new CubeDeformation(0.65F)), PartPose.ZERO);
 
         rightLeg.addOrReplaceChild("right_legging", CubeListBuilder.create().texOffs(112, 115).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 9.0F, 4.0F, new CubeDeformation(0.51F)), PartPose.ZERO);
 

@@ -16,6 +16,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -179,6 +180,21 @@ public class ClientProxy extends CommonProxy {
                         ENTITY_SOUND_INSTANCE_MAP.put(entity.getId(), sound);
                     } else {
                         sound = (TerrorSawSound) oldSound;
+                    }
+                    if (!isSoundPlaying(sound) && sound.canPlaySound()) {
+                        Minecraft.getInstance().getSoundManager().queueTickingSound(sound);
+                    }
+                }
+                break;
+            case 6:
+                if (soundEmitter instanceof LivingEntity livingEntity) {
+                    SawbladeSound sound;
+                    AbstractTickableSoundInstance old = ENTITY_SOUND_INSTANCE_MAP.get(livingEntity.getId());
+                    if (old == null || !(old instanceof SawbladeSound gauntletSound && gauntletSound.isSameEntity(livingEntity))) {
+                        sound = new SawbladeSound(livingEntity);
+                        ENTITY_SOUND_INSTANCE_MAP.put(livingEntity.getId(), sound);
+                    } else {
+                        sound = (SawbladeSound) old;
                     }
                     if (!isSoundPlaying(sound) && sound.canPlaySound()) {
                         Minecraft.getInstance().getSoundManager().queueTickingSound(sound);
