@@ -114,7 +114,6 @@ public class SawbladeItem extends ConfigurableAxeItem {
         super.releaseUsing(stack, level, living, useTimeLeft);
         setActive(stack, false);
         if (living instanceof Player player) {
-            AttributeInstance speedAttribute = player.getAttribute(Attributes.MOVEMENT_SPEED);
             player.getCooldowns().addCooldown(this, 75);
             clearSawbladeAttributes(player);
         }
