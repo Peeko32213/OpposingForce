@@ -1,0 +1,28 @@
+{
+	"parent": "item/handheld",
+	"textures": {
+		"layer0": "opposing_force:item/sawblade_huge_active"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, -90, 120],
+			"translation": [0, 1, -10],
+			"scale": [2, 2, 0.85]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, 90, -120],
+			"translation": [0, 1, -10],
+			"scale": [2, 2, 0.85]
+		},
+		"firstperson_righthand": {
+			"rotation": [-170, -90, -70],
+			"translation": [2, 4, -2],
+			"scale": [1.5, 1.5, 0.68]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-170, 90, 70],
+			"translation": [2, 4, -2],
+			"scale": [1.5, 1.5, 0.68]
+		}
+	}
+}

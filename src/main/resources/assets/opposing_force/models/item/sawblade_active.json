@@ -1,0 +1,21 @@
+{
+  "parent": "item/handheld",
+  "loader": "forge:separate_transforms",
+  "textures": {
+    "layer0": "opposing_force:item/sawblade_active"
+  },
+  "base": {
+    "parent": "opposing_force:item/sawblade_handheld_active"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "opposing_force:item/sawblade_gui_active"
+    },
+    "fixed": {
+      "parent": "opposing_force:item/sawblade_gui_active"
+    },
+    "ground": {
+      "parent": "opposing_force:item/sawblade_gui_active"
+    }
+  }
+}

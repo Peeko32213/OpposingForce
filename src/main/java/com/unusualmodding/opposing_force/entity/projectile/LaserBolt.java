@@ -174,7 +174,6 @@ public class LaserBolt extends FrictionlessProjectile {
             this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (random.nextFloat() - random.nextFloat()) * 0.2F);
             this.level().broadcastEntityEvent(this, (byte) 3);
             entity.hurt(damageSource, this.getLaserDamage());
-            entity.invulnerableTime = 0;
             if (this.isDisruptor()) {
                 for (int i = 0; i < 2 + this.getDisruptorLevel(); i++) {
                     LaserBolt laserBolt = OPEntities.LASER_BOLT.get().create(level());

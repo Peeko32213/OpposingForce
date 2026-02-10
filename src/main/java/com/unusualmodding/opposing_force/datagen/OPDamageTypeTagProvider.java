@@ -38,7 +38,12 @@ public class OPDamageTypeTagProvider extends TagsProvider<DamageType> {
         );
 
         this.tag(DamageTypeTags.NO_IMPACT).add(
-                LASER
+                LASER,
+                SAWBLADE
+        );
+
+        this.tag(DamageTypeTags.BYPASSES_COOLDOWN).add(
+                LASER_BOLT
         );
 
         this.tag(DamageTypeTags.WITCH_RESISTANT_TO).add(

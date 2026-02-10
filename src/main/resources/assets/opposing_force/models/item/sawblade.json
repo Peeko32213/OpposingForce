@@ -17,5 +17,13 @@
     "ground": {
       "parent": "opposing_force:item/sawblade_gui"
     }
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "opposing_force:active": 1
+      },
+      "model": "opposing_force:item/sawblade_active"
+    }
+  ]
 }

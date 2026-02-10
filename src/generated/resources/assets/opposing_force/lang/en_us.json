@@ -103,6 +103,8 @@
   "death.attack.laser.player": "%1$s was vaporized by%2$s",
   "death.attack.laser_bolt": "%1$s was blasted",
   "death.attack.laser_bolt.player": "%1$s was blasted by%2$s",
+  "death.attack.sawblade": "%1$s was sawn in half",
+  "death.attack.sawblade.player": "%1$s was sawn in half by%2$s",
   "death.attack.thrown_laser_blade": "%1$s was sliced in half",
   "death.attack.thrown_laser_blade.player": "%1$s was sliced in half by%2$s",
   "death.attack.tomahawk": "%1$s was domed",

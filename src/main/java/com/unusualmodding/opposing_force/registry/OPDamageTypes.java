@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,6 +24,7 @@ public class OPDamageTypes {
     public static final ResourceKey<DamageType> UMBER_DAGGER = register("umber_dagger");
     public static final ResourceKey<DamageType> THROWN_LASER_BLADE = register("thrown_laser_blade");
     public static final ResourceKey<DamageType> TERROR_SAW = register("terror_saw");
+    public static final ResourceKey<DamageType> SAWBLADE = register("sawblade");
 
     public static void bootstrap(BootstapContext<DamageType> context) {
         context.register(ELECTRIC, new DamageType("electric", 0.1F));
@@ -34,6 +36,7 @@ public class OPDamageTypes {
         context.register(UMBER_DAGGER, new DamageType("umber_dagger", 0.1F));
         context.register(THROWN_LASER_BLADE, new DamageType("thrown_laser_blade", 0.1F));
         context.register(TERROR_SAW, new DamageType("terror_saw", 0.1F));
+        context.register(SAWBLADE, new DamageType("sawblade", 0.0F));
     }
 
     public static DamageSource laser(Level level, DicerLaser laser, @Nullable Entity indirectEntity) {
@@ -50,6 +53,10 @@ public class OPDamageTypes {
 
     public static DamageSource terrorSaw(Level level, TerrorSaw terrorSaw, @Nullable Entity indirectEntity) {
         return level.damageSources().source(TERROR_SAW, terrorSaw, indirectEntity);
+    }
+
+    public static DamageSource sawblade(Level level, Player source, @Nullable Entity indirectEntity) {
+        return level.damageSources().source(SAWBLADE, source, indirectEntity);
     }
 
     public static DamageSource umberDagger(Level level, UmberDagger umberKnife, @Nullable Entity indirectEntity) {

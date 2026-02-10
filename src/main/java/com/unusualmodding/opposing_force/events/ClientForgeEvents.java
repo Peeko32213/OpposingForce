@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.events;
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.items.BlasterItem;
 import com.unusualmodding.opposing_force.items.LaserBladeItem;
+import com.unusualmodding.opposing_force.items.SawbladeItem;
 import com.unusualmodding.opposing_force.items.TeslaCannonItem;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.utils.ClientProxy;
@@ -15,6 +16,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ComputeFovModifierEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderNameTagEvent;
 import net.minecraftforge.client.event.ViewportEvent;
@@ -171,6 +173,14 @@ public class ClientForgeEvents {
         if (lerpedShakeAmount > 0) {
             float time = minecraft.cameraEntity == null ? 0.0F : minecraft.cameraEntity.tickCount + minecraft.getPartialTick();
             event.setRoll((float) (lerpedShakeAmount * Math.sin(2.0F * time)));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onFovModify(ComputeFovModifierEvent event) {
+        float sawbladeFov = SawbladeItem.sawbladeComputeFov(event.getPlayer(), event.getNewFovModifier());
+        if (sawbladeFov != event.getNewFovModifier()) {
+            event.setNewFovModifier(sawbladeFov);
         }
     }
 }

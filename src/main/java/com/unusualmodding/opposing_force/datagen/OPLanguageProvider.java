@@ -303,7 +303,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.translateDamageType(OPDamageTypes.UMBER_DAGGER, player -> player + " was stabbed", (player, entity) -> player + " was stabbed by" + entity);
         this.translateDamageType(OPDamageTypes.LASER_BOLT, player -> player + " was blasted", (player, entity) -> player + " was blasted by" + entity);
         this.translateDamageType(OPDamageTypes.THROWN_LASER_BLADE, player -> player + " was sliced in half", (player, entity) -> player + " was sliced in half by" + entity);
-
+        this.translateDamageType(OPDamageTypes.SAWBLADE, player -> player + " was sawn in half", (player, entity) -> player + " was sawn in half by" + entity);
     }
 
     @Override
