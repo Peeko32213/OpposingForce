@@ -6,6 +6,7 @@ import com.unusualmodding.opposing_force.effects.SlugInfestation;
 import com.unusualmodding.opposing_force.entity.Frowzy;
 import com.unusualmodding.opposing_force.entity.UmberSpider;
 import com.unusualmodding.opposing_force.items.LaserBladeItem;
+import com.unusualmodding.opposing_force.items.TremblingSlammer;
 import com.unusualmodding.opposing_force.items.armor.SlugBaronArmorItem;
 import com.unusualmodding.opposing_force.items.SawbladeItem;
 import com.unusualmodding.opposing_force.registry.*;
@@ -56,7 +57,6 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = OpposingForce.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ForgeEvents {
@@ -341,6 +341,10 @@ public class ForgeEvents {
 
         if (player.getMainHandItem().getItem() instanceof SawbladeItem && !player.isShiftKeyDown()) {
             SawbladeItem.chopTree(level, pos, player);
+        }
+
+        if (player.getMainHandItem().getItem() instanceof TremblingSlammer && !player.isShiftKeyDown()) {
+            TremblingSlammer.breakBlocksAroundMinedBlock(level, pos, player);
         }
     }
 

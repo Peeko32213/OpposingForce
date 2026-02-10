@@ -38,7 +38,7 @@ import java.util.*;
 public class SawbladeItem extends ConfigurableAxeItem {
 
     public static final UUID SAWBLADE_SPEED_MODIFIER_UUID = UUID.fromString("ad2337e7-989c-4e7a-8916-20fe59a18fbd");
-    public static HashMap<BlockPos, Integer> highestLeaf = new HashMap<>();
+    public static HashMap<BlockPos, Integer> HIGHEST_LEAF = new HashMap<>();
 
     public SawbladeItem(Properties properties) {
         super(OPToolDefinitions.SAWBLADE, 3, -3.0F, properties);
@@ -95,7 +95,7 @@ public class SawbladeItem extends ConfigurableAxeItem {
                     entity.knockback(knockback * 0.15F, Mth.sin(player.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(player.getYRot() * ((float) Math.PI / 180F)));
                 }
                 if (player.getRandom().nextBoolean()) {
-                    player.getItemInHand(hand).hurtAndBreak(1, player, (livingEntity) -> livingEntity.broadcastBreakEvent(livingEntity.getUsedItemHand()));
+                    player.getItemInHand(hand).hurtAndBreak(1, player, (player1) -> player1.broadcastBreakEvent(player1.getUsedItemHand()));
                 }
             }
             break;
@@ -210,55 +210,52 @@ public class SawbladeItem extends ConfigurableAxeItem {
     }
 
     public static void chopTree(Level level, BlockPos blockPos, Player player) {
-        if (level.isClientSide) return;
-        ServerPlayer serverPlayer = (ServerPlayer) player;
-
+        ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
         BlockState startState = level.getBlockState(blockPos);
         Block block = startState.getBlock();
 
-        if (!startState.is(BlockTags.LOGS)) return;
+        if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
+            if (!startState.is(BlockTags.LOGS)) return;
 
-        ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
-
-        BlockPos tempPos = blockPos.immutable();
-        while (level.getBlockState(tempPos.below()).getBlock().equals(block)) {
-            tempPos = tempPos.below().immutable();
-        }
-
-        for (BlockPos belowPos : BlockPos.betweenClosed(tempPos.getX() - 1, tempPos.getY() - 1, tempPos.getZ() - 1, tempPos.getX() + 1, tempPos.getY() - 1, tempPos.getZ() + 1)) {
-            if (level.getBlockState(belowPos).getBlock().equals(block)) {
-                tempPos = belowPos.immutable();
-                while (level.getBlockState(tempPos.below()).getBlock().equals(block)) {
-                    tempPos = tempPos.below().immutable();
-                }
-                break;
+            BlockPos tempPos = blockPos.immutable();
+            while (level.getBlockState(tempPos.below()).getBlock().equals(block)) {
+                tempPos = tempPos.below().immutable();
             }
-        }
 
-        blockPos = tempPos.immutable();
+            for (BlockPos belowPos : BlockPos.betweenClosed(tempPos.getX() - 1, tempPos.getY() - 1, tempPos.getZ() - 1, tempPos.getX() + 1, tempPos.getY() - 1, tempPos.getZ() + 1)) {
+                if (level.getBlockState(belowPos).getBlock().equals(block)) {
+                    tempPos = belowPos.immutable();
+                    while (level.getBlockState(tempPos.below()).getBlock().equals(block)) {
+                        tempPos = tempPos.below().immutable();
+                    }
+                    break;
+                }
+            }
 
-        int logAmount = isTreeAndReturnLogAmount(level, blockPos);
-        if (logAmount < 0) return;
+            blockPos = tempPos.immutable();
 
-        List<BlockPos> logsToBreak = getLogsToBreak(level, blockPos, new ArrayList<>(), logAmount, block);
+            int logAmount = isTreeAndReturnLogAmount(level, blockPos);
+            if (logAmount < 0) return;
 
-        BlockPos highestLogPos = blockPos.immutable();
+            List<BlockPos> logsToBreak = getLogsToBreak(level, blockPos, new ArrayList<>(), logAmount, block);
+            BlockPos highestLogPos = blockPos.immutable();
 
-        for (BlockPos logPos : logsToBreak) {
-            if (logPos.getY() > highestLogPos.getY()) highestLogPos = logPos.immutable();
+            for (BlockPos logPos : logsToBreak) {
+                if (logPos.getY() > highestLogPos.getY()) highestLogPos = logPos.immutable();
 
-            BlockState logState = level.getBlockState(logPos);
-            if (!logState.is(BlockTags.LOGS)) continue;
-            level.destroyBlock(logPos, true, player);
+                BlockState logState = level.getBlockState(logPos);
+                if (!logState.is(BlockTags.LOGS)) continue;
+                level.destroyBlock(logPos, true, player);
 
-            if (!player.isCreative() && level.getRandom().nextBoolean()) {
-                stack.hurtAndBreak(1, serverPlayer, (livingEntity) -> livingEntity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+                if (!player.isCreative() && level.getRandom().nextBoolean()) {
+                    stack.hurtAndBreak(1, serverPlayer, (livingEntity) -> livingEntity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+                }
             }
         }
     }
 
     public static int isTreeAndReturnLogAmount(Level level, BlockPos pos) {
-        highestLeaf.put(pos, 0);
+        HIGHEST_LEAF.put(pos, 0);
 
         int leafcount = 8;
         int logCount = 0;
@@ -280,7 +277,7 @@ public class SawbladeItem extends ConfigurableAxeItem {
                 else if (state.is(BlockTags.LOGS)) logCount++;
             }
         }
-        highestLeaf.put(pos.immutable(), highesty);
+        HIGHEST_LEAF.put(pos.immutable(), highesty);
         if (leafcount < 0) {
             return logCount;
         }
