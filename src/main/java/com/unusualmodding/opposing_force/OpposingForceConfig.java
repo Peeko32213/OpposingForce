@@ -73,7 +73,7 @@ public class OpposingForceConfig {
 
         // Terror
         COMMON_BUILDER.push(CATEGORY_TERROR);
-        TERROR_SPAWN_HEIGHT = COMMON_BUILDER.comment("Maximum height terrors can spawn").defineInRange("terrorSpawnHeight", -16, -64, 320);
+        TERROR_SPAWN_HEIGHT = COMMON_BUILDER.comment("Maximum height terrors can spawn").defineInRange("terrorSpawnHeight", 0, -64, 320);
         COMMON_BUILDER.pop();
 
         // Trembler
@@ -83,8 +83,8 @@ public class OpposingForceConfig {
 
         // Umber Spider
         COMMON_BUILDER.push(CATEGORY_UMBER_SPIDER);
-        UMBER_SPIDER_SPAWN_HEIGHT = COMMON_BUILDER.comment("Maximum height umber spiders can spawn").defineInRange("umberSpiderSpawnHeight", -16, -64, 320);
-        UMBER_SPIDER_REPLACE_SPIDER_CHANCE = COMMON_BUILDER.comment("Chance for umber spiders to replace spider spawns underground").defineInRange("umberSpiderReplaceSpiderChance", 0.25, 0.0, 1.0);
+        UMBER_SPIDER_SPAWN_HEIGHT = COMMON_BUILDER.comment("Maximum height umber spiders can spawn").defineInRange("umberSpiderSpawnHeight", -20, -64, 320);
+        UMBER_SPIDER_REPLACE_SPIDER_CHANCE = COMMON_BUILDER.comment("Chance for umber spiders to replace spider spawns underground").defineInRange("umberSpiderReplaceSpiderChance", 0.75, 0.0, 1.0);
         COMMON_BUILDER.pop();
 
         // Volt

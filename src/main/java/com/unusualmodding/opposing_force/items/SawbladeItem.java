@@ -7,6 +7,7 @@ import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
@@ -69,13 +70,13 @@ public class SawbladeItem extends ConfigurableAxeItem {
     @Override
     public void onUseTick(@NotNull Level level, @NotNull LivingEntity living, @NotNull ItemStack itemStack, int timeUsing) {
         super.onUseTick(level, living, itemStack, timeUsing);
-        if (living instanceof Player player && !level.isClientSide) {
-            this.hurtNearbyEntities(player);
+        if (living instanceof Player player) {
+            this.hurtNearbyEntities(player, level);
         }
         OpposingForce.PROXY.playWorldSound(living, (byte) 6);
     }
 
-    private void hurtNearbyEntities(Player player) {
+    private void hurtNearbyEntities(Player player, Level level) {
         List<LivingEntity> nearbyEntities = player.level().getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), player, player.getBoundingBox().inflate(1.5D));
         for (LivingEntity entity : nearbyEntities) {
             InteractionHand hand = player.getUsedItemHand();
@@ -84,17 +85,24 @@ public class SawbladeItem extends ConfigurableAxeItem {
             float damage = 3.0F;
             damage += EnchantmentHelper.getDamageBonus(player.getItemInHand(hand), entity.getMobType()) * 0.5F;
 
-            if (!isEntityInFront(player, entity) || player.level().isClientSide) continue;
-            if (entity.hurt(player.level().damageSources().source(OPDamageTypes.SAWBLADE), damage)) {
-                entity.invulnerableTime -= 5;
-                if (player.getItemInHand(hand).getEnchantmentLevel(Enchantments.FIRE_ASPECT) > 0) {
-                    entity.setSecondsOnFire(player.getItemInHand(hand).getEnchantmentLevel(Enchantments.FIRE_ASPECT));
-                }
-                if (player.getItemInHand(hand).getEnchantmentLevel(Enchantments.KNOCKBACK) > 0) {
-                    entity.knockback(knockback * 0.15F, Mth.sin(player.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(player.getYRot() * ((float) Math.PI / 180F)));
-                }
-                if (player.getRandom().nextBoolean()) {
-                    player.getItemInHand(hand).hurtAndBreak(1, player, (player1) -> player1.broadcastBreakEvent(player1.getUsedItemHand()));
+            double x = entity.getX() + entity.level().getRandom().nextFloat() * entity.getBbWidth() * 2.0F - entity.getBbWidth();
+            double y = entity.getY() + entity.level().getRandom().nextFloat() * entity.getBbHeight();
+            double z = entity.getZ() + entity.level().getRandom().nextFloat() * entity.getBbWidth() * 2.0F - entity.getBbWidth();
+            entity.level().addParticle(ParticleTypes.CRIT, x, y, z, 0.025D, 0.025D, 0.025D);
+
+            if (!level.isClientSide) {
+                if (!isEntityInFront(player, entity) || player.level().isClientSide) continue;
+                if (entity.hurt(player.level().damageSources().source(OPDamageTypes.SAWBLADE), damage)) {
+                    entity.invulnerableTime -= 5;
+                    if (player.getItemInHand(hand).getEnchantmentLevel(Enchantments.FIRE_ASPECT) > 0) {
+                        entity.setSecondsOnFire(player.getItemInHand(hand).getEnchantmentLevel(Enchantments.FIRE_ASPECT));
+                    }
+                    if (player.getItemInHand(hand).getEnchantmentLevel(Enchantments.KNOCKBACK) > 0) {
+                        entity.knockback(knockback * 0.15F, Mth.sin(player.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(player.getYRot() * ((float) Math.PI / 180F)));
+                    }
+                    if (player.getRandom().nextBoolean()) {
+                        player.getItemInHand(hand).hurtAndBreak(1, player, (player1) -> player1.broadcastBreakEvent(player1.getUsedItemHand()));
+                    }
                 }
             }
             break;

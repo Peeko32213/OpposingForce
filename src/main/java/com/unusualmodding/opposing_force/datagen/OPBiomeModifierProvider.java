@@ -34,14 +34,14 @@ import static net.minecraft.world.level.levelgen.GenerationStep.Decoration.LOCAL
 public class OPBiomeModifierProvider {
 
     public static void bootstrap(BootstapContext<BiomeModifier> context) {
-        addSpawn(context, "dicer", OPBiomeTags.HAS_DICER, new MobSpawnSettings.SpawnerData(OPEntities.DICER.get(), 20, 1, 1));
-        addSpawn(context, "guzzler", OPBiomeTags.HAS_GUZZLER, new MobSpawnSettings.SpawnerData(OPEntities.GUZZLER.get(), 10, 1, 1));
+        addSpawn(context, "dicer", OPBiomeTags.HAS_DICER, new MobSpawnSettings.SpawnerData(OPEntities.DICER.get(), 15, 1, 1));
+        addSpawn(context, "guzzler", OPBiomeTags.HAS_GUZZLER, new MobSpawnSettings.SpawnerData(OPEntities.GUZZLER.get(), 20, 1, 1));
         addSpawn(context, "hanging_spider", OPBiomeTags.HAS_HANGING_SPIDER, new MobSpawnSettings.SpawnerData(OPEntities.HANGING_SPIDER.get(), 50, 4, 4));
-        addSpawn(context, "ramble", OPBiomeTags.HAS_RAMBLE, new MobSpawnSettings.SpawnerData(OPEntities.RAMBLER.get(), 10, 1, 1));
+        addSpawn(context, "ramble", OPBiomeTags.HAS_RAMBLE, new MobSpawnSettings.SpawnerData(OPEntities.RAMBLER.get(), 15, 1, 1));
         addSpawn(context, "slug", OPBiomeTags.HAS_SLUG, new MobSpawnSettings.SpawnerData(OPEntities.SLUG.get(), 100, 2, 2));
-        addSpawn(context, "terror", OPBiomeTags.HAS_TERROR, new MobSpawnSettings.SpawnerData(OPEntities.TERROR.get(), 10, 2, 2));
+        addSpawn(context, "terror", OPBiomeTags.HAS_TERROR, new MobSpawnSettings.SpawnerData(OPEntities.TERROR.get(), 15, 2, 2));
         addSpawn(context, "trembler", OPBiomeTags.HAS_TREMBLER, new MobSpawnSettings.SpawnerData(OPEntities.TREMBLER.get(), 30, 1, 1));
-        addSpawn(context, "volt", OPBiomeTags.HAS_VOLT, new MobSpawnSettings.SpawnerData(OPEntities.VOLT.get(), 20, 2, 2));
+        addSpawn(context, "volt", OPBiomeTags.HAS_VOLT, new MobSpawnSettings.SpawnerData(OPEntities.VOLT.get(), 40, 2, 2));
         removeFeature(context, "amethyst_geode", BiomeTags.IS_OVERWORLD, LOCAL_MODIFICATIONS, CavePlacements.AMETHYST_GEODE);
     }
 

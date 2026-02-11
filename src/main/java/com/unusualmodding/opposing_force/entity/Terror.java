@@ -466,7 +466,7 @@ public class Terror extends Monster implements EliteVariant {
             return false;
         } else {
             boolean canSpawn = level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(level, pos, random) && (spawnType == MobSpawnType.SPAWNER || level.getFluidState(pos).is(FluidTags.WATER));
-            return random.nextInt(15) == 0 && pos.getY() <= OpposingForceConfig.TERROR_SPAWN_HEIGHT.get() && canSpawn;
+            return random.nextInt(10) == 0 && pos.getY() <= OpposingForceConfig.TERROR_SPAWN_HEIGHT.get() && canSpawn;
         }
     }
 
