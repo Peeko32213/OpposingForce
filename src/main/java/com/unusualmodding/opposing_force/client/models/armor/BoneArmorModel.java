@@ -28,7 +28,7 @@ public class BoneArmorModel extends HumanoidModel<LivingEntity> {
 
         head.addOrReplaceChild("skull", CubeListBuilder.create()
                 .texOffs(58, 68).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.7F))
-                .texOffs(58, 84).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F)), PartPose.ZERO);
+                .texOffs(58, 84).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.55F)), PartPose.ZERO);
 
         body.addOrReplaceChild("ribcage", CubeListBuilder.create()
                 .texOffs(58, 100).addBox(-5.0F, -0.3F, -2.5F, 10.0F, 6.0F, 5.0F, new CubeDeformation(0.5F))

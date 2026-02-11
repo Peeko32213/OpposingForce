@@ -1,9 +1,11 @@
 package com.unusualmodding.opposing_force.items;
 
+import com.unusualmodding.opposing_force.client.renderer.items.OPItemRenderers;
 import com.unusualmodding.opposing_force.entity.projectile.LaserBolt;
 import com.unusualmodding.opposing_force.registry.OPEnchantments;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundSource;
@@ -23,8 +25,10 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 @SuppressWarnings("deprecation")
@@ -34,8 +38,18 @@ public class BlasterItem extends Item implements Vanishable {
     private final int laserColor;
 
     public BlasterItem(int laserColor) {
-        super(new Properties().stacksTo(1).durability(651));
+        super(new Properties().stacksTo(1).durability(1100));
         this.laserColor = laserColor;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                return new OPItemRenderers();
+            }
+        });
     }
 
     @Override

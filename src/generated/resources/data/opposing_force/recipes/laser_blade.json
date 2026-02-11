@@ -2,23 +2,20 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "A": {
-      "tag": "forge:gems/amethyst"
-    },
     "D": {
       "item": "opposing_force:dicer_lens"
     },
     "I": {
       "tag": "forge:ingots/iron"
     },
-    "R": {
-      "tag": "forge:dusts/redstone"
+    "L": {
+      "item": "opposing_force:laser_core"
     }
   },
   "pattern": [
-    "  A",
-    "RD ",
-    "IR "
+    " D ",
+    " D ",
+    "ILI"
   ],
   "result": {
     "item": "opposing_force:laser_blade"

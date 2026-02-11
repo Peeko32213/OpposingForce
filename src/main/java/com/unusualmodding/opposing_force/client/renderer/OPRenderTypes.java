@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.client.renderer;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
@@ -16,6 +17,14 @@ public abstract class OPRenderTypes extends RenderType {
     }
 
     protected static final RenderStateShard.TexturingStateShard GLINT_TEXTURING = new RenderStateShard.TexturingStateShard("entity_glint_texturing", () -> setupGlintTexturing(1F, 8L), RenderSystem::resetTextureMatrix);
+
+    protected static final RenderStateShard.TransparencyStateShard EYES_ALPHA_TRANSPARENCY = new RenderStateShard.TransparencyStateShard("eyes_alpha_transparency", () -> {
+        RenderSystem.enableBlend();
+        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+    }, () -> {
+        RenderSystem.disableBlend();
+        RenderSystem.defaultBlendFunc();
+    });
 
     public static RenderType specialGlint(ResourceLocation resourceLocation, boolean blur, boolean outline) {
         RenderStateShard.TextureStateShard shard = new RenderStateShard.TextureStateShard(resourceLocation, blur, false);
@@ -77,6 +86,11 @@ public abstract class OPRenderTypes extends RenderType {
                 .setLightmapState(LIGHTMAP)
                 .createCompositeState(false);
         return create("laser_bolt", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256,false,true, compositeState);
+    }
+
+    public static RenderType getEyesAlphaEnabled(ResourceLocation locationIn) {
+        RenderType.CompositeState rendertype$compositestate = RenderType.CompositeState.builder().setShaderState(RENDERTYPE_EYES_SHADER).setTextureState(new RenderStateShard.TextureStateShard(locationIn, false, false)).setTransparencyState(EYES_ALPHA_TRANSPARENCY).setCullState(NO_CULL).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY).setDepthTestState(EQUAL_DEPTH_TEST).createCompositeState(true);
+        return create("eye_alpha", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, false, rendertype$compositestate);
     }
 
     private static void setupGlintTexturing(float in, long time) {

@@ -16,7 +16,7 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
-        event.register(DICER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Dicer::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(DICER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Dicer::canDicerSpawn, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(FROWZY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Frowzy::canFrowzySpawn, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(GUZZLER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Guzzler::canGuzzlerSpawn, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(HANGING_SPIDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, HangingSpider::canHangingSpiderSpawn, SpawnPlacementRegisterEvent.Operation.OR);

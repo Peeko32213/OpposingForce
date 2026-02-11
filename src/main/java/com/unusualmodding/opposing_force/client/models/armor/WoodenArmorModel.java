@@ -27,9 +27,9 @@ public class WoodenArmorModel extends HumanoidModel<LivingEntity> {
 		PartDefinition rightArm = root.getChild("right_arm");
 
 		head.addOrReplaceChild("mask", CubeListBuilder.create()
-				.texOffs(62, 83).addBox(-4.0F, -6.0F, -4.5F, 8.0F, 5.0F, 9.0F, new CubeDeformation(0.51F))
-				.texOffs(62, 70).addBox(-5.0F, -9.0F, -5.5F, 10.0F, 3.0F, 10.0F, new CubeDeformation(0.0F))
-				.texOffs(93, 71).addBox(-1.0F, -4.0F, -10.625F, 2.0F, 2.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.ZERO);
+				.texOffs(62, 83).addBox(-4.0F, -6.0F, -4.5F, 8.0F, 5.0F, 9.0F, new CubeDeformation(0.6F))
+				.texOffs(62, 70).addBox(-5.0F, -9.0F, -5.5F, 10.0F, 3.0F, 10.0F, new CubeDeformation(0.25F))
+				.texOffs(93, 71).addBox(-1.0F, -4.0F, -10.625F, 2.0F, 2.0F, 6.0F, new CubeDeformation(0.25F)), PartPose.ZERO);
 
 		body.addOrReplaceChild("chestplate", CubeListBuilder.create()
 				.texOffs(63, 119).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 5.0F, 4.0F, new CubeDeformation(0.53F))

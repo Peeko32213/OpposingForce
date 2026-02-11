@@ -11,16 +11,13 @@ public class PlayerData {
 
     public static final Codec<PlayerData> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    Codec.BOOL.fieldOf("hasGottenEndMessage")
-                            .forGetter(PlayerData::hasGottenEndMessage),
-                    Codec.BOOL.fieldOf("hasGottenNetherMessage")
-                            .forGetter(PlayerData::hasGottenNetherMessage)
+                    Codec.BOOL.fieldOf("hasGottenEndMessage").forGetter(PlayerData::hasGottenEndMessage),
+                    Codec.BOOL.fieldOf("hasGottenNetherMessage").forGetter(PlayerData::hasGottenNetherMessage)
             ).apply(instance, PlayerData::new)
     );
 
     private boolean hasGottenEndMessage;
     private boolean hasGottenNetherMessage;
-
 
     public PlayerData() {
         this(false, false);
@@ -30,7 +27,6 @@ public class PlayerData {
         this.hasGottenEndMessage = hasGottenEndMessage;
         this.hasGottenNetherMessage = hasGottenNetherMessage;
     }
-
 
     public boolean hasGottenEndMessage() {
         return hasGottenEndMessage;
@@ -57,7 +53,7 @@ public class PlayerData {
 
     public void sendEndMessageAndMarkComplete(Player player) {
         MutableComponent component = Component.translatable("opposing_force.end_progression.enabled");
-        component = component.withStyle(ChatFormatting.YELLOW);
+        component = component.withStyle(ChatFormatting.LIGHT_PURPLE);
         player.sendSystemMessage(component);
         setHasGottenEndMessage(true);
     }

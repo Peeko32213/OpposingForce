@@ -33,11 +33,11 @@ public class ReconKnightArmorModel extends HumanoidModel<LivingEntity> {
         PartDefinition rightArm = root.getChild("right_arm");
 
         head.addOrReplaceChild("helmet", CubeListBuilder.create()
-                .texOffs(40, 90).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F))
-                .texOffs(40, 78).addBox(-5.0F, -8.025F, -4.975F, 10.0F, 3.0F, 9.0F, new CubeDeformation(0.5F))
-                .texOffs(72, 90).addBox(-4.5F, -2.025F, -4.975F, 9.0F, 2.0F, 9.0F, new CubeDeformation(0.5F))
-                .texOffs(98, 101).addBox(3.6F, -7.0F, -1.5F, 1.0F, 5.0F, 8.0F, new CubeDeformation(0.5F))
-                .texOffs(98, 101).mirror().addBox(-4.6F, -7.0F, -1.5F, 1.0F, 5.0F, 8.0F, new CubeDeformation(0.5F)).mirror(false), PartPose.ZERO);
+                .texOffs(40, 90).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.55F))
+                .texOffs(40, 78).addBox(-5.0F, -8.025F, -4.975F, 10.0F, 3.0F, 9.0F, new CubeDeformation(0.55F))
+                .texOffs(72, 90).addBox(-4.5F, -2.025F, -4.975F, 9.0F, 2.0F, 9.0F, new CubeDeformation(0.55F))
+                .texOffs(98, 101).addBox(3.6F, -7.0F, -1.5F, 1.0F, 5.0F, 8.0F, new CubeDeformation(0.55F))
+                .texOffs(98, 101).mirror().addBox(-4.6F, -7.0F, -1.5F, 1.0F, 5.0F, 8.0F, new CubeDeformation(0.55F)).mirror(false), PartPose.ZERO);
 
         body.addOrReplaceChild("chestplate", CubeListBuilder.create()
                 .texOffs(72, 101).addBox(-4.0F, 0.0F, -2.5F, 8.0F, 6.0F, 5.0F, new CubeDeformation(0.6F))

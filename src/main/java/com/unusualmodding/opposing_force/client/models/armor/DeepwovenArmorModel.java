@@ -29,7 +29,7 @@ public class DeepwovenArmorModel extends HumanoidModel<LivingEntity> {
         head.addOrReplaceChild("hat", CubeListBuilder.create()
                 .texOffs(42, 115).addBox(-5.0F, -2.5F, -5.0F, 10.0F, 3.0F, 10.0F, new CubeDeformation(0.6F))
                 .texOffs(42, 103).addBox(-2.0F, -17.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.6F))
-                .texOffs(72, 101).addBox(-7.0F, -9.0F, -7.0F, 14.0F, 2.0F, 14.0F, new CubeDeformation(0.5F)), PartPose.ZERO);
+                .texOffs(72, 101).addBox(-7.0F, -9.0F, -7.0F, 14.0F, 2.0F, 14.0F, new CubeDeformation(0.55F)), PartPose.ZERO);
 
         body.addOrReplaceChild("tunic", CubeListBuilder.create()
                 .texOffs(58, 74).addBox(-5.0F, -0.8F, -2.5F, 10.0F, 6.0F, 5.0F, new CubeDeformation(0.5F))

@@ -32,6 +32,7 @@ public class OPItems {
     // Dicer
     public static final RegistryObject<Item> DICER_SPAWN_EGG = registerSpawnEggItem("dicer", OPEntities.DICER , 0x1c0d1c, 0x3850f9);
     public static final RegistryObject<Item> DICER_LENS = registerItem("dicer_lens", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> LASER_CORE = registerItem("laser_core", () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> BLASTER = registerItem("blaster", () -> new BlasterItem(0xff38ff));
     public static final RegistryObject<Item> WHITE_BLASTER = registerItem("white_blaster", () -> new BlasterItem(0xffffff));

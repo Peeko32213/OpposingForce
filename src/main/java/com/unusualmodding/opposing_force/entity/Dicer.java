@@ -8,6 +8,7 @@ import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
+import com.unusualmodding.opposing_force.world.OPWorldData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -17,6 +18,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -306,5 +308,9 @@ public class Dicer extends Monster implements AttackState, EliteVariant {
                 this.spawnAtLocation(itemstack);
             }
         }
+    }
+
+    public static boolean canDicerSpawn(EntityType<Dicer> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return OPWorldData.get(level.getLevel()).hasNetherBeenEnteredBefore() && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random);
     }
 }

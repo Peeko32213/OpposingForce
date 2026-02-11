@@ -27,9 +27,9 @@ public class EmeraldArmorModel extends HumanoidModel<LivingEntity> {
 		PartDefinition rightArm = root.getChild("right_arm");
 
         head.addOrReplaceChild("mask", CubeListBuilder.create()
-                .texOffs(62, 77).addBox(-4.0F, -8.0F, -4.5F, 8.0F, 5.0F, 9.0F, new CubeDeformation(0.51F))
-                .texOffs(62, 61).addBox(-5.0F, -8.0F, -4.5F, 10.0F, 7.0F, 9.0F, new CubeDeformation(0.512F))
-                .texOffs(71, 99).addBox(-1.0F, -8.5F, -6.0F, 2.0F, 8.0F, 1.0F, new CubeDeformation(0.2F)), PartPose.ZERO);
+                .texOffs(62, 77).addBox(-4.0F, -8.0F, -4.5F, 8.0F, 5.0F, 9.0F, new CubeDeformation(0.6F))
+                .texOffs(62, 61).addBox(-5.0F, -8.0F, -4.5F, 10.0F, 7.0F, 9.0F, new CubeDeformation(0.55F))
+                .texOffs(71, 99).addBox(-1.0F, -8.5F, -6.0F, 2.0F, 8.0F, 1.0F, new CubeDeformation(0.25F)), PartPose.ZERO);
 
         body.addOrReplaceChild("chestplate", CubeListBuilder.create()
                 .texOffs(86, 92).addBox(-4.0F, 0.5F, -2.5F, 8.0F, 8.0F, 5.0F, new CubeDeformation(0.6F))

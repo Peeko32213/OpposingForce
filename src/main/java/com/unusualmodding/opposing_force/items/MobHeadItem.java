@@ -1,6 +1,6 @@
 package com.unusualmodding.opposing_force.items;
 
-import com.unusualmodding.opposing_force.client.renderer.items.OPItemRenderers;
+import com.unusualmodding.opposing_force.client.renderer.items.OPMobHeadItemRenderers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -23,7 +24,7 @@ import java.util.function.Consumer;
 public class MobHeadItem extends StandingAndWallBlockItem {
 
     public static final DispenseItemBehavior DISPENSE_ITEM_BEHAVIOR = new DefaultDispenseItemBehavior() {
-        protected ItemStack execute(BlockSource blockSource, ItemStack stack) {
+        protected @NotNull ItemStack execute(@NotNull BlockSource blockSource, @NotNull ItemStack stack) {
             return MobHeadItem.dispenseHead(blockSource, stack) ? stack : super.execute(blockSource, stack);
         }
     };
@@ -53,8 +54,8 @@ public class MobHeadItem extends StandingAndWallBlockItem {
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
             @Override
-            public OPItemRenderers getCustomRenderer() {
-                return OPItemRenderers.instance;
+            public OPMobHeadItemRenderers getCustomRenderer() {
+                return OPMobHeadItemRenderers.instance;
             }
         });
     }

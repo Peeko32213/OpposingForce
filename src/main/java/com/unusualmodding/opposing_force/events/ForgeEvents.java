@@ -22,7 +22,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -31,20 +30,14 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
@@ -196,7 +189,7 @@ public class ForgeEvents {
         Player player = event.getEntity();
         ServerLevel level = player.getServer().overworld();
         OPWorldData worldData = OPWorldData.get(level);
-        if (event.getTo().equals(Level.NETHER) && !worldData.isHasNetherBeenEnteredBefore()) {
+        if (event.getTo().equals(Level.NETHER) && !worldData.hasNetherBeenEnteredBefore()) {
             worldData.setHasNetherBeenEnteredBefore(true);
             MinecraftServer server = level.getServer();
             PlayerList list = server.getPlayerList();
@@ -216,7 +209,7 @@ public class ForgeEvents {
         OPWorldData worldData = OPWorldData.get(level);
         OPPlayerSavedData playerSavedData = OPPlayerSavedData.get(level);
         PlayerData data = playerSavedData.getPlayerData(player.getUUID());
-        if (worldData.isHasNetherBeenEnteredBefore() && !data.hasGottenNetherMessage()) {
+        if (worldData.hasNetherBeenEnteredBefore() && !data.hasGottenNetherMessage()) {
             playerSavedData.sendNetherMessageAndMarkComplete(player);
         }
     }

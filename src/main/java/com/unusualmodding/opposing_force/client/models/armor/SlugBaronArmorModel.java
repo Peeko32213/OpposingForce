@@ -27,15 +27,15 @@ public class SlugBaronArmorModel extends HumanoidModel<LivingEntity> {
 		PartDefinition rightArm = root.getChild("right_arm");
 
         head.addOrReplaceChild("helmet", CubeListBuilder.create()
-                .texOffs(56, 69).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F))
-                .texOffs(56, 57).addBox(-5.0F, -9.0F, -5.0F, 10.0F, 2.0F, 10.0F, new CubeDeformation(0.5F))
-                .texOffs(56, 85).addBox(-5.0F, -3.95F, -5.0F, 10.0F, 4.0F, 5.0F, new CubeDeformation(0.5F))
-                .texOffs(55, 121).addBox(5.35F, -6.35F, 0.35F, 0.0F, 4.0F, 3.0F, new CubeDeformation(0.5F))
-                .texOffs(55, 121).mirror().addBox(-5.35F, -6.35F, 0.35F, 0.0F, 4.0F, 3.0F, new CubeDeformation(0.5F)).mirror(false)
-                .texOffs(88, 81).addBox(-1.0F, -11.5F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.5F))
-                .texOffs(56, 94).addBox(-2.0F, -14.25F, -4.0F, 4.0F, 2.0F, 8.0F, new CubeDeformation(0.5F))
-                .texOffs(96, 64).addBox(0.975F, -16.875F, -3.95F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.5F))
-                .texOffs(96, 64).mirror().addBox(-1.975F, -16.875F, -3.95F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.5F)).mirror(false), PartPose.ZERO);
+                .texOffs(56, 69).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.6F))
+                .texOffs(56, 57).addBox(-5.0F, -9.0F, -5.0F, 10.0F, 2.0F, 10.0F, new CubeDeformation(0.6F))
+                .texOffs(56, 85).addBox(-5.0F, -3.95F, -5.0F, 10.0F, 4.0F, 5.0F, new CubeDeformation(0.6F))
+                .texOffs(55, 121).addBox(5.35F, -6.35F, 0.35F, 0.0F, 4.0F, 3.0F, new CubeDeformation(0.6F))
+                .texOffs(55, 121).mirror().addBox(-5.35F, -6.35F, 0.35F, 0.0F, 4.0F, 3.0F, new CubeDeformation(0.6F)).mirror(false)
+                .texOffs(88, 81).addBox(-1.0F, -11.5F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.6F))
+                .texOffs(56, 94).addBox(-2.0F, -14.25F, -4.0F, 4.0F, 2.0F, 8.0F, new CubeDeformation(0.6F))
+                .texOffs(96, 64).addBox(0.975F, -16.875F, -3.95F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.6F))
+                .texOffs(96, 64).mirror().addBox(-1.975F, -16.875F, -3.95F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.6F)).mirror(false), PartPose.ZERO);
 
         body.addOrReplaceChild("chestplate", CubeListBuilder.create()
                 .texOffs(88, 69).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 8.0F, 4.0F, new CubeDeformation(0.7F))

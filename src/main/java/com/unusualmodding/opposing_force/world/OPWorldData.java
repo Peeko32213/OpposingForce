@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class OPWorldData extends SavedData {
 
-    private static final String IDENTIFIER = "hostile_takeover_world_data";
+    private static final String IDENTIFIER = "opposing_force_world_data";
     private static final String NETHER_ENTERED = "nether_entered";
 
     private Map<UUID, Double> skyvernSpawnChance = new HashMap<>();
@@ -99,7 +99,7 @@ public class OPWorldData extends SavedData {
         this.hasNetherBeenEnteredBefore = hasNetherBeenEnteredBefore;
     }
 
-    public boolean isHasNetherBeenEnteredBefore() {
+    public boolean hasNetherBeenEnteredBefore() {
         return hasNetherBeenEnteredBefore;
     }
 }

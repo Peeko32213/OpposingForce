@@ -47,7 +47,7 @@ public class LaserBolt extends FrictionlessProjectile {
         this.setDeltaMovement(motion);
         this.setYRot(yRot);
         this.setXRot(xRot);
-        this.setLaserDamage(6.0F);
+        this.setLaserDamage(7.0F);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class LaserBolt extends FrictionlessProjectile {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.getEntityData().define(DAMAGE, 6.0F);
+        this.getEntityData().define(DAMAGE, 7.0F);
         this.getEntityData().define(ITEM_STACK, ItemStack.EMPTY);
     }
 
@@ -196,14 +196,15 @@ public class LaserBolt extends FrictionlessProjectile {
     private void tickTrail() {
         Vec3 trailAt = this.position().add(0, this.getBbHeight() / 2F, 0);
         if (trailPointer == -1) {
+            Vec3 backAt = trailAt;
             for (int i = 0; i < trailPositions.length; i++) {
-                this.trailPositions[i] = trailAt;
+                this.trailPositions[i] = backAt;
             }
         }
-        if (trailPositions.length == trailPointer++) {
+        if (++this.trailPointer == this.trailPositions.length) {
             this.trailPointer = 0;
         }
-        this.trailPositions[trailPointer] = trailAt;
+        this.trailPositions[this.trailPointer] = trailAt;
     }
 
     public Vec3 getTrailPosition(int pointer, float partialTick) {

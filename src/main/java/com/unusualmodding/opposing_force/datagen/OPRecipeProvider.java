@@ -33,43 +33,46 @@ public class OPRecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildRecipes(@NotNull Consumer<FinishedRecipe> consumer) {
+
+        ShapedRecipeBuilder.shaped(MISC, LASER_CORE.get()).define('D', Tags.Items.GEMS_DIAMOND).define('L', DICER_LENS.get()).pattern("DL").pattern("LD").unlockedBy("has_dicer_lens", has(DICER_LENS.get())).save(consumer);
+
         // Blasters
-        ShapedRecipeBuilder.shaped(COMBAT, BLASTER.get()).define('I', Tags.Items.INGOTS_IRON).define('R', Tags.Items.DUSTS_REDSTONE).define('D', DICER_LENS.get()).define('A', Tags.Items.GEMS_AMETHYST).pattern("RDA").pattern("I  ").unlockedBy("has_dicer_lens", has(DICER_LENS.get())).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, WHITE_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_WHITE).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, LIGHT_GRAY_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_LIGHT_GRAY).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, GRAY_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_GRAY).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, BLACK_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_BLACK).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, BROWN_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_BROWN).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, RED_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_RED).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, ORANGE_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_ORANGE).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, YELLOW_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_YELLOW).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, LIME_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_LIME).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, GREEN_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_GREEN).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, CYAN_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_CYAN).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, LIGHT_BLUE_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_LIGHT_BLUE).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, BLUE_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_BLUE).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, PURPLE_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_PURPLE).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, MAGENTA_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_MAGENTA).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, PINK_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_PINK).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, BLASTER.get()).define('I', Tags.Items.INGOTS_IRON).define('N', Tags.Items.NUGGETS_IRON).define('R', Tags.Items.DUSTS_REDSTONE).define('L', LASER_CORE.get()).define('D', DICER_LENS.get()).pattern("D  ").pattern("NIR").pattern(" NL").unlockedBy("has_laser_core", has(LASER_CORE.get())).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, WHITE_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_WHITE).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, LIGHT_GRAY_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_LIGHT_GRAY).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, GRAY_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_GRAY).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, BLACK_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_BLACK).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, BROWN_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_BROWN).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, RED_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_RED).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, ORANGE_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_ORANGE).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, YELLOW_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_YELLOW).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, LIME_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_LIME).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, GREEN_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_GREEN).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, CYAN_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_CYAN).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, LIGHT_BLUE_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_LIGHT_BLUE).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, BLUE_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_BLUE).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, PURPLE_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_PURPLE).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, MAGENTA_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_MAGENTA).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, PINK_BLASTER.get(), 1).requires(OPItemTags.BLASTERS).requires(Tags.Items.DYES_PINK).unlockedBy("has_blaster", has(OPItemTags.BLASTERS)).save(consumer);
 
         // Laser blades
-        ShapedRecipeBuilder.shaped(COMBAT, LASER_BLADE.get()).define('I', Tags.Items.INGOTS_IRON).define('R', Tags.Items.DUSTS_REDSTONE).define('D', DICER_LENS.get()).define('A', Tags.Items.GEMS_AMETHYST).pattern("  A").pattern("RD ").pattern("IR ").unlockedBy("has_dicer_lens", has(DICER_LENS.get())).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, WHITE_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_WHITE).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, LIGHT_GRAY_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_LIGHT_GRAY).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, GRAY_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_GRAY).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, BLACK_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_BLACK).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, BROWN_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_BROWN).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, RED_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_RED).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, ORANGE_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_ORANGE).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, YELLOW_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_YELLOW).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, LIME_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_LIME).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, GREEN_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_GREEN).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, CYAN_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_CYAN).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, LIGHT_BLUE_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_LIGHT_BLUE).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, BLUE_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_BLUE).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, PURPLE_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_PURPLE).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, MAGENTA_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_MAGENTA).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(COMBAT, PINK_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_PINK).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, LASER_BLADE.get()).define('I', Tags.Items.INGOTS_IRON).define('L', LASER_CORE.get()).define('D', DICER_LENS.get()).pattern(" D ").pattern(" D ").pattern("ILI").unlockedBy("has_laser_core", has(LASER_CORE.get())).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, WHITE_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_WHITE).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, LIGHT_GRAY_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_LIGHT_GRAY).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, GRAY_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_GRAY).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, BLACK_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_BLACK).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, BROWN_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_BROWN).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, RED_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_RED).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, ORANGE_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_ORANGE).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, YELLOW_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_YELLOW).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, LIME_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_LIME).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, GREEN_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_GREEN).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, CYAN_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_CYAN).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, LIGHT_BLUE_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_LIGHT_BLUE).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, BLUE_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_BLUE).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, PURPLE_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_PURPLE).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, MAGENTA_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_MAGENTA).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
+//        ShapelessRecipeBuilder.shapeless(COMBAT, PINK_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(Tags.Items.DYES_PINK).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
         ShapelessRecipeBuilder.shapeless(COMBAT, RAINBOW_LASER_BLADE.get(), 1).requires(OPItemTags.LASER_BLADES).requires(OPItemTags.LASER_BLADES).requires(OPItemTags.LASER_BLADES).requires(OPItemTags.LASER_BLADES).requires(OPItemTags.LASER_BLADES).requires(OPItemTags.LASER_BLADES).requires(OPItemTags.LASER_BLADES).requires(OPItemTags.LASER_BLADES).unlockedBy("has_laser_blade", has(OPItemTags.LASER_BLADES)).save(consumer);
 
         ShapelessRecipeBuilder.shapeless(MISC, ELECTRIC_ALLOY.get(), 2).requires(ELECTRIC_CHARGE.get()).requires(ELECTRIC_CHARGE.get()).requires(Tags.Items.INGOTS_GOLD).requires(Tags.Items.GEMS_DIAMOND).unlockedBy("has_electric_charge", has(ELECTRIC_CHARGE.get())).save(consumer);

@@ -6,6 +6,7 @@ import com.unusualmodding.opposing_force.client.models.entity.*;
 import com.unusualmodding.opposing_force.client.models.entity.skyvern.SkyvernBodyModel;
 import com.unusualmodding.opposing_force.client.models.entity.skyvern.SkyvernModel;
 import com.unusualmodding.opposing_force.client.models.entity.skyvern.SkyvernTailModel;
+import com.unusualmodding.opposing_force.client.models.item.BlasterModel;
 import com.unusualmodding.opposing_force.client.models.mob_heads.*;
 import com.unusualmodding.opposing_force.client.particles.LaserBoltDustParticle;
 import com.unusualmodding.opposing_force.client.particles.LaserImpactParticle;
@@ -126,6 +127,7 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.VOLT_CHARGED, () -> VoltModel.createBodyLayer(new CubeDeformation(1.0F)));
         event.registerLayerDefinition(OPModelLayers.WHIZZ, WhizzModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.WHIZZ_HEAD, WhizzHeadModel::createHeadLayer);
+        event.registerLayerDefinition(OPModelLayers.BLASTER, BlasterModel::createItemLayer);
         event.registerLayerDefinition(OPModelLayers.LASER_BOLT, LaserBoltModel::createProjectileLayer);
 
         // Armor

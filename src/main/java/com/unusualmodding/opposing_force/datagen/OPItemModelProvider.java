@@ -31,6 +31,7 @@ public class OPItemModelProvider extends ItemModelProvider {
 
         // Dicer
         this.item(DICER_LENS);
+        this.item(LASER_CORE);
 
         // Fire Slime
         this.item(FIRE_GEL);

@@ -247,7 +247,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.addBlock(OPBlocks.VALIANT_RAMBLER_SKULL.getFirst(), "Rambler Skull");
         this.add("block.opposing_force.valiant_rambler_skull.desc", "Valiant");
 
-        this.translateMusicDisc(OPItems.WALTZ_OF_THE_SLUG_DISC, "Chips The Cat - Waltz of the Slug");
+        this.translateMusicDisc(OPItems.WALTZ_OF_THE_SLUG_DISC, "ChipsTheCat - Waltz of the Slug");
 
         this.addItem(OPItems.TERROR_LEG, "Raw Terror Leg");
 
@@ -311,6 +311,10 @@ public class OPLanguageProvider extends LanguageProvider {
         this.translateDamageType(OPDamageTypes.LASER_BOLT, player -> player + " was blasted", (player, entity) -> player + " was blasted by" + entity);
         this.translateDamageType(OPDamageTypes.THROWN_LASER_BLADE, player -> player + " was sliced in half", (player, entity) -> player + " was sliced in half by" + entity);
         this.translateDamageType(OPDamageTypes.SAWBLADE, player -> player + " was sawn in half", (player, entity) -> player + " was sawn in half by" + entity);
+
+        // misc
+        this.add("opposing_force.nether_progression.enabled", "New enemies have entered the Overworld...");
+        this.add("opposing_force.end_progression.enabled", "New enemies have entered the Overworld...");
     }
 
     @Override

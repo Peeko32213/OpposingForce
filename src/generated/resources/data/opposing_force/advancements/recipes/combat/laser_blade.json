@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_dicer_lens": {
+    "has_laser_core": {
       "conditions": {
         "items": [
           {
             "items": [
-              "opposing_force:dicer_lens"
+              "opposing_force:laser_core"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_dicer_lens",
+      "has_laser_core",
       "has_the_recipe"
     ]
   ],
