@@ -220,6 +220,30 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound("mob/slime/attack2").pitch(0.84F)
         );
 
+        // Tart
+        this.sound(OPSoundEvents.TART_DEATH,
+                sound(OpposingForce.modPrefix("entity/tart/death1"))
+        );
+        this.sound(OPSoundEvents.TART_HURT,
+                sound(OpposingForce.modPrefix("entity/tart/hurt1")),
+                sound(OpposingForce.modPrefix("entity/tart/hurt2"))
+        );
+        this.sound(OPSoundEvents.TART_IDLE,
+                sound(OpposingForce.modPrefix("entity/tart/idle1")).volume(0.6F).weight(20),
+                sound(OpposingForce.modPrefix("entity/tart/idle2")).volume(0.6F).weight(20),
+                sound(OpposingForce.modPrefix("entity/tart/idle3")).volume(0.6F).weight(20),
+                sound(OpposingForce.modPrefix("entity/tart/evil_idle4")).volume(0.6F).weight(1)
+        );
+        this.sound(OPSoundEvents.TART_ATTACK,
+                sound(OpposingForce.modPrefix("entity/tart/attack1")),
+                sound(OpposingForce.modPrefix("entity/tart/attack2")),
+                sound(OpposingForce.modPrefix("entity/tart/attack3"))
+        );
+        this.sound(OPSoundEvents.TART_PLUCK,
+                sound(OpposingForce.modPrefix("entity/tart/pluck1"))
+        );
+
+        // Terror
         this.sound(OPSoundEvents.TERROR_HURT,
                 sound(OpposingForce.modPrefix("entity/terror/hurt1")).pitch(1.2F)
         );

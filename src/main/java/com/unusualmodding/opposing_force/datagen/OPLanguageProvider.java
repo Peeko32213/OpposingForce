@@ -136,10 +136,15 @@ public class OPLanguageProvider extends LanguageProvider {
 
         this.translateSound(OPSoundEvents.SLUG_DEATH, "Slug dies");
         this.translateSound(OPSoundEvents.SLUG_HURT, "Slug hurts");
-        this.translateSound(OPSoundEvents.SLUG_SLIDE, "Footsteps");
+        this.translateSound(OPSoundEvents.SLUG_SLIDE, "Slug slides");
         this.translateSound(OPSoundEvents.SLUG_EAT, "Slug eats");
         this.translateSound(OPSoundEvents.SLUG_ATTACK, "Slug attacks");
 
+        this.translateSound(OPSoundEvents.TART_DEATH, "Slug dies");
+        this.translateSound(OPSoundEvents.TART_HURT, "Slug hurts");
+        this.translateSound(OPSoundEvents.TART_IDLE, "Tart gurgles");
+        this.translateSound(OPSoundEvents.TART_ATTACK, "Tart attacks");
+        this.translateSound(OPSoundEvents.TART_PLUCK, "Tart escapes leaf");
         this.translateSound(OPSoundEvents.NOTE_BLOCK_IMITATE_TART, "Tart tarts");
 
         this.translateSound(OPSoundEvents.TERROR_DEATH, "Terror dies");

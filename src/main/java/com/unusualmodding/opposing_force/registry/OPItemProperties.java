@@ -41,7 +41,7 @@ public class OPItemProperties {
             if (entity == null) {
                 return 0.0F;
             } else {
-                return entity.isUsingItem() ? 1.0F : 0.0F;
+                return entity.isUsingItem() && entity.getUseItem().is(OPItems.SAWBLADE.get()) ? 1.0F : 0.0F;
             }
         });
     }

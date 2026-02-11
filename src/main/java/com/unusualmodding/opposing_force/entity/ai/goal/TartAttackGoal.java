@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.entity.ai.goal;
 
 import com.unusualmodding.opposing_force.entity.Tart;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
+import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
@@ -41,8 +42,13 @@ public class TartAttackGoal extends AttackGoal {
             if (attackState == 1) {
                 timer++;
                 this.tart.getNavigation().stop();
-                if (timer == 1) this.tart.setPose(OPPoses.ATTACKING.get());
-                if (this.timer == 3) this.tart.addDeltaMovement(this.tart.getLookAngle().scale(1.0D).multiply(0.3D, 0, 0.3D));
+                if (timer == 1) {
+                    this.tart.setPose(OPPoses.ATTACKING.get());
+                    this.tart.playSound(OPSoundEvents.TART_ATTACK.get(), 1.0F, 0.9F + tart.getRandom().nextFloat() * 0.2F);
+                }
+                if (timer == 3) {
+                    this.tart.addDeltaMovement(this.tart.getLookAngle().scale(1.0D).multiply(0.3D, 0, 0.3D));
+                }
                 if (timer == 5) {
                     if (this.tart.distanceTo(Objects.requireNonNull(target)) < getAttackReachSqr(target)) {
                         this.tart.doHurtTarget(target);

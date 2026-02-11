@@ -674,6 +674,57 @@
     ],
     "subtitle": "subtitles.opposing_force.slug_slide"
   },
+  "tart_attack": {
+    "sounds": [
+      "opposing_force:entity/tart/attack1",
+      "opposing_force:entity/tart/attack2",
+      "opposing_force:entity/tart/attack3"
+    ],
+    "subtitle": "subtitles.opposing_force.tart_attack"
+  },
+  "tart_death": {
+    "sounds": [
+      "opposing_force:entity/tart/death1"
+    ],
+    "subtitle": "subtitles.opposing_force.tart_death"
+  },
+  "tart_hurt": {
+    "sounds": [
+      "opposing_force:entity/tart/hurt1",
+      "opposing_force:entity/tart/hurt2"
+    ],
+    "subtitle": "subtitles.opposing_force.tart_hurt"
+  },
+  "tart_idle": {
+    "sounds": [
+      {
+        "name": "opposing_force:entity/tart/idle1",
+        "volume": 0.6,
+        "weight": 20
+      },
+      {
+        "name": "opposing_force:entity/tart/idle2",
+        "volume": 0.6,
+        "weight": 20
+      },
+      {
+        "name": "opposing_force:entity/tart/idle3",
+        "volume": 0.6,
+        "weight": 20
+      },
+      {
+        "name": "opposing_force:entity/tart/evil_idle4",
+        "volume": 0.6
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.tart_idle"
+  },
+  "tart_pluck": {
+    "sounds": [
+      "opposing_force:entity/tart/pluck1"
+    ],
+    "subtitle": "subtitles.opposing_force.tart_pluck"
+  },
   "terror_death": {
     "sounds": [
       "opposing_force:entity/terror/death1"

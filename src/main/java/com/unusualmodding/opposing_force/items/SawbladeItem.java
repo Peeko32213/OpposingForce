@@ -81,7 +81,7 @@ public class SawbladeItem extends ConfigurableAxeItem {
             InteractionHand hand = player.getUsedItemHand();
             float knockback = (float) player.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
             knockback += EnchantmentHelper.getKnockbackBonus(player);
-            float damage = 2.0F;
+            float damage = 3.0F;
             damage += EnchantmentHelper.getDamageBonus(player.getItemInHand(hand), entity.getMobType()) * 0.5F;
 
             if (!isEntityInFront(player, entity) || player.level().isClientSide) continue;
@@ -123,7 +123,7 @@ public class SawbladeItem extends ConfigurableAxeItem {
         ItemStack stack = player.getUseItem();
         if (stack.getItem() == OPItems.SAWBLADE.get()) {
             AttributeInstance speedAttribute = player.getAttribute(Attributes.MOVEMENT_SPEED);
-            AttributeModifier speedModifier = new AttributeModifier(SAWBLADE_SPEED_MODIFIER_UUID, "Sawblade Speed", 2.5, AttributeModifier.Operation.MULTIPLY_TOTAL);
+            AttributeModifier speedModifier = new AttributeModifier(SAWBLADE_SPEED_MODIFIER_UUID, "Sawblade Speed", 3.0, AttributeModifier.Operation.MULTIPLY_TOTAL);
             if (speedAttribute != null && !speedAttribute.hasModifier(speedModifier)) {
                 speedAttribute.addTransientModifier(speedModifier);
             }

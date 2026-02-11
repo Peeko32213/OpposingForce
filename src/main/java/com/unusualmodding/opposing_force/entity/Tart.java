@@ -7,10 +7,12 @@ import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.entity.utils.collisions.CustomCollisions;
 import com.unusualmodding.opposing_force.entity.utils.collisions.CustomCollisionsMoveControl;
 import com.unusualmodding.opposing_force.registry.OPItems;
+import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -175,6 +177,21 @@ public class Tart extends Monster implements AttackState, CustomCollisions {
     @Override
     public void setAttackState(int attackState) {
         this.entityData.set(ATTACK_STATE, attackState);
+    }
+
+    @Override
+    protected @NotNull SoundEvent getAmbientSound() {
+        return OPSoundEvents.TART_IDLE.get();
+    }
+
+    @Override
+    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
+        return OPSoundEvents.TART_HURT.get();
+    }
+
+    @Override
+    protected @NotNull SoundEvent getDeathSound() {
+        return OPSoundEvents.TART_DEATH.get();
     }
 
     private static class TartNodeEvaluator extends WalkNodeEvaluator {

@@ -1,9 +1,9 @@
 package com.unusualmodding.opposing_force.blocks;
 
 import com.unusualmodding.opposing_force.blocks.utils.FruitLeaves;
+import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -35,7 +35,7 @@ public class InfestedLeavesBlock extends LeavesBlock implements FruitLeaves {
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState blockState, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (!level.isClientSide) this.spawnInfestation((ServerLevel) level, pos);
-        level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
+        level.playSound(null, pos, OPSoundEvents.TART_PLUCK.get(), SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
         level.setBlock(pos, leaves.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, blockState.getValue(LeavesBlock.PERSISTENT)).setValue(LeavesBlock.DISTANCE, blockState.getValue(LeavesBlock.DISTANCE)), 2);
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

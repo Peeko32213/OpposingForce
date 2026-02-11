@@ -43,6 +43,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
@@ -271,34 +272,7 @@ public class ForgeEvents {
         final Entity attacker = event.getSource().getDirectEntity();
 
         if (entity != null && attacker != null) {
-            Vec3 lookVec = entity.getLookAngle().normalize();
-            Vec3 directionToTarget = attacker.position().subtract(entity.position()).normalize();
-            double dot = lookVec.dot(directionToTarget);
-
-            // laser blade parry
-            if (entity.isUsingItem() && entity.getUseItem().getItem() instanceof LaserBladeItem && entity.getUseItem().getUseDuration() - entity.getUseItemRemainingTicks() <= 5) {
-                if (dot > 0.0) {
-                    entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
-                    if (attacker instanceof LivingEntity livingAttacker) {
-                        double knockbackMulti = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.KNOCKBACK, entity.getUseItem());
-                        if (knockbackMulti != 0) {
-                            knockbackMulti = 1 + knockbackMulti * 0.5D;
-                        } else {
-                            knockbackMulti = 1;
-                        }
-                        int fireAspect = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, entity.getUseItem());
-                        if (fireAspect > 0) {
-                            livingAttacker.setSecondsOnFire(3 * fireAspect);
-                        }
-                        if (livingAttacker instanceof Warden && entity instanceof Player) {
-                            OPCriterion.PARRY_WARDEN_WITH_LASER_BLADE.trigger((ServerPlayer) entity);
-                        }
-                        livingAttacker.knockback(0.55F * knockbackMulti, attacker.getDeltaMovement().x, attacker.getDeltaMovement().z);
-                        livingAttacker.knockback(0.5F * knockbackMulti, entity.getX() - livingAttacker.getX(), entity.getZ() - livingAttacker.getZ());
-                    }
-                    event.setCanceled(true);
-                }
-            }
+            LaserBladeItem.parryAttack(entity, attacker, event);
         }
     }
 
@@ -306,31 +280,8 @@ public class ForgeEvents {
     public static void onProjectileImpact(ProjectileImpactEvent event) {
         final Projectile projectile = event.getProjectile();
         final Entity entity = event.getEntity();
-
-        // laser blade deflection
-        if (event.getRayTraceResult() instanceof EntityHitResult result) {
-            Entity resultEntity = result.getEntity();
-            if (entity != null && resultEntity instanceof LivingEntity entityBlocking) {
-                if (entityBlocking.isUsingItem() && entityBlocking.getUseItem().getItem() instanceof LaserBladeItem && entityBlocking.getUseItem().getUseDuration() - entityBlocking.getUseItemRemainingTicks() <= 5) {
-                    Vec3 lookVec = entityBlocking.getLookAngle().normalize();
-                    Vec3 directionToTarget = entity.position().subtract(entityBlocking.position()).normalize();
-                    double dot = lookVec.dot(directionToTarget);
-
-                    if (dot > 0.0) {
-                        projectile.setOwner(entityBlocking);
-                        Vec3 rebound = entityBlocking.getLookAngle();
-                        projectile.shoot(rebound.x(), rebound.y(), rebound.z(), 1.5F, 0.0F);
-                        if (projectile instanceof AbstractHurtingProjectile hurting) {
-                            hurting.xPower = rebound.x() * 0.1D;
-                            hurting.yPower = rebound.y() * 0.1D;
-                            hurting.zPower = rebound.z() * 0.1D;
-                        }
-                        entityBlocking.level().playSound(null, entityBlocking.getX(), entityBlocking.getY(), entityBlocking.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entityBlocking.level().getRandom().nextFloat() * 0.4F + 0.8F));
-                        event.setCanceled(true);
-                    }
-                }
-            }
-        }
+        HitResult hitResult = event.getRayTraceResult();
+        LaserBladeItem.deflectProjectiles(entity, projectile, hitResult, event);
     }
 
     @SubscribeEvent

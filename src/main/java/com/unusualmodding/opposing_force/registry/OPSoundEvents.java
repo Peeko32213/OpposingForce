@@ -66,6 +66,12 @@ public class OPSoundEvents {
     public static final RegistryObject<SoundEvent> SLUG_EAT = registerSoundEvent("slug_eat");
     public static final RegistryObject<SoundEvent> SLUG_ATTACK = registerSoundEvent("slug_attack");
 
+    public static final RegistryObject<SoundEvent> TART_HURT = registerSoundEvent("tart_hurt");
+    public static final RegistryObject<SoundEvent> TART_DEATH = registerSoundEvent("tart_death");
+    public static final RegistryObject<SoundEvent> TART_IDLE = registerSoundEvent("tart_idle");
+    public static final RegistryObject<SoundEvent> TART_ATTACK = registerSoundEvent("tart_attack");
+    public static final RegistryObject<SoundEvent> TART_PLUCK = registerSoundEvent("tart_pluck");
+
     public static final RegistryObject<SoundEvent> TERROR_HURT = registerSoundEvent("terror_hurt");
     public static final RegistryObject<SoundEvent> TERROR_DEATH = registerSoundEvent("terror_death");
     public static final RegistryObject<SoundEvent> TERROR_IDLE = registerSoundEvent("terror_idle");
