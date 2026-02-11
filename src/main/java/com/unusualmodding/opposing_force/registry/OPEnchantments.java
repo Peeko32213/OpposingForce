@@ -31,14 +31,11 @@ public class OPEnchantments {
 
     // blaster
     public static final RegistryObject<Enchantment> POWER_SUPPLY = ENCHANTMENTS.register("power_supply", () -> new OPEnchantment("power_supply", Enchantment.Rarity.UNCOMMON, BLASTER, 3, 15, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> RAPID_FIRE = ENCHANTMENTS.register("rapid_fire", () -> new OPEnchantment("rapid_fire", Enchantment.Rarity.RARE, BLASTER, 3, 20, EquipmentSlot.MAINHAND));
 
     // tesla cannon
-    public static final RegistryObject<Enchantment> BATTERY = ENCHANTMENTS.register("battery", () -> new OPEnchantment("battery", Enchantment.Rarity.UNCOMMON, TESLA_CANNON, 3, 15, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> CAPACITANCE = ENCHANTMENTS.register("capacitance", () -> new OPEnchantment("capacitance", Enchantment.Rarity.RARE, TESLA_CANNON, 3, 20, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> QUASAR = ENCHANTMENTS.register("quasar", () -> new OPEnchantment("quasar", Enchantment.Rarity.VERY_RARE, TESLA_CANNON, 1, 30, false, false, true, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> REBOUND = ENCHANTMENTS.register("rebound", () -> new OPEnchantment("rebound", Enchantment.Rarity.UNCOMMON, TESLA_CANNON, 4, 15, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> STATIC_ATTRACTION = ENCHANTMENTS.register("static_attraction", () -> new OPEnchantment("static_attraction", Enchantment.Rarity.VERY_RARE, TESLA_CANNON, 1, 25, true, false, true, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> KICKBACK = ENCHANTMENTS.register("kickback", KickbackEnchantment::new);
 
     // vile boulder
@@ -54,9 +51,6 @@ public class OPEnchantments {
         if (enchantment1 == QUASAR.get() && (enchantment2 == Enchantments.MULTISHOT || enchantment2 == CAPACITANCE.get() || enchantment2 == REBOUND.get())) {
             return false;
         }
-        if (enchantment1 == STATIC_ATTRACTION.get() && (enchantment2 == CAPACITANCE.get() || enchantment2 == QUASAR.get())) {
-            return false;
-        }
         return true;
     }
 
@@ -64,7 +58,7 @@ public class OPEnchantments {
         for (RegistryObject<Enchantment> enchantObject : ENCHANTMENTS.getEntries()) {
             if (enchantObject.isPresent()) {
                 Enchantment enchant = enchantObject.get();
-                if(enchant.category == enchantmentCategory){
+                if (enchant.category == enchantmentCategory) {
                     EnchantmentInstance instance = new EnchantmentInstance(enchant, enchant.getMaxLevel());
                     output.accept(EnchantedBookItem.createForEnchantment(instance));
                 }

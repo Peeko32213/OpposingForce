@@ -58,8 +58,7 @@ public class SawbladeItem extends ConfigurableAxeItem {
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         player.startUsingItem(hand);
-        setActive(itemstack, true);
-        player.playSound(OPSoundEvents.TERROR_SAW_START.get());
+        player.playSound(OPSoundEvents.SAWBLADE_SAW_START.get());
 //        AttributeModifier speedModifier = new AttributeModifier(SAWBLADE_SPEED_MODIFIER_UUID, "Sawblade Speed", 2.0, AttributeModifier.Operation.MULTIPLY_BASE);
 //        if (!player.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(speedModifier)) {
 //            player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(speedModifier);
@@ -112,20 +111,19 @@ public class SawbladeItem extends ConfigurableAxeItem {
     @Override
     public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity living, int useTimeLeft) {
         super.releaseUsing(stack, level, living, useTimeLeft);
-        setActive(stack, false);
         if (living instanceof Player player) {
-            player.getCooldowns().addCooldown(this, 75);
+            player.getCooldowns().addCooldown(this, 40);
             clearSawbladeAttributes(player);
         }
         OpposingForce.PROXY.clearSoundCacheFor(living);
-        living.playSound(OPSoundEvents.TERROR_SAW_END.get());
+        living.playSound(OPSoundEvents.SAWBLADE_SAW_END.get());
     }
 
     public static void onPlayerTick(Player player) {
         ItemStack stack = player.getUseItem();
         if (stack.getItem() == OPItems.SAWBLADE.get()) {
             AttributeInstance speedAttribute = player.getAttribute(Attributes.MOVEMENT_SPEED);
-            AttributeModifier speedModifier = new AttributeModifier(SAWBLADE_SPEED_MODIFIER_UUID, "Sawblade Speed", 2.25, AttributeModifier.Operation.MULTIPLY_TOTAL);
+            AttributeModifier speedModifier = new AttributeModifier(SAWBLADE_SPEED_MODIFIER_UUID, "Sawblade Speed", 2.5, AttributeModifier.Operation.MULTIPLY_TOTAL);
             if (speedAttribute != null && !speedAttribute.hasModifier(speedModifier)) {
                 speedAttribute.addTransientModifier(speedModifier);
             }
@@ -142,7 +140,6 @@ public class SawbladeItem extends ConfigurableAxeItem {
     public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int i, boolean held) {
         super.inventoryTick(stack, level, entity, i, held);
         boolean using = entity instanceof LivingEntity living && living.getUseItem().equals(stack);
-
         if (level.isClientSide) {
             int useTime = getUseTime(stack);
             CompoundTag compoundTag = stack.getOrCreateTag();
@@ -174,15 +171,6 @@ public class SawbladeItem extends ConfigurableAxeItem {
         float prev = compoundTag != null ? (float) compoundTag.getInt("PrevUseTime") : 0F;
         float current = compoundTag != null ? (float) compoundTag.getInt("UseTime") : 0F;
         return prev + f * (current - prev);
-    }
-
-    public static boolean isActive(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        return tag != null && tag.getBoolean("Active");
-    }
-
-    public static void setActive(ItemStack stack, boolean active) {
-        stack.getOrCreateTag().putBoolean("Active", active);
     }
 
     @Override

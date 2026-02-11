@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 public class SawbladeSound extends ItemTickableSound {
 
     public SawbladeSound(LivingEntity user) {
-        super(user, OPSoundEvents.TERROR_SAW.get());
+        super(user, OPSoundEvents.SAWBLADE_SAW.get());
     }
 
     public void tickVolume(ItemStack itemStack) {

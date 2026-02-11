@@ -21,7 +21,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
@@ -29,16 +28,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
-
-import java.util.List;
 
 public class ElectricCharge extends FrictionlessProjectile {
 
     private static final EntityDataAccessor<Float> CHARGE_SCALE = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> MAX_BOUNCES = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> TARGET = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> BOUNCY = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> QUASAR = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> STATIC_ATTRACTION = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.BOOLEAN);
@@ -68,7 +63,6 @@ public class ElectricCharge extends FrictionlessProjectile {
         this.getEntityData().define(STATIC_ATTRACTION, false);
         this.getEntityData().define(CHARGE_SCALE, 1.0F);
         this.getEntityData().define(MAX_BOUNCES, 0);
-        this.getEntityData().define(TARGET, -1);
         this.getEntityData().define(DAMAGE, 3.0F);
     }
 
@@ -80,7 +74,6 @@ public class ElectricCharge extends FrictionlessProjectile {
         compoundTag.putInt("MaxBounces", this.getMaxBounces());
         compoundTag.putBoolean("Bouncy", this.isBouncy());
         compoundTag.putBoolean("Quasar", this.isQuasar());
-        compoundTag.putBoolean("StaticAttraction", this.isStaticAttraction());
     }
 
     @Override
@@ -91,7 +84,6 @@ public class ElectricCharge extends FrictionlessProjectile {
         this.setMaxBounces(compoundTag.getInt("MaxBounces"));
         this.setBouncy(compoundTag.getBoolean("Bouncy"));
         this.setQuasar(compoundTag.getBoolean("Quasar"));
-        this.setStaticAttraction(compoundTag.getBoolean("StaticAttraction"));
     }
 
     public float getChargeDamage() {
@@ -129,21 +121,6 @@ public class ElectricCharge extends FrictionlessProjectile {
         this.entityData.set(QUASAR, quasar);
     }
 
-    public boolean isStaticAttraction() {
-        return this.entityData.get(STATIC_ATTRACTION);
-    }
-    public void setStaticAttraction(boolean staticAttraction) {
-        this.entityData.set(STATIC_ATTRACTION, staticAttraction);
-    }
-
-    @Nullable
-    private Entity getTarget() {
-        return this.level().getEntity(this.getEntityData().get(TARGET));
-    }
-    private void setTarget(@Nullable Entity entity) {
-        this.getEntityData().set(TARGET, entity == null ? -1 : entity.getId());
-    }
-
     @Override
     protected void onHitEntity(@NotNull EntityHitResult result) {
         super.onHitEntity(result);
@@ -151,9 +128,6 @@ public class ElectricCharge extends FrictionlessProjectile {
 
         if (!this.level().isClientSide) {
             this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
-            if (entity instanceof Creeper creeper) {
-                ((CreeperExtension) creeper).opposingForce$setCharged(true);
-            }
         }
     }
 
@@ -206,13 +180,7 @@ public class ElectricCharge extends FrictionlessProjectile {
             }
         }
 
-        if (this.isQuasar()) {
-            this.doQuasarEffects(1F);
-        }
-
-        if (this.isStaticAttraction()) {
-            this.doStaticEffects();
-        }
+        if (this.isQuasar()) this.doQuasarEffects(1F);
     }
 
     @Override
@@ -239,27 +207,27 @@ public class ElectricCharge extends FrictionlessProjectile {
         }
     }
 
-    public void doStaticEffects() {
-        if (!this.level().isClientSide()) {
-            this.updateTarget();
-        }
-        Entity target = getTarget();
-        if (target != null) {
-            Vec3 targetVec = getVectorToTarget(target).scale(0.9F);
-            double courseLength = this.getDeltaMovement().length();
-            double targetLength = targetVec.length();
-            double totalLength = Math.sqrt(courseLength * courseLength + targetLength * targetLength);
-
-            double dotProduct = this.getDeltaMovement().dot(targetVec) / (courseLength * targetLength);
-
-            if (dotProduct > 0.5) {
-                Vec3 newMotion = this.getDeltaMovement().scale(courseLength / totalLength).add(targetVec.scale(courseLength / totalLength));
-                this.setDeltaMovement(newMotion.add(0, 0.045F, 0).normalize());
-            } else if (!this.level().isClientSide()) {
-                this.setTarget(null);
-            }
-        }
-    }
+//    public void doStaticEffects() {
+//        if (!this.level().isClientSide()) {
+//            this.updateTarget();
+//        }
+//        Entity target = getTarget();
+//        if (target != null) {
+//            Vec3 targetVec = getVectorToTarget(target).scale(0.9F);
+//            double courseLength = this.getDeltaMovement().length();
+//            double targetLength = targetVec.length();
+//            double totalLength = Math.sqrt(courseLength * courseLength + targetLength * targetLength);
+//
+//            double dotProduct = this.getDeltaMovement().dot(targetVec) / (courseLength * targetLength);
+//
+//            if (dotProduct > 0.5) {
+//                Vec3 newMotion = this.getDeltaMovement().scale(courseLength / totalLength).add(targetVec.scale(courseLength / totalLength));
+//                this.setDeltaMovement(newMotion.add(0, 0.045F, 0).normalize());
+//            } else if (!this.level().isClientSide()) {
+//                this.setTarget(null);
+//            }
+//        }
+//    }
 
     public void spawnElectricParticles(ElectricCharge charge, int range, float yHeight, float particleMax) {
         Vec3 movement = charge.getDeltaMovement();
@@ -272,10 +240,10 @@ public class ElectricCharge extends FrictionlessProjectile {
 
         for (int i = 0; i < particleMax; i++) {
             if (!this.level().isClientSide) {
-                if (this.isStaticAttraction()) {
-                    ParticleUtils.spawnLightningParticles(x, y, z, lightningLength, 0.3F + (randomSource.nextFloat() / 8), 0.8F + (randomSource.nextFloat() / 8), 0.5F + (randomSource.nextFloat() / 8));
-                }
-                else if (this.isQuasar()) {
+//                if (this.isStaticAttraction()) {
+//                    ParticleUtils.spawnLightningParticles(x, y, z, lightningLength, 0.3F + (randomSource.nextFloat() / 8), 0.8F + (randomSource.nextFloat() / 8), 0.5F + (randomSource.nextFloat() / 8));
+//                }
+                if (this.isQuasar()) {
                     ParticleUtils.spawnLightningParticles(x, y, z, lightningLength, 0.1F + randomSource.nextFloat(), 0.1F + randomSource.nextFloat(), 0.1F + randomSource.nextFloat());
                 }
                 else {
@@ -323,73 +291,73 @@ public class ElectricCharge extends FrictionlessProjectile {
         }
     }
 
-    private void updateTarget() {
-        Entity target = getTarget();
+//    private void updateTarget() {
+//        Entity target = getTarget();
+//
+//        if (target != null && !target.isAlive()) {
+//            target = null;
+//            this.setTarget(null);
+//        }
+//
+//        if (target == null) {
+//            AABB positionBB = this.getBoundingBox().inflate(6 + this.getChargeScale(), 6 + this.getChargeScale(), 6 + this.getChargeScale());
+//
+//            AABB targetBB = positionBB;
+//
+//            Vec3 courseVec = this.getDeltaMovement().scale(5).yRot((float) -Math.PI / 6.0F);
+//            targetBB = targetBB.minmax(positionBB.move(courseVec));
+//
+//            courseVec = this.getDeltaMovement().scale(5).yRot((float) -Math.PI / 6.0F);
+//            targetBB = targetBB.minmax(positionBB.move(courseVec));
+//
+//            targetBB = targetBB.inflate(0, 5 * 0.5, 0);
+//
+//            double closestDot = -1.0;
+//            Entity closestTarget = null;
+//
+//            List<LivingEntity> entityList = this.level().getEntitiesOfClass(LivingEntity.class, targetBB);
+//            List<LivingEntity> monsters = entityList.stream().filter(l -> l instanceof Monster).toList();
+//
+//            if (!monsters.isEmpty()) {
+//                for (LivingEntity monster : monsters) {
+//                    if (((Monster) monster).getTarget() == this.getOwner()) {
+//                        setTarget(monster);
+//                        return;
+//                    }
+//                }
+//                for (LivingEntity monster : monsters) {
+//                    if (monster instanceof NeutralMob) continue;
+//                    if (monster.hasLineOfSight(this)) {
+//                        setTarget(monster);
+//                        return;
+//                    }
+//                }
+//            }
+//
+//            for (LivingEntity living : entityList) {
+//                if (!living.hasLineOfSight(this)) continue;
+//                if (living == this.getOwner()) continue;
+//                if (getOwner() != null && living instanceof TamableAnimal animal && animal.getOwner() == this.getOwner()) continue;
+//
+//                Vec3 motionVec = this.getDeltaMovement().normalize();
+//                Vec3 targetVec = getVectorToTarget(living).normalize();
+//                double dot = motionVec.dot(targetVec);
+//
+//                if (dot > Math.max(closestDot, 0.5)) {
+//                    closestDot = dot;
+//                    closestTarget = living;
+//                }
+//            }
+//
+//            if (closestTarget != null) {
+//                setTarget(closestTarget);
+//            }
+//        }
+//    }
 
-        if (target != null && !target.isAlive()) {
-            target = null;
-            this.setTarget(null);
-        }
-
-        if (target == null) {
-            AABB positionBB = this.getBoundingBox().inflate(6 + this.getChargeScale(), 6 + this.getChargeScale(), 6 + this.getChargeScale());
-
-            AABB targetBB = positionBB;
-
-            Vec3 courseVec = this.getDeltaMovement().scale(5).yRot((float) -Math.PI / 6.0F);
-            targetBB = targetBB.minmax(positionBB.move(courseVec));
-
-            courseVec = this.getDeltaMovement().scale(5).yRot((float) -Math.PI / 6.0F);
-            targetBB = targetBB.minmax(positionBB.move(courseVec));
-
-            targetBB = targetBB.inflate(0, 5 * 0.5, 0);
-
-            double closestDot = -1.0;
-            Entity closestTarget = null;
-
-            List<LivingEntity> entityList = this.level().getEntitiesOfClass(LivingEntity.class, targetBB);
-            List<LivingEntity> monsters = entityList.stream().filter(l -> l instanceof Monster).toList();
-
-            if (!monsters.isEmpty()) {
-                for (LivingEntity monster : monsters) {
-                    if (((Monster) monster).getTarget() == this.getOwner()) {
-                        setTarget(monster);
-                        return;
-                    }
-                }
-                for (LivingEntity monster : monsters) {
-                    if (monster instanceof NeutralMob) continue;
-                    if (monster.hasLineOfSight(this)) {
-                        setTarget(monster);
-                        return;
-                    }
-                }
-            }
-
-            for (LivingEntity living : entityList) {
-                if (!living.hasLineOfSight(this)) continue;
-                if (living == this.getOwner()) continue;
-                if (getOwner() != null && living instanceof TamableAnimal animal && animal.getOwner() == this.getOwner()) continue;
-
-                Vec3 motionVec = this.getDeltaMovement().normalize();
-                Vec3 targetVec = getVectorToTarget(living).normalize();
-                double dot = motionVec.dot(targetVec);
-
-                if (dot > Math.max(closestDot, 0.5)) {
-                    closestDot = dot;
-                    closestTarget = living;
-                }
-            }
-
-            if (closestTarget != null) {
-                setTarget(closestTarget);
-            }
-        }
-    }
-
-    private Vec3 getVectorToTarget(Entity target) {
-        return new Vec3(target.getX() - this.getX(), (target.getY() + target.getEyeHeight()) - this.getY(), target.getZ() - this.getZ());
-    }
+//    private Vec3 getVectorToTarget(Entity target) {
+//        return new Vec3(target.getX() - this.getX(), (target.getY() + target.getEyeHeight()) - this.getY(), target.getZ() - this.getZ());
+//    }
 
     @Override
     protected float getEyeHeight(@NotNull Pose pose, @NotNull EntityDimensions dimensions) {

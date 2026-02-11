@@ -41,7 +41,7 @@ public class OPItemProperties {
             if (entity == null) {
                 return 0.0F;
             } else {
-                return SawbladeItem.isActive(itemStack) ? 1.0F : 0.0F;
+                return entity.isUsingItem() ? 1.0F : 0.0F;
             }
         });
     }

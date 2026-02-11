@@ -33,6 +33,6 @@ public class OPTiers {
         public static final Tier UMBER = new OPItemTier(2, 196, 6.0F, 1.0F, 10, () -> Ingredient.of(OPItems.UMBER_FANG.get()));
         public static final Tier VILE = new OPItemTier(0, 224, 3.0F, 0.0F, 8, () -> Ingredient.of(OPBlocks.SLUG_EGGS.get()));
         public static final Tier SAWBLADE = new OPItemTier(3, 1520, 4.0F, 1.0F, 6, () -> Ingredient.of(OPItems.TERROR_SAW.get()));
-        public static final Tier TREMBLING = new OPItemTier(3, 1120, 5.0F, 3.0F, 7, () -> Ingredient.of(OPBlocks.TREMBLER_SHELL.get()));
+        public static final Tier TREMBLING = new OPItemTier(3, 1120, 4.0F, 3.0F, 6, () -> Ingredient.of(OPBlocks.TREMBLER_SHELL.get()));
     }
 }

@@ -8,6 +8,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -24,6 +27,11 @@ public class TremblingSlammer extends ConfigurablePickaxetem {
 
     public TremblingSlammer(Properties properties) {
         super(OPToolDefinitions.TREMBLING, 4, -3.0F, properties);
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return enchantment.category == EnchantmentCategory.WEAPON && enchantment != Enchantments.SWEEPING_EDGE;
     }
 
     public static void breakBlocksAroundMinedBlock(Level level, BlockPos initialBlockPos, Player player) {

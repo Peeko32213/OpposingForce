@@ -582,6 +582,30 @@
     ],
     "subtitle": "subtitles.opposing_force.rambler_idle"
   },
+  "sawblade_saw": {
+    "sounds": [
+      "opposing_force:entity/terror/saw_loop1"
+    ],
+    "subtitle": "subtitles.opposing_force.sawblade_saw"
+  },
+  "sawblade_saw_end": {
+    "sounds": [
+      "opposing_force:entity/terror/saw_end1"
+    ],
+    "subtitle": "subtitles.opposing_force.sawblade_saw_end"
+  },
+  "sawblade_saw_start": {
+    "sounds": [
+      "opposing_force:entity/terror/saw_start1"
+    ],
+    "subtitle": "subtitles.opposing_force.sawblade_saw_start"
+  },
+  "sawblade_swing": {
+    "sounds": [
+      "opposing_force:item/sawblade/swing1"
+    ],
+    "subtitle": "subtitles.opposing_force.sawblade_swing"
+  },
   "slug_attack": {
     "sounds": [
       {

@@ -108,6 +108,11 @@ public class OPSoundEvents {
     public static final RegistryObject<SoundEvent> LASER_BLADE_SPIN = registerSoundEvent("laser_blade_spin");
     public static final RegistryObject<SoundEvent> LASER_BLADE_CATCH = registerSoundEvent("laser_blade_catch");
 
+    public static final RegistryObject<SoundEvent> SAWBLADE_SAW_START = registerSoundEvent("sawblade_saw_start");
+    public static final RegistryObject<SoundEvent> SAWBLADE_SAW = registerSoundEvent("sawblade_saw");
+    public static final RegistryObject<SoundEvent> SAWBLADE_SAW_END = registerSoundEvent("sawblade_saw_end");
+    public static final RegistryObject<SoundEvent> SAWBLADE_SWING = registerSoundEvent("sawblade_swing");
+
     public static final RegistryObject<SoundEvent> WALTZ_OF_THE_SLUG_DISC = registerSoundEvent("waltz_of_the_slug_disc");
 
     public static final Holder.Reference<SoundEvent> NOTE_BLOCK_IMITATE_DICER = registerSoundEventHolder("note_block_imitate_dicer");

@@ -147,8 +147,13 @@ public class OPLanguageProvider extends LanguageProvider {
         this.translateSound(OPSoundEvents.TERROR_IDLE, "Terror grumbles");
         this.translateSound(OPSoundEvents.TERROR_FLOP, "Terror flops");
         this.translateSound(OPSoundEvents.TERROR_SAW_START, "Terror starts sawing");
-        this.translateSound(OPSoundEvents.TERROR_SAW, "Terror sawing");
+        this.translateSound(OPSoundEvents.TERROR_SAW, "Terror saws");
         this.translateSound(OPSoundEvents.TERROR_SAW_END, "Terror stops sawing");
+
+        this.translateSound(OPSoundEvents.SAWBLADE_SAW_START, "Sawblade starts sawing");
+        this.translateSound(OPSoundEvents.SAWBLADE_SAW, "Sawblade saws");
+        this.translateSound(OPSoundEvents.SAWBLADE_SAW_END, "Sawblade stops sawing");
+        this.translateSound(OPSoundEvents.SAWBLADE_SWING, "Sawblade swings");
 
         this.translateSound(OPSoundEvents.TESLA_BOW_CHARGED, "Tesla Bow loads");
         this.translateSound(OPSoundEvents.TESLA_BOW_SHOOT, "Tesla Bow fires");
@@ -252,12 +257,9 @@ public class OPLanguageProvider extends LanguageProvider {
         this.translateEnchantmentWithDesc(OPEnchantments.REBOUND.get(), "The fired electric charge bounces off blocks and passes through mobs");
         this.translateEnchantmentWithDesc(OPEnchantments.KICKBACK.get(), "Launches the user backwards after firing");
         this.translateEnchantmentWithDesc(OPEnchantments.QUASAR.get(), "The fired electric charge changes color rapidly and pulls mobs towards it");
-        this.translateEnchantmentWithDesc(OPEnchantments.STATIC_ATTRACTION.get(), "The fired electric charge seeks out nearby entities");
-        this.translateEnchantmentWithDesc(OPEnchantments.BATTERY.get(), "Tesla bow has a chance to not consume electric charges");
 
         this.translateEnchantmentWithDesc(OPEnchantments.PLAGUE.get(), "Increases the level of slug infestation inflicted");
 
-        this.translateEnchantmentWithDesc(OPEnchantments.RAPID_FIRE.get(), "Increases the fire rate of the blaster at the cost of damage per shot");
         this.translateEnchantmentWithDesc(OPEnchantments.POWER_SUPPLY.get(), "Blaster has a chance to not consume redstone dust");
 
         this.translateEnchantmentWithDesc(OPEnchantments.THROWING.get(), "Laser blade parry is replaced by throwing");

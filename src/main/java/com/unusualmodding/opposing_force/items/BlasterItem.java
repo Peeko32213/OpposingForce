@@ -5,6 +5,7 @@ import com.unusualmodding.opposing_force.registry.OPEnchantments;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
@@ -75,11 +76,11 @@ public class BlasterItem extends Item implements Vanishable {
         }
         if (shouldSwap(player, itemStack, hand, stack -> stack.getItem() instanceof BlasterItem)) return InteractionResultHolder.fail(itemStack);
 
-        Vec3 vector3d = player.getViewVector(1F);
+        Vec3 vector3d = player.getViewVector(1.0F);
         Vec3 vec3 = vector3d.normalize();
         float yRot = (float) (Mth.atan2(vec3.z, vec3.x) * (180F / Math.PI)) + 90F;
         float xRot = (float) -(Mth.atan2(vec3.y, Math.sqrt(vec3.x * vec3.x + vec3.z * vec3.z)) * (180F / Math.PI));
-        double inaccuracy = itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) > 0 ? 0.03D : 0.015D;
+        double inaccuracy = 0.015D;
         double xOffset = level.getRandom().nextGaussian() * inaccuracy;
         double yOffset = level.getRandom().nextGaussian() * inaccuracy;
         double zOffset = level.getRandom().nextGaussian() * inaccuracy;
@@ -90,21 +91,9 @@ public class BlasterItem extends Item implements Vanishable {
         Vec3 lookVec = player.getLookAngle().add(xOffset, yOffset, zOffset).normalize();
         Vec3 motion = lookVec.add(correction).normalize().scale(1.75F);
 
-        laserBolt.setPos(barrelPos.x, barrelPos.y, barrelPos.z);
-        laserBolt.setDeltaMovement(motion);
-        laserBolt.setYRot(yRot);
-        laserBolt.setXRot(xRot);
-        laserBolt.setOwner(player);
-        laserBolt.setLaserDamage(6.0F);
-        laserBolt.setItem(player.getItemInHand(hand));
-
-        if (itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) > 0) {
-            laserBolt.setLaserDamage(3.0F);
-            laserBolt.setRapidFire(true);
-        }
+        laserBolt.setData(player, hand, barrelPos, motion, xRot, yRot);
         level.addFreshEntity(laserBolt);
-
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), OPSoundEvents.BLASTER_SHOOT.get(), SoundSource.PLAYERS, 1.0F, (level.getRandom().nextFloat() * 0.25F + (itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) > 0 ? 1.1F : 0.9F)));
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), OPSoundEvents.BLASTER_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 1.0F + level.getRandom().nextFloat() * 0.25F);
 
         if (!player.isCreative()) {
             itemStack.hurtAndBreak(1, player, (player1) -> player1.broadcastBreakEvent(hand));
@@ -125,7 +114,7 @@ public class BlasterItem extends Item implements Vanishable {
 
         player.awardStat(Stats.ITEM_USED.get(this));
 
-        applyCooldown(player, itemStack, hand, stack -> stack.getItem() instanceof BlasterItem, (int) (10 - (itemStack.getEnchantmentLevel(OPEnchantments.RAPID_FIRE.get()) * 1.5F)));
+        applyCooldown(player, hand, stack -> stack.getItem() instanceof BlasterItem, 10);
         return InteractionResultHolder.success(itemStack);
     }
 
@@ -149,7 +138,7 @@ public class BlasterItem extends Item implements Vanishable {
         return false;
     }
 
-    public static boolean shouldSwap(Player player, ItemStack item, InteractionHand hand, Predicate<ItemStack> predicate) {
+    private static boolean shouldSwap(Player player, ItemStack item, InteractionHand hand, Predicate<ItemStack> predicate) {
         boolean isSwap = item.getTag().contains("Swapped");
         boolean mainHand = hand == InteractionHand.MAIN_HAND;
         boolean offhandBlaster = predicate.test(player.getItemInHand(mainHand ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND));
@@ -162,13 +151,18 @@ public class BlasterItem extends Item implements Vanishable {
         return false;
     }
 
-    public static void applyCooldown(Player player, ItemStack item, InteractionHand hand, Predicate<ItemStack> predicate, int cooldown) {
+    private static void applyCooldown(Player player, InteractionHand hand, Predicate<ItemStack> predicate, int cooldown) {
         if (cooldown <= 0) return;
         boolean offhandBlaster = predicate.test(player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND));
-        player.getCooldowns().addCooldown(item.getItem(), offhandBlaster ? (int) (cooldown * 0.8F) : cooldown);
+        int i = offhandBlaster ? (int) (cooldown * 0.75F) : cooldown;
+        for (Item blaster : BuiltInRegistries.ITEM) {
+            if (blaster.builtInRegistryHolder().is(OPItemTags.BLASTERS)) {
+                player.getCooldowns().addCooldown(blaster, i);
+            }
+        }
     }
 
-    public static Vec3 getBarrelVec(Player player, boolean mainHand, Vec3 rightHandForward) {
+    private static Vec3 getBarrelVec(Player player, boolean mainHand, Vec3 rightHandForward) {
         Vec3 start = player.position().add(0, player.getEyeHeight(), 0);
         float yaw = (float) ((player.getYRot()) / -180 * Math.PI);
         float pitch = (float) ((player.getXRot()) / -180 * Math.PI);

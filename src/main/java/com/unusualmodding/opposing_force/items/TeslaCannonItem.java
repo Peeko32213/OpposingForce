@@ -185,14 +185,13 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
         ElectricCharge electricCharge = getCharge(level, shooter, projectileStack, cannon);
         boolean capacitance = cannon.getEnchantmentLevel(OPEnchantments.CAPACITANCE.get()) > 0;
         boolean quasar = cannon.getEnchantmentLevel(OPEnchantments.QUASAR.get()) > 0;
-        boolean attraction = cannon.getEnchantmentLevel(OPEnchantments.STATIC_ATTRACTION.get()) > 0;
 
         Vec3 vec31 = shooter.getUpVector(1.0F);
         Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(simulated * ((float) Math.PI / 180F), vec31.x, vec31.y, vec31.z);
         Vec3 vec3 = shooter.getViewVector(1.0F);
         Vector3f vector3f = vec3.toVector3f().rotate(quaternionf);
 
-        if (capacitance || quasar || attraction) {
+        if (capacitance || quasar) {
             electricCharge.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 1.0F, 1.0F);
             level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), OPSoundEvents.TESLA_BOW_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 0.6F * (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
         }
@@ -209,7 +208,6 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
 
         boolean rebound = stack.getEnchantmentLevel(OPEnchantments.REBOUND.get()) > 0;
         boolean quasar = stack.getEnchantmentLevel(OPEnchantments.QUASAR.get()) > 0;
-        boolean attraction = stack.getEnchantmentLevel(OPEnchantments.STATIC_ATTRACTION.get()) > 0;
 
         int bounces = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.REBOUND.get(), stack);
         int capacitance = EnchantmentHelper.getItemEnchantmentLevel(OPEnchantments.CAPACITANCE.get(), stack);
@@ -230,9 +228,6 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
         if (quasar) {
             electricCharge.setChargeScale(electricCharge.getChargeScale() + 1.0F);
             electricCharge.setQuasar(true);
-        }
-        if (attraction) {
-            electricCharge.setStaticAttraction(true);
         }
         return electricCharge;
     }

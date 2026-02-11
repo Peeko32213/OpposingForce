@@ -9,7 +9,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
@@ -23,9 +23,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class LaserBolt extends FrictionlessProjectile {
 
-    private static final EntityDataAccessor<Integer> DISRUPTOR_LEVEL = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> DISRUPTOR = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> RAPID_FIRE = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<ItemStack> ITEM_STACK = SynchedEntityData.defineId(LaserBolt.class, EntityDataSerializers.ITEM_STACK);
 
@@ -43,6 +40,16 @@ public class LaserBolt extends FrictionlessProjectile {
         this.reapplyPosition();
     }
 
+    public void setData(Player owner, InteractionHand hand, Vec3 barrelPos, Vec3 motion, float xRot, float yRot) {
+        this.setOwner(owner);
+        this.setItem(owner.getItemInHand(hand));
+        this.setPos(barrelPos);
+        this.setDeltaMovement(motion);
+        this.setYRot(yRot);
+        this.setXRot(xRot);
+        this.setLaserDamage(6.0F);
+    }
+
     @Override
     public void recreateFromPacket(@NotNull ClientboundAddEntityPacket packet) {
         super.recreateFromPacket(packet);
@@ -54,9 +61,6 @@ public class LaserBolt extends FrictionlessProjectile {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.getEntityData().define(DAMAGE, 6.0F);
-        this.getEntityData().define(DISRUPTOR, false);
-        this.getEntityData().define(DISRUPTOR_LEVEL, 0);
-        this.getEntityData().define(RAPID_FIRE, false);
         this.getEntityData().define(ITEM_STACK, ItemStack.EMPTY);
     }
 
@@ -64,9 +68,6 @@ public class LaserBolt extends FrictionlessProjectile {
     public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putFloat("Damage", this.getLaserDamage());
-        compoundTag.putBoolean("IsDisruptor", this.isDisruptor());
-        compoundTag.putInt("DisruptorLevel", this.getDisruptorLevel());
-        compoundTag.putBoolean("IsRapidFire", this.isRapidFire());
         ItemStack itemstack = this.getItemRaw();
         if (!itemstack.isEmpty()) {
             compoundTag.put("Item", itemstack.save(new CompoundTag()));
@@ -77,35 +78,8 @@ public class LaserBolt extends FrictionlessProjectile {
     public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         this.setLaserDamage(compoundTag.getFloat("Damage"));
-        this.setDisruptor(compoundTag.getBoolean("IsDisruptor"));
-        this.setDisruptorLevel(compoundTag.getInt("DisruptorLevel"));
-        this.setRapidFire(compoundTag.getBoolean("IsRapidFire"));
         ItemStack itemstack = ItemStack.of(compoundTag.getCompound("Item"));
         this.setItem(itemstack);
-    }
-
-    public boolean isDisruptor() {
-        return this.entityData.get(DISRUPTOR);
-    }
-
-    public void setDisruptor(boolean disruptor) {
-        this.entityData.set(DISRUPTOR, disruptor);
-    }
-
-    public int getDisruptorLevel() {
-        return this.entityData.get(DISRUPTOR_LEVEL);
-    }
-
-    public void setDisruptorLevel(int disruptorLevel) {
-        this.entityData.set(DISRUPTOR_LEVEL, disruptorLevel);
-    }
-
-    public boolean isRapidFire() {
-        return this.entityData.get(RAPID_FIRE);
-    }
-
-    public void setRapidFire(boolean rapidFire) {
-        this.entityData.set(RAPID_FIRE, rapidFire);
     }
 
     public float getLaserDamage() {
@@ -174,30 +148,30 @@ public class LaserBolt extends FrictionlessProjectile {
             this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (random.nextFloat() - random.nextFloat()) * 0.2F);
             this.level().broadcastEntityEvent(this, (byte) 3);
             entity.hurt(damageSource, this.getLaserDamage());
-            if (this.isDisruptor()) {
-                for (int i = 0; i < 2 + this.getDisruptorLevel(); i++) {
-                    LaserBolt laserBolt = OPEntities.LASER_BOLT.get().create(level());
-                    Vec3 vec3 = this.getDeltaMovement().normalize();
-                    float f = -((float) Mth.atan2(vec3.x, vec3.z)) * 180.0F / (float) Math.PI;
-                    float boltAngle = 360.0F / (this.getDisruptorLevel() + 2);
-                    Vec3 vec31 = new Vec3(0, 0, 1.5F).yRot((float) -Math.toRadians(f + boltAngle - boltAngle * i));
-                    laserBolt.setPos(entity.getEyePosition().add(vec31));
-                    laserBolt.setDeltaMovement(vec31);
-                    if (this.getOwner() != null) {
-                        laserBolt.setOwner(this.getOwner());
-                        if (this.getOwner() instanceof Player player) {
-                            laserBolt.setItem(player.getItemInHand(player.getUsedItemHand()));
-                        }
-                    }
-                    laserBolt.setDisruptor(false);
-                    float yRot = (float) (Mth.atan2(vec31.z, vec31.x) * (180F / Math.PI)) + 90F;
-                    float xRot = (float) -(Mth.atan2(vec31.y, Math.sqrt(vec31.x * vec31.x + vec31.z * vec31.z)) * (180F / Math.PI));
-                    laserBolt.setYRot(yRot);
-                    laserBolt.setXRot(xRot);
-                    level().addFreshEntity(laserBolt);
-                }
-                level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.BLASTER_SHOOT.get(), SoundSource.PLAYERS, 1.0F, (level.getRandom().nextFloat() * 0.5F + 0.8F));
-            }
+//            if (this.isDisruptor()) {
+//                for (int i = 0; i < 2 + this.getDisruptorLevel(); i++) {
+//                    LaserBolt laserBolt = OPEntities.LASER_BOLT.get().create(level());
+//                    Vec3 vec3 = this.getDeltaMovement().normalize();
+//                    float f = -((float) Mth.atan2(vec3.x, vec3.z)) * 180.0F / (float) Math.PI;
+//                    float boltAngle = 360.0F / (this.getDisruptorLevel() + 2);
+//                    Vec3 vec31 = new Vec3(0, 0, 1.5F).yRot((float) -Math.toRadians(f + boltAngle - boltAngle * i));
+//                    laserBolt.setPos(entity.getEyePosition().add(vec31));
+//                    laserBolt.setDeltaMovement(vec31);
+//                    if (this.getOwner() != null) {
+//                        laserBolt.setOwner(this.getOwner());
+//                        if (this.getOwner() instanceof Player player) {
+//                            laserBolt.setItem(player.getItemInHand(player.getUsedItemHand()));
+//                        }
+//                    }
+//                    laserBolt.setDisruptor(false);
+//                    float yRot = (float) (Mth.atan2(vec31.z, vec31.x) * (180F / Math.PI)) + 90F;
+//                    float xRot = (float) -(Mth.atan2(vec31.y, Math.sqrt(vec31.x * vec31.x + vec31.z * vec31.z)) * (180F / Math.PI));
+//                    laserBolt.setYRot(yRot);
+//                    laserBolt.setXRot(xRot);
+//                    level().addFreshEntity(laserBolt);
+//                }
+//                level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.BLASTER_SHOOT.get(), SoundSource.PLAYERS, 1.0F, (level.getRandom().nextFloat() * 0.5F + 0.8F));
+//            }
             this.discard();
         }
     }
@@ -222,15 +196,14 @@ public class LaserBolt extends FrictionlessProjectile {
     private void tickTrail() {
         Vec3 trailAt = this.position().add(0, this.getBbHeight() / 2F, 0);
         if (trailPointer == -1) {
-            Vec3 backAt = trailAt;
             for (int i = 0; i < trailPositions.length; i++) {
-                trailPositions[i] = backAt;
+                this.trailPositions[i] = trailAt;
             }
         }
-        if (++this.trailPointer == this.trailPositions.length) {
+        if (trailPositions.length == trailPointer++) {
             this.trailPointer = 0;
         }
-        this.trailPositions[this.trailPointer] = trailAt;
+        this.trailPositions[trailPointer] = trailAt;
     }
 
     public Vec3 getTrailPosition(int pointer, float partialTick) {
