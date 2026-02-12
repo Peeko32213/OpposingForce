@@ -109,14 +109,14 @@ public class OPEntities {
     public static final RegistryObject<EntityType<Skyvern>> SKYVERN = ENTITY_TYPE.register(
             "skyvern", () ->
             EntityType.Builder.of(Skyvern::new, MobCategory.MONSTER)
-                    .sized(0.8125F, 0.8125F)
+                    .sized(1.2F, 1.2F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "skyvern").toString())
     );
     public static final RegistryObject<EntityType<SkyvernSegment>> SKYVERN_SEGMENT = ENTITY_TYPE.register(
             "skyvern_segment", () ->
             EntityType.Builder.of(SkyvernSegment::new, MobCategory.MONSTER)
-                    .sized(0.8125F, 0.8125F)
+                    .sized(1.2F, 1.2F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "skyvern_segment").toString())
     );

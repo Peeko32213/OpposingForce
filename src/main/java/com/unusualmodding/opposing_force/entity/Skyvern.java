@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.mojang.serialization.Codec;
+import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.entity.ai.control.SkyvernLookControl;
 import com.unusualmodding.opposing_force.entity.ai.control.SkyvernMoveControl;
 import com.unusualmodding.opposing_force.entity.ai.goal.skyvern.SkyvernChargeGoal;
@@ -8,13 +9,13 @@ import com.unusualmodding.opposing_force.entity.ai.goal.skyvern.SkyvernFlightGoa
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothFlyingPathNavigation;
 import com.unusualmodding.opposing_force.entity.base.TameableMonster;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
+import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
@@ -86,6 +87,7 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.FENCE, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.WALKABLE, -1.0F);
+        this.xpReward = 20;
     }
 
     @Override
@@ -149,7 +151,6 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
 
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
-        compoundTag.putInt("AttackState", this.getAttackState());
         compoundTag.putFloat("TargetPitch", this.getTargetPitch());
         compoundTag.putInt("Segments", this.getSegments());
         compoundTag.putInt("Variant", this.getVariant().id());
@@ -157,7 +158,6 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
 
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
-        this.setAttackState(compoundTag.getInt("AttackState"));
         this.setTargetPitch(compoundTag.getFloat("TargetPitch"));
         this.setSegments(compoundTag.getInt("Segments"));
         this.setVariant(SkyvernVariant.byId(compoundTag.getInt("Variant")));
@@ -208,8 +208,8 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
     }
 
     @Override
-    public boolean removeWhenFarAway(double distanceSq) {
-        return distanceSq < 65536;
+    public boolean removeWhenFarAway(double distanceSqr) {
+        return distanceSqr < 65536;
     }
 
     @Override
@@ -221,7 +221,7 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
         if (!level().isClientSide) {
             this.setTargetPitch((float) (-(Mth.atan2(this.getDeltaMovement().y, this.getDeltaMovement().horizontalDistance()) * (180F / (float) Math.PI))));
         }
-        this.pitch = Mth.approachDegrees(pitch, getTargetPitch(), 5);
+        this.pitch = Mth.approachDegrees(pitch, this.getTargetPitch(), 4);
 
         if (attackStartTicks > 0) attackStartTicks--;
         if (attackEndTicks > 0) attackEndTicks--;
@@ -237,6 +237,11 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
 
         if (level().isClientSide) {
             this.setupAnimationStates();
+
+            if (this.isAlive()) {
+                OpposingForce.PROXY.playWorldSound(this, (byte) 7);
+            }
+
             if (this.lSteps > 0) {
                 double x = this.getX() + (this.lx - this.getX()) / (double) this.lSteps;
                 double y = this.getY() + (this.ly - this.getY()) / (double) this.lSteps;
@@ -249,9 +254,9 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
                 this.reapplyPosition();
             }
         } else {
-            if (random.nextInt(600) == 0) {
+            if (this.getRandom().nextInt(600) == 0) {
                 this.roar();
-            } else if (random.nextInt(700) == 0) {
+            } else if (this.getRandom().nextInt(700) == 0) {
                 this.roll();
             }
         }
@@ -267,7 +272,7 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
     public void roar() {
         if (roarCooldown == 0 && this.getPose() == Pose.STANDING) {
             this.setPose(Pose.ROARING);
-            this.playSound(SoundEvents.ENDER_DRAGON_AMBIENT, 3.0F, this.getVoicePitch());
+            this.playSound(OPSoundEvents.SKYVERN_ROAR.get(), 3.0F, 0.9F + this.getRandom().nextFloat() * 0.2F);
             this.roarTicks = 40;
             this.roarCooldown = 200 + random.nextInt(200);
         }
@@ -285,7 +290,7 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
     public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> entityDataAccessor) {
         if (SEGMENTS.equals(entityDataAccessor)) {
             this.refreshDimensions();
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(5.0F * this.getSegments() + 10.0F);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(6.0F * this.getSegments() + 10.0F);
             this.heal(this.getMaxHealth());
         }
         if (DATA_POSE.equals(entityDataAccessor)) {
@@ -329,11 +334,6 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
     }
 
     @Override
-    public int getHeadRotSpeed() {
-        return 8;
-    }
-
-    @Override
     protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
     }
 
@@ -354,6 +354,12 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
         this.lyd = lerpY;
         this.lzd = lerpZ;
         this.setDeltaMovement(this.lxd, this.lyd, this.lzd);
+    }
+
+    @Override
+    public void remove(@NotNull RemovalReason removalReason) {
+        OpposingForce.PROXY.clearSoundCacheFor(this);
+        super.remove(removalReason);
     }
 
     public enum SkyvernVariant implements StringRepresentable {
@@ -389,7 +395,7 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag compoundTag) {
-        int segmentCount = 16 + level.getRandom().nextInt(8);
+        int segmentCount = 16 + level.getRandom().nextInt(16);
         SkyvernSegment.createSkyvernSegments(this, segmentCount);
         this.setSegments(segmentCount);
         SkyvernVariant skyvernVariant = getSkyvernVariant(level);
@@ -465,8 +471,8 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
     }
 
     @Override
-    public float getViewXRot(float partialTick) {
-        return (prevPitch + (pitch - prevPitch) * partialTick);
+    public float getViewXRot(float partialTicks) {
+        return (prevPitch + (pitch - prevPitch) * partialTicks);
     }
 
     @Override
@@ -480,21 +486,21 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.PHANTOM_AMBIENT;
+        return this.getTarget() != null ? OPSoundEvents.SKYVERN_IDLE_HOSTILE.get() : OPSoundEvents.SKYVERN_IDLE.get();
     }
 
     @Override
     protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
-        return SoundEvents.ENDER_DRAGON_HURT;
+        return OPSoundEvents.SKYVERN_HURT.get();
     }
 
     @Override
     protected @NotNull SoundEvent getDeathSound() {
-        return SoundEvents.ENDER_DRAGON_HURT;
+        return OPSoundEvents.SKYVERN_DEATH.get();
     }
 
     @Override
     protected float getSoundVolume() {
-        return super.getSoundVolume() * 2.0F;
+        return super.getSoundVolume() * 3.0F;
     }
 }

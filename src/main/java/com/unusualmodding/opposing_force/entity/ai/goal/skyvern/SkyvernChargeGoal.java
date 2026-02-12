@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.entity.ai.goal.skyvern;
 
 import com.unusualmodding.opposing_force.entity.Skyvern;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
+import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntitySelector;
@@ -101,7 +102,10 @@ public class SkyvernChargeGoal extends Goal {
             this.collisionTicks++;
         }
 
-        if (timer == 5) this.skyvern.setPose(OPPoses.ATTACK_START.get());
+        if (timer == 5) {
+            this.skyvern.setPose(OPPoses.ATTACK_START.get());
+            this.skyvern.playSound(OPSoundEvents.SKYVERN_CHARGE_WARN.get(), 3.0F, 0.9F + skyvern.getRandom().nextFloat() * 0.3F);
+        }
 
         if (timer < 9) {
             this.skyvern.getNavigation().stop();
@@ -110,9 +114,13 @@ public class SkyvernChargeGoal extends Goal {
             this.skyvern.getLookControl().setLookAt(target, 360.0F, 90.0F);
         }
 
+        if (timer == 9) {
+            this.skyvern.playSound(OPSoundEvents.SKYVERN_WHOOSH.get(), 3.0F, 0.9F + skyvern.getRandom().nextFloat() * 0.2F);
+        }
+
         if (timer > 9) {
             Vec3 rollDirection = new Vec3(target.getX() - skyvern.getX(), target.getY() - skyvern.getY(), target.getZ() - skyvern.getZ()).normalize();
-            float yRot = Mth.approachDegrees(skyvern.getYRot(), (float) (Mth.atan2(rollDirection.z, rollDirection.x) * (180F / Math.PI)) - 90.0F, 2.5F);
+            float yRot = Mth.approachDegrees(skyvern.getYRot(), (float) (Mth.atan2(rollDirection.z, rollDirection.x) * (180F / Math.PI)) - 90.0F, 0.2F);
             float speed = 2.0F;
             this.skyvern.setYRot(yRot);
             this.skyvern.setYBodyRot(yRot);
@@ -138,7 +146,7 @@ public class SkyvernChargeGoal extends Goal {
     }
 
     private void hurtNearbyEntities() {
-        List<LivingEntity> nearbyEntities = skyvern.level().getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), skyvern, skyvern.getBoundingBox().inflate(1.5D));
+        List<LivingEntity> nearbyEntities = skyvern.level().getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), skyvern, skyvern.getBoundingBox().inflate(1.25D));
         if (!nearbyEntities.isEmpty()) {
             LivingEntity entity = nearbyEntities.get(0);
             if (!(entity instanceof Skyvern)) {

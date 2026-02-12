@@ -4,6 +4,7 @@ import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.client.renderer.items.OPArmorRenderProperties;
 import com.unusualmodding.opposing_force.client.sounds.*;
 import com.unusualmodding.opposing_force.entity.Frowzy;
+import com.unusualmodding.opposing_force.entity.Skyvern;
 import com.unusualmodding.opposing_force.entity.Terror;
 import com.unusualmodding.opposing_force.entity.Whizz;
 import com.unusualmodding.opposing_force.entity.projectile.DicerLaser;
@@ -195,6 +196,21 @@ public class ClientProxy extends CommonProxy {
                         ENTITY_SOUND_INSTANCE_MAP.put(livingEntity.getId(), sound);
                     } else {
                         sound = (SawbladeSound) old;
+                    }
+                    if (!isSoundPlaying(sound) && sound.canPlaySound()) {
+                        Minecraft.getInstance().getSoundManager().queueTickingSound(sound);
+                    }
+                }
+                break;
+            case 7:
+                if (soundEmitter instanceof Skyvern entity) {
+                    SkyvernSound sound;
+                    AbstractTickableSoundInstance oldSound = ENTITY_SOUND_INSTANCE_MAP.get(entity.getId());
+                    if (oldSound == null || !(oldSound instanceof SkyvernSound sound1 && sound1.isSameEntity(entity))) {
+                        sound = new SkyvernSound(entity);
+                        ENTITY_SOUND_INSTANCE_MAP.put(entity.getId(), sound);
+                    } else {
+                        sound = (SkyvernSound) oldSound;
                     }
                     if (!isSoundPlaying(sound) && sound.canPlaySound()) {
                         Minecraft.getInstance().getSoundManager().queueTickingSound(sound);

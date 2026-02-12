@@ -606,6 +606,84 @@
     ],
     "subtitle": "subtitles.opposing_force.sawblade_swing"
   },
+  "skyvern_charge_warn": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "opposing_force:entity/skyvern/charge_warn1"
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.skyvern_charge_warn"
+  },
+  "skyvern_death": {
+    "sounds": [
+      "opposing_force:entity/skyvern/death1"
+    ],
+    "subtitle": "subtitles.opposing_force.skyvern_death"
+  },
+  "skyvern_hurt": {
+    "sounds": [
+      "opposing_force:entity/skyvern/hurt1",
+      "opposing_force:entity/skyvern/hurt2"
+    ],
+    "subtitle": "subtitles.opposing_force.skyvern_hurt"
+  },
+  "skyvern_idle": {
+    "sounds": [
+      "opposing_force:entity/skyvern/idle1",
+      "opposing_force:entity/skyvern/idle2",
+      "opposing_force:entity/skyvern/idle3",
+      "opposing_force:entity/skyvern/idle4",
+      "opposing_force:entity/skyvern/idle5",
+      "opposing_force:entity/skyvern/idle6"
+    ],
+    "subtitle": "subtitles.opposing_force.skyvern_idle"
+  },
+  "skyvern_idle_hostile": {
+    "sounds": [
+      "opposing_force:entity/skyvern/hostile_idle1",
+      "opposing_force:entity/skyvern/hostile_idle2",
+      "opposing_force:entity/skyvern/hostile_idle3",
+      "opposing_force:entity/skyvern/hostile_idle4"
+    ],
+    "subtitle": "subtitles.opposing_force.skyvern_idle_hostile"
+  },
+  "skyvern_loop": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "opposing_force:entity/skyvern/loop1",
+        "volume": 0.5
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.skyvern_loop"
+  },
+  "skyvern_roar": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "opposing_force:entity/skyvern/roar1"
+      },
+      {
+        "attenuation_distance": 32,
+        "name": "opposing_force:entity/skyvern/roar2"
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.skyvern_roar"
+  },
+  "skyvern_whoosh": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "opposing_force:entity/skyvern/whoosh1"
+      },
+      {
+        "attenuation_distance": 32,
+        "name": "opposing_force:entity/skyvern/whoosh2"
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.skyvern_whoosh"
+  },
   "slug_attack": {
     "sounds": [
       {
@@ -975,7 +1053,7 @@
   "whizz_fly": {
     "sounds": [
       {
-        "attenuation_distance": 6,
+        "attenuation_distance": 8,
         "name": "opposing_force:entity/whizz/loop1",
         "pitch": 0.9
       }

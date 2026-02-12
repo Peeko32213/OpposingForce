@@ -13,19 +13,17 @@ public class SkyvernMoveControl extends MoveControl {
 
     @Override
     public void tick() {
-        if (this.operation == Operation.MOVE_TO) {
-            final Vec3 vector3d = new Vec3(this.wantedX - mob.getX(), this.wantedY - mob.getY(), this.wantedZ - mob.getZ());
-            final double length = vector3d.length();
-            Vec3 vec3 = vector3d.scale(this.speedModifier * 0.15F / length);
-            if (length < mob.getBoundingBox().getSize()) {
+        if (this.operation == MoveControl.Operation.MOVE_TO) {
+            Vec3 vector3d = new Vec3(this.wantedX - mob.getX(), this.wantedY - mob.getY(), this.wantedZ - mob.getZ());
+            double d0 = vector3d.length();
+            double width = mob.getBoundingBox().getSize();
+            Vec3 vector3d1 = vector3d.scale(this.speedModifier * 0.1D / d0);
+            this.mob.setDeltaMovement(mob.getDeltaMovement().add(vector3d1).scale(0.9D));
+            if (d0 < width) {
                 this.operation = Operation.WAIT;
-                this.mob.setDeltaMovement(mob.getDeltaMovement().add(vec3).scale(0.7F));
-            } else {
-                final Vec3 deltaMovement = mob.getDeltaMovement();
-                this.mob.setDeltaMovement(mob.getDeltaMovement().add(vec3).scale(0.9F));
-                float f = -((float) Mth.atan2(deltaMovement.x, deltaMovement.z)) * 180.0F / (float) Math.PI;
-                this.mob.setYRot(Mth.approachDegrees(mob.getYRot(), f, 20));
-                this.mob.yBodyRot = mob.getYRot();
+            } else if (d0 >= width) {
+                float yaw = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
+                this.mob.setYRot(Mth.approachDegrees(mob.getYRot(), yaw, 8));
             }
         }
     }

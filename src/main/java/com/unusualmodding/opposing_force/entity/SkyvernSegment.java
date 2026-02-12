@@ -227,7 +227,6 @@ public class SkyvernSegment extends Entity {
 
     public static void createSkyvernSegments(Skyvern skyvern, int count) {
         SkyvernSegment prev = null;
-        SkyvernSegment ridingSegment = null;
         for (int i = 0; i < count; i++) {
             SkyvernSegment segment = new SkyvernSegment(OPEntities.SKYVERN_SEGMENT.get(), skyvern.level());
             segment.setHeadUUID(skyvern.getUUID());
@@ -243,14 +242,8 @@ public class SkyvernSegment extends Entity {
                     segment.setHasOffsetArms(true);
                 }
             }
-            if (i == 3){
-                ridingSegment = prev;
-            }
             skyvern.level().addFreshEntity(segment);
             prev = segment;
-        }
-        if (ridingSegment == null) {
-            ridingSegment = prev;
         }
     }
 
@@ -258,11 +251,11 @@ public class SkyvernSegment extends Entity {
         Entity head = getHeadEntity();
         Entity front = parent == null ? getFrontEntity() : parent;
         if (front != null) {
-            float backStretch = -0.6F;
+            float backStretch = -0.85F;
             if (head != null) {
                 float headDelta = Mth.clamp((float) head.getDeltaMovement().length(), 0.0F, 1.0F);
                 if (front == head) {
-                    backStretch -= 0.15F;
+                    backStretch -= 0.5F;
                 }
                 backStretch *= 1.0F - headDelta * 0.3F;
             }
@@ -329,26 +322,26 @@ public class SkyvernSegment extends Entity {
                     this.discard();
                 }
             } else {
-                float maxDistFromFront = 0.6F;
-                Vec3 ideal = getIdealPosition(front);
+                float maxDistFromFront = 0.8F;
+                Vec3 ideal = this.getIdealPosition(front);
                 Vec3 distVec = ideal.subtract(this.position());
                 float extraLength = (float) Math.max(distVec.length() - maxDistFromFront, 0.0F);
                 Vec3 vec31 = distVec.length() > 1.0F ? distVec.normalize().scale(1.0F + extraLength) : distVec;
-                Vec3 vec32 = this.position().add(vec31.scale(0.6F));
+                Vec3 vec32 = this.position().add(vec31.scale(0.8F));
                 this.setTargetPos(vec32.toVector3f());
-                this.setPos(new Vec3(getTargetPos().x(), getTargetPos().y(), getTargetPos().z()));
-                Vec3 frontsBack = front.position().add(new Vec3(0.0F, 0.0F, 0.6F).xRot(-(float) Math.toRadians(front.getXRot())).yRot(-(float) Math.toRadians(front.getYRot())));
+                this.setPos(new Vec3(this.getTargetPos().x(), this.getTargetPos().y(), this.getTargetPos().z()));
+                Vec3 frontsBack = front.position().add(new Vec3(0.0F, 0.0F, 0.8F).xRot(-(float) Math.toRadians(front.getXRot())).yRot(-(float) Math.toRadians(front.getYRot())));
                 double x = frontsBack.x - this.getX();
                 double y = frontsBack.y - this.getY();
                 double z = frontsBack.z - this.getZ();
                 double sqrt = Math.sqrt(x * x + z * z);
                 float xRot = Mth.wrapDegrees((float) (-(Mth.atan2(y, sqrt) * (double) (180F / (float) Math.PI))));
                 float yRot = Mth.wrapDegrees((float) (Mth.atan2(z, x) * (double) (180F / (float) Math.PI)) - 90);
-                this.setXRot(Mth.approachDegrees(this.getXRot(), xRot, 6));
+                this.setXRot(Mth.approachDegrees(this.getXRot(), xRot, 8));
                 this.setYRot(Mth.approachDegrees(this.getYRot(), yRot, 8));
                 this.move(MoverType.SELF, this.getDeltaMovement());
                 this.setDeltaMovement(this.getDeltaMovement().scale(0.9F));
-//                this.reapplyPosition();
+                this.reapplyPosition();
             }
         }
         this.pushEntities();

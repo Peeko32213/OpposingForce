@@ -104,6 +104,15 @@ public class OPSoundEvents {
     public static final RegistryObject<SoundEvent> WHIZZ_FLY = registerSoundEvent("whizz_fly");
     public static final RegistryObject<SoundEvent> WHIZZ_ATTACK = registerSoundEvent("whizz_attack");
 
+    public static final RegistryObject<SoundEvent> SKYVERN_DEATH = registerSoundEvent("skyvern_death");
+    public static final RegistryObject<SoundEvent> SKYVERN_HURT = registerSoundEvent("skyvern_hurt");
+    public static final RegistryObject<SoundEvent> SKYVERN_IDLE = registerSoundEvent("skyvern_idle");
+    public static final RegistryObject<SoundEvent> SKYVERN_IDLE_HOSTILE = registerSoundEvent("skyvern_idle_hostile");
+    public static final RegistryObject<SoundEvent> SKYVERN_ROAR = registerSoundEvent("skyvern_roar");
+    public static final RegistryObject<SoundEvent> SKYVERN_CHARGE_WARN = registerSoundEvent("skyvern_charge_warn");
+    public static final RegistryObject<SoundEvent> SKYVERN_LOOP = registerSoundEvent("skyvern_loop");
+    public static final RegistryObject<SoundEvent> SKYVERN_WHOOSH = registerSoundEvent("skyvern_whoosh");
+
     public static final RegistryObject<SoundEvent> LASER_BOLT_IMPACT = registerSoundEvent("laser_bolt_impact");
 
     public static final RegistryObject<SoundEvent> BLASTER_SHOOT = registerSoundEvent("blaster_shoot");

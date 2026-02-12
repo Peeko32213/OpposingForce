@@ -77,8 +77,12 @@ repositories {
         }
     }
     maven {
-        name "JEI maven"
-        url "https://maven.blamejared.com/"
+        name = "JEI maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
     }
     flatDir {
         dirs 'libs'
@@ -96,7 +100,9 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
     implementation fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
 
-    runtimeOnly fg.deobf("curse.maven:jade-324717:6855440")
+    compileOnly fg.deobf("maven.modrinth:jade:LecuGude")
+    implementation fg.deobf("maven.modrinth:jade:LecuGude")
+
     runtimeOnly fg.deobf("curse.maven:cyanide-541676:5778405")
     runtimeOnly fg.deobf("curse.maven:appleskin-248787:4770828")
 }

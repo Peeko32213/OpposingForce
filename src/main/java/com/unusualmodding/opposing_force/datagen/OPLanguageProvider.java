@@ -185,6 +185,15 @@ public class OPLanguageProvider extends LanguageProvider {
         this.translateSound(OPSoundEvents.WHIZZ_ATTACK, "Whizz bites");
         this.translateSound(OPSoundEvents.NOTE_BLOCK_IMITATE_WHIZZ, "Whizz bites");
 
+        this.translateSound(OPSoundEvents.SKYVERN_DEATH, "Skyvern dies");
+        this.translateSound(OPSoundEvents.SKYVERN_HURT, "Skyvern hurts");
+        this.translateSound(OPSoundEvents.SKYVERN_IDLE, "Skyvern chatters");
+        this.translateSound(OPSoundEvents.SKYVERN_IDLE_HOSTILE, "Skyvern chatters angrily");
+        this.translateSound(OPSoundEvents.SKYVERN_ROAR, "Skyvern roars");
+        this.translateSound(OPSoundEvents.SKYVERN_CHARGE_WARN, "Skyvern warns");
+        this.translateSound(OPSoundEvents.SKYVERN_LOOP, "Skyvern charges");
+        this.translateSound(OPSoundEvents.SKYVERN_WHOOSH, "Skyvern whooshes");
+
         this.translateSound(OPSoundEvents.LASER_BOLT_IMPACT, "Laser impacts");
 
         this.translateSound(OPSoundEvents.BLASTER_SHOOT, "Blaster shoots");
@@ -313,8 +322,10 @@ public class OPLanguageProvider extends LanguageProvider {
         this.translateDamageType(OPDamageTypes.SAWBLADE, player -> player + " was sawn in half", (player, entity) -> player + " was sawn in half by" + entity);
 
         // misc
-        this.add("opposing_force.nether_progression.enabled", "New enemies have entered the Overworld...");
-        this.add("opposing_force.end_progression.enabled", "New enemies have entered the Overworld...");
+        this.add("opposing_force.nether_progression.enabled", "Forgotten monsters have returned to the world...");
+        this.add("opposing_force.end_progression.enabled", "The seal has been broken...");
+
+        this.add("config.jade.plugin_opposing_force.skyvern_segment", "Skyvern Segments display as parent Skyvern");
     }
 
     @Override

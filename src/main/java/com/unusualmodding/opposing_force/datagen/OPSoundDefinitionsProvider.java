@@ -361,13 +361,50 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound("block/amethyst/step12").pitch(1.3F)
         );
         this.sound(OPSoundEvents.WHIZZ_FLY,
-                sound(OpposingForce.modPrefix("entity/whizz/loop1")).pitch(0.9F).attenuationDistance(6)
+                sound(OpposingForce.modPrefix("entity/whizz/loop1")).pitch(0.9F).attenuationDistance(8)
         );
         this.sound(OPSoundEvents.WHIZZ_ATTACK,
                 sound("block/amethyst/resonate1").pitch(1.2F),
                 sound("block/amethyst/resonate2").pitch(1.2F),
                 sound("block/amethyst/resonate3").pitch(1.2F),
                 sound("block/amethyst/resonate4").pitch(1.2F)
+        );
+
+        // Skyvern
+        this.sound(OPSoundEvents.SKYVERN_DEATH,
+                sound(OpposingForce.modPrefix("entity/skyvern/death1"))
+        );
+        this.sound(OPSoundEvents.SKYVERN_HURT,
+                sound(OpposingForce.modPrefix("entity/skyvern/hurt1")),
+                sound(OpposingForce.modPrefix("entity/skyvern/hurt2"))
+        );
+        this.sound(OPSoundEvents.SKYVERN_IDLE,
+                sound(OpposingForce.modPrefix("entity/skyvern/idle1")),
+                sound(OpposingForce.modPrefix("entity/skyvern/idle2")),
+                sound(OpposingForce.modPrefix("entity/skyvern/idle3")),
+                sound(OpposingForce.modPrefix("entity/skyvern/idle4")),
+                sound(OpposingForce.modPrefix("entity/skyvern/idle5")),
+                sound(OpposingForce.modPrefix("entity/skyvern/idle6"))
+        );
+        this.sound(OPSoundEvents.SKYVERN_IDLE_HOSTILE,
+                sound(OpposingForce.modPrefix("entity/skyvern/hostile_idle1")),
+                sound(OpposingForce.modPrefix("entity/skyvern/hostile_idle2")),
+                sound(OpposingForce.modPrefix("entity/skyvern/hostile_idle3")),
+                sound(OpposingForce.modPrefix("entity/skyvern/hostile_idle4"))
+        );
+        this.sound(OPSoundEvents.SKYVERN_ROAR,
+                sound(OpposingForce.modPrefix("entity/skyvern/roar1")).attenuationDistance(32),
+                sound(OpposingForce.modPrefix("entity/skyvern/roar2")).attenuationDistance(32)
+        );
+        this.sound(OPSoundEvents.SKYVERN_CHARGE_WARN,
+                sound(OpposingForce.modPrefix("entity/skyvern/charge_warn1")).attenuationDistance(32)
+        );
+        this.sound(OPSoundEvents.SKYVERN_LOOP,
+                sound(OpposingForce.modPrefix("entity/skyvern/loop1")).attenuationDistance(24).volume(0.5F)
+        );
+        this.sound(OPSoundEvents.SKYVERN_WHOOSH,
+                sound(OpposingForce.modPrefix("entity/skyvern/whoosh1")).attenuationDistance(32),
+                sound(OpposingForce.modPrefix("entity/skyvern/whoosh2")).attenuationDistance(32)
         );
 
         this.sound(OPSoundEvents.LASER_BOLT_IMPACT,

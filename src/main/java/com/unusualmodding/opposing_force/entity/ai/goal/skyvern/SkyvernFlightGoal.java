@@ -28,7 +28,7 @@ public class SkyvernFlightGoal extends Goal {
         if (skyvern.isVehicle() || (skyvern.getTarget() != null && skyvern.getTarget().isAlive()) || skyvern.isPassenger()) {
             return false;
         } else {
-            Vec3 target = this.getRandomLocation();
+            Vec3 target = this.getForwardLocation();
             if (target == null) {
                 return false;
             } else {
@@ -56,6 +56,20 @@ public class SkyvernFlightGoal extends Goal {
     @Override
     public boolean canContinueToUse() {
         return skyvern.isFlying() && !skyvern.getNavigation().isDone();
+    }
+
+    @Nullable
+    private Vec3 getForwardLocation() {
+        RandomSource random = skyvern.getRandom();
+        Vec3 look = skyvern.getLookAngle();
+        double forwardDistance = 32.0D + random.nextDouble() * 8.0D;
+        double sideOffset = 32.0D + random.nextDouble() * 8.0D;
+        double verticalOffset = (random.nextDouble() - 0.5D) * 16.0D;
+        Vec3 sideways = new Vec3(-look.z, 0, look.x).normalize();
+        Vec3 targetPos = skyvern.position().add(look.scale(forwardDistance)).add(sideways.scale(sideOffset)).add(0, verticalOffset, 0);
+        BlockPos pos = BlockPos.containing(targetPos);
+        if (this.canBlockPosBeSeen(pos) && skyvern.level().isEmptyBlock(pos)) return targetPos;
+        return this.getRandomLocation();
     }
 
     @Nullable
