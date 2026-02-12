@@ -266,6 +266,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.translateEffect(OPMobEffects.ELECTRIFIED, "Inflicts lethal damage over time while in water or rain; higher levels do more damage per second.");
         this.translateEffect(OPMobEffects.GLOOM_TOXIN, "Inflicts lethal damage over time while in light levels of 7 or less; higher levels do more damage per second.");
         this.translateEffect(OPMobEffects.SLUG_INFESTATION, "Decreases walking speed and gives the entity a 10% chance to spawn between 1 and 2 slugs when hurt; higher levels increase the amount of slugs spawned.");
+        this.translateEffect(OPMobEffects.ENERGIZED, "Gain increased speed and attack damage.");
 
         this.translateEnchantmentWithDesc(OPEnchantments.CAPACITANCE.get(), "Increases the size of the fired electric charge");
         this.translateEnchantmentWithDesc(OPEnchantments.REBOUND.get(), "The fired electric charge bounces off blocks and passes through mobs");
@@ -302,6 +303,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.translateAttribute(OPAttributes.EXPERIENCE_GAIN);
         this.translateAttribute(OPAttributes.SUMMON_DAMAGE);
         this.translateAttribute(OPAttributes.SUMMON_DURATION);
+        this.translateAttribute(OPAttributes.RANGED_DAMAGE);
 
         // tame commands
         this.add("entity.opposing_force.all.command_0", "%s is wandering");

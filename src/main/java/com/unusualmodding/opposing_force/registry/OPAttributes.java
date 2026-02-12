@@ -19,6 +19,7 @@ public class OPAttributes {
     public static final RegistryObject<Attribute> EXPERIENCE_GAIN = registerAttribute("experience_gain", (id) -> new RangedAttribute(id, 0.0D, 0.0D, 2048.0D).setSyncable(true));
     public static final RegistryObject<Attribute> SUMMON_DAMAGE = registerAttribute("summon_damage", (id) -> new RangedAttribute(id, 0.0D, 0.0D, 2048.0D).setSyncable(true));
     public static final RegistryObject<Attribute> SUMMON_DURATION = registerAttribute("summon_duration", (id) -> new RangedAttribute(id, 0.0D, 0.0D, 2048.0D).setSyncable(true));
+    public static final RegistryObject<Attribute> RANGED_DAMAGE = registerAttribute("ranged_damage", (id) -> new RangedAttribute(id, 0.0D, 0.0D, 2048.0D).setSyncable(true));
 
     public static RegistryObject<Attribute> registerAttribute(String name, Function<String, Attribute> attribute) {
         return ATTRIBUTES.register(name, () -> attribute.apply("attribute.name." + OpposingForce.MOD_ID + "." + name));

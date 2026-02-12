@@ -1,4 +1,4 @@
-// 1.20.1	2026-02-11T14:12:28.7695312	Item Models: opposing_force
+// 1.20.1	2026-02-11T22:28:35.4289947	Item Models: opposing_force
 43d32e7d031485f83a1b4eb56ecb3cc40a456163 assets/opposing_force/models/item/angry_rambler_skull.json
 76e32b619b6a338b691da2b22d3ae2be3d549c59 assets/opposing_force/models/item/bone_axe.json
 1aae6a213c7ddb8099e7177c1fbbdfbc2f2f37b5 assets/opposing_force/models/item/bone_boots.json
@@ -36,7 +36,6 @@ c828d395bd4d83506659a153bae1a1b153e3df7c assets/opposing_force/models/item/emera
 d068d5426a62a9461307fa55f67d866bd23768e6 assets/opposing_force/models/item/emerald_sword.json
 43d32e7d031485f83a1b4eb56ecb3cc40a456163 assets/opposing_force/models/item/evil_rambler_skull.json
 d1eddd2a4fe2137902646241730c38ac6609a6cd assets/opposing_force/models/item/fire_bomb.json
-a0ac3bf657030a45aebab3ad3144e7afd5770940 assets/opposing_force/models/item/fire_gel.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/fire_slime_spawn_egg.json
 0458f2eb6f3e0425519ee9a59259aee0307e5f98 assets/opposing_force/models/item/fried_terror_leg.json
 43d32e7d031485f83a1b4eb56ecb3cc40a456163 assets/opposing_force/models/item/frowzy_head.json

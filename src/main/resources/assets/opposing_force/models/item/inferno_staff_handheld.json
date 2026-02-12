@@ -1,6 +1,16 @@
 {
   "parent": "opposing_force:item/handheld_large",
+  "loader": "forge:item_layers",
+  "forge_data": {
+    "layers": {
+      "1": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    }
+  },
   "textures": {
-    "layer0": "opposing_force:item/inferno_staff_huge"
+    "layer0": "opposing_force:item/inferno_staff_huge",
+    "layer1": "opposing_force:item/inferno_staff_huge_glow"
   }
 }

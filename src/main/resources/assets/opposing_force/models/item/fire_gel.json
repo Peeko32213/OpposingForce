@@ -1,16 +1,15 @@
 {
-  "parent": "item/handheld",
+  "parent": "minecraft:item/generated",
   "loader": "forge:item_layers",
   "forge_data": {
     "layers": {
-      "1": {
+      "0": {
         "block_light": 15,
         "sky_light": 15
       }
     }
   },
   "textures": {
-    "layer0": "opposing_force:item/inferno_staff",
-    "layer1": "opposing_force:item/inferno_staff_glow"
+    "layer0": "opposing_force:item/fire_gel"
   }
 }

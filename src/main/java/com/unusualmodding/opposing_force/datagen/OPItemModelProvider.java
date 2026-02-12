@@ -34,7 +34,6 @@ public class OPItemModelProvider extends ItemModelProvider {
         this.item(LASER_CORE);
 
         // Fire Slime
-        this.item(FIRE_GEL);
         this.item(FIRE_BOMB);
 
         // Frowzy

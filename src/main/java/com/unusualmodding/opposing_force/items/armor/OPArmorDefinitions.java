@@ -48,6 +48,7 @@ public class OPArmorDefinitions {
     public static final ArmorDefinition RECON_KNIGHT = new ArmorDefinition.Builder()
             .material(OPTiers.OPArmorMaterials.RECON_KNIGHT)
             .attribute(Attributes.MOVEMENT_SPEED, 0.05F, AttributeModifier.Operation.MULTIPLY_BASE)
+            .attribute(OPAttributes.RANGED_DAMAGE.get(), 0.15F, AttributeModifier.Operation.MULTIPLY_BASE)
             .texture(slot -> slot == EquipmentSlot.LEGS ? OpposingForce.MOD_ID + ":textures/models/armor/recon_knight_armor_layer_2.png" : OpposingForce.MOD_ID + ":textures/models/armor/recon_knight_armor_layer_1.png")
             .build();
 

@@ -136,11 +136,9 @@ public class DicerModel extends OPModel<Dicer> {
 	public void setupAnim(Dicer entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 
-		if (entity.getAttackState() == 0) {
-			if (entity.isRunning()) {
-				this.animateWalk(DicerAnimations.RUN, limbSwing, limbSwingAmount, 1, 1);
-			}
-			this.animateWalk(DicerAnimations.WALK, limbSwing, limbSwingAmount, 2, 4);
+		if (entity.getAttackState() != 2 && entity.getAttackState() != 3 && entity.getAttackState() != 4) {
+			if (entity.isRunning()) this.animateWalk(DicerAnimations.RUN, limbSwing, limbSwingAmount, 1, 1);
+			else this.animateWalk(DicerAnimations.WALK, limbSwing, limbSwingAmount, 2, 4);
 		}
 
 		this.animateIdle(entity.idleAnimationState, DicerAnimations.IDLE, ageInTicks, 1, limbSwingAmount * 4);

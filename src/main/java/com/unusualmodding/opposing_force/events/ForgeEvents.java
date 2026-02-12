@@ -22,6 +22,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -235,6 +236,7 @@ public class ForgeEvents {
     public static void onMobHurt(final LivingHurtEvent event) {
         LivingEntity entity = event.getEntity();
         DamageSource damageSource = event.getSource();
+        float damage = event.getAmount();
 
         for (MobEffectInstance activeEffect : entity.getActiveEffects()) {
             if (activeEffect.getEffect() == OPMobEffects.SLUG_INFESTATION.get()) {
@@ -255,6 +257,21 @@ public class ForgeEvents {
 
         if (SlugBaronArmorItem.wearingFullSlugBaronSet(entity)) {
             SlugBaronArmorItem.onHurt(entity);
+        }
+
+        if (damageSource.is(DamageTypeTags.IS_PROJECTILE) && damageSource.getDirectEntity() instanceof LivingEntity attacker) {
+            float rangedDamage = 0.0F;
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                ItemStack stack = attacker.getItemBySlot(slot);
+                Collection<AttributeModifier> magicProt = stack.getAttributeModifiers(slot).get(OPAttributes.RANGED_DAMAGE.get());
+                if (!magicProt.isEmpty()) {
+                    rangedDamage += (float) magicProt.stream().mapToDouble(AttributeModifier::getAmount).sum();
+                }
+            }
+
+            if (rangedDamage > 0.0F) {
+                event.setAmount(damage + rangedDamage);
+            }
         }
     }
 

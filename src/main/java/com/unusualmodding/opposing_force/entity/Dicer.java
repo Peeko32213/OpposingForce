@@ -63,6 +63,9 @@ public class Dicer extends Monster implements AttackState, EliteVariant {
     private int laserTicks;
 
     public int laserCooldown = 100 + this.getRandom().nextInt(100);
+    public int slashCooldown = 0;
+    public int crossSlashCooldown = 0;
+    public int tailSpinCooldown = 0;
 
     public Dicer(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -111,7 +114,12 @@ public class Dicer extends Monster implements AttackState, EliteVariant {
     public void tick() {
         super.tick();
 
-        if (this.getPose() == Pose.STANDING) if (laserCooldown > 0) laserCooldown--;
+        if (this.getPose() == Pose.STANDING) {
+            if (laserCooldown > 0) laserCooldown--;
+            if (slashCooldown > 0) slashCooldown--;
+            if (tailSpinCooldown > 0) tailSpinCooldown--;
+            if (crossSlashCooldown > 0) crossSlashCooldown--;
+        }
 
         if (slashTicks > 0) slashTicks--;
         if (crossSlashTicks > 0) crossSlashTicks--;

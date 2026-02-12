@@ -48,13 +48,13 @@ public class BoneArmorModel extends HumanoidModel<LivingEntity> {
                 .texOffs(106, 96).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 9.0F, 4.0F, new CubeDeformation(0.5F)), PartPose.ZERO);
 
         rightLeg.addOrReplaceChild("right_boot", CubeListBuilder.create()
-                .texOffs(58, 121).addBox(-2.1F, 9.0F, -2.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.5F)), PartPose.ZERO);
+                .texOffs(58, 121).addBox(-2.1F, 9.0F, -2.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.6F)), PartPose.ZERO);
 
         leftLeg.addOrReplaceChild("left_legging", CubeListBuilder.create()
                 .texOffs(96, 112).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 9.0F, 4.0F, new CubeDeformation(0.51F)), PartPose.ZERO);
 
         leftLeg.addOrReplaceChild("left_boot", CubeListBuilder.create()
-                .texOffs(112, 109).addBox(-1.85F, 9.0F, -2.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.51F)), PartPose.ZERO);
+                .texOffs(112, 109).addBox(-1.85F, 9.0F, -2.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.61F)), PartPose.ZERO);
 
         return LayerDefinition.create(meshdefinition, 128, 128);
 	}
