@@ -263,9 +263,9 @@ public class ForgeEvents {
             float rangedDamage = 0.0F;
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 ItemStack stack = attacker.getItemBySlot(slot);
-                Collection<AttributeModifier> magicProt = stack.getAttributeModifiers(slot).get(OPAttributes.RANGED_DAMAGE.get());
-                if (!magicProt.isEmpty()) {
-                    rangedDamage += (float) magicProt.stream().mapToDouble(AttributeModifier::getAmount).sum();
+                Collection<AttributeModifier> modifiers = stack.getAttributeModifiers(slot).get(OPAttributes.RANGED_DAMAGE.get());
+                if (!modifiers.isEmpty()) {
+                    rangedDamage += (float) modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum();
                 }
             }
 

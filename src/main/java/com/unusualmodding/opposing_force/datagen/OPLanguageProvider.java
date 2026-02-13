@@ -269,7 +269,6 @@ public class OPLanguageProvider extends LanguageProvider {
         this.translateEffect(OPMobEffects.ENERGIZED, "Gain increased speed and attack damage.");
 
         this.translateEnchantmentWithDesc(OPEnchantments.CAPACITANCE.get(), "Increases the size of the fired electric charge");
-        this.translateEnchantmentWithDesc(OPEnchantments.REBOUND.get(), "The fired electric charge bounces off blocks and passes through mobs");
         this.translateEnchantmentWithDesc(OPEnchantments.KICKBACK.get(), "Launches the user backwards after firing");
         this.translateEnchantmentWithDesc(OPEnchantments.QUASAR.get(), "The fired electric charge changes color rapidly and pulls mobs towards it");
 

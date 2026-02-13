@@ -6,41 +6,32 @@ import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPMobEffects;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
-import com.unusualmodding.opposing_force.utils.CreeperExtension;
 import com.unusualmodding.opposing_force.utils.OPMath;
 import com.unusualmodding.opposing_force.utils.ParticleUtils;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.*;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Vector3f;
 
 public class ElectricCharge extends FrictionlessProjectile {
 
     private static final EntityDataAccessor<Float> CHARGE_SCALE = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Integer> MAX_BOUNCES = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> BOUNCY = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> QUASAR = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> STATIC_ATTRACTION = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(ElectricCharge.class, EntityDataSerializers.FLOAT);
-
-    private final RandomSource randomSource = level.getRandom();
-    private int bounces = 0;
 
     public ElectricCharge(EntityType<? extends FrictionlessProjectile> entityType, Level level) {
         super(entityType, level);
@@ -56,14 +47,16 @@ public class ElectricCharge extends FrictionlessProjectile {
     }
 
     @Override
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.getEntityData().define(BOUNCY, false);
         this.getEntityData().define(QUASAR, false);
-        this.getEntityData().define(STATIC_ATTRACTION, false);
         this.getEntityData().define(CHARGE_SCALE, 1.0F);
-        this.getEntityData().define(MAX_BOUNCES, 0);
-        this.getEntityData().define(DAMAGE, 3.0F);
+        this.getEntityData().define(DAMAGE, 5.0F);
     }
 
     @Override
@@ -71,8 +64,6 @@ public class ElectricCharge extends FrictionlessProjectile {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putFloat("Damage", this.getChargeDamage());
         compoundTag.putFloat("ChargeScale", this.getChargeScale());
-        compoundTag.putInt("MaxBounces", this.getMaxBounces());
-        compoundTag.putBoolean("Bouncy", this.isBouncy());
         compoundTag.putBoolean("Quasar", this.isQuasar());
     }
 
@@ -81,8 +72,6 @@ public class ElectricCharge extends FrictionlessProjectile {
         super.readAdditionalSaveData(compoundTag);
         this.setChargeDamage(compoundTag.getFloat("Damage"));
         this.setChargeScale(compoundTag.getFloat("ChargeScale"));
-        this.setMaxBounces(compoundTag.getInt("MaxBounces"));
-        this.setBouncy(compoundTag.getBoolean("Bouncy"));
         this.setQuasar(compoundTag.getBoolean("Quasar"));
     }
 
@@ -100,20 +89,6 @@ public class ElectricCharge extends FrictionlessProjectile {
         this.entityData.set(CHARGE_SCALE, scale);
     }
 
-    public int getMaxBounces() {
-        return this.entityData.get(MAX_BOUNCES);
-    }
-    public void setMaxBounces(int bounces) {
-        this.entityData.set(MAX_BOUNCES, bounces);
-    }
-
-    public boolean isBouncy() {
-        return this.entityData.get(BOUNCY);
-    }
-    public void setBouncy(boolean bounce) {
-        this.entityData.set(BOUNCY, bounce);
-    }
-
     public boolean isQuasar() {
         return this.entityData.get(QUASAR);
     }
@@ -122,62 +97,81 @@ public class ElectricCharge extends FrictionlessProjectile {
     }
 
     @Override
-    protected void onHitEntity(@NotNull EntityHitResult result) {
-        super.onHitEntity(result);
-        Entity entity = result.getEntity();
-
-        if (!this.level().isClientSide) {
-            this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
+    protected void onHit(@NotNull HitResult hitResult) {
+        super.onHit(hitResult);
+        if (hitResult instanceof BlockHitResult blockHitResult) {
+            BlockState state = this.level().getBlockState(blockHitResult.getBlockPos());
+            if (!state.getCollisionShape(this.level(), blockHitResult.getBlockPos()).isEmpty()) {
+                this.createExplosion(this.getChargeScale() * 4.0F, 6);
+                if (!this.level().isClientSide) this.discard();
+            }
+        }
+        else if (hitResult instanceof EntityHitResult entityHitResult && !(entityHitResult.getEntity() instanceof ElectricCharge)) {
+            this.createExplosion(this.getChargeScale() * 4.0F, 6);
+            if (!this.level().isClientSide) this.discard();
         }
     }
 
-    @Override
-    protected void onHitBlock(@NotNull BlockHitResult result) {
-        super.onHitBlock(result);
-        BlockPos pos = result.getBlockPos();
-
+    protected void createExplosion(float radius, int particleRange) {
+        Vec3 location = this.position().add(0, this.getBbHeight() * 0.5, 0);
         if (!this.level().isClientSide) {
-            if (this.isBouncy()) {
-                Direction hitDirection = result.getDirection();
-                Vector3f surfaceNormal = hitDirection.step();
-                Vec3 velocity = this.getDeltaMovement();
-                Vec3 newVel = new Vec3(velocity.toVector3f().reflect(surfaceNormal));
-                bounce(newVel);
-            } else {
-                this.level().playSound(null, pos.getX(), pos.getY(), pos.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 2.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
-                this.spawnElectricParticles(this, 1 + randomSource.nextInt(3), 0.3F, 12);
-                this.discard();
+            this.spawnElectricParticles(this, particleRange + random.nextInt(particleRange), 0.25F, 16);
+            this.level().playSound(null, location.x(), location.y(), location.z(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 2.5F, 1.25F + (this.random.nextFloat() - this.random.nextFloat()) * 0.25F);
+        }
+        for (Entity entity : this.level().getEntities(this, new AABB(location.subtract(radius, radius, radius), location.add(radius, radius, radius)))) {
+            if (entity.distanceToSqr(location) > radius * radius || !OPMath.hasLineOfSight(this, entity) || entity == this.getOwner()) {
+                continue;
+            }
+            if (entity instanceof LivingEntity livingEntity) {
+                this.doDamage(livingEntity, this.getChargeDamage() * 0.5F, this.getChargeDamage());
+                livingEntity.addEffect(new MobEffectInstance(OPMobEffects.ELECTRIFIED.get(), 200, 0));
+                this.doKnockback(livingEntity, radius, 0.75D, 0.5D);
             }
         }
+    }
+
+    protected void doKnockback(LivingEntity entity, float radius, double horizontalMultiplier, double verticalMultiplier) {
+        Vec3 location = this.position().add(0, this.getBbHeight() * 0.5, 0);
+        float scaledDistance = (float) (1 - (entity.position().distanceTo(location) / radius));
+        double knockbackResistance = 1.0 - Mth.clamp(entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE), 0.0, 1.0);
+        Vec3 knockback = entity.position().add(0, entity.getBbHeight() * 0.75, 0).subtract(location).normalize().scale(Mth.sqrt(scaledDistance) * knockbackResistance);
+        if (!this.level().isClientSide) entity.hurtMarked = true;
+        entity.setOnGround(false);
+        entity.setDeltaMovement(entity.getDeltaMovement().add(knockback.x() * horizontalMultiplier, knockback.y() * verticalMultiplier, knockback.z() * horizontalMultiplier));
+    }
+
+    protected void doDamage(LivingEntity entity, float minDamage, float maxDamage) {
+        Vec3 location = this.position().add(0, this.getBbHeight() * 0.5, 0);
+        float radius = this.getChargeScale() * 4.0F;
+        float scaledDistance = (float) (1 - (entity.position().distanceTo(location) / radius));
+        float damage = Mth.lerp(Mth.sqrt(scaledDistance), minDamage, maxDamage);
+        DamageSource damageSource = this.damageSources().source(OPDamageTypes.ELECTRIC);
+        entity.hurt(damageSource, damage);
+    }
+
+    @Override
+    protected boolean canHitEntity(@NotNull Entity entity) {
+        return true;
     }
 
     @Override
     public void tick() {
         super.tick();
-        Vec3 pos = this.position();
 
-        if (level().isClientSide && isAlive()) {
+        if (this.level().isClientSide && this.isAlive()) {
             OpposingForce.PROXY.playWorldSound(this, (byte) 1);
         }
 
-        this.spawnElectricParticles(this, 1 + randomSource.nextInt(3), 0, 12);
-        this.hurtEntitiesAround(pos, (this.getChargeScale()) + 1.3F, this.getChargeDamage());
+        this.spawnElectricParticles(this, 1 + random.nextInt(3), 0, 16);
 
         if (this.level().getBlockState(this.blockPosition().below(0)).is(Blocks.WATER)) {
-            this.spawnElectricParticles(this, 7 + randomSource.nextInt(5), 0, 16);
-            if (!this.level().isClientSide) {
-                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 2.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
-                this.hurtEntitiesAround(pos, this.getChargeScale() + 3.6F, this.getChargeDamage() * 1.25F);
-                this.discard();
-            }
+            this.createExplosion(this.getChargeScale() * 8.0F, 12);
+            if (!this.level().isClientSide) this.discard();
         }
 
-        if (tickCount > (this.isQuasar() ? 50 : 200) || this.getBlockY() > this.level().getMaxBuildHeight() + 30) {
-            this.spawnElectricParticles(this, 4 + randomSource.nextInt(3), 0, 12);
-            if (!this.level().isClientSide) {
-                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), SoundSource.NEUTRAL, 2.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
-                this.discard();
-            }
+        if (this.tickCount > (this.isQuasar() ? 50 : 200) || this.getBlockY() > this.level().getMaxBuildHeight() + 30) {
+            this.createExplosion(this.getChargeScale() * 4.0F, 6);
+            if (!this.level().isClientSide) this.discard();
         }
 
         if (this.isQuasar()) this.doQuasarEffects(1F);
@@ -207,160 +201,24 @@ public class ElectricCharge extends FrictionlessProjectile {
         }
     }
 
-//    public void doStaticEffects() {
-//        if (!this.level().isClientSide()) {
-//            this.updateTarget();
-//        }
-//        Entity target = getTarget();
-//        if (target != null) {
-//            Vec3 targetVec = getVectorToTarget(target).scale(0.9F);
-//            double courseLength = this.getDeltaMovement().length();
-//            double targetLength = targetVec.length();
-//            double totalLength = Math.sqrt(courseLength * courseLength + targetLength * targetLength);
-//
-//            double dotProduct = this.getDeltaMovement().dot(targetVec) / (courseLength * targetLength);
-//
-//            if (dotProduct > 0.5) {
-//                Vec3 newMotion = this.getDeltaMovement().scale(courseLength / totalLength).add(targetVec.scale(courseLength / totalLength));
-//                this.setDeltaMovement(newMotion.add(0, 0.045F, 0).normalize());
-//            } else if (!this.level().isClientSide()) {
-//                this.setTarget(null);
-//            }
-//        }
-//    }
-
     public void spawnElectricParticles(ElectricCharge charge, int range, float yHeight, float particleMax) {
         Vec3 movement = charge.getDeltaMovement();
 
         double x = charge.getX() + movement.x;
-        double y = charge.getY() + movement.y + (yHeight - 0.35F);
+        double y = charge.getY() + movement.y + yHeight;
         double z = charge.getZ() + movement.z;
 
         int lightningLength = (int) (range + charge.getChargeScale() / 1.25F);
 
         for (int i = 0; i < particleMax; i++) {
             if (!this.level().isClientSide) {
-//                if (this.isStaticAttraction()) {
-//                    ParticleUtils.spawnLightningParticles(x, y, z, lightningLength, 0.3F + (randomSource.nextFloat() / 8), 0.8F + (randomSource.nextFloat() / 8), 0.5F + (randomSource.nextFloat() / 8));
-//                }
                 if (this.isQuasar()) {
-                    ParticleUtils.spawnLightningParticles(x, y, z, lightningLength, 0.1F + randomSource.nextFloat(), 0.1F + randomSource.nextFloat(), 0.1F + randomSource.nextFloat());
+                    ParticleUtils.spawnLightningParticles(x, y, z, lightningLength, 0.1F + random.nextFloat(), 0.1F + random.nextFloat(), 0.1F + random.nextFloat());
                 }
                 else {
-                    ParticleUtils.spawnLightningParticles(x, y, z, lightningLength, 0.3F + (randomSource.nextFloat() / 8), 0.5F + (randomSource.nextFloat() / 8), 0.8F + (randomSource.nextFloat() / 8));
+                    ParticleUtils.spawnLightningParticles(x, y, z, lightningLength, 0.3F + (random.nextFloat() / 8), 0.5F + (random.nextFloat() / 8), 0.8F + (random.nextFloat() / 8));
                 }
             }
         }
-    }
-
-    public void hurtEntitiesAround(Vec3 center, float radius, float damageAmount) {
-        AABB aabb = new AABB(center.subtract(radius, radius, radius), center.add(radius, radius, radius));
-        for (LivingEntity living : level().getEntitiesOfClass(LivingEntity.class, aabb, EntitySelector.NO_CREATIVE_OR_SPECTATOR)) {
-            DamageSource damageSource = this.damageSources().source(OPDamageTypes.ELECTRIC);
-            if (OPMath.hasLineOfSight(this, living) && !living.is(this) && !living.isAlliedTo(this) && living.getType() != this.getType() && living.distanceToSqr(center.x, center.y, center.z) <= radius * radius) {
-                if (this.getOwner() != null && !living.is(this.getOwner())) {
-                    if (living.hurt(damageSource, damageAmount)) {
-                        this.spawnElectricParticles(this, 4 + randomSource.nextInt(3), 0, 12);
-                        living.addEffect(new MobEffectInstance(OPMobEffects.ELECTRIFIED.get(), 200), this.getOwner());
-                        this.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
-                    }
-                }
-                if (living instanceof Creeper creeper) {
-                    ((CreeperExtension) creeper).opposingForce$setCharged(true);
-                }
-            }
-        }
-    }
-
-    private void bounce(Vec3 newVel) {
-        bounces++;
-        float conservedEnergy = 0.9F;
-        newVel = newVel.scale(conservedEnergy);
-        this.setDeltaMovement(newVel);
-
-        if (!level().isClientSide) {
-            this.hasImpulse = true;
-            if (bounces >= 0) {
-                this.playSound(OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), 1.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
-            }
-            if (bounces > getMaxBounces()) {
-                this.playSound(OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE.get(), 2.5F, 1.0F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.2F);
-                this.spawnElectricParticles(this, 1 + randomSource.nextInt(3), 0.3F, 12);
-                this.discard();
-            }
-        }
-    }
-
-//    private void updateTarget() {
-//        Entity target = getTarget();
-//
-//        if (target != null && !target.isAlive()) {
-//            target = null;
-//            this.setTarget(null);
-//        }
-//
-//        if (target == null) {
-//            AABB positionBB = this.getBoundingBox().inflate(6 + this.getChargeScale(), 6 + this.getChargeScale(), 6 + this.getChargeScale());
-//
-//            AABB targetBB = positionBB;
-//
-//            Vec3 courseVec = this.getDeltaMovement().scale(5).yRot((float) -Math.PI / 6.0F);
-//            targetBB = targetBB.minmax(positionBB.move(courseVec));
-//
-//            courseVec = this.getDeltaMovement().scale(5).yRot((float) -Math.PI / 6.0F);
-//            targetBB = targetBB.minmax(positionBB.move(courseVec));
-//
-//            targetBB = targetBB.inflate(0, 5 * 0.5, 0);
-//
-//            double closestDot = -1.0;
-//            Entity closestTarget = null;
-//
-//            List<LivingEntity> entityList = this.level().getEntitiesOfClass(LivingEntity.class, targetBB);
-//            List<LivingEntity> monsters = entityList.stream().filter(l -> l instanceof Monster).toList();
-//
-//            if (!monsters.isEmpty()) {
-//                for (LivingEntity monster : monsters) {
-//                    if (((Monster) monster).getTarget() == this.getOwner()) {
-//                        setTarget(monster);
-//                        return;
-//                    }
-//                }
-//                for (LivingEntity monster : monsters) {
-//                    if (monster instanceof NeutralMob) continue;
-//                    if (monster.hasLineOfSight(this)) {
-//                        setTarget(monster);
-//                        return;
-//                    }
-//                }
-//            }
-//
-//            for (LivingEntity living : entityList) {
-//                if (!living.hasLineOfSight(this)) continue;
-//                if (living == this.getOwner()) continue;
-//                if (getOwner() != null && living instanceof TamableAnimal animal && animal.getOwner() == this.getOwner()) continue;
-//
-//                Vec3 motionVec = this.getDeltaMovement().normalize();
-//                Vec3 targetVec = getVectorToTarget(living).normalize();
-//                double dot = motionVec.dot(targetVec);
-//
-//                if (dot > Math.max(closestDot, 0.5)) {
-//                    closestDot = dot;
-//                    closestTarget = living;
-//                }
-//            }
-//
-//            if (closestTarget != null) {
-//                setTarget(closestTarget);
-//            }
-//        }
-//    }
-
-//    private Vec3 getVectorToTarget(Entity target) {
-//        return new Vec3(target.getX() - this.getX(), (target.getY() + target.getEyeHeight()) - this.getY(), target.getZ() - this.getZ());
-//    }
-
-    @Override
-    protected float getEyeHeight(@NotNull Pose pose, @NotNull EntityDimensions dimensions) {
-        return 0;
     }
 }
