@@ -40,7 +40,6 @@ public class ElectricChargeItem extends Item {
         if (!level.isClientSide) {
             ElectricCharge electricCharge = new ElectricCharge(user, level, user.position().x(), user.getEyePosition().y(), user.position().z());
             electricCharge.shootFromRotation(user, user.getXRot(), user.getYRot(), 0.0F, 0.75F, 1.0F);
-            electricCharge.setChargeScale(1.0F);
             electricCharge.setChargeDamage(5.0F);
             level.addFreshEntity(electricCharge);
         }

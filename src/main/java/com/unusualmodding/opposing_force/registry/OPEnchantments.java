@@ -12,7 +12,6 @@ import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -33,8 +32,6 @@ public class OPEnchantments {
     public static final RegistryObject<Enchantment> POWER_SUPPLY = ENCHANTMENTS.register("power_supply", () -> new OPEnchantment("power_supply", Enchantment.Rarity.UNCOMMON, BLASTER, 3, 15, EquipmentSlot.MAINHAND));
 
     // tesla cannon
-    public static final RegistryObject<Enchantment> CAPACITANCE = ENCHANTMENTS.register("capacitance", () -> new OPEnchantment("capacitance", Enchantment.Rarity.RARE, TESLA_CANNON, 3, 20, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> QUASAR = ENCHANTMENTS.register("quasar", () -> new OPEnchantment("quasar", Enchantment.Rarity.VERY_RARE, TESLA_CANNON, 1, 30, false, false, true, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> KICKBACK = ENCHANTMENTS.register("kickback", KickbackEnchantment::new);
 
     // vile boulder
@@ -44,12 +41,6 @@ public class OPEnchantments {
     public static final RegistryObject<Enchantment> THROWING = ENCHANTMENTS.register("throwing", ThrowingEnchantment::new);
 
     public static boolean areCompatible(OPEnchantment enchantment1, Enchantment enchantment2) {
-        if (enchantment1 == CAPACITANCE.get() && (enchantment2 == Enchantments.MULTISHOT || enchantment2 == Enchantments.QUICK_CHARGE)) {
-            return false;
-        }
-        if (enchantment1 == QUASAR.get() && (enchantment2 == Enchantments.MULTISHOT || enchantment2 == CAPACITANCE.get())) {
-            return false;
-        }
         return true;
     }
 

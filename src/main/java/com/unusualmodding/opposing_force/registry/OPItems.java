@@ -201,6 +201,13 @@ public class OPItems {
     public static final RegistryObject<Item> EMERALD_SHOVEL = registerItem("emerald_shovel", ()-> new ConfigurableShovelItem(OPToolDefinitions.EMERALD, 1.5F, -3.0F, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> EMERALD_HOE = registerItem("emerald_hoe", ()-> new ConfigurableHoeItem(OPToolDefinitions.EMERALD, -3, 0.0F, new Item.Properties().rarity(Rarity.UNCOMMON)));
 
+    // Lapis
+    public static final RegistryObject<Item> LAPIS_SWORD = registerItemNoLang("lapis_sword", ()-> new LapisSwordItem(new Item.Properties()));
+    public static final RegistryObject<Item> LAPIS_PICKAXE = registerItemNoLang("lapis_pickaxe", ()-> new LapisPickaxeItem(new Item.Properties()));
+    public static final RegistryObject<Item> LAPIS_AXE = registerItemNoLang("lapis_axe", ()-> new LapisAxeItem(new Item.Properties()));
+    public static final RegistryObject<Item> LAPIS_SHOVEL = registerItemNoLang("lapis_shovel", ()-> new LapisShovelItem(new Item.Properties()));
+    public static final RegistryObject<Item> LAPIS_HOE = registerItemNoLang("lapis_hoe", ()-> new LapisHoeItem(new Item.Properties()));
+
     // wooden
     public static final RegistryObject<Item> WOODEN_MASK = registerItem("wooden_mask", ()-> new WoodenArmorItem(ArmorItem.Type.HELMET, new Item.Properties()));
     public static final RegistryObject<Item> WOODEN_CHESTPLATE = registerItem("wooden_chestplate", ()-> new WoodenArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties()));

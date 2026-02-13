@@ -9,6 +9,7 @@ import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -35,6 +36,13 @@ public abstract class FrictionlessProjectile extends AbstractHurtingProjectile i
         this.reapplyPosition();
         this.assignDirectionalMovement(movement, this.accelerationPower);
         this.accelerationPower = 0.0;
+    }
+
+    @Override
+    protected @NotNull AABB makeBoundingBox() {
+        float f = this.getType().getDimensions().width / 2.0F;
+        float f1 = this.getType().getDimensions().height;
+        return new AABB(this.position().x - (double) f, this.position().y - 0.15F, this.position().z - (double) f, this.position().x + (double) f, this.position().y - 0.15F + (double) f1, this.position().z + (double) f);
     }
 
     @Override
@@ -104,7 +112,7 @@ public abstract class FrictionlessProjectile extends AbstractHurtingProjectile i
     }
 
     @Override
-    public boolean hurt(DamageSource source, float amount) {
+    public boolean hurt(@NotNull DamageSource source, float amount) {
         return false;
     }
 

@@ -34,5 +34,7 @@ public class OPTiers {
         public static final Tier VILE = new OPItemTier(0, 224, 3.0F, 0.0F, 8, () -> Ingredient.of(OPBlocks.SLUG_EGGS.get()));
         public static final Tier SAWBLADE = new OPItemTier(3, 1520, 4.0F, 1.0F, 6, () -> Ingredient.of(OPItems.TERROR_SAW.get()));
         public static final Tier TREMBLING = new OPItemTier(3, 1120, 4.0F, 3.0F, 6, () -> Ingredient.of(OPBlocks.TREMBLER_SHELL.get()));
+        public static final Tier LAPIS = new OPItemTier(2, 220, 7.0F, 2.0F, 24, () -> Ingredient.of(Tags.Items.GEMS_LAPIS));
+
     }
 }

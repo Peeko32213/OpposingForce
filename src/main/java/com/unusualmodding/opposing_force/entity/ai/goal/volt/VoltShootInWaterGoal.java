@@ -38,7 +38,7 @@ public class VoltShootInWaterGoal extends AttackGoal {
 
             if (volt.getAttackState() == 1) {
                 this.timer++;
-                this.cooldown = 34;
+                this.cooldown = 30;
                 this.volt.getNavigation().stop();
                 if (this.timer == 1) this.volt.setPose(OPPoses.SHOOTING.get());
                 if (this.timer == 10) this.volt.playSound(OPSoundEvents.VOLT_SHOOT.get(), 3.0F, 1.0F / (this.volt.getRandom().nextFloat() * 0.4F + 0.8F));
@@ -48,17 +48,17 @@ public class VoltShootInWaterGoal extends AttackGoal {
                     double ty = target.getY() + target.getEyeHeight() - 1.1D - electricCharge.getY();
                     double tz = target.getZ() - this.volt.getZ();
                     float heightOffset = Mth.sqrt((float) (tx * tx + tz * tz)) * 0.01F;
-                    electricCharge.setChargeScale(0.25F);
-                    electricCharge.setChargeDamage(3.0F);
-                    electricCharge.shoot(tx, ty + heightOffset, tz, volt.isElite() ? 0.44F : 0.3F, 2.0F);
+                    float speed = volt.isElite() ? 0.5F : 0.25F;
+                    electricCharge.setChargeDamage(5.0F);
                     if (this.volt.isPowered()) {
-                        electricCharge.setChargeScale(1.0F);
-                        electricCharge.setChargeDamage(6.0F);
+                        electricCharge.setChargeDamage(7.0F);
+                        speed += 0.25F;
                     }
                     if (this.volt.isElite()) {
-                        electricCharge.setQuasar(true);
-                        electricCharge.setChargeScale(electricCharge.getChargeScale() + 0.3F);
+                        electricCharge.setRainbow(true);
+                        electricCharge.setChargeDamage(8.0F);
                     }
+                    electricCharge.shoot(tx, ty + heightOffset, tz, speed, 2.0F);
                     this.volt.level().addFreshEntity(electricCharge);
                 }
                 if (this.timer > 20) {

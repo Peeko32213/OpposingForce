@@ -24,4 +24,8 @@ public class OPToolDefinitions {
             .tier(OPTiers.OPItemTiers.EMERALD)
             .attribute(OPAttributes.EXPERIENCE_GAIN.get(), 0.5F, AttributeModifier.Operation.MULTIPLY_BASE)
             .build();
+
+    public static final ToolDefinition LAPIS = new ToolDefinition.Builder()
+            .tier(OPTiers.OPItemTiers.LAPIS)
+            .build();
 }

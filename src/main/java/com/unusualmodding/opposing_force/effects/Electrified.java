@@ -15,7 +15,7 @@ public class Electrified extends MobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity entity, int amplifier) {
-        if (entity.isInWaterRainOrBubble() && entity.isAlive() && !entity.level().isClientSide()) {
+        if (entity.isInWaterRainOrBubble()) {
             if (entity.hurt(entity.damageSources().source(OPDamageTypes.ELECTRIFIED), 2.0F)) {
                 entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.ELECTRIC_CHARGE_ZAP.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entity.getRandom().nextFloat() * 0.4F + 0.8F));
             }

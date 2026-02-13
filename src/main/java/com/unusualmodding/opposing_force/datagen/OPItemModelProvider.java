@@ -106,6 +106,12 @@ public class OPItemModelProvider extends ItemModelProvider {
         this.item(CAPTURED_WHIZZ);
         this.item(WHIZZ_BOMB);
 
+        // Lapis
+        this.handheldItem(LAPIS_PICKAXE);
+        this.handheldItem(LAPIS_AXE);
+        this.handheldItem(LAPIS_SHOVEL);
+        this.handheldItem(LAPIS_HOE);
+
         // Emerald
         this.handheldItem(EMERALD_SWORD);
         this.handheldItem(EMERALD_PICKAXE);

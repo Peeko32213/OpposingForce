@@ -209,6 +209,12 @@ public class OpposingForceTab {
                     output.accept(OPItems.STONE_LEGGINGS.get());
                     output.accept(OPItems.STONE_BOOTS.get());
 
+                    output.accept(OPItems.LAPIS_SWORD.get());
+                    output.accept(OPItems.LAPIS_SHOVEL.get());
+                    output.accept(OPItems.LAPIS_PICKAXE.get());
+                    output.accept(OPItems.LAPIS_AXE.get());
+                    output.accept(OPItems.LAPIS_HOE.get());
+
                     output.accept(OPItems.EMERALD_SWORD.get());
                     output.accept(OPItems.EMERALD_SHOVEL.get());
                     output.accept(OPItems.EMERALD_PICKAXE.get());

@@ -47,17 +47,17 @@ public class VoltShootGoal extends AttackGoal {
                     double ty = target.getY() + target.getEyeHeight() - 1.1D - electricCharge.getY();
                     double tz = target.getZ() - this.volt.getZ();
                     float heightOffset = Mth.sqrt((float) (tx * tx + tz * tz)) * 0.01F;
-                    electricCharge.setChargeScale(0.5F);
-                    electricCharge.setChargeDamage(3.0F);
-                    electricCharge.shoot(tx, ty + heightOffset, tz, volt.isElite() ? 0.44F : 0.3F, 2.0F);
+                    float speed = volt.isElite() ? 0.5F : 0.25F;
+                    electricCharge.setChargeDamage(5.0F);
                     if (this.volt.isPowered()) {
-                        electricCharge.setChargeScale(1.5F);
-                        electricCharge.setChargeDamage(6.0F);
+                        electricCharge.setChargeDamage(7.0F);
+                        speed += 0.25F;
                     }
                     if (this.volt.isElite()) {
-                        electricCharge.setQuasar(true);
-                        electricCharge.setChargeScale(electricCharge.getChargeScale() + 0.7F);
+                        electricCharge.setRainbow(true);
+                        electricCharge.setChargeDamage(8.0F);
                     }
+                    electricCharge.shoot(tx, ty + heightOffset, tz, speed, 2.0F);
                     this.volt.level().addFreshEntity(electricCharge);
                 }
                 if (this.timer > 20) {

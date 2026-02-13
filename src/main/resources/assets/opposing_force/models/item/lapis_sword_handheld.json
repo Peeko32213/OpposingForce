@@ -1,0 +1,28 @@
+{
+	"parent": "item/handheld",
+	"textures": {
+		"layer0": "opposing_force:item/lapis_sword_huge"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, -90, 45],
+			"translation": [0, 13, 1.75],
+			"scale": [2, 2, 0.85]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, 90, -45],
+			"translation": [0, 13, 1.75],
+			"scale": [2, 2, 0.85]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, -90, 25],
+			"translation": [1.13, 7, 0.13],
+			"scale": [1.5, 1.5, 0.68]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 90, -25],
+			"translation": [1.13, 7, 0.13],
+			"scale": [1.5, 1.5, 0.68]
+		}
+	}
+}

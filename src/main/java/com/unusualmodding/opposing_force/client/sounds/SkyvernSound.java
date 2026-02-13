@@ -34,10 +34,12 @@ public class SkyvernSound extends AbstractTickableSoundInstance {
         this.x = (float) this.entity.getX();
         this.y = (float) this.entity.getY();
         this.z = (float) this.entity.getZ();
-        float horizontalDistance = (float) this.entity.getDeltaMovement().horizontalDistance();
+        float speed = (float) this.entity.getDeltaMovement().horizontalDistance();
+        float maxSpeed = 0.5F;
+        float clampedSpeed = Mth.clamp(speed / maxSpeed, 0.0F, 1.0F);
         if (entity.isAlive()) {
-            this.pitch = Mth.lerp(Mth.clamp(horizontalDistance, 0.75F, 1.25F), 0.75F, 1.25F);
-            this.volume = Mth.lerp(Mth.clamp(horizontalDistance, 0.25F, 2.0F), 0.25F, 2.0F);
+            this.pitch = Mth.lerp(clampedSpeed, 0.75F, 1.5F);
+            this.volume = Mth.lerp(clampedSpeed, 0.2F, 1.0F);
         } else {
             this.volume = 0.0F;
             this.pitch = 0.0F;

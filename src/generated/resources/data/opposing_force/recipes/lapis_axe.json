@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "L": {
+      "tag": "forge:storage_blocks/lapis"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    "LL ",
+    "LS ",
+    " S "
+  ],
+  "result": {
+    "item": "opposing_force:lapis_axe"
+  },
+  "show_notification": true
+}

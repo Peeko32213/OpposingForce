@@ -40,17 +40,11 @@ public class ElectricChargeSound extends AbstractTickableSoundInstance {
     }
 
     private float getMinPitch() {
-        if (this.entity.getChargeScale() >= 2.0F) {
-            return 0.85F;
-        }
-        else return 1.0f;
+        return 0.75F;
     }
 
     private float getMaxPitch() {
-        if (this.entity.getChargeScale() >= 2.0F) {
-            return 1.0F;
-        }
-        else return 1.2F;
+        return 1.25F;
     }
 
     @Override

@@ -47,6 +47,12 @@ public class OPLanguageProvider extends LanguageProvider {
         this.addItem(OPItems.INFERNO_PIE_SLICE, "Slice of Inferno Pie");
         this.addItem(OPItems.RAW_TART, "Raw Tart");
 
+        this.addItem(OPItems.LAPIS_SWORD, "Lapis Lazuli Sword");
+        this.addItem(OPItems.LAPIS_PICKAXE, "Lapis Lazuli Pickaxe");
+        this.addItem(OPItems.LAPIS_AXE, "Lapis Lazuli Axe");
+        this.addItem(OPItems.LAPIS_SHOVEL, "Lapis Lazuli Shovel");
+        this.addItem(OPItems.LAPIS_HOE, "Lapis Lazuli Hoe");
+
         this.forEntity(OPEntities.DICER);
         this.forEntity(OPEntities.EMERALDFISH);
         this.forEntity(OPEntities.FIRE_SLIME);
@@ -268,9 +274,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.translateEffect(OPMobEffects.SLUG_INFESTATION, "Decreases walking speed and gives the entity a 10% chance to spawn between 1 and 2 slugs when hurt; higher levels increase the amount of slugs spawned.");
         this.translateEffect(OPMobEffects.ENERGIZED, "Gain increased speed and attack damage.");
 
-        this.translateEnchantmentWithDesc(OPEnchantments.CAPACITANCE.get(), "Increases the size of the fired electric charge");
         this.translateEnchantmentWithDesc(OPEnchantments.KICKBACK.get(), "Launches the user backwards after firing");
-        this.translateEnchantmentWithDesc(OPEnchantments.QUASAR.get(), "The fired electric charge changes color rapidly and pulls mobs towards it");
 
         this.translateEnchantmentWithDesc(OPEnchantments.PLAGUE.get(), "Increases the level of slug infestation inflicted");
 

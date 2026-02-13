@@ -131,27 +131,32 @@ public class OPItemTagProvider extends ItemTagsProvider {
 
         this.tag(ItemTags.SWORDS).add(
                 BONE_SWORD.get(),
-                EMERALD_SWORD.get()
+                EMERALD_SWORD.get(),
+                LAPIS_SWORD.get()
         );
 
         this.tag(ItemTags.PICKAXES).add(
                 BONE_PICKAXE.get(),
-                EMERALD_PICKAXE.get()
+                EMERALD_PICKAXE.get(),
+                LAPIS_PICKAXE.get()
         );
 
         this.tag(ItemTags.AXES).add(
                 BONE_AXE.get(),
-                EMERALD_AXE.get()
+                EMERALD_AXE.get(),
+                LAPIS_AXE.get()
         );
 
         this.tag(ItemTags.SHOVELS).add(
                 BONE_SHOVEL.get(),
-                EMERALD_SHOVEL.get()
+                EMERALD_SHOVEL.get(),
+                LAPIS_SHOVEL.get()
         );
 
         this.tag(ItemTags.HOES).add(
                 BONE_HOE.get(),
-                EMERALD_HOE.get()
+                EMERALD_HOE.get(),
+                LAPIS_HOE.get()
         );
 
         this.tag(Tags.Items.ARMORS).add(
