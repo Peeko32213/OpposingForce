@@ -46,12 +46,12 @@
               "count": {
                 "type": "minecraft:uniform",
                 "max": 1.0,
-                "min": -3.0
+                "min": -2.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "opposing_force:sawblade"
+          "name": "opposing_force:terror_saw"
         }
       ],
       "rolls": 1
