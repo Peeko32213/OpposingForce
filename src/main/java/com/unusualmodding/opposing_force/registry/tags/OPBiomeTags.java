@@ -19,7 +19,7 @@ public class OPBiomeTags {
     public static final TagKey<Biome> HAS_UMBER_SPIDER = modBiomeTag("has_monster/umber_spider");
     public static final TagKey<Biome> HAS_VOLT = modBiomeTag("has_monster/volt");
 
-    public static final TagKey<Biome> HAS_CREAM_CAP = modBiomeTag("has_feature/cream_cap");
+    public static final TagKey<Biome> HAS_APPLE_TREES = modBiomeTag("has_feature/apple_trees");
 
     public static final TagKey<Biome> WITH_DEFAULT_MONSTER_SPAWNS = forgeBiomeTag("with_default_monster_spawns");
     public static final TagKey<Biome> WITHOUT_DEFAULT_MONSTER_SPAWNS = forgeBiomeTag("without_default_monster_spawns");

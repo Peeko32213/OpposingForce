@@ -46,6 +46,7 @@ public class OPBlockTagProvider extends BlockTagsProvider {
         );
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
+                DICER_LENS_BLOCK.get(),
                 GUZZLER_SCALE_BRICKS.get(),
                 GUZZLER_SCALE_BRICK_STAIRS.get(),
                 GUZZLER_SCALE_BRICK_SLAB.get(),

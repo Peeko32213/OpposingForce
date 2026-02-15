@@ -29,6 +29,7 @@ public class OpposingForceTab {
                     // Dicer
                     output.accept(OPItems.DICER_LENS.get());
                     output.accept(OPItems.LASER_CORE.get());
+                    output.accept(OPBlocks.DICER_LENS_BLOCK.get());
 
                     output.accept(OPItems.LASER_BLADE.get());
                     output.accept(OPItems.WHITE_LASER_BLADE.get());

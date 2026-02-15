@@ -18,7 +18,7 @@
       "type": "minecraft:weighted_state_provider",
       "entries": [
         {
-          "weight": 1,
+          "weight": 2,
           "data": {
             "Name": "opposing_force:fruitful_infested_apple_leaves"
           }

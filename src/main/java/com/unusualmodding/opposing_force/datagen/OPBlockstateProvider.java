@@ -25,6 +25,8 @@ public class OPBlockstateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
+        this.cubeAllBlock(DICER_LENS_BLOCK);
+
         this.cubeAllBlock(GUZZLER_SCALE_BLOCK);
         this.cubeAllBlock(GUZZLER_SCALE_BRICKS);
         this.stairs(GUZZLER_SCALE_BRICK_STAIRS, this.blockTexture(GUZZLER_SCALE_BRICKS.get()));

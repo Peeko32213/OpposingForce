@@ -6,11 +6,14 @@ import com.unusualmodding.opposing_force.entity.Guzzler;
 import com.unusualmodding.opposing_force.events.ScreenShakeEvent;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public class GuzzlerAttackGoal extends AttackGoal {
 
@@ -98,6 +101,7 @@ public class GuzzlerAttackGoal extends AttackGoal {
         this.timer++;
         this.spewCooldown = 28;
         LivingEntity target = this.guzzler.getTarget();
+        ServerLevel serverLevel = (ServerLevel) guzzler.level();
 
         if (this.timer == 7) {
             FireSlime slime = OPEntities.FIRE_SLIME.get().create(this.guzzler.level());
@@ -117,6 +121,7 @@ public class GuzzlerAttackGoal extends AttackGoal {
             slime.copyTarget(this.guzzler);
             if (!this.guzzler.level().isClientSide) {
                 this.guzzler.level().addFreshEntity(slime);
+                ForgeEventFactory.onFinalizeSpawn(slime, serverLevel, serverLevel.getCurrentDifficultyAt(guzzler.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
             }
         }
 

@@ -30,6 +30,7 @@ public class OPBlocks {
 
     // Dicer
     public static final Pair<RegistryObject<Block>, RegistryObject<Block>> DICER_HEAD = registerMobHead("dicer_head", MobHeadBlock.Types.DICER, OPNoteBlockInstruments.DICER.get());
+    public static final RegistryObject<Block> DICER_LENS_BLOCK = registerBlock("dicer_lens_block", () -> new Block(OPBlockProperties.DICER_LENS_BLOCK));
 
     // Frowzy
     public static final Pair<RegistryObject<Block>, RegistryObject<Block>> FROWZY_HEAD = registerMobHead("frowzy_head", MobHeadBlock.Types.FROWZY, OPNoteBlockInstruments.FROWZY.get());

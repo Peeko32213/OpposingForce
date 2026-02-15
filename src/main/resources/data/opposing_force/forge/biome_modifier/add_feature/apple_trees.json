@@ -1,0 +1,8 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#opposing_force:has_feature/apple_trees",
+  "features": [
+    "opposing_force:apple_trees"
+  ],
+  "step": "vegetal_decoration"
+}

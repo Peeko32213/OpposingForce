@@ -8,6 +8,7 @@ import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -19,7 +20,7 @@ public class OPBiomeTagProvider extends BiomeTagsProvider {
     }
 
     @Override
-    public void addTags(Provider provider) {
+    public void addTags(@NotNull Provider provider) {
 
         this.tag(OPBiomeTags.HAS_DICER).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
         this.tag(OPBiomeTags.HAS_FROWZY).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
@@ -32,15 +33,12 @@ public class OPBiomeTagProvider extends BiomeTagsProvider {
         this.tag(OPBiomeTags.HAS_UMBER_SPIDER).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
         this.tag(OPBiomeTags.HAS_VOLT).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
 
-        this.tag(OPBiomeTags.HAS_CREAM_CAP).add(Biomes.DARK_FOREST);
+        this.tag(OPBiomeTags.HAS_APPLE_TREES).add(
+                Biomes.FOREST,
+                Biomes.FLOWER_FOREST
+        );
 
         this.tag(OPBiomeTags.WITHOUT_DEFAULT_MONSTER_SPAWNS).add(Biomes.MUSHROOM_FIELDS, Biomes.DEEP_DARK);
         this.tag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS).addTag(BiomeTags.IS_OVERWORLD).remove(OPBiomeTags.WITHOUT_DEFAULT_MONSTER_SPAWNS);
-        /*
-        TagAppender<Biome> withMonsterSpawns = this.tag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
-        MultiNoiseBiomeSourceParameterList.Preset.OVERWORLD.usedBiomes().forEach((biome) -> {
-            if (biome != Biomes.MUSHROOM_FIELDS && biome != Biomes.DEEP_DARK) withMonsterSpawns.add(biome);
-        });
-         */
     }
 }

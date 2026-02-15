@@ -24,6 +24,8 @@ public class OPBlockProperties {
 
     public static final BlockBehaviour.Properties MOB_HEAD = BlockBehaviour.Properties.of().strength(1.0F).pushReaction(PushReaction.DESTROY).mapColor(MapColor.STONE);
 
+    public static final BlockBehaviour.Properties DICER_LENS_BLOCK = BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_MAGENTA).instrument(NoteBlockInstrument.CHIME).sound(SoundType.STONE).requiresCorrectToolForDrops().strength(2.0F, 3.0F);
+
     private static boolean always(BlockState state, BlockGetter blockGetter, BlockPos blockPos) {
         return true;
     }

@@ -1,5 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
+import com.mojang.serialization.Codec;
 import com.unusualmodding.opposing_force.entity.ai.goal.MonsterFollowOwnerGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.MonsterOwnerHurtByTargetGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.MonsterOwnerHurtTargetGoal;
@@ -8,13 +9,17 @@ import com.unusualmodding.opposing_force.entity.base.SummonableMonster;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.ByIdMap;
 import net.minecraft.util.Mth;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -24,6 +29,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
@@ -32,8 +38,12 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.function.BooleanSupplier;
+import java.util.function.IntFunction;
 
-public class FireSlime extends SummonableMonster {
+@SuppressWarnings("deprecation")
+public class FireSlime extends SummonableMonster implements VariantHolder<FireSlime.FireSlimeVariant> {
+
+    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(FireSlime.class, EntityDataSerializers.INT);
 
     public float targetSquish;
     public float squish;
@@ -204,15 +214,33 @@ public class FireSlime extends SummonableMonster {
     }
 
     @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(VARIANT, FireSlimeVariant.FIRE_SLIME.id());
+    }
+
+    @Override
     public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putBoolean("WasOnGround", this.wasOnGround);
+        compoundTag.putInt("Variant", this.getVariant().id());
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         this.wasOnGround = compoundTag.getBoolean("WasOnGround");
+        this.setVariant(FireSlimeVariant.byId(compoundTag.getInt("Variant")));
+    }
+
+    @Override
+    public @NotNull FireSlimeVariant getVariant() {
+        return FireSlimeVariant.byId(this.entityData.get(VARIANT));
+    }
+
+    @Override
+    public void setVariant(FireSlimeVariant variant) {
+        this.entityData.set(VARIANT, variant.id());
     }
 
     public void shootFromGuzzler(double x, double y, double z, float scale) {
@@ -241,6 +269,64 @@ public class FireSlime extends SummonableMonster {
             }
         }
         super.handleEntityEvent(id);
+    }
+
+    public enum FireSlimeVariant implements StringRepresentable {
+
+        FIRE_SLIME(0, "fire_slime"),
+        CHUD(1, "chud");
+
+        private static final IntFunction<FireSlimeVariant> BY_ID = ByIdMap.sparse(FireSlimeVariant::id, values(), FIRE_SLIME);
+
+        final int id;
+        private final String name;
+
+        FireSlimeVariant(int id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public @NotNull String getSerializedName() {
+            return this.name;
+        }
+
+        public int id() {
+            return this.id;
+        }
+
+        public static FireSlimeVariant byId(int pId) {
+            return BY_ID.apply(pId);
+        }
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag compoundTag) {
+        FireSlimeVariant variant = getFireSlimeVariant(level);
+        if (spawnData instanceof FireSlimeSpawnData) {
+            variant = ((FireSlimeSpawnData) spawnData).variant;
+        } else {
+            spawnData = new FireSlimeSpawnData(variant);
+        }
+        this.setVariant(variant);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
+    }
+
+    private static FireSlimeVariant getFireSlimeVariant(ServerLevelAccessor level) {
+        if (level.getRandom().nextBoolean()) {
+            return FireSlimeVariant.CHUD;
+        }
+        else {
+            return FireSlimeVariant.FIRE_SLIME;
+        }
+    }
+
+    public static class FireSlimeSpawnData implements SpawnGroupData {
+        public final FireSlimeVariant variant;
+
+        public FireSlimeSpawnData(FireSlimeVariant variant) {
+            this.variant = variant;
+        }
     }
 
     private static class FireSlimeMoveControl extends MoveControl {

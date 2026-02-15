@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 public class FireSlimeRenderer extends MobRenderer<FireSlime, FireSlimeModel> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/fire_slime/fire_slime.png");
+    private static final ResourceLocation TEXTURE_CHUD = new ResourceLocation(OpposingForce.MOD_ID, "textures/entity/fire_slime/chud.png");
 
     public FireSlimeRenderer(EntityRendererProvider.Context context) {
         super(context, new FireSlimeModel(context.bakeLayer(OPModelLayers.FIRE_SLIME)), 0.4F);
@@ -27,12 +28,12 @@ public class FireSlimeRenderer extends MobRenderer<FireSlime, FireSlimeModel> {
 
     @Override
     public @NotNull ResourceLocation getTextureLocation(@NotNull FireSlime entity) {
-        return TEXTURE;
+        return entity.getVariant() == FireSlime.FireSlimeVariant.CHUD ? TEXTURE_CHUD : TEXTURE;
     }
 
     @Override
     protected @Nullable RenderType getRenderType(@NotNull FireSlime entity, boolean bodyVisible, boolean translucent, boolean glowing) {
-        return RenderType.entityCutout(TEXTURE);
+        return RenderType.entityCutout(this.getTextureLocation(entity));
     }
 
     @Override

@@ -100,6 +100,9 @@ public class OPRecipeProvider extends RecipeProvider {
         furnaceRecipe(RecipeSerializer.SMOKING_RECIPE, List.of(TERROR_LEG.get()), FOOD, FRIED_TERROR_LEG.get(), 0.25f, 100, "_from_smoking", consumer);
         ShapelessRecipeBuilder.shapeless(FOOD, SPICY_TERROR_LEG.get(), 1).requires(FIRE_GEL.get()).requires(FRIED_TERROR_LEG.get()).unlockedBy("has_fried_terror_leg", has(FRIED_TERROR_LEG.get())).save(consumer);
 
+        ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, OPBlocks.DICER_LENS_BLOCK.get(), 1).define('D', DICER_LENS.get()).pattern("DDD").pattern("DDD").pattern("DDD").unlockedBy("has_dicer_lens", has(DICER_LENS.get())).save(consumer);
+        ShapelessRecipeBuilder.shapeless(MISC, DICER_LENS.get(), 9).requires(OPBlocks.DICER_LENS_BLOCK.get()).unlockedBy("has_dicer_lens", has(DICER_LENS.get())).save(consumer);
+
         ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, OPBlocks.GUZZLER_SCALE_BLOCK.get(), 1).define('G', GUZZLER_SCALES.get()).pattern("GGG").pattern("GGG").pattern("GGG").unlockedBy("has_guzzler_scales", has(GUZZLER_SCALES.get())).save(consumer);
         ShapelessRecipeBuilder.shapeless(MISC, GUZZLER_SCALES.get(), 9).requires(OPBlocks.GUZZLER_SCALE_BLOCK.get()).unlockedBy("has_guzzler_scales", has(GUZZLER_SCALES.get())).save(consumer);
 
