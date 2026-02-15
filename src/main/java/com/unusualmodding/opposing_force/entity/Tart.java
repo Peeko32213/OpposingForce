@@ -3,18 +3,22 @@ package com.unusualmodding.opposing_force.entity;
 import com.unusualmodding.opposing_force.entity.ai.goal.TartAttackGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
+import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.entity.utils.collisions.CustomCollisions;
 import com.unusualmodding.opposing_force.entity.utils.collisions.CustomCollisionsMoveControl;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
@@ -32,6 +36,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
@@ -39,10 +44,13 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class Tart extends Monster implements AttackState, CustomCollisions {
+@SuppressWarnings("deprecation")
+public class Tart extends Monster implements AttackState, CustomCollisions, EliteVariant {
 
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Tart.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> GREEN = SynchedEntityData.defineId(Tart.class, EntityDataSerializers.BOOLEAN);
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState sitAnimationState = new AnimationState();
@@ -103,7 +111,7 @@ public class Tart extends Monster implements AttackState, CustomCollisions {
     }
 
     @Override
-    protected Vec3 collide(Vec3 vec3) {
+    protected @NotNull Vec3 collide(@NotNull Vec3 vec3) {
         return CustomCollisions.getAllowedMovementForEntity(this, vec3);
     }
 
@@ -167,6 +175,19 @@ public class Tart extends Monster implements AttackState, CustomCollisions {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ATTACK_STATE, 0);
+        this.entityData.define(GREEN, false);
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        compoundTag.putBoolean("Green", this.isElite());
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        this.setElite(compoundTag.getBoolean("Green"));
     }
 
     @Override
@@ -177,6 +198,16 @@ public class Tart extends Monster implements AttackState, CustomCollisions {
     @Override
     public void setAttackState(int attackState) {
         this.entityData.set(ATTACK_STATE, attackState);
+    }
+
+    @Override
+    public boolean isElite() {
+        return this.entityData.get(GREEN);
+    }
+
+    @Override
+    public void setElite(boolean elite) {
+        this.entityData.set(GREEN, elite);
     }
 
     @Override
@@ -192,6 +223,18 @@ public class Tart extends Monster implements AttackState, CustomCollisions {
     @Override
     protected @NotNull SoundEvent getDeathSound() {
         return OPSoundEvents.TART_DEATH.get();
+    }
+
+    @Override
+    @Nullable
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag compoundTag) {
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
+        RandomSource random = level.getRandom();
+        if (random.nextInt(this.getEliteSpawnChance()) == 0) {
+            this.setElite(true);
+            this.setEliteStats(this);
+        }
+        return spawnData;
     }
 
     private static class TartNodeEvaluator extends WalkNodeEvaluator {
