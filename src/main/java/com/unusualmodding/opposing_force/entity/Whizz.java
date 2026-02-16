@@ -33,6 +33,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -318,6 +319,18 @@ public class Whizz extends SummonableMonster {
                 this.setTame(true);
             } catch (Throwable var4) {
                 this.setTame(false);
+            }
+        }
+    }
+
+    @Override
+    protected void dropCustomDeathLoot(@NotNull DamageSource source, int damage, boolean drops) {
+        super.dropCustomDeathLoot(source, damage, drops);
+        Entity entity = source.getEntity();
+        if (entity instanceof Creeper creeper) {
+            if (creeper.canDropMobsSkull()) {
+                creeper.increaseDroppedSkulls();
+                this.spawnAtLocation(OPItems.WHIZZ_HEAD.get());
             }
         }
     }

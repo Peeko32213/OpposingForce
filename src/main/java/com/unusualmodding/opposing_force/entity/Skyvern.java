@@ -9,6 +9,7 @@ import com.unusualmodding.opposing_force.entity.ai.goal.skyvern.SkyvernFlightGoa
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothFlyingPathNavigation;
 import com.unusualmodding.opposing_force.entity.base.TameableMonster;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
+import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -29,6 +30,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -331,6 +333,18 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
             }
         }
         super.onSyncedDataUpdated(entityDataAccessor);
+    }
+
+    @Override
+    protected void dropCustomDeathLoot(@NotNull DamageSource source, int damage, boolean drops) {
+        super.dropCustomDeathLoot(source, damage, drops);
+        Entity entity = source.getEntity();
+        if (entity instanceof Creeper creeper) {
+            if (creeper.canDropMobsSkull()) {
+                creeper.increaseDroppedSkulls();
+                this.spawnAtLocation(OPItems.SKYVERN_HEAD.get());
+            }
+        }
     }
 
     @Override
