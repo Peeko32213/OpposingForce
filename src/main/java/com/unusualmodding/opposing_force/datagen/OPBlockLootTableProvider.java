@@ -66,10 +66,33 @@ public class OPBlockLootTableProvider extends BlockLootSubProvider {
         this.dropSelf(VILE_STONE_BRICK_STAIRS.get());
         this.add(VILE_STONE_BRICK_SLAB.get(), this::createSlabItemTable);
         this.dropSelf(VILE_STONE_BRICK_WALL.get());
+
+        this.dropSelf(DICER_HEAD.getFirst().get());
+        this.dropSelf(FROWZY_HEAD.getFirst().get());
+
+        this.dropSelf(ANGRY_RAMBLER_SKULL.getFirst().get());
+        this.dropSelf(CLASSIC_RAMBLER_SKULL.getFirst().get());
+        this.dropSelf(EVIL_RAMBLER_SKULL.getFirst().get());
+        this.dropSelf(GRINNING_RAMBLER_SKULL.getFirst().get());
+        this.dropSelf(SKELETAL_RAMBLER_SKULL.getFirst().get());
+        this.dropSelf(SMILING_RAMBLER_SKULL.getFirst().get());
+        this.dropSelf(STRANGE_RAMBLER_SKULL.getFirst().get());
+        this.dropSelf(CRUNDLY_RAMBLER_SKULL.getFirst().get());
+        this.dropSelf(DWARVEN_RAMBLER_SKULL.getFirst().get());
+        this.dropSelf(IMPRISONED_RAMBLER_SKULL.getFirst().get());
+        this.dropSelf(INDOMITABLE_RAMBLER_SKULL.getFirst().get());
+        this.dropSelf(LEERING_RAMBLER_SKULL.getFirst().get());
+        this.dropSelf(MAGMATIC_RAMBLER_SKULL.getFirst().get());
+        this.dropSelf(MUSICAL_RAMBLER_SKULL.getFirst().get());
+        this.dropSelf(NOSY_RAMBLER_SKULL.getFirst().get());
+        this.dropSelf(VALIANT_RAMBLER_SKULL.getFirst().get());
+
+        this.dropSelf(SKYVERN_HEAD.getFirst().get());
+        this.dropSelf(TART_HEAD.getFirst().get());
     }
 
     @Override
-    protected Iterable<Block> getKnownBlocks() {
+    protected @NotNull Iterable<Block> getKnownBlocks() {
         return knownBlocks;
     }
 }

@@ -188,7 +188,7 @@ public class SawbladeItem extends ConfigurableAxeItem {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return enchantment.category == EnchantmentCategory.WEAPON && enchantment != Enchantments.SWEEPING_EDGE;
+        return (enchantment.category == EnchantmentCategory.WEAPON || enchantment.category == EnchantmentCategory.BREAKABLE || enchantment.category == EnchantmentCategory.VANISHABLE) && enchantment != Enchantments.SWEEPING_EDGE;
     }
 
     public static float sawbladeComputeFov(Player player, float currentFovModifier) {

@@ -1,6 +1,7 @@
 package com.unusualmodding.opposing_force.registry;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.Instrument;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -25,6 +26,10 @@ public class OPBlockProperties {
     public static final BlockBehaviour.Properties MOB_HEAD = BlockBehaviour.Properties.of().strength(1.0F).pushReaction(PushReaction.DESTROY).mapColor(MapColor.STONE);
 
     public static final BlockBehaviour.Properties DICER_LENS_BLOCK = BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_MAGENTA).instrument(NoteBlockInstrument.CHIME).sound(SoundType.STONE).requiresCorrectToolForDrops().strength(2.0F, 3.0F);
+
+    public static BlockBehaviour.Properties mobHead(NoteBlockInstrument instrument) {
+        return BlockBehaviour.Properties.of().strength(1.0F).pushReaction(PushReaction.DESTROY).mapColor(MapColor.STONE).instrument(instrument);
+    }
 
     private static boolean always(BlockState state, BlockGetter blockGetter, BlockPos blockPos) {
         return true;
