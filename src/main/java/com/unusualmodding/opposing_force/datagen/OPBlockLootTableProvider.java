@@ -28,6 +28,8 @@ public class OPBlockLootTableProvider extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
+        this.dropSelf(DICER_LENS_BLOCK.get());
+
         this.dropSelf(GUZZLER_SCALE_BRICKS.get());
         this.dropSelf(GUZZLER_SCALE_BRICK_STAIRS.get());
         this.add(GUZZLER_SCALE_BRICK_SLAB.get(), this::createSlabItemTable);

@@ -1,9 +1,10 @@
-// 1.20.1	2026-02-16T15:27:11.8904574	Loot Tables
+// 1.20.1	2026-02-17T19:46:55.5325805	Loot Tables
 7d8718ce0d691d76f30fd9e76311632811e897c1 data/opposing_force/loot_tables/blocks/angry_rambler_skull.json
 886ab901eea5da6aee52773a27bc75e8cf404737 data/opposing_force/loot_tables/blocks/classic_rambler_skull.json
 df754931efeeee75b5cd36d55bd7b220544a4f6d data/opposing_force/loot_tables/blocks/crundly_rambler_skull.json
 d2958188eb9643e832f6a72254ba0e708ff6fb95 data/opposing_force/loot_tables/blocks/deep_silk_block.json
 fd4f95fdbc7eb242a1e15d671b0c5e2eca827d38 data/opposing_force/loot_tables/blocks/dicer_head.json
+f2039a1a8b6d1b2051b7af888eac6280b1c2d692 data/opposing_force/loot_tables/blocks/dicer_lens_block.json
 fd8fddc4381694286544d1e7145edc1d3acd4bb2 data/opposing_force/loot_tables/blocks/dwarven_rambler_skull.json
 f40e2ffdaad5af60d379e4f1b56d59bd6e9f35e0 data/opposing_force/loot_tables/blocks/evil_rambler_skull.json
 aa43f53983ecb49a711c9cad63fcb3c83128ae5d data/opposing_force/loot_tables/blocks/frowzy_head.json
