@@ -49,7 +49,7 @@ public class OPRecipeProvider extends RecipeProvider {
         ShapedRecipeBuilder.shaped(COMBAT, LAPIS_SHOVEL.get()).define('L', Tags.Items.STORAGE_BLOCKS_LAPIS).define('S', Tags.Items.RODS_WOODEN).pattern("L").pattern("S").pattern("S").unlockedBy("has_lapis", has(Tags.Items.GEMS_LAPIS)).save(consumer);
         ShapedRecipeBuilder.shaped(COMBAT, LAPIS_HOE.get()).define('L', Tags.Items.STORAGE_BLOCKS_LAPIS).define('S', Tags.Items.RODS_WOODEN).pattern("LL").pattern(" S").pattern(" S").unlockedBy("has_lapis", has(Tags.Items.GEMS_LAPIS)).save(consumer);
 
-        ShapelessRecipeBuilder.shapeless(MISC, ELECTRIC_ALLOY.get(), 2).requires(ELECTRIC_CHARGE.get()).requires(ELECTRIC_CHARGE.get()).requires(Tags.Items.INGOTS_GOLD).requires(Tags.Items.GEMS_DIAMOND).unlockedBy("has_electric_charge", has(ELECTRIC_CHARGE.get())).save(consumer);
+        ShapelessRecipeBuilder.shapeless(MISC, ELECTRIC_ALLOY.get(), 2).requires(ELECTRIC_CHARGE.get()).requires(Tags.Items.INGOTS_GOLD).requires(Tags.Items.GEMS_DIAMOND).unlockedBy("has_electric_charge", has(ELECTRIC_CHARGE.get())).save(consumer);
         ShapedRecipeBuilder.shaped(COMBAT, TESLA_CANNON.get()).define('#', ELECTRIC_ALLOY.get()).define('X', DEEP_SILK.get()).define('Y', Tags.Items.RODS_WOODEN).define('Z', Blocks.TRIPWIRE_HOOK).define('A', ELECTRIC_CHARGE.get()).pattern("#A#").pattern("XZX").pattern(" Y ").unlockedBy("has_tesla_ingot", has(ELECTRIC_ALLOY.get())).save(consumer);
         ShapedRecipeBuilder.shaped(COMBAT, SPARK_BLADE.get()).define('B', Tags.Items.INGOTS_GOLD).define('A', ELECTRIC_ALLOY.get()).pattern(" A ").pattern(" A ").pattern(" B ").unlockedBy("has_tesla_ingot", has(ELECTRIC_ALLOY.get())).save(consumer);
 

@@ -196,9 +196,7 @@ public class TeslaCannonItem extends ProjectileWeaponItem implements Vanishable 
 
     public static ElectricCharge getCharge(Level level, LivingEntity entity, ItemStack ammo, ItemStack stack) {
         ElectricChargeItem chargeItem = (ElectricChargeItem) (ammo.getItem() instanceof ElectricChargeItem ? ammo.getItem() : OPItems.ELECTRIC_CHARGE);
-        ElectricCharge electricCharge = chargeItem.shootCharge(level, entity);
-        electricCharge.setChargeDamage(9.0F);
-        return electricCharge;
+        return chargeItem.shootCharge(level, entity);
     }
 
     public static void onCannonShot(Level level, LivingEntity entity, ItemStack stack) {
