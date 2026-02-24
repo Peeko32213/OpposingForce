@@ -211,6 +211,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.translateSound(OPSoundEvents.LASER_BLADE_CATCH, "Laser Blade caught");
 
         this.translateSound(OPSoundEvents.WALTZ_OF_THE_SLUG_DISC, "Music Disc");
+        this.translateSound(OPSoundEvents.SLAYSER_DISC, "Music Disc");
 
         this.addBlock(OPBlocks.INFESTED_AMETHYST_BLOCK, "Infested Block of Amethyst");
 
@@ -263,6 +264,7 @@ public class OPLanguageProvider extends LanguageProvider {
         this.add("block.opposing_force.valiant_rambler_skull.desc", "Valiant");
 
         this.translateMusicDisc(OPItems.WALTZ_OF_THE_SLUG_DISC, "ChipsTheCat - Waltz of the Slug");
+        this.translateMusicDisc(OPItems.SLAYSER_DISC, "ChipsTheCat - Slayser");
 
         this.addItem(OPItems.TERROR_LEG, "Raw Terror Leg");
 

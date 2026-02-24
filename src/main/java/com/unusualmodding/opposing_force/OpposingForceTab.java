@@ -69,6 +69,7 @@ public class OpposingForceTab {
                     output.accept(OPItems.PINK_BLASTER.get());
 
                     output.accept(OPItems.DICER_HEAD.get());
+                    output.accept(OPItems.SLAYSER_DISC.get());
 
                     // Frowzy
                     output.accept(OPItems.FROWZY_HEAD.get());

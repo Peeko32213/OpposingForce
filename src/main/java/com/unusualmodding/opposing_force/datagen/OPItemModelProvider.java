@@ -146,6 +146,7 @@ public class OPItemModelProvider extends ItemModelProvider {
 
         // Music Discs
         this.item(WALTZ_OF_THE_SLUG_DISC);
+        this.item(SLAYSER_DISC);
 
         // spawn eggs
         for (Item item : BuiltInRegistries.ITEM) {

@@ -684,6 +684,15 @@
     ],
     "subtitle": "subtitles.opposing_force.skyvern_whoosh"
   },
+  "slayser_disc": {
+    "sounds": [
+      {
+        "name": "opposing_force:music/slayser_disc",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.opposing_force.slayser_disc"
+  },
   "slug_attack": {
     "sounds": [
       {

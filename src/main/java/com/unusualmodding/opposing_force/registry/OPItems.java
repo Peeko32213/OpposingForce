@@ -232,6 +232,7 @@ public class OPItems {
 
     // discs
     public static final RegistryObject<Item> WALTZ_OF_THE_SLUG_DISC = registerItemNoLang("waltz_of_the_slug_disc", () -> new RecordItem(15, OPSoundEvents.WALTZ_OF_THE_SLUG_DISC, new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 3440));
+    public static final RegistryObject<Item> SLAYSER_DISC = registerItemNoLang("slayser_disc", () -> new RecordItem(15, OPSoundEvents.SLAYSER_DISC, new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 2300));
 
     private static <I extends Item> RegistryObject<I> registerItem(String name, Supplier<? extends I> supplier) {
         RegistryObject<I> item = ITEMS.register(name, supplier);

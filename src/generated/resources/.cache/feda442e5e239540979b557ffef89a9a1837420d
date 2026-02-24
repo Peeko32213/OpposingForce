@@ -1,4 +1,4 @@
-// 1.20.1	2026-02-13T14:32:38.1067995	Item Models: opposing_force
+// 1.20.1	2026-02-23T20:32:58.8488493	Item Models: opposing_force
 43d32e7d031485f83a1b4eb56ecb3cc40a456163 assets/opposing_force/models/item/angry_rambler_skull.json
 76e32b619b6a338b691da2b22d3ae2be3d549c59 assets/opposing_force/models/item/bone_axe.json
 1aae6a213c7ddb8099e7177c1fbbdfbc2f2f37b5 assets/opposing_force/models/item/bone_boots.json
@@ -74,6 +74,7 @@ d7ec0f9ced421f0b4b26fcf33813c71cde0378f5 assets/opposing_force/models/item/skyve
 407c181c35a189576218d9b7740a5a6c75179839 assets/opposing_force/models/item/skyvern_egg.json
 43d32e7d031485f83a1b4eb56ecb3cc40a456163 assets/opposing_force/models/item/skyvern_head.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/opposing_force/models/item/skyvern_spawn_egg.json
+5631456a255612e93e4c31447e5f4bcb7f4889c1 assets/opposing_force/models/item/slayser_disc.json
 2bd48a611147c7c9dd53899a80efa5e607686cfb assets/opposing_force/models/item/slug_baron_boots.json
 1e39c5af1ff9899d8bc36efde8f3729f2476e8a6 assets/opposing_force/models/item/slug_baron_chestplate.json
 dc21d4013faf7cb3156c3797beca65d163775c5a assets/opposing_force/models/item/slug_baron_helmet.json

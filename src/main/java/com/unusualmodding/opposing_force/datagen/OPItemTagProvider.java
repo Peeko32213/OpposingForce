@@ -119,7 +119,8 @@ public class OPItemTagProvider extends ItemTagsProvider {
         this.copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
 
         this.tag(ItemTags.MUSIC_DISCS).add(
-                WALTZ_OF_THE_SLUG_DISC.get()
+                WALTZ_OF_THE_SLUG_DISC.get(),
+                SLAYSER_DISC.get()
         );
 
         this.tag(ItemTags.FREEZE_IMMUNE_WEARABLES).add(

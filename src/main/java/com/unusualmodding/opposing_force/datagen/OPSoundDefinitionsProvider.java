@@ -443,6 +443,9 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
         this.sound(OPSoundEvents.WALTZ_OF_THE_SLUG_DISC,
                 sound(OpposingForce.modPrefix("music/waltz_of_the_slug_disc")).stream()
         );
+        this.sound(OPSoundEvents.SLAYSER_DISC,
+                sound(OpposingForce.modPrefix("music/slayser_disc")).stream()
+        );
 
         this.sound(OPSoundEvents.NOTE_BLOCK_IMITATE_DICER,
                 sound(OpposingForce.modPrefix("entity/dicer/idle1")).volume(0.8F),

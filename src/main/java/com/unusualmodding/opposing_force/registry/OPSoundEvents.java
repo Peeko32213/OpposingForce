@@ -129,6 +129,7 @@ public class OPSoundEvents {
     public static final RegistryObject<SoundEvent> SAWBLADE_SWING = registerSoundEvent("sawblade_swing");
 
     public static final RegistryObject<SoundEvent> WALTZ_OF_THE_SLUG_DISC = registerSoundEvent("waltz_of_the_slug_disc");
+    public static final RegistryObject<SoundEvent> SLAYSER_DISC = registerSoundEvent("slayser_disc");
 
     public static final Holder.Reference<SoundEvent> NOTE_BLOCK_IMITATE_DICER = registerSoundEventHolder("note_block_imitate_dicer");
     public static final Holder.Reference<SoundEvent> NOTE_BLOCK_IMITATE_FROWZY = registerSoundEventHolder("note_block_imitate_frowzy");
