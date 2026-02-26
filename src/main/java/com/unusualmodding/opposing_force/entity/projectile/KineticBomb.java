@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.entity.projectile;
 
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPItems;
+import com.unusualmodding.opposing_force.registry.OPParticles;
 import com.unusualmodding.opposing_force.utils.OPMath;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -58,7 +59,8 @@ public class KineticBomb extends AbstractBomb {
     public void handleEntityEvent(byte id) {
         if (id == 3) {
             Vec3 location = this.position().add(0, this.getBbHeight() * 0.5, 0);
-            this.level().addParticle(ParticleTypes.FLASH, true, location.x(), location.y(), location.z(), 0, 0, 0);
+            this.spawnExplosionParticles(OPParticles.KINETIC_BOMB_EXPLOSION.get());
+            this.level().addParticle(OPParticles.KINETIC_BOMB_FLASH.get(), true, location.x, location.y, location.z, 0, 0, 0);
         }
     }
 

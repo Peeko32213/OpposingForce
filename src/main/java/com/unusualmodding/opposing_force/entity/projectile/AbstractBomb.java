@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.entity.projectile;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.events.ScreenShakeEvent;
+import com.unusualmodding.opposing_force.registry.OPParticles;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -85,7 +86,16 @@ public abstract class AbstractBomb extends ThrowableItemProjectile {
             double xVelocity = Math.sin(theta) * cos * (random.nextFloat() * 0.3 + 0.7);
             double yVelocity = cos * Math.cos(theta) * (random.nextFloat() * 0.3 + 0.7);
             double zVelocity = Math.sin(alpha) * (random.nextFloat() * 0.3 + 0.7);
-            level().addParticle(particle, false, location.x(), location.y(), location.z(), xVelocity * speed, yVelocity * speed, zVelocity * speed);
+            level().addParticle(particle, false, location.x, location.y, location.z, xVelocity * speed, yVelocity * speed, zVelocity * speed);
+        }
+    }
+
+    protected void spawnExplosionParticles(ParticleOptions particle) {
+        for (int i = 0; i < 8; i++) {
+            double x = this.getX() + (this.random.nextDouble() - this.random.nextDouble()) * 3.0D;
+            double y = this.getY() + (this.random.nextDouble() - this.random.nextDouble()) * 3.0D;
+            double z = this.getZ() + (this.random.nextDouble() - this.random.nextDouble()) * 3.0D;
+            this.level().addAlwaysVisibleParticle(particle, true, x, y, z, 0.75D, 0.0D, 0.0D);
         }
     }
 

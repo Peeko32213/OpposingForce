@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.entity.projectile;
 
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPItems;
+import com.unusualmodding.opposing_force.registry.OPParticles;
 import com.unusualmodding.opposing_force.utils.OPMath;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -73,7 +74,8 @@ public class FireBomb extends AbstractBomb {
             this.spawnParticles(ParticleTypes.FLAME, 32, 0.4);
             this.spawnParticles(ParticleTypes.LARGE_SMOKE, 20, 0.3);
             this.spawnParticles(ParticleTypes.LAVA, 20, 0.5);
-            this.level().addParticle(ParticleTypes.FLASH, true, location.x(), location.y(), location.z(), 0, 0, 0);
+            this.spawnExplosionParticles(OPParticles.FIRE_BOMB_EXPLOSION.get());
+            this.level().addParticle(OPParticles.FIRE_BOMB_FLASH.get(), true, location.x, location.y, location.z, 0.0D, 0.0D, 0.0D);
         }
     }
 

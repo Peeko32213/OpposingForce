@@ -35,5 +35,14 @@ public class OPParticles {
     public static final RegistryObject<SimpleParticleType> LASER_BOLT_DUST = PARTICLE_TYPES.register("laser_bolt_dust", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> LASER_IMPACT = PARTICLE_TYPES.register("laser_impact", () -> new SimpleParticleType(false));
 
+    public static final RegistryObject<SimpleParticleType> FIRE_BOMB_EXPLOSION = PARTICLE_TYPES.register("fire_bomb_explosion", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> KINETIC_BOMB_EXPLOSION = PARTICLE_TYPES.register("kinetic_bomb_explosion", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> LIGHTNING_BOMB_EXPLOSION = PARTICLE_TYPES.register("lightning_bomb_explosion", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> WHIZZ_BOMB_EXPLOSION = PARTICLE_TYPES.register("whizz_bomb_explosion", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> FIRE_BOMB_FLASH = PARTICLE_TYPES.register("fire_bomb_flash", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> KINETIC_BOMB_FLASH = PARTICLE_TYPES.register("kinetic_bomb_flash", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> LIGHTNING_BOMB_FLASH = PARTICLE_TYPES.register("lightning_bomb_flash", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> WHIZZ_BOMB_FLASH = PARTICLE_TYPES.register("whizz_bomb_flash", () -> new SimpleParticleType(true));
+
     public static final RegistryObject<LightningParticleType> LIGHTNING = PARTICLE_TYPES.register("lightning", () -> new LightningParticleType(false));
 }

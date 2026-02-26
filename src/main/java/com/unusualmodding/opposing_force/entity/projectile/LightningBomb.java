@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.entity.projectile;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPMobEffects;
+import com.unusualmodding.opposing_force.registry.OPParticles;
 import com.unusualmodding.opposing_force.utils.OPMath;
 import com.unusualmodding.opposing_force.utils.ParticleUtils;
 import net.minecraft.core.particles.ParticleTypes;
@@ -67,7 +68,8 @@ public class LightningBomb extends AbstractBomb {
         if (id == 3) {
             Vec3 location = this.position().add(0, this.getBbHeight() * 0.5, 0);
             this.spawnParticles(ParticleTypes.LARGE_SMOKE, 16, 0.3);
-            this.level().addParticle(ParticleTypes.FLASH, true, location.x(), location.y(), location.z(), 0, 0, 0);
+            this.spawnExplosionParticles(OPParticles.LIGHTNING_BOMB_EXPLOSION.get());
+            this.level().addParticle(OPParticles.LIGHTNING_BOMB_FLASH.get(), true, location.x(), location.y(), location.z(), 0, 0, 0);
         }
     }
 

@@ -6,6 +6,7 @@
   "refmap": "opposing_force.refmap.json",
   "mixins": [
     "AbstractArrowMixin",
+    "BlockBehaviourMixin",
     "CreeperMixin",
     "EntityMixin",
     "FoodDataMixin",

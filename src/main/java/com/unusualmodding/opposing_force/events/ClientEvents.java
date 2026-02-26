@@ -8,10 +8,7 @@ import com.unusualmodding.opposing_force.client.models.entity.skyvern.SkyvernMod
 import com.unusualmodding.opposing_force.client.models.entity.skyvern.SkyvernTailModel;
 import com.unusualmodding.opposing_force.client.models.item.BlasterModel;
 import com.unusualmodding.opposing_force.client.models.mob_heads.*;
-import com.unusualmodding.opposing_force.client.particles.LaserBoltDustParticle;
-import com.unusualmodding.opposing_force.client.particles.LaserImpactParticle;
-import com.unusualmodding.opposing_force.client.particles.LaserSweepParticle;
-import com.unusualmodding.opposing_force.client.particles.MoonShoesParticle;
+import com.unusualmodding.opposing_force.client.particles.*;
 import com.unusualmodding.opposing_force.client.particles.lightning.LightningParticle;
 import com.unusualmodding.opposing_force.client.renderer.*;
 import com.unusualmodding.opposing_force.client.renderer.blocks.MobHeadBlockEntityRenderer;
@@ -61,6 +58,14 @@ public final class ClientEvents {
         event.registerSpriteSet(OPParticles.MAGENTA_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
         event.registerSpriteSet(OPParticles.PINK_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
         event.registerSpriteSet(OPParticles.LASER_IMPACT.get(), LaserImpactParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.FIRE_BOMB_EXPLOSION.get(), BombExplosionParticle.FireBombFactory::new);
+        event.registerSpriteSet(OPParticles.KINETIC_BOMB_EXPLOSION.get(), BombExplosionParticle.KineticBombFactory::new);
+        event.registerSpriteSet(OPParticles.LIGHTNING_BOMB_EXPLOSION.get(), BombExplosionParticle.LightningBombFactory::new);
+        event.registerSpriteSet(OPParticles.WHIZZ_BOMB_EXPLOSION.get(), BombExplosionParticle.WhizzBombFactory::new);
+        event.registerSpriteSet(OPParticles.FIRE_BOMB_FLASH.get(), BombFlashParticle.FireBombFactory::new);
+        event.registerSpriteSet(OPParticles.KINETIC_BOMB_FLASH.get(), BombFlashParticle.KineticBombFactory::new);
+        event.registerSpriteSet(OPParticles.LIGHTNING_BOMB_FLASH.get(), BombFlashParticle.LightningBombFactory::new);
+        event.registerSpriteSet(OPParticles.WHIZZ_BOMB_FLASH.get(), BombFlashParticle.WhizzBombFactory::new);
         event.registerSpecial(OPParticles.LIGHTNING.get(), new LightningParticle.Factory());
     }
 
