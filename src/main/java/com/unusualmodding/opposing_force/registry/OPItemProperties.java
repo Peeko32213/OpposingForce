@@ -1,7 +1,6 @@
 package com.unusualmodding.opposing_force.registry;
 
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.items.SawbladeItem;
 import com.unusualmodding.opposing_force.items.TeslaCannonItem;
 import net.minecraft.client.renderer.item.ItemProperties;
 

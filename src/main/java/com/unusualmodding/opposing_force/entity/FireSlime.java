@@ -1,6 +1,5 @@
 package com.unusualmodding.opposing_force.entity;
 
-import com.mojang.serialization.Codec;
 import com.unusualmodding.opposing_force.entity.ai.goal.MonsterFollowOwnerGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.MonsterOwnerHurtByTargetGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.MonsterOwnerHurtTargetGoal;

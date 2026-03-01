@@ -2,7 +2,6 @@ package com.unusualmodding.opposing_force.entity.projectile;
 
 import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.events.ScreenShakeEvent;
-import com.unusualmodding.opposing_force.registry.OPParticles;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;

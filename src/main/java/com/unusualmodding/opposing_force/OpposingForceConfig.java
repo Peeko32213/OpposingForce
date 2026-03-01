@@ -73,7 +73,7 @@ public class OpposingForceConfig {
 
         // Terror
         COMMON_BUILDER.push(CATEGORY_TERROR);
-        TERROR_SPAWN_HEIGHT = COMMON_BUILDER.comment("Maximum height terrors can spawn").defineInRange("terrorSpawnHeight", 0, -64, 320);
+        TERROR_SPAWN_HEIGHT = COMMON_BUILDER.comment("Maximum height terrors can spawn").defineInRange("terrorSpawnHeight", 16, -64, 320);
         COMMON_BUILDER.pop();
 
         // Trembler

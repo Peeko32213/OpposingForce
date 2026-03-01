@@ -6,10 +6,13 @@ import com.unusualmodding.opposing_force.effects.SlugInfestation;
 import com.unusualmodding.opposing_force.entity.Frowzy;
 import com.unusualmodding.opposing_force.entity.UmberSpider;
 import com.unusualmodding.opposing_force.items.LaserBladeItem;
+import com.unusualmodding.opposing_force.items.SawbladeItem;
 import com.unusualmodding.opposing_force.items.TremblingSlammer;
 import com.unusualmodding.opposing_force.items.armor.SlugBaronArmorItem;
-import com.unusualmodding.opposing_force.items.SawbladeItem;
-import com.unusualmodding.opposing_force.registry.*;
+import com.unusualmodding.opposing_force.registry.OPAttributes;
+import com.unusualmodding.opposing_force.registry.OPEntities;
+import com.unusualmodding.opposing_force.registry.OPItems;
+import com.unusualmodding.opposing_force.registry.OPMobEffects;
 import com.unusualmodding.opposing_force.registry.OPTrades.MultipleInputsTrade;
 import com.unusualmodding.opposing_force.registry.tags.OPBiomeTags;
 import com.unusualmodding.opposing_force.registry.tags.OPBlockTags;
@@ -227,7 +230,7 @@ public class ForgeEvents {
 
     @SubscribeEvent
     public void livingHurt(LivingDamageEvent event) {
-        if (event.getEntity() instanceof Player player && event.getSource().is(DamageTypes.FALL) && (player.getItemBySlot(EquipmentSlot.FEET).is(OPItems.MOON_SHOES.get()) || player.getItemBySlot(EquipmentSlot.LEGS).is(OPItems.LEAPING_LEGGINGS.get()))) {
+        if (event.getEntity() instanceof Player player && event.getSource().is(DamageTypes.FALL) && (player.getItemBySlot(EquipmentSlot.FEET).is(OPItems.MOON_SHOES.get()))) {
             player.fallDistance = 0.0F;
             event.setCanceled(true);
         }

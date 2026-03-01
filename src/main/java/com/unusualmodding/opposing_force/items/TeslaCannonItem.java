@@ -3,7 +3,6 @@ package com.unusualmodding.opposing_force.items;
 import com.google.common.collect.Lists;
 import com.unusualmodding.opposing_force.enchantments.KickbackEnchantment;
 import com.unusualmodding.opposing_force.entity.projectile.ElectricCharge;
-import com.unusualmodding.opposing_force.registry.OPEnchantments;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.advancements.CriteriaTriggers;
