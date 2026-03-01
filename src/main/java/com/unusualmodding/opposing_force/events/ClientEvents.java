@@ -58,6 +58,7 @@ public final class ClientEvents {
         event.registerSpriteSet(OPParticles.MAGENTA_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
         event.registerSpriteSet(OPParticles.PINK_LASER_SWEEP.get(), LaserSweepParticle.Factory::new);
         event.registerSpriteSet(OPParticles.LASER_IMPACT.get(), LaserImpactParticle.Factory::new);
+        event.registerSpriteSet(OPParticles.TREMBLING_SLAMMER_IMPACT.get(), TremblingSlammerImpactParticle.Factory::new);
         event.registerSpriteSet(OPParticles.FIRE_BOMB_EXPLOSION.get(), BombExplosionParticle.FireBombFactory::new);
         event.registerSpriteSet(OPParticles.KINETIC_BOMB_EXPLOSION.get(), BombExplosionParticle.KineticBombFactory::new);
         event.registerSpriteSet(OPParticles.LIGHTNING_BOMB_EXPLOSION.get(), BombExplosionParticle.LightningBombFactory::new);

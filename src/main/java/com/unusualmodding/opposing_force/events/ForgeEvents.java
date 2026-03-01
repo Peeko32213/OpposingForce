@@ -42,6 +42,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.event.level.BlockEvent;
@@ -275,6 +276,17 @@ public class ForgeEvents {
         }
     }
 
+    @SubscribeEvent
+    public static void onCriticalHit(CriticalHitEvent event) {
+        Player player = event.getEntity();
+        Entity target = event.getTarget();
+        ItemStack stack = player.getMainHandItem();
+
+        if (player.level() instanceof ServerLevel && event.isVanillaCritical() && stack.getItem() instanceof TremblingSlammer) {
+            TremblingSlammer.tremblingSlammerCriticalHit(stack, player, target);
+            event.setDamageModifier(1.75F);
+        }
+    }
 
     @SubscribeEvent
     public static void onMobAttack(final LivingAttackEvent event) {

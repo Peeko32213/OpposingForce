@@ -2,10 +2,16 @@ package com.unusualmodding.opposing_force.items;
 
 import com.unusualmodding.opposing_force.items.tools.ConfigurablePickaxetem;
 import com.unusualmodding.opposing_force.items.tools.OPToolDefinitions;
+import com.unusualmodding.opposing_force.registry.OPParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -32,6 +38,14 @@ public class TremblingSlammer extends ConfigurablePickaxetem {
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return (enchantment.category == EnchantmentCategory.WEAPON || enchantment.category == EnchantmentCategory.BREAKABLE || enchantment.category == EnchantmentCategory.VANISHABLE) && enchantment != Enchantments.SWEEPING_EDGE;
+    }
+
+    public static void tremblingSlammerCriticalHit(ItemStack stack, Player player, Entity target) {
+        double x = -Mth.sin(player.getYRot() * ((float) Math.PI / 180F));
+        double z = Mth.cos(player.getYRot() * ((float) Math.PI / 180F));
+        if (player.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(OPParticles.TREMBLING_SLAMMER_IMPACT.get(), player.getX() + x * 1.5D, player.getY(0.5D), player.getZ() + z * 1.5D, 0, x, 0.0D, z, 0.0D);
+        }
     }
 
     public static void breakBlocksAroundMinedBlock(Level level, BlockPos initialBlockPos, Player player) {

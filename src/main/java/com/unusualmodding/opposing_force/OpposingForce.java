@@ -93,7 +93,7 @@ public class OpposingForce {
         generator.addProvider(server, OPLootProvider.register(output));
         generator.addProvider(server, new OPRecipeProvider(output));
 
-        generator.addProvider(server, OPAdvancementProvider.register(output, provider, helper));
+//        generator.addProvider(server, OPAdvancementProvider.register(output, provider, helper));
 
         boolean client = data.includeClient();
 
