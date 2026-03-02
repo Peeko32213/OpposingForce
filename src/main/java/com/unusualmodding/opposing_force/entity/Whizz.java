@@ -146,13 +146,6 @@ public class Whizz extends SummonableMonster {
     }
 
     @Override
-    protected void dropFromLootTable(@NotNull DamageSource source, boolean drops) {
-        if (!this.isFromSummon()) {
-            super.dropFromLootTable(source, drops);
-        }
-    }
-
-    @Override
     public void tick() {
         super.tick();
 
@@ -177,7 +170,7 @@ public class Whizz extends SummonableMonster {
         if (attackTicks > 0) attackTicks--;
         if (attackTicks == 0 && this.getPose() == OPPoses.ATTACKING.get()) this.setPose(Pose.STANDING);
 
-        if (this.isFromSummon()) {
+        if (this.isFromSummon() && !this.isCaptured()) {
             this.limitedLifeTicks++;
             if (this.limitedLifeTicks > 200) {
                 this.limitedLifeTicks = 180;

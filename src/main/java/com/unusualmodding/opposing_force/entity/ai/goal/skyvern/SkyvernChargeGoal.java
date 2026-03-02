@@ -79,16 +79,15 @@ public class SkyvernChargeGoal extends Goal {
         int attackState = skyvern.getAttackState();
         if (target != null) {
             if (startOrbitFrom == null) {
-                this.skyvern.getNavigation().moveTo(target, 1.0D);
+                this.skyvern.getNavigation().moveTo(target, 1.5D);
             } else if (orbitTime < maxOrbitTime) {
                 this.orbitTime++;
-                Vec3 orbitPos = orbitAroundPos(32.0F);
-                this.skyvern.getNavigation().moveTo(orbitPos.x, orbitPos.y, orbitPos.z, 1.2D);
+                Vec3 orbitPos = orbitAroundPos(48.0F);
+                this.skyvern.getNavigation().moveTo(orbitPos.x, orbitPos.y, orbitPos.z, 1.5D);
             } else {
                 this.orbitTime = 0;
                 this.startOrbitFrom = null;
             }
-
             if (attackState == 1) this.tickCharge();
             else if (attackState == 0 && this.isWithinRange(target) && orbitTime == 0) this.skyvern.setAttackState(1);
         }
@@ -102,8 +101,8 @@ public class SkyvernChargeGoal extends Goal {
             this.collisionTicks++;
         }
 
-        if (timer == 5) {
-            this.skyvern.setPose(OPPoses.ATTACK_START.get());
+        if (timer == 7) {
+            this.skyvern.setPose(OPPoses.ATTACKING.get());
             this.skyvern.playSound(OPSoundEvents.SKYVERN_CHARGE_WARN.get(), 3.0F, 0.9F + skyvern.getRandom().nextFloat() * 0.3F);
         }
 
@@ -119,8 +118,8 @@ public class SkyvernChargeGoal extends Goal {
         }
 
         if (timer > 9) {
-            Vec3 rollDirection = new Vec3(target.getX() - skyvern.getX(), target.getY() - skyvern.getY(), target.getZ() - skyvern.getZ()).normalize();
-            float yRot = Mth.approachDegrees(skyvern.getYRot(), (float) (Mth.atan2(rollDirection.z, rollDirection.x) * (180F / Math.PI)) - 90.0F, 0.2F);
+            Vec3 chargeDirection = new Vec3(target.getX() - skyvern.getX(), target.getY(), target.getZ() - skyvern.getZ()).normalize();
+            float yRot = Mth.approachDegrees(skyvern.getYRot(), (float) (Mth.atan2(chargeDirection.z, chargeDirection.x) * (180F / Math.PI)) - 90.0F, 0.5F);
             float speed = 2.0F;
             this.skyvern.setYRot(yRot);
             this.skyvern.setYBodyRot(yRot);
@@ -128,9 +127,9 @@ public class SkyvernChargeGoal extends Goal {
             this.hurtNearbyEntities();
         }
 
-        if (timer == 28 || collisionTicks > 15) {
+        if (timer == 28 || collisionTicks > 10) {
             this.clockwise = skyvern.getRandom().nextBoolean();
-            this.skyvern.setPose(OPPoses.ATTACK_END.get());
+            this.skyvern.setPose(Pose.STANDING);
             this.maxOrbitTime = 30 + skyvern.getRandom().nextInt(30);
             this.startOrbitFrom = target.getEyePosition();
             this.timer = 0;
@@ -142,11 +141,11 @@ public class SkyvernChargeGoal extends Goal {
         final float angle = 2.0F * (float) (Math.toRadians((clockwise ? -orbitTime : orbitTime) * 2.0F));
         final double extraX = circleDistance * Mth.sin((angle));
         final double extraZ = circleDistance * Mth.cos(angle);
-        return startOrbitFrom.add(extraX, 0.0F, extraZ);
+        return startOrbitFrom.add(extraX, 16.0F, extraZ);
     }
 
     private void hurtNearbyEntities() {
-        List<LivingEntity> nearbyEntities = skyvern.level().getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), skyvern, skyvern.getBoundingBox().inflate(1.25D));
+        List<LivingEntity> nearbyEntities = skyvern.level().getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), skyvern, skyvern.getBoundingBox().inflate(1.5D));
         if (!nearbyEntities.isEmpty()) {
             LivingEntity entity = nearbyEntities.get(0);
             if (!(entity instanceof Skyvern)) {
@@ -163,6 +162,6 @@ public class SkyvernChargeGoal extends Goal {
         if (target == null) {
             return false;
         }
-        return Math.abs(target.getY() - skyvern.getY()) < 4 && skyvern.distanceTo(target) < 64 && !(skyvern.getY() < target.getY());
+        return Math.abs(target.getY() - skyvern.getY()) < 5 && skyvern.distanceTo(target) < 256 && !(skyvern.getY() < target.getY() + 0.5F);
     }
 }

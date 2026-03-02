@@ -3,6 +3,8 @@ package com.unusualmodding.opposing_force.entity;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPItems;
+import com.unusualmodding.opposing_force.utils.OPLoadedMods;
+import com.unusualmodding.opposing_force.utils.SmoothAnimationState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -48,15 +50,10 @@ public class SkyvernSegment extends Entity {
     private int controlUpTicks = 0;
     private int controlDownTicks = 0;
 
-    public final AnimationState flying1AnimationState = new AnimationState();
-    public final AnimationState flying2AnimationState = new AnimationState();
-    public final AnimationState attackStartAnimationState = new AnimationState();
-    public final AnimationState attackingAnimationState = new AnimationState();
-    public final AnimationState attackEndAnimationState = new AnimationState();
-    public final AnimationState roll1AnimationState = new AnimationState();
-
-    private int attackStartTicks;
-    private int attackEndTicks;
+    public final SmoothAnimationState fly1AnimationState = new SmoothAnimationState();
+    public final SmoothAnimationState fly2AnimationState = new SmoothAnimationState();
+    public final SmoothAnimationState attackAnimationState = new SmoothAnimationState();
+    public final SmoothAnimationState rollAnimationState = new SmoothAnimationState();
 
     private int lSteps;
     private double lx;
@@ -70,6 +67,9 @@ public class SkyvernSegment extends Entity {
 
     public SkyvernSegment(EntityType entityType, Level level) {
         super(entityType, level);
+        if (OPLoadedMods.isEntityCullingLoaded()){
+            this.noCulling = true;
+        }
     }
 
     @Override
@@ -255,7 +255,7 @@ public class SkyvernSegment extends Entity {
             if (head != null) {
                 float headDelta = Mth.clamp((float) head.getDeltaMovement().length(), 0.0F, 1.0F);
                 if (front == head) {
-                    backStretch -= 0.5F;
+                    backStretch -= 0.3F;
                 }
                 backStretch *= 1.0F - headDelta * 0.3F;
             }
@@ -350,59 +350,15 @@ public class SkyvernSegment extends Entity {
             this.setPose(head.getPose());
         }
 
-        if (attackStartTicks > 0) attackStartTicks--;
-        if (attackEndTicks > 0) attackEndTicks--;
-        if (attackStartTicks == 0 && this.getPose() == OPPoses.ATTACK_START.get()) this.setPose(OPPoses.ATTACKING.get());
-        if (attackEndTicks == 0 && this.getPose() == OPPoses.ATTACK_END.get()) this.setPose(Pose.STANDING);
-
         if (controlDownTicks > 0) controlDownTicks--;
         else if (controlUpTicks > 0) controlUpTicks--;
     }
 
     public void setupAnimationStates() {
-        if (attackStartTicks == 0 && this.attackStartAnimationState.isStarted()) this.attackStartAnimationState.stop();
-        if (attackEndTicks == 0 && this.attackEndAnimationState.isStarted()) this.attackEndAnimationState.stop();
-        this.flying1AnimationState.animateWhen(!this.hasOffsetArms() && this.getPose() == Pose.STANDING, this.tickCount);
-        this.flying2AnimationState.animateWhen(this.hasOffsetArms() && this.getPose() == Pose.STANDING, this.tickCount);
-    }
-
-    @Override
-    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> entityDataAccessor) {
-        if (DATA_POSE.equals(entityDataAccessor)) {
-            if (this.getPose() == OPPoses.ATTACK_START.get()) {
-                this.flying1AnimationState.stop();
-                this.flying2AnimationState.stop();
-                this.attackStartAnimationState.start(this.tickCount);
-                this.attackStartTicks = 10;
-            }
-            else if (this.getPose() == OPPoses.ATTACKING.get()) {
-                this.flying1AnimationState.stop();
-                this.flying2AnimationState.stop();
-                this.attackStartAnimationState.stop();
-                this.attackingAnimationState.start(this.tickCount);
-            }
-            else if (this.getPose() == OPPoses.ATTACK_END.get()) {
-                this.flying1AnimationState.stop();
-                this.flying2AnimationState.stop();
-                this.attackingAnimationState.stop();
-                this.attackEndAnimationState.start(this.tickCount);
-                this.attackEndTicks = 10;
-            }
-            else if (this.getPose() == OPPoses.ROLLING.get()) {
-                this.flying1AnimationState.stop();
-                this.flying2AnimationState.stop();
-                this.attackingAnimationState.stop();
-                this.attackEndAnimationState.stop();
-                this.attackStartAnimationState.stop();
-                this.roll1AnimationState.start(this.tickCount);
-            }
-            else if (this.getPose() == Pose.STANDING) {
-                this.attackStartAnimationState.stop();
-                this.attackingAnimationState.stop();
-                this.attackEndAnimationState.stop();
-            }
-        }
-        super.onSyncedDataUpdated(entityDataAccessor);
+        this.fly1AnimationState.animateWhen(!this.hasOffsetArms() && (this.getPose() == Pose.STANDING || this.getPose() == Pose.ROARING), this.tickCount);
+        this.fly2AnimationState.animateWhen(this.hasOffsetArms() && (this.getPose() == Pose.STANDING || this.getPose() == Pose.ROARING), this.tickCount);
+        this.rollAnimationState.animateWhen(this.getPose() == OPPoses.ROLLING.get(), this.tickCount);
+        this.attackAnimationState.animateWhen(this.getPose() == OPPoses.ATTACKING.get(), this.tickCount);
     }
 
     private void pushEntities() {

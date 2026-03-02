@@ -11,6 +11,7 @@ import com.unusualmodding.opposing_force.entity.base.TameableMonster;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
+import com.unusualmodding.opposing_force.utils.SmoothAnimationState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -53,17 +54,13 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
     private static final EntityDataAccessor<Integer> SEGMENTS = SynchedEntityData.defineId(Skyvern.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(Skyvern.class, EntityDataSerializers.INT);
 
-    public final AnimationState flyingAnimationState = new AnimationState();
-    public final AnimationState attackStartAnimationState = new AnimationState();
-    public final AnimationState attackingAnimationState = new AnimationState();
-    public final AnimationState attackEndAnimationState = new AnimationState();
-    public final AnimationState roarAnimationState = new AnimationState();
-    public final AnimationState roll1AnimationState = new AnimationState();
+    public final SmoothAnimationState flyAnimationState = new SmoothAnimationState();
+    public final SmoothAnimationState attackAnimationState = new SmoothAnimationState();
+    public final SmoothAnimationState roarAnimationState = new SmoothAnimationState();
+    public final SmoothAnimationState rollAnimationState = new SmoothAnimationState();
 
-    private int attackStartTicks;
-    private int attackEndTicks;
-    private int roarTicks;
-    private int rollTicks;
+    private int roarTicks = 0;
+    private int rollTicks = 0;
 
     private int roarCooldown = 0;
     private int rollCooldown = 0;
@@ -153,14 +150,12 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
 
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
-        compoundTag.putFloat("TargetPitch", this.getTargetPitch());
         compoundTag.putInt("Segments", this.getSegments());
         compoundTag.putInt("Variant", this.getVariant().id());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
-        this.setTargetPitch(compoundTag.getFloat("TargetPitch"));
         this.setSegments(compoundTag.getInt("Segments"));
         this.setVariant(SkyvernVariant.byId(compoundTag.getInt("Variant")));
     }
@@ -201,7 +196,7 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
 
     @Override
     protected float getStandingEyeHeight(@NotNull Pose pose, EntityDimensions dimensions) {
-        return 0.4F * dimensions.height;
+        return 0.5F * dimensions.height;
     }
 
     @Override
@@ -225,17 +220,15 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
         }
         this.pitch = Mth.approachDegrees(pitch, this.getTargetPitch(), 4);
 
-        if (attackStartTicks > 0) attackStartTicks--;
-        if (attackEndTicks > 0) attackEndTicks--;
+        if (!this.level().isClientSide) {
+            if (roarCooldown > 0) roarCooldown--;
+            if (rollCooldown > 0) rollCooldown--;
+        }
+
         if (roarTicks > 0) roarTicks--;
         if (rollTicks > 0) rollTicks--;
-        if (attackStartTicks == 0 && this.getPose() == OPPoses.ATTACK_START.get()) this.setPose(OPPoses.ATTACKING.get());
-        if (attackEndTicks == 0 && this.getPose() == OPPoses.ATTACK_END.get()) this.setPose(Pose.STANDING);
         if (roarTicks == 0 && this.getPose() == Pose.ROARING) this.setPose(Pose.STANDING);
         if (rollTicks == 0 && this.getPose() == OPPoses.ROLLING.get()) this.setPose(Pose.STANDING);
-
-        if (roarCooldown > 0) roarCooldown--;
-        if (rollCooldown > 0) rollCooldown--;
 
         if (level().isClientSide) {
             this.setupAnimationStates();
@@ -255,35 +248,35 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
             } else {
                 this.reapplyPosition();
             }
-        } else {
-            if (this.getRandom().nextInt(600) == 0) {
-                this.roar();
-            } else if (this.getRandom().nextInt(700) == 0) {
-                this.roll();
-            }
+        }
+        if (this.getRandom().nextInt(800) == 0) {
+            this.roar();
+        } else if (this.getRandom().nextInt(700) == 0) {
+            this.roll();
         }
     }
 
     // Animations
     public void setupAnimationStates() {
-        if (attackStartTicks == 0 && this.attackStartAnimationState.isStarted()) this.attackStartAnimationState.stop();
-        if (attackEndTicks == 0 && this.attackEndAnimationState.isStarted()) this.attackEndAnimationState.stop();
-        this.flyingAnimationState.animateWhen(this.getPose() == Pose.STANDING, this.tickCount);
+        this.flyAnimationState.animateWhen(this.getPose() == Pose.STANDING, this.tickCount);
+        this.attackAnimationState.animateWhen(this.getPose() == OPPoses.ATTACKING.get(), this.tickCount);
+        this.roarAnimationState.animateWhen(this.getPose() == Pose.ROARING, this.tickCount);
+        this.rollAnimationState.animateWhen(this.getPose() == OPPoses.ROLLING.get(), this.tickCount);
     }
 
     public void roar() {
         if (roarCooldown == 0 && this.getPose() == Pose.STANDING) {
-            this.setPose(Pose.ROARING);
-            this.playSound(OPSoundEvents.SKYVERN_ROAR.get(), 3.0F, 0.9F + this.getRandom().nextFloat() * 0.2F);
             this.roarTicks = 40;
+            this.setPose(Pose.ROARING);
+            this.playSound(OPSoundEvents.SKYVERN_ROAR.get(), 4.0F, 0.9F + this.getRandom().nextFloat() * 0.2F);
             this.roarCooldown = 200 + random.nextInt(200);
         }
     }
 
     public void roll() {
         if (rollCooldown == 0 && this.getPose() == Pose.STANDING) {
-            this.setPose(OPPoses.ROLLING.get());
             this.rollTicks = 40;
+            this.setPose(OPPoses.ROLLING.get());
             this.rollCooldown = 300 + random.nextInt(300);
         }
     }
@@ -294,43 +287,6 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
             this.refreshDimensions();
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(6.0F * this.getSegments() + 10.0F);
             this.heal(this.getMaxHealth());
-        }
-        if (DATA_POSE.equals(entityDataAccessor)) {
-            if (this.getPose() == OPPoses.ATTACK_START.get()) {
-                this.flyingAnimationState.stop();
-                this.attackStartAnimationState.start(this.tickCount);
-                this.attackStartTicks = 10;
-            }
-            else if (this.getPose() == OPPoses.ATTACKING.get()) {
-                this.flyingAnimationState.stop();
-                this.attackStartAnimationState.stop();
-                this.attackingAnimationState.start(this.tickCount);
-            }
-            else if (this.getPose() == OPPoses.ATTACK_END.get()) {
-                this.flyingAnimationState.stop();
-                this.attackingAnimationState.stop();
-                this.attackEndAnimationState.start(this.tickCount);
-                this.attackEndTicks = 10;
-            }
-            else if (this.getPose() == Pose.ROARING) {
-                this.flyingAnimationState.stop();
-                this.attackingAnimationState.stop();
-                this.attackEndAnimationState.stop();
-                this.attackStartAnimationState.stop();
-                this.roarAnimationState.start(this.tickCount);
-            }
-            else if (this.getPose() == OPPoses.ROLLING.get()) {
-                this.flyingAnimationState.stop();
-                this.attackingAnimationState.stop();
-                this.attackEndAnimationState.stop();
-                this.attackStartAnimationState.stop();
-                this.roll1AnimationState.start(this.tickCount);
-            }
-            else if (this.getPose() == Pose.STANDING) {
-                this.attackStartAnimationState.stop();
-                this.attackingAnimationState.stop();
-                this.attackEndAnimationState.stop();
-            }
         }
         super.onSyncedDataUpdated(entityDataAccessor);
     }
@@ -409,7 +365,7 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag compoundTag) {
-        int segmentCount = 16 + level.getRandom().nextInt(16);
+        int segmentCount = 20 + level.getRandom().nextInt(4);
         SkyvernSegment.createSkyvernSegments(this, segmentCount);
         this.setSegments(segmentCount);
         SkyvernVariant skyvernVariant = getSkyvernVariant(level);

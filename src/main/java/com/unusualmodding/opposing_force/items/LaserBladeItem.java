@@ -16,6 +16,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -67,12 +68,22 @@ public class LaserBladeItem extends SwordItem implements CustomSweepAttack {
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (itemstack.getEnchantmentLevel(OPEnchantments.THROWING.get()) > 0) {
+            itemstack.hurtAndBreak(2, player, (player1) -> player1.broadcastBreakEvent(EquipmentSlot.MAINHAND));
             ThrowingEnchantment.throwBlade(level, player, hand, itemstack);
             return InteractionResultHolder.success(itemstack);
-        }
-        else {
+        } else {
             player.startUsingItem(hand);
             return InteractionResultHolder.consume(itemstack);
+        }
+    }
+
+    @Override
+    public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity, int timeLeft) {
+        super.releaseUsing(stack, level, entity, timeLeft);
+        if (!level.isClientSide && entity instanceof Player player) {
+            if (!player.getCooldowns().isOnCooldown(stack.getItem())) {
+                player.getCooldowns().addCooldown(stack.getItem(), 10);
+            }
         }
     }
 
@@ -132,8 +143,9 @@ public class LaserBladeItem extends SwordItem implements CustomSweepAttack {
                     Vec3 lookVec = entityBlocking.getLookAngle().normalize();
                     Vec3 directionToTarget = entity.position().subtract(entityBlocking.position()).normalize();
                     double dot = lookVec.dot(directionToTarget);
+                    int useTicks = entityBlocking.getUseItem().getUseDuration() - entityBlocking.getUseItemRemainingTicks();
 
-                    if (dot > 0.0) {
+                    if (dot > 0.0 && useTicks <= 3) {
                         projectile.setOwner(entityBlocking);
                         Vec3 rebound = entityBlocking.getLookAngle();
                         projectile.shoot(rebound.x(), rebound.y(), rebound.z(), 1.5F, 0.0F);
@@ -144,6 +156,15 @@ public class LaserBladeItem extends SwordItem implements CustomSweepAttack {
                         }
                         entityBlocking.level().playSound(null, entityBlocking.getX(), entityBlocking.getY(), entityBlocking.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entityBlocking.level().getRandom().nextFloat() * 0.4F + 0.8F));
                         event.setCanceled(true);
+                    } else if (useTicks > 3) {
+                        if (entityBlocking instanceof Player player) {
+                            if (!player.getCooldowns().isOnCooldown(player.getUseItem().getItem())) {
+                                player.level().playSound(null, player.getX(), player.getY(), player.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 0.8F / (player.level().getRandom().nextFloat() * 0.4F + 0.8F));
+                                player.getCooldowns().addCooldown(player.getUseItem().getItem(), 50);
+                                player.stopUsingItem();
+                                player.getUseItem().hurtAndBreak(1, player, (player1) -> player1.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+                            }
+                        }
                     }
                 }
             }
@@ -155,10 +176,9 @@ public class LaserBladeItem extends SwordItem implements CustomSweepAttack {
             Vec3 lookVec = entity.getLookAngle().normalize();
             Vec3 directionToTarget = attacker.position().subtract(entity.position()).normalize();
             double dot = lookVec.dot(directionToTarget);
-
-            // laser blade parry
-            if (entity.isUsingItem() && entity.getUseItem().getItem() instanceof LaserBladeItem && entity.getUseItem().getUseDuration() - entity.getUseItemRemainingTicks() <= 5) {
-                if (dot > 0.0) {
+            if (entity.isUsingItem() && entity.getUseItem().getItem() instanceof LaserBladeItem) {
+                int useTicks = entity.getUseItem().getUseDuration() - entity.getUseItemRemainingTicks();
+                if (useTicks <= 3 && dot > 0.0) {
                     entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
                     if (attacker instanceof LivingEntity livingAttacker) {
                         double knockbackMulti = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.KNOCKBACK, entity.getUseItem());
@@ -171,13 +191,25 @@ public class LaserBladeItem extends SwordItem implements CustomSweepAttack {
                         if (fireAspect > 0) {
                             livingAttacker.setSecondsOnFire(3 * fireAspect);
                         }
+
                         if (livingAttacker instanceof Warden && entity instanceof Player) {
                             OPCriterion.PARRY_WARDEN_WITH_LASER_BLADE.trigger((ServerPlayer) entity);
                         }
+
                         livingAttacker.knockback(0.55F * knockbackMulti, attacker.getDeltaMovement().x, attacker.getDeltaMovement().z);
                         livingAttacker.knockback(0.5F * knockbackMulti, entity.getX() - livingAttacker.getX(), entity.getZ() - livingAttacker.getZ());
                     }
+
                     event.setCanceled(true);
+                } else if (useTicks > 3) {
+                    if (entity instanceof Player player) {
+                        if (!player.getCooldowns().isOnCooldown(entity.getUseItem().getItem())) {
+                            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), OPSoundEvents.LASER_BLADE_BLOCK.get(), SoundSource.PLAYERS, 1.0F, 0.8F / (player.level().getRandom().nextFloat() * 0.4F + 0.8F));
+                            player.getCooldowns().addCooldown(entity.getUseItem().getItem(), 50);
+                            player.stopUsingItem();
+                            player.getUseItem().hurtAndBreak(1, player, (player1) -> player1.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+                        }
+                    }
                 }
             }
         }

@@ -19,12 +19,13 @@ public class GrowingLeavesBlock extends LeavesBlock implements FruitLeaves {
 
     @Override
     public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+        super.randomTick(state, level, pos, random);
         this.onRandomTick(state, level, pos, random);
     }
 
     @Override
     public boolean isRandomlyTicking(BlockState state) {
-        return FruitLeaves.getNext(state.getBlock()).isPresent() && !state.getValue(LeavesBlock.PERSISTENT);
+        return FruitLeaves.getNext(state.getBlock()).isPresent() && super.isRandomlyTicking(state);
     }
 
     @Override

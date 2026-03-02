@@ -4,6 +4,7 @@ import com.unusualmodding.opposing_force.datagen.*;
 import com.unusualmodding.opposing_force.registry.*;
 import com.unusualmodding.opposing_force.utils.ClientProxy;
 import com.unusualmodding.opposing_force.utils.CommonProxy;
+import com.unusualmodding.opposing_force.utils.OPLoadedMods;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -18,6 +19,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.util.Locale;
@@ -35,6 +37,7 @@ public class OpposingForce {
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
+        modEventBus.addListener(this::loadComplete);
         modEventBus.addListener(this::dataSetup);
 
         context.registerConfig(ModConfig.Type.COMMON, OpposingForceConfig.COMMON_CONFIG);
@@ -69,6 +72,10 @@ public class OpposingForce {
 
     private void clientSetup(final FMLClientSetupEvent event) {
         event.enqueueWork(PROXY::clientInit);
+    }
+
+    private void loadComplete(FMLLoadCompleteEvent event) {
+        event.enqueueWork(OPLoadedMods::afterAllModsLoaded);
     }
 
     private void dataSetup(GatherDataEvent data) {

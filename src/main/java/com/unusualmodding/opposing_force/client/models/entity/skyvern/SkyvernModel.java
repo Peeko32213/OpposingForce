@@ -3,8 +3,8 @@ package com.unusualmodding.opposing_force.client.models.entity.skyvern;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.SkyvernAnimations;
+import com.unusualmodding.opposing_force.client.models.entity.base.OPModel;
 import com.unusualmodding.opposing_force.entity.Skyvern;
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class SkyvernModel extends HierarchicalModel<Skyvern> {
+public class SkyvernModel extends OPModel<Skyvern> {
 
     private final ModelPart root;
     private final ModelPart roll_control;
@@ -66,12 +66,10 @@ public class SkyvernModel extends HierarchicalModel<Skyvern> {
 	@Override
 	public void setupAnim(Skyvern entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-        this.animate(entity.flyingAnimationState, SkyvernAnimations.HEAD_FLY, ageInTicks);
-        this.animate(entity.attackStartAnimationState, SkyvernAnimations.HEAD_ATTACK_START, ageInTicks);
-        this.animate(entity.attackingAnimationState, SkyvernAnimations.HEAD_ATTACK, ageInTicks);
-        this.animate(entity.attackEndAnimationState, SkyvernAnimations.HEAD_ATTACK_END, ageInTicks);
-        this.animate(entity.roarAnimationState, SkyvernAnimations.ROAR, ageInTicks);
-        this.animate(entity.roll1AnimationState, SkyvernAnimations.HEAD_LOOP1, ageInTicks);
+        this.animateSmooth(entity.flyAnimationState, SkyvernAnimations.HEAD_FLY, ageInTicks);
+        this.animateSmooth(entity.attackAnimationState, SkyvernAnimations.HEAD_ATTACK, ageInTicks);
+        this.animateSmooth(entity.roarAnimationState, SkyvernAnimations.ROAR, ageInTicks);
+        this.animate(entity.rollAnimationState, SkyvernAnimations.HEAD_LOOP1, ageInTicks);
     }
 
     @Override
