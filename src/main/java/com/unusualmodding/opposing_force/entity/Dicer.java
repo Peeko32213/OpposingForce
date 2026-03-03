@@ -69,7 +69,7 @@ public class Dicer extends Monster implements AttackState, EliteVariant {
 
     public Dicer(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
-        this.xpReward = 15;
+        this.xpReward = 10;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

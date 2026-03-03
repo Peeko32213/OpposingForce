@@ -73,12 +73,12 @@ public class Rambler extends Monster implements AttackState {
 
     public Rambler(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
-        this.xpReward = 15;
+        this.xpReward = 10;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 80.0D)
+                .add(Attributes.MAX_HEALTH, 60.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.15F)
                 .add(Attributes.ATTACK_DAMAGE, 5.0D)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.3D)

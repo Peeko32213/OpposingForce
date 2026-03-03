@@ -8,7 +8,6 @@ import com.unusualmodding.opposing_force.entity.Terror;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -144,18 +143,18 @@ public class TerrorModel extends OPModel<Terror> {
                 this.animateWalk(TerrorAnimations.SWIM, limbSwing, limbSwingAmount, 2, 4);
             }
         }
-        this.animateIdle(entity.swimIdleAnimationState, TerrorAnimations.SWIM_IDLE, ageInTicks, 1, limbSwingAmount * 4);
-        this.animateIdle(entity.idleAnimationState, TerrorAnimations.IDLE, ageInTicks, 1, limbSwingAmount * 4);
-        this.animate(entity.flopAnimationState, TerrorAnimations.FLOP, ageInTicks);
-        this.animate(entity.growLegsAnimationState, TerrorAnimations.FLOP_END, ageInTicks);
-        this.animate(entity.startSawingAnimationState, TerrorAnimations.SAW_ATTACK_START_BLEND, ageInTicks);
-        this.animate(entity.sawingAnimationState, TerrorAnimations.SAW_ATTACK_HOLD_BLEND, ageInTicks);
-        this.animate(entity.cooldownAnimationState, TerrorAnimations.SAW_ATTACK_COOLDOWN_BLEND, ageInTicks);
-        this.animate(entity.retractLegsAnimationState, TerrorAnimations.WATER_RETURN, ageInTicks);
-        this.animate(entity.spinSawAnimationState, TerrorAnimations.SAW_IDLE_BLEND, ageInTicks);
+        this.animateIdleSmooth(entity.swimIdleAnimationState, TerrorAnimations.SWIM_IDLE, ageInTicks, limbSwingAmount);
+        this.animateIdleSmooth(entity.idleAnimationState, TerrorAnimations.IDLE, ageInTicks, limbSwingAmount);
+        this.animateSmooth(entity.flopAnimationState, TerrorAnimations.FLOP, ageInTicks);
+        this.animateSmooth(entity.growLegsAnimationState, TerrorAnimations.FLOP_END, ageInTicks);
+        this.animateSmooth(entity.startSawingAnimationState, TerrorAnimations.SAW_ATTACK_START_BLEND, ageInTicks);
+        this.animateSmooth(entity.sawingAnimationState, TerrorAnimations.SAW_ATTACK_HOLD_BLEND, ageInTicks);
+        this.animateSmooth(entity.cooldownAnimationState, TerrorAnimations.SAW_ATTACK_COOLDOWN_BLEND, ageInTicks);
+        this.animateSmooth(entity.retractLegsAnimationState, TerrorAnimations.WATER_RETURN, ageInTicks);
+        this.animateSmooth(entity.spinSawAnimationState, TerrorAnimations.SAW_IDLE_BLEND, ageInTicks);
 
         if (entity.isInWaterOrBubble()) {
-            this.swim_control.xRot = headPitch * (Mth.DEG_TO_RAD);
+            this.swim_control.xRot = headPitch * ((float) Math.PI / 180F);
         }
 	}
 
