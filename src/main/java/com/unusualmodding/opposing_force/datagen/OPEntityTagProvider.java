@@ -28,5 +28,15 @@ public class OPEntityTagProvider extends EntityTypeTagsProvider {
         this.tag(OPEntityTypeTags.NO_LEAF_COLLISIONS).add(
                 OPEntities.TART.get()
         );
+
+        this.tag(OPEntityTypeTags.POST_NETHER).add(
+                OPEntities.DICER.get(),
+                OPEntities.GUZZLER.get()
+        );
+
+        this.tag(OPEntityTypeTags.POST_END).add(
+                OPEntities.LADYBUG.get(),
+                OPEntities.SKYVERN.get()
+        );
     }
 }

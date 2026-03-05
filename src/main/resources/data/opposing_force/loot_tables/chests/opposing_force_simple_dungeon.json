@@ -40,6 +40,19 @@
       ]
     },
     {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 96
+        },
+        {
+          "type": "opposing_force:waltz_of_the_slug_disc",
+          "weight": 4
+        }
+      ]
+    },
+    {
       "rolls": 2,
       "entries": [
         {

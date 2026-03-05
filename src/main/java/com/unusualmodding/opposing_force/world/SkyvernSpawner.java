@@ -1,6 +1,8 @@
 package com.unusualmodding.opposing_force.world;
 
+import com.unusualmodding.opposing_force.entity.Skyvern;
 import com.unusualmodding.opposing_force.registry.OPEntities;
+import com.unusualmodding.opposing_force.registry.tags.OPEntityTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -51,7 +53,7 @@ public class SkyvernSpawner {
         Player player = this.getRandomPlayer();
         decreaseSkyvernSpawnChances();
         boolean postDragon = serverLevel.getServer().getWorldData().endDragonFightData().dragonKilled() || serverLevel.getServer().getWorldData().endDragonFightData().previouslyKilled();
-        boolean canSpawn = postDragon || !SKYVERN_SPAWN_POST_DRAGON.get();
+        boolean canSpawn = postDragon || !POST_END.get() || !OPEntities.SKYVERN.get().is(OPEntityTypeTags.POST_END);
         if (player != null && this.serverLevel.dimensionType().hasSkyLight() && canSpawn) {
             if(handleSkyvernSpawnChance(player)) {
                 BlockPos playerPos = BlockPos.containing(player.position());

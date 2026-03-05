@@ -10,6 +10,9 @@ public class OPEntityTypeTags {
 
     public static final TagKey<EntityType<?>> HANGING_SPIDER_TARGETS = modEntityTypeTag("hanging_spider_targets");
     public static final TagKey<EntityType<?>> NO_LEAF_COLLISIONS = modEntityTypeTag("no_leaf_collisions");
+    public static final TagKey<EntityType<?>> POST_NETHER = modEntityTypeTag("post_nether");
+    public static final TagKey<EntityType<?>> POST_END = modEntityTypeTag("post_end");
+
 
     private static TagKey<EntityType<?>> modEntityTypeTag(String name) {
         return entityTypeTag(OpposingForce.MOD_ID, name);

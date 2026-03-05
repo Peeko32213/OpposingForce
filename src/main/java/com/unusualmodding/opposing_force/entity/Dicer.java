@@ -319,6 +319,7 @@ public class Dicer extends Monster implements AttackState, EliteVariant {
     }
 
     public static boolean canDicerSpawn(EntityType<Dicer> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return OPWorldData.get(level.getLevel()).hasNetherBeenEnteredBefore() && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random);
+        //OPWorldData.get(level.getLevel()).hasNetherBeenEnteredBefore() &&
+        return level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random);
     }
 }

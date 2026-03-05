@@ -25,7 +25,6 @@ public class OpposingForceConfig {
     public static ForgeConfigSpec.DoubleValue SKYVERN_SPAWN_CHANCE;
     public static ForgeConfigSpec.IntValue SKYVERN_SPAWN_TIMER;
     public static ForgeConfigSpec.IntValue SKYVERN_SPAWN_HEIGHT;
-    public static ForgeConfigSpec.BooleanValue SKYVERN_SPAWN_POST_DRAGON;
 
     public static final String CATEGORY_TERROR = "terror";
     public static ForgeConfigSpec.IntValue TERROR_SPAWN_HEIGHT;
@@ -40,6 +39,10 @@ public class OpposingForceConfig {
     public static final String CATEGORY_VOLT = "volt";
     public static ForgeConfigSpec.IntValue VOLT_SPAWN_HEIGHT;
     public static ForgeConfigSpec.BooleanValue VOLT_SPAWNS_DURING_STORM;
+
+    public static final String CATEGORY_PROGRESSION = "progression";
+    public static ForgeConfigSpec.BooleanValue POST_NETHER;
+    public static ForgeConfigSpec.BooleanValue POST_END;
 
     static {
         ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
@@ -68,7 +71,6 @@ public class OpposingForceConfig {
         SKYVERN_SPAWN_CHANCE = COMMON_BUILDER.comment("Compounding spawn chance for Skyverns, default is 2%").defineInRange("skyvernSpawnChance", 0.02, 0.0, 1.0);
         SKYVERN_SPAWN_TIMER = COMMON_BUILDER.comment("The time between Skyvern spawn attempts in ticks, default is 30 seconds").defineInRange("skyvernSpawnTimer", 600, 20, 2400);
         SKYVERN_SPAWN_HEIGHT = COMMON_BUILDER.comment("Spawn height for Skyverns, default is cloud height").defineInRange("skyvernSpawnHeight", 196, -64, 320);
-        SKYVERN_SPAWN_POST_DRAGON = COMMON_BUILDER.comment("Skyverns only spawn after at least one Ender Dragon has been defeated").define("skyvernSpawnPostDragon", true);
         COMMON_BUILDER.pop();
 
         // Terror
@@ -91,6 +93,12 @@ public class OpposingForceConfig {
         COMMON_BUILDER.push(CATEGORY_VOLT);
         VOLT_SPAWN_HEIGHT = COMMON_BUILDER.comment("Maximum height volts can spawn").defineInRange("voltSpawnHeight", 0, -64, 320);
         VOLT_SPAWNS_DURING_STORM = COMMON_BUILDER.comment("Do volts spawn on the surface during thunderstorms").define("voltSpawnsDuringStorm", true);
+        COMMON_BUILDER.pop();
+
+        // Progression
+        COMMON_BUILDER.push(CATEGORY_PROGRESSION);
+        POST_NETHER = COMMON_BUILDER.comment("Should mobs tagged as Post-Nether only spawn after entering the nether. Setting this to false allows Post-Nether mobs to spawn at any time").define("postNether", true);
+        POST_END = COMMON_BUILDER.comment("Should mobs tagged as Post-End only spawn after at least one Ender dragon has been defeated. Setting this to false allows Post-End mobs to spawn at any time").define("postEnd", true);
         COMMON_BUILDER.pop();
 
         COMMON_BUILDER.pop();

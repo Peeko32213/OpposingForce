@@ -13,6 +13,7 @@ import com.unusualmodding.opposing_force.registry.*;
 import com.unusualmodding.opposing_force.registry.OPTrades.MultipleInputsTrade;
 import com.unusualmodding.opposing_force.registry.tags.OPBiomeTags;
 import com.unusualmodding.opposing_force.registry.tags.OPBlockTags;
+import com.unusualmodding.opposing_force.registry.tags.OPEntityTypeTags;
 import com.unusualmodding.opposing_force.registry.tags.OPItemTags;
 import com.unusualmodding.opposing_force.world.OPPlayerSavedData;
 import com.unusualmodding.opposing_force.world.OPWorldData;
@@ -51,6 +52,8 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import static com.unusualmodding.opposing_force.OpposingForceConfig.*;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -71,6 +74,31 @@ public class ForgeEvents {
         rareTrades.add(new MultipleInputsTrade(Items.DIAMOND_CHESTPLATE, 1, 32, OPItems.EMERALD_CHESTPLATE.get(), 1, 1, 20));
         rareTrades.add(new MultipleInputsTrade(Items.DIAMOND_LEGGINGS, 1, 32, OPItems.EMERALD_LEGGINGS.get(), 1, 1, 20));
         rareTrades.add(new MultipleInputsTrade(Items.DIAMOND_BOOTS, 1, 32, OPItems.EMERALD_BOOTS.get(), 1, 1, 20));
+    }
+
+    @SubscribeEvent
+    public static void checkProgressionSpawns(MobSpawnEvent.SpawnPlacementCheck event) {
+        EntityType<?> entityType = event.getEntityType();
+        boolean postNether = entityType.is(OPEntityTypeTags.POST_NETHER);
+        ServerLevel level = event.getLevel().getLevel();
+        OPWorldData worldData = OPWorldData.get(level);
+        if(postNether) {
+            boolean nether = !worldData.hasNetherBeenEnteredBefore();
+            nether = nether && POST_NETHER.get();
+            if (nether) {
+                event.setResult(Event.Result.DENY);
+                return;
+            }
+        }
+        boolean postEnd = entityType.is(OPEntityTypeTags.POST_END);
+        if(postEnd) {
+            boolean postDragon = level.getServer().getWorldData().endDragonFightData().dragonKilled() ||
+                    level.getServer().getWorldData().endDragonFightData().previouslyKilled();
+            postDragon = postDragon && POST_END.get();
+            if(!postDragon) {
+                event.setResult(Event.Result.DENY);
+            }
+        }
     }
 
     @SubscribeEvent

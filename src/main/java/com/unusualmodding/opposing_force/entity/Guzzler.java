@@ -249,10 +249,11 @@ public class Guzzler extends Monster implements AttackState {
 
     @SuppressWarnings("unused")
     public static boolean canGuzzlerSpawn(EntityType<Guzzler> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if(level instanceof Level level1) {
+        /*if(level instanceof Level level1) {
             OPWorldData worldData = OPWorldData.get(level1);
             if (!worldData.hasNetherBeenEnteredBefore()) return false;
         }
+         */
         return pos.getY() <= OpposingForceConfig.GUZZLER_SPAWN_HEIGHT.get() && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random);
     }
 
