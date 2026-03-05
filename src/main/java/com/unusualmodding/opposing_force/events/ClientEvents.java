@@ -140,7 +140,6 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.BONE_ARMOR, BoneArmorModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.DEEPWOVEN_ARMOR, DeepwovenArmorModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.EMERALD_ARMOR, EmeraldArmorModel::createArmorLayer);
-        event.registerLayerDefinition(OPModelLayers.LEAPING_LEGGINGS, LeapingLeggingsModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.MOON_SHOES, MoonShoesModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.RECON_KNIGHT_ARMOR, ReconKnightArmorModel::createArmorLayer);
         event.registerLayerDefinition(OPModelLayers.SLUG_BARON_ARMOR, SlugBaronArmorModel::createArmorLayer);

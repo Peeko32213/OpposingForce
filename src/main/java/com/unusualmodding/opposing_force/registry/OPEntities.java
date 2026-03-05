@@ -110,18 +110,16 @@ public class OPEntities {
             "skyvern", () ->
             EntityType.Builder.of(Skyvern::new, MobCategory.MONSTER)
                     .sized(1.2F, 1.2F)
-                    .setTrackingRange(14)
+                    .setTrackingRange(10)
                     .setShouldReceiveVelocityUpdates(true)
-                    .setUpdateInterval(1)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "skyvern").toString())
     );
     public static final RegistryObject<EntityType<SkyvernSegment>> SKYVERN_SEGMENT = ENTITY_TYPE.register(
             "skyvern_segment", () ->
             EntityType.Builder.of(SkyvernSegment::new, MobCategory.MISC)
                     .sized(1.2F, 1.2F)
-                    .clientTrackingRange(14)
+                    .clientTrackingRange(10)
                     .setShouldReceiveVelocityUpdates(true)
-                    .setUpdateInterval(1)
                     .build(new ResourceLocation(OpposingForce.MOD_ID, "skyvern_segment").toString())
     );
     public static final RegistryObject<EntityType<StratoArrow>> STRATO_ARROW = ENTITY_TYPE.register(

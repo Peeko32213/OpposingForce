@@ -58,7 +58,7 @@ public class Guzzler extends Monster implements AttackState {
     public Guzzler(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.setMaxUpStep(1);
-        this.xpReward = 10;
+        this.xpReward = 15;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -147,7 +147,7 @@ public class Guzzler extends Monster implements AttackState {
     public void tick() {
         super.tick();
 
-        if (this.level().isClientSide()) {
+        if (this.level().isClientSide) {
             this.setupAnimationStates();
         }
     }
@@ -172,13 +172,13 @@ public class Guzzler extends Monster implements AttackState {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compoundTag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putInt("AttackState", this.getAttackState());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compoundTag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         this.setAttackState(compoundTag.getInt("AttackState"));
     }
@@ -228,12 +228,12 @@ public class Guzzler extends Monster implements AttackState {
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
         return OPSoundEvents.GUZZLER_HURT.get();
     }
 
     @Override
-    protected SoundEvent getDeathSound() {
+    protected @NotNull SoundEvent getDeathSound() {
         return OPSoundEvents.GUZZLER_DEATH.get();
     }
 
@@ -258,7 +258,6 @@ public class Guzzler extends Monster implements AttackState {
     }
 
     public static boolean isDarkEnoughToSpawnNoSkylight(ServerLevelAccessor level, BlockPos pos, RandomSource random) {
-
         if (level.getBrightness(LightLayer.SKY, pos) > 0) {
             return false;
         } else {

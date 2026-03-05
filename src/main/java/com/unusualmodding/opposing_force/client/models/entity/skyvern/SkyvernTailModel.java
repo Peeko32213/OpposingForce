@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.client.models.entity.skyvern;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.SkyvernAnimations;
+import com.unusualmodding.opposing_force.client.models.entity.base.OPModel;
 import com.unusualmodding.opposing_force.entity.SkyvernSegment;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class SkyvernTailModel extends HierarchicalModel<SkyvernSegment> {
+public class SkyvernTailModel extends OPModel<SkyvernSegment> {
 
     private final ModelPart root;
     private final ModelPart roll_control;
@@ -52,11 +53,9 @@ public class SkyvernTailModel extends HierarchicalModel<SkyvernSegment> {
 	@Override
 	public void setupAnim(SkyvernSegment entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-        this.animate(entity.flying1AnimationState, SkyvernAnimations.TAIL_FLY, ageInTicks);
-        this.animate(entity.attackStartAnimationState, SkyvernAnimations.TAIL_ATTACK_START, ageInTicks);
-        this.animate(entity.attackingAnimationState, SkyvernAnimations.TAIL_ATTACK, ageInTicks);
-        this.animate(entity.attackEndAnimationState, SkyvernAnimations.TAIL_ATTACK_END, ageInTicks);
-        this.animate(entity.roll1AnimationState, SkyvernAnimations.TAIL_LOOP1, ageInTicks);
+        this.animateSmooth(entity.fly1AnimationState, SkyvernAnimations.TAIL_FLY, ageInTicks);
+        this.animateSmooth(entity.attackAnimationState, SkyvernAnimations.TAIL_ATTACK, ageInTicks);
+        this.animate(entity.rollAnimationState, SkyvernAnimations.TAIL_LOOP1, ageInTicks);
     }
 
     @Override

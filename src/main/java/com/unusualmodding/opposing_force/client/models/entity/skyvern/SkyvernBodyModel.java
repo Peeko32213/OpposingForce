@@ -3,6 +3,7 @@ package com.unusualmodding.opposing_force.client.models.entity.skyvern;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.SkyvernAnimations;
+import com.unusualmodding.opposing_force.client.models.entity.base.OPModel;
 import com.unusualmodding.opposing_force.entity.SkyvernSegment;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("FieldCanBeLocal, unused")
-public class SkyvernBodyModel extends HierarchicalModel<SkyvernSegment> {
+public class SkyvernBodyModel extends OPModel<SkyvernSegment> {
 
     private final ModelPart root;
     private final ModelPart roll_control;
@@ -77,12 +78,10 @@ public class SkyvernBodyModel extends HierarchicalModel<SkyvernSegment> {
 	@Override
 	public void setupAnim(SkyvernSegment entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-        this.animate(entity.flying1AnimationState, SkyvernAnimations.BODY_FLY1, ageInTicks);
-        this.animate(entity.flying2AnimationState, SkyvernAnimations.BODY_FLY2, ageInTicks);
-        this.animate(entity.attackStartAnimationState, SkyvernAnimations.BODY_ATTACK_START, ageInTicks);
-        this.animate(entity.attackingAnimationState, SkyvernAnimations.BODY_ATTACK, ageInTicks);
-        this.animate(entity.attackEndAnimationState, SkyvernAnimations.BODY_ATTACK_END, ageInTicks);
-        this.animate(entity.roll1AnimationState, SkyvernAnimations.BODY_LOOP1, ageInTicks);
+        this.animateSmooth(entity.fly1AnimationState, SkyvernAnimations.BODY_FLY1, ageInTicks);
+        this.animateSmooth(entity.fly2AnimationState, SkyvernAnimations.BODY_FLY2, ageInTicks);
+        this.animateSmooth(entity.attackAnimationState, SkyvernAnimations.BODY_ATTACK, ageInTicks);
+        this.animate(entity.rollAnimationState, SkyvernAnimations.BODY_LOOP1, ageInTicks);
         if (entity.hasArms()) {
             this.right_arm.visible = true;
             this.left_arm.visible = true;

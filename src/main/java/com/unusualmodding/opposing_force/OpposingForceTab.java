@@ -227,7 +227,6 @@ public class OpposingForceTab {
                     output.accept(OPItems.EMERALD_LEGGINGS.get());
                     output.accept(OPItems.EMERALD_BOOTS.get());
 
-                    output.accept(OPItems.LEAPING_LEGGINGS.get());
                     output.accept(OPItems.MOON_SHOES.get());
 
                     OPEnchantments.addAllEnchantsToCreativeTab(output, OPEnchantments.TESLA_CANNON);

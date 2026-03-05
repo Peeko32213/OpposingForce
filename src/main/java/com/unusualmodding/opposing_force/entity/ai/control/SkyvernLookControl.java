@@ -12,15 +12,21 @@ public class SkyvernLookControl extends LookControl {
 
     @Override
     public void tick() {
-        if (this.lookAtCooldown > 0 && this.getYRotD().isPresent()) {
+        if (this.lookAtCooldown > 0) {
             this.lookAtCooldown--;
-            this.mob.yHeadRot = this.rotateTowards(this.mob.yHeadRot, this.getYRotD().get(), this.yMaxRotSpeed);
+            this.getYRotD().ifPresent(f -> this.mob.yHeadRot = this.rotateTowards(this.mob.yHeadRot, f + 20.0F, this.yMaxRotSpeed));
+            this.getXRotD().ifPresent(f -> this.mob.setXRot(this.rotateTowards(this.mob.getXRot(), f + 1.0F, this.xMaxRotAngle)));
         } else {
-            this.mob.yHeadRot = this.rotateTowards(this.mob.yHeadRot, this.mob.yBodyRot, 10.0F);
+            if (this.mob.getNavigation().isDone()) {
+                this.mob.setXRot(this.rotateTowards(this.mob.getXRot(), 0.0F, 5.0F));
+            }
+            this.mob.yHeadRot = this.rotateTowards(this.mob.yHeadRot, this.mob.yBodyRot, this.yMaxRotSpeed);
         }
-
-        if (!this.mob.getNavigation().isDone()) {
-            this.mob.yHeadRot = Mth.rotateIfNecessary(this.mob.yHeadRot, this.mob.yBodyRot, (float) this.mob.getMaxHeadYRot());
+        float f = Mth.wrapDegrees(this.mob.yHeadRot - this.mob.yBodyRot);
+        if (f < -20) {
+            this.mob.yBodyRot -= 4.0F;
+        } else if (f > 20) {
+            this.mob.yBodyRot += 4.0F;
         }
     }
 }

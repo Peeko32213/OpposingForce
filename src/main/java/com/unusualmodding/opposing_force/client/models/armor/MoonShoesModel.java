@@ -28,12 +28,12 @@ public class MoonShoesModel extends HumanoidModel<LivingEntity> {
 		PartDefinition leftBoot = root.getChild("left_leg");
 
 		rightBoot.addOrReplaceChild("right_boot", CubeListBuilder.create()
-				.texOffs(18, 0).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.5F))
-				.texOffs(0, 0).addBox(-3.5F, 8.0F, -3.0F, 6.0F, 2.0F, 6.0F, new CubeDeformation(0.01F)), PartPose.ZERO);
+				.texOffs(18, 0).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.6F))
+				.texOffs(0, 0).addBox(-3.5F, 8.0F, -3.0F, 6.0F, 2.0F, 6.0F, new CubeDeformation(0.1F)), PartPose.ZERO);
 
         leftBoot.addOrReplaceChild("left_boot", CubeListBuilder.create()
-				.texOffs(0, 8).addBox(-2.5F, 8.0F, -3.0F, 6.0F, 2.0F, 6.0F, new CubeDeformation(0.02F))
-				.texOffs(34, 0).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.51F)), PartPose.ZERO);
+				.texOffs(0, 8).addBox(-2.5F, 8.0F, -3.0F, 6.0F, 2.0F, 6.0F, new CubeDeformation(0.11F))
+				.texOffs(34, 0).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.61F)), PartPose.ZERO);
 
 		rightBoot.addOrReplaceChild("right_wing", CubeListBuilder.create()
 				.texOffs(28, 3).addBox(0.0F, -5.0F, 0.0F, 0.0F, 6.0F, 5.0F, new CubeDeformation(0.01F)), PartPose.offset(0F, 11.0F, 0F));

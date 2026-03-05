@@ -2,6 +2,7 @@ package com.unusualmodding.opposing_force.client.models.entity.base;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.unusualmodding.opposing_force.utils.SmoothAnimationState;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
@@ -57,6 +58,22 @@ public abstract class OPModel<E extends Entity> extends HierarchicalModel<E> {
     protected void animate(AnimationState animationState, @NotNull AnimationDefinition definition, float ageInTicks, float speed) {
         animationState.updateTime(ageInTicks, speed);
         animationState.ifStarted((state) -> KeyframeAnimations.animate(this, definition, state.getAccumulatedTime(), 1.0F, OPModel.ANIMATION_VECTOR_CACHE));
+    }
+
+    protected void animateIdleSmooth(SmoothAnimationState animationState, @NotNull AnimationDefinition definition, float ageInTicks, float limbSwingAmount) {
+        animationState.animateIdle(this, definition, ageInTicks, limbSwingAmount, 1.5F);
+    }
+
+    protected void animateIdleSmooth(SmoothAnimationState animationState, @NotNull AnimationDefinition definition, float ageInTicks, float limbSwingAmount, float animationScaleFactor) {
+        animationState.animateIdle(this, definition, ageInTicks, limbSwingAmount, animationScaleFactor);
+    }
+
+    protected void animateSmooth(SmoothAnimationState animationState, @NotNull AnimationDefinition definition, float ageInTicks) {
+        this.animateSmooth(animationState, definition, ageInTicks, 1.0F);
+    }
+
+    protected void animateSmooth(SmoothAnimationState animationState, @NotNull AnimationDefinition definition, float ageInTicks, float speed) {
+        animationState.animate(this, definition, ageInTicks, speed);
     }
 
     @Override

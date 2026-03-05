@@ -4,7 +4,6 @@ import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPParticles;
 import com.unusualmodding.opposing_force.utils.OPMath;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;

@@ -1,6 +1,5 @@
 package com.unusualmodding.opposing_force.entity;
 
-import com.mojang.serialization.Codec;
 import com.unusualmodding.opposing_force.entity.ai.goal.MonsterFollowOwnerGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.MonsterOwnerHurtByTargetGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.MonsterOwnerHurtTargetGoal;
@@ -44,6 +43,7 @@ import java.util.function.IntFunction;
 public class FireSlime extends SummonableMonster implements VariantHolder<FireSlime.FireSlimeVariant> {
 
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(FireSlime.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> FROM_GUZZLER = SynchedEntityData.defineId(FireSlime.class, EntityDataSerializers.BOOLEAN);
 
     public float targetSquish;
     public float squish;
@@ -150,7 +150,7 @@ public class FireSlime extends SummonableMonster implements VariantHolder<FireSl
             this.level().addParticle(ParticleTypes.FLAME, this.getX() + (double) f2, this.getY() + 0.3D, this.getZ() + (double) f3, 0.0D, 0.0D, 0.0D);
         }
 
-        if (this.isFromSummon()) {
+        if (this.isFromSummon() || this.isFromGuzzler()) {
             this.setLifeTicks(this.getLifeTicks() + 1);
             if (this.getLifeTicks() > this.getMaxLifeTicks() - 40) {
                 this.navigation.stop();
@@ -217,6 +217,7 @@ public class FireSlime extends SummonableMonster implements VariantHolder<FireSl
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(VARIANT, FireSlimeVariant.FIRE_SLIME.id());
+        this.entityData.define(FROM_GUZZLER, false);
     }
 
     @Override
@@ -224,6 +225,7 @@ public class FireSlime extends SummonableMonster implements VariantHolder<FireSl
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putBoolean("WasOnGround", this.wasOnGround);
         compoundTag.putInt("Variant", this.getVariant().id());
+        compoundTag.putBoolean("FromGuzzler", this.isFromGuzzler());
     }
 
     @Override
@@ -231,6 +233,7 @@ public class FireSlime extends SummonableMonster implements VariantHolder<FireSl
         super.readAdditionalSaveData(compoundTag);
         this.wasOnGround = compoundTag.getBoolean("WasOnGround");
         this.setVariant(FireSlimeVariant.byId(compoundTag.getInt("Variant")));
+        this.setFromGuzzler(compoundTag.getBoolean("FromGuzzler"));
     }
 
     @Override
@@ -243,6 +246,14 @@ public class FireSlime extends SummonableMonster implements VariantHolder<FireSl
         this.entityData.set(VARIANT, variant.id());
     }
 
+    public boolean isFromGuzzler() {
+        return this.entityData.get(FROM_GUZZLER);
+    }
+
+    public void setFromGuzzler(boolean fromGuzzler) {
+        this.entityData.set(FROM_GUZZLER, fromGuzzler);
+    }
+
     public void shootFromGuzzler(double x, double y, double z, float scale) {
         Vec3 vec3 = (new Vec3(x, y, z)).normalize().add(this.random.nextGaussian() * 0.008D, this.random.nextGaussian() * 0.008D, this.random.nextGaussian() * 0.008D).scale(scale);
         this.setDeltaMovement(vec3);
@@ -250,11 +261,11 @@ public class FireSlime extends SummonableMonster implements VariantHolder<FireSl
         this.setYRot( (float) (Mth.atan2(vec3.x, vec3.z) * 55D));
         this.setXRot((float) (Mth.atan2(vec3.y, horizontalDistanceSqr) * 55D));
         this.xRotO = this.getXRot();
-        this.yBodyRot = getYRot();
-        this.yHeadRot = getYRot();
-        this.yHeadRotO = getYRot();
-        this.yRotO = getYRot();
-        this.setFromSummon(true);
+        this.yBodyRot = this.getYRot();
+        this.yHeadRot = this.getYRot();
+        this.yHeadRotO = this.getYRot();
+        this.yRotO = this.getYRot();
+        this.setFromGuzzler(true);
     }
 
     @Override

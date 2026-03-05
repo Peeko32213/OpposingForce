@@ -8,6 +8,7 @@ import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNa
 import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
+import com.unusualmodding.opposing_force.utils.SmoothAnimationState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -68,15 +69,15 @@ public class Terror extends Monster implements EliteVariant {
 
     public static final ResourceLocation LEGS_LOOT = OpposingForce.modPrefix("entities/terror_legs");
 
-    public final AnimationState idleAnimationState = new AnimationState();
-    public final AnimationState flopAnimationState = new AnimationState();
-    public final AnimationState cooldownAnimationState = new AnimationState();
-    public final AnimationState swimIdleAnimationState = new AnimationState();
-    public final AnimationState growLegsAnimationState = new AnimationState();
-    public final AnimationState startSawingAnimationState = new AnimationState();
-    public final AnimationState sawingAnimationState = new AnimationState();
-    public final AnimationState retractLegsAnimationState = new AnimationState();
-    public final AnimationState spinSawAnimationState = new AnimationState();
+    public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
+    public final SmoothAnimationState flopAnimationState = new SmoothAnimationState();
+    public final SmoothAnimationState cooldownAnimationState = new SmoothAnimationState();
+    public final SmoothAnimationState swimIdleAnimationState = new SmoothAnimationState();
+    public final SmoothAnimationState growLegsAnimationState = new SmoothAnimationState();
+    public final SmoothAnimationState startSawingAnimationState = new SmoothAnimationState();
+    public final SmoothAnimationState sawingAnimationState = new SmoothAnimationState();
+    public final SmoothAnimationState retractLegsAnimationState = new SmoothAnimationState();
+    public final SmoothAnimationState spinSawAnimationState = new SmoothAnimationState();
 
     public boolean isLandNavigator;
 
@@ -210,10 +211,10 @@ public class Terror extends Monster implements EliteVariant {
 
         final boolean canLandNavigate = !this.isInWater() && this.hasLegs();
         if (!canLandNavigate && this.isLandNavigator) {
-            switchNavigator(false);
+            this.switchNavigator(false);
         }
         if (canLandNavigate && !this.isLandNavigator) {
-            switchNavigator(true);
+            this.switchNavigator(true);
         }
 
         // grow legs
@@ -268,6 +269,12 @@ public class Terror extends Monster implements EliteVariant {
         this.idleAnimationState.animateWhen(!this.isInWaterOrBubble() && this.hasLegs(), this.tickCount);
         this.flopAnimationState.animateWhen(!this.isInWaterOrBubble() && !this.hasLegs() && this.getPose() != OPPoses.GROWING_LEGS.get(), this.tickCount);
         this.swimIdleAnimationState.animateWhen(this.isInWaterOrBubble() && this.getPose() != OPPoses.RETRACTING_LEGS.get(), this.tickCount);
+        this.growLegsAnimationState.animateWhen(this.growLegsAnimationState.isStarted(), this.tickCount);
+        this.retractLegsAnimationState.animateWhen(this.retractLegsAnimationState.isStarted(), this.tickCount);
+        this.startSawingAnimationState.animateWhen(this.startSawingAnimationState.isStarted(), this.tickCount);
+        this.cooldownAnimationState.animateWhen(this.cooldownAnimationState.isStarted(), this.tickCount);
+        this.spinSawAnimationState.animateWhen(this.spinSawAnimationState.isStarted(), this.tickCount);
+        this.sawingAnimationState.animateWhen(this.sawingAnimationState.isStarted(), this.tickCount);
     }
 
     @Override

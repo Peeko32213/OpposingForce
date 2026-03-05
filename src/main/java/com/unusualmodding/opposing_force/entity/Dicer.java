@@ -69,7 +69,7 @@ public class Dicer extends Monster implements AttackState, EliteVariant {
 
     public Dicer(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
-        this.xpReward = 15;
+        this.xpReward = 10;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -99,8 +99,8 @@ public class Dicer extends Monster implements AttackState, EliteVariant {
 
     @Override
     public float getStepHeight() {
-        if (this.getAttackState() == 2) {
-            return 1.0F;
+        if (this.getAttackState() == 3) {
+            return 1.1F;
         }
         return 0.6F;
     }

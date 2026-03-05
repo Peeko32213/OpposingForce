@@ -42,6 +42,27 @@
         }
       ],
       "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 1.0,
+                "min": -60.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "opposing_force:slayser_disc"
+        }
+      ],
+      "rolls": 1.0
     }
   ],
   "random_sequence": "opposing_force:entities/dicer"
