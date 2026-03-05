@@ -1,6 +1,5 @@
-# 2.0.2
-- Fixed fire slimes not dropping fire gel when spit from a guzzler
-- Updated simplified chinese translation
-- Made terror animations smoother
-- Tweaked xp rewards for rambler, dicer, and guzzler
-- Reduced rambler health to 60
+# 2.1.0
+- Progression spawning configs
+- Progression spawning is now data driven under the opposing_force:post_nether and opposing_force:post end tags
+- Fixed Tarts not spawning elites when from infested leaves
+- Fixed Waltz of the Slug not being obtainable
