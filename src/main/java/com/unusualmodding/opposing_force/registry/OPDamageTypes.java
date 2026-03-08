@@ -43,6 +43,10 @@ public class OPDamageTypes {
         return level.damageSources().source(LASER, laser, indirectEntity);
     }
 
+    public static DamageSource laserBolt(Level level, LaserBolt laser, @Nullable Entity indirectEntity) {
+        return level.damageSources().source(LASER_BOLT, laser, indirectEntity);
+    }
+
     public static DamageSource thrownLaserBlade(Level level, ThrownLaserBlade laserBlade, @Nullable Entity indirectEntity) {
         return level.damageSources().source(THROWN_LASER_BLADE, laserBlade, indirectEntity);
     }

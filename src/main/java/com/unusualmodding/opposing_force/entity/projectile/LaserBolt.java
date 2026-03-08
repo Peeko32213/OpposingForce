@@ -142,7 +142,7 @@ public class LaserBolt extends FrictionlessProjectile {
     protected void onHitEntity(@NotNull EntityHitResult entityHitResult) {
         super.onHitEntity(entityHitResult);
         Entity entity = entityHitResult.getEntity();
-        DamageSource damageSource = this.damageSources().source(OPDamageTypes.LASER_BOLT);
+        DamageSource damageSource = OPDamageTypes.laserBolt(this.level, this, this.getOwner());
 
         if (!this.level().isClientSide) {
             this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), OPSoundEvents.LASER_BOLT_IMPACT.get(), SoundSource.NEUTRAL, 1.5F, 1.0F + (random.nextFloat() - random.nextFloat()) * 0.2F);

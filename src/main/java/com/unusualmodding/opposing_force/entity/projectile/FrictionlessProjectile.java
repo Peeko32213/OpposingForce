@@ -26,6 +26,7 @@ public abstract class FrictionlessProjectile extends AbstractHurtingProjectile i
 
     protected FrictionlessProjectile(EntityType<? extends AbstractHurtingProjectile> entityType, Level level, Entity owner, double x, double y, double z) {
         this(entityType, level);
+        this.setOwner(owner);
         this.setPos(x, y, z);
         this.accelerationPower = 0;
     }
