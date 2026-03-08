@@ -14,6 +14,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -66,10 +67,6 @@ public class SawbladeItem extends ConfigurableAxeItem {
         ItemStack itemstack = player.getItemInHand(hand);
         player.startUsingItem(hand);
         player.playSound(OPSoundEvents.SAWBLADE_SAW_START.get());
-//        AttributeModifier speedModifier = new AttributeModifier(SAWBLADE_SPEED_MODIFIER_UUID, "Sawblade Speed", 2.0, AttributeModifier.Operation.MULTIPLY_BASE);
-//        if (!player.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(speedModifier)) {
-//            player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(speedModifier);
-//        }
         return InteractionResultHolder.consume(itemstack);
     }
 
@@ -98,7 +95,8 @@ public class SawbladeItem extends ConfigurableAxeItem {
 
             if (!level.isClientSide) {
                 if (!isEntityInFront(player, entity) || player.level().isClientSide) continue;
-                if (entity.hurt(player.level().damageSources().source(OPDamageTypes.SAWBLADE), damage)) {
+                DamageSource damageSource = OPDamageTypes.sawblade(level, player, player);
+                if (entity.hurt(damageSource, damage)) {
                     entity.invulnerableTime -= 5;
                     if (player.getItemInHand(hand).getEnchantmentLevel(Enchantments.FIRE_ASPECT) > 0) {
                         entity.setSecondsOnFire(player.getItemInHand(hand).getEnchantmentLevel(Enchantments.FIRE_ASPECT));

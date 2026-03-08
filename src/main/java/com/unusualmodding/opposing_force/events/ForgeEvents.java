@@ -82,23 +82,19 @@ public class ForgeEvents {
     @SubscribeEvent
     public static void checkProgressionSpawns(MobSpawnEvent.SpawnPlacementCheck event) {
         EntityType<?> entityType = event.getEntityType();
-        boolean postNether = entityType.is(OPEntityTypeTags.POST_NETHER);
         ServerLevel level = event.getLevel().getLevel();
-        OPWorldData worldData = OPWorldData.get(level);
-        if(postNether) {
-            boolean nether = !worldData.hasNetherBeenEnteredBefore();
+        if (entityType.is(OPEntityTypeTags.POST_NETHER)) {
+            boolean nether = !OPWorldData.get(level).hasNetherBeenEnteredBefore();
             nether = nether && POST_NETHER.get();
             if (nether) {
                 event.setResult(Event.Result.DENY);
                 return;
             }
         }
-        boolean postEnd = entityType.is(OPEntityTypeTags.POST_END);
-        if(postEnd) {
-            boolean postDragon = level.getServer().getWorldData().endDragonFightData().dragonKilled() ||
-                    level.getServer().getWorldData().endDragonFightData().previouslyKilled();
+        if (entityType.is(OPEntityTypeTags.POST_END)) {
+            boolean postDragon = level.getServer().getWorldData().endDragonFightData().dragonKilled() || level.getServer().getWorldData().endDragonFightData().previouslyKilled();
             postDragon = postDragon && POST_END.get();
-            if(!postDragon) {
+            if (!postDragon) {
                 event.setResult(Event.Result.DENY);
             }
         }
