@@ -1,4 +1,4 @@
-// 1.20.1	2026-02-19T22:06:50.778139	Recipes
+// 1.20.1	2026-03-11T22:20:01.5411149	Recipes
 19b9af45401a2eea7cbaccf470cc125ee7fee81b data/minecraft/advancements/recipes/food/enchanted_golden_apple.json
 4e6fce234df08980a5f8e058b9497c4d9d72a986 data/minecraft/recipes/enchanted_golden_apple.json
 139da0a86e8b183e3a1799119694c7bc0b55d53e data/opposing_force/advancements/recipes/building_blocks/chiseled_vile_stone_bricks.json
@@ -99,6 +99,7 @@ d09293319d90ad74e8dbdd89304412c970be1e0c data/opposing_force/advancements/recipe
 71ce3d84da0c7cc8f099e63e6fd3e5d524b3b5fc data/opposing_force/advancements/recipes/misc/electric_alloy.json
 20dae58225c569c984e3a16b2f44697d7d3c90d7 data/opposing_force/advancements/recipes/misc/guzzler_scales.json
 d2cfb851097b8921ba31a61982e08cb57b39ad62 data/opposing_force/advancements/recipes/misc/laser_core.json
+92accd68ad6afebb4bf2653cb47fe7c80c7a1ac5 data/opposing_force/advancements/recipes/misc/slime_ball_from_smelting_slug_eggs.json
 f58b321a85e04173caccc1c13e0c17a13e1f1345 data/opposing_force/recipes/blaster.json
 1ebaaa845045af975a367d683d73fad1a500f390 data/opposing_force/recipes/bone_axe.json
 89b494f2fc9c607c69c50a4fb806aba8cbf29fe9 data/opposing_force/recipes/bone_boots.json
@@ -146,6 +147,7 @@ ff8457ac68e63ad7d8674fee24062029419773c3 data/opposing_force/recipes/recon_knigh
 642449634a7565750c447f83cdf253a6316a5bd6 data/opposing_force/recipes/recon_knight_helmet.json
 800866ebac7d2488f8e721d0cd0354590d198aa3 data/opposing_force/recipes/recon_knight_leggings.json
 f741a24facf0521e46c1c870be9f2197e8a977c2 data/opposing_force/recipes/sawblade.json
+1ef69bc68f0ef5072ad9fdabf45a2af3680aaf5b data/opposing_force/recipes/slime_ball_from_smelting_slug_eggs.json
 0d8043322178adeec560b4339414659d5c2dc99d data/opposing_force/recipes/spark_blade.json
 3134678492236736d6be9366a4fcdae3c7ed2890 data/opposing_force/recipes/spicy_terror_leg.json
 98f9d8c2041358e8f033c5ee81a4c05571208ca1 data/opposing_force/recipes/stone_boots.json

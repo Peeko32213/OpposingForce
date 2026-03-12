@@ -168,6 +168,9 @@ public class OPRecipeProvider extends RecipeProvider {
         stonecutting(OPBlocks.VILE_STONE_BRICKS.get(), OPBlocks.VILE_STONE_BRICK_SLAB.get(), 2, consumer);
         stonecutting(OPBlocks.VILE_STONE_BRICKS.get(), OPBlocks.VILE_STONE_BRICK_WALL.get(), 1, consumer);
         stonecutting(OPBlocks.VILE_STONE_BRICKS.get(), OPBlocks.CHISELED_VILE_STONE_BRICKS.get(), 1, consumer);
+
+        // 2.1
+        furnaceRecipe(RecipeSerializer.SMELTING_RECIPE, List.of(OPBlocks.SLUG_EGGS.get()), MISC, Items.SLIME_BALL, 0.05f, 100, "_from_smelting", consumer);
     }
 
     private static void conditionalRecipe(RecipeBuilder recipe, ICondition condition, Consumer<FinishedRecipe> consumer, ResourceLocation id) {
