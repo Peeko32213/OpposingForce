@@ -5,6 +5,7 @@
 - Fixed Waltz of the Slug not being obtainable
 - Fixed Blaster not giving kill credit
 - Fixed Sawblade not giving kill credit
+- Fixed Apple Sapling Collision
 
 # 2.0.2
 - Fixed fire slimes not dropping fire gel when spit from a guzzler

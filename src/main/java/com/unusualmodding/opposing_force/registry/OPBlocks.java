@@ -88,7 +88,7 @@ public class OPBlocks {
     public static final RegistryObject<Block> CHISELED_VILE_STONE_BRICKS = registerBlock("chiseled_vile_stone_bricks", () -> new Block(OPBlockProperties.VILE_STONE));
 
     // Tart
-    public static final RegistryObject<Block> APPLE_SAPLING = registerBlock("apple_sapling", () -> new SaplingBlock(new AppleTreeGrower(), BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)));
+    public static final RegistryObject<Block> APPLE_SAPLING = registerBlock("apple_sapling", () -> new SaplingBlock(new AppleTreeGrower(), BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)));
     public static final RegistryObject<Block> POTTED_APPLE_SAPLING = registerBlockWithoutItemNoLang("potted_apple_sapling", () -> new FlowerPotBlock(APPLE_SAPLING.get(), registerFlowerPot()));
     public static final RegistryObject<Block> APPLE_LEAVES = registerBlock("apple_leaves", () -> new GrowingLeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES), FruitLeaves.FruitState.FRUITLESS));
     public static final RegistryObject<Block> FLOWERING_APPLE_LEAVES = registerBlock("flowering_apple_leaves", () -> new GrowingLeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES), FruitLeaves.FruitState.FLOWERING));
