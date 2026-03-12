@@ -6,6 +6,8 @@
 - Fixed Blaster not giving kill credit
 - Fixed Sawblade not giving kill credit
 - Fixed Apple Sapling Collision
+- Skyvern heads now drop from the normal loot table
+- 
 
 # 2.0.2
 - Fixed fire slimes not dropping fire gel when spit from a guzzler

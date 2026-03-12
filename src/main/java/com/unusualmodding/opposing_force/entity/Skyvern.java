@@ -291,6 +291,7 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
         super.onSyncedDataUpdated(entityDataAccessor);
     }
 
+    /*
     @Override
     protected void dropCustomDeathLoot(@NotNull DamageSource source, int damage, boolean drops) {
         super.dropCustomDeathLoot(source, damage, drops);
@@ -302,6 +303,7 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
             }
         }
     }
+     */
 
     @Override
     protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
