@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "category": "food",
+  "cookingtime": 200,
+  "experience": 0.25,
+  "ingredient": {
+    "item": "opposing_force:tart"
+  },
+  "result": "opposing_force:cooked_tart"
+}

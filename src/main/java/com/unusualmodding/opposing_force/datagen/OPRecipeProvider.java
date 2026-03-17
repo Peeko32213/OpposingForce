@@ -123,6 +123,7 @@ public class OPRecipeProvider extends RecipeProvider {
 
         furnaceRecipe(RecipeSerializer.SMELTING_RECIPE, List.of(RAW_TART.get()), FOOD, COOKED_TART.get(), 0.25f, 200, "_from_smelting", consumer);
         furnaceRecipe(RecipeSerializer.SMOKING_RECIPE, List.of(RAW_TART.get()), FOOD, COOKED_TART.get(), 0.25f, 100, "_from_smoking", consumer);
+        furnaceRecipe(RecipeSerializer.CAMPFIRE_COOKING_RECIPE, List.of(RAW_TART.get()), FOOD, COOKED_TART.get(), 0.25f, 200, "_from_campfire_cooking", consumer);
 
         ShapedRecipeBuilder.shaped(COMBAT, SAWBLADE.get(), 1).define('I', Tags.Items.INGOTS_IRON).define('T', TERROR_SAW.get()).define('R', Tags.Items.DUSTS_REDSTONE).pattern(" TI").pattern(" RI").pattern(" I ").unlockedBy("has_terror_saw", has(TERROR_SAW.get())).save(consumer);
 

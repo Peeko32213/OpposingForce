@@ -8,6 +8,7 @@
 - Fixed Apple Sapling collision
 - Skyvern heads now drop from the normal loot table
 - Slug eggs can now be smelted into slimeballs
+- Tarts can now be cooked on a campfire
 
 # 2.0.2
 - Fixed fire slimes not dropping fire gel when spit from a guzzler
