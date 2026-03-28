@@ -44,11 +44,12 @@
       "entries": [
         {
           "type": "minecraft:empty",
-          "weight": 96
+          "weight": 95
         },
         {
-          "type": "opposing_force:waltz_of_the_slug_disc",
-          "weight": 4
+          "type": "minecraft:item",
+          "name": "opposing_force:waltz_of_the_slug_disc",
+          "weight": 5
         }
       ]
     },
@@ -92,7 +93,7 @@
               "function": "set_count",
               "count": {
                 "min": 1,
-                "max": 2
+                "max": 3
               }
             }
           ]

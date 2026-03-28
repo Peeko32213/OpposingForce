@@ -22,16 +22,16 @@ public class OPBiomeTagProvider extends BiomeTagsProvider {
     @Override
     public void addTags(@NotNull Provider provider) {
 
-        this.tag(OPBiomeTags.HAS_DICER).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
-        this.tag(OPBiomeTags.HAS_FROWZY).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
-        this.tag(OPBiomeTags.HAS_GUZZLER).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
-        this.tag(OPBiomeTags.HAS_HANGING_SPIDER).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
-        this.tag(OPBiomeTags.HAS_RAMBLE).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
-        this.tag(OPBiomeTags.HAS_SLUG).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
-        this.tag(OPBiomeTags.HAS_TERROR).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
-        this.tag(OPBiomeTags.HAS_TREMBLER).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
-        this.tag(OPBiomeTags.HAS_UMBER_SPIDER).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
-        this.tag(OPBiomeTags.HAS_VOLT).addTag(OPBiomeTags.WITH_DEFAULT_MONSTER_SPAWNS);
+        this.tag(OPBiomeTags.HAS_DICER).addTag(BiomeTags.IS_OVERWORLD).remove(Biomes.DEEP_DARK, Biomes.MUSHROOM_FIELDS);
+        this.tag(OPBiomeTags.HAS_FROWZY).addTag(BiomeTags.IS_OVERWORLD).remove(Biomes.DEEP_DARK, Biomes.MUSHROOM_FIELDS);
+        this.tag(OPBiomeTags.HAS_GUZZLER).addTag(BiomeTags.IS_OVERWORLD).remove(Biomes.DEEP_DARK, Biomes.MUSHROOM_FIELDS);
+        this.tag(OPBiomeTags.HAS_HANGING_SPIDER).addTag(BiomeTags.IS_OVERWORLD).remove(Biomes.DEEP_DARK, Biomes.MUSHROOM_FIELDS);
+        this.tag(OPBiomeTags.HAS_RAMBLE).addTag(BiomeTags.IS_OVERWORLD).remove(Biomes.DEEP_DARK, Biomes.MUSHROOM_FIELDS);
+        this.tag(OPBiomeTags.HAS_SLUG).addTag(BiomeTags.IS_OVERWORLD).remove(Biomes.DEEP_DARK, Biomes.MUSHROOM_FIELDS);
+        this.tag(OPBiomeTags.HAS_TERROR).addTag(BiomeTags.IS_OVERWORLD).remove(Biomes.DEEP_DARK, Biomes.MUSHROOM_FIELDS);
+        this.tag(OPBiomeTags.HAS_TREMBLER).addTag(BiomeTags.IS_OVERWORLD).remove(Biomes.DEEP_DARK, Biomes.MUSHROOM_FIELDS);
+        this.tag(OPBiomeTags.HAS_UMBER_SPIDER).addTag(BiomeTags.IS_OVERWORLD).remove(Biomes.DEEP_DARK, Biomes.MUSHROOM_FIELDS);
+        this.tag(OPBiomeTags.HAS_VOLT).addTag(BiomeTags.IS_OVERWORLD).remove(Biomes.DEEP_DARK, Biomes.MUSHROOM_FIELDS);
 
         this.tag(OPBiomeTags.HAS_APPLE_TREES).add(
                 Biomes.FOREST,

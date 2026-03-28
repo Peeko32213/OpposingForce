@@ -1,5 +1,9 @@
 {
+  "remove": [
+    "minecraft:deep_dark",
+    "minecraft:mushroom_fields"
+  ],
   "values": [
-    "#forge:with_default_monster_spawns"
+    "#minecraft:is_overworld"
   ]
 }
