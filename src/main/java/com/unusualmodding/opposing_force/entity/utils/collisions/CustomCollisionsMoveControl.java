@@ -81,7 +81,7 @@ public class CustomCollisionsMoveControl extends MoveControl {
 
     }
 
-    private boolean isWalkable(float v, float v1) {
+    protected boolean isWalkable(float v, float v1) {
         PathNavigation pathnavigator = this.mob.getNavigation();
         if (pathnavigator != null) {
             NodeEvaluator nodeprocessor = pathnavigator.getNodeEvaluator();

@@ -282,7 +282,7 @@ public class Tart extends Monster implements AttackState, EliteVariant {
 
         }
 
-        private boolean isWalkable(float relativeX, float relativeZ) {
+        protected boolean isWalkable(float relativeX, float relativeZ) {
             PathNavigation pathnavigation = this.mob.getNavigation();
             NodeEvaluator nodeevaluator = pathnavigation.getNodeEvaluator();
             return nodeevaluator.getBlockPathType(this.mob.level(), Mth.floor(this.mob.getX() + (double) relativeX), this.mob.getBlockY(), Mth.floor(this.mob.getZ() + (double) relativeZ)) == BlockPathTypes.WALKABLE;

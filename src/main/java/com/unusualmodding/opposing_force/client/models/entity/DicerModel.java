@@ -8,6 +8,7 @@ import com.unusualmodding.opposing_force.entity.Dicer;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -141,15 +142,19 @@ public class DicerModel extends OPModel<Dicer> {
 			else this.animateWalk(DicerAnimations.WALK, limbSwing, limbSwingAmount, 2, 4);
 		}
 
-		this.animateIdle(entity.idleAnimationState, DicerAnimations.IDLE, ageInTicks, 1, limbSwingAmount * 4);
-		this.animate(entity.slash1AnimationState, DicerAnimations.SLASH_BLEND2, ageInTicks);
-		this.animate(entity.slash2AnimationState, DicerAnimations.SLASH_BLEND1, ageInTicks);
-		this.animate(entity.crossSlashAnimationState, DicerAnimations.CROSSSLASH, ageInTicks);
-        this.animate(entity.tailSpinAnimationState, DicerAnimations.TAILWHIP, ageInTicks);
-        this.animate(entity.laserAnimationState, DicerAnimations.LASER, ageInTicks);
+		this.animateIdleSmooth(entity.idleAnimationState, DicerAnimations.IDLE, ageInTicks, limbSwingAmount);
+		this.animateSmooth(entity.slash1AnimationState, DicerAnimations.SLASH_BLEND2, ageInTicks);
+		this.animateSmooth(entity.slash2AnimationState, DicerAnimations.SLASH_BLEND1, ageInTicks);
+		this.animateSmooth(entity.crossSlashAnimationState, DicerAnimations.CROSSSLASH, ageInTicks);
+        this.animateSmooth(entity.tailSpinAnimationState, DicerAnimations.TAILWHIP, ageInTicks);
+        this.animateSmooth(entity.laserAnimationState, DicerAnimations.LASER, ageInTicks);
 
         this.head.xRot += headPitch * ((float) Math.PI / 180) - (headPitch * ((float) Math.PI / 180)) / 2;
         this.head.yRot += netHeadYaw * ((float) Math.PI / 180) - (netHeadYaw * ((float) Math.PI / 180)) / 2;
+
+//        float partialTicks = ageInTicks - entity.tickCount;
+//        float tailYaw = entity.getTailYaw(partialTicks);
+//        this.tail.yRot = Mth.lerp(0.3F, this.tail.yRot, tailYaw * 0.25F);
 	}
 
 	@Override

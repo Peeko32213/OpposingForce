@@ -2,7 +2,7 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.entity.ai.goal.LadybugAttackGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.LadybugFlightGoal;
-import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothFlyingPathNavigation;
+import com.unusualmodding.opposing_force.entity.ai.navigation.NoSpinFlyingPathNavigation;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
@@ -97,11 +97,11 @@ public class Ladybug extends Monster implements FlyingAnimal, AttackState, Elite
     public void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new SmoothGroundPathNavigation(this, this.level());
+            this.navigation = this.createNavigation(this.level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new FlyingMoveControl(this, 20, true);
-            SmoothFlyingPathNavigation navigation = new SmoothFlyingPathNavigation(this, this.level(), 1.0F) {
+            NoSpinFlyingPathNavigation navigation = new NoSpinFlyingPathNavigation(this, this.level()) {
                 @Override
                 public boolean isStableDestination(BlockPos pos) {
                     return !level().getBlockState(pos.below()).isAir();

@@ -56,55 +56,17 @@ public class DicerAttackGoal extends AttackGoal {
                 this.dicer.getLookControl().setLookAt(target, 30F, 30F);
             }
             if (attackState == 1) {
-                this.timer++;
                 this.dicer.getNavigation().moveTo(target, 1.3D);
-                if (this.timer == 1) this.dicer.setPose(OPPoses.SLASHING.get());
-                if (this.timer == 9) {
-                    if (this.isInAttackRange(target, 1.5D)) {
-                        this.dicer.doHurtTarget(target);
-                        this.dicer.swing(InteractionHand.MAIN_HAND);
-                    }
-                }
-                if (this.timer > 20) {
-                    this.timer = 0;
-                    this.dicer.setAttackState(0);
-                    this.dicer.slashCooldown = 12;
-                }
+                this.tickSlash();
             } else if (attackState == 2) {
-                this.timer++;
                 this.dicer.getNavigation().moveTo(target, 2.0D);
-                if (this.timer == 1) this.dicer.setPose(OPPoses.TAIL_SPINNING.get());
-                if (this.timer == 8) {
-                    if (this.isInAttackRange(target, 1.25D)) {
-                        this.dicer.doHurtTarget(target);
-                        this.dicer.swing(InteractionHand.MAIN_HAND);
-                    }
-                }
-                if (this.timer > 20) {
-                    this.timer = 0;
-                    this.dicer.setAttackState(0);
-                    this.dicer.tailSpinCooldown = 50 + dicer.getRandom().nextInt(20);
-                }
+                this.tickTailSpin();
             } else if (attackState == 3) {
-                this.timer++;
                 this.dicer.getNavigation().stop();
-                if (this.timer == 1) this.dicer.setPose(OPPoses.CROSS_SLASHING.get());
-                if (this.timer < 26) {
-                    this.dicer.lookAt(target, 30F, 30F);
-                    this.dicer.getLookControl().setLookAt(target, 30F, 30F);
-                }
-                if (this.timer == 28) this.dicer.addDeltaMovement(this.dicer.getLookAngle().scale(3.25D).multiply(1.0D, 0, 1.0D));
-                if (this.timer > 28 && this.timer < 32) {
-                    this.hurtNearbyEntities();
-                }
-                if (this.timer > 50) {
-                    this.timer = 0;
-                    this.dicer.setAttackState(0);
-                    this.dicer.crossSlashCooldown = 80 + dicer.getRandom().nextInt(50);
-                }
+                this.tickCrossSlash();
             } else {
                 this.dicer.getNavigation().moveTo(target, 2.0D);
-                if (distance < this.monster.getBbWidth() * 2.0F * this.monster.getBbWidth() * 2.0F + target.getBbWidth()) {
+                if (distance < this.getAttackReachSqr(target)) {
                     if (this.dicer.getRandom().nextFloat() < 0.25F && dicer.crossSlashCooldown == 0) {
                         this.dicer.setAttackState(3);
                     }
@@ -116,6 +78,65 @@ public class DicerAttackGoal extends AttackGoal {
                     }
                 }
             }
+        }
+    }
+
+    protected void tickSlash() {
+        this.timer++;
+        LivingEntity target = dicer.getTarget();
+        if (timer == 1) {
+            this.dicer.setPose(OPPoses.ATTACKING.get());
+            this.dicer.slashAlt = dicer.getRandom().nextBoolean();
+        }
+        if (timer == 9) {
+            if (this.isInAttackRange(target, 1.5D)) {
+                this.dicer.doHurtTarget(target);
+                this.dicer.swing(InteractionHand.MAIN_HAND);
+            }
+        }
+        if (timer > 20) {
+            this.dicer.setPose(Pose.STANDING);
+            this.timer = 0;
+            this.dicer.setAttackState(0);
+            this.dicer.slashCooldown = 12;
+        }
+    }
+
+    protected void tickTailSpin() {
+        this.timer++;
+        LivingEntity target = dicer.getTarget();
+        if (timer == 1) dicer.setPose(OPPoses.TAIL_SPINNING.get());
+        if (timer == 8) {
+            if (this.isInAttackRange(target, 1.25D)) {
+                this.dicer.doHurtTarget(target);
+                this.dicer.swing(InteractionHand.MAIN_HAND);
+            }
+        }
+        if (timer > 20) {
+            this.dicer.setPose(Pose.STANDING);
+            this.timer = 0;
+            this.dicer.setAttackState(0);
+            this.dicer.tailSpinCooldown = 50 + dicer.getRandom().nextInt(20);
+        }
+    }
+
+    protected void tickCrossSlash() {
+        this.timer++;
+        LivingEntity target = dicer.getTarget();
+        if (this.timer == 1) dicer.setPose(OPPoses.CROSS_SLASHING.get());
+        if (this.timer < 26) {
+            this.dicer.lookAt(target, 30F, 30F);
+            this.dicer.getLookControl().setLookAt(target, 30F, 30F);
+        }
+        if (timer == 28) dicer.addDeltaMovement(dicer.getLookAngle().scale(3.25D).multiply(1.0D, 0, 1.0D));
+        if (timer > 28 && timer < 32) {
+            this.hurtNearbyEntities();
+        }
+        if (timer > 50) {
+            this.dicer.setPose(Pose.STANDING);
+            this.timer = 0;
+            this.dicer.setAttackState(0);
+            this.dicer.crossSlashCooldown = 80 + dicer.getRandom().nextInt(50);
         }
     }
 
