@@ -1,7 +1,6 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.entity.ai.goal.DicerAttackGoal;
-import com.unusualmodding.opposing_force.entity.ai.goal.DicerLaserGoal;
 import com.unusualmodding.opposing_force.entity.base.OPMonster;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPItems;
@@ -9,9 +8,6 @@ import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.utils.SmoothAnimationState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
@@ -40,20 +36,16 @@ import org.jetbrains.annotations.Nullable;
 @SuppressWarnings("deprecation")
 public class Dicer extends OPMonster {
 
-    private static final EntityDataAccessor<Boolean> LASERING = SynchedEntityData.defineId(Dicer.class, EntityDataSerializers.BOOLEAN);
-
-    public final SmoothAnimationState slash1AnimationState = new SmoothAnimationState(1.0F);
-    public final SmoothAnimationState slash2AnimationState = new SmoothAnimationState(1.0F);
+    public final SmoothAnimationState slash1AnimationState = new SmoothAnimationState();
+    public final SmoothAnimationState slash2AnimationState = new SmoothAnimationState();
     public final SmoothAnimationState crossSlashAnimationState = new SmoothAnimationState();
     public final SmoothAnimationState laserAnimationState = new SmoothAnimationState();
-    public final SmoothAnimationState tailSpinAnimationState = new SmoothAnimationState();
 
     public boolean slashAlt = false;
 
     public int laserCooldown = 100 + this.getRandom().nextInt(100);
     public int slashCooldown = 0;
     public int crossSlashCooldown = 0;
-    public int tailSpinCooldown = 0;
 
     public Dicer(EntityType<? extends OPMonster> entityType, Level level) {
         super(entityType, level);
@@ -70,14 +62,13 @@ public class Dicer extends OPMonster {
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new DicerLaserGoal(this));
-        this.goalSelector.addGoal(2, new DicerAttackGoal(this));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(1, new DicerAttackGoal(this));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, IronGolem.class, false, false));
     }
 
     @Override
@@ -100,18 +91,16 @@ public class Dicer extends OPMonster {
         if (this.getPose() == Pose.STANDING) {
             if (laserCooldown > 0) laserCooldown--;
             if (slashCooldown > 0) slashCooldown--;
-            if (tailSpinCooldown > 0) tailSpinCooldown--;
             if (crossSlashCooldown > 0) crossSlashCooldown--;
         }
     }
 
     @Override
     public void setupAnimationStates() {
-        this.idleAnimationState.animateWhen(this.getPose() != OPPoses.LASERING.get() && this.getPose() != OPPoses.CROSS_SLASHING.get() && this.getPose() != OPPoses.TAIL_SPINNING.get(), this.tickCount);
+        this.idleAnimationState.animateWhen(this.getPose() != OPPoses.LASERING.get() && this.getPose() != OPPoses.CROSS_SLASHING.get() && this.getPose() != OPPoses.ATTACKING.get(), this.tickCount);
         this.slash1AnimationState.animateWhen(this.getPose() == OPPoses.ATTACKING.get() && !slashAlt, this.tickCount);
         this.slash2AnimationState.animateWhen(this.getPose() == OPPoses.ATTACKING.get() && slashAlt, this.tickCount);
         this.crossSlashAnimationState.animateWhen(this.getPose() == OPPoses.CROSS_SLASHING.get(), this.tickCount);
-        this.tailSpinAnimationState.animateWhen(this.getPose() == OPPoses.TAIL_SPINNING.get(), this.tickCount);
         this.laserAnimationState.animateWhen(this.getPose() == OPPoses.LASERING.get(), this.tickCount);
     }
 
@@ -126,20 +115,6 @@ public class Dicer extends OPMonster {
         } else {
             return false;
         }
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(LASERING, false);
-    }
-
-    public boolean isLasering() {
-        return this.entityData.get(LASERING);
-    }
-
-    public void setLasering(boolean lasering) {
-        this.entityData.set(LASERING, lasering);
     }
 
     @Override
@@ -165,7 +140,7 @@ public class Dicer extends OPMonster {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @javax.annotation.Nullable SpawnGroupData spawnData, @javax.annotation.Nullable CompoundTag compoundTag) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag compoundTag) {
         spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
         RandomSource random = level.getRandom();
         if (random.nextInt(this.getEliteSpawnChance()) == 0) {
@@ -200,7 +175,6 @@ public class Dicer extends OPMonster {
     }
 
     public static boolean canDicerSpawn(EntityType<Dicer> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        //OPWorldData.get(level.getLevel()).hasNetherBeenEnteredBefore() &&
         return level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random);
     }
 }

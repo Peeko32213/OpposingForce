@@ -10,6 +10,10 @@
 - Slug eggs can now be smelted into slimeballs
 - Tarts can now be cooked on a campfire
 - All opposing force mobs now extend a base opposing force monster class
+- Removed tail spin attack from dicer
+- Dicer now stops when it performs a slash attack
+- Dicer now rotates less quickly when lasering
+- Reduced dicer cross slash attack range
 
 # 2.0.2
 - Fixed fire slimes not dropping fire gel when spit from a guzzler
