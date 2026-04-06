@@ -1,4 +1,4 @@
-# 2.1.0
+# 2.0.3
 - Added progression spawning configs
 - Progression spawning is now data driven under the opposing_force:post_nether and opposing_force:post end tags
 - Fixed Tarts not spawning elites when from infested leaves
