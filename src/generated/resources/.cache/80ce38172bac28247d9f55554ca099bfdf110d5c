@@ -1,14 +1,14 @@
-// 1.20.1	2026-03-28T11:25:07.0447185	Tags for minecraft:worldgen/biome mod id opposing_force
+// 1.20.1	2026-04-06T12:40:00.3126347	Tags for minecraft:worldgen/biome mod id opposing_force
 c51679c52f4830fdfbffad5f7ab8bfe6121eec2a data/forge/tags/worldgen/biome/without_default_monster_spawns.json
 b0d9a506e8803f778b300059618f79254525da55 data/forge/tags/worldgen/biome/with_default_monster_spawns.json
 5056f3bd580be2fd51c5ed3c2780ed82e9a2768a data/opposing_force/tags/worldgen/biome/has_feature/apple_trees.json
 0de88aa3ec9653b5a4e45da628cb4088195f5f80 data/opposing_force/tags/worldgen/biome/has_monster/dicer.json
-a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/frowzy.json
-a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/guzzler.json
-a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/hanging_spider.json
-a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/ramble.json
-a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/slug.json
-a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/terror.json
-a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/trembler.json
-a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/umber_spider.json
-a49575600083d19a17060feccd66f4fa59dd6f39 data/opposing_force/tags/worldgen/biome/has_monster/volt.json
+0de88aa3ec9653b5a4e45da628cb4088195f5f80 data/opposing_force/tags/worldgen/biome/has_monster/frowzy.json
+0de88aa3ec9653b5a4e45da628cb4088195f5f80 data/opposing_force/tags/worldgen/biome/has_monster/guzzler.json
+0de88aa3ec9653b5a4e45da628cb4088195f5f80 data/opposing_force/tags/worldgen/biome/has_monster/hanging_spider.json
+0de88aa3ec9653b5a4e45da628cb4088195f5f80 data/opposing_force/tags/worldgen/biome/has_monster/ramble.json
+0de88aa3ec9653b5a4e45da628cb4088195f5f80 data/opposing_force/tags/worldgen/biome/has_monster/slug.json
+0de88aa3ec9653b5a4e45da628cb4088195f5f80 data/opposing_force/tags/worldgen/biome/has_monster/terror.json
+0de88aa3ec9653b5a4e45da628cb4088195f5f80 data/opposing_force/tags/worldgen/biome/has_monster/trembler.json
+0de88aa3ec9653b5a4e45da628cb4088195f5f80 data/opposing_force/tags/worldgen/biome/has_monster/umber_spider.json
+0de88aa3ec9653b5a4e45da628cb4088195f5f80 data/opposing_force/tags/worldgen/biome/has_monster/volt.json
