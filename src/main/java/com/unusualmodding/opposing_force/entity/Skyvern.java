@@ -2,14 +2,13 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.mojang.serialization.Codec;
 import com.unusualmodding.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.entity.ai.control.SkyvernLookControl;
-import com.unusualmodding.opposing_force.entity.ai.control.SkyvernMoveControl;
+import com.unusualmodding.opposing_force.entity.ai.control.OPFlyingLookControl;
+import com.unusualmodding.opposing_force.entity.ai.control.OPFlyingMoveControl;
 import com.unusualmodding.opposing_force.entity.ai.goal.skyvern.SkyvernChargeGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.skyvern.SkyvernFlightGoal;
-import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothFlyingPathNavigation;
-import com.unusualmodding.opposing_force.entity.base.TameableMonster;
+import com.unusualmodding.opposing_force.entity.ai.navigation.NoSpinFlyingPathNavigation;
+import com.unusualmodding.opposing_force.entity.base.OPMonster;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
-import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.utils.SmoothAnimationState;
 import net.minecraft.core.BlockPos;
@@ -31,7 +30,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.FlyingAnimal;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -47,10 +45,9 @@ import javax.annotation.Nullable;
 import java.util.function.IntFunction;
 
 @SuppressWarnings("deprecation")
-public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHolder<Skyvern.SkyvernVariant> {
+public class Skyvern extends OPMonster implements FlyingAnimal, VariantHolder<Skyvern.SkyvernVariant> {
 
     private static final EntityDataAccessor<Float> TARGET_PITCH = SynchedEntityData.defineId(Skyvern.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Skyvern.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SEGMENTS = SynchedEntityData.defineId(Skyvern.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(Skyvern.class, EntityDataSerializers.INT);
 
@@ -77,10 +74,10 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
     private float prevPitch;
     private float pitch;
 
-    public Skyvern(EntityType<? extends TameableMonster> type, Level level) {
+    public Skyvern(EntityType<? extends OPMonster> type, Level level) {
         super(type, level);
-        this.moveControl = new SkyvernMoveControl(this);
-        this.lookControl = new SkyvernLookControl(this);
+        this.moveControl = new OPFlyingMoveControl(this);
+        this.lookControl = new OPFlyingLookControl(this, 4);
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, -1.0F);
@@ -119,7 +116,7 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
 
     @Override
     protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
-        return new SmoothFlyingPathNavigation(this, level, 1.0F);
+        return new NoSpinFlyingPathNavigation(this, level);
     }
 
     @Override
@@ -142,7 +139,6 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(ATTACK_STATE, 0);
         this.entityData.define(TARGET_PITCH, 0.0F);
         this.entityData.define(SEGMENTS, 0);
         this.entityData.define(VARIANT, SkyvernVariant.CLOUDY.id());
@@ -158,14 +154,6 @@ public class Skyvern extends TameableMonster implements FlyingAnimal, VariantHol
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         this.setSegments(compoundTag.getInt("Segments"));
         this.setVariant(SkyvernVariant.byId(compoundTag.getInt("Variant")));
-    }
-
-    public void setAttackState(int attackState) {
-        this.entityData.set(ATTACK_STATE, attackState);
-    }
-
-    public int getAttackState() {
-        return this.entityData.get(ATTACK_STATE);
     }
 
     public void setTargetPitch(float pitch) {

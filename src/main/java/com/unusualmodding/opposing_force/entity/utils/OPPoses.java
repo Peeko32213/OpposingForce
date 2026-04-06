@@ -25,7 +25,6 @@ public enum OPPoses {
     CLOSE_JAWS,
     SLASHING,
     CROSS_SLASHING,
-    TAIL_SPINNING,
     LASERING,
     LAUNCHED,
     LANDING,

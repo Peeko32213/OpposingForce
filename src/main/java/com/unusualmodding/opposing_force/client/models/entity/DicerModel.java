@@ -5,9 +5,11 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unusualmodding.opposing_force.client.animations.DicerAnimations;
 import com.unusualmodding.opposing_force.client.models.entity.base.OPModel;
 import com.unusualmodding.opposing_force.entity.Dicer;
+import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -136,20 +138,26 @@ public class DicerModel extends OPModel<Dicer> {
 	public void setupAnim(Dicer entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 
-		if (entity.getAttackState() != 2 && entity.getAttackState() != 3 && entity.getAttackState() != 4) {
-			if (entity.isRunning()) this.animateWalk(DicerAnimations.RUN, limbSwing, limbSwingAmount, 1, 1);
+		if (entity.getPose() != OPPoses.ATTACKING.get() && entity.getPose() != OPPoses.CROSS_SLASHING.get() && entity.getPose() != OPPoses.LASERING.get()) {
+			if (entity.isRunning()) this.animateWalk(DicerAnimations.RUN, limbSwing, limbSwingAmount, 1, 2);
 			else this.animateWalk(DicerAnimations.WALK, limbSwing, limbSwingAmount, 2, 4);
 		}
 
-		this.animateIdle(entity.idleAnimationState, DicerAnimations.IDLE, ageInTicks, 1, limbSwingAmount * 4);
-		this.animate(entity.slash1AnimationState, DicerAnimations.SLASH_BLEND2, ageInTicks);
-		this.animate(entity.slash2AnimationState, DicerAnimations.SLASH_BLEND1, ageInTicks);
-		this.animate(entity.crossSlashAnimationState, DicerAnimations.CROSSSLASH, ageInTicks);
-        this.animate(entity.tailSpinAnimationState, DicerAnimations.TAILWHIP, ageInTicks);
-        this.animate(entity.laserAnimationState, DicerAnimations.LASER, ageInTicks);
+		this.animateIdleSmooth(entity.idleAnimationState, DicerAnimations.IDLE, ageInTicks, limbSwingAmount);
+		this.animateSmooth(entity.slash1AnimationState, DicerAnimations.SLASH1, ageInTicks);
+		this.animateSmooth(entity.slash2AnimationState, DicerAnimations.SLASH2, ageInTicks);
+		this.animateSmooth(entity.crossSlashAnimationState, DicerAnimations.CROSSSLASH, ageInTicks);
+        this.animateSmooth(entity.laserAnimationState, DicerAnimations.LASER, ageInTicks);
 
         this.head.xRot += headPitch * ((float) Math.PI / 180) - (headPitch * ((float) Math.PI / 180)) / 2;
         this.head.yRot += netHeadYaw * ((float) Math.PI / 180) - (netHeadYaw * ((float) Math.PI / 180)) / 2;
+
+        float partialTicks = ageInTicks - entity.tickCount;
+        float tailYaw = entity.getTailYaw(partialTicks);
+        this.tail1.yRot = Mth.lerp(0.1F, this.tail1.yRot, tailYaw * 0.23F);
+        this.tail2.yRot = Mth.lerp(0.2F, this.tail2.yRot, tailYaw * 0.23F);
+        this.tail3.yRot = Mth.lerp(0.3F, this.tail3.yRot, tailYaw * 0.23F);
+        this.tail4.yRot = Mth.lerp(0.4F, this.tail4.yRot, tailYaw * 0.23F);
 	}
 
 	@Override
