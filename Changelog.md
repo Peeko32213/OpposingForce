@@ -9,6 +9,8 @@
 - Skyvern heads now drop from the normal loot table
 - Slug eggs can now be smelted into slimeballs
 - Tarts can now be cooked on a campfire
+- Fixed Tart sound subtitles
+- Added Russian Translation thanks to @slepoy_toliy
 
 # 2.0.2
 - Fixed fire slimes not dropping fire gel when spit from a guzzler
