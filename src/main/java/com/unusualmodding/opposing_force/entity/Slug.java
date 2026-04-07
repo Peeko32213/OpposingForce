@@ -2,9 +2,7 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.unusualmodding.opposing_force.entity.ai.goal.*;
-import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
-import com.unusualmodding.opposing_force.entity.base.SummonableMonster;
-import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
+import com.unusualmodding.opposing_force.entity.base.OPMonster;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPCriterion;
 import com.unusualmodding.opposing_force.registry.OPMobEffects;
@@ -35,7 +33,6 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
@@ -56,13 +53,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 
 @SuppressWarnings("deprecation")
-public class Slug extends SummonableMonster implements EliteVariant {
+public class Slug extends OPMonster {
 
     private static final EntityDataAccessor<Integer> SIZE = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> MAX_GROWABLE_SIZE = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> TAME_ATTEMPTS = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> LAUNCHED = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> VILE = SynchedEntityData.defineId(Slug.class, EntityDataSerializers.BOOLEAN);
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState launchStartAnimationState = new AnimationState();
@@ -70,7 +66,7 @@ public class Slug extends SummonableMonster implements EliteVariant {
 
     private int launchedTicks = 0;
 
-    public Slug(EntityType<? extends SummonableMonster> entityType, Level level) {
+    public Slug(EntityType<? extends OPMonster> entityType, Level level) {
         super(entityType, level);
         this.fixupDimensions();
     }
@@ -97,11 +93,6 @@ public class Slug extends SummonableMonster implements EliteVariant {
         this.targetSelector.addGoal(2, new MonsterOwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, false, false, this::hasInfestation));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, this::isInfestationSlug));
-    }
-
-    @Override
-    protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
-        return new SmoothGroundPathNavigation(this, level);
     }
 
     @Override
@@ -163,7 +154,7 @@ public class Slug extends SummonableMonster implements EliteVariant {
     @Override
     protected void dropFromLootTable(@NotNull DamageSource source, boolean drops) {
         int extraEggs = this.isElite() ? this.getSlugSize() : this.getSlugSize() / 2;
-        if (this.getSlugSize() > 3 && !this.isFromSummon()) {
+        if (!this.isFromSummon()) {
             for (int i = 0; i < extraEggs; i++) {
                 super.dropFromLootTable(source, drops);
             }
@@ -187,7 +178,6 @@ public class Slug extends SummonableMonster implements EliteVariant {
         this.entityData.define(MAX_GROWABLE_SIZE, 0);
         this.entityData.define(TAME_ATTEMPTS, 0);
         this.entityData.define(LAUNCHED, false);
-        this.entityData.define(VILE, false);
     }
 
     @Override
@@ -196,7 +186,6 @@ public class Slug extends SummonableMonster implements EliteVariant {
         compoundTag.putInt("Size", this.getSlugSize() - 1);
         compoundTag.putInt("MaxGrowableSize", this.getMaxGrowableSlugSize());
         compoundTag.putInt("TameAttempts", this.getTameAttempts());
-        compoundTag.putBoolean("Vile", this.isElite());
     }
 
     @Override
@@ -205,17 +194,6 @@ public class Slug extends SummonableMonster implements EliteVariant {
         super.readAdditionalSaveData(compoundTag);
         this.setMaxGrowableSlugSize(compoundTag.getInt("MaxGrowableSize"));
         this.setTameAttempts(compoundTag.getInt("TameAttempts"));
-        this.setElite(compoundTag.getBoolean("Vile"));
-    }
-
-    @Override
-    public boolean isElite() {
-        return this.entityData.get(VILE);
-    }
-
-    @Override
-    public void setElite(boolean elite) {
-        this.entityData.set(VILE, elite);
     }
 
     public void setTameAttempts(int i) {
@@ -316,15 +294,9 @@ public class Slug extends SummonableMonster implements EliteVariant {
         }
     }
 
-    private void setupAnimationStates() {
-        this.idleAnimationState.animateWhen(this.getPose() == Pose.STANDING, this.tickCount);
-    }
-
     @Override
-    public void calculateEntityAnimation(boolean flying) {
-        float f1 = (float) Mth.length(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
-        float f2 = Math.min(f1 * 10.0F, 1.0F);
-        this.walkAnimation.update(f2, 0.4F);
+    public void setupAnimationStates() {
+        this.idleAnimationState.animateWhen(this.getPose() == Pose.STANDING, this.tickCount);
     }
 
     @Override

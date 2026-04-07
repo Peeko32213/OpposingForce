@@ -5,8 +5,7 @@ import com.unusualmodding.opposing_force.entity.ai.goal.volt.VoltLeapGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.volt.VoltShootGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.volt.VoltShootInWaterGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
-import com.unusualmodding.opposing_force.entity.utils.AttackState;
-import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
+import com.unusualmodding.opposing_force.entity.base.OPMonster;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
@@ -19,7 +18,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -49,11 +47,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public class Volt extends Monster implements AttackState, PowerableMob, EliteVariant {
+public class Volt extends OPMonster implements PowerableMob {
 
-    private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Volt.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> CHARGED = SynchedEntityData.defineId(Volt.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> QUASAR = SynchedEntityData.defineId(Volt.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SWIMMING = SynchedEntityData.defineId(Volt.class, EntityDataSerializers.BOOLEAN);
 
     private static final EntityDimensions FISH_IN_WATER_DIMENSIONS = EntityDimensions.scalable(1.1F, 0.5F);
@@ -81,7 +77,7 @@ public class Volt extends Monster implements AttackState, PowerableMob, EliteVar
     private final byte TWITCH1 = 68;
     private final byte TWITCH2 = 69;
 
-    public Volt(EntityType<? extends Monster> entityType, Level level) {
+    public Volt(EntityType<? extends OPMonster> entityType, Level level) {
         super(entityType, level);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
@@ -108,10 +104,10 @@ public class Volt extends Monster implements AttackState, PowerableMob, EliteVar
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
-    @Override
-    protected @NotNull BodyRotationControl createBodyControl() {
-        return new VoltBodyRotationControl(this);
-    }
+//    @Override
+//    protected @NotNull BodyRotationControl createBodyControl() {
+//        return new VoltBodyRotationControl(this);
+//    }
 
     protected void switchNavigator(boolean onLand) {
         if (onLand) {
@@ -163,53 +159,27 @@ public class Volt extends Monster implements AttackState, PowerableMob, EliteVar
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(ATTACK_STATE, 0);
         this.entityData.define(CHARGED, false);
-        this.entityData.define(QUASAR, false);
         this.entityData.define(SWIMMING, false);
     }
 
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        compoundTag.putInt("AttackState", this.getAttackState());
         if (this.entityData.get(CHARGED)) {
             compoundTag.putBoolean("Charged", true);
         }
-        compoundTag.putBoolean("Quasar", this.isElite());
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        this.setAttackState(compoundTag.getInt("AttackState"));
         this.entityData.set(CHARGED, compoundTag.getBoolean("Charged"));
-        this.setElite(compoundTag.getBoolean("Quasar"));
-    }
-
-    @Override
-    public int getAttackState() {
-        return this.entityData.get(ATTACK_STATE);
-    }
-
-    @Override
-    public void setAttackState(int attack) {
-        this.entityData.set(ATTACK_STATE, attack);
     }
 
     @Override
     public boolean isPowered() {
         return this.entityData.get(CHARGED);
-    }
-
-    @Override
-    public boolean isElite() {
-        return this.entityData.get(QUASAR);
-    }
-
-    @Override
-    public void setElite(boolean elite) {
-        this.entityData.set(QUASAR, elite);
     }
 
     public boolean isVoltSwimming() {
@@ -259,10 +229,6 @@ public class Volt extends Monster implements AttackState, PowerableMob, EliteVar
             this.leapCooldown--;
         }
 
-        if (this.level().isClientSide()) {
-            this.setupAnimationStates();
-        }
-
         if (this.onGround() && !this.wasOnGround) {
             this.playSound(OPSoundEvents.VOLT_SQUISH.get(), 0.2F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
         }
@@ -273,10 +239,10 @@ public class Volt extends Monster implements AttackState, PowerableMob, EliteVar
 
         final boolean canLandNavigate = !this.isInWater();
         if (!canLandNavigate && this.isLandNavigator) {
-            switchNavigator(false);
+            this.switchNavigator(false);
         }
         if (canLandNavigate && !this.isLandNavigator) {
-            switchNavigator(true);
+            this.switchNavigator(true);
         }
 
         if (shootingTicks > 0) shootingTicks--;
@@ -307,7 +273,8 @@ public class Volt extends Monster implements AttackState, PowerableMob, EliteVar
         }
     }
 
-    private void setupAnimationStates() {
+    @Override
+    public void setupAnimationStates() {
         if (shootingTicks == 0 && (this.shootAnimationState.isStarted() || this.shootWaterAnimationState.isStarted())) {
             this.shootAnimationState.stop();
             this.shootWaterAnimationState.stop();
@@ -471,32 +438,6 @@ public class Volt extends Monster implements AttackState, PowerableMob, EliteVar
         @Override
         public boolean canContinueToUse() {
             return super.canContinueToUse() && this.entity.isLandNavigator && !entity.isInWater();
-        }
-    }
-
-    @SuppressWarnings("unused, FieldCanBeLocal")
-    private static class VoltBodyRotationControl extends BodyRotationControl {
-
-        private final Mob mob;
-        private int headStableTime;
-        private float lastStableYHeadRot;
-
-        public VoltBodyRotationControl(Mob mob) {
-            super(mob);
-            this.mob = mob;
-        }
-
-        // just so it faces its target more reliably when not moving
-        @Override
-        public void clientTick() {
-            this.mob.yBodyRot = this.mob.getYRot();
-            this.rotateHeadIfNecessary();
-            this.lastStableYHeadRot = this.mob.yHeadRot;
-            this.headStableTime = 0;
-        }
-
-        private void rotateHeadIfNecessary() {
-            this.mob.yHeadRot = Mth.rotateIfNecessary(this.mob.yHeadRot, this.mob.yBodyRot, (float) this.mob.getMaxHeadYRot());
         }
     }
 }

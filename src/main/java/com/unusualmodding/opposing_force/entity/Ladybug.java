@@ -3,9 +3,7 @@ package com.unusualmodding.opposing_force.entity;
 import com.unusualmodding.opposing_force.entity.ai.goal.LadybugAttackGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.LadybugFlightGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.NoSpinFlyingPathNavigation;
-import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
-import com.unusualmodding.opposing_force.entity.utils.AttackState;
-import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
+import com.unusualmodding.opposing_force.entity.base.OPMonster;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -42,11 +40,9 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
 @SuppressWarnings("deprecation")
-public class Ladybug extends Monster implements FlyingAnimal, AttackState, EliteVariant {
+public class Ladybug extends OPMonster implements FlyingAnimal {
 
     private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(Ladybug.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Ladybug.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> TWICE_STABBED = SynchedEntityData.defineId(Ladybug.class, EntityDataSerializers.BOOLEAN);
 
     public boolean isLandNavigator;
     public int flightTicks = 0;
@@ -61,7 +57,7 @@ public class Ladybug extends Monster implements FlyingAnimal, AttackState, Elite
 
     private int bashTicks;
 
-    public Ladybug(EntityType<? extends Monster> entityType, Level level) {
+    public Ladybug(EntityType<? extends OPMonster> entityType, Level level) {
         super(entityType, level);
         this.switchNavigator(false);
         this.setMaxUpStep(1.0F);
@@ -148,15 +144,14 @@ public class Ladybug extends Monster implements FlyingAnimal, AttackState, Elite
     public void tick() {
         super.tick();
 
-        if (this.level().isClientSide) this.setupAnimationStates();
-
         if (this.bashTicks > 0) bashTicks--;
         if (this.bashTicks == 0 && this.getPose() == OPPoses.ATTACKING.get()) this.setPose(Pose.STANDING);
 
         this.tickFlight();
     }
 
-    private void setupAnimationStates() {
+    @Override
+    public void setupAnimationStates() {
         if (this.bashTicks == 0 && (this.bashAnimationState.isStarted() || this.airBashAnimationState.isStarted())) {
             this.bashAnimationState.stop();
             this.airBashAnimationState.stop();
@@ -218,30 +213,6 @@ public class Ladybug extends Monster implements FlyingAnimal, AttackState, Elite
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(FLYING, false);
-        this.entityData.define(ATTACK_STATE, 0);
-        this.entityData.define(TWICE_STABBED, false);
-    }
-
-    @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
-        super.addAdditionalSaveData(compoundTag);
-        compoundTag.putBoolean("TwiceStabbed", this.isElite());
-    }
-
-    @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
-        super.readAdditionalSaveData(compoundTag);
-        this.setElite(compoundTag.getBoolean("TwiceStabbed"));
-    }
-
-    @Override
-    public int getAttackState() {
-        return this.entityData.get(ATTACK_STATE);
-    }
-
-    @Override
-    public void setAttackState(int attackState) {
-        this.entityData.set(ATTACK_STATE, attackState);
     }
 
     @Override
@@ -251,16 +222,6 @@ public class Ladybug extends Monster implements FlyingAnimal, AttackState, Elite
 
     public void setFlying(boolean flying) {
         this.entityData.set(FLYING, flying);
-    }
-
-    @Override
-    public boolean isElite() {
-        return this.entityData.get(TWICE_STABBED);
-    }
-
-    @Override
-    public void setElite(boolean elite) {
-        this.entityData.set(TWICE_STABBED, elite);
     }
 
     @Override

@@ -48,7 +48,7 @@ public abstract class SummonableMonster extends TameableMonster {
 
     @Override
     public boolean doHurtTarget(@NotNull Entity entity) {
-        float damage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * this.getSummonDamage();
+        float damage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + this.getSummonDamage();
         float knockback = (float) this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
         if (entity instanceof LivingEntity livingEntity) {
             damage += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), livingEntity.getMobType());

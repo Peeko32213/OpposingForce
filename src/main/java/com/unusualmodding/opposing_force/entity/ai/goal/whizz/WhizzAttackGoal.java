@@ -37,22 +37,22 @@ public class WhizzAttackGoal extends AttackGoal {
             this.whizz.lookAt(target, 30F, 30F);
             this.whizz.getLookControl().setLookAt(target, 30F, 30F);
 
-            if (this.whizz.isAttacking()) {
+            if (this.whizz.getAttackState() == 1) {
                 this.timer++;
                 if (this.timer == 1) this.whizz.setPose(OPPoses.ATTACKING.get());
                 if (this.timer == 15) {
-                    if (this.whizz.distanceTo(target) < this.getAttackReachSqr(target)) {
+                    if (this.isInAttackRange(target, 1.5D)) {
                         this.whizz.doHurtTarget(target);
                         this.whizz.swing(InteractionHand.MAIN_HAND);
                     }
                 }
                 if (this.timer == 24) {
                     this.timer = 0;
-                    this.whizz.setAttacking(false);
+                    this.whizz.setAttackState(0);
                 }
             } else {
                 if (distance <= this.getAttackReachSqr(target)) {
-                    this.whizz.setAttacking(true);
+                    this.whizz.setAttackState(1);
                 }
             }
         }

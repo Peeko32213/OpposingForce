@@ -5,7 +5,7 @@ import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.entity.ai.goal.frowzy.FrowzyAttackGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.frowzy.FrowzyAttackTurtleEggGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.frowzy.FrowzyLeapGoal;
-import com.unusualmodding.opposing_force.entity.utils.AttackState;
+import com.unusualmodding.opposing_force.entity.base.OPMonster;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
@@ -35,7 +35,6 @@ import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
@@ -59,10 +58,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class Frowzy extends Monster implements AttackState, VariantHolder<Frowzy.FrowzyVariant> {
+public class Frowzy extends OPMonster implements VariantHolder<Frowzy.FrowzyVariant> {
 
     private static final EntityDataAccessor<Boolean> IS_BABY = SynchedEntityData.defineId(Frowzy.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Frowzy.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(Frowzy.class, EntityDataSerializers.INT);
 
     private static final UUID BABY_SPEED_MODIFIER_UUID = UUID.fromString("B9766B59-9566-4402-BC1F-2EE2A276D836");
@@ -80,7 +78,7 @@ public class Frowzy extends Monster implements AttackState, VariantHolder<Frowzy
 
     private int attackTicks;
 
-    public Frowzy(EntityType<? extends Monster> entityType, Level level) {
+    public Frowzy(EntityType<? extends OPMonster> entityType, Level level) {
         super(entityType, level);
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.DANGER_POWDER_SNOW, 0.0F);
@@ -190,7 +188,6 @@ public class Frowzy extends Monster implements AttackState, VariantHolder<Frowzy
         if (this.jumpCooldown > 0) jumpCooldown--;
 
         if (this.level().isClientSide) {
-            this.setupAnimationStates();
             if (this.isAggressive() && this.isAlive()) {
                 OpposingForce.PROXY.playWorldSound(this, (byte) 3);
             }
@@ -200,7 +197,8 @@ public class Frowzy extends Monster implements AttackState, VariantHolder<Frowzy
         if (attackTicks == 0 && this.getPose() == OPPoses.ATTACKING.get()) this.setPose(Pose.STANDING);
     }
 
-    private void setupAnimationStates() {
+    @Override
+    public void setupAnimationStates() {
         if (attackTicks == 0 && (this.attack1AnimationState.isStarted() || this.attack2AnimationState.isStarted())) {
             this.attack1AnimationState.stop();
             this.attack2AnimationState.stop();
@@ -256,7 +254,6 @@ public class Frowzy extends Monster implements AttackState, VariantHolder<Frowzy
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(IS_BABY, false);
-        this.entityData.define(ATTACK_STATE, 0);
         this.entityData.define(VARIANT, FrowzyVariant.BLUE.getId());
     }
 
@@ -265,7 +262,6 @@ public class Frowzy extends Monster implements AttackState, VariantHolder<Frowzy
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putBoolean("IsBaby", this.isBaby());
         compoundTag.putBoolean("CanBreakDoors", this.canBreakDoors());
-        compoundTag.putInt("AttackState", this.getAttackState());
         compoundTag.putInt("Variant", this.getVariant().getId());
     }
 
@@ -274,7 +270,6 @@ public class Frowzy extends Monster implements AttackState, VariantHolder<Frowzy
         super.readAdditionalSaveData(compoundTag);
         this.setBaby(compoundTag.getBoolean("IsBaby"));
         this.setCanBreakDoors(compoundTag.getBoolean("CanBreakDoors"));
-        this.setAttackState(compoundTag.getInt("AttackState"));
         this.setVariant(FrowzyVariant.byId(compoundTag.getInt("Variant")));
     }
 
@@ -328,16 +323,6 @@ public class Frowzy extends Monster implements AttackState, VariantHolder<Frowzy
             this.goalSelector.removeGoal(this.breakDoorGoal);
             this.canBreakDoors = false;
         }
-    }
-
-    @Override
-    public int getAttackState() {
-        return this.entityData.get(ATTACK_STATE);
-    }
-
-    @Override
-    public void setAttackState(int attackState) {
-        this.entityData.set(ATTACK_STATE, attackState);
     }
 
     @Override

@@ -1,9 +1,7 @@
 package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.entity.ai.goal.TartAttackGoal;
-import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
-import com.unusualmodding.opposing_force.entity.utils.AttackState;
-import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
+import com.unusualmodding.opposing_force.entity.base.OPMonster;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
@@ -11,8 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
@@ -32,7 +28,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -45,10 +40,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public class Tart extends Monster implements AttackState, EliteVariant {
-
-    private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Tart.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> GREEN = SynchedEntityData.defineId(Tart.class, EntityDataSerializers.BOOLEAN);
+public class Tart extends OPMonster {
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState sitAnimationState = new AnimationState();
@@ -57,7 +49,7 @@ public class Tart extends Monster implements AttackState, EliteVariant {
 
     private int attackTicks;
 
-    public Tart(EntityType<? extends Monster> entityType, Level level) {
+    public Tart(EntityType<? extends OPMonster> entityType, Level level) {
         super(entityType, level);
         this.setPathfindingMalus(BlockPathTypes.LEAVES, 0.0F);
         this.moveControl = new TartMoveControl(this);
@@ -79,11 +71,6 @@ public class Tart extends Monster implements AttackState, EliteVariant {
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
-    }
-
-    @Override
-    protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
-        return new SmoothGroundPathNavigation(this, level);
     }
 
     @Override
@@ -118,13 +105,10 @@ public class Tart extends Monster implements AttackState, EliteVariant {
 
         if (attackTicks > 0) attackTicks--;
         if (attackTicks == 0 && this.getPose() == OPPoses.ATTACKING.get()) this.setPose(Pose.STANDING);
-
-        if (this.level().isClientSide) {
-            this.setupAnimationStates();
-        }
     }
 
-    private void setupAnimationStates() {
+    @Override
+    public void setupAnimationStates() {
         this.idleAnimationState.animateWhen(this.getPose() == Pose.STANDING, this.tickCount);
     }
 
@@ -147,45 +131,6 @@ public class Tart extends Monster implements AttackState, EliteVariant {
             }
         }
         super.onSyncedDataUpdated(entityDataAccessor);
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ATTACK_STATE, 0);
-        this.entityData.define(GREEN, false);
-    }
-
-    @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
-        super.addAdditionalSaveData(compoundTag);
-        compoundTag.putBoolean("Green", this.isElite());
-    }
-
-    @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
-        super.readAdditionalSaveData(compoundTag);
-        this.setElite(compoundTag.getBoolean("Green"));
-    }
-
-    @Override
-    public int getAttackState() {
-        return this.entityData.get(ATTACK_STATE);
-    }
-
-    @Override
-    public void setAttackState(int attackState) {
-        this.entityData.set(ATTACK_STATE, attackState);
-    }
-
-    @Override
-    public boolean isElite() {
-        return this.entityData.get(GREEN);
-    }
-
-    @Override
-    public void setElite(boolean elite) {
-        this.entityData.set(GREEN, elite);
     }
 
     @Override

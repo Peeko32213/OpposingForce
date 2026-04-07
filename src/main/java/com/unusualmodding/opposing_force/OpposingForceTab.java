@@ -93,7 +93,7 @@ public class OpposingForceTab {
                     output.accept(OPItems.INFERNO_STAFF.get());
 
                     // Ladybug
-//                    output.accept(OPItems.LADYBUG_HUSK.get());
+                    output.accept(OPItems.LADYBUG_HUSK.get());
 
                     // Rambler
                     output.accept(OPItems.HEAVY_BONE.get());

@@ -138,7 +138,7 @@ public class DicerModel extends OPModel<Dicer> {
 	public void setupAnim(Dicer entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 
-		if (entity.getPose() != OPPoses.ATTACKING.get() && entity.getPose() != OPPoses.CROSS_SLASHING.get() && entity.getPose() != OPPoses.LASERING.get()) {
+		if (entity.getPose() != OPPoses.CROSS_SLASHING.get() && entity.getPose() != OPPoses.LASERING.get()) {
 			if (entity.isRunning()) this.animateWalk(DicerAnimations.RUN, limbSwing, limbSwingAmount, 1, 2);
 			else this.animateWalk(DicerAnimations.WALK, limbSwing, limbSwingAmount, 2, 4);
 		}

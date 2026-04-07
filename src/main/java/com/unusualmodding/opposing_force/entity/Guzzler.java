@@ -3,19 +3,13 @@ package com.unusualmodding.opposing_force.entity;
 import com.google.common.collect.Sets;
 import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.entity.ai.goal.GuzzlerAttackGoal;
-import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
-import com.unusualmodding.opposing_force.entity.utils.AttackState;
+import com.unusualmodding.opposing_force.entity.base.OPMonster;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.utils.OPMath;
-import com.unusualmodding.opposing_force.world.OPWorldData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
@@ -32,8 +26,6 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.level.Level;
@@ -47,15 +39,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
-public class Guzzler extends Monster implements AttackState {
-
-    private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Guzzler.class, EntityDataSerializers.INT);
+public class Guzzler extends OPMonster {
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState spewAnimationState = new AnimationState();
     public final AnimationState stompAnimationState = new AnimationState();
 
-    public Guzzler(EntityType<? extends Monster> pEntityType, Level pLevel) {
+    public Guzzler(EntityType<? extends OPMonster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.setMaxUpStep(1);
         this.xpReward = 15;
@@ -78,11 +68,6 @@ public class Guzzler extends Monster implements AttackState {
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
-    }
-
-    @Override
-    protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
-        return new SmoothGroundPathNavigation(this, level);
     }
 
     @Override
@@ -144,53 +129,10 @@ public class Guzzler extends Monster implements AttackState {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-
-        if (this.level().isClientSide) {
-            this.setupAnimationStates();
-        }
-    }
-
-    private void setupAnimationStates() {
+    public void setupAnimationStates() {
         this.idleAnimationState.animateWhen(this.getAttackState() == 0, this.tickCount);
         this.spewAnimationState.animateWhen(this.getAttackState() == 1, this.tickCount);
         this.stompAnimationState.animateWhen(this.getAttackState() == 2, this.tickCount);
-    }
-
-    @Override
-    public void calculateEntityAnimation(boolean flying) {
-        float pos = (float) Mth.length(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
-        float speed = Math.min(pos * 10.0F, 1.0F);
-        this.walkAnimation.update(speed, 0.4F);
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ATTACK_STATE, 0);
-    }
-
-    @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
-        super.addAdditionalSaveData(compoundTag);
-        compoundTag.putInt("AttackState", this.getAttackState());
-    }
-
-    @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
-        super.readAdditionalSaveData(compoundTag);
-        this.setAttackState(compoundTag.getInt("AttackState"));
-    }
-
-    @Override
-    public int getAttackState() {
-        return this.entityData.get(ATTACK_STATE);
-    }
-
-    @Override
-    public void setAttackState(int attackState) {
-        this.entityData.set(ATTACK_STATE, attackState);
     }
 
     private void guzzleEffect() {
@@ -247,13 +189,7 @@ public class Guzzler extends Monster implements AttackState {
         return 140;
     }
 
-    @SuppressWarnings("unused")
     public static boolean canGuzzlerSpawn(EntityType<Guzzler> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        /*if(level instanceof Level level1) {
-            OPWorldData worldData = OPWorldData.get(level1);
-            if (!worldData.hasNetherBeenEnteredBefore()) return false;
-        }
-         */
         return pos.getY() <= OpposingForceConfig.GUZZLER_SPAWN_HEIGHT.get() && level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawnNoSkylight(level, pos, random) && checkMobSpawnRules(entityType, level, spawnType, pos, random);
     }
 

@@ -4,7 +4,7 @@ import com.unusualmodding.opposing_force.entity.ai.goal.MonsterFollowOwnerGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.MonsterOwnerHurtByTargetGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.MonsterOwnerHurtTargetGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.MonsterSitWhenOrderedToGoal;
-import com.unusualmodding.opposing_force.entity.base.SummonableMonster;
+import com.unusualmodding.opposing_force.entity.base.OPMonster;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -40,7 +40,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.IntFunction;
 
 @SuppressWarnings("deprecation")
-public class FireSlime extends SummonableMonster implements VariantHolder<FireSlime.FireSlimeVariant> {
+public class FireSlime extends OPMonster implements VariantHolder<FireSlime.FireSlimeVariant> {
 
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(FireSlime.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> FROM_GUZZLER = SynchedEntityData.defineId(FireSlime.class, EntityDataSerializers.BOOLEAN);
@@ -50,7 +50,7 @@ public class FireSlime extends SummonableMonster implements VariantHolder<FireSl
     public float oSquish;
     private boolean wasOnGround;
 
-    public FireSlime(EntityType<? extends SummonableMonster> entityType, Level level) {
+    public FireSlime(EntityType<? extends OPMonster> entityType, Level level) {
         super(entityType, level);
         this.moveControl = new FireSlimeMoveControl(this);
     }

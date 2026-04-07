@@ -4,8 +4,7 @@ import com.unusualmodding.opposing_force.OpposingForce;
 import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.entity.ai.goal.TerrorAttackGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.TerrorRandomStrollGoal;
-import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
-import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
+import com.unusualmodding.opposing_force.entity.base.OPMonster;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.utils.SmoothAnimationState;
@@ -39,7 +38,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -57,13 +55,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class Terror extends Monster implements EliteVariant {
+public class Terror extends OPMonster {
 
     private static final EntityDataAccessor<Boolean> SAWING = SynchedEntityData.defineId(Terror.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> HAS_LEGS = SynchedEntityData.defineId(Terror.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(Terror.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> FLOP_TIME = SynchedEntityData.defineId(Terror.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> ANTEDILUVIAN = SynchedEntityData.defineId(Terror.class, EntityDataSerializers.BOOLEAN);
 
     private static final EntityDimensions FISH_OUT_OF_WATER_DIMENSIONS = EntityDimensions.scalable(1.3F, 1.7F);
 
@@ -94,7 +90,7 @@ public class Terror extends Monster implements EliteVariant {
         return new WaterBoundPathNavigation(this, level);
     }
 
-    public Terror(EntityType<? extends Monster> entityType, Level level) {
+    public Terror(EntityType<? extends OPMonster> entityType, Level level) {
         super(entityType, level);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
@@ -123,12 +119,12 @@ public class Terror extends Monster implements EliteVariant {
     protected void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new SmoothGroundPathNavigation(this, level());
+            this.navigation = this.createNavigation(this.level());
             this.lookControl = new LookControl(this);
             this.isLandNavigator = true;
         } else {
             this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.2F, 0.1F, false);
-            this.navigation = new AmphibiousPathNavigation(this, level());
+            this.navigation = new AmphibiousPathNavigation(this, this.level());
             this.lookControl = new SmoothSwimmingLookControl(this, 10);
             this.isLandNavigator = false;
         }
@@ -196,7 +192,6 @@ public class Terror extends Monster implements EliteVariant {
     public void tick () {
         super.tick();
         if (this.level().isClientSide) {
-            this.setupAnimationStates();
             if (this.isAggressive() && this.isAlive() && this.getPose() == OPPoses.SAWING.get()) {
                 OpposingForce.PROXY.playWorldSound(this, (byte) 5);
             }
@@ -260,7 +255,8 @@ public class Terror extends Monster implements EliteVariant {
         if (spinSawCooldown > 0) spinSawCooldown--;
     }
 
-    private void setupAnimationStates() {
+    @Override
+    public void setupAnimationStates() {
         if (growLegsTicks == 0 && this.growLegsAnimationState.isStarted()) this.growLegsAnimationState.stop();
         if (retractLegsTicks == 0 && this.retractLegsAnimationState.isStarted()) this.retractLegsAnimationState.stop();
         if (startSawingTicks == 0 && this.startSawingAnimationState.isStarted()) this.startSawingAnimationState.stop();
@@ -365,9 +361,7 @@ public class Terror extends Monster implements EliteVariant {
         super.defineSynchedData();
         this.entityData.define(SAWING, false);
         this.entityData.define(HAS_LEGS, false);
-        this.entityData.define(RUNNING, false);
         this.entityData.define(FLOP_TIME, 20 + this.getRandom().nextInt(2 * 10));
-        this.entityData.define(ANTEDILUVIAN, false);
     }
 
     @Override
@@ -385,17 +379,6 @@ public class Terror extends Monster implements EliteVariant {
         this.setSawing(compoundTag.getBoolean("Sawing"));
         this.setHasLegs(compoundTag.getBoolean("HasLegs"));
         this.setFlopTime(compoundTag.getInt("FlopTime"));
-        this.setElite(compoundTag.getBoolean("Antediluvian"));
-    }
-
-    @Override
-    public boolean isElite() {
-        return this.entityData.get(ANTEDILUVIAN);
-    }
-
-    @Override
-    public void setElite(boolean elite) {
-        this.entityData.set(ANTEDILUVIAN, elite);
     }
 
     public boolean isSawing() {
@@ -412,14 +395,6 @@ public class Terror extends Monster implements EliteVariant {
 
     public void setHasLegs(boolean hasLegs) {
         this.entityData.set(HAS_LEGS, hasLegs);
-    }
-
-    public boolean isRunning() {
-        return this.entityData.get(RUNNING);
-    }
-
-    public void setRunning(boolean running) {
-        this.entityData.set(RUNNING, running);
     }
 
     public int getFlopTime() {
@@ -444,10 +419,6 @@ public class Terror extends Monster implements EliteVariant {
     @Override
     protected @NotNull SoundEvent getDeathSound() {
         return OPSoundEvents.TERROR_DEATH.get();
-    }
-
-    protected SoundEvent getFlopSound() {
-        return OPSoundEvents.TERROR_FLOP.get();
     }
 
     @Override

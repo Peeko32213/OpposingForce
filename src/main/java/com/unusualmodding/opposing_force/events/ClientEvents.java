@@ -85,7 +85,6 @@ public final class ClientEvents {
         event.registerEntityRenderer(OPEntities.GUZZLER.get(), GuzzlerRenderer::new);
         event.registerEntityRenderer(OPEntities.HANGING_SPIDER.get(), HangingSpiderRenderer::new);
         event.registerEntityRenderer(OPEntities.LADYBUG.get(), LadybugRenderer::new);
-//        event.registerEntityRenderer(OPEntities.NYMPH.get(), NymphRenderer::new);
         event.registerEntityRenderer(OPEntities.KINETIC_BOMB.get(), BombRenderer::new);
         event.registerEntityRenderer(OPEntities.LIGHTNING_BOMB.get(), BombRenderer::new);
         event.registerEntityRenderer(OPEntities.RAMBLER.get(), RamblerRenderer::new);
@@ -116,7 +115,6 @@ public final class ClientEvents {
         event.registerLayerDefinition(OPModelLayers.GUZZLER, GuzzlerModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.HANGING_SPIDER, HangingSpiderModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.LADYBUG, LadybugModel::createBodyLayer);
-        event.registerLayerDefinition(OPModelLayers.NYMPH, NymphModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.RAMBLER, RamblerModel::createBodyLayer);
         event.registerLayerDefinition(OPModelLayers.RAMBLER_SKULL, RamblerSkullModel::createSkullLayer);
         event.registerLayerDefinition(OPModelLayers.SKYVERN, SkyvernModel::createBodyLayer);

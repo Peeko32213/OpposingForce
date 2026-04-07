@@ -2,7 +2,7 @@ package com.unusualmodding.opposing_force.entity;
 
 import com.unusualmodding.opposing_force.OpposingForceConfig;
 import com.unusualmodding.opposing_force.entity.ai.goal.TremblerRollGoal;
-import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
+import com.unusualmodding.opposing_force.entity.base.OPMonster;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.registry.tags.OPDamageTypeTags;
 import net.minecraft.core.BlockPos;
@@ -21,15 +21,11 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.BodyRotationControl;
-import net.minecraft.world.entity.ai.control.LookControl;
-import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
@@ -44,27 +40,19 @@ import java.time.LocalDate;
 import java.time.Month;
 
 @SuppressWarnings("deprecation")
-public class Trembler extends Monster implements EliteVariant {
+public class Trembler extends OPMonster {
 
     private static final EntityDataAccessor<Boolean> ROLLING = SynchedEntityData.defineId(Trembler.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Integer> ROLL_COOLDOWN = SynchedEntityData.defineId(Trembler.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> STUNNED_TICKS = SynchedEntityData.defineId(Trembler.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> TURBO = SynchedEntityData.defineId(Trembler.class, EntityDataSerializers.BOOLEAN);
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState rollAnimationState = new AnimationState();
     public final AnimationState stunnedAnimationState = new AnimationState();
 
-    public Trembler(EntityType<? extends Monster> entityType, Level level) {
+    public Trembler(EntityType<? extends OPMonster> entityType, Level level) {
         super(entityType, level);
-        this.moveControl = new TremblerMoveControl();
-        this.lookControl = new TremblerLookControl(this);
         this.xpReward = 10;
-    }
-
-    @Override
-    protected @NotNull BodyRotationControl createBodyControl() {
-        return new TremblerBodyRotationControl(this);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -85,6 +73,16 @@ public class Trembler extends Monster implements EliteVariant {
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
+
+    @Override
+    public boolean refuseToMove() {
+        return this.getStunnedTicks() > 0;
+    }
+
+    @Override
+    public boolean refuseToLook() {
+        return this.getStunnedTicks() > 0;
     }
 
     @Override
@@ -116,7 +114,8 @@ public class Trembler extends Monster implements EliteVariant {
         }
     }
 
-    private void setupAnimationStates() {
+    @Override
+    public void setupAnimationStates() {
         this.idleAnimationState.animateWhen(!this.isRolling(), this.tickCount);
         this.rollAnimationState.animateWhen(this.isRolling(), this.tickCount);
         this.stunnedAnimationState.animateWhen(this.getStunnedTicks() > 0, this.tickCount);
@@ -193,19 +192,6 @@ public class Trembler extends Monster implements EliteVariant {
         this.entityData.define(ROLLING, false);
         this.entityData.define(ROLL_COOLDOWN, 60);
         this.entityData.define(STUNNED_TICKS, 0);
-        this.entityData.define(TURBO, false);
-    }
-
-    @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
-        super.addAdditionalSaveData(compoundTag);
-        compoundTag.putBoolean("Turbo", this.isElite());
-    }
-
-    @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
-        super.readAdditionalSaveData(compoundTag);
-        this.setElite(compoundTag.getBoolean("Turbo"));
     }
 
     public boolean isRolling() {
@@ -238,16 +224,6 @@ public class Trembler extends Monster implements EliteVariant {
 
     public void stunnedTicks() {
         this.entityData.set(STUNNED_TICKS, 54);
-    }
-
-    @Override
-    public boolean isElite() {
-        return this.entityData.get(TURBO);
-    }
-
-    @Override
-    public void setElite(boolean elite) {
-        this.entityData.set(TURBO, elite);
     }
 
     @Override
@@ -314,45 +290,6 @@ public class Trembler extends Monster implements EliteVariant {
                 int lightTest = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
                 return lightTest <= dimension.monsterSpawnLightTest().sample(random);
             }
-        }
-    }
-
-    private static class TremblerLookControl extends LookControl {
-
-        protected final Trembler trembler;
-
-        TremblerLookControl(Trembler trembler) {
-            super(trembler);
-            this.trembler = trembler;
-        }
-
-        @Override
-        public void tick() {
-            if (this.trembler.getStunnedTicks() <= 0) super.tick();
-        }
-    }
-
-    private class TremblerBodyRotationControl extends BodyRotationControl {
-
-        public TremblerBodyRotationControl(Trembler trembler) {
-            super(trembler);
-        }
-
-        @Override
-        public void clientTick() {
-            if (Trembler.this.getStunnedTicks() <= 0) super.clientTick();
-        }
-    }
-
-    private class TremblerMoveControl extends MoveControl {
-
-        public TremblerMoveControl() {
-            super(Trembler.this);
-        }
-
-        @Override
-        public void tick() {
-            if (Trembler.this.getStunnedTicks() <= 0) super.tick();
         }
     }
 }

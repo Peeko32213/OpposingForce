@@ -105,7 +105,7 @@ public class DicerAttackGoal extends AttackGoal {
         this.timer++;
         LivingEntity target = dicer.getTarget();
         if (timer == 1) dicer.setPose(OPPoses.CROSS_SLASHING.get());
-        if (timer < 21) {
+        if (timer < 19) {
             this.dicer.lookAt(target, 30F, 30F);
             this.dicer.getLookControl().setLookAt(target, 30F, 30F);
         }
@@ -124,7 +124,6 @@ public class DicerAttackGoal extends AttackGoal {
     protected void tickLaser() {
         this.timer++;
         LivingEntity target = dicer.getTarget();
-        if (timer == 1) dicer.setPose(OPPoses.LASERING.get());
         if (timer < 5) {
             this.dicer.lookAt(target, 30F, 30F);
             this.dicer.getLookControl().setLookAt(target, 30F, 30F);
@@ -133,6 +132,8 @@ public class DicerAttackGoal extends AttackGoal {
             this.dicer.yRotO = dicer.getYRot();
             this.dicer.yBodyRotO = dicer.getYRot();
         }
+
+        if (timer == 5) dicer.setPose(OPPoses.LASERING.get());
 
         if (timer > 5) {
             this.dicer.getLookControl().setLookAt(target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(), 1.0F, 90.0F);

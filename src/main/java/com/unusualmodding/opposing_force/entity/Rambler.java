@@ -3,7 +3,7 @@ package com.unusualmodding.opposing_force.entity;
 import com.unusualmodding.opposing_force.entity.ai.goal.rambler.RamblerFlailGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.rambler.RamblerJabGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
-import com.unusualmodding.opposing_force.entity.utils.AttackState;
+import com.unusualmodding.opposing_force.entity.base.OPMonster;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPItems;
@@ -32,7 +32,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -44,14 +43,12 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
 @SuppressWarnings("deprecation")
-public class Rambler extends Monster implements AttackState {
+public class Rambler extends OPMonster {
 
     private static final EntityDataAccessor<Boolean> FLAILING = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> ROLLING = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Integer> MIDDLE_SKULL = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> LEFT_SKULL = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> RIGHT_SKULL = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Rambler.class, EntityDataSerializers.INT);
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState jab1AnimationState = new AnimationState();
@@ -71,7 +68,7 @@ public class Rambler extends Monster implements AttackState {
     private int jabRushTicks;
     public int flailCooldown = 200;
 
-    public Rambler(EntityType<? extends Monster> entityType, Level level) {
+    public Rambler(EntityType<? extends OPMonster> entityType, Level level) {
         super(entityType, level);
         this.xpReward = 10;
     }
@@ -124,8 +121,6 @@ public class Rambler extends Monster implements AttackState {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(FLAILING, false);
-        this.entityData.define(ROLLING, false);
-        this.entityData.define(ATTACK_STATE, 0);
         this.entityData.define(MIDDLE_SKULL, 0);
         this.entityData.define(LEFT_SKULL, 0);
         this.entityData.define(RIGHT_SKULL, 0);
@@ -145,16 +140,6 @@ public class Rambler extends Monster implements AttackState {
         this.setMiddleSkull(compoundTag.getInt("MiddleSkull"));
         this.setLeftSkull(compoundTag.getInt("LeftSkull"));
         this.setRightSkull(compoundTag.getInt("RightSkull"));
-    }
-
-    @Override
-    public int getAttackState() {
-        return this.entityData.get(ATTACK_STATE);
-    }
-
-    @Override
-    public void setAttackState(int attackState) {
-        this.entityData.set(ATTACK_STATE, attackState);
     }
 
     public boolean isFlailing() {
@@ -195,8 +180,6 @@ public class Rambler extends Monster implements AttackState {
 
         if (flailCooldown > 0) this.flailCooldown--;
 
-        if (this.level().isClientSide) this.setupAnimationStates();
-
         // animation stuff
         if (startFlailingTicks > 0) this.startFlailingTicks--;
         if (stopFlailingTicks > 0) this.stopFlailingTicks--;
@@ -210,7 +193,8 @@ public class Rambler extends Monster implements AttackState {
         if (jabRushTicks == 0 && this.getPose() == OPPoses.JAB_RUSH.get()) this.setPose(Pose.STANDING);
     }
 
-    private void setupAnimationStates() {
+    @Override
+    public void setupAnimationStates() {
         if (startFlailingTicks == 0 && this.flailStartAnimationState.isStarted()) this.flailStartAnimationState.stop();
         if (stopFlailingTicks == 0 && this.flailEndAnimationState.isStarted()) this.flailEndAnimationState.stop();
         if (recoveringTicks == 0 && this.recoverAnimationState.isStarted()) this.recoverAnimationState.stop();

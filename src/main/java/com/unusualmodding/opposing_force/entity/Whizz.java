@@ -5,7 +5,7 @@ import com.unusualmodding.opposing_force.entity.ai.goal.*;
 import com.unusualmodding.opposing_force.entity.ai.goal.whizz.WhizzAttackGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.whizz.WhizzSwarmGoal;
 import com.unusualmodding.opposing_force.entity.ai.goal.whizz.WhizzWanderGoal;
-import com.unusualmodding.opposing_force.entity.base.SummonableMonster;
+import com.unusualmodding.opposing_force.entity.base.OPMonster;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPBlocks;
 import com.unusualmodding.opposing_force.registry.OPItems;
@@ -52,9 +52,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public class Whizz extends SummonableMonster {
+public class Whizz extends OPMonster {
 
-    private static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> CAPTURED = SynchedEntityData.defineId(Whizz.class, EntityDataSerializers.BOOLEAN);
 
     @Nullable
@@ -71,7 +70,7 @@ public class Whizz extends SummonableMonster {
 
     private int attackTicks;
 
-    public Whizz(EntityType<? extends SummonableMonster> entityType, Level level) {
+    public Whizz(EntityType<? extends OPMonster> entityType, Level level) {
         super(entityType, level);
         this.xpReward = 5;
         this.moveControl = new FlyingMoveControl(this, 20, true);
@@ -154,7 +153,6 @@ public class Whizz extends SummonableMonster {
         }
 
         if (this.level().isClientSide) {
-            this.setupAnimationStates();
             if (this.isAlive()) {
                 OpposingForce.PROXY.playWorldSound(this, (byte) 2);
             }
@@ -179,7 +177,8 @@ public class Whizz extends SummonableMonster {
         }
     }
 
-    private void setupAnimationStates() {
+    @Override
+    public void setupAnimationStates() {
         if (attackTicks == 0 && this.attackAnimationState.isStarted()) this.attackAnimationState.stop();
         this.flyingAnimationState.animateWhen(this.isAlive(), this.tickCount);
     }
@@ -215,7 +214,7 @@ public class Whizz extends SummonableMonster {
     }
 
     @Override
-    public boolean hurt(DamageSource source, float pAmount) {
+    public boolean hurt(@NotNull DamageSource source, float pAmount) {
         if (this.isInvulnerableTo(source)) {
             return false;
         } else {
@@ -255,21 +254,18 @@ public class Whizz extends SummonableMonster {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(ATTACKING, false);
         this.entityData.define(CAPTURED, false);
     }
 
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        compoundTag.putBoolean("Attacking", this.isAttacking());
         compoundTag.putBoolean("Captured", this.isCaptured());
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        this.setAttacking(compoundTag.getBoolean("Attacking"));
         this.setCaptured(compoundTag.getBoolean("Captured"));
     }
 
@@ -326,14 +322,6 @@ public class Whizz extends SummonableMonster {
                 this.spawnAtLocation(OPItems.WHIZZ_HEAD.get());
             }
         }
-    }
-
-    public boolean isAttacking() {
-        return this.entityData.get(ATTACKING);
-    }
-
-    public void setAttacking(boolean attacking) {
-        this.entityData.set(ATTACKING, attacking);
     }
 
     public boolean isCaptured() {
