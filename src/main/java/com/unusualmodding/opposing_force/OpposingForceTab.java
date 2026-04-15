@@ -116,7 +116,7 @@ public class OpposingForceTab {
 
                     // Skyvern
                     output.accept(OPItems.SKYVERN_CLAW.get());
-                    output.accept(OPItems.SKYVERN_EGG.get());
+//                    output.accept(OPItems.SKYVERN_EGG.get());
                     output.accept(OPItems.STRATO_BOW.get());
                     output.accept(OPItems.SKYVERN_HEAD.get());
 

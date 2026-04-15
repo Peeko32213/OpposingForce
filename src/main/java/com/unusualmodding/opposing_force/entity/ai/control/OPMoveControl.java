@@ -73,11 +73,11 @@ public class OPMoveControl extends MoveControl {
             this.mob.setZza(0.0F);
             return;
         }
-        float moveAngle = (float) (Mth.atan2(z, x) * (double) (180F / (float) Math.PI)) - 90.0F;
-        this.mob.setYRot(this.rotlerp(mob.getYRot(), moveAngle, 90.0F));
+        float newYRot = (float) Mth.wrapDegrees(Mth.atan2(z, x) * Mth.RAD_TO_DEG - 90);
+        this.mob.setYRot(this.rotlerp(mob.getYRot(), newYRot, 90.0F));
         this.mob.setSpeed((float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
         if (mob.isInWater()) {
-            mob.setSpeed(mob.getSpeed() * 2);
+            this.mob.setSpeed(mob.getSpeed() * 2);
         }
         BlockPos blockpos = mob.blockPosition();
         BlockState blockstate = mob.level().getBlockState(blockpos);

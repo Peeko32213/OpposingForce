@@ -1,17 +1,14 @@
 package com.unusualmodding.opposing_force.entity.ai.control;
 
 import com.unusualmodding.opposing_force.entity.base.OPMonster;
+import net.minecraft.world.entity.ai.control.BodyRotationControl;
 
-public class OPBodyRotationControl extends SmoothBodyRotationControl {
+public class OPBodyRotationControl extends BodyRotationControl {
 
     protected final OPMonster monster;
 
-    public OPBodyRotationControl(OPMonster mob) {
-        this(mob, 0.5F, 30.0F, 0.25F, 20.0F, 0.8F, 180.0F);
-    }
-
-    public OPBodyRotationControl(OPMonster monster, float bodyLagMoving, float bodyMaxMoving, float bodyLagStill, float bodyMaxStill, float headLag, float headMax) {
-        super(monster, bodyLagMoving, bodyMaxMoving, bodyLagStill, bodyMaxStill, headLag, headMax);
+    public OPBodyRotationControl(OPMonster monster) {
+        super(monster);
         this.monster = monster;
     }
 

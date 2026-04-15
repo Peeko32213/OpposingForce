@@ -5,6 +5,8 @@
 - Dicer now rotates less quickly when lasering
 - Reduced dicer cross slash attack range
 - Dicer now stops looking during cross slash charge up giving you a chance to dodge it
+- Fixed strato arrows killing servers
+- Removed skyvern egg
 - Many misc tweaks and fixes
 
 ## Version 2.0.3

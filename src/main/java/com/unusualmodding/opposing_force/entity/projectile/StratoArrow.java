@@ -14,17 +14,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class StratoArrow extends BaseArrow {
 
+    private boolean hasTouchedGround = false;
+
     public StratoArrow(EntityType<? extends BaseArrow> type, Level level) {
         super(type, level);
     }
 
     public StratoArrow(Level level, Entity shooter) {
         super(OPEntities.STRATO_ARROW.get(), level, shooter);
-    }
-
-    @Override
-    public boolean isNoGravity() {
-        return !this.isInWaterOrBubble();
     }
 
     @Override
@@ -53,21 +50,33 @@ public class StratoArrow extends BaseArrow {
         double y2 = this.getY() + y1;
         double z2 = this.getZ() + z1;
 
-        if (this.level().isClientSide) {
-            if (this.isCritArrow() && this.tickCount > 1) {
-                for (int i = 0; i < 2; i++) {
+        if (this.isInWaterOrBubble() && !this.inGround) {
+            this.setDeltaMovement(this.getDeltaMovement().add(0, -0.05F, 0));
+        }
+
+        if (this.level().isClientSide && !this.inGround) {
+            if (this.isCritArrow() && !this.isInWaterOrBubble() && this.tickCount > 1) {
+                for (int i = 0; i < 1; i++) {
                     this.level().addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), -x1 * 0.1D, -y1 * 0.1D, -z1 * 0.1D);
                 }
             }
-            if (this.isInWater()) {
+            if (this.isInWaterOrBubble() && this.tickCount > 1) {
                 for (int j = 0; j < 4; j++) {
                     this.level().addParticle(ParticleTypes.BUBBLE, x2 - x1 * 0.25D, y2 - y1 * 0.25D, z2 - z1 * 0.25D, x1, y1, z1);
                 }
             }
         }
 
-        if (this.tickCount > 300 && !this.inGround) {
+        if (this.tickCount > 150 && !this.inGround) {
             this.discard();
+        }
+
+        if (this.inGround && this.isNoGravity()) {
+            this.setNoGravity(false);
+            this.hasTouchedGround = true;
+        }
+        if (!this.inGround && !this.isNoGravity() && !this.hasTouchedGround) {
+            this.setNoGravity(true);
         }
     }
 
