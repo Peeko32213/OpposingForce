@@ -5,6 +5,7 @@ import com.unusualmodding.opposing_force.blocks.MobHeadBlock;
 import com.unusualmodding.opposing_force.blocks.WallMobHeadBlock;
 import com.unusualmodding.opposing_force.client.models.mob_heads.MobHeadModelBase;
 import com.unusualmodding.opposing_force.client.renderer.blocks.MobHeadBlockEntityRenderer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -85,7 +86,7 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
                 if (this.opposingForce$headModelBaseMap == null) {
                     this.opposingForce$headModelBaseMap =
                             MobHeadBlockEntityRenderer.createMobHeadRenderers(
-                                    net.minecraft.client.Minecraft.getInstance().getEntityModels()
+                                    Minecraft.getInstance().getEntityModels()
                             );
                 }
 
