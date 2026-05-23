@@ -38,6 +38,8 @@ public class ClientForgeEvents {
     private static float prevShakeAmount;
 
     public static final List<ScreenShakeEvent> SCREEN_SHAKE_EVENTS = new ArrayList<>();
+    public static final List<ScreenShakeEvent> PENDING_SCREEN_SHAKE_EVENTS = new ArrayList<>();
+
 
     @SubscribeEvent
     public void preRenderLiving(RenderLivingEvent.Pre event) {
@@ -149,19 +151,28 @@ public class ClientForgeEvents {
     @SubscribeEvent
     public void clientTick(TickEvent.ClientTickEvent event) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (event.phase == TickEvent.Phase.END) {
-            Entity cameraEntity = minecraft.getCameraEntity();
-            prevShakeAmount = shakeAmount;
-            float shake = 0.0F;
-            Iterator<ScreenShakeEvent> groundShakeMomentIterator = SCREEN_SHAKE_EVENTS.iterator();
-            while (groundShakeMomentIterator.hasNext()) {
-                ScreenShakeEvent groundShakeMoment = groundShakeMomentIterator.next();
-                groundShakeMoment.tick();
-                if (groundShakeMoment.isDone()) groundShakeMomentIterator.remove();
-                else shake = Math.max(shake, groundShakeMoment.getDegree(cameraEntity, 1.0F));
-            }
-            shakeAmount = shake * minecraft.options.screenEffectScale().get().floatValue();
+        if (event.phase != TickEvent.Phase.END)
+            return;
+
+        Entity cameraEntity = minecraft.getCameraEntity();
+        prevShakeAmount = shakeAmount;
+
+        if (!PENDING_SCREEN_SHAKE_EVENTS.isEmpty()) {
+            SCREEN_SHAKE_EVENTS.addAll(PENDING_SCREEN_SHAKE_EVENTS);
+            PENDING_SCREEN_SHAKE_EVENTS.clear();
         }
+
+        float shake = 0.0F;
+
+        Iterator<ScreenShakeEvent> groundShakeMomentIterator = SCREEN_SHAKE_EVENTS.iterator();
+        while (groundShakeMomentIterator.hasNext()) {
+            ScreenShakeEvent groundShakeMoment = groundShakeMomentIterator.next();
+            groundShakeMoment.tick();
+            if (groundShakeMoment.isDone()) groundShakeMomentIterator.remove();
+            else shake = Math.max(shake, groundShakeMoment.getDegree(cameraEntity, 1.0F));
+        }
+        shakeAmount = shake * minecraft.options.screenEffectScale().get().floatValue();
+
     }
 
     @SubscribeEvent

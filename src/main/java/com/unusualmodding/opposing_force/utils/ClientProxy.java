@@ -88,7 +88,7 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void screenShake(ScreenShakeEvent event) {
-        ClientForgeEvents.SCREEN_SHAKE_EVENTS.add(event);
+        ClientForgeEvents.PENDING_SCREEN_SHAKE_EVENTS.add(event);
     }
 
     @Override
