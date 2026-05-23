@@ -4,6 +4,6 @@
     "id": "opposing_force:dicer_head",
     "Count": 1
   },
-  "minTries": 2,
-  "maxTries": 4
+  "minTries": 4,
+  "maxTries": 8
 }
