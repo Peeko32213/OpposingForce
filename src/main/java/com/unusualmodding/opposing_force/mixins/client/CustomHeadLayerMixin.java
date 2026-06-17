@@ -5,6 +5,7 @@ import com.unusualmodding.opposing_force.blocks.MobHeadBlock;
 import com.unusualmodding.opposing_force.blocks.WallMobHeadBlock;
 import com.unusualmodding.opposing_force.client.models.mob_heads.MobHeadModelBase;
 import com.unusualmodding.opposing_force.client.renderer.blocks.MobHeadBlockEntityRenderer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -43,16 +44,17 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
     @Shadow @Final private float scaleX;
     @Shadow @Final private float scaleY;
     @Shadow @Final private float scaleZ;
-    @Unique private Map<MobHeadBlock.Type, MobHeadModelBase> opposingForce$headModelBaseMap;
+    @Unique
+    private Map<MobHeadBlock.Type, MobHeadModelBase> opposingForce$headModelBaseMap = null;
 
     public CustomHeadLayerMixin(RenderLayerParent<T, M> renderLayerParent) {
         super(renderLayerParent);
     }
 
-    @Inject(at = @At("TAIL"), method = "<init>(Lnet/minecraft/client/renderer/entity/RenderLayerParent;Lnet/minecraft/client/model/geom/EntityModelSet;FFFLnet/minecraft/client/renderer/ItemInHandRenderer;)V")
-    private void opposingForce$renderHeads(RenderLayerParent parent, EntityModelSet modelSet, float v, float v1, float v2, ItemInHandRenderer handRenderer, CallbackInfo ci) {
-        this.opposingForce$headModelBaseMap = MobHeadBlockEntityRenderer.createMobHeadRenderers(modelSet);
-    }
+    //@Inject(at = @At("TAIL"), method = "<init>(Lnet/minecraft/client/renderer/entity/RenderLayerParent;Lnet/minecraft/client/model/geom/EntityModelSet;FFFLnet/minecraft/client/renderer/ItemInHandRenderer;)V")
+    //private void opposingForce$renderHeads(RenderLayerParent parent, EntityModelSet modelSet, float v, float v1, float v2, ItemInHandRenderer handRenderer, CallbackInfo ci) {
+    //    this.opposingForce$headModelBaseMap = MobHeadBlockEntityRenderer.createMobHeadRenderers(modelSet);
+    //}
 
     @Inject(at = @At("HEAD"), method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V", cancellable = true)
     private void opposingForce$renderHeads(PoseStack poseStack, MultiBufferSource bufferSource, int i, T t, float v, float v1, float v2, float v3, float v4, float v5, CallbackInfo ci) {
@@ -61,7 +63,7 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
         if (!itemstack.isEmpty() && item instanceof BlockItem) {
             Block block = ((BlockItem)item).getBlock();
             if (block instanceof MobHeadBlock || block instanceof WallMobHeadBlock) {
-                ci.cancel();
+
                 poseStack.pushPose();
                 poseStack.scale(this.scaleX, this.scaleY, this.scaleZ);
 
@@ -80,7 +82,23 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
                 poseStack.translate(-0.5D, 0.0D, -0.5D);
 
                 MobHeadBlock.Type type = block instanceof MobHeadBlock ? ((MobHeadBlock) block).getType() : ((WallMobHeadBlock) block).getType();
+
+                if (this.opposingForce$headModelBaseMap == null) {
+                    this.opposingForce$headModelBaseMap =
+                            MobHeadBlockEntityRenderer.createMobHeadRenderers(
+                                    Minecraft.getInstance().getEntityModels()
+                            );
+                }
+
+
                 MobHeadModelBase headModelBase = this.opposingForce$headModelBaseMap.get(type);
+                if (headModelBase == null) {
+                    poseStack.popPose();
+                    return;
+                }
+
+                //safe to cancel vanilla now since we are sure there wont be any unbaked layer crashes now
+                ci.cancel();
                 RenderType rendertype = MobHeadBlockEntityRenderer.getRenderType(type);
                 Entity entity = t.getVehicle();
 
