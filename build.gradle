@@ -1,169 +1,162 @@
 plugins {
-    id 'eclipse'
-    id 'idea'
+    id 'java-library'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '5.1.+'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
-    id 'org.spongepowered.mixin' version '0.7.+'
+    id 'idea'
+    id 'net.neoforged.moddev' version '2.0.107'
 }
 
-version = "${project.mc_version}-${project.mod_version}"
-group = "com.unusualmodding.${mod_id}"
-archivesBaseName = "Opposing-Force"
+version = "${project.minecraft_version}-${project.mod_version}"
+group = mod_group_id
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-jarJar.enable()
+repositories {
+    mavenLocal()
+}
 
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
-minecraft {
-    mappings channel: 'parchment', version: "${parchment_version}"
+base {
+    archivesName = "Opposing-Force"
+}
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    version = project.neo_version
+    interfaceInjectionData = project.files('src/main/resources/META-INF/interfaceinjections.json')
+
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
+    }
 
     runs {
         client {
-            workingDirectory project.file('run')
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
+            client()
 
-            mods {
-                opposing_force {
-                    source sourceSets.main
-                }
-            }
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
         server {
-            workingDirectory project.file('run')
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
+            server()
+            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
 
-            mods {
-                opposing_force {
-                    source sourceSets.main
-                }
-            }
+        gameTestServer {
+            type = "gameTestServer"
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
         data {
-            workingDirectory project.file('run')
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
+            data()
 
-            args '--mod', "${mod_id}", '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
 
-            mods {
-                opposing_force {
-                    source sourceSets.main
-                }
-            }
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        "$mod_id" {
+            sourceSet(sourceSets.main)
         }
     }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
-repositories {
-    maven {
-        url "https://www.cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-    maven {
-        name = "JEI maven"
-        url = "https://maven.blamejared.com/"
-    }
-    maven {
-        name = "Modrinth"
-        url = "https://api.modrinth.com/maven"
-    }
-    maven {
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
-    maven {
-        url = "https://modmaven.k-4u.nl"
-    }
-    flatDir {
-        dirs 'libs'
-    }
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
 }
 
 configurations {
     runtimeClasspath.extendsFrom localRuntime
 }
 
+repositories {
+    mavenCentral()
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "CurseMaven"
+                url "https://cursemaven.com"
+            }
+        }
+        filter {
+            includeGroup "curse.maven"
+        }
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
+    maven {
+        url = "https://maven.blamejared.com/"
+    }
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
-    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    compileOnly "mezz.jei:jei-$minecraft_version-common-api:$jei_version"
+    compileOnly "mezz.jei:jei-$minecraft_version-neoforge-api:$jei_version"
+    localRuntime "mezz.jei:jei-$minecraft_version-neoforge:$jei_version"
+    implementation "maven.modrinth:jade:yd8FKCmx"
 
-    compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
-    implementation fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+    localRuntime "maven.modrinth:appleskin:3.0.5+mc1.21"
+    localRuntime "maven.modrinth:worldedit:7.3.6"
+    localRuntime "maven.modrinth:cyanide:v4LiMGGH"
+    localRuntime "maven.modrinth:better-advancements:FjTYILOi"
+    localRuntime "maven.modrinth:commandstructures:rTiLoxgs"
+    localRuntime "maven.modrinth:just-enough-effect-descriptions-jeed:HpxNIA6x"
+//    localRuntime "maven.modrinth:sodium:mc1.21.1-0.6.13-neoforge"
+//    localRuntime "maven.modrinth:lithium:mc1.21.1-0.15.3-neoforge"
+    localRuntime "maven.modrinth:architectury-api:ZxYGwlk0"
+//    localRuntime "maven.modrinth:spark:v5qtqRQi"
 
-    compileOnly fg.deobf("maven.modrinth:jade:LecuGude")
-    implementation fg.deobf("maven.modrinth:jade:LecuGude")
+}
 
-    runtimeOnly fg.deobf("curse.maven:jade-324717:6855440")
-    runtimeOnly fg.deobf("curse.maven:cyanide-541676:5778405")
-    runtimeOnly fg.deobf("curse.maven:appleskin-248787:4770828")
-    runtimeOnly fg.deobf("curse.maven:commandstructures-565119:4711641")
-    runtimeOnly fg.deobf("curse.maven:structure-void-toggle-357304:4727098")
-    runtimeOnly fg.deobf("curse.maven:worldedit-225608:4586218")
-    runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:6172935")
-    runtimeOnly fg.deobf("curse.maven:better-advancements-272515:5454907")
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version            : neo_version,
+            neo_version_range      : neo_version_range,
+            loader_version_range   : loader_version_range,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_version            : mod_version,
+            mod_authors            : mod_authors,
+            mod_description        : mod_description
+    ]
 
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
-    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.0")) {
-        jarJar.ranged(it, "[0.5.0,)")
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/neoforge.mods.toml']) {
+        expand replaceProperties
     }
 }
-
-mixin {
-    add sourceSets.main, "${mod_id}.refmap.json"
-    config "${mod_id}.mixins.json"
-}
-
-java {
-    withSourcesJar()
-}
-
-jar {
-    manifest {
-        attributes([
-                "Specification-Title"     : "${mod_id}",
-                "Specification-Vendor"    : "Barl Inc",
-                "Specification-Version"   : "1",
-                "Implementation-Title"    : project.name,
-                "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "Barl Inc",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
-    }
-}
-
-jar.finalizedBy('reobfJar')
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
-            artifact jar
+        register('mavenJava', MavenPublication) {
+            from components.java
         }
     }
     repositories {
         maven {
-            url "file://${project.projectDir}/mcmodsrepo"
+            url "file://${project.projectDir}/repo"
         }
     }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
 }
 
 idea {

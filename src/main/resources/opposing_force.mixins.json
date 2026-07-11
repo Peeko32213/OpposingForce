@@ -1,31 +1,15 @@
 {
   "required": true,
-  "minVersion": "0.8",
-  "package": "com.unusualmodding.opposing_force.mixins",
-  "compatibilityLevel": "JAVA_17",
+  "package": "com.barl_inc.opposing_force.mixins",
+  "compatibilityLevel": "JAVA_21",
   "refmap": "opposing_force.refmap.json",
-  "mixins": [
-    "AbstractArrowMixin",
-    "BlockBehaviourMixin",
-    "CreeperMixin",
-    "EntityMixin",
-    "FoodDataMixin",
-    "LivingEntityMixin",
-    "MobMixin",
-    "NoteBlockInstrumentMixin",
-    "NoteBlockMixin",
-    "PlayerMixin",
-    "PoseMixin"
-  ],
+  "mixins": [],
   "client": [
     "client.CapeLayerMixin",
-    "client.CustomHeadLayerMixin",
-    "client.GuiMixin",
-    "client.HumanoidArmorLayerMixin",
-    "client.HumanoidModelMixin",
-    "client.ItemInHandRendererMixin"
+    "client.CustomHeadLayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "minVersion": "0.8"
 }

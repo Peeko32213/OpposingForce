@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/wall_inventory",
-  "textures": {
-    "wall": "opposing_force:block/vile_cobblestone"
-  }
-}

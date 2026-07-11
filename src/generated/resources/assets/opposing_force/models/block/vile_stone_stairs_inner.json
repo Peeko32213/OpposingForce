@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "bottom": "opposing_force:block/vile_stone",
-    "side": "opposing_force:block/vile_stone",
-    "top": "opposing_force:block/vile_stone"
-  }
-}

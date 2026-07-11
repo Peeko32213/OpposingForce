@@ -1,9 +1,0 @@
-{
-  "remove": [
-    "minecraft:deep_dark",
-    "minecraft:mushroom_fields"
-  ],
-  "values": [
-    "#minecraft:is_overworld"
-  ]
-}

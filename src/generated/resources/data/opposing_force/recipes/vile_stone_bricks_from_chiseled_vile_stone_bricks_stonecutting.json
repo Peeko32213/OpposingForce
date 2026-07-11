@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "count": 1,
-  "ingredient": {
-    "item": "opposing_force:vile_stone_bricks"
-  },
-  "result": "opposing_force:chiseled_vile_stone_bricks"
-}

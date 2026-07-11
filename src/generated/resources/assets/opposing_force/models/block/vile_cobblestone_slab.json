@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "bottom": "opposing_force:block/vile_cobblestone",
-    "side": "opposing_force:block/vile_cobblestone",
-    "top": "opposing_force:block/vile_cobblestone"
-  }
-}

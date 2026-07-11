@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "opposing_force:block/trembling_guzzler_scale_shingles"
-  }
-}
