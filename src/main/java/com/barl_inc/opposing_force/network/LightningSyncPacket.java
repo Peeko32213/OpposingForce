@@ -1,19 +1,31 @@
 package com.barl_inc.opposing_force.network;
 
+import com.barl_inc.opposing_force.OpposingForce;
 import com.barl_inc.opposing_force.client.particles.lightning.LightningParticleType;
 import com.barl_inc.opposing_force.client.particles.lightning.LightningTarget;
 import com.barl_inc.opposing_force.registry.OPParticles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.joml.Vector4f;
 
 import java.util.List;
 import java.util.function.Supplier;
 
 public class LightningSyncPacket {
+    public static final CustomPacketPayload.Type<LightningSyncPacket> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(OpposingForce.MOD_ID, "lightning_sync_s2c"));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, LightningSyncPacket> STREAM_CODEC = StreamCodec.composite(
+            LightningSyncPacket.STREAM_CODEC, LightningSyncPacket::getEvent,
+            LightningSyncPacket::new
+    );
 
     private final float blockX, blockY, blockZ;
     private final float attackX, attackY, attackZ;
@@ -95,15 +107,17 @@ public class LightningSyncPacket {
         buf.writeVarInt(senderId);
     }
 
-    public void handle(Supplier<NetworkEvent.Context> supplier) {
-        NetworkEvent.Context context = supplier.get();
-        context.enqueueWork(() -> {
+    public void onPacketReceived(IPayloadContext contextGetter) {
+        contextGetter.enqueueWork(this::handlePacketOnMainThread);
+    }
+
+    public void handlePacketOnMainThread() {
+
             ClientLevel level = Minecraft.getInstance().level;
             if (level != null) {
                 LightningParticleType.Data data = new LightningParticleType.Data(OPParticles.LIGHTNING.get(), senderId, range, sections, size, parallelNoise, spreadFactor, branchInitiationFactor, branchContinuationFactor, closeness, color, target);
                 level.addParticle(data, true, blockX, blockY, blockZ, attackX, attackY, attackZ);
             }
-        });
     }
 
     public static Builder builder() {

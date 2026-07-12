@@ -2,14 +2,18 @@ package com.barl_inc.opposing_force.registry;
 
 import com.barl_inc.opposing_force.OpposingForce;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraftforge.fml.common.Mod;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
-@Mod.EventBusSubscriber(modid = OpposingForce.MOD_ID)
 public class OPCriterion {
+    public static DeferredRegister<CriterionTrigger<?>> TRIGGERS = DeferredRegister.create(BuiltInRegistries.TRIGGER_TYPES, OpposingForce.MOD_ID);
 
-    public static final OPCriteriaTriggers TAME_SLUG = CriteriaTriggers.register(new OPCriteriaTriggers("tame_slug"));
+    public static final DeferredHolder<CriterionTrigger<?>, OPCriteriaTriggers> TAME_SLUG = TRIGGERS.register("tame_slug", () ->new OPCriteriaTriggers("tame_slug"));
 
-    public static final OPCriteriaTriggers PARRY_WARDEN_WITH_LASER_BLADE = CriteriaTriggers.register(new OPCriteriaTriggers("parry_warden_with_laser_blade"));
+    public static final DeferredHolder<CriterionTrigger<?>, OPCriteriaTriggers>  PARRY_WARDEN_WITH_LASER_BLADE = TRIGGERS.register("parry_warden_with_laser_blade", () -> new OPCriteriaTriggers("parry_warden_with_laser_blade"));
 
 
 }

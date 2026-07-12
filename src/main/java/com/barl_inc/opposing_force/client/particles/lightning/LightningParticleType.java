@@ -3,11 +3,14 @@ package com.barl_inc.opposing_force.client.particles.lightning;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.phys.Vec3;
@@ -25,7 +28,7 @@ public class LightningParticleType extends ParticleType<LightningParticleType.Da
             Codec.FLOAT.fieldOf("a").forGetter(Vector4f::w)
     ).apply(instance, Vector4f::new));
 
-    public static final Codec<Data> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final Codec<Data> CODEC = RecordCodecBuilder.<LightningParticleType>mapCodec(instance -> instance.group(
             Codec.STRING.fieldOf("particle_type").forGetter(data -> BuiltInRegistries.PARTICLE_TYPE.getKey(data.particleType).toString()),
             Codec.INT.fieldOf("sender_id").forGetter(data -> data.senderId),
             Codec.INT.fieldOf("range").forGetter(data -> data.range),
@@ -38,15 +41,20 @@ public class LightningParticleType extends ParticleType<LightningParticleType.Da
             Codec.FLOAT.fieldOf("closeness").forGetter(data -> data.closeness),
             VECTOR4F_CODEC.fieldOf("color").forGetter(data -> data.color),
             LightningTarget.CODEC.fieldOf("target").forGetter(data -> data.target)
-    ).apply(instance, (type, id,range, sections, size, pn, sf, bif, bcf, close, color, target) -> new Data((ParticleType<Data>) BuiltInRegistries.PARTICLE_TYPE.get(new ResourceLocation(type)),id, range, sections, size, pn, sf, bif, bcf, close, color, target)));
+    ).apply(instance, (type, id,range, sections, size, pn, sf, bif, bcf, close, color, target) -> new Data((ParticleType<Data>) BuiltInRegistries.PARTICLE_TYPE.get( ResourceLocation.tryParse(type)),id, range, sections, size, pn, sf, bif, bcf, close, color, target)));
 
     public LightningParticleType(boolean alwaysShow) {
         super(alwaysShow, Data.DESERIALIZER);
     }
 
     @Override
-    public Codec<Data> codec() {
+    public MapCodec<Data> codec() {
         return CODEC;
+    }
+
+    @Override
+    public StreamCodec<? super RegistryFriendlyByteBuf, Data> streamCodec() {
+        return null;
     }
 
     public static class Data implements ParticleOptions {

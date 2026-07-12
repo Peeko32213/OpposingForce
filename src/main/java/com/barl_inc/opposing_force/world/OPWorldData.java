@@ -1,6 +1,7 @@
 package com.barl_inc.opposing_force.world;
 
 import com.barl_inc.opposing_force.OpposingForceConfig;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
@@ -17,7 +18,7 @@ public class OPWorldData extends SavedData {
 
     private static final String IDENTIFIER = "opposing_force_world_data";
     private static final String NETHER_ENTERED = "nether_entered";
-
+    public static final SavedData.Factory<OPWorldData> OP_WORLD_DATA_FACTORY = new SavedData.Factory<OPWorldData>(OPWorldData::new, OPWorldData::load);
     private Map<UUID, Double> skyvernSpawnChance = new HashMap<>();
     private final double SKYVERN_CHANCE_STEP = OpposingForceConfig.SKYVERN_SPAWN_CHANCE.get();
     private boolean hasNetherBeenEnteredBefore;
@@ -25,11 +26,13 @@ public class OPWorldData extends SavedData {
         super();
     }
 
+=
+
     public static OPWorldData get(Level world) {
         if (world instanceof ServerLevel) {
             ServerLevel overworld = world.getServer().getLevel(Level.OVERWORLD);
             DimensionDataStorage storage = overworld.getDataStorage();
-            OPWorldData data = storage.computeIfAbsent(OPWorldData::load, OPWorldData::new, IDENTIFIER);
+            OPWorldData data = storage.computeIfAbsent(OP_WORLD_DATA_FACTORY, IDENTIFIER);
             if (data != null) {
                 data.setDirty();
             }
@@ -38,7 +41,7 @@ public class OPWorldData extends SavedData {
         return null;
     }
 
-    public static OPWorldData load(CompoundTag nbt) {
+    public static OPWorldData load(CompoundTag nbt, HolderLookup.Provider provider) {
         OPWorldData data = new OPWorldData();
         if (nbt.contains("SkyvernSpawnChance")) {
             ListTag listtag = nbt.getList("SkyvernSpawnChance", 10);
@@ -54,7 +57,7 @@ public class OPWorldData extends SavedData {
     }
 
     @Override
-    public @NotNull CompoundTag save(@NotNull CompoundTag compound) {
+    public @NotNull CompoundTag save(@NotNull CompoundTag compound, HolderLookup.Provider provider) {
         if (!this.skyvernSpawnChance.isEmpty()) {
             ListTag listTag = new ListTag();
             for (Map.Entry<UUID, Double> reputations : skyvernSpawnChance.entrySet()) {

@@ -70,7 +70,7 @@ public class SkyvernSpawner {
         EntityType<? extends Mob> type = OPEntities.SKYVERN.get();
         Mob mob = type.create(this.serverLevel);
         mob.moveTo(Vec3.atCenterOf(spawnPos));
-        mob.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(spawnPos), MobSpawnType.NATURAL, null, null);
+        mob.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(spawnPos), MobSpawnType.NATURAL, null);
         OPWorldData worldData = OPWorldData.get(serverLevel);
         if(worldData != null) {
             worldData.resetSkyvernSpawnChance(player.getUUID());

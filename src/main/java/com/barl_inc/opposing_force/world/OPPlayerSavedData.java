@@ -2,6 +2,7 @@ package com.barl_inc.opposing_force.world;
 
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
@@ -21,6 +22,7 @@ public class OPPlayerSavedData extends SavedData {
     public static final Logger LOGGER = LogManager.getLogger();
 
     private final Map<UUID, PlayerData> playerData = new ConcurrentHashMap<>();
+    public static final SavedData.Factory<OPPlayerSavedData> OP_PLAYER_SAVED_DATA_FACTORY = new SavedData.Factory<>(OPPlayerSavedData::new, OPPlayerSavedData::load);
 
     public static OPPlayerSavedData get(Level level) {
         if (level.isClientSide) {
@@ -29,8 +31,7 @@ public class OPPlayerSavedData extends SavedData {
 
         DimensionDataStorage storage = ((ServerLevel) level).getDataStorage();
         return storage.computeIfAbsent(
-                OPPlayerSavedData::load,
-                OPPlayerSavedData::new,
+                OP_PLAYER_SAVED_DATA_FACTORY,
                 "player_data_manager"
         );
     }
@@ -57,7 +58,8 @@ public class OPPlayerSavedData extends SavedData {
 
     public OPPlayerSavedData() {}
 
-    public static OPPlayerSavedData load(CompoundTag nbt) {
+
+    public static OPPlayerSavedData load(CompoundTag nbt, HolderLookup.Provider provider) {
         OPPlayerSavedData data = new OPPlayerSavedData();
 
         ListTag list = nbt.getList("playerDataList", CompoundTag.TAG_COMPOUND);
@@ -80,7 +82,7 @@ public class OPPlayerSavedData extends SavedData {
 
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
+    public CompoundTag save(CompoundTag compound, HolderLookup.Provider provider) {
         ListTag playerList = new ListTag();
 
         for (Map.Entry<UUID, PlayerData> entry : playerData.entrySet()) {

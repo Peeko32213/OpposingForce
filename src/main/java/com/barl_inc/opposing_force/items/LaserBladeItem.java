@@ -193,7 +193,7 @@ public class LaserBladeItem extends SwordItem implements CustomSweepAttack {
                         }
 
                         if (livingAttacker instanceof Warden && entity instanceof Player) {
-                            OPCriterion.PARRY_WARDEN_WITH_LASER_BLADE.trigger((ServerPlayer) entity);
+                            OPCriterion.PARRY_WARDEN_WITH_LASER_BLADE.get().trigger((ServerPlayer) entity);
                         }
 
                         livingAttacker.knockback(0.55F * knockbackMulti, attacker.getDeltaMovement().x, attacker.getDeltaMovement().z);

@@ -359,7 +359,8 @@ public class Slug extends SummonableMonster implements EliteVariant {
     public void tame(Player player) {
         super.tame(player);
         if (player instanceof ServerPlayer serverPlayer) {
-            OPCriterion.TAME_SLUG.trigger(serverPlayer);
+
+            OPCriterion.TAME_SLUG.get().trigger(serverPlayer);
         }
 
         RandomSource randomsource = this.getRandom();

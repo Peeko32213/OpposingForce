@@ -1,6 +1,5 @@
 package com.barl_inc.opposing_force;
 
-import com.barl_inc.opposing_force.datagen.*;
 import com.barl_inc.opposing_force.registry.*;
 import com.barl_inc.opposing_force.utils.ClientProxy;
 import com.barl_inc.opposing_force.utils.CommonProxy;
@@ -29,6 +28,10 @@ public class OpposingForce {
         modEventBus.addListener(this::clientSetup);
         modEventBus.addListener(this::loadComplete);
         modEventBus.addListener(this::dataSetup);
+
+
+        OPTreeFeatures.INIT();
+        OPTreeGrowers.INIT();
 
         OPBlocks.BLOCKS.register(modEventBus);
         OPItems.ITEMS.register(modEventBus);

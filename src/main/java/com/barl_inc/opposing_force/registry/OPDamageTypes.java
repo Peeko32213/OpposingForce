@@ -5,6 +5,7 @@ import com.barl_inc.opposing_force.entity.projectile.*;
 import com.unusualmodding.opposing_force.entity.projectile.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
@@ -27,7 +28,7 @@ public class OPDamageTypes {
     public static final ResourceKey<DamageType> TERROR_SAW = register("terror_saw");
     public static final ResourceKey<DamageType> SAWBLADE = register("sawblade");
 
-    public static void bootstrap(BootstapContext<DamageType> context) {
+    public static void bootstrap(BootstrapContext<DamageType> context) {
         context.register(ELECTRIC, new DamageType("electric", 0.1F));
         context.register(ELECTRIFIED, new DamageType("electrified", 0.0F));
         context.register(GLOOM_TOXIN, new DamageType("gloom_toxin", 0.0F));
@@ -69,6 +70,6 @@ public class OPDamageTypes {
     }
 
     public static ResourceKey<DamageType> register(String name) {
-        return ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(OpposingForce.MOD_ID, name));
+        return ResourceKey.create(Registries.DAMAGE_TYPE,  ResourceLocation.fromNamespaceAndPath(OpposingForce.MOD_ID, name));
     }
 }

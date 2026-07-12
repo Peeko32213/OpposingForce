@@ -5,9 +5,12 @@ import com.unusualmodding.opposing_force.entity.projectile.*;
 import com.barl_inc.opposing_force.items.MobHeadItem;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.core.dispenser.ProjectileDispenseBehavior;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -23,66 +26,19 @@ public class OPCompat {
     }
 
     public static void registerDispenserBehaviors() {
-        DispenserBlock.registerBehavior(OPItems.ELECTRIC_CHARGE.get(), new AbstractProjectileDispenseBehavior() {
-            @Override
-            protected @NotNull Projectile getProjectile(@NotNull Level level, @NotNull Position pos, @NotNull ItemStack itemStack) {
-                return new ElectricCharge(level, pos.x(), pos.y(), pos.z(), Vec3.ZERO);
-            }
-        });
 
-        DispenserBlock.registerBehavior(OPItems.TOMAHAWK.get(), new AbstractProjectileDispenseBehavior() {
-            @Override
-            protected @NotNull Projectile getProjectile(@NotNull Level level, @NotNull Position pos, @NotNull ItemStack itemStack) {
-                Tomahawk entity = new Tomahawk(level, pos.x(), pos.y(), pos.z());
-                entity.pickup = AbstractArrow.Pickup.ALLOWED;
-                return entity;
-            }
-        });
 
-        DispenserBlock.registerBehavior(OPItems.UMBER_DAGGER.get(), new AbstractProjectileDispenseBehavior() {
-            @Override
-            protected @NotNull Projectile getProjectile(@NotNull Level level, @NotNull Position pos, @NotNull ItemStack itemStack) {
-                UmberDagger entity = new UmberDagger(level, pos.x(), pos.y(), pos.z());
-                entity.pickup = AbstractArrow.Pickup.ALLOWED;
-                return entity;
-            }
-        });
+        //TODO check if the ones that can be picked up are still able to be picked up!
+        DispenserBlock.registerProjectileBehavior(OPItems.ELECTRIC_CHARGE.get());
+        DispenserBlock.registerProjectileBehavior(OPItems.TOMAHAWK.get());
+        DispenserBlock.registerProjectileBehavior(OPItems.UMBER_DAGGER.get());
+        DispenserBlock.registerProjectileBehavior(OPItems.FIRE_BOMB.get());
+        DispenserBlock.registerProjectileBehavior(OPItems.KINETIC_BOMB.get());
+        DispenserBlock.registerProjectileBehavior(OPItems.DONUT.get());
+        DispenserBlock.registerProjectileBehavior(OPItems.TERROR_SAW.get());
+        DispenserBlock.registerProjectileBehavior(OPItems.LIGHTNING_BOMB.get());
+        DispenserBlock.registerProjectileBehavior(OPItems.WHIZZ_BOMB.get());
 
-        DispenserBlock.registerBehavior(OPItems.FIRE_BOMB.get(), new AbstractProjectileDispenseBehavior() {
-            protected Projectile getProjectile(Level level, Position position, ItemStack itemStack) {
-                return new FireBomb(level, position.x(), position.y(), position.z());
-            }
-        });
-
-        DispenserBlock.registerBehavior(OPItems.KINETIC_BOMB.get(), new AbstractProjectileDispenseBehavior() {
-            protected Projectile getProjectile(Level level, Position position, ItemStack itemStack) {
-                return new KineticBomb(level, position.x(), position.y(), position.z());
-            }
-        });
-
-        DispenserBlock.registerBehavior(OPItems.DONUT.get(), new AbstractProjectileDispenseBehavior() {
-            protected Projectile getProjectile(Level level, Position position, ItemStack itemStack) {
-                return new Donut(level, position.x(), position.y(), position.z());
-            }
-        });
-
-        DispenserBlock.registerBehavior(OPItems.TERROR_SAW.get(), new AbstractProjectileDispenseBehavior() {
-            protected Projectile getProjectile(Level level, Position position, ItemStack itemStack) {
-                return new TerrorSaw(level, position.x(), position.y(), position.z());
-            }
-        });
-
-        DispenserBlock.registerBehavior(OPItems.LIGHTNING_BOMB.get(), new AbstractProjectileDispenseBehavior() {
-            protected Projectile getProjectile(Level level, Position position, ItemStack itemStack) {
-                return new LightningBomb(level, position.x(), position.y(), position.z());
-            }
-        });
-
-        DispenserBlock.registerBehavior(OPItems.WHIZZ_BOMB.get(), new AbstractProjectileDispenseBehavior() {
-            protected Projectile getProjectile(Level level, Position position, ItemStack itemStack) {
-                return new WhizzBomb(level, position.x(), position.y(), position.z());
-            }
-        });
 
         DispenserBlock.registerBehavior(OPItems.DICER_HEAD.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);
         DispenserBlock.registerBehavior(OPItems.FROWZY_HEAD.get(), MobHeadItem.DISPENSE_ITEM_BEHAVIOR);

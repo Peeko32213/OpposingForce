@@ -8,14 +8,18 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
+import static net.neoforged.neoforge.registries.NeoForgeRegistries.Keys.BIOME_MODIFIERS;
+
 public class OPDatapackProvider extends DatapackBuiltinEntriesProvider {
 
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
-            .add(ForgeRegistries.Keys.BIOME_MODIFIERS, OPBiomeModifierProvider::bootstrap)
+            .add(NeoForgeRegistries. Keys.BIOME_MODIFIERS, OPBiomeModifierProvider::bootstrap)
             .add(Registries.DAMAGE_TYPE, OPDamageTypes::bootstrap);
 
     public OPDatapackProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {

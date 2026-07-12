@@ -9,10 +9,7 @@ import com.barl_inc.opposing_force.items.LaserBladeItem;
 import com.barl_inc.opposing_force.items.SawbladeItem;
 import com.barl_inc.opposing_force.items.TremblingSlammer;
 import com.barl_inc.opposing_force.items.armor.SlugBaronArmorItem;
-import com.barl_inc.opposing_force.registry.OPAttributes;
-import com.barl_inc.opposing_force.registry.OPEntities;
-import com.barl_inc.opposing_force.registry.OPItems;
-import com.barl_inc.opposing_force.registry.OPMobEffects;
+import com.barl_inc.opposing_force.registry.*;
 import com.barl_inc.opposing_force.registry.OPTrades.MultipleInputsTrade;
 import com.barl_inc.opposing_force.registry.tags.OPBiomeTags;
 import com.barl_inc.opposing_force.registry.tags.OPBlockTags;
@@ -54,14 +51,35 @@ import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
+import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
+import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
+import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.event.village.WandererTradesEvent;
 
 import static com.barl_inc.opposing_force.OpposingForceConfig.*;
 
 import java.util.Collection;
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = OpposingForce.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(modid = OpposingForce.MOD_ID)
 public class ForgeEvents {
+
+    @SubscribeEvent
+    public static void registerBrewingRecipes(RegisterBrewingRecipesEvent event) {
+        OPBrewingRecipes.registerPotionRecipes(event.getBuilder());
+    }
+
+
 
     @SubscribeEvent
     public static void wandererTradesEvent(WandererTradesEvent event) {
@@ -100,6 +118,7 @@ public class ForgeEvents {
         }
     }
 
+    //Has been removed
     @SubscribeEvent
     public static void onLivingSpawn(MobSpawnEvent.FinalizeSpawn event) {
         LivingEntity entity = event.getEntity();
@@ -260,11 +279,12 @@ public class ForgeEvents {
         }
     }
 
+    //TODO look at this
     @SubscribeEvent
-    public static void onMobHurt(final LivingHurtEvent event) {
+    public static void onMobHurt(LivingDamageEvent.Post event) {
         LivingEntity entity = event.getEntity();
         DamageSource damageSource = event.getSource();
-        float damage = event.getAmount();
+        float damage = damageSource.getOriginalDamage();
 
         for (MobEffectInstance activeEffect : entity.getActiveEffects()) {
             if (activeEffect.getEffect() == OPMobEffects.SLUG_INFESTATION.get()) {
@@ -314,11 +334,11 @@ public class ForgeEvents {
             event.setDamageModifier(1.75F);
         }
     }
-
+    //TODO look at this
     @SubscribeEvent
-    public static void onMobAttack(final LivingAttackEvent event) {
-        final LivingEntity entity = event.getEntity();
-        final Entity attacker = event.getSource().getDirectEntity();
+    public static void onMobAttack(final Living event) {
+        final Entity entity = event.getTarget();
+        final Entity attacker = event.getEntity();
 
         if (entity != null && attacker != null) {
             LaserBladeItem.parryAttack(entity, attacker, event);
@@ -349,9 +369,7 @@ public class ForgeEvents {
     }
 
     @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            SawbladeItem.onPlayerTick(event.player);
-        }
+    public static void onPlayerTick(PlayerTickEvent.Post event) {
+            SawbladeItem.onPlayerTick(event.getEntity());
     }
 }

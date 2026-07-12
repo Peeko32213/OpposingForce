@@ -15,7 +15,12 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
+@EventBusSubscriber(modid = OpposingForce.MOD_ID)
 public class OPNetwork {
 
     private static SimpleChannel CHANNEL;
@@ -25,6 +30,18 @@ public class OPNetwork {
     private static int id() {
         return packetId++;
     }
+
+    @SubscribeEvent
+    public static void packetRegister(RegisterPayloadHandlersEvent event) {
+        final PayloadRegistrar registrar = event.registrar(OpposingForce.MOD_ID)
+                .versioned("1.0.0")
+                .optional();
+
+
+
+        registrar.playToClient(ClientEventS2C.TYPE, ClientEventS2C.STREAM_CODEC, ClientEventS2C::onPacketReceived);
+    }
+
 
     public static void registerNetwork() {
         SimpleChannel network = NetworkRegistry.ChannelBuilder

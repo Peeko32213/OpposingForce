@@ -6,7 +6,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class OPModelLayers {
 
     public static final ModelLayerLocation DICER = main("dicer");
@@ -49,7 +48,7 @@ public class OPModelLayers {
     public static final ModelLayerLocation LASER_BOLT = main("laser_bolt");
 
     private static ModelLayerLocation register(String id, String name) {
-        return new ModelLayerLocation(new ResourceLocation(OpposingForce.MOD_ID, id), name);
+        return new ModelLayerLocation( ResourceLocation.fromNamespaceAndPath(OpposingForce.MOD_ID, id), name);
     }
 
     private static ModelLayerLocation main(String id) {
