@@ -39,9 +39,8 @@ public class SmoothAnimationState extends AnimationState {
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
     public float factor() {
-        return Mth.lerp(Minecraft.getInstance().getPartialTick(), this.factorOld, this.factor);
+        return Mth.lerp(Minecraft.getInstance().getP(), this.factorOld, this.factor);
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -10,6 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.neoforge.common.NeoForge;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -28,7 +29,7 @@ public abstract class HumanoidModelMixin extends Model {
     @Inject(at = @At("HEAD"), method = "poseRightArm", cancellable = true)
     private void opposingForce$poseRightArm(LivingEntity entity, CallbackInfo ci) {
         PoseHandEvent event = new PoseHandEvent(entity, (HumanoidModel) ((Model) this), false);
-        MinecraftForge.EVENT_BUS.post(event);
+        NeoForge.EVENT_BUS.post(event);
         if (event.getResult() == Event.Result.ALLOW) {
             ci.cancel();
         }
@@ -37,7 +38,7 @@ public abstract class HumanoidModelMixin extends Model {
     @Inject(at = @At("HEAD"), method = "poseLeftArm", cancellable = true)
     private void opposingForce$poseLeftArm(LivingEntity entity, CallbackInfo ci) {
         PoseHandEvent event = new PoseHandEvent(entity, (HumanoidModel) ((Model) this), true);
-        MinecraftForge.EVENT_BUS.post(event);
+        NeoForge.EVENT_BUS.post(event);
         if (event.getResult() == Event.Result.ALLOW) {
             ci.cancel();
         }

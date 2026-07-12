@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.neoforged.neoforge.client.ClientHooks;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -58,7 +59,7 @@ public abstract class HumanoidArmorLayerMixin extends RenderLayer {
                 if (armorItem.getEquipmentSlot() == equipmentSlot) {
                     boolean legs = equipmentSlot == EquipmentSlot.LEGS;
                     HumanoidModel model = this.getParentModel() instanceof HumanoidModel humanoidModel1 ? humanoidModel1 : humanoidModel;
-                    Model armorModel = ForgeHooksClient.getArmorModel(livingEntity, itemstack, equipmentSlot, model);
+                    Model armorModel = ClientHooks.getArmorModel(livingEntity, itemstack, equipmentSlot, model);
                     setPartVisibility((HumanoidModel) armorModel, equipmentSlot);
                     ResourceLocation texture = opposingForce$getArmorResource(livingEntity, itemstack, equipmentSlot, null);
                     OPArmorRenderProperties.renderCustomArmor(poseStack, multiBufferSource, light, opposingForce$lastArmorItemStackRendered, armorItem, armorModel,model, legs, texture);
@@ -70,7 +71,7 @@ public abstract class HumanoidArmorLayerMixin extends RenderLayer {
     @Unique
     private ResourceLocation opposingForce$getArmorResource(LivingEntity entity, ItemStack stack, EquipmentSlot slot, @Nullable String type) {
         ArmorItem item = (ArmorItem) stack.getItem();
-        String texture = item.getMaterial().getName();
+        String texture = item.getMaterial().getRegisteredName();
         String domain = "minecraft";
         int idx = texture.indexOf(':');
         if (idx != -1) {
@@ -79,11 +80,11 @@ public abstract class HumanoidArmorLayerMixin extends RenderLayer {
         }
         String s1 = String.format(java.util.Locale.ROOT, "%s:textures/models/armor/%s_layer_%d%s.png", domain, texture, (slot == EquipmentSlot.LEGS ? 2 : 1), type == null ? "" : String.format(java.util.Locale.ROOT, "_%s", type));
 
-        s1 = ForgeHooksClient.getArmorTexture(entity, stack, s1, slot, type);
+        s1 = ClientHooks.getArmorTexture(entity, stack, s1, slot, type);
         ResourceLocation resourcelocation = OP_ARMOR_LOCATION_CACHE.get(s1);
 
         if (resourcelocation == null) {
-            resourcelocation = new ResourceLocation(s1);
+            resourcelocation = ResourceLocation.tryParse(s1);
             OP_ARMOR_LOCATION_CACHE.put(s1, resourcelocation);
         }
 

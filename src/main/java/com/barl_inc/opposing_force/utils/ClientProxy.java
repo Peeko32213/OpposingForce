@@ -24,14 +24,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(modid = OpposingForce.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = OpposingForce.MOD_ID)
 public class ClientProxy extends CommonProxy {
 
     public static final Int2ObjectMap<AbstractTickableSoundInstance> ENTITY_SOUND_INSTANCE_MAP = new Int2ObjectOpenHashMap<>();
@@ -42,7 +43,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     public void clientInit() {
-        MinecraftForge.EVENT_BUS.register(new ClientForgeEvents());
+        NeoForge.EVENT_BUS.register(new ClientForgeEvents());
     }
 
     @Override

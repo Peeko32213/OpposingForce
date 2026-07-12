@@ -25,9 +25,9 @@ public abstract class GuiMixin {
 
     @Unique
     private static boolean opposingForce$hasAnyCustomHearts(Player player) {
-        return player.hasEffect(OPMobEffects.GLOOM_TOXIN.get()) || player.hasEffect(OPMobEffects.ELECTRIFIED.get());
+        return player.hasEffect(OPMobEffects.GLOOM_TOXIN.getDelegate()) || player.hasEffect(OPMobEffects.ELECTRIFIED.getDelegate());
     }
-
+    //Todo use the event available for this now: PlayerHeartTypeEvent
     @Inject(method = "renderHeart", at = @At("HEAD"), cancellable = true)
     private void opposingForce$renderHeart(GuiGraphics stack, Gui.HeartType __, int x, int y, int v, boolean blinking, boolean halfHeart, CallbackInfo cbi) {
         if (!blinking && opposingForce$drawForHeartType(__) && Minecraft.getInstance().cameraEntity instanceof Player player && opposingForce$hasAnyCustomHearts(player)) {

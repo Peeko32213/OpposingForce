@@ -5,15 +5,14 @@ import com.google.common.collect.Maps;
 import com.barl_inc.opposing_force.registry.OPItems;
 import com.barl_inc.opposing_force.registry.OPRecipeSerializers;
 import net.minecraft.Util;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
-import net.minecraft.world.item.crafting.CustomRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.component.FireworkExplosion;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,27 +43,27 @@ public class MobHeadFireworkStarRecipe extends CustomRecipe {
             OPItems.TART_HEAD.get()
     );
 
-    private static final java.util.Map<Item, FireworkRocketItem.Shape> SHAPE_BY_ITEM = Util.make(Maps.newHashMap(), (map) -> {
-        map.put(OPItems.DICER_HEAD.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.FROWZY_HEAD.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.ANGRY_RAMBLER_SKULL.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.CLASSIC_RAMBLER_SKULL.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.EVIL_RAMBLER_SKULL.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.GRINNING_RAMBLER_SKULL.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.SKELETAL_RAMBLER_SKULL.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.SMILING_RAMBLER_SKULL.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.STRANGE_RAMBLER_SKULL.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.CRUNDLY_RAMBLER_SKULL.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.DWARVEN_RAMBLER_SKULL.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.IMPRISONED_RAMBLER_SKULL.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.INDOMITABLE_RAMBLER_SKULL.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.LEERING_RAMBLER_SKULL.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.MAGMATIC_RAMBLER_SKULL.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.MUSICAL_RAMBLER_SKULL.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.NOSY_RAMBLER_SKULL.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.VALIANT_RAMBLER_SKULL.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.SKYVERN_HEAD.get(), FireworkRocketItem.Shape.CREEPER);
-        map.put(OPItems.TART_HEAD.get(), FireworkRocketItem.Shape.CREEPER);
+    private static final java.util.Map<Item, FireworkExplosion.Shape> SHAPE_BY_ITEM = Util.make(Maps.newHashMap(), (map) -> {
+        map.put(OPItems.DICER_HEAD.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.FROWZY_HEAD.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.ANGRY_RAMBLER_SKULL.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.CLASSIC_RAMBLER_SKULL.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.EVIL_RAMBLER_SKULL.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.GRINNING_RAMBLER_SKULL.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.SKELETAL_RAMBLER_SKULL.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.SMILING_RAMBLER_SKULL.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.STRANGE_RAMBLER_SKULL.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.CRUNDLY_RAMBLER_SKULL.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.DWARVEN_RAMBLER_SKULL.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.IMPRISONED_RAMBLER_SKULL.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.INDOMITABLE_RAMBLER_SKULL.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.LEERING_RAMBLER_SKULL.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.MAGMATIC_RAMBLER_SKULL.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.MUSICAL_RAMBLER_SKULL.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.NOSY_RAMBLER_SKULL.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.VALIANT_RAMBLER_SKULL.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.SKYVERN_HEAD.get(), FireworkExplosion.Shape.CREEPER);
+        map.put(OPItems.TART_HEAD.get(), FireworkExplosion.Shape.CREEPER);
     });
 
     private static final Ingredient TRAIL_INGREDIENT = Ingredient.of(Items.DIAMOND);
@@ -76,15 +75,15 @@ public class MobHeadFireworkStarRecipe extends CustomRecipe {
     }
 
     @Override
-    public boolean matches(CraftingContainer container, @NotNull Level level) {
+    public boolean matches(CraftingInput craftingInput, Level level) {
         boolean gunpowder = false;
         boolean dye = false;
         boolean shape = false;
         boolean trail = false;
         boolean flicker = false;
 
-        for(int i = 0; i < container.getContainerSize(); ++i) {
-            ItemStack itemstack = container.getItem(i);
+        for(int i = 0; i < craftingInput.size(); ++i) {
+            ItemStack itemstack = craftingInput.getItem(i);
             if (!itemstack.isEmpty()) {
                 if (SHAPE_INGREDIENT.test(itemstack)) {
                     if (shape) {
@@ -119,17 +118,17 @@ public class MobHeadFireworkStarRecipe extends CustomRecipe {
     }
 
     @Override
-    public @NotNull ItemStack assemble(CraftingContainer container, @NotNull RegistryAccess registryAccess) {
+    public @NotNull ItemStack assemble(CraftingInput craftingInput, HolderLookup.Provider provider) {
         ItemStack itemstack = new ItemStack(Items.FIREWORK_STAR);
         CompoundTag compoundtag = itemstack.getOrCreateTagElement("Explosion");
-        FireworkRocketItem.Shape fireworkrocketitem$shape = FireworkRocketItem.Shape.SMALL_BALL;
+        FireworkExplosion.Shape fireworkrocketitem$shape = FireworkExplosion.Shape.SMALL_BALL;
         List<Integer> list = Lists.newArrayList();
 
-        for(int i = 0; i < container.getContainerSize(); ++i) {
-            ItemStack itemstack1 = container.getItem(i);
+        for(int i = 0; i < craftingInput.size(); ++i) {
+            ItemStack itemstack1 = craftingInput.getItem(i);
             if (!itemstack1.isEmpty()) {
                 if (SHAPE_INGREDIENT.test(itemstack1)) {
-                    FireworkRocketItem.Shape shape = SHAPE_BY_ITEM.get(itemstack1.getItem());
+                    FireworkExplosion.Shape shape = SHAPE_BY_ITEM.get(itemstack1.getItem());
                     if (shape != null) fireworkrocketitem$shape = shape;
                 } else if (FLICKER_INGREDIENT.test(itemstack1)) {
                     compoundtag.putBoolean("Flicker", true);
@@ -147,14 +146,16 @@ public class MobHeadFireworkStarRecipe extends CustomRecipe {
     }
 
     @Override
+    public ItemStack getResultItem(HolderLookup.Provider registries) {
+        return new ItemStack(Items.FIREWORK_STAR);
+
+    }
+
+    @Override
     public boolean canCraftInDimensions(int i, int j) {
         return i * j >= 2;
     }
 
-    @Override
-    public @NotNull ItemStack getResultItem(@NotNull RegistryAccess registryAccess) {
-        return new ItemStack(Items.FIREWORK_STAR);
-    }
 
     @Override
     public @NotNull RecipeSerializer<?> getSerializer() {

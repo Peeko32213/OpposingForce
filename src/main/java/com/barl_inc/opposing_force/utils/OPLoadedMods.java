@@ -1,6 +1,6 @@
 package com.barl_inc.opposing_force.utils;
 
-import net.minecraftforge.fml.ModList;
+import net.neoforged.fml.ModList;
 
 public class OPLoadedMods {
 

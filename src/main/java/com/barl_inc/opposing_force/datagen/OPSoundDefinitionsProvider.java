@@ -7,6 +7,10 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.SoundDefinition;
 import net.minecraftforge.common.data.SoundDefinitionsProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.SoundDefinition;
+import net.neoforged.neoforge.common.data.SoundDefinitionsProvider;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.function.Supplier;
 
@@ -474,11 +478,11 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
         );
     }
 
-    private void soundDefinition(Supplier<SoundEvent> soundEvent, String subtitle, SoundDefinition.Sound... sounds) {
+    private void soundDefinition(DeferredHolder<SoundEvent, ?> soundEvent, String subtitle, SoundDefinition.Sound... sounds) {
         this.add(soundEvent.get(), SoundDefinition.definition().subtitle("subtitles.opposing_force." + subtitle).with(sounds));
     }
 
-    private void sound(Supplier<SoundEvent> soundEvent, SoundDefinition.Sound... sounds){
+    private void sound(DeferredHolder<SoundEvent, ?> soundEvent, SoundDefinition.Sound... sounds){
         this.soundDefinition(soundEvent, soundEvent.get().getLocation().getPath(), sounds);
     }
 }
