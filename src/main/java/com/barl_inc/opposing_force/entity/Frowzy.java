@@ -49,7 +49,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraftforge.common.ForgeConfig;
+import net.neoforged.common.ForgeConfig;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;

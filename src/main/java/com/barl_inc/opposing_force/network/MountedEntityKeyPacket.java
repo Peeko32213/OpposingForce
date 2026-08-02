@@ -5,8 +5,8 @@ import com.barl_inc.opposing_force.entity.utils.KeybindUsingMount;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.fml.LogicalSide;
+import net.neoforged.network.NetworkEvent;
 
 import java.util.function.Supplier;
 

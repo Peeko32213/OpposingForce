@@ -15,7 +15,7 @@ import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

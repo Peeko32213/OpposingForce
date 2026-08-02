@@ -1,31 +1,39 @@
 package com.barl_inc.opposing_force;
 
 import com.barl_inc.opposing_force.registry.*;
-import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
+import static com.barl_inc.opposing_force.registry.OPItems..*;
+
 
 public class OpposingForceTab {
 
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, OpposingForce.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> TAB = CREATIVE_TABS.register(OpposingForce.MOD_ID,
-            () -> CreativeModeTab.builder().icon(() -> new ItemStack(OPItems.OPPOSING_FORCE.get()))
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> UNUSUAL_PREHISTORY_2_TAB = CREATIVE_TABS.register("unusual_prehistory",
+            () -> CreativeModeTab.builder()
                 .title(Component.translatable("itemGroup." + OpposingForce.MOD_ID))
                 .displayItems((enabledFeatures, output) -> {
 
                     // Spawn eggs
-                    OPItems.ITEMS.getEntries().forEach(spawnEgg -> {
-                        if ((spawnEgg.get() instanceof ForgeSpawnEggItem)) {
-                            output.accept(spawnEgg.get());
-                        }
-                    });
+                    output.accept(FIRE_SLIME_SPAWN_EGG.get());
+                    output.accept(FROWZY_SPAWN_EGG.get());
+                    output.accept(GUZZLER_SPAWN_EGG.get());
+                    output.accept(HANGING_SPIDER_SPAWN_EGG.get());
+                    output.accept(RAMBLER_SPAWN_EGG.get());
+                    output.accept(SKYVERN_SPAWN_EGG.get());
+                    output.accept(SLUG_SPAWN_EGG.get());
+                    output.accept(TART_SPAWN_EGG.get());
+                    output.accept(TERROR_SPAWN_EGG.get());
+                    output.accept(TREMBLER_SPAWN_EGG.get());
+                    output.accept(UMBER_SPIDER_SPAWN_EGG.get());
+                    output.accept(VOLT_SPAWN_EGG.get());
+                    output.accept(WHIZZ_SPAWN_EGG.get());
 
                     // Dicer
                     output.accept(OPItems.DICER_LENS.get());

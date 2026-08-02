@@ -9,7 +9,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.event.ForgeEventFactory;
 
 public class WakeUpInfestationsGoal extends Goal {
 

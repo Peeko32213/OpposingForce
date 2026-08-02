@@ -47,8 +47,8 @@ public class OpposingForce {
         OPBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
         OPRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
 
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(PROXY);
+        neoforged.EVENT_BUS.register(this);
+        neoforged.EVENT_BUS.register(PROXY);
         PROXY.init();
     }
 

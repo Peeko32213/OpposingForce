@@ -8,7 +8,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeMod;
+import net.neoforged.common.ForgeMod;
 
 import java.util.EnumSet;
 

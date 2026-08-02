@@ -2,7 +2,7 @@ package com.barl_inc.opposing_force.effects;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.brewing.BrewingRecipe;
+import net.neoforged.common.brewing.BrewingRecipe;
 
 import javax.annotation.Nonnull;
 

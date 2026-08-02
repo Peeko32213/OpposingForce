@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;

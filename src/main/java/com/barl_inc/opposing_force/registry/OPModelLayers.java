@@ -3,8 +3,8 @@ package com.barl_inc.opposing_force.registry;
 import com.barl_inc.opposing_force.OpposingForce;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 public class OPModelLayers {
 

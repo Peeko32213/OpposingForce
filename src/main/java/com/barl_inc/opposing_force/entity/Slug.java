@@ -48,9 +48,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.MobEffectEvent;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.common.neoforged;
+import net.neoforged.event.entity.living.MobEffectEvent;
+import net.neoforged.eventbus.api.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -146,7 +146,7 @@ public class Slug extends SummonableMonster implements EliteVariant {
     public boolean canBeAffected(MobEffectInstance effect) {
         if (effect.getEffect() == OPMobEffects.SLUG_INFESTATION.get() || (effect.getEffect() == MobEffects.POISON && this.isElite())) {
             MobEffectEvent.Applicable event = new MobEffectEvent.Applicable(this, effect);
-            MinecraftForge.EVENT_BUS.post(event);
+            neoforged.EVENT_BUS.post(event);
             return event.getResult() == Event.Result.ALLOW;
         } else {
             return super.canBeAffected(effect);

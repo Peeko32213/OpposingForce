@@ -1,12 +1,9 @@
 package com.barl_inc.opposing_force.registry;
 
-import com.google.gson.JsonObject;
 import com.barl_inc.opposing_force.OpposingForce;
 import com.mojang.serialization.Codec;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.CriterionValidator;
-import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;

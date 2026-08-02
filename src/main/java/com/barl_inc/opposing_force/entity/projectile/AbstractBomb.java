@@ -22,7 +22,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractBomb extends ThrowableItemProjectile {

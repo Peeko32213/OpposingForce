@@ -5,10 +5,10 @@ import com.barl_inc.opposing_force.entity.*;
 import com.unusualmodding.opposing_force.entity.*;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.event.entity.SpawnPlacementRegisterEvent;
+import net.neoforged.eventbus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 
 import static com.barl_inc.opposing_force.registry.OPEntities.*;
 

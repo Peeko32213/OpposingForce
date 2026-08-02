@@ -12,7 +12,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.network.NetworkEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.joml.Vector4f;
 

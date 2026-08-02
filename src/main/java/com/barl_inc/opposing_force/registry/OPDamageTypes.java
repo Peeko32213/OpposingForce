@@ -2,9 +2,8 @@ package com.barl_inc.opposing_force.registry;
 
 import com.barl_inc.opposing_force.OpposingForce;
 import com.barl_inc.opposing_force.entity.projectile.*;
-import com.unusualmodding.opposing_force.entity.projectile.*;
+import com.barl_inc.opposing_force.entity.projectile.*;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;

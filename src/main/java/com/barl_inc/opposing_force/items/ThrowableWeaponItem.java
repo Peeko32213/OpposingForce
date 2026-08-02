@@ -14,8 +14,8 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.common.ToolActions;
+import net.neoforged.common.ToolAction;
+import net.neoforged.common.ToolActions;
 import org.jetbrains.annotations.NotNull;
 
 public class ThrowableWeaponItem extends TieredItem implements Vanishable {

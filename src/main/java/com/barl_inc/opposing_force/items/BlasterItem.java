@@ -25,7 +25,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;

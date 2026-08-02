@@ -35,9 +35,9 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.MobEffectEvent;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.common.neoforged;
+import net.neoforged.event.entity.living.MobEffectEvent;
+import net.neoforged.eventbus.api.Event;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -217,7 +217,7 @@ public class UmberSpider extends Spider implements AttackState, EliteVariant {
     public boolean canBeAffected(MobEffectInstance effect) {
         if (effect.getEffect() == MobEffects.POISON || effect.getEffect() == OPMobEffects.GLOOM_TOXIN.get()) {
             MobEffectEvent.Applicable event = new MobEffectEvent.Applicable(this, effect);
-            MinecraftForge.EVENT_BUS.post(event);
+            neoforged.EVENT_BUS.post(event);
             return event.getResult() == Event.Result.ALLOW;
         } else {
             return super.canBeAffected(effect);

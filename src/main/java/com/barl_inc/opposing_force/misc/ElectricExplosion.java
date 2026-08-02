@@ -24,7 +24,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;

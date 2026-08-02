@@ -14,17 +14,17 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ComputeFovModifierEvent;
-import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.client.event.RenderNameTagEvent;
-import net.minecraftforge.client.event.ViewportEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.client.event.ComputeFovModifierEvent;
+import net.neoforged.client.event.RenderLivingEvent;
+import net.neoforged.client.event.RenderNameTagEvent;
+import net.neoforged.client.event.ViewportEvent;
+import net.neoforged.common.neoforged;
+import net.neoforged.event.TickEvent;
+import net.neoforged.eventbus.api.Event;
+import net.neoforged.eventbus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -43,7 +43,7 @@ public class ClientForgeEvents {
     public void preRenderLiving(RenderLivingEvent.Pre event) {
         if (ClientProxy.blockedEntityRenders.contains(event.getEntity().getUUID())) {
             if (!OpposingForce.PROXY.isFirstPersonPlayer(event.getEntity())) {
-                MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Post(event.getEntity(), event.getRenderer(), event.getPartialTick(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight()));
+                neoforged.EVENT_BUS.post(new RenderLivingEvent.Post(event.getEntity(), event.getRenderer(), event.getPartialTick(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight()));
                 event.setCanceled(true);
             }
             ClientProxy.blockedEntityRenders.remove(event.getEntity().getUUID());

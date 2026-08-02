@@ -6,7 +6,7 @@ import com.barl_inc.opposing_force.registry.enums.OPTiers;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraftforge.common.ForgeMod;
+import net.neoforged.common.ForgeMod;
 
 public class OPArmorDefinitions {
 

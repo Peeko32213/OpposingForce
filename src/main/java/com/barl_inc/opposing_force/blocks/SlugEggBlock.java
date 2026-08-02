@@ -32,7 +32,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;

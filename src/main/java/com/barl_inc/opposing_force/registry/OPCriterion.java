@@ -4,7 +4,6 @@ import com.barl_inc.opposing_force.OpposingForce;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraftforge.fml.common.Mod;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 

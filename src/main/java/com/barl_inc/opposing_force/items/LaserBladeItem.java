@@ -33,10 +33,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.neoforged.common.ToolAction;
+import net.neoforged.common.ToolActions;
+import net.neoforged.event.entity.ProjectileImpactEvent;
+import net.neoforged.event.entity.living.LivingAttackEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class LaserBladeItem extends SwordItem implements CustomSweepAttack {
