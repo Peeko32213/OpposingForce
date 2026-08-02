@@ -15,11 +15,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.RecordItem;
-import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.DeferredItem;
+import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -178,7 +174,7 @@ public class OPItems {
     public static final DeferredItem<Item> UMBER_DAGGER = registerItem("umber_dagger", () -> new UmberDaggerItem(new Item.Properties().stacksTo(1)));
 
     // Volt
-    public static final DeferredItem<Item> VOLT_SPAWN_EGG = registerSpawnEggItem("volt", OPEntities.VOLT , 0x2c1538, 0x00bfff);
+    public static final DeferredItem<Item> VOLT_SPAWN_EGG = registerSpawnEggItem("volt", OPEntities.VOLT, 0x2c1538, 0x00bfff);
     public static final DeferredItem<Item> ELECTRIC_CHARGE = registerItem("electric_charge", () -> new ElectricChargeItem(OPEntities.ELECTRIC_CHARGE, (new Item.Properties())));
     public static final DeferredItem<Item> ELECTRIC_ALLOY = registerItem("electric_alloy", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> TESLA_CANNON = registerItem("tesla_cannon", () -> new TeslaCannonItem(new Item.Properties().stacksTo(1).durability(465)));
@@ -248,8 +244,8 @@ public class OPItems {
         return ITEMS.register(name, supplier);
     }
 
-    private static DeferredItem<Item> registerSpawnEggItem(String name, DeferredItem<? extends EntityType<? extends Mob>> type, int baseColor, int spotColor) {
-        return registerItem(name + "_spawn_egg", () -> new ForgeSpawnEggItem(type, baseColor, spotColor, new Item.Properties()));
+    private static DeferredItem<Item> registerSpawnEggItem(String name, Supplier<? extends EntityType<? extends Mob>> type, int baseColor, int spotColor) {
+        return registerItem(name + "_spawn_egg", () -> new DeferredSpawnEggItem(type, baseColor, spotColor, new Item.Properties()));
     }
 
     public static Item.Properties foodItem(FoodProperties food) {

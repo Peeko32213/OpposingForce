@@ -13,10 +13,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.crafting.ConditionalRecipe;
-import net.minecraftforge.common.crafting.conditions.ICondition;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -63,10 +60,10 @@ public class OPRecipeProvider extends RecipeProvider {
 
         ShapedRecipeBuilder.shaped(COMBAT, STRATO_BOW.get()).define('C', SKYVERN_CLAW.get()).define('W', Tags.Items.RODS_WOODEN).define('S', Tags.Items.STRING).pattern(" WS").pattern("C S").pattern(" WS").unlockedBy("has_skyvern_claw", has(SKYVERN_CLAW.get())).save(consumer);
 
-        ShapedRecipeBuilder.shaped(COMBAT, LIGHTNING_BOMB.get()).define('G', Tags.Items.GUNPOWDER).define('E', ELECTRIC_CHARGE.get()).define('S', Tags.Items.STRING).pattern("  S").pattern("GE ").pattern("EG ").unlockedBy("has_electric_charge", has(ELECTRIC_CHARGE.get())).save(consumer);
-        ShapedRecipeBuilder.shaped(COMBAT, FIRE_BOMB.get()).define('G', Tags.Items.GUNPOWDER).define('F', FIRE_GEL.get()).define('S', Tags.Items.STRING).pattern("  S").pattern("GF ").pattern("FG ").unlockedBy("has_fire_gel", has(FIRE_GEL.get())).save(consumer);
-        ShapedRecipeBuilder.shaped(COMBAT, WHIZZ_BOMB.get()).define('G', Tags.Items.GUNPOWDER).define('W', CAPTURED_WHIZZ.get()).define('S', Tags.Items.STRING).pattern("  S").pattern("GW ").pattern("SG ").unlockedBy("has_captured_whizz", has(CAPTURED_WHIZZ.get())).save(consumer);
-        ShapedRecipeBuilder.shaped(COMBAT, KINETIC_BOMB.get()).define('G', Tags.Items.GUNPOWDER).define('A', Tags.Items.GEMS_AMETHYST).define('S', Tags.Items.STRING).pattern("  S").pattern("GA ").pattern("AG ").unlockedBy("has_amethyst", has(Tags.Items.GEMS_AMETHYST)).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, LIGHTNING_BOMB.get()).define('G', Tags.Items.GUNPOWDERS).define('E', ELECTRIC_CHARGE.get()).define('S', Tags.Items.STRING).pattern("  S").pattern("GE ").pattern("EG ").unlockedBy("has_electric_charge", has(ELECTRIC_CHARGE.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, FIRE_BOMB.get()).define('G', Tags.Items.GUNPOWDERS).define('F', FIRE_GEL.get()).define('S', Tags.Items.STRING).pattern("  S").pattern("GF ").pattern("FG ").unlockedBy("has_fire_gel", has(FIRE_GEL.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, WHIZZ_BOMB.get()).define('G', Tags.Items.GUNPOWDERS).define('W', CAPTURED_WHIZZ.get()).define('S', Tags.Items.STRING).pattern("  S").pattern("GW ").pattern("SG ").unlockedBy("has_captured_whizz", has(CAPTURED_WHIZZ.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(COMBAT, KINETIC_BOMB.get()).define('G', Tags.Items.GUNPOWDERS).define('A', Tags.Items.GEMS_AMETHYST).define('S', Tags.Items.STRING).pattern("  S").pattern("GA ").pattern("AG ").unlockedBy("has_amethyst", has(Tags.Items.GEMS_AMETHYST)).save(consumer);
 
         ShapedRecipeBuilder.shaped(COMBAT, DEEPWOVEN_HAT.get()).define('#', DEEP_SILK.get()).pattern("###").pattern("# #").unlockedBy("has_deep_silk", has(DEEP_SILK.get())).save(consumer);
         ShapedRecipeBuilder.shaped(COMBAT, DEEPWOVEN_TUNIC.get()).define('#', DEEP_SILK.get()).pattern("# #").pattern("###").pattern("###").unlockedBy("has_deep_silk", has(DEEP_SILK.get())).save(consumer);

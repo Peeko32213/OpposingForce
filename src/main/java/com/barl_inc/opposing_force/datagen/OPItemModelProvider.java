@@ -7,11 +7,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -149,8 +148,8 @@ public class OPItemModelProvider extends ItemModelProvider {
 
         // spawn eggs
         for (Item item : BuiltInRegistries.ITEM) {
-            if (item instanceof SpawnEggItem && Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)).getNamespace().equals(OpposingForce.MOD_ID)) {
-                this.getBuilder(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)).getPath()).parent(getExistingFile(new ResourceLocation("item/template_spawn_egg")));
+            if (item instanceof SpawnEggItem && Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item)).getNamespace().equals(OpposingForce.MOD_ID)) {
+                this.getBuilder(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item)).getPath()).parent(getExistingFile(ResourceLocation.withDefaultNamespace("item/template_spawn_egg")));
             }
         }
 
@@ -158,16 +157,16 @@ public class OPItemModelProvider extends ItemModelProvider {
     }
 
     // item
-    private void item(RegistryObject<?> item) {
+    private void item(DeferredHolder<?, ?> item) {
         this.generated(item.getId().getPath(), modLoc("item/" + item.getId().getPath()));
     }
 
-    private void handheldItem(RegistryObject<?> item) {
+    private void handheldItem(DeferredHolder<?, ?> item) {
         this.handheld(item.getId().getPath(), modLoc("item/" + item.getId().getPath()));
     }
 
     private void mobHeads(Supplier<? extends Block> skull) {
-        this.getBuilder(Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(skull.get())).getPath()).parent(getExistingFile(new ResourceLocation("item/template_skull")));
+        this.getBuilder(Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(skull.get())).getPath()).parent(getExistingFile(ResourceLocation.withDefaultNamespace("item/template_skull")));
     }
 
     // utils

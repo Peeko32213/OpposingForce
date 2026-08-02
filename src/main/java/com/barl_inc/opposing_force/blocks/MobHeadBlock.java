@@ -29,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-@SuppressWarnings("deprecation")
 public class MobHeadBlock extends BaseEntityBlock implements Equipable {
 
     public static final int MAX = RotationSegment.getMaxSegmentIndex();

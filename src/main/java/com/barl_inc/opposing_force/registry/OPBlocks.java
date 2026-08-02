@@ -3,7 +3,6 @@ package com.barl_inc.opposing_force.registry;
 import com.barl_inc.opposing_force.blocks.*;
 import com.mojang.datafixers.util.Pair;
 import com.barl_inc.opposing_force.OpposingForce;
-import com.unusualmodding.opposing_force.blocks.*;
 import com.barl_inc.opposing_force.blocks.trees.AppleTreeGrower;
 import com.barl_inc.opposing_force.blocks.utils.FruitLeaves;
 import net.minecraft.world.flag.FeatureFlag;
@@ -14,11 +13,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.ArrayList;
@@ -42,15 +37,15 @@ public class OPBlocks {
     public static final DeferredBlock<Block> GUZZLER_SCALE_BLOCK = registerBlock("guzzler_scale_block", () -> new Block(OPBlockProperties.GUZZLER_SCALE_BLOCK));
 
     public static final DeferredBlock<Block> GUZZLER_SCALE_BRICKS = registerBlock("guzzler_scale_bricks", () -> new Block(OPBlockProperties.GUZZLER_SCALE_BLOCK));
-    public static final DeferredBlock<Block> GUZZLER_SCALE_BRICK_STAIRS = registerBlock("guzzler_scale_brick_stairs", () -> new StairBlock(() -> GUZZLER_SCALE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(GUZZLER_SCALE_BRICKS.get())));
+    public static final DeferredBlock<Block> GUZZLER_SCALE_BRICK_STAIRS = registerBlock("guzzler_scale_brick_stairs", () -> new StairBlock(GUZZLER_SCALE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(GUZZLER_SCALE_BRICKS.get())));
     public static final DeferredBlock<Block> GUZZLER_SCALE_BRICK_SLAB = registerBlock("guzzler_scale_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(GUZZLER_SCALE_BRICKS.get())));
 
     public static final DeferredBlock<Block> TREMBLING_GUZZLER_SCALE_BRICKS = registerBlock("trembling_guzzler_scale_bricks", () -> new Block(OPBlockProperties.GUZZLER_SCALE_BLOCK));
-    public static final DeferredBlock<Block> TREMBLING_GUZZLER_SCALE_BRICK_STAIRS = registerBlock("trembling_guzzler_scale_brick_stairs", () -> new StairBlock(() -> TREMBLING_GUZZLER_SCALE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(TREMBLING_GUZZLER_SCALE_BRICKS.get())));
+    public static final DeferredBlock<Block> TREMBLING_GUZZLER_SCALE_BRICK_STAIRS = registerBlock("trembling_guzzler_scale_brick_stairs", () -> new StairBlock(TREMBLING_GUZZLER_SCALE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(TREMBLING_GUZZLER_SCALE_BRICKS.get())));
     public static final DeferredBlock<Block> TREMBLING_GUZZLER_SCALE_BRICK_SLAB = registerBlock("trembling_guzzler_scale_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(TREMBLING_GUZZLER_SCALE_BRICKS.get())));
 
     public static final DeferredBlock<Block> TREMBLING_GUZZLER_SCALE_SHINGLES = registerBlock("trembling_guzzler_scale_shingles", () -> new Block(OPBlockProperties.GUZZLER_SCALE_BLOCK));
-    public static final DeferredBlock<Block> TREMBLING_GUZZLER_SCALE_SHINGLE_STAIRS = registerBlock("trembling_guzzler_scale_shingle_stairs", () -> new StairBlock(() -> TREMBLING_GUZZLER_SCALE_SHINGLES.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(TREMBLING_GUZZLER_SCALE_SHINGLES.get())));
+    public static final DeferredBlock<Block> TREMBLING_GUZZLER_SCALE_SHINGLE_STAIRS = registerBlock("trembling_guzzler_scale_shingle_stairs", () -> new StairBlock(TREMBLING_GUZZLER_SCALE_SHINGLES.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(TREMBLING_GUZZLER_SCALE_SHINGLES.get())));
     public static final DeferredBlock<Block> TREMBLING_GUZZLER_SCALE_SHINGLE_SLAB = registerBlock("trembling_guzzler_scale_shingle_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(TREMBLING_GUZZLER_SCALE_SHINGLES.get())));
 
     public static final DeferredBlock<Block> INFERNO_PIE = registerBlock("inferno_pie", () -> new InfernoPieBlock(OPBlockProperties.INFERNO_PIE));
@@ -79,14 +74,14 @@ public class OPBlocks {
     // Slug
     public static final DeferredBlock<Block> SLUG_EGGS = registerBlock("slug_eggs", () -> new SlugEggBlock(OPBlockProperties.SLUG_EGGS));
     public static final DeferredBlock<Block> VILE_STONE = registerBlock("vile_stone", () -> new Block(OPBlockProperties.VILE_STONE));
-    public static final DeferredBlock<Block> VILE_STONE_STAIRS = registerBlock("vile_stone_stairs", () -> new StairBlock(() -> VILE_STONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(VILE_STONE.get())));
+    public static final DeferredBlock<Block> VILE_STONE_STAIRS = registerBlock("vile_stone_stairs", () -> new StairBlock(VILE_STONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(VILE_STONE.get())));
     public static final DeferredBlock<Block> VILE_STONE_SLAB = registerBlock("vile_stone_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(VILE_STONE.get())));
     public static final DeferredBlock<Block> VILE_COBBLESTONE = registerBlock("vile_cobblestone", () -> new Block(OPBlockProperties.VILE_COBBLESTONE));
-    public static final DeferredBlock<Block> VILE_COBBLESTONE_STAIRS = registerBlock("vile_cobblestone_stairs", () -> new StairBlock(() -> VILE_COBBLESTONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(VILE_COBBLESTONE.get())));
+    public static final DeferredBlock<Block> VILE_COBBLESTONE_STAIRS = registerBlock("vile_cobblestone_stairs", () -> new StairBlock(VILE_COBBLESTONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(VILE_COBBLESTONE.get())));
     public static final DeferredBlock<Block> VILE_COBBLESTONE_SLAB = registerBlock("vile_cobblestone_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(VILE_COBBLESTONE.get())));
     public static final DeferredBlock<Block> VILE_COBBLESTONE_WALL = registerBlock("vile_cobblestone_wall", () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(VILE_COBBLESTONE.get())));
     public static final DeferredBlock<Block> VILE_STONE_BRICKS = registerBlock("vile_stone_bricks", () -> new Block(OPBlockProperties.VILE_STONE));
-    public static final DeferredBlock<Block> VILE_STONE_BRICK_STAIRS = registerBlock("vile_stone_brick_stairs", () -> new StairBlock(() -> VILE_STONE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(VILE_STONE_BRICKS.get())));
+    public static final DeferredBlock<Block> VILE_STONE_BRICK_STAIRS = registerBlock("vile_stone_brick_stairs", () -> new StairBlock(VILE_STONE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(VILE_STONE_BRICKS.get())));
     public static final DeferredBlock<Block> VILE_STONE_BRICK_SLAB = registerBlock("vile_stone_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(VILE_STONE_BRICKS.get())));
     public static final DeferredBlock<Block> VILE_STONE_BRICK_WALL = registerBlock("vile_stone_brick_wall", () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(VILE_STONE_BRICKS.get())));
     public static final DeferredBlock<Block> CHISELED_VILE_STONE_BRICKS = registerBlock("chiseled_vile_stone_bricks", () -> new Block(OPBlockProperties.VILE_STONE));
@@ -105,7 +100,7 @@ public class OPBlocks {
     // Trembler
     public static final DeferredBlock<Block> TREMBLER_SHELL = registerBlock("trembler_shell", () -> new TremblerShellBlock(OPBlockProperties.TREMBLING_BLOCK));
     public static final DeferredBlock<Block> TREMBLING_SHINGLES = registerBlock("trembling_shingles", () -> new Block(OPBlockProperties.TREMBLING_BLOCK));
-    public static final DeferredBlock<Block> TREMBLING_SHINGLE_STAIRS = registerBlock("trembling_shingle_stairs", () -> new StairBlock(() -> TREMBLING_SHINGLES.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(TREMBLING_SHINGLES.get())));
+    public static final DeferredBlock<Block> TREMBLING_SHINGLE_STAIRS = registerBlock("trembling_shingle_stairs", () -> new StairBlock(TREMBLING_SHINGLES.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(TREMBLING_SHINGLES.get())));
     public static final DeferredBlock<Block> TREMBLING_SHINGLE_SLAB = registerBlock("trembling_shingle_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(TREMBLING_SHINGLES.get())));
     public static final DeferredBlock<Block> TREMBLING_BLOCK = registerBlock("trembling_block", () -> new Block(OPBlockProperties.TREMBLING_BLOCK));
 
