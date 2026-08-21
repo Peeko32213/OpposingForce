@@ -1,13 +1,13 @@
 package com.barl_inc.opposing_force.client.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import com.barl_inc.opposing_force.OpposingForce;
 import com.barl_inc.opposing_force.client.models.entity.HangingSpiderModel;
 import com.barl_inc.opposing_force.client.renderer.layers.HangingSpiderEyesLayer;
 import com.barl_inc.opposing_force.entity.HangingSpider;
 import com.barl_inc.opposing_force.registry.OPModelLayers;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;

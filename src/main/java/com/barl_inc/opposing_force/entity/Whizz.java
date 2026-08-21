@@ -2,7 +2,6 @@ package com.barl_inc.opposing_force.entity;
 
 import com.barl_inc.opposing_force.OpposingForce;
 import com.barl_inc.opposing_force.entity.ai.goal.*;
-import com.unusualmodding.opposing_force.entity.ai.goal.*;
 import com.barl_inc.opposing_force.entity.ai.goal.whizz.WhizzAttackGoal;
 import com.barl_inc.opposing_force.entity.ai.goal.whizz.WhizzSwarmGoal;
 import com.barl_inc.opposing_force.entity.ai.goal.whizz.WhizzWanderGoal;
@@ -11,6 +10,7 @@ import com.barl_inc.opposing_force.entity.utils.OPPoses;
 import com.barl_inc.opposing_force.registry.OPBlocks;
 import com.barl_inc.opposing_force.registry.OPItems;
 import com.barl_inc.opposing_force.registry.OPSoundEvents;
+import com.unusualmodding.opposing_force.entity.ai.goal.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;

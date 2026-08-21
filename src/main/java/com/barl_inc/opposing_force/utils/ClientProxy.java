@@ -3,7 +3,6 @@ package com.barl_inc.opposing_force.utils;
 import com.barl_inc.opposing_force.OpposingForce;
 import com.barl_inc.opposing_force.client.renderer.items.OPArmorRenderProperties;
 import com.barl_inc.opposing_force.client.sounds.*;
-import com.barl_inc.opposing_force.client.sounds.*;
 import com.barl_inc.opposing_force.entity.Frowzy;
 import com.barl_inc.opposing_force.entity.Skyvern;
 import com.barl_inc.opposing_force.entity.Terror;

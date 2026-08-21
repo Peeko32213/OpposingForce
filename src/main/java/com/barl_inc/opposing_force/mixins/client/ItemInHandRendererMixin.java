@@ -1,10 +1,10 @@
 package com.barl_inc.opposing_force.mixins.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import com.barl_inc.opposing_force.items.LaserBladeItem;
 import com.barl_inc.opposing_force.items.TeslaCannonItem;
 import com.barl_inc.opposing_force.registry.OPItems;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;

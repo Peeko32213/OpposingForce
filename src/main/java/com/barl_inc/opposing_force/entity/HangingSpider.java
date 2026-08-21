@@ -2,9 +2,9 @@ package com.barl_inc.opposing_force.entity;
 
 import com.barl_inc.opposing_force.OpposingForceConfig;
 import com.barl_inc.opposing_force.entity.ai.goal.hanging_spider.*;
-import com.unusualmodding.opposing_force.entity.ai.goal.hanging_spider.*;
 import com.barl_inc.opposing_force.entity.utils.AttackState;
 import com.barl_inc.opposing_force.registry.OPSoundEvents;
+import com.unusualmodding.opposing_force.entity.ai.goal.hanging_spider.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

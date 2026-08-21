@@ -40,7 +40,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.event.TickEvent;
 import net.neoforged.event.entity.ProjectileImpactEvent;
 import net.neoforged.event.entity.living.*;
 import net.neoforged.event.entity.player.CriticalHitEvent;
@@ -50,26 +49,17 @@ import net.neoforged.event.level.BlockEvent;
 import net.neoforged.event.village.WandererTradesEvent;
 import net.neoforged.eventbus.api.Event;
 import net.neoforged.eventbus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
-import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
-import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
-import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.event.village.WandererTradesEvent;
-
-import static com.barl_inc.opposing_force.OpposingForceConfig.*;
 
 import java.util.Collection;
 import java.util.List;
+
+import static com.barl_inc.opposing_force.OpposingForceConfig.*;
 
 @EventBusSubscriber(modid = OpposingForce.MOD_ID)
 public class ForgeEvents {

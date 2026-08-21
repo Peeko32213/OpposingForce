@@ -2,11 +2,11 @@ package com.barl_inc.opposing_force.entity;
 
 import com.barl_inc.opposing_force.OpposingForceConfig;
 import com.barl_inc.opposing_force.entity.ai.goal.umber_spider.*;
-import com.unusualmodding.opposing_force.entity.ai.goal.umber_spider.*;
 import com.barl_inc.opposing_force.entity.utils.AttackState;
 import com.barl_inc.opposing_force.entity.utils.EliteVariant;
 import com.barl_inc.opposing_force.registry.OPMobEffects;
 import com.barl_inc.opposing_force.registry.OPSoundEvents;
+import com.unusualmodding.opposing_force.entity.ai.goal.umber_spider.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;

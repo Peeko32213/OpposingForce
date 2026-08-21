@@ -1,7 +1,7 @@
 package com.barl_inc.opposing_force.datagen;
 
-import com.mojang.datafixers.util.Pair;
 import com.barl_inc.opposing_force.OpposingForce;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;

@@ -1,11 +1,11 @@
 package com.barl_inc.opposing_force.client.renderer.layers;
 
-import com.google.common.collect.Maps;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.barl_inc.opposing_force.client.models.entity.FrowzyModel;
 import com.barl_inc.opposing_force.client.renderer.FrowzyRenderer;
 import com.barl_inc.opposing_force.entity.Frowzy;
+import com.google.common.collect.Maps;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;

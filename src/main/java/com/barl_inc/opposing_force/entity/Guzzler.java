@@ -1,12 +1,12 @@
 package com.barl_inc.opposing_force.entity;
 
-import com.google.common.collect.Sets;
 import com.barl_inc.opposing_force.OpposingForceConfig;
 import com.barl_inc.opposing_force.entity.ai.goal.GuzzlerAttackGoal;
 import com.barl_inc.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.barl_inc.opposing_force.entity.utils.AttackState;
 import com.barl_inc.opposing_force.registry.OPSoundEvents;
 import com.barl_inc.opposing_force.utils.OPMath;
+import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;

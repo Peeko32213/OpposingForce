@@ -1,10 +1,10 @@
 package com.barl_inc.opposing_force.client.models.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.barl_inc.opposing_force.client.animations.FrowzyAnimations;
 import com.barl_inc.opposing_force.client.models.entity.base.OPModel;
 import com.barl_inc.opposing_force.entity.Frowzy;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.geom.ModelPart;

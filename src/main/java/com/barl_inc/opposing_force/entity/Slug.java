@@ -1,8 +1,6 @@
 package com.barl_inc.opposing_force.entity;
 
 import com.barl_inc.opposing_force.entity.ai.goal.*;
-import com.google.common.annotations.VisibleForTesting;
-import com.unusualmodding.opposing_force.entity.ai.goal.*;
 import com.barl_inc.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.barl_inc.opposing_force.entity.base.SummonableMonster;
 import com.barl_inc.opposing_force.entity.utils.EliteVariant;
@@ -10,6 +8,8 @@ import com.barl_inc.opposing_force.entity.utils.OPPoses;
 import com.barl_inc.opposing_force.registry.OPCriterion;
 import com.barl_inc.opposing_force.registry.OPMobEffects;
 import com.barl_inc.opposing_force.registry.OPSoundEvents;
+import com.google.common.annotations.VisibleForTesting;
+import com.unusualmodding.opposing_force.entity.ai.goal.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;

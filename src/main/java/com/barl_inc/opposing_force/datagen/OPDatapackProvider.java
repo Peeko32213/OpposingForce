@@ -7,14 +7,10 @@ import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.neoforged.common.data.DatapackBuiltinEntriesProvider;
-import net.neoforged.registries.ForgeRegistries;
-import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-
-import static net.neoforged.neoforge.registries.NeoForgeRegistries.Keys.BIOME_MODIFIERS;
 
 public class OPDatapackProvider extends DatapackBuiltinEntriesProvider {
 

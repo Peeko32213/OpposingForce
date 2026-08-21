@@ -1,8 +1,8 @@
 package com.barl_inc.opposing_force.items.armor;
 
+import com.barl_inc.opposing_force.OpposingForce;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.barl_inc.opposing_force.OpposingForce;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;

@@ -1,10 +1,10 @@
 package com.barl_inc.opposing_force.items;
 
-import com.google.common.collect.Lists;
 import com.barl_inc.opposing_force.enchantments.KickbackEnchantment;
 import com.barl_inc.opposing_force.entity.projectile.ElectricCharge;
 import com.barl_inc.opposing_force.registry.OPItems;
 import com.barl_inc.opposing_force.registry.OPSoundEvents;
+import com.google.common.collect.Lists;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -20,7 +20,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ProjectileWeaponItem;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;

@@ -12,7 +12,6 @@ import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
-import net.neoforged.fml.common.Mod.EventBusSubscriber;
 import net.neoforged.registries.DeferredRegister;
 import net.neoforged.registries.ForgeRegistries;
 import net.neoforged.registries.RegistryObject;

@@ -1,8 +1,8 @@
 package com.barl_inc.opposing_force.client.renderer;
 
+import com.barl_inc.opposing_force.entity.projectile.AbstractBomb;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.barl_inc.opposing_force.entity.projectile.AbstractBomb;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

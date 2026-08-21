@@ -1,9 +1,9 @@
 package com.barl_inc.opposing_force.items;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import com.barl_inc.opposing_force.entity.FireSlime;
 import com.barl_inc.opposing_force.registry.OPEntities;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;

@@ -1,9 +1,9 @@
 package com.barl_inc.opposing_force.client.particles.lightning;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.barl_inc.opposing_force.network.LightningDamagePacket;
 import com.barl_inc.opposing_force.registry.OPNetwork;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;

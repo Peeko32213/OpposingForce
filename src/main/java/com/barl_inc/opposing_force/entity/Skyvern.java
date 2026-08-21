@@ -1,6 +1,5 @@
 package com.barl_inc.opposing_force.entity;
 
-import com.mojang.serialization.Codec;
 import com.barl_inc.opposing_force.OpposingForce;
 import com.barl_inc.opposing_force.entity.ai.control.SkyvernLookControl;
 import com.barl_inc.opposing_force.entity.ai.control.SkyvernMoveControl;
@@ -11,6 +10,7 @@ import com.barl_inc.opposing_force.entity.base.TameableMonster;
 import com.barl_inc.opposing_force.entity.utils.OPPoses;
 import com.barl_inc.opposing_force.registry.OPSoundEvents;
 import com.barl_inc.opposing_force.utils.SmoothAnimationState;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -30,7 +30,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.FlyingAnimal;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;

@@ -1,7 +1,7 @@
 package com.barl_inc.opposing_force.client.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.barl_inc.opposing_force.entity.projectile.ElectricCharge;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
