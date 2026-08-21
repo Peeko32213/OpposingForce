@@ -1,17 +1,16 @@
 package com.barl_inc.opposing_force.client.renderer.blocks;
 
+import com.barl_inc.opposing_force.OpposingForce;
+import com.barl_inc.opposing_force.blocks.MobHeadBlock;
+import com.barl_inc.opposing_force.blocks.WallMobHeadBlock;
+import com.barl_inc.opposing_force.blocks.entity.MobHeadBlockEntity;
 import com.barl_inc.opposing_force.client.models.mob_heads.*;
+import com.barl_inc.opposing_force.registry.OPModelLayers;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import com.barl_inc.opposing_force.OpposingForce;
-import com.barl_inc.opposing_force.blocks.MobHeadBlock;
-import com.barl_inc.opposing_force.blocks.WallMobHeadBlock;
-import com.barl_inc.opposing_force.blocks.entity.MobHeadBlockEntity;
-import com.unusualmodding.opposing_force.client.models.mob_heads.*;
-import com.barl_inc.opposing_force.registry.OPModelLayers;
 import net.minecraft.Util;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -37,27 +36,27 @@ public class MobHeadBlockEntityRenderer implements BlockEntityRenderer<MobHeadBl
     public final Map<MobHeadBlock.Type, MobHeadModelBase> modelByType;
 
     public static final Map<MobHeadBlock.Type, ResourceLocation> SKIN_BY_TYPE = Util.make(Maps.newHashMap(), (map) -> {
-        map.put(MobHeadBlock.Types.DICER, OpposingForce.modPrefix("textures/entity/dicer/dicer.png"));
-        map.put(MobHeadBlock.Types.FROWZY, OpposingForce.modPrefix("textures/entity/frowzy/blue.png"));
-        map.put(MobHeadBlock.Types.RAMBLER_ANGRY, OpposingForce.modPrefix("textures/entity/rambler/skulls/angry.png"));
-        map.put(MobHeadBlock.Types.RAMBLER_CLASSIC, OpposingForce.modPrefix("textures/entity/rambler/skulls/classic.png"));
-        map.put(MobHeadBlock.Types.RAMBLER_CRUNDLY, OpposingForce.modPrefix("textures/entity/rambler/skulls/crundly.png"));
-        map.put(MobHeadBlock.Types.RAMBLER_DWARVEN, OpposingForce.modPrefix("textures/entity/rambler/skulls/dwarven.png"));
-        map.put(MobHeadBlock.Types.RAMBLER_EVIL, OpposingForce.modPrefix("textures/entity/rambler/skulls/evil.png"));
-        map.put(MobHeadBlock.Types.RAMBLER_GRINNING, OpposingForce.modPrefix("textures/entity/rambler/skulls/grinning.png"));
-        map.put(MobHeadBlock.Types.RAMBLER_IMPRISONED, OpposingForce.modPrefix("textures/entity/rambler/skulls/imprisoned.png"));
-        map.put(MobHeadBlock.Types.RAMBLER_INDOMITABLE, OpposingForce.modPrefix("textures/entity/rambler/skulls/indomitable.png"));
-        map.put(MobHeadBlock.Types.RAMBLER_LEERING, OpposingForce.modPrefix("textures/entity/rambler/skulls/leering.png"));
-        map.put(MobHeadBlock.Types.RAMBLER_MAGMATIC, OpposingForce.modPrefix("textures/entity/rambler/skulls/magmatic.png"));
-        map.put(MobHeadBlock.Types.RAMBLER_MUSICAL, OpposingForce.modPrefix("textures/entity/rambler/skulls/musical.png"));
-        map.put(MobHeadBlock.Types.RAMBLER_NOSY, OpposingForce.modPrefix("textures/entity/rambler/skulls/nosy.png"));
-        map.put(MobHeadBlock.Types.RAMBLER_SKELETAL, OpposingForce.modPrefix("textures/entity/rambler/skulls/skeletal.png"));
-        map.put(MobHeadBlock.Types.RAMBLER_SMILING, OpposingForce.modPrefix("textures/entity/rambler/skulls/smiling.png"));
-        map.put(MobHeadBlock.Types.RAMBLER_STRANGE, OpposingForce.modPrefix("textures/entity/rambler/skulls/strange.png"));
-        map.put(MobHeadBlock.Types.RAMBLER_VALIANT, OpposingForce.modPrefix("textures/entity/rambler/skulls/valiant.png"));
-        map.put(MobHeadBlock.Types.SKYVERN, OpposingForce.modPrefix("textures/entity/skyvern/cloudy.png"));
-        map.put(MobHeadBlock.Types.TART, OpposingForce.modPrefix("textures/entity/tart/tart.png"));
-        map.put(MobHeadBlock.Types.WHIZZ, OpposingForce.modPrefix("textures/entity/whizz/whizz.png"));
+        map.put(MobHeadBlock.Types.DICER, OpposingForce.location("textures/entity/dicer/dicer.png"));
+        map.put(MobHeadBlock.Types.FROWZY, OpposingForce.location("textures/entity/frowzy/blue.png"));
+        map.put(MobHeadBlock.Types.RAMBLER_ANGRY, OpposingForce.location("textures/entity/rambler/skulls/angry.png"));
+        map.put(MobHeadBlock.Types.RAMBLER_CLASSIC, OpposingForce.location("textures/entity/rambler/skulls/classic.png"));
+        map.put(MobHeadBlock.Types.RAMBLER_CRUNDLY, OpposingForce.location("textures/entity/rambler/skulls/crundly.png"));
+        map.put(MobHeadBlock.Types.RAMBLER_DWARVEN, OpposingForce.location("textures/entity/rambler/skulls/dwarven.png"));
+        map.put(MobHeadBlock.Types.RAMBLER_EVIL, OpposingForce.location("textures/entity/rambler/skulls/evil.png"));
+        map.put(MobHeadBlock.Types.RAMBLER_GRINNING, OpposingForce.location("textures/entity/rambler/skulls/grinning.png"));
+        map.put(MobHeadBlock.Types.RAMBLER_IMPRISONED, OpposingForce.location("textures/entity/rambler/skulls/imprisoned.png"));
+        map.put(MobHeadBlock.Types.RAMBLER_INDOMITABLE, OpposingForce.location("textures/entity/rambler/skulls/indomitable.png"));
+        map.put(MobHeadBlock.Types.RAMBLER_LEERING, OpposingForce.location("textures/entity/rambler/skulls/leering.png"));
+        map.put(MobHeadBlock.Types.RAMBLER_MAGMATIC, OpposingForce.location("textures/entity/rambler/skulls/magmatic.png"));
+        map.put(MobHeadBlock.Types.RAMBLER_MUSICAL, OpposingForce.location("textures/entity/rambler/skulls/musical.png"));
+        map.put(MobHeadBlock.Types.RAMBLER_NOSY, OpposingForce.location("textures/entity/rambler/skulls/nosy.png"));
+        map.put(MobHeadBlock.Types.RAMBLER_SKELETAL, OpposingForce.location("textures/entity/rambler/skulls/skeletal.png"));
+        map.put(MobHeadBlock.Types.RAMBLER_SMILING, OpposingForce.location("textures/entity/rambler/skulls/smiling.png"));
+        map.put(MobHeadBlock.Types.RAMBLER_STRANGE, OpposingForce.location("textures/entity/rambler/skulls/strange.png"));
+        map.put(MobHeadBlock.Types.RAMBLER_VALIANT, OpposingForce.location("textures/entity/rambler/skulls/valiant.png"));
+        map.put(MobHeadBlock.Types.SKYVERN, OpposingForce.location("textures/entity/skyvern/cloudy.png"));
+        map.put(MobHeadBlock.Types.TART, OpposingForce.location("textures/entity/tart/tart.png"));
+        map.put(MobHeadBlock.Types.WHIZZ, OpposingForce.location("textures/entity/whizz/whizz.png"));
     });
 
     public static Map<MobHeadBlock.Type, MobHeadModelBase> createMobHeadRenderers(EntityModelSet root) {

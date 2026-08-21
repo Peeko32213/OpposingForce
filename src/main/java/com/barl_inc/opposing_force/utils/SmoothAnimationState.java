@@ -1,6 +1,5 @@
 package com.barl_inc.opposing_force.utils;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;

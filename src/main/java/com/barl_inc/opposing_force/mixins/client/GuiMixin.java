@@ -1,9 +1,9 @@
 package com.barl_inc.opposing_force.mixins.client;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.barl_inc.opposing_force.client.renderer.gui.ElectrifiedHeartType;
 import com.barl_inc.opposing_force.client.renderer.gui.GloomToxinHeartType;
 import com.barl_inc.opposing_force.registry.OPMobEffects;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;

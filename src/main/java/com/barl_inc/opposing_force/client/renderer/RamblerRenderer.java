@@ -13,31 +13,31 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.barl_inc.opposing_force.OpposingForce.modPrefix;
+import static com.barl_inc.opposing_force.OpposingForce.location;
 
 @OnlyIn(Dist.CLIENT)
 public class RamblerRenderer extends MobRenderer<Rambler, RamblerModel> {
 
-    private static final ResourceLocation RAMBLER = modPrefix("textures/entity/rambler/rambler.png");
+    private static final ResourceLocation RAMBLER = location("textures/entity/rambler/rambler.png");
 
     public RamblerRenderer(EntityRendererProvider.Context context) {
         super(context, new RamblerModel(context.bakeLayer(OPModelLayers.RAMBLER)), 0.8F);
 
         this.addLayer(new RamblerSkullLayer(this, skullModelPart -> skullModelPart.middle_skull, entity -> {
                     Rambler.RamblerSkulls skull = Rambler.RamblerSkulls.getVariantId(entity.getMiddleSkull());
-                    return modPrefix("textures/entity/rambler/skulls/" + skull.getSerializedName() + ".png");
+                    return location("textures/entity/rambler/skulls/" + skull.getSerializedName() + ".png");
                 }));
 
         this.addLayer(new RamblerSkullLayer(this,
                 skullModelPart -> skullModelPart.left_skull, entity -> {
                     Rambler.RamblerSkulls skull = Rambler.RamblerSkulls.getVariantId(entity.getLeftSkull());
-                    return modPrefix("textures/entity/rambler/skulls/" + skull.getSerializedName() + ".png");
+                    return location("textures/entity/rambler/skulls/" + skull.getSerializedName() + ".png");
                 }));
 
         this.addLayer(new RamblerSkullLayer(this,
                 skullModelPart -> skullModelPart.right_skull, entity -> {
                     Rambler.RamblerSkulls skull = Rambler.RamblerSkulls.getVariantId(entity.getRightSkull());
-                    return modPrefix("textures/entity/rambler/skulls/" + skull.getSerializedName() + ".png");
+                    return location("textures/entity/rambler/skulls/" + skull.getSerializedName() + ".png");
                 }));
     }
 

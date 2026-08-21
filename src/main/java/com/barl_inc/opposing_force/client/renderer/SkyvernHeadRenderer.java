@@ -1,11 +1,11 @@
 package com.barl_inc.opposing_force.client.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import com.barl_inc.opposing_force.OpposingForce;
 import com.barl_inc.opposing_force.client.models.entity.skyvern.SkyvernModel;
 import com.barl_inc.opposing_force.entity.Skyvern;
 import com.barl_inc.opposing_force.registry.OPModelLayers;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -16,9 +16,9 @@ import org.jetbrains.annotations.NotNull;
 @OnlyIn(Dist.CLIENT)
 public class SkyvernHeadRenderer extends MobRenderer<Skyvern, SkyvernModel> {
 
-    private static final ResourceLocation CLOUDY = OpposingForce.modPrefix("textures/entity/skyvern/cloudy.png");
-    private static final ResourceLocation AZURE = OpposingForce.modPrefix("textures/entity/skyvern/azure.png");
-    private static final ResourceLocation THUNDER = OpposingForce.modPrefix("textures/entity/skyvern/thunder.png");
+    private static final ResourceLocation CLOUDY = OpposingForce.location("textures/entity/skyvern/cloudy.png");
+    private static final ResourceLocation AZURE = OpposingForce.location("textures/entity/skyvern/azure.png");
+    private static final ResourceLocation THUNDER = OpposingForce.location("textures/entity/skyvern/thunder.png");
 
     public SkyvernHeadRenderer(EntityRendererProvider.Context context) {
         super(context, new SkyvernModel(context.bakeLayer(OPModelLayers.SKYVERN)), 0.5F);

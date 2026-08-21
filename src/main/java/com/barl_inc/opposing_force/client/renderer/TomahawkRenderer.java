@@ -1,8 +1,8 @@
 package com.barl_inc.opposing_force.client.renderer;
 
+import com.barl_inc.opposing_force.entity.projectile.Tomahawk;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.barl_inc.opposing_force.entity.projectile.Tomahawk;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;

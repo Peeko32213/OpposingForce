@@ -1,11 +1,11 @@
 package com.barl_inc.opposing_force.client.models.entity;
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.barl_inc.opposing_force.client.animations.HangingSpiderAnimations;
 import com.barl_inc.opposing_force.client.models.entity.base.OPModel;
 import com.barl_inc.opposing_force.entity.HangingSpider;
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;

@@ -34,6 +34,6 @@ public class SkyvernSegmentProvider implements IEntityComponentProvider {
 
 	@Override
 	public ResourceLocation getUid() {
-		return OpposingForce.modPrefix("skyvern_segment");
+		return OpposingForce.location("skyvern_segment");
 	}
 }

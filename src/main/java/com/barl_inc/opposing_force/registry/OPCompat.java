@@ -1,21 +1,8 @@
 package com.barl_inc.opposing_force.registry;
 
-import com.barl_inc.opposing_force.entity.projectile.*;
-import com.unusualmodding.opposing_force.entity.projectile.*;
 import com.barl_inc.opposing_force.items.MobHeadItem;
-import net.minecraft.core.Position;
-import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
-import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
-import net.minecraft.core.dispenser.ProjectileDispenseBehavior;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 public class OPCompat {
 

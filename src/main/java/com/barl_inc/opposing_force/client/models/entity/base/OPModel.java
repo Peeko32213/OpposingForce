@@ -1,8 +1,8 @@
 package com.barl_inc.opposing_force.client.models.entity.base;
 
+import com.barl_inc.opposing_force.utils.SmoothAnimationState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.barl_inc.opposing_force.utils.SmoothAnimationState;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;

@@ -1,7 +1,7 @@
 package com.barl_inc.opposing_force.entity.ai.goal.whizz;
 
-import com.mojang.datafixers.DataFixUtils;
 import com.barl_inc.opposing_force.entity.Whizz;
+import com.mojang.datafixers.DataFixUtils;
 import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.List;

@@ -23,19 +23,22 @@ public class OpposingForce {
     public static final CommonProxy PROXY = unsafeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
     public static final String MOD_ID = "opposing_force";
 
+    public static ResourceLocation location(String name) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, name.toLowerCase(Locale.ROOT));
+    }
+
     public OpposingForce(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
         modEventBus.addListener(this::loadComplete);
         modEventBus.addListener(this::dataSetup);
 
-
         OPTreeFeatures.INIT();
         OPTreeGrowers.INIT();
 
         OPBlocks.BLOCKS.register(modEventBus);
         OPItems.ITEMS.register(modEventBus);
-        OpposingForceTab.CREATIVE_TABS.register(modEventBus);
+        OpposingForceTab.CREATIVE_MODE_TAB.register(modEventBus);
         OPMobEffects.MOB_EFFECTS.register(modEventBus);
         OPEntities.ENTITY_TYPE.register(modEventBus);
         OPSoundEvents.SOUND_EVENTS.register(modEventBus);
@@ -43,12 +46,9 @@ public class OpposingForce {
         OPEnchantments.ENCHANTMENTS.register(modEventBus);
         OPPotions.POTIONS.register(modEventBus);
         OPAttributes.ATTRIBUTES.register(modEventBus);
-        OPLootModifiers.LOOT_MODIFIERS.register(modEventBus);
         OPBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
         OPRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
 
-        neoforged.EVENT_BUS.register(this);
-        neoforged.EVENT_BUS.register(PROXY);
         PROXY.init();
     }
 
@@ -98,10 +98,6 @@ public class OpposingForce {
 //        generator.addProvider(client, new OPItemModelProvider(data));
 //        generator.addProvider(client, new OPSoundDefinitionsProvider(output, helper));
 //        generator.addProvider(client, new OPLanguageProvider(data));
-    }
-
-    public static ResourceLocation modPrefix(String name) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, name.toLowerCase(Locale.ROOT));
     }
 
     private static <T> T unsafeRunForDist(Supplier<Supplier<T>> clientTarget, Supplier<Supplier<T>> serverTarget) {

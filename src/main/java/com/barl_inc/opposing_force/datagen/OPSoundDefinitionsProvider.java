@@ -7,12 +7,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.neoforged.common.data.ExistingFileHelper;
 import net.neoforged.common.data.SoundDefinition;
 import net.neoforged.common.data.SoundDefinitionsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.common.data.SoundDefinition;
-import net.neoforged.neoforge.common.data.SoundDefinitionsProvider;
 import net.neoforged.neoforge.registries.DeferredHolder;
-
-import java.util.function.Supplier;
 
 @SuppressWarnings("SameParameterValue")
 public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
@@ -65,32 +60,32 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
         );
 
         this.sound(OPSoundEvents.DICER_HURT,
-                sound(OpposingForce.modPrefix("entity/dicer/hurt1")).volume(0.9F),
-                sound(OpposingForce.modPrefix("entity/dicer/hurt2")).volume(0.9F)
+                sound(OpposingForce.location("entity/dicer/hurt1")).volume(0.9F),
+                sound(OpposingForce.location("entity/dicer/hurt2")).volume(0.9F)
         );
         this.sound(OPSoundEvents.DICER_DEATH,
-                sound(OpposingForce.modPrefix("entity/dicer/death1")).volume(0.9F)
+                sound(OpposingForce.location("entity/dicer/death1")).volume(0.9F)
         );
         this.sound(OPSoundEvents.DICER_IDLE,
-                sound(OpposingForce.modPrefix("entity/dicer/idle1")).volume(0.8F),
-                sound(OpposingForce.modPrefix("entity/dicer/idle2")).volume(0.8F)
+                sound(OpposingForce.location("entity/dicer/idle1")).volume(0.8F),
+                sound(OpposingForce.location("entity/dicer/idle2")).volume(0.8F)
         );
         this.sound(OPSoundEvents.DICER_ATTACK,
-                sound(OpposingForce.modPrefix("entity/dicer/attack1")),
-                sound(OpposingForce.modPrefix("entity/dicer/attack2"))
+                sound(OpposingForce.location("entity/dicer/attack1")),
+                sound(OpposingForce.location("entity/dicer/attack2"))
         );
         this.sound(OPSoundEvents.DICER_LASER,
-                sound(OpposingForce.modPrefix("entity/dicer/laser1")).attenuationDistance(20)
+                sound(OpposingForce.location("entity/dicer/laser1")).attenuationDistance(20)
         );
 
         this.sound(OPSoundEvents.ELECTRIC_CHARGE,
-                sound(OpposingForce.modPrefix("entity/electric_charge/loop1")).attenuationDistance(20)
+                sound(OpposingForce.location("entity/electric_charge/loop1")).attenuationDistance(20)
         );
         this.sound(OPSoundEvents.ELECTRIC_CHARGE_DISSIPATE,
-                sound(OpposingForce.modPrefix("entity/electric_charge/dissipate1"))
+                sound(OpposingForce.location("entity/electric_charge/dissipate1"))
         );
         this.sound(OPSoundEvents.ELECTRIC_CHARGE_ZAP,
-                sound(OpposingForce.modPrefix("entity/electric_charge/zap1"))
+                sound(OpposingForce.location("entity/electric_charge/zap1"))
         );
 
         this.sound(OPSoundEvents.FIRE_SLIME_HURT,
@@ -108,13 +103,13 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound("mob/slime/small5").pitch(0.9F)
         );
         this.sound(OPSoundEvents.FIRE_SLIME_IDLE,
-                sound(OpposingForce.modPrefix("entity/fire_slime/idle1")).volume(0.3F)
+                sound(OpposingForce.location("entity/fire_slime/idle1")).volume(0.3F)
         );
         this.sound(OPSoundEvents.FIRE_SLIME_SQUISH,
-                sound(OpposingForce.modPrefix("entity/fire_slime/jump1")).volume(0.35F)
+                sound(OpposingForce.location("entity/fire_slime/jump1")).volume(0.35F)
         );
         this.sound(OPSoundEvents.FIRE_SLIME_JUMP,
-                sound(OpposingForce.modPrefix("entity/fire_slime/jump1")).volume(0.35F)
+                sound(OpposingForce.location("entity/fire_slime/jump1")).volume(0.35F)
         );
         this.sound(OPSoundEvents.FIRE_SLIME_ATTACK,
                 sound("mob/slime/attack1"),
@@ -125,41 +120,41 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
         );
 
         this.sound(OPSoundEvents.FROWZY_HURT,
-                sound(OpposingForce.modPrefix("entity/frowzy/hurt1")),
-                sound(OpposingForce.modPrefix("entity/frowzy/hurt2")),
-                sound(OpposingForce.modPrefix("entity/frowzy/hurt3"))
+                sound(OpposingForce.location("entity/frowzy/hurt1")),
+                sound(OpposingForce.location("entity/frowzy/hurt2")),
+                sound(OpposingForce.location("entity/frowzy/hurt3"))
         );
         this.sound(OPSoundEvents.FROWZY_DEATH,
-                sound(OpposingForce.modPrefix("entity/frowzy/death1"))
+                sound(OpposingForce.location("entity/frowzy/death1"))
         );
         this.sound(OPSoundEvents.FROWZY_IDLE,
-                sound(OpposingForce.modPrefix("entity/frowzy/idle1")),
-                sound(OpposingForce.modPrefix("entity/frowzy/idle2")),
-                sound(OpposingForce.modPrefix("entity/frowzy/idle3"))
+                sound(OpposingForce.location("entity/frowzy/idle1")),
+                sound(OpposingForce.location("entity/frowzy/idle2")),
+                sound(OpposingForce.location("entity/frowzy/idle3"))
         );
         this.sound(OPSoundEvents.FROWZY_ATTACK,
-                sound(OpposingForce.modPrefix("entity/frowzy/attack1")),
-                sound(OpposingForce.modPrefix("entity/frowzy/attack2")),
-                sound(OpposingForce.modPrefix("entity/frowzy/attack3"))
+                sound(OpposingForce.location("entity/frowzy/attack1")),
+                sound(OpposingForce.location("entity/frowzy/attack2")),
+                sound(OpposingForce.location("entity/frowzy/attack3"))
         );
         this.sound(OPSoundEvents.FROWZY_RUN,
-                sound(OpposingForce.modPrefix("entity/frowzy/run1")).volume(0.6F)
+                sound(OpposingForce.location("entity/frowzy/run1")).volume(0.6F)
         );
 
         this.sound(OPSoundEvents.GUZZLER_HURT,
-                sound(OpposingForce.modPrefix("entity/guzzler/hurt1")).volume(0.75F)
+                sound(OpposingForce.location("entity/guzzler/hurt1")).volume(0.75F)
         );
         this.sound(OPSoundEvents.GUZZLER_DEATH,
-                sound(OpposingForce.modPrefix("entity/guzzler/death1"))
+                sound(OpposingForce.location("entity/guzzler/death1"))
         );
         this.sound(OPSoundEvents.GUZZLER_IDLE,
-                sound(OpposingForce.modPrefix("entity/guzzler/idle1"))
+                sound(OpposingForce.location("entity/guzzler/idle1"))
         );
         this.sound(OPSoundEvents.GUZZLER_SPEW,
-                sound(OpposingForce.modPrefix("entity/guzzler/spew1"))
+                sound(OpposingForce.location("entity/guzzler/spew1"))
         );
         this.sound(OPSoundEvents.GUZZLER_SLAM,
-                sound(OpposingForce.modPrefix("entity/guzzler/slam1")).attenuationDistance(20).volume(2.0F)
+                sound(OpposingForce.location("entity/guzzler/slam1")).attenuationDistance(20).volume(2.0F)
         );
 
         this.sound(OPSoundEvents.HANGING_SPIDER_HURT,
@@ -185,10 +180,10 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound("mob/skeleton/hurt4").pitch(0.7F)
         );
         this.sound(OPSoundEvents.RAMBLER_DEATH,
-                sound(OpposingForce.modPrefix("entity/ramble/death1"))
+                sound(OpposingForce.location("entity/ramble/death1"))
         );
         this.sound(OPSoundEvents.RAMBLER_IDLE,
-                sound(OpposingForce.modPrefix("entity/ramble/idle1"))
+                sound(OpposingForce.location("entity/ramble/idle1"))
         );
         this.sound(OPSoundEvents.RAMBLER_ATTACK,
                 sound("mob/skeleton/hurt1").volume(0.8F),
@@ -210,9 +205,9 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound("mob/slime/big4").pitch(0.8F)
         );
         this.sound(OPSoundEvents.SLUG_SLIDE,
-                sound(OpposingForce.modPrefix("entity/slug/walk1")),
-                sound(OpposingForce.modPrefix("entity/slug/walk2")),
-                sound(OpposingForce.modPrefix("entity/slug/walk3"))
+                sound(OpposingForce.location("entity/slug/walk1")),
+                sound(OpposingForce.location("entity/slug/walk2")),
+                sound(OpposingForce.location("entity/slug/walk3"))
         );
         this.sound(OPSoundEvents.SLUG_EAT,
                 sound("mob/strider/eat1").pitch(1.1F),
@@ -226,46 +221,46 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
 
         // Tart
         this.sound(OPSoundEvents.TART_DEATH,
-                sound(OpposingForce.modPrefix("entity/tart/death1"))
+                sound(OpposingForce.location("entity/tart/death1"))
         );
         this.sound(OPSoundEvents.TART_HURT,
-                sound(OpposingForce.modPrefix("entity/tart/hurt1")),
-                sound(OpposingForce.modPrefix("entity/tart/hurt2"))
+                sound(OpposingForce.location("entity/tart/hurt1")),
+                sound(OpposingForce.location("entity/tart/hurt2"))
         );
         this.sound(OPSoundEvents.TART_IDLE,
-                sound(OpposingForce.modPrefix("entity/tart/idle1")).volume(0.6F).weight(20),
-                sound(OpposingForce.modPrefix("entity/tart/idle2")).volume(0.6F).weight(20),
-                sound(OpposingForce.modPrefix("entity/tart/idle3")).volume(0.6F).weight(20),
-                sound(OpposingForce.modPrefix("entity/tart/evil_idle4")).volume(0.6F).weight(1)
+                sound(OpposingForce.location("entity/tart/idle1")).volume(0.6F).weight(20),
+                sound(OpposingForce.location("entity/tart/idle2")).volume(0.6F).weight(20),
+                sound(OpposingForce.location("entity/tart/idle3")).volume(0.6F).weight(20),
+                sound(OpposingForce.location("entity/tart/evil_idle4")).volume(0.6F).weight(1)
         );
         this.sound(OPSoundEvents.TART_ATTACK,
-                sound(OpposingForce.modPrefix("entity/tart/attack1")),
-                sound(OpposingForce.modPrefix("entity/tart/attack2")),
-                sound(OpposingForce.modPrefix("entity/tart/attack3"))
+                sound(OpposingForce.location("entity/tart/attack1")),
+                sound(OpposingForce.location("entity/tart/attack2")),
+                sound(OpposingForce.location("entity/tart/attack3"))
         );
         this.sound(OPSoundEvents.TART_PLUCK,
-                sound(OpposingForce.modPrefix("entity/tart/pluck1"))
+                sound(OpposingForce.location("entity/tart/pluck1"))
         );
 
         // Terror
         this.sound(OPSoundEvents.TERROR_HURT,
-                sound(OpposingForce.modPrefix("entity/terror/hurt1")).pitch(1.2F)
+                sound(OpposingForce.location("entity/terror/hurt1")).pitch(1.2F)
         );
         this.sound(OPSoundEvents.TERROR_DEATH,
-                sound(OpposingForce.modPrefix("entity/terror/death1"))
+                sound(OpposingForce.location("entity/terror/death1"))
         );
         this.sound(OPSoundEvents.TERROR_IDLE,
-                sound(OpposingForce.modPrefix("entity/terror/idle1")),
-                sound(OpposingForce.modPrefix("entity/terror/idle2"))
+                sound(OpposingForce.location("entity/terror/idle1")),
+                sound(OpposingForce.location("entity/terror/idle2"))
         );
         this.sound(OPSoundEvents.TERROR_SAW_START,
-                sound(OpposingForce.modPrefix("entity/terror/saw_start1"))
+                sound(OpposingForce.location("entity/terror/saw_start1"))
         );
         this.sound(OPSoundEvents.TERROR_SAW,
-                sound(OpposingForce.modPrefix("entity/terror/saw_loop1"))
+                sound(OpposingForce.location("entity/terror/saw_loop1"))
         );
         this.sound(OPSoundEvents.TERROR_SAW_END,
-                sound(OpposingForce.modPrefix("entity/terror/saw_end1"))
+                sound(OpposingForce.location("entity/terror/saw_end1"))
         );
         this.sound(OPSoundEvents.TERROR_FLOP,
                 sound("entity/fish/flop1").volume(0.3F).pitch(0.8F),
@@ -275,36 +270,36 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
         );
 
         this.sound(OPSoundEvents.SAWBLADE_SAW_START,
-                sound(OpposingForce.modPrefix("entity/terror/saw_start1"))
+                sound(OpposingForce.location("entity/terror/saw_start1"))
         );
         this.sound(OPSoundEvents.SAWBLADE_SAW,
-                sound(OpposingForce.modPrefix("entity/terror/saw_loop1"))
+                sound(OpposingForce.location("entity/terror/saw_loop1"))
         );
         this.sound(OPSoundEvents.SAWBLADE_SAW_END,
-                sound(OpposingForce.modPrefix("entity/terror/saw_end1"))
+                sound(OpposingForce.location("entity/terror/saw_end1"))
         );
         this.sound(OPSoundEvents.SAWBLADE_SWING,
-                sound(OpposingForce.modPrefix("item/sawblade/swing1"))
+                sound(OpposingForce.location("item/sawblade/swing1"))
         );
 
         this.sound(OPSoundEvents.TESLA_BOW_CHARGED,
-                sound(OpposingForce.modPrefix("item/tesla_bow/charged1"))
+                sound(OpposingForce.location("item/tesla_bow/charged1"))
         );
         this.sound(OPSoundEvents.TESLA_BOW_SHOOT,
-                sound(OpposingForce.modPrefix("item/tesla_bow/shoot1"))
+                sound(OpposingForce.location("item/tesla_bow/shoot1"))
         );
 
         this.sound(OPSoundEvents.TREMBLER_DEATH,
-                sound(OpposingForce.modPrefix("entity/trembler/death1"))
+                sound(OpposingForce.location("entity/trembler/death1"))
         );
         this.sound(OPSoundEvents.TREMBLER_HURT,
-                sound(OpposingForce.modPrefix("entity/trembler/hurt1")).pitch(1.2F)
+                sound(OpposingForce.location("entity/trembler/hurt1")).pitch(1.2F)
         );
         this.sound(OPSoundEvents.TREMBLER_IDLE,
-                sound(OpposingForce.modPrefix("entity/trembler/idle1"))
+                sound(OpposingForce.location("entity/trembler/idle1"))
         );
         this.sound(OPSoundEvents.TREMBLER_IDLE_FUNNY,
-                sound(OpposingForce.modPrefix("entity/trembler/idle_funny1"))
+                sound(OpposingForce.location("entity/trembler/idle_funny1"))
         );
         this.sound(OPSoundEvents.TREMBLER_BLOCK,
                 sound("item/shield/block1").pitch(1.2F),
@@ -315,26 +310,26 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
         );
 
         this.sound(OPSoundEvents.UMBER_SPIDER_HURT,
-                sound(OpposingForce.modPrefix("entity/umber_spider/hurt1"))
+                sound(OpposingForce.location("entity/umber_spider/hurt1"))
         );
         this.sound(OPSoundEvents.UMBER_SPIDER_DEATH,
-                sound(OpposingForce.modPrefix("entity/umber_spider/death1"))
+                sound(OpposingForce.location("entity/umber_spider/death1"))
         );
         this.sound(OPSoundEvents.UMBER_SPIDER_IDLE,
-                sound(OpposingForce.modPrefix("entity/umber_spider/idle1"))
+                sound(OpposingForce.location("entity/umber_spider/idle1"))
         );
 
         this.sound(OPSoundEvents.VOLT_HURT,
-                sound(OpposingForce.modPrefix("entity/volt/hurt1"))
+                sound(OpposingForce.location("entity/volt/hurt1"))
         );
         this.sound(OPSoundEvents.VOLT_DEATH,
-                sound(OpposingForce.modPrefix("entity/volt/death1"))
+                sound(OpposingForce.location("entity/volt/death1"))
         );
         this.sound(OPSoundEvents.VOLT_IDLE,
-                sound(OpposingForce.modPrefix("entity/volt/idle1"))
+                sound(OpposingForce.location("entity/volt/idle1"))
         );
         this.sound(OPSoundEvents.VOLT_SHOOT,
-                sound(OpposingForce.modPrefix("entity/volt/shoot1"))
+                sound(OpposingForce.location("entity/volt/shoot1"))
         );
         this.sound(OPSoundEvents.VOLT_SQUISH,
                 sound("mob/slime/small1").pitch(0.8F),
@@ -365,7 +360,7 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
                 sound("block/amethyst/step12").pitch(1.3F)
         );
         this.sound(OPSoundEvents.WHIZZ_FLY,
-                sound(OpposingForce.modPrefix("entity/whizz/loop1")).pitch(0.9F).attenuationDistance(8)
+                sound(OpposingForce.location("entity/whizz/loop1")).pitch(0.9F).attenuationDistance(8)
         );
         this.sound(OPSoundEvents.WHIZZ_ATTACK,
                 sound("block/amethyst/resonate1").pitch(1.2F),
@@ -376,98 +371,98 @@ public class OPSoundDefinitionsProvider extends SoundDefinitionsProvider {
 
         // Skyvern
         this.sound(OPSoundEvents.SKYVERN_DEATH,
-                sound(OpposingForce.modPrefix("entity/skyvern/death1"))
+                sound(OpposingForce.location("entity/skyvern/death1"))
         );
         this.sound(OPSoundEvents.SKYVERN_HURT,
-                sound(OpposingForce.modPrefix("entity/skyvern/hurt1")),
-                sound(OpposingForce.modPrefix("entity/skyvern/hurt2"))
+                sound(OpposingForce.location("entity/skyvern/hurt1")),
+                sound(OpposingForce.location("entity/skyvern/hurt2"))
         );
         this.sound(OPSoundEvents.SKYVERN_IDLE,
-                sound(OpposingForce.modPrefix("entity/skyvern/idle1")),
-                sound(OpposingForce.modPrefix("entity/skyvern/idle2")),
-                sound(OpposingForce.modPrefix("entity/skyvern/idle3")),
-                sound(OpposingForce.modPrefix("entity/skyvern/idle4")),
-                sound(OpposingForce.modPrefix("entity/skyvern/idle5")),
-                sound(OpposingForce.modPrefix("entity/skyvern/idle6"))
+                sound(OpposingForce.location("entity/skyvern/idle1")),
+                sound(OpposingForce.location("entity/skyvern/idle2")),
+                sound(OpposingForce.location("entity/skyvern/idle3")),
+                sound(OpposingForce.location("entity/skyvern/idle4")),
+                sound(OpposingForce.location("entity/skyvern/idle5")),
+                sound(OpposingForce.location("entity/skyvern/idle6"))
         );
         this.sound(OPSoundEvents.SKYVERN_IDLE_HOSTILE,
-                sound(OpposingForce.modPrefix("entity/skyvern/hostile_idle1")),
-                sound(OpposingForce.modPrefix("entity/skyvern/hostile_idle2")),
-                sound(OpposingForce.modPrefix("entity/skyvern/hostile_idle3")),
-                sound(OpposingForce.modPrefix("entity/skyvern/hostile_idle4"))
+                sound(OpposingForce.location("entity/skyvern/hostile_idle1")),
+                sound(OpposingForce.location("entity/skyvern/hostile_idle2")),
+                sound(OpposingForce.location("entity/skyvern/hostile_idle3")),
+                sound(OpposingForce.location("entity/skyvern/hostile_idle4"))
         );
         this.sound(OPSoundEvents.SKYVERN_ROAR,
-                sound(OpposingForce.modPrefix("entity/skyvern/roar1")).attenuationDistance(32),
-                sound(OpposingForce.modPrefix("entity/skyvern/roar2")).attenuationDistance(32)
+                sound(OpposingForce.location("entity/skyvern/roar1")).attenuationDistance(32),
+                sound(OpposingForce.location("entity/skyvern/roar2")).attenuationDistance(32)
         );
         this.sound(OPSoundEvents.SKYVERN_CHARGE_WARN,
-                sound(OpposingForce.modPrefix("entity/skyvern/charge_warn1")).attenuationDistance(32)
+                sound(OpposingForce.location("entity/skyvern/charge_warn1")).attenuationDistance(32)
         );
         this.sound(OPSoundEvents.SKYVERN_LOOP,
-                sound(OpposingForce.modPrefix("entity/skyvern/loop1")).attenuationDistance(24).volume(0.5F)
+                sound(OpposingForce.location("entity/skyvern/loop1")).attenuationDistance(24).volume(0.5F)
         );
         this.sound(OPSoundEvents.SKYVERN_WHOOSH,
-                sound(OpposingForce.modPrefix("entity/skyvern/whoosh1")).attenuationDistance(32),
-                sound(OpposingForce.modPrefix("entity/skyvern/whoosh2")).attenuationDistance(32)
+                sound(OpposingForce.location("entity/skyvern/whoosh1")).attenuationDistance(32),
+                sound(OpposingForce.location("entity/skyvern/whoosh2")).attenuationDistance(32)
         );
 
         this.sound(OPSoundEvents.LASER_BOLT_IMPACT,
-                sound(OpposingForce.modPrefix("entity/laser_bolt/impact1"))
+                sound(OpposingForce.location("entity/laser_bolt/impact1"))
         );
 
         this.sound(OPSoundEvents.BLASTER_SHOOT,
-                sound(OpposingForce.modPrefix("item/blaster/shoot1"))
+                sound(OpposingForce.location("item/blaster/shoot1"))
         );
 
         this.sound(OPSoundEvents.LASER_BLADE_BLOCK,
-                sound(OpposingForce.modPrefix("item/laser_blade/block1")),
-                sound(OpposingForce.modPrefix("item/laser_blade/block2")),
-                sound(OpposingForce.modPrefix("item/laser_blade/block3"))
+                sound(OpposingForce.location("item/laser_blade/block1")),
+                sound(OpposingForce.location("item/laser_blade/block2")),
+                sound(OpposingForce.location("item/laser_blade/block3"))
         );
         this.sound(OPSoundEvents.LASER_BLADE_HIT,
-                sound(OpposingForce.modPrefix("item/laser_blade/impact1")),
-                sound(OpposingForce.modPrefix("item/laser_blade/impact2")),
-                sound(OpposingForce.modPrefix("item/laser_blade/impact3"))
+                sound(OpposingForce.location("item/laser_blade/impact1")),
+                sound(OpposingForce.location("item/laser_blade/impact2")),
+                sound(OpposingForce.location("item/laser_blade/impact3"))
         );
         this.sound(OPSoundEvents.LASER_BLADE_SWING,
-                sound(OpposingForce.modPrefix("item/laser_blade/swing1")),
-                sound(OpposingForce.modPrefix("item/laser_blade/swing2")),
-                sound(OpposingForce.modPrefix("item/laser_blade/swing3")),
-                sound(OpposingForce.modPrefix("item/laser_blade/swing4"))
+                sound(OpposingForce.location("item/laser_blade/swing1")),
+                sound(OpposingForce.location("item/laser_blade/swing2")),
+                sound(OpposingForce.location("item/laser_blade/swing3")),
+                sound(OpposingForce.location("item/laser_blade/swing4"))
         );
         this.sound(OPSoundEvents.LASER_BLADE_SPIN,
-                sound(OpposingForce.modPrefix("item/laser_blade/spin1")).attenuationDistance(20)
+                sound(OpposingForce.location("item/laser_blade/spin1")).attenuationDistance(20)
         );
         this.sound(OPSoundEvents.LASER_BLADE_CATCH,
-                sound(OpposingForce.modPrefix("item/laser_blade/catch1")),
-                sound(OpposingForce.modPrefix("item/laser_blade/catch2")),
-                sound(OpposingForce.modPrefix("item/laser_blade/catch3"))
+                sound(OpposingForce.location("item/laser_blade/catch1")),
+                sound(OpposingForce.location("item/laser_blade/catch2")),
+                sound(OpposingForce.location("item/laser_blade/catch3"))
         );
 
         this.sound(OPSoundEvents.WALTZ_OF_THE_SLUG_DISC,
-                sound(OpposingForce.modPrefix("music/waltz_of_the_slug_disc")).stream()
+                sound(OpposingForce.location("music/waltz_of_the_slug_disc")).stream()
         );
         this.sound(OPSoundEvents.SLAYSER_DISC,
-                sound(OpposingForce.modPrefix("music/slayser_disc")).stream()
+                sound(OpposingForce.location("music/slayser_disc")).stream()
         );
 
         this.sound(OPSoundEvents.NOTE_BLOCK_IMITATE_DICER,
-                sound(OpposingForce.modPrefix("entity/dicer/idle1")).volume(0.8F),
-                sound(OpposingForce.modPrefix("entity/dicer/idle2")).volume(0.8F)
+                sound(OpposingForce.location("entity/dicer/idle1")).volume(0.8F),
+                sound(OpposingForce.location("entity/dicer/idle2")).volume(0.8F)
         );
 
         this.sound(OPSoundEvents.NOTE_BLOCK_IMITATE_FROWZY,
-                sound(OpposingForce.modPrefix("entity/frowzy/idle1")),
-                sound(OpposingForce.modPrefix("entity/frowzy/idle2")),
-                sound(OpposingForce.modPrefix("entity/frowzy/idle3"))
+                sound(OpposingForce.location("entity/frowzy/idle1")),
+                sound(OpposingForce.location("entity/frowzy/idle2")),
+                sound(OpposingForce.location("entity/frowzy/idle3"))
         );
 
         this.sound(OPSoundEvents.NOTE_BLOCK_IMITATE_RAMBLER,
-                sound(OpposingForce.modPrefix("entity/ramble/idle1"))
+                sound(OpposingForce.location("entity/ramble/idle1"))
         );
 
         this.sound(OPSoundEvents.NOTE_BLOCK_IMITATE_TART,
-                sound(OpposingForce.modPrefix("entity/ramble/idle1"))
+                sound(OpposingForce.location("entity/ramble/idle1"))
         );
 
         this.sound(OPSoundEvents.NOTE_BLOCK_IMITATE_WHIZZ,

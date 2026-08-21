@@ -197,7 +197,7 @@ public class OPRecipeProvider extends RecipeProvider {
     }
 
     private static ResourceLocation getSaveLocation(String name) {
-        return OpposingForce.modPrefix(name);
+        return OpposingForce.location(name);
     }
 }
 

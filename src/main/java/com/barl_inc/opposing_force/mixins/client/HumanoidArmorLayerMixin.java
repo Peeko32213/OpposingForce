@@ -1,9 +1,9 @@
 package com.barl_inc.opposing_force.mixins.client;
 
-import com.google.common.collect.Maps;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.barl_inc.opposing_force.client.renderer.items.OPArmorRenderProperties;
 import com.barl_inc.opposing_force.items.interfaces.CustomArmorRender;
+import com.google.common.collect.Maps;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,7 +18,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.client.ForgeHooksClient;
 import net.neoforged.neoforge.client.ClientHooks;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;

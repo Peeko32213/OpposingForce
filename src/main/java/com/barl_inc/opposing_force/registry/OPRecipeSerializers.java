@@ -5,15 +5,10 @@ import com.barl_inc.opposing_force.data.MobHeadFireworkStarRecipe;
 import com.barl_inc.opposing_force.recipes.BlasterColoring;
 import com.barl_inc.opposing_force.recipes.LaserBladeColoring;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
-import net.neoforged.registries.DeferredRegister;
-import net.neoforged.registries.RegistryObject;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
-import java.util.function.Supplier;
 
 public class OPRecipeSerializers {
 

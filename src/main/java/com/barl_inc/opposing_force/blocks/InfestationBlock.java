@@ -12,12 +12,10 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.function.Supplier;
 
-@SuppressWarnings("deprecation")
 public class InfestationBlock extends Block{
 
     private final Block hostBlock;
@@ -43,10 +41,11 @@ public class InfestationBlock extends Block{
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public void spawnAfterBreak(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull ItemStack stack, boolean dropExperience) {
+    public void spawnAfterBreak(BlockState state, ServerLevel level, BlockPos pos, ItemStack stack, boolean dropExperience) {
         super.spawnAfterBreak(state, level, pos, stack, dropExperience);
-        if (level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS) && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack) == 0) {
+        if (level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS) && EnchantmentHelper.getItemEnchantmentLevel(level.registryAccess().holderOrThrow(Enchantments.SILK_TOUCH), stack) == 0) {
             this.spawnInfestation(level, pos);
         }
     }
@@ -55,6 +54,7 @@ public class InfestationBlock extends Block{
         return getNewStateWithProperties(pInfested, () -> this.getHostBlock().defaultBlockState());
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private static BlockState getNewStateWithProperties(BlockState state, Supplier<BlockState> supplier) {
         return InfestationBlock.INFESTED_TO_HOST_STATES.computeIfAbsent(state, (block) -> {
             BlockState blockState = supplier.get();

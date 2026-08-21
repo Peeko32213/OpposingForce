@@ -1,12 +1,12 @@
 package com.barl_inc.opposing_force.client.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.barl_inc.opposing_force.OpposingForce;
 import com.barl_inc.opposing_force.client.models.entity.LaserBoltModel;
 import com.barl_inc.opposing_force.entity.projectile.LaserBolt;
 import com.barl_inc.opposing_force.items.BlasterItem;
 import com.barl_inc.opposing_force.registry.OPModelLayers;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -26,9 +26,9 @@ import org.joml.Matrix4f;
 @OnlyIn(Dist.CLIENT)
 public class LaserBoltRenderer extends EntityRenderer<LaserBolt> {
 
-    private static final ResourceLocation OUTER = OpposingForce.modPrefix("textures/entity/projectiles/laser_bolt_outer.png");
-    private static final ResourceLocation INNER = OpposingForce.modPrefix("textures/entity/projectiles/laser_bolt_inner.png");
-    private static final ResourceLocation TRAIL_TEXTURE = OpposingForce.modPrefix("textures/particle/trail.png");
+    private static final ResourceLocation OUTER = OpposingForce.location("textures/entity/projectiles/laser_bolt_outer.png");
+    private static final ResourceLocation INNER = OpposingForce.location("textures/entity/projectiles/laser_bolt_inner.png");
+    private static final ResourceLocation TRAIL_TEXTURE = OpposingForce.location("textures/particle/trail.png");
 
     private final LaserBoltModel model;
 

@@ -1,10 +1,10 @@
 package com.barl_inc.opposing_force.client.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.barl_inc.opposing_force.client.models.entity.FrowzyModel;
 import com.barl_inc.opposing_force.client.renderer.layers.FrowzyHelmetLayer;
 import com.barl_inc.opposing_force.entity.Frowzy;
 import com.barl_inc.opposing_force.registry.OPModelLayers;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
-import static com.barl_inc.opposing_force.OpposingForce.modPrefix;
+import static com.barl_inc.opposing_force.OpposingForce.location;
 
 @OnlyIn(Dist.CLIENT)
 public class FrowzyRenderer extends MobRenderer<Frowzy, FrowzyModel> {
@@ -40,7 +40,7 @@ public class FrowzyRenderer extends MobRenderer<Frowzy, FrowzyModel> {
     @Override
     public @NotNull ResourceLocation getTextureLocation(Frowzy entity) {
         Frowzy.FrowzyVariant variant = Frowzy.FrowzyVariant.byId(entity.getVariant().getId());
-        return modPrefix("textures/entity/frowzy/" + variant.name().toLowerCase(Locale.ROOT) + ".png");
+        return location("textures/entity/frowzy/" + variant.name().toLowerCase(Locale.ROOT) + ".png");
     }
 
     @Override

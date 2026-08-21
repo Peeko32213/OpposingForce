@@ -7,7 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -23,8 +23,7 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.event.ForgeEventFactory;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.event.EventHooks;
 
 import java.util.function.Supplier;
 
@@ -41,23 +40,25 @@ public class InfestedLeavesBlock extends LeavesBlock implements FruitLeaves {
     }
 
     @Override
-    public @NotNull InteractionResult use(@NotNull BlockState blockState, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        if (!level.isClientSide) this.spawnInfestation((ServerLevel) level, pos);
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+        if (!level.isClientSide) {
+            this.spawnInfestation((ServerLevel) level, pos);
+        }
         level.playSound(null, pos, OPSoundEvents.TART_PLUCK.get(), SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
-        level.setBlock(pos, leaves.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, blockState.getValue(LeavesBlock.PERSISTENT)).setValue(LeavesBlock.DISTANCE, blockState.getValue(LeavesBlock.DISTANCE)), 2);
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        level.setBlock(pos, this.leaves.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, state.getValue(LeavesBlock.PERSISTENT)).setValue(LeavesBlock.DISTANCE, state.getValue(LeavesBlock.DISTANCE)), 2);
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override
-    public void spawnAfterBreak(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull ItemStack stack, boolean dropExperience) {
+    public void spawnAfterBreak(BlockState state, ServerLevel level, BlockPos pos, ItemStack stack, boolean dropExperience) {
         super.spawnAfterBreak(state, level, pos, stack, dropExperience);
-        if (level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS) && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack) == 0) {
+        if (level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS) && EnchantmentHelper.getItemEnchantmentLevel(level.registryAccess().holderOrThrow(Enchantments.SILK_TOUCH), stack) == 0) {
             this.spawnInfestation(level, pos);
         }
     }
 
     @Override
-    public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (this.decaying(state)) {
             dropResources(state, level, pos);
             if (level.getRandom().nextFloat() < 0.1F) this.spawnInfestation(level, pos);
@@ -66,13 +67,15 @@ public class InfestedLeavesBlock extends LeavesBlock implements FruitLeaves {
     }
 
     private void spawnInfestation(ServerLevel level, BlockPos pos) {
-        if (toSpawn.get() == null) return;
-        Entity entity = toSpawn.get().create(level);
+        if (this.toSpawn.get() == null) {
+            return;
+        }
+        Entity entity = this.toSpawn.get().create(level);
         if (entity != null) {
             if(entity instanceof Mob mob) {
                 entity.moveTo(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, 0.0F, 0.0F);
                 level.addFreshEntity(entity);
-                ForgeEventFactory.onFinalizeSpawn(mob, level, level.getCurrentDifficultyAt(pos), MobSpawnType.TRIGGERED, null, null);
+                EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(pos), MobSpawnType.TRIGGERED, null);
             }
         }
     }

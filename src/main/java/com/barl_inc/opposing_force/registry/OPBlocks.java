@@ -1,15 +1,15 @@
 package com.barl_inc.opposing_force.registry;
 
-import com.barl_inc.opposing_force.blocks.*;
-import com.mojang.datafixers.util.Pair;
 import com.barl_inc.opposing_force.OpposingForce;
-import com.barl_inc.opposing_force.blocks.trees.AppleTreeGrower;
+import com.barl_inc.opposing_force.blocks.*;
 import com.barl_inc.opposing_force.blocks.utils.FruitLeaves;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.world.flag.FeatureFlag;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -87,7 +87,7 @@ public class OPBlocks {
     public static final DeferredBlock<Block> CHISELED_VILE_STONE_BRICKS = registerBlock("chiseled_vile_stone_bricks", () -> new Block(OPBlockProperties.VILE_STONE));
 
     // Tart
-    public static final DeferredBlock<Block> APPLE_SAPLING = registerBlock("apple_sapling", () -> new SaplingBlock(new AppleTreeGrower(), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+    public static final DeferredBlock<Block> APPLE_SAPLING = registerBlock("apple_sapling", () -> new SaplingBlock(TreeGrower.OAK, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
     public static final DeferredBlock<Block> POTTED_APPLE_SAPLING = registerBlockWithoutItemNoLang("potted_apple_sapling", () -> new FlowerPotBlock(APPLE_SAPLING.get(), registerFlowerPot()));
     public static final DeferredBlock<Block> APPLE_LEAVES = registerBlock("apple_leaves", () -> new GrowingLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES), FruitLeaves.FruitState.FRUITLESS));
     public static final DeferredBlock<Block> FLOWERING_APPLE_LEAVES = registerBlock("flowering_apple_leaves", () -> new GrowingLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES), FruitLeaves.FruitState.FLOWERING));

@@ -3,15 +3,14 @@ package com.barl_inc.opposing_force.recipes;
 import com.barl_inc.opposing_force.items.LaserBladeItem;
 import com.barl_inc.opposing_force.registry.OPItems;
 import com.barl_inc.opposing_force.registry.OPRecipeSerializers;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 public class LaserBladeColoring extends CustomRecipe {
 
@@ -20,12 +19,12 @@ public class LaserBladeColoring extends CustomRecipe {
     }
 
     @Override
-    public boolean matches(CraftingContainer container, @NotNull Level level) {
+    public boolean matches(CraftingInput craftingInput, Level level) {
         int laserBlades = 0;
         int dyes = 0;
 
-        for (int slot = 0; slot < container.getContainerSize(); slot++) {
-            ItemStack stack = container.getItem(slot);
+        for (int slot = 0; slot < craftingInput.size(); slot++) {
+            ItemStack stack = craftingInput.getItem(slot);
             if (!stack.isEmpty()) {
                 if (stack.getItem() instanceof LaserBladeItem) {
                     laserBlades++;
@@ -44,13 +43,11 @@ public class LaserBladeColoring extends CustomRecipe {
     }
 
     @Override
-    public @NotNull ItemStack assemble(CraftingContainer container, @NotNull RegistryAccess registryAccess) {
+    public ItemStack assemble(CraftingInput craftingInput, HolderLookup.Provider provider) {
         ItemStack empty = ItemStack.EMPTY;
         DyeItem dye = (DyeItem) Items.WHITE_DYE;
-
-        for (int slot = 0; slot < container.getContainerSize(); slot++) {
-            ItemStack stack = container.getItem(slot);
-
+        for (int slot = 0; slot < craftingInput.size(); slot++) {
+            ItemStack stack = craftingInput.getItem(slot);
             if (!stack.isEmpty()) {
                 Item item = stack.getItem();
                 if (item instanceof LaserBladeItem) {
@@ -60,13 +57,10 @@ public class LaserBladeColoring extends CustomRecipe {
                 }
             }
         }
-
         ItemStack result = getLaserBladeByColor(dye.getDyeColor()).getDefaultInstance();
-        if (
-            empty.hasTag()) {
+        if (empty.hasTag()) {
             result.setTag(empty.getTag().copy());
         }
-
         return result;
     }
 
@@ -76,7 +70,7 @@ public class LaserBladeColoring extends CustomRecipe {
     }
 
     @Override
-    public @NotNull RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return OPRecipeSerializers.LASER_BLADE_COLORING.get();
     }
 

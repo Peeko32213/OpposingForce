@@ -3,6 +3,7 @@ package com.barl_inc.opposing_force.blocks;
 import com.barl_inc.opposing_force.blocks.entity.MobHeadBlockEntity;
 import com.barl_inc.opposing_force.registry.OPBlockEntityTypes;
 import com.barl_inc.opposing_force.registry.OPBlocks;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Equipable;
@@ -25,7 +26,6 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -48,15 +48,17 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos, @NotNull CollisionContext context) {
-        if (this.type == Types.SKYVERN) return SKYVERN_SHAPE;
-        else if (this.type == Types.TART) return TART_SHAPE;
-        else if (this.type == Types.WHIZZ) return WHIZZ_SHAPE;
-        else return SHAPE;
+    public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
+        return switch (this.type) {
+            case Types.SKYVERN -> SKYVERN_SHAPE;
+            case Types.TART -> TART_SHAPE;
+            case Types.WHIZZ -> WHIZZ_SHAPE;
+            case null, default -> SHAPE;
+        };
     }
 
     @Override
-    public @NotNull VoxelShape getOcclusionShape(@NotNull BlockState state, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos) {
+    public VoxelShape getOcclusionShape(BlockState state, BlockGetter blockGetter, BlockPos pos) {
         return Shapes.empty();
     }
 
@@ -66,12 +68,12 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
     }
 
     @Override
-    public @NotNull BlockState rotate(BlockState state, Rotation rotation) {
+    public BlockState rotate(BlockState state, Rotation rotation) {
         return state.setValue(ROTATION, rotation.rotate(state.getValue(ROTATION), ROTATIONS));
     }
 
     @Override
-    public @NotNull BlockState mirror(BlockState state, Mirror mirror) {
+    public BlockState mirror(BlockState state, Mirror mirror) {
         return state.setValue(ROTATION, mirror.mirror(state.getValue(ROTATION), ROTATIONS));
     }
 
@@ -85,18 +87,18 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
     }
 
     @Override
-    public boolean isPathfindable(@NotNull BlockState state, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos, @NotNull PathComputationType computationType) {
+    public boolean isPathfindable(BlockState state, PathComputationType computationType) {
         return false;
     }
 
     @Override
-    public @NotNull EquipmentSlot getEquipmentSlot() {
+    public EquipmentSlot getEquipmentSlot() {
         return EquipmentSlot.HEAD;
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         if (level.isClientSide) {
             if (shouldAnimate(state)) {
                 return createTickerHelper(type, OPBlockEntityTypes.MOB_HEAD.get(), MobHeadBlockEntity::animation);
@@ -106,14 +108,21 @@ public class MobHeadBlock extends BaseEntityBlock implements Equipable {
     }
 
     public static boolean shouldAnimate(BlockState state) {
-        if (state.is(OPBlocks.WHIZZ_HEAD.getFirst().get()) || state.is(OPBlocks.WHIZZ_HEAD.getSecond().get())) return true;
-        else if (state.is(OPBlocks.SKYVERN_HEAD.getFirst().get()) || state.is(OPBlocks.SKYVERN_HEAD.getSecond().get())) return true;
-        else return false;
+        if (state.is(OPBlocks.WHIZZ_HEAD.getFirst().get()) || state.is(OPBlocks.WHIZZ_HEAD.getSecond().get())) {
+            return true;
+        }
+        return state.is(OPBlocks.SKYVERN_HEAD.getFirst().get()) || state.is(OPBlocks.SKYVERN_HEAD.getSecond().get());
     }
 
     @Override
-    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new MobHeadBlockEntity(pos, state);
+    }
+
+    @Nullable
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return null;
     }
 
     public interface Type {

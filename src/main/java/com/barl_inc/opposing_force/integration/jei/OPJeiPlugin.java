@@ -99,6 +99,6 @@ public class OPJeiPlugin implements IModPlugin {
 
     @Override
     public @NotNull ResourceLocation getPluginUid() {
-        return OpposingForce.modPrefix("jei_plugin");
+        return OpposingForce.location("jei_plugin");
     }
 }

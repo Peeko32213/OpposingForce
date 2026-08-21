@@ -1,10 +1,10 @@
 package com.barl_inc.opposing_force.client.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.barl_inc.opposing_force.OpposingForce;
 import com.barl_inc.opposing_force.client.models.entity.SlugModel;
 import com.barl_inc.opposing_force.entity.Slug;
 import com.barl_inc.opposing_force.registry.OPModelLayers;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;

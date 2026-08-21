@@ -1,10 +1,10 @@
 package com.barl_inc.opposing_force.mixins.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.barl_inc.opposing_force.blocks.MobHeadBlock;
 import com.barl_inc.opposing_force.blocks.WallMobHeadBlock;
 import com.barl_inc.opposing_force.client.models.mob_heads.MobHeadModelBase;
 import com.barl_inc.opposing_force.client.renderer.blocks.MobHeadBlockEntityRenderer;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.geom.EntityModelSet;

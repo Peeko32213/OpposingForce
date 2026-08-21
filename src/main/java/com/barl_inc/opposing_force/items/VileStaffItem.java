@@ -1,11 +1,11 @@
 package com.barl_inc.opposing_force.items;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import com.barl_inc.opposing_force.entity.Slug;
 import com.barl_inc.opposing_force.entity.utils.OPPoses;
 import com.barl_inc.opposing_force.registry.OPEntities;
 import com.barl_inc.opposing_force.registry.OPSoundEvents;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;

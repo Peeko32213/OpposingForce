@@ -1,9 +1,9 @@
 package com.barl_inc.opposing_force.client.renderer.layers;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.barl_inc.opposing_force.client.models.entity.VoltModel;
 import com.barl_inc.opposing_force.entity.Volt;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -15,13 +15,13 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
-import static com.barl_inc.opposing_force.OpposingForce.modPrefix;
+import static com.barl_inc.opposing_force.OpposingForce.location;
 
 @OnlyIn(Dist.CLIENT)
 public class VoltGlowLayer extends RenderLayer<Volt, VoltModel> {
 
-    private static final RenderType GLOW = RenderType.eyes(modPrefix("textures/entity/volt/volt_glow.png"));
-    private static final RenderType QUASAR_GLOW = RenderType.eyes(modPrefix("textures/entity/volt/quasar_volt_glow.png"));
+    private static final RenderType GLOW = RenderType.eyes(location("textures/entity/volt/volt_glow.png"));
+    private static final RenderType QUASAR_GLOW = RenderType.eyes(location("textures/entity/volt/quasar_volt_glow.png"));
 
     public VoltGlowLayer(RenderLayerParent<Volt, VoltModel> parent) {
         super(parent);

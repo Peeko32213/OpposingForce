@@ -1,13 +1,13 @@
 package com.barl_inc.opposing_force.client.renderer.items;
 
 import com.barl_inc.opposing_force.client.models.armor.*;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.unusualmodding.opposing_force.client.models.armor.*;
 import com.barl_inc.opposing_force.items.armor.MoonShoesItem;
 import com.barl_inc.opposing_force.items.armor.SlugBaronArmorItem;
 import com.barl_inc.opposing_force.items.armor.WoodenArmorItem;
 import com.barl_inc.opposing_force.registry.OPItems;
 import com.barl_inc.opposing_force.registry.OPModelLayers;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.unusualmodding.opposing_force.client.models.armor.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;

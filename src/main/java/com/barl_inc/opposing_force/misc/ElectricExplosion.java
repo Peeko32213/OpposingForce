@@ -1,9 +1,9 @@
 package com.barl_inc.opposing_force.misc;
 
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.barl_inc.opposing_force.registry.OPMobEffects;
 import com.barl_inc.opposing_force.registry.OPSoundEvents;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;

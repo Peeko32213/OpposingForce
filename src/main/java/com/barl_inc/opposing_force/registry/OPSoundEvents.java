@@ -140,6 +140,6 @@ public class OPSoundEvents {
     }
 
     private static Holder.Reference<SoundEvent> registerSoundEventHolder(String name) {
-        return Registry.registerForHolder(BuiltInRegistries.SOUND_EVENT, OpposingForce.modPrefix(name), SoundEvent.createVariableRangeEvent(OpposingForce.modPrefix(name)));
+        return Registry.registerForHolder(BuiltInRegistries.SOUND_EVENT, OpposingForce.location(name), SoundEvent.createVariableRangeEvent(OpposingForce.location(name)));
     }
 }

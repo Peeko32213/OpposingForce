@@ -3,7 +3,6 @@ package com.barl_inc.opposing_force.datagen;
 import com.barl_inc.opposing_force.OpposingForce;
 import com.barl_inc.opposing_force.OpposingForceTab;
 import com.barl_inc.opposing_force.registry.*;
-import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageType;
@@ -16,11 +15,8 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.common.data.LanguageProvider;
-import net.neoforged.data.event.GatherDataEvent;
-import net.neoforged.registries.ForgeRegistries;
-import net.neoforged.registries.IForgeRegistry;
-import net.neoforged.registries.RegistryObject;
+import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.apache.commons.lang3.text.WordUtils;
 import org.codehaus.plexus.util.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +35,7 @@ public class OPLanguageProvider extends LanguageProvider {
     @Override
     protected void addTranslations(){
 
-        this.translateTab(OpposingForceTab.TAB.get(), "Opposing Force");
+        this.translateTab(OpposingForceTab.OPPOSING_FORCE_TAB.get(), "Opposing Force");
 
         // blocks
         OPBlocks.BLOCK_TRANSLATIONS.forEach(this::forBlocks);
@@ -61,7 +57,6 @@ public class OPLanguageProvider extends LanguageProvider {
         this.forEntity(OPEntities.GUZZLER);
         this.forEntity(OPEntities.HANGING_SPIDER);
         this.forEntity(OPEntities.LADYBUG);
-//        this.forEntity(OPEntities.NYMPH);
         this.forEntity(OPEntities.RAMBLER);
         this.forEntity(OPEntities.SKYVERN);
         this.forEntity(OPEntities.SKYVERN_SEGMENT);

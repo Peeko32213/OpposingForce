@@ -10,7 +10,7 @@ public enum ElectrifiedHeartType {
 
     ELECTRIFIED(0);
 
-    public static final ResourceLocation ATLAS = OpposingForce.modPrefix("textures/gui/heart_type/electrified.png");
+    public static final ResourceLocation ATLAS = OpposingForce.location("textures/gui/heart_type/electrified.png");
 
     public static final int ATLAS_W = 64;
     public static final int ATLAS_H = 9;

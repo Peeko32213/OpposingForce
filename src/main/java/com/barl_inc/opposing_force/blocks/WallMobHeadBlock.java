@@ -1,9 +1,10 @@
 package com.barl_inc.opposing_force.blocks;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.barl_inc.opposing_force.blocks.entity.MobHeadBlockEntity;
 import com.barl_inc.opposing_force.registry.OPBlockEntityTypes;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -22,7 +23,6 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -76,15 +76,17 @@ public class WallMobHeadBlock extends BaseEntityBlock implements Equipable {
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos, @NotNull CollisionContext context) {
-        if (this.type == MobHeadBlock.Types.SKYVERN) return SKYVERN_AABBS.get(state.getValue(FACING));
-        else if (this.type == MobHeadBlock.Types.TART) return TART_AABBS.get(state.getValue(FACING));
-        else if (this.type == MobHeadBlock.Types.WHIZZ) return WHIZZ_AABBS.get(state.getValue(FACING));
-        else return AABBS.get(state.getValue(FACING));
+    public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
+        return switch (this.type) {
+            case MobHeadBlock.Types.SKYVERN -> SKYVERN_AABBS.get(state.getValue(FACING));
+            case MobHeadBlock.Types.TART -> TART_AABBS.get(state.getValue(FACING));
+            case MobHeadBlock.Types.WHIZZ -> WHIZZ_AABBS.get(state.getValue(FACING));
+            case null, default -> AABBS.get(state.getValue(FACING));
+        };
     }
 
     @Override
-    public @NotNull VoxelShape getOcclusionShape(@NotNull BlockState state, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos) {
+    public VoxelShape getOcclusionShape(BlockState state, BlockGetter blockGetter, BlockPos pos) {
         return Shapes.empty();
     }
 
@@ -108,12 +110,12 @@ public class WallMobHeadBlock extends BaseEntityBlock implements Equipable {
     }
 
     @Override
-    public @NotNull BlockState rotate(BlockState state, Rotation rotation) {
+    public BlockState rotate(BlockState state, Rotation rotation) {
         return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
 
     @Override
-    public @NotNull BlockState mirror(BlockState state, Mirror mirror) {
+    public BlockState mirror(BlockState state, Mirror mirror) {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 
@@ -127,18 +129,18 @@ public class WallMobHeadBlock extends BaseEntityBlock implements Equipable {
     }
 
     @Override
-    public boolean isPathfindable(@NotNull BlockState state, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos, @NotNull PathComputationType computationType) {
+    public boolean isPathfindable(BlockState state, PathComputationType computationType) {
         return false;
     }
 
     @Override
-    public @NotNull EquipmentSlot getEquipmentSlot() {
+    public EquipmentSlot getEquipmentSlot() {
         return EquipmentSlot.HEAD;
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         if (level.isClientSide) {
             if (MobHeadBlock.shouldAnimate(state)) {
                 return createTickerHelper(type, OPBlockEntityTypes.MOB_HEAD.get(), MobHeadBlockEntity::animation);
@@ -148,7 +150,13 @@ public class WallMobHeadBlock extends BaseEntityBlock implements Equipable {
     }
 
     @Override
-    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new MobHeadBlockEntity(pos, state);
+    }
+
+    @Nullable
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return null;
     }
 }

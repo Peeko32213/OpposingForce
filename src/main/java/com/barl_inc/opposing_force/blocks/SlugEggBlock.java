@@ -32,8 +32,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.event.ForgeEventFactory;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.event.EventHooks;
 
 import javax.annotation.Nullable;
 
@@ -43,12 +42,12 @@ public class SlugEggBlock extends Block {
     public static final IntegerProperty EGGS = IntegerProperty.create("eggs", 1, 3);
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
-    protected static final VoxelShape EAST_AABB;
-    protected static final VoxelShape WEST_AABB;
-    protected static final VoxelShape SOUTH_AABB;
-    protected static final VoxelShape NORTH_AABB;
-    protected static final VoxelShape UP_AABB;
-    protected static final VoxelShape DOWN_AABB;
+    protected static final VoxelShape EAST_AABB = Block.box(0.0D, 0.0D, 0.0D, 9.0D, 16.0D, 16.0D);;
+    protected static final VoxelShape WEST_AABB = Block.box(7.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);;
+    protected static final VoxelShape SOUTH_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 9.0D);;
+    protected static final VoxelShape NORTH_AABB = Block.box(0.0D, 0.0D, 7.0D, 16.0D, 16.0D, 16.0D);;
+    protected static final VoxelShape UP_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D);;
+    protected static final VoxelShape DOWN_AABB = Block.box(0.0D, 7.0D, 0.0D, 16.0D, 16.0D, 16.0D);;
 
     public SlugEggBlock(BlockBehaviour.Properties properties) {
         super(properties);
@@ -78,13 +77,13 @@ public class SlugEggBlock extends Block {
     }
 
     @Override
-    public void stepOn(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Entity entity) {
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         this.tryTrample(level, pos, entity, 100);
         super.stepOn(level, pos, state, entity);
     }
 
     @Override
-    public void fallOn(@NotNull Level level, @NotNull BlockState state, @NotNull BlockPos pos, @NotNull Entity entity, float fallDistance) {
+    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
         this.tryTrample(level, pos, entity, 3);
         super.fallOn(level, state, pos, entity, fallDistance);
     }
@@ -101,12 +100,12 @@ public class SlugEggBlock extends Block {
         if (!(trampler instanceof LivingEntity) || trampler instanceof Slug) {
             return false;
         } else {
-            return (trampler instanceof Player || ForgeEventFactory.getMobGriefingEvent(level, trampler));
+            return (trampler instanceof Player || EventHooks.canEntityGrief(level, trampler));
         }
     }
 
     @Override
-    public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter getter, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
         return switch (state.getValue(FACING)) {
             case DOWN -> DOWN_AABB;
             case UP -> UP_AABB;
@@ -169,16 +168,7 @@ public class SlugEggBlock extends Block {
     }
 
     @Override
-    public boolean isPathfindable(@NotNull BlockState state, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos, @NotNull PathComputationType computationType) {
+    public boolean isPathfindable(BlockState state, PathComputationType computationType) {
         return false;
-    }
-
-    static {
-        DOWN_AABB = Block.box(0.0D, 7.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-        UP_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D);
-        EAST_AABB = Block.box(0.0D, 0.0D, 0.0D, 9.0D, 16.0D, 16.0D);
-        WEST_AABB = Block.box(7.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-        SOUTH_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 9.0D);
-        NORTH_AABB = Block.box(0.0D, 0.0D, 7.0D, 16.0D, 16.0D, 16.0D);
     }
 }

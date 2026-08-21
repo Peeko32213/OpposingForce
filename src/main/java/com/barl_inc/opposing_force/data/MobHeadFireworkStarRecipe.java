@@ -1,20 +1,19 @@
 package com.barl_inc.opposing_force.data;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.barl_inc.opposing_force.registry.OPItems;
 import com.barl_inc.opposing_force.registry.OPRecipeSerializers;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.DyeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.FireworkExplosion;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -70,8 +69,8 @@ public class MobHeadFireworkStarRecipe extends CustomRecipe {
     private static final Ingredient FLICKER_INGREDIENT = Ingredient.of(Items.GLOWSTONE_DUST);
     private static final Ingredient GUNPOWDER_INGREDIENT = Ingredient.of(Items.GUNPOWDER);
 
-    public MobHeadFireworkStarRecipe(ResourceLocation name, CraftingBookCategory category) {
-        super(name, category);
+    public MobHeadFireworkStarRecipe(CraftingBookCategory category) {
+        super(category);
     }
 
     @Override
@@ -118,7 +117,7 @@ public class MobHeadFireworkStarRecipe extends CustomRecipe {
     }
 
     @Override
-    public @NotNull ItemStack assemble(CraftingInput craftingInput, HolderLookup.Provider provider) {
+    public ItemStack assemble(CraftingInput craftingInput, HolderLookup.Provider provider) {
         ItemStack itemstack = new ItemStack(Items.FIREWORK_STAR);
         CompoundTag compoundtag = itemstack.getOrCreateTagElement("Explosion");
         FireworkExplosion.Shape fireworkrocketitem$shape = FireworkExplosion.Shape.SMALL_BALL;
@@ -148,7 +147,6 @@ public class MobHeadFireworkStarRecipe extends CustomRecipe {
     @Override
     public ItemStack getResultItem(HolderLookup.Provider registries) {
         return new ItemStack(Items.FIREWORK_STAR);
-
     }
 
     @Override
@@ -156,9 +154,8 @@ public class MobHeadFireworkStarRecipe extends CustomRecipe {
         return i * j >= 2;
     }
 
-
     @Override
-    public @NotNull RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return OPRecipeSerializers.MOB_HEAD_FIREWORK_STAR.get();
     }
 }

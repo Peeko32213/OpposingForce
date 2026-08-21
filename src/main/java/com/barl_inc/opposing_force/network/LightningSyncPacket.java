@@ -12,12 +12,10 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.network.NetworkEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.joml.Vector4f;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 public class LightningSyncPacket {
     public static final CustomPacketPayload.Type<LightningSyncPacket> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(OpposingForce.MOD_ID, "lightning_sync_s2c"));

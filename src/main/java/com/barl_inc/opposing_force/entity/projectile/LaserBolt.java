@@ -2,7 +2,6 @@ package com.barl_inc.opposing_force.entity.projectile;
 
 import com.barl_inc.opposing_force.items.BlasterItem;
 import com.barl_inc.opposing_force.registry.*;
-import com.unusualmodding.opposing_force.registry.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
